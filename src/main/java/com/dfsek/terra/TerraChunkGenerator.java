@@ -20,6 +20,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         super(InterpolationType.TRILINEAR);
     }
 
+    @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoise fastNoise) {
         ChunkData chunk = createChunkData(world);
         for(byte x = 0; x < 16; x++) {
@@ -29,34 +30,24 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 }
             }
         }
-        for(byte x = 0; x < 16; x++) {
-            for(byte z = 0; z < 16; z++) {
-                int paletteLevel = 0;
-                for(int y = world.getMaxHeight()-1; y > 0; y--) {
-                    if(chunk.getType(x, y, z).isAir()){
-                        paletteLevel = 0;
-                        continue;
-                    }
-                    chunk.setBlock(x, y, z, TerraBiomeGrid.fromWorld(world).getBiome((chunkX << 4) + x, (chunkZ << 4) + z).getGenerator().getPalette().get(paletteLevel, random));
-                    paletteLevel++;
-                }
-            }
-        }
         return chunk;
     }
 
+    @Override
     public int getNoiseOctaves(World world) {
         return 4;
     }
-
+    @Override
     public float getNoiseFrequency(World world) {
         return 1f/96;
     }
 
+    @Override
     public List<GenerationPopulator> getGenerationPopulators(World world) {
         return Collections.emptyList();
     }
 
+    @Override
     public org.polydev.gaea.biome.BiomeGrid getBiomeGrid(World world) {
         return TerraBiomeGrid.fromWorld(world);
     }

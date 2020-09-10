@@ -98,7 +98,6 @@ public class Terra extends JavaPlugin {
 
     @Override
     public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-        new WorldConfig(worldName, this);
         return new TerraChunkGenerator();
     }
 }
