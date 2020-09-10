@@ -1,5 +1,7 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.math.NoiseFunction2;
+import com.dfsek.terra.math.NoiseFunction3;
 import org.polydev.gaea.biome.BiomeTerrain;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.parsii.eval.Expression;
@@ -15,18 +17,16 @@ public class UserDefinedGenerator extends BiomeTerrain {
     private final Variable xVar;
     private final Variable yVar;
     private final Variable zVar;
-    private final Variable noise2D;
-    private final Variable noise3D;
+    private final BlockPalette p;
 
 
-    public UserDefinedGenerator(Scope s, Expression e, List<Variable> v) {
+    public UserDefinedGenerator(Scope s, Expression e, List<Variable> v, BlockPalette p) {
         this.noiseExp = e;
         this.vars = v;
+        this.p = p;
         this.xVar = s.getVariable("x");
         this.yVar = s.getVariable("y");
         this.zVar = s.getVariable("z");
-        this.noise2D = s.getVariable("w");
-        this.noise3D = s.getVariable("t");
     }
     /**
      * Gets the 2D noise at a pair of coordinates using the provided FastNoise instance.
@@ -41,8 +41,8 @@ public class UserDefinedGenerator extends BiomeTerrain {
         xVar.setValue(x);
         yVar.setValue(0);
         zVar.setValue(z);
-        noise2D.setValue(gen.getSimplexFractal(x, z));
-        noise3D.setValue(0);
+        NoiseFunction2.setNoise(gen);
+        NoiseFunction3.setNoise(gen);
         return noiseExp.evaluate();
     }
 
@@ -60,8 +60,8 @@ public class UserDefinedGenerator extends BiomeTerrain {
         xVar.setValue(x);
         yVar.setValue(y);
         zVar.setValue(z);
-        noise2D.setValue(gen.getSimplexFractal(x, z));
-        noise3D.setValue(gen.getSimplexFractal(x, y, z));
+        NoiseFunction2.setNoise(gen);
+        NoiseFunction3.setNoise(gen);
         return noiseExp.evaluate();
     }
 
@@ -72,6 +72,6 @@ public class UserDefinedGenerator extends BiomeTerrain {
      */
     @Override
     public BlockPalette getPalette() {
-        return null;
+        return p;
     }
 }

@@ -1,5 +1,7 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.config.BiomeConfig;
+import com.dfsek.terra.config.ConfigUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeTerrain;
@@ -11,12 +13,19 @@ import org.polydev.gaea.structures.features.Feature;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
-    public UserDefinedBiome(String noiseEq) throws ParseException {
+    private final BiomeConfig config;
+    public UserDefinedBiome(BiomeConfig config) throws ParseException {
+        this.config = config;
         Scope s = Scope.create();
-        gen = new UserDefinedGenerator(s, Parser.parse(noiseEq, s), Collections.emptyList());
+        gen = new UserDefinedGenerator(s, Parser.parse(Objects.requireNonNull(config.getString("noise-equation")), s), Collections.emptyList(), ConfigUtil.getPalette(config.getString("palette")).getPalette());
+    }
+
+    public BiomeConfig getConfig() {
+        return config;
     }
 
     /**

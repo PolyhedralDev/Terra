@@ -27,13 +27,18 @@ import java.util.stream.Stream;
 public class WorldConfig {
     private static JavaPlugin main;
     private static final Map<String, WorldConfig> configs = new HashMap<>();
-    private static final Map<String, BiomeConfig> biomes = new HashMap<>();
-    public List<List<String>> biomeGrid;
+    public BiomeGridConfig biomeGrid;
 
 
     public WorldConfig(String name, JavaPlugin main) {
         WorldConfig.main = main;
         load(name);
+    }
+
+    public static void reloadAll() {
+        for(Map.Entry<String, WorldConfig> e : configs.entrySet()) {
+            e.getValue().load(e.getKey());
+        }
     }
 
     public static WorldConfig fromWorld(World w) {
@@ -57,31 +62,13 @@ public class WorldConfig {
             main.getLogger().severe("Unable to load configuration for world " + w + ".");
         }
 
-        biomeGrid = (List<List<String>>) config.getList("grids.DEFAULT");
+        biomeGrid = ConfigUtil.getGrid(config.getStringList("grids").get(0));
 
-        try (Stream<Path> paths = Files.walk(Paths.get(main.getDataFolder() + File.separator + "biomes"))) {
-            paths
-                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
-                    .forEach(path -> {
-                        Bukkit.getLogger().info(path.toString());
-                        try {
-                            BiomeConfig biome = new BiomeConfig(path.toFile());
-                            biomes.put(biome.getBiomeID(), biome);
-                        } catch(IOException | InvalidConfigurationException | ParseException e) {
-                            e.printStackTrace();
-                        }
-                    });
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+
 
 
         configs.put(w, this);
 
         main.getLogger().info("World load complete. Time elapsed: " + ((double) (System.nanoTime() - start)) / 1000000 + "ms");
-    }
-
-    public static Map<String, BiomeConfig> getBiomes() {
-        return biomes;
     }
 }

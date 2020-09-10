@@ -1,20 +1,17 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.WorldConfig;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.polydev.gaea.biome.BiomeGrid;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TerraBiomeGrid extends BiomeGrid {
-    private UserDefinedBiome[][] grid;
+
+    private static final Map<World, TerraBiomeGrid> grids = new HashMap<>();
+    private final UserDefinedBiome[][] grid;
     private final World w;
 
     public TerraBiomeGrid(World w) {
@@ -22,15 +19,21 @@ public class TerraBiomeGrid extends BiomeGrid {
         this.w = w;
         grid = new UserDefinedBiome[16][16];
         load();
+        grids.put(w, this);
     }
 
     public void load() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                WorldConfig.fromWorld(w);
-                grid[x][z] = WorldConfig.getBiomes().get(WorldConfig.fromWorld(w).biomeGrid.get(x).get(z)).getBiome();
-            }
-        }
-        super.setGrid(grid);
+        super.setGrid(WorldConfig.fromWorld(w).biomeGrid.getBiomeGrid());
     }
+
+    public static TerraBiomeGrid fromWorld(World w) {
+        if(grids.containsKey(w)) return grids.get(w);
+        else return new TerraBiomeGrid(w);
+    }
+    public static void reloadAll() {
+        for(Map.Entry<World, TerraBiomeGrid> e : grids.entrySet()) {
+            e.getValue().load();
+        }
+    }
+
 }
