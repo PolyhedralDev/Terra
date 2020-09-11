@@ -31,7 +31,7 @@ public class PaletteConfig extends YamlConfiguration {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
                 for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
                     layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
-                    Bukkit.getLogger().info("[Terra] Added" + type.getKey() + " with probability " + type.getValue());
+                    Bukkit.getLogger().info("[Terra] Added " + type.getKey() + " with probability " + type.getValue());
                 }
                 Bukkit.getLogger().info("[Terra] Added above materials for " + m.get("layers") + " layers.");
                 palette.addBlockData(layer, (Integer) m.get("layers"));
@@ -60,29 +60,5 @@ public class PaletteConfig extends YamlConfiguration {
 
     public String getPaletteID() {
         return paletteID;
-    }
-
-    private static class Range {
-        private final int min;
-        private final int max;
-
-        /**
-         * Instantiates a Range object with a minimum value (inclusive) and a maximum value (exclusive).
-         * @param min The minimum value (inclusive).
-         * @param max The maximum value (exclusive).
-         */
-        public Range(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        /**
-         * Tests if a value is within range.
-         * @param val The value to test.
-         * @return boolean - Whether the value is within range.
-         */
-        public boolean isInRange(int val) {
-            return val >= min && val < max;
-        }
     }
 }

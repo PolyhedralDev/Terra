@@ -10,6 +10,8 @@ import org.polydev.gaea.math.parsii.eval.Variable;
 import org.polydev.gaea.world.BlockPalette;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class UserDefinedGenerator extends BiomeTerrain {
     private final Expression noiseExp;
@@ -17,13 +19,13 @@ public class UserDefinedGenerator extends BiomeTerrain {
     private final Variable xVar;
     private final Variable yVar;
     private final Variable zVar;
-    private final BlockPalette p;
+    private final TreeMap<Integer, BlockPalette> paletteMap;
 
 
-    public UserDefinedGenerator(Scope s, Expression e, List<Variable> v, BlockPalette p) {
+    public UserDefinedGenerator(Scope s, Expression e, List<Variable> v, TreeMap<Integer, BlockPalette> p) {
         this.noiseExp = e;
         this.vars = v;
-        this.p = p;
+        this.paletteMap = p;
         this.xVar = s.getVariable("x");
         this.yVar = s.getVariable("y");
         this.zVar = s.getVariable("z");
@@ -72,6 +74,33 @@ public class UserDefinedGenerator extends BiomeTerrain {
      */
     @Override
     public BlockPalette getPalette(int y) {
-        return p;
+        for(Map.Entry<Integer, BlockPalette> e : paletteMap.entrySet()) {
+            if(e.getKey() >= y ) return e.getValue();
+        }
+        return null;
+    }
+
+    private static class Range {
+        private final int min;
+        private final int max;
+
+        /**
+         * Instantiates a Range object with a minimum value (inclusive) and a maximum value (exclusive).
+         * @param min The minimum value (inclusive).
+         * @param max The maximum value (exclusive).
+         */
+        public Range(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        /**
+         * Tests if a value is within range.
+         * @param val The value to test.
+         * @return boolean - Whether the value is within range.
+         */
+        public boolean isInRange(int val) {
+            return val >= min && val < max;
+        }
     }
 }

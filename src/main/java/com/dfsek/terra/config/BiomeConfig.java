@@ -14,6 +14,7 @@ public class BiomeConfig extends YamlConfiguration {
     private UserDefinedBiome biome;
     private String biomeID;
     private String friendlyName;
+    private org.bukkit.block.Biome vanillaBiome;
     private boolean isEnabled = false;
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
@@ -37,6 +38,12 @@ public class BiomeConfig extends YamlConfiguration {
         this.biomeID = getString("id");
         if(!contains("name")) throw new InvalidConfigurationException("Biome Name unspecified!");
         this.friendlyName = getString("name");
+        if(!contains("vanilla")) throw new InvalidConfigurationException("Vanila Biome unspecified!");
+        try {
+            this.vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
+        } catch(IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid Vanilla biome: " + getString("vanilla"));
+        }
         isEnabled = true;
     }
 
@@ -54,5 +61,9 @@ public class BiomeConfig extends YamlConfiguration {
 
     public String getFriendlyName() {
         return friendlyName;
+    }
+
+    public org.bukkit.block.Biome getVanillaBiome() {
+        return vanillaBiome;
     }
 }

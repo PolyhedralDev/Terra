@@ -10,18 +10,30 @@ import org.polydev.gaea.math.parsii.eval.Parser;
 import org.polydev.gaea.math.parsii.eval.Scope;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.structures.features.Feature;
+import org.polydev.gaea.world.BlockPalette;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
     private final BiomeConfig config;
+    private final UserDefinedDecorator decorator;
     public UserDefinedBiome(BiomeConfig config) throws ParseException {
         this.config = config;
         Scope s = Scope.create();
-        gen = new UserDefinedGenerator(s, Parser.parse(Objects.requireNonNull(config.getString("noise-equation")), s), Collections.emptyList(), ConfigUtil.getPalette(config.getString("palette")).getPalette());
+        TreeMap<Integer, BlockPalette> paletteMap = new TreeMap<>();
+        for(Map.Entry<String, Object> e : config.getConfigurationSection("palette").getValues(false).entrySet()) {
+            paletteMap.put((Integer) e.getValue(), ConfigUtil.getPalette(e.getKey()).getPalette());
+        }
+
+
+        this.decorator = new UserDefinedDecorator(config);
+
+        gen = new UserDefinedGenerator(s, Parser.parse(Objects.requireNonNull(config.getString("noise-equation")), s), Collections.emptyList(), paletteMap);
     }
 
     public BiomeConfig getConfig() {
@@ -35,7 +47,7 @@ public class UserDefinedBiome implements Biome {
      */
     @Override
     public org.bukkit.block.Biome getVanillaBiome() {
-        return org.bukkit.block.Biome.PLAINS;
+        return config.getVanillaBiome();
     }
 
     /**
@@ -65,6 +77,6 @@ public class UserDefinedBiome implements Biome {
      */
     @Override
     public Decorator getDecorator() {
-        return null;
+        return decorator;
     }
 }

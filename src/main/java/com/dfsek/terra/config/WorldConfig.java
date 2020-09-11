@@ -1,8 +1,7 @@
 package com.dfsek.terra.config;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.biome.BiomeZone;
-import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -27,7 +26,10 @@ public class WorldConfig {
     private static final Map<World, WorldConfig> configs = new HashMap<>();
     private final Map<String, BiomeGridConfig> biomeGrids = new HashMap<>();
     public float zoneFreq = 1f/1536;
-    public UserDefinedGrid[] definedGrids = new UserDefinedGrid[16];
+    public float freq1 = 1f/256;
+    public float freq2 = 1f/512;
+    public int seaLevel;
+    public UserDefinedGrid[] definedGrids = new UserDefinedGrid[32];
 
 
     public WorldConfig(World w, JavaPlugin main) {
@@ -63,6 +65,7 @@ public class WorldConfig {
             main.getLogger().severe("Unable to load configuration for world " + w + ".");
         }
 
+        seaLevel = config.getInt("sea-level", 63);
 
         try (Stream<Path> paths = Files.walk(Paths.get(main.getDataFolder() + File.separator + "grids"))) {
             paths
@@ -85,8 +88,19 @@ public class WorldConfig {
 
 
 
-        for(int i = 0; i < 16; i++) {
-            definedGrids[i] = biomeGrids.get(config.getStringList("grids").get(i)).getGrid();
+        for(int i = 0; i < 32; i++) {
+            String partName = config.getStringList("grids").get(i);
+            if(partName.startsWith("BIOME:")) {
+                UserDefinedBiome[][] temp = new UserDefinedBiome[16][16];
+                UserDefinedBiome b = ConfigUtil.getBiome(partName.substring(6)).getBiome();
+                for(int x = 0; x < 16; x++) {
+                    for(int z = 0; z < 16; z++) {
+                        temp[x][z] = b;
+                    }
+                }
+                definedGrids[i] = new UserDefinedGrid(w, freq1, freq2, temp);
+                main.getLogger().info("Loaded single-biome grid " + partName);
+            } else definedGrids[i] = biomeGrids.get(partName).getGrid();
         }
 
 

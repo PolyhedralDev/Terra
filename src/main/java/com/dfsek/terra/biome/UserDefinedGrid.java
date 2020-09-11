@@ -9,4 +9,8 @@ public class UserDefinedGrid extends BiomeGrid {
         super(w, freq1, freq2);
         super.setGrid(config.getBiomeGrid());
     }
+    public UserDefinedGrid(World w, float freq1, float freq2, UserDefinedBiome[][] b) {
+        super(w, freq1, freq2);
+        super.setGrid(b);
+    }
 }
