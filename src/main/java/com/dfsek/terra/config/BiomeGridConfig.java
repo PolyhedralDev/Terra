@@ -43,7 +43,7 @@ public class BiomeGridConfig extends YamlConfiguration {
         this.gridID = getString("id");
         if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
         this.friendlyName = getString("name");
-        this.grid = new UserDefinedGrid(world, 1f/256, 1f/512, this);// TODO: custom frequency
+        this.grid = new UserDefinedGrid(world, 1f/512, 1f/1024, this);// TODO: custom frequency
         isEnabled = true;
     }
 

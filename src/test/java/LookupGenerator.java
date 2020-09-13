@@ -10,7 +10,7 @@ public class LookupGenerator {
     private static double[] lookup;
 
     public static void main(String[] args) {
-        int dist = 32;
+        int dist = 16;
 
         List<Double> vals = new ArrayList<>();
         FastNoise noise = new FastNoise(new Random().nextInt());
@@ -25,7 +25,7 @@ public class LookupGenerator {
         }
 
         for(int i = 0; i < 10000000; i++) {
-            double n = noise.getSimplexFractal(0, i);
+            double n = noise.getNoise(0, i);
             max = Math.max(max, n);
             min = Math.min(min, n);
             vals.add(n);
@@ -59,7 +59,7 @@ public class LookupGenerator {
         numbers = new int[dist];
         vals = new ArrayList<>();
         for(int i = 0; i < 10000000; i++) {
-            double n = noise.getSimplexFractal(0, i);
+            double n = noise.getNoise(0, i);
             vals.add(n);
             numbers[normalizeNew(n)]++;
         }

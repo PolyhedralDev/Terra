@@ -12,7 +12,10 @@ import java.util.Map;
 public class UserDefinedDecorator extends Decorator {
 
     private final ProbabilityCollection<Fauna> fauna = new ProbabilityCollection<>();
-    private int faunaChance;
+    private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
+    private final int faunaChance;
+    private final int treeChance;
+    private final int treeDensity;
 
     public UserDefinedDecorator(BiomeConfig config) {
         if(config.contains("fauna")) {
@@ -20,17 +23,28 @@ public class UserDefinedDecorator extends Decorator {
                 fauna.add(Fauna.valueOf(e.getKey()), (Integer) e.getValue());
             }
         }
+        if(config.contains("trees")) {
+            for(Map.Entry<String, Object> e : config.getConfigurationSection("trees").getValues(false).entrySet()) {
+                trees.add(Tree.valueOf(e.getKey()), (Integer) e.getValue());
+            }
+        }
         faunaChance = config.getInt("fauna-chance", 0);
+        treeChance = config.getInt("tree-chance", 0);
+        treeDensity = config.getInt("tree-density", 0);
     }
 
     @Override
     public ProbabilityCollection<Tree> getTrees() {
-        return null;
+        return trees;
+    }
+
+    public int getTreeChance() {
+        return treeChance;
     }
 
     @Override
     public int getTreeDensity() {
-        return 0;
+        return treeDensity;
     }
 
     @Override

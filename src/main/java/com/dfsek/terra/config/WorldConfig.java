@@ -25,9 +25,9 @@ public class WorldConfig {
     private static JavaPlugin main;
     private static final Map<World, WorldConfig> configs = new HashMap<>();
     private final Map<String, BiomeGridConfig> biomeGrids = new HashMap<>();
-    public float zoneFreq = 1f/1536;
-    public float freq1 = 1f/256;
-    public float freq2 = 1f/512;
+    public float zoneFreq;
+    public float freq1;
+    public float freq2;
     public int seaLevel;
     public UserDefinedGrid[] definedGrids = new UserDefinedGrid[32];
 
@@ -66,6 +66,9 @@ public class WorldConfig {
         }
 
         seaLevel = config.getInt("sea-level", 63);
+        zoneFreq = config.getInt("frequencies.zone", 1536);
+        freq1 = config.getInt("frequencies.grid-1", 256);
+        freq2 = config.getInt("frequencies.grid-2", 512);
 
         try (Stream<Path> paths = Files.walk(Paths.get(main.getDataFolder() + File.separator + "grids"))) {
             paths
