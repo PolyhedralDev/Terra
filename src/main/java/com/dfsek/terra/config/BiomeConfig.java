@@ -39,6 +39,7 @@ public class BiomeConfig extends YamlConfiguration {
         if(!contains("name")) throw new InvalidConfigurationException("Biome Name unspecified!");
         this.friendlyName = getString("name");
         if(!contains("vanilla")) throw new InvalidConfigurationException("Vanila Biome unspecified!");
+        if(!contains("palette")) throw new InvalidConfigurationException("Palette unspecified!");
         try {
             this.vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
         } catch(IllegalArgumentException e) {

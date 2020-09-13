@@ -66,9 +66,9 @@ public class WorldConfig {
         }
 
         seaLevel = config.getInt("sea-level", 63);
-        zoneFreq = config.getInt("frequencies.zone", 1536);
-        freq1 = config.getInt("frequencies.grid-1", 256);
-        freq2 = config.getInt("frequencies.grid-2", 512);
+        zoneFreq = 1f/config.getInt("frequencies.zone", 1536);
+        freq1 = 1f/config.getInt("frequencies.grid-1", 256);
+        freq2 = 1f/config.getInt("frequencies.grid-2", 512);
 
         try (Stream<Path> paths = Files.walk(Paths.get(main.getDataFolder() + File.separator + "grids"))) {
             paths

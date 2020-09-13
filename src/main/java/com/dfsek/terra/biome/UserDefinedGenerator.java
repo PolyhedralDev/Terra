@@ -1,12 +1,15 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import org.polydev.gaea.biome.BiomeTerrain;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.parsii.eval.Expression;
+import org.polydev.gaea.math.parsii.eval.Parser;
 import org.polydev.gaea.math.parsii.eval.Scope;
 import org.polydev.gaea.math.parsii.eval.Variable;
+import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.world.BlockPalette;
 
 import java.util.List;
@@ -16,19 +19,26 @@ import java.util.TreeMap;
 public class UserDefinedGenerator extends BiomeTerrain {
     private final Expression noiseExp;
     private final List<Variable> vars;
-    private final Variable xVar;
-    private final Variable yVar;
-    private final Variable zVar;
+    private final Scope s = new Scope();
+    private final Variable xVar = s.getVariable("x");;
+    private final Variable yVar = s.getVariable("y");
+    private final Variable zVar = s.getVariable("z");;
     private final TreeMap<Integer, BlockPalette> paletteMap;
+    private final NoiseFunction2 n2 = new NoiseFunction2();
+    private final NoiseFunction3 n3 = new NoiseFunction3();
+    private final Parser p = new Parser();
+    {
+        p.registerFunction("noise2", n2);
+        p.registerFunction("noise3", n3);
+    }
+
+    private static final Object noiseLock = new Object();
 
 
-    public UserDefinedGenerator(Scope s, Expression e, List<Variable> v, TreeMap<Integer, BlockPalette> p) {
-        this.noiseExp = e;
+    public UserDefinedGenerator(String e, List<Variable> v, TreeMap<Integer, BlockPalette> pa) throws ParseException {
         this.vars = v;
-        this.paletteMap = p;
-        this.xVar = s.getVariable("x");
-        this.yVar = s.getVariable("y");
-        this.zVar = s.getVariable("z");
+        this.paletteMap = pa;
+        this.noiseExp = p.parse(e, s);
     }
     /**
      * Gets the 2D noise at a pair of coordinates using the provided FastNoise instance.
@@ -40,12 +50,14 @@ public class UserDefinedGenerator extends BiomeTerrain {
      */
     @Override
     public double getNoise(FastNoise gen, int x, int z) {
-        xVar.setValue(x);
-        yVar.setValue(0);
-        zVar.setValue(z);
-        NoiseFunction2.setNoise(gen);
-        NoiseFunction3.setNoise(gen);
-        return noiseExp.evaluate();
+        synchronized(noiseLock) {
+            xVar.setValue(x);
+            yVar.setValue(0);
+            zVar.setValue(z);
+            n2.setNoise(gen, false);
+            n3.setNoise(gen, false);
+            return noiseExp.evaluate();
+        }
     }
 
     /**
@@ -59,12 +71,14 @@ public class UserDefinedGenerator extends BiomeTerrain {
      */
     @Override
     public double getNoise(FastNoise gen, int x, int y, int z) {
-        xVar.setValue(x);
-        yVar.setValue(y);
-        zVar.setValue(z);
-        NoiseFunction2.setNoise(gen);
-        NoiseFunction3.setNoise(gen);
-        return noiseExp.evaluate();
+        synchronized(noiseLock) {
+            xVar.setValue(x);
+            yVar.setValue(y);
+            zVar.setValue(z);
+            n2.setNoise(gen, false);
+            n3.setNoise(gen, false);
+            return noiseExp.evaluate();
+        }
     }
 
     /**

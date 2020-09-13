@@ -83,7 +83,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.4.0</version>
+            <version>1.5.7</version>
         </dependency>
     </dependencies>
 

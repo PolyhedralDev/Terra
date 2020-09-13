@@ -1,6 +1,7 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedDecorator;
 import org.bukkit.Chunk;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.population.PopulationManager;
+import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.util.WorldUtil;
 
 import java.util.Random;
@@ -22,6 +24,7 @@ public class TreePopulator extends GaeaBlockPopulator {
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+        ProfileFuture tree = TerraProfiler.fromWorld(world).measure("TreeGenTime");
         int x = random.nextInt(16); // Decrease chances of chunk-crossing trees
         int z = random.nextInt(16);
         Location origin = chunk.getBlock(x, 0, z).getLocation();
@@ -41,5 +44,6 @@ public class TreePopulator extends GaeaBlockPopulator {
             x = random.nextInt(16); // Decrease chances of chunk-crossing trees
             z = random.nextInt(16);
         }
+        if(tree!=null) tree.complete();
     }
 }
