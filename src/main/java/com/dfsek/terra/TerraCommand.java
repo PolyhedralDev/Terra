@@ -3,12 +3,17 @@ package com.dfsek.terra;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.OreConfig;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.profiler.WorldProfiler;
+import org.polydev.gaea.structures.NMSStructure;
+
+import java.util.Random;
 
 public class TerraCommand implements CommandExecutor {
     @Override
@@ -21,6 +26,7 @@ public class TerraCommand implements CommandExecutor {
             case "biome":
                 if(!(sender instanceof Player)) return false;
                 sender.sendMessage("You are in " + ((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation())).getConfig().getFriendlyName());
+                break;
             case "profile":
                 if(! (sender instanceof Player)) {
                     sender.sendMessage("Command is for players only.");
@@ -46,7 +52,30 @@ public class TerraCommand implements CommandExecutor {
                         return true;
                     }
                 } else sender.sendMessage("World is not a Terra world!");
-            }
+                break;
+            case "get_data":
+                if(! (sender instanceof Player)) {
+                    sender.sendMessage("Command is for players only.");
+                    return true;
+                }
+                Block b = ((Player) sender).getTargetBlockExact(25);
+                sender.sendMessage(b.getBlockData().getAsString());
+                //NMSStructure villageBase = new NMSStructure(((Player) sender).getLocation(), NMSStructure.getAsTag(Class.forName("net.minecraft.server.v1_16_R2.AbstractDragonController").getResourceAsStream("/data/minecraft/structures/village/plains/town_centers/plains_fountain_01.nbt")));
+                //villageBase.paste();
+                break;
+            case "ore":
+                if(! (sender instanceof Player)) {
+                    sender.sendMessage("Command is for players only.");
+                    return true;
+                }
+                Block bl = ((Player) sender).getTargetBlockExact(25);
+                OreConfig ore = ConfigUtil.getOre(args[1]);
+                if(ore == null) {
+                    sender.sendMessage("Unable to find Ore");
+                    return true;
+                }
+                ore.doVein(bl.getLocation(), new Random());
+        }
         return true;
     }
 }

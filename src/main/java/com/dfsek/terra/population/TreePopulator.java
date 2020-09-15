@@ -17,11 +17,6 @@ import org.polydev.gaea.util.WorldUtil;
 import java.util.Random;
 
 public class TreePopulator extends GaeaBlockPopulator {
-
-    public TreePopulator(PopulationManager manager) {
-        super(manager);
-    }
-
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         ProfileFuture tree = TerraProfiler.fromWorld(world).measure("TreeGenTime");

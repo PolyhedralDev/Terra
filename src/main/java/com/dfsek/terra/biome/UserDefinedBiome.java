@@ -4,6 +4,7 @@ import com.dfsek.terra.config.BiomeConfig;
 import com.dfsek.terra.config.ConfigUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeTerrain;
@@ -26,7 +27,7 @@ public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
     private final BiomeConfig config;
     private final UserDefinedDecorator decorator;
-    public UserDefinedBiome(BiomeConfig config) throws ParseException {
+    public UserDefinedBiome(BiomeConfig config) throws ParseException, InvalidConfigurationException {
         this.config = config;
         TreeMap<Integer, BlockPalette> paletteMap = new TreeMap<>();
         for(Map<?, ?> e : config.getMapList("palette")) {
@@ -34,14 +35,20 @@ public class UserDefinedBiome implements Biome {
                 try {
                     if(((String) entry.getKey()).startsWith("BLOCK:")) {
                         try {
-                            paletteMap.put((Integer) entry.getValue(), new BlockPalette().addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData((String) entry.getKey()), 1), 1));
+                            paletteMap.put((Integer) entry.getValue(), new BlockPalette().addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
-                            Bukkit.getLogger().severe("SEVERE configuration error for BlockPalettes in biome" + config.getFriendlyName() + ", ID: " + config.getBiomeID() + ". BlockData " + entry.getKey() + " is invalid!");
+                            throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome " + config.getFriendlyName() + ", ID: " + config.getBiomeID() + ". BlockData " + entry.getKey() + " is invalid!");
                         }
                     }
-                    else paletteMap.put((Integer) entry.getValue(), ConfigUtil.getPalette((String) entry.getKey()).getPalette());
+                    else {
+                        try {
+                            paletteMap.put((Integer) entry.getValue(), ConfigUtil.getPalette((String) entry.getKey()).getPalette());
+                        } catch(NullPointerException ex) {
+                            throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome " + config.getFriendlyName() + ", ID: " + config.getBiomeID() + "\n\nPalette " + entry.getKey() + " cannot be found!");
+                        }
+                    }
                 } catch(ClassCastException ex) {
-                    Bukkit.getLogger().severe("SEVERE configuration error for BlockPalettes in biome" + config.getFriendlyName() + ", ID: " + config.getBiomeID());
+                    throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome" + config.getFriendlyName() + ", ID: " + config.getBiomeID());
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.dfsek.terra;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.population.FaunaPopulator;
+import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.TreePopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,7 +24,9 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager();
     public TerraChunkGenerator() {
         super(InterpolationType.TRILINEAR);
-        popMan.attach(new TreePopulator(popMan));
+        popMan.attach(new TreePopulator());
+        popMan.attach(new FaunaPopulator());
+        popMan.attach(new OrePopulator());
     }
 
     @Override
@@ -62,6 +65,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Arrays.asList(popMan, new FaunaPopulator());
+        return Collections.singletonList(popMan);
+    }
+
+    @Override
+    public boolean shouldGenerateStructures() {
+        return true;
     }
 }

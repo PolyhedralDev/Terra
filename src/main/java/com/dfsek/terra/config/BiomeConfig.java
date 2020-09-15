@@ -2,6 +2,7 @@ package com.dfsek.terra.config;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,11 @@ import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class BiomeConfig extends YamlConfiguration {
     private UserDefinedBiome biome;
@@ -16,6 +22,8 @@ public class BiomeConfig extends YamlConfiguration {
     private String friendlyName;
     private org.bukkit.block.Biome vanillaBiome;
     private boolean isEnabled = false;
+    private final Map<OreConfig, MaxMin> ores = new HashMap<>();
+    private final Map<OreConfig, MaxMin> oreHeights = new HashMap<>();
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
         super();
@@ -27,18 +35,26 @@ public class BiomeConfig extends YamlConfiguration {
     public void load(@NotNull File file) throws InvalidConfigurationException, IOException {
         isEnabled = false;
         super.load(file);
+        if(!contains("id")) throw new InvalidConfigurationException("Biome ID unspecified!");
+        this.biomeID = getString("id");
+        if(!contains("name")) throw new InvalidConfigurationException("Biome Name unspecified!");
+        this.friendlyName = getString("name");
         if(!contains("noise-equation")) throw new InvalidConfigurationException("No noise equation included in biome!");
         try {
             this.biome = new UserDefinedBiome(this);
         } catch(ParseException e) {
             e.printStackTrace();
-            Bukkit.getLogger().severe("Unable to parse noise equation!");
+            throw new IllegalArgumentException("Unable to parse noise equation!");
         }
-        if(!contains("id")) throw new InvalidConfigurationException("Biome ID unspecified!");
-        this.biomeID = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Biome Name unspecified!");
-        this.friendlyName = getString("name");
-        if(!contains("vanilla")) throw new InvalidConfigurationException("Vanila Biome unspecified!");
+        if(contains("ores")) {
+            ores.clear();
+            for(Map.Entry<String, Object> m : getConfigurationSection("ores").getValues(false).entrySet()) {
+                ores.put(ConfigUtil.getOre(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
+                oreHeights.put(ConfigUtil.getOre(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
+            }
+        }
+
+        if(!contains("vanilla")) throw new InvalidConfigurationException("Vanilla Biome unspecified!");
         if(!contains("palette")) throw new InvalidConfigurationException("Palette unspecified!");
         try {
             this.vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
@@ -46,6 +62,10 @@ public class BiomeConfig extends YamlConfiguration {
             throw new InvalidConfigurationException("Invalid Vanilla biome: " + getString("vanilla"));
         }
         isEnabled = true;
+    }
+
+    public MaxMin getOreHeight(OreConfig c) {
+        return oreHeights.get(c);
     }
 
     public boolean isEnabled() {
@@ -66,5 +86,29 @@ public class BiomeConfig extends YamlConfiguration {
 
     public org.bukkit.block.Biome getVanillaBiome() {
         return vanillaBiome;
+    }
+
+    public Map<OreConfig, MaxMin> getOres() {
+        return ores;
+    }
+
+    public static class MaxMin {
+        private final int min;
+        private final int max;
+        public MaxMin(int min, int max) {
+            this.max = max;
+            this.min = min;
+        }
+
+        public int getMax() {
+            return max;
+        }
+
+        public int getMin() {
+            return min;
+        }
+        public int get(Random r) {
+            return r.nextInt((max-min)+1)+min;
+        }
     }
 }

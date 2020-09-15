@@ -17,7 +17,7 @@ public class BiomeGridConfig extends YamlConfiguration {
     private String gridID;
     private String friendlyName;
     private boolean isEnabled = false;
-    private World world;
+    private final World world;
     private final UserDefinedBiome[][] gridRaw = new UserDefinedBiome[16][16];
 
     public BiomeGridConfig(File file, World w) throws IOException, InvalidConfigurationException {
@@ -29,20 +29,25 @@ public class BiomeGridConfig extends YamlConfiguration {
     public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
         isEnabled = false;
         super.load(file);
+        if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
+        this.gridID = getString("id");
+        if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
+        this.friendlyName = getString("name");
         if(!contains("grid")) throw new InvalidConfigurationException("Grid not found!");
         try {
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    gridRaw[x][z] = ConfigUtil.getBiome(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
+                    try {
+                        gridRaw[x][z] = ConfigUtil.getBiome(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
+                    } catch(NullPointerException e) {
+                        throw new InvalidConfigurationException("SEVERE configuration error for BiomeGrid " + getFriendlyName() + ", ID: " + getGridID() + "\n\nNo such biome " + ((List<List<String>>) getList("grid")).get(x).get(z));
+                    }
                 }
             }
         } catch(ClassCastException e) {
             throw new InvalidConfigurationException("Malformed grid!");
         }
-        if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
-        this.gridID = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
-        this.friendlyName = getString("name");
+
         this.grid = new UserDefinedGrid(world, 1f/512, 1f/1024, this);// TODO: custom frequency
         isEnabled = true;
     }
