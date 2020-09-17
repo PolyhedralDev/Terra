@@ -14,14 +14,10 @@ import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.Fauna;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class FaunaConfig extends YamlConfiguration implements Fauna {
     private BlockPalette faunaPalette = new BlockPalette();
@@ -35,7 +31,7 @@ public class FaunaConfig extends YamlConfiguration implements Fauna {
     }
 
     @Override
-    public void load(@NotNull File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
+    public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
         super.load(file);
         if(!contains("blocks")) throw new InvalidConfigurationException("No blocks defined in custom fauna!");
         if(!contains("id")) throw new InvalidConfigurationException("Fauna ID unspecified!");
@@ -49,23 +45,10 @@ public class FaunaConfig extends YamlConfiguration implements Fauna {
             throw new InvalidConfigurationException("Invalid material ID in spawnable list: " + e.getMessage());
         }
 
-        faunaPalette  = new BlockPalette();
-        for(Map<?, ?> m : getMapList("blocks")) {
-            try {
-                ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
-                for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
-                    layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
-                    Bukkit.getLogger().info("[Terra] Added " + type.getKey() + " with probability " + type.getValue());
-                }
-                Bukkit.getLogger().info("[Terra] Added above materials for " + m.get("layers") + " layers.");
-                faunaPalette.addBlockData(layer, (Integer) m.get("layers"));
-            } catch(ClassCastException e) {
-                e.printStackTrace();
-            }
-        }
-        if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
+        faunaPalette  = PaletteConfig.getPalette(getMapList("blocks"));
+        if(!contains("id")) throw new InvalidConfigurationException("Fauna ID unspecified!");
         this.id = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
+        if(!contains("name")) throw new InvalidConfigurationException("Fauna Name unspecified!");
         this.friendlyName = getString("name");
     }
 

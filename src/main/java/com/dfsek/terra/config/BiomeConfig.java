@@ -1,7 +1,7 @@
 package com.dfsek.terra.config;
 
+import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,11 +10,8 @@ import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class BiomeConfig extends YamlConfiguration {
     private UserDefinedBiome biome;
@@ -24,6 +21,8 @@ public class BiomeConfig extends YamlConfiguration {
     private boolean isEnabled = false;
     private final Map<OreConfig, MaxMin> ores = new HashMap<>();
     private final Map<OreConfig, MaxMin> oreHeights = new HashMap<>();
+
+
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
         super();
@@ -53,6 +52,8 @@ public class BiomeConfig extends YamlConfiguration {
                 oreHeights.put(ConfigUtil.getOre(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
             }
         }
+
+
 
         if(!contains("vanilla")) throw new InvalidConfigurationException("Vanilla Biome unspecified!");
         if(!contains("palette")) throw new InvalidConfigurationException("Palette unspecified!");
@@ -90,25 +91,5 @@ public class BiomeConfig extends YamlConfiguration {
 
     public Map<OreConfig, MaxMin> getOres() {
         return ores;
-    }
-
-    public static class MaxMin {
-        private final int min;
-        private final int max;
-        public MaxMin(int min, int max) {
-            this.max = max;
-            this.min = min;
-        }
-
-        public int getMax() {
-            return max;
-        }
-
-        public int getMin() {
-            return min;
-        }
-        public int get(Random r) {
-            return r.nextInt((max-min)+1)+min;
-        }
     }
 }

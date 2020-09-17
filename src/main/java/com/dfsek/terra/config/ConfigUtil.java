@@ -27,6 +27,7 @@ public class ConfigUtil {
     private static final Map<String, OreConfig> ores = new HashMap<>();
     private static final Map<String, PaletteConfig> palettes = new HashMap<>();
     private static final Map<String, FaunaConfig> faunaConfig = new HashMap<>();
+    private static final Map<String, CarverConfig> caveConfig = new HashMap<>();
 
     public static void loadConfig(JavaPlugin main) {
         Logger logger = main.getLogger();
@@ -35,6 +36,8 @@ public class ConfigUtil {
         loadOres(main);
 
         loadPalettes(main);
+
+        loadCaves(main);
 
         loadFauna(main);
 
@@ -163,6 +166,33 @@ public class ConfigUtil {
         }
     }
 
+    private static void loadCaves(JavaPlugin main) {
+        Logger logger = main.getLogger();
+        caveConfig.clear();
+        File oreFolder = new File(main.getDataFolder() + File.separator + "carving");
+        oreFolder.mkdirs();
+        try (Stream<Path> paths = Files.walk(oreFolder.toPath())) {
+            paths
+                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
+                    .forEach(path -> {
+                        logger.info("Loading cave from " + path.toString());
+                        try {
+                            CarverConfig cave = new CarverConfig(path.toFile());
+                            caveConfig.put(cave.getID(), cave);
+                            logger.info("ID: " + cave.getID());
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
+                            logger.severe("Configuration error for Carver. ");
+                            logger.severe(e.getMessage());
+                            logger.severe("Correct this before proceeding!");
+                        }
+                    });
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static BiomeConfig getBiome(String id) {
         return biomes.get(id);
     }
@@ -175,11 +205,19 @@ public class ConfigUtil {
         return faunaConfig.get(id);
     }
 
+    public static CarverConfig getCarver(String id) {
+        return caveConfig.get(id);
+    }
+
     public static OreConfig getOre(String id) {
         return ores.get(id);
     }
 
     public static <E extends Enum<E>> List<E> getElements(List<String> st, Class<E> clazz) {
         return st.stream().map((s) -> E.valueOf(clazz, s)).collect(Collectors.toList());
+    }
+
+    public static List<CarverConfig> getCarvers() {
+        return new ArrayList<>(caveConfig.values());
     }
 }

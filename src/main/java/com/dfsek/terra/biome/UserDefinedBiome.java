@@ -1,6 +1,8 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.UserDefinedCarver;
 import com.dfsek.terra.config.BiomeConfig;
+import com.dfsek.terra.config.CarverConfig;
 import com.dfsek.terra.config.ConfigUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
@@ -17,7 +19,9 @@ import org.polydev.gaea.structures.features.Feature;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.BlockPalette;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,6 +31,8 @@ public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
     private final BiomeConfig config;
     private final UserDefinedDecorator decorator;
+    private final List<CarverConfig> carvers = new ArrayList<>();
+    private final Map<CarverConfig, Integer> carverChance = new HashMap<>();
     public UserDefinedBiome(BiomeConfig config) throws ParseException, InvalidConfigurationException {
         this.config = config;
         TreeMap<Integer, BlockPalette> paletteMap = new TreeMap<>();
@@ -53,9 +59,26 @@ public class UserDefinedBiome implements Biome {
             }
         }
 
+        if(config.contains("carving")) {
+            for(Map<?, ?> e : config.getMapList("carving")) {
+                for(Map.Entry<?, ?> entry : e.entrySet()) {
+                    try {
+                        //carvers.add(new UserDefinedCarver((Integer) entry.getValue(), ConfigUtil.getCarver((String) entry.getKey())));
+                        carverChance.put(ConfigUtil.getCarver((String) entry.getKey()), (Integer) entry.getValue());
+                    } catch(ClassCastException ex) {
+                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome" + config.getFriendlyName() + ", ID: " + config.getBiomeID());
+                    }
+                }
+            }
+        }
+
         this.decorator = new UserDefinedDecorator(config);
 
         gen = new UserDefinedGenerator(Objects.requireNonNull(config.getString("noise-equation")), Collections.emptyList(), paletteMap);
+    }
+
+    public List<CarverConfig> getCarvers() {
+        return carvers;
     }
 
     public BiomeConfig getConfig() {
@@ -100,5 +123,9 @@ public class UserDefinedBiome implements Biome {
     @Override
     public Decorator getDecorator() {
         return decorator;
+    }
+
+    public int getCarverChance(CarverConfig c) {
+        return carverChance.getOrDefault(c, 0);
     }
 }

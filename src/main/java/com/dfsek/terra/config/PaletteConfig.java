@@ -2,6 +2,7 @@ package com.dfsek.terra.config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -25,20 +26,7 @@ public class PaletteConfig extends YamlConfiguration {
     @Override
     public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
         super.load(file);
-        palette  = new BlockPalette();
-        for(Map<?, ?> m : getMapList("blocks")) {
-            try {
-                ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
-                for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
-                    layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
-                    Bukkit.getLogger().info("[Terra] Added " + type.getKey() + " with probability " + type.getValue());
-                }
-                Bukkit.getLogger().info("[Terra] Added above materials for " + m.get("layers") + " layers.");
-                palette.addBlockData(layer, (Integer) m.get("layers"));
-            } catch(ClassCastException e) {
-                e.printStackTrace();
-            }
-        }
+        palette = getPalette(getMapList("blocks"));
         if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
         this.paletteID = getString("id");
         if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
@@ -60,5 +48,23 @@ public class PaletteConfig extends YamlConfiguration {
 
     public String getPaletteID() {
         return paletteID;
+    }
+
+    public static BlockPalette getPalette(List<Map<?, ?>> maps) throws InvalidConfigurationException {
+        BlockPalette p  = new BlockPalette();
+        for(Map<?, ?> m : maps) {
+            try {
+                ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
+                for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
+                    layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
+                    Bukkit.getLogger().info("[Terra] Added " + type.getKey() + " with probability " + type.getValue());
+                }
+                Bukkit.getLogger().info("[Terra] Added above materials for " + m.get("layers") + " layers.");
+                p.addBlockData(layer, (Integer) m.get("layers"));
+            } catch(ClassCastException e) {
+                throw new InvalidConfigurationException("SEVERE configuration error for BlockPalette: \n\n" + e.getMessage());
+            }
+        }
+        return p;
     }
 }
