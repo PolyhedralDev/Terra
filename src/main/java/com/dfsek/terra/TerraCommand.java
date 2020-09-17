@@ -2,6 +2,7 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.BiomeConfig;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.OreConfig;
 import org.bukkit.block.Block;
@@ -25,7 +26,7 @@ public class TerraCommand implements CommandExecutor {
                 break;
             case "biome":
                 if(!(sender instanceof Player)) return false;
-                sender.sendMessage("You are in " + ((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation())).getConfig().getFriendlyName());
+                sender.sendMessage("You are in " + BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation())).getFriendlyName());
                 break;
             case "profile":
                 if(! (sender instanceof Player)) {
@@ -69,7 +70,7 @@ public class TerraCommand implements CommandExecutor {
                     return true;
                 }
                 Block bl = ((Player) sender).getTargetBlockExact(25);
-                OreConfig ore = ConfigUtil.getOre(args[1]);
+                OreConfig ore = OreConfig.fromID(args[1]);
                 if(ore == null) {
                     sender.sendMessage("Unable to find Ore");
                     return true;

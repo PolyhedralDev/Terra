@@ -15,7 +15,7 @@ public class CavePopulator extends GenerationPopulator {
     @Override
     public ChunkGenerator.ChunkData populate(World world, ChunkGenerator.ChunkData chunk, Random random, int chunkX, int chunkZ) {
         ProfileFuture cave = TerraProfiler.fromWorld(world).measure("CaveTime");
-        for(CarverConfig c : ConfigUtil.getCarvers()) {
+        for(CarverConfig c : CarverConfig.getCarvers()) {
             chunk = c.getCarver().carve(chunkX, chunkZ, world).merge(chunk, true);
         }
         if(cave != null) cave.complete();

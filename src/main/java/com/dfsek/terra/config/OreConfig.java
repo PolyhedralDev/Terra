@@ -7,18 +7,27 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.commons.io.FilenameUtils;
 import org.polydev.gaea.math.FastNoise;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class OreConfig extends YamlConfiguration {
+    private static final Map<String, OreConfig> ores = new HashMap<>();
     private BlockData oreData;
     private int min;
     private int max;
@@ -85,5 +94,36 @@ public class OreConfig extends YamlConfiguration {
 
     public String getFriendlyName() {
         return friendlyName;
+    }
+
+    protected static void loadOres(JavaPlugin main) {
+        // TODO: Merge all load methods
+        Logger logger = main.getLogger();
+        ores.clear();
+        File oreFolder = new File(main.getDataFolder() + File.separator + "ores");
+        oreFolder.mkdirs();
+        try (Stream<Path> paths = Files.walk(oreFolder.toPath())) {
+            paths
+                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
+                    .forEach(path -> {
+                        logger.info("Loading ore from " + path.toString());
+                        try {
+                            OreConfig ore = new OreConfig(path.toFile());
+                            ores.put(ore.getID(), ore);
+                            logger.info("ID: " + ore.getID());
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
+                            logger.severe("Configuration error for Ore. ");
+                            logger.severe(e.getMessage());
+                            logger.severe("Correct this before proceeding!");
+                        }
+                    });
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static OreConfig fromID(String id) {
+        return ores.get(id);
     }
 }

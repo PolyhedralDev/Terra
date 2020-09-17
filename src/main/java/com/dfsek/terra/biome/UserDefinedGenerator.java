@@ -18,7 +18,6 @@ import java.util.TreeMap;
 
 public class UserDefinedGenerator extends BiomeTerrain {
     private final Expression noiseExp;
-    private final List<Variable> vars;
     private final Scope s = new Scope();
     private final Variable xVar = s.getVariable("x");;
     private final Variable yVar = s.getVariable("y");
@@ -26,17 +25,14 @@ public class UserDefinedGenerator extends BiomeTerrain {
     private final TreeMap<Integer, BlockPalette> paletteMap;
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
-    private final Parser p = new Parser();
-    {
-        p.registerFunction("noise2", n2);
-        p.registerFunction("noise3", n3);
-    }
 
     private static final Object noiseLock = new Object();
 
 
     public UserDefinedGenerator(String e, List<Variable> v, TreeMap<Integer, BlockPalette> pa) throws ParseException {
-        this.vars = v;
+        Parser p = new Parser();
+        p.registerFunction("noise2", n2);
+        p.registerFunction("noise3", n3);
         this.paletteMap = pa;
         this.noiseExp = p.parse(e, s);
     }
@@ -94,27 +90,4 @@ public class UserDefinedGenerator extends BiomeTerrain {
         return null;
     }
 
-    private static class Range {
-        private final int min;
-        private final int max;
-
-        /**
-         * Instantiates a Range object with a minimum value (inclusive) and a maximum value (exclusive).
-         * @param min The minimum value (inclusive).
-         * @param max The maximum value (exclusive).
-         */
-        public Range(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        /**
-         * Tests if a value is within range.
-         * @param val The value to test.
-         * @return boolean - Whether the value is within range.
-         */
-        public boolean isInRange(int val) {
-            return val >= min && val < max;
-        }
-    }
 }

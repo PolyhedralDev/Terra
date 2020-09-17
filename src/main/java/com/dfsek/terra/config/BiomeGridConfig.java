@@ -37,7 +37,7 @@ public class BiomeGridConfig extends YamlConfiguration {
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     try {
-                        gridRaw[x][z] = ConfigUtil.getBiome(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
+                        gridRaw[x][z] = BiomeConfig.fromID(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
                     } catch(NullPointerException e) {
                         throw new InvalidConfigurationException("SEVERE configuration error for BiomeGrid " + getFriendlyName() + ", ID: " + getGridID() + "\n\nNo such biome " + ((List<List<String>>) getList("grid")).get(x).get(z));
                     }

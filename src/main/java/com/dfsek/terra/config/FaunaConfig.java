@@ -8,18 +8,26 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.commons.io.FilenameUtils;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.Fauna;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class FaunaConfig extends YamlConfiguration implements Fauna {
+    private static final Map<String, FaunaConfig> faunaConfig = new HashMap<>();
     private BlockPalette faunaPalette = new BlockPalette();
     private String id;
     private String friendlyName;
@@ -80,4 +88,36 @@ public class FaunaConfig extends YamlConfiguration implements Fauna {
         return true;
     }
 
+    protected static void loadFauna(JavaPlugin main) {
+        // TODO: Merge all load methods
+        Logger logger = main.getLogger();
+        faunaConfig.clear();
+        File faunaFolder = new File(main.getDataFolder() + File.separator + "fauna");
+        faunaFolder.mkdirs();
+        try (Stream<Path> paths = Files.walk(faunaFolder.toPath())) {
+            paths
+                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
+                    .forEach(path -> {
+                        try {
+                            logger.info("Loading fauna from " + path.toString());
+                            FaunaConfig fauna = new FaunaConfig(path.toFile());
+                            faunaConfig.put(fauna.getID(), fauna);
+                            logger.info("Friendly name: " + fauna.getFriendlyName());
+                            logger.info("ID: " + fauna.getID());
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
+                            logger.severe("Configuration error for Fauna. ");
+                            logger.severe(e.getMessage());
+                            logger.severe("Correct this before proceeding!");
+                        }
+                    });
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        main.getLogger().info("Loaded " + faunaConfig.size() + " fauna objects.");
+    }
+    public static FaunaConfig fromID(String id) {
+        return faunaConfig.get(id);
+    }
 }

@@ -22,12 +22,12 @@ public class OrePopulator extends GaeaBlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         Location l = chunk.getBlock(8, 0, 0).getLocation();
         Biome b = TerraBiomeGrid.fromWorld(world).getBiome(l.getBlockX(), l.getBlockZ());
-        for(Map.Entry<OreConfig, MaxMin> e : ((UserDefinedBiome) b).getConfig().getOres().entrySet()) {
+        for(Map.Entry<OreConfig, MaxMin> e : BiomeConfig.fromBiome((UserDefinedBiome) b).getOres().entrySet()) {
             int num = e.getValue().get(random);
             for(int i = 0; i < num; i++) {
                 int x = random.nextInt(16);
                 int z = random.nextInt(16);
-                int y = ((UserDefinedBiome) b).getConfig().getOreHeight(e.getKey()).get(random);
+                int y = BiomeConfig.fromBiome((UserDefinedBiome) b).getOreHeight(e.getKey()).get(random);
                 e.getKey().doVein(chunk.getBlock(x, y, z).getLocation(), random);
             }
         }

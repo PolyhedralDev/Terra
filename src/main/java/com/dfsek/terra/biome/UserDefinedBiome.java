@@ -29,60 +29,15 @@ import java.util.TreeMap;
 
 public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
-    private final BiomeConfig config;
     private final UserDefinedDecorator decorator;
-    private final List<CarverConfig> carvers = new ArrayList<>();
-    private final Map<CarverConfig, Integer> carverChance = new HashMap<>();
-    public UserDefinedBiome(BiomeConfig config) throws ParseException, InvalidConfigurationException {
-        this.config = config;
-        TreeMap<Integer, BlockPalette> paletteMap = new TreeMap<>();
-        for(Map<?, ?> e : config.getMapList("palette")) {
-            for(Map.Entry<?, ?> entry : e.entrySet()) {
-                try {
-                    if(((String) entry.getKey()).startsWith("BLOCK:")) {
-                        try {
-                            paletteMap.put((Integer) entry.getValue(), new BlockPalette().addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
-                        } catch(IllegalArgumentException ex) {
-                            throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome " + config.getFriendlyName() + ", ID: " + config.getBiomeID() + ". BlockData " + entry.getKey() + " is invalid!");
-                        }
-                    }
-                    else {
-                        try {
-                            paletteMap.put((Integer) entry.getValue(), ConfigUtil.getPalette((String) entry.getKey()).getPalette());
-                        } catch(NullPointerException ex) {
-                            throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome " + config.getFriendlyName() + ", ID: " + config.getBiomeID() + "\n\nPalette " + entry.getKey() + " cannot be found!");
-                        }
-                    }
-                } catch(ClassCastException ex) {
-                    throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome" + config.getFriendlyName() + ", ID: " + config.getBiomeID());
-                }
-            }
-        }
+    private final org.bukkit.block.Biome vanilla;
 
-        if(config.contains("carving")) {
-            for(Map<?, ?> e : config.getMapList("carving")) {
-                for(Map.Entry<?, ?> entry : e.entrySet()) {
-                    try {
-                        //carvers.add(new UserDefinedCarver((Integer) entry.getValue(), ConfigUtil.getCarver((String) entry.getKey())));
-                        carverChance.put(ConfigUtil.getCarver((String) entry.getKey()), (Integer) entry.getValue());
-                    } catch(ClassCastException ex) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome" + config.getFriendlyName() + ", ID: " + config.getBiomeID());
-                    }
-                }
-            }
-        }
 
-        this.decorator = new UserDefinedDecorator(config);
+    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, UserDefinedGenerator gen) {
 
-        gen = new UserDefinedGenerator(Objects.requireNonNull(config.getString("noise-equation")), Collections.emptyList(), paletteMap);
-    }
-
-    public List<CarverConfig> getCarvers() {
-        return carvers;
-    }
-
-    public BiomeConfig getConfig() {
-        return config;
+        this.vanilla = vanilla;
+        this.decorator = dec;
+        this.gen = gen;
     }
 
     /**
@@ -92,7 +47,7 @@ public class UserDefinedBiome implements Biome {
      */
     @Override
     public org.bukkit.block.Biome getVanillaBiome() {
-        return config.getVanillaBiome();
+        return vanilla;
     }
 
     /**
@@ -123,9 +78,5 @@ public class UserDefinedBiome implements Biome {
     @Override
     public Decorator getDecorator() {
         return decorator;
-    }
-
-    public int getCarverChance(CarverConfig c) {
-        return carverChance.getOrDefault(c, 0);
     }
 }

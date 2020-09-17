@@ -101,7 +101,7 @@ public class WorldConfig {
             String partName = config.getStringList("grids").get(i);
             if(partName.startsWith("BIOME:")) {
                 UserDefinedBiome[][] temp = new UserDefinedBiome[16][16];
-                UserDefinedBiome b = ConfigUtil.getBiome(partName.substring(6)).getBiome();
+                UserDefinedBiome b = BiomeConfig.fromID(partName.substring(6)).getBiome();
                 for(int x = 0; x < 16; x++) {
                     for(int z = 0; z < 16; z++) {
                         temp[x][z] = b;
