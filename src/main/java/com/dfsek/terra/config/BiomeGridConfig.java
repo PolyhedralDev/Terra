@@ -2,26 +2,33 @@ package com.dfsek.terra.config;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class BiomeGridConfig extends YamlConfiguration {
-    private UserDefinedGrid grid;
+    private static final Map<String, BiomeGridConfig> biomeGrids = new HashMap<>();
     private String gridID;
     private String friendlyName;
     private boolean isEnabled = false;
-    private final World world;
     private final UserDefinedBiome[][] gridRaw = new UserDefinedBiome[16][16];
 
-    public BiomeGridConfig(File file, World w) throws IOException, InvalidConfigurationException {
+    public BiomeGridConfig(File file) throws IOException, InvalidConfigurationException {
         super();
-        this.world = w;
         load(file);
     }
     @Override
@@ -46,8 +53,6 @@ public class BiomeGridConfig extends YamlConfiguration {
         } catch(ClassCastException e) {
             throw new InvalidConfigurationException("Malformed grid!");
         }
-
-        this.grid = new UserDefinedGrid(world, 1f/512, 1f/1024, this);// TODO: custom frequency
         isEnabled = true;
     }
 
@@ -67,7 +72,38 @@ public class BiomeGridConfig extends YamlConfiguration {
         return gridID;
     }
 
-    public UserDefinedGrid getGrid() {
-        return grid;
+    public UserDefinedGrid getGrid(World w) {
+        WorldConfig c = WorldConfig.fromWorld(w);
+        return new UserDefinedGrid(w, c.freq1, c.freq2, this);
+    }
+
+    protected static void loadBiomeGrids(JavaPlugin main) {
+        File biomeGridFolder = new File(main.getDataFolder() + File.separator + "grids");
+        biomeGridFolder.mkdirs();
+        try (Stream<Path> paths = Files.walk(biomeGridFolder.toPath())) {
+            paths
+                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
+                    .forEach(path -> {
+                        main.getLogger().info("Loading BiomeGrid from " + path.toString());
+                        try {
+                            BiomeGridConfig grid = new BiomeGridConfig(path.toFile());
+                            biomeGrids.put(grid.getGridID(), grid);
+                            main.getLogger().info("Friendly name: " + grid.getFriendlyName());
+                            main.getLogger().info("ID: " + grid.getGridID());
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
+                            Bukkit.getLogger().severe("[Terra] Configuration error for BiomeGrid. ");
+                            Bukkit.getLogger().severe("[Terra] " + e.getMessage());
+                            Bukkit.getLogger().severe("[Terra] Correct this before proceeding!");
+                        }
+                    });
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Map<String, BiomeGridConfig> getBiomeGrids() {
+        return biomeGrids;
     }
 }

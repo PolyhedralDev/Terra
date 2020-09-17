@@ -2,7 +2,6 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.config.CarverConfig;
-import com.dfsek.terra.config.ConfigUtil;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.polydev.gaea.generation.GenerationPopulator;

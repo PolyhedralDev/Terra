@@ -21,6 +21,8 @@ public class ConfigUtil {
 
         BiomeConfig.loadBiomes(main);
 
+        BiomeGridConfig.loadBiomeGrids(main);
+
         WorldConfig.reloadAll();
     }
 

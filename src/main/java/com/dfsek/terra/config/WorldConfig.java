@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 public class WorldConfig {
     private static JavaPlugin main;
     private static final Map<World, WorldConfig> configs = new HashMap<>();
-    private final Map<String, BiomeGridConfig> biomeGrids = new HashMap<>();
+
     public float zoneFreq;
     public float freq1;
     public float freq2;
@@ -72,30 +72,8 @@ public class WorldConfig {
         freq1 = 1f/config.getInt("frequencies.grid-1", 256);
         freq2 = 1f/config.getInt("frequencies.grid-2", 512);
 
-        // Load BiomeGrids.
-        File biomeGridFolder = new File(main.getDataFolder() + File.separator + "grids");
-        biomeGridFolder.mkdirs();
-        try (Stream<Path> paths = Files.walk(biomeGridFolder.toPath())) {
-            paths
-                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
-                    .forEach(path -> {
-                        main.getLogger().info("Loading BiomeGrid from " + path.toString());
-                        try {
-                            BiomeGridConfig grid = new BiomeGridConfig(path.toFile(), w);
-                            biomeGrids.put(grid.getGridID(), grid);
-                            main.getLogger().info("Friendly name: " + grid.getFriendlyName());
-                            main.getLogger().info("ID: " + grid.getGridID());
-                        } catch(IOException e) {
-                            e.printStackTrace();
-                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            Bukkit.getLogger().severe("[Terra] Configuration error for BiomeGrid. ");
-                            Bukkit.getLogger().severe("[Terra] " + e.getMessage());
-                            Bukkit.getLogger().severe("[Terra] Correct this before proceeding!");
-                        }
-                    });
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+
+        configs.put(w, this); // WorldConfig must be included in map before Grids are loaded.
 
         for(int i = 0; i < 32; i++) {
             String partName = config.getStringList("grids").get(i);
@@ -109,10 +87,10 @@ public class WorldConfig {
                 }
                 definedGrids[i] = new UserDefinedGrid(w, freq1, freq2, temp);
                 main.getLogger().info("Loaded single-biome grid " + partName);
-            } else definedGrids[i] = biomeGrids.get(partName).getGrid();
+            } else definedGrids[i] = BiomeGridConfig.getBiomeGrids().get(partName).getGrid(w);
         }
 
-        configs.put(w, this);
+
 
         main.getLogger().info("World load complete. Time elapsed: " + ((double) (System.nanoTime() - start)) / 1000000 + "ms");
     }

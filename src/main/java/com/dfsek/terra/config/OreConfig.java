@@ -122,6 +122,7 @@ public class OreConfig extends YamlConfiguration {
         } catch(IOException e) {
             e.printStackTrace();
         }
+        main.getLogger().info("Loaded " + ores.size() + " ores.");
     }
     public static OreConfig fromID(String id) {
         return ores.get(id);

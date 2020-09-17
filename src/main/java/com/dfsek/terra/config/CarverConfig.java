@@ -110,6 +110,7 @@ public class CarverConfig extends YamlConfiguration {
         } catch(IOException e) {
             e.printStackTrace();
         }
+        main.getLogger().info("Loaded " + caveConfig.size() + " carvers.");
     }
     public static List<CarverConfig> getCarvers() {
         return new ArrayList<>(caveConfig.values());

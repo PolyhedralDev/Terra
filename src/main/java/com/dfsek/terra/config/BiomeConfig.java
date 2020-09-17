@@ -130,6 +130,12 @@ public class BiomeConfig extends YamlConfiguration {
 
         String eq = Objects.requireNonNull(getString("noise-equation"));
         try {
+            this.vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
+        } catch(IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid Vanilla biome: " + getString("vanilla"));
+        }
+
+        try {
             this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap));
         } catch(ParseException e) {
             e.printStackTrace();
@@ -147,11 +153,7 @@ public class BiomeConfig extends YamlConfiguration {
 
         if(!contains("vanilla")) throw new InvalidConfigurationException("Vanilla Biome unspecified!");
         if(!contains("palette")) throw new InvalidConfigurationException("Palette unspecified!");
-        try {
-            this.vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
-        } catch(IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid Vanilla biome: " + getString("vanilla"));
-        }
+
         isEnabled = true;
     }
 

@@ -1,7 +1,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FaunaPopulator;
@@ -10,17 +9,13 @@ import com.dfsek.terra.population.TreePopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.InterpolationType;
-import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.population.PopulationManager;
-import org.polydev.gaea.profiler.ProfileFuture;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
