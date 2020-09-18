@@ -5,6 +5,7 @@ import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedDecorator;
 import com.dfsek.terra.biome.UserDefinedGenerator;
+import com.dfsek.terra.carving.UserDefinedCarver;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
@@ -227,7 +228,7 @@ public class BiomeConfig extends YamlConfiguration {
         main.getLogger().info("Loaded " + biomes.size() + " biomes.");
     }
 
-    public int getCarverChance(CarverConfig c) {
-        return carvers.getOrDefault(c, 0);
+    public int getCarverChance(UserDefinedCarver c) {
+        return carvers.getOrDefault(CarverConfig.fromDefinedCarver(c), 0);
     }
 }

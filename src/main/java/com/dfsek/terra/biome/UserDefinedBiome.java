@@ -1,31 +1,11 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.UserDefinedCarver;
-import com.dfsek.terra.config.BiomeConfig;
-import com.dfsek.terra.config.CarverConfig;
-import com.dfsek.terra.config.ConfigUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeTerrain;
 import org.polydev.gaea.biome.Decorator;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.math.parsii.eval.Parser;
-import org.polydev.gaea.math.parsii.eval.Scope;
-import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.structures.features.Feature;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.world.BlockPalette;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
 
 public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
