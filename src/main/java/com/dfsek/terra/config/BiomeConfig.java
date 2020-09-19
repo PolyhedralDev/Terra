@@ -207,13 +207,10 @@ public class BiomeConfig extends YamlConfiguration {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
-                        logger.info("Loading biome from " + path.toString());
                         try {
                             BiomeConfig biome = new BiomeConfig(path.toFile());
                             biomes.put(biome.getBiomeID(), biome);
-                            logger.info("Friendly name: " + biome.getFriendlyName());
-                            logger.info("ID: " + biome.getBiomeID());
-                            logger.info("Noise equation: " + biome.get("noise-equation"));
+                            logger.info("Loaded Biome with name " + biome.getFriendlyName() + ", ID " + biome.getBiomeID() + " and noise equation " + biome.get("noise-equation") + " from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {

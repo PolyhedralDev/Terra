@@ -5,12 +5,14 @@ import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.BiomeConfig;
 import com.dfsek.terra.config.CarverConfig;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 
+import java.util.List;
 import java.util.Random;
 
 public class UserDefinedCarver extends Carver {
@@ -21,7 +23,7 @@ public class UserDefinedCarver extends Carver {
     private final double[] radiusMultiplier;
     private final MaxMin length;
     private final MaxMin radius;
-    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length,  double[] start, double[] mutate, double[] radiusMultiplier) {
+    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length, double[] start, double[] mutate, double[] radiusMultiplier) {
         super(height.getMin(), height.getMax());
         this.radius = radius;
         this.length = length;

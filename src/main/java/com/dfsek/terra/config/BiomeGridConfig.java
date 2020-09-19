@@ -84,12 +84,10 @@ public class BiomeGridConfig extends YamlConfiguration {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
-                        main.getLogger().info("Loading BiomeGrid from " + path.toString());
                         try {
                             BiomeGridConfig grid = new BiomeGridConfig(path.toFile());
                             biomeGrids.put(grid.getGridID(), grid);
-                            main.getLogger().info("Friendly name: " + grid.getFriendlyName());
-                            main.getLogger().info("ID: " + grid.getGridID());
+                            main.getLogger().info("Loaded BiomeGrid with name " + grid.getFriendlyName() + ", ID " + grid.getGridID() + " from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {

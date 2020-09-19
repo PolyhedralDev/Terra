@@ -65,9 +65,7 @@ public class PaletteConfig extends YamlConfiguration {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
                 for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
                     layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
-                    Bukkit.getLogger().info("[Terra] Added " + type.getKey() + " with probability " + type.getValue());
                 }
-                Bukkit.getLogger().info("[Terra] Added above materials for " + m.get("layers") + " layers.");
                 p.addBlockData(layer, (Integer) m.get("layers"));
             } catch(ClassCastException e) {
                 throw new InvalidConfigurationException("SEVERE configuration error for BlockPalette: \n\n" + e.getMessage());
@@ -86,12 +84,10 @@ public class PaletteConfig extends YamlConfiguration {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
-                        logger.info("Loading BlockPalette from " + path.toString());
                         try {
-                            PaletteConfig grid = new PaletteConfig(path.toFile());
-                            palettes.put(grid.getPaletteID(), grid);
-                            logger.info("Friendly name: " + grid.getFriendlyName());
-                            logger.info("ID: " + grid.getPaletteID());
+                            PaletteConfig palette = new PaletteConfig(path.toFile());
+                            palettes.put(palette.getPaletteID(), palette);
+                            logger.info("Loaded BlockPalette with name: " + palette.getFriendlyName() + ", ID " + palette.getPaletteID() + "with " + palette.getPalette().getSize() + " layers from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {

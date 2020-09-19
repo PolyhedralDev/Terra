@@ -99,11 +99,9 @@ public class FaunaConfig extends YamlConfiguration implements Fauna {
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
                         try {
-                            logger.info("Loading fauna from " + path.toString());
                             FaunaConfig fauna = new FaunaConfig(path.toFile());
                             faunaConfig.put(fauna.getID(), fauna);
-                            logger.info("Friendly name: " + fauna.getFriendlyName());
-                            logger.info("ID: " + fauna.getID());
+                            logger.info("Loaded Fauna with name " + fauna.getFriendlyName() + ", ID " + fauna.getID() + " from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {

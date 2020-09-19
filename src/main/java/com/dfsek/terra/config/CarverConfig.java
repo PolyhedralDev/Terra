@@ -3,6 +3,7 @@ package com.dfsek.terra.config;
 import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,34 +19,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class CarverConfig extends YamlConfiguration {
     private static final Map<String, CarverConfig> caveConfig = new HashMap<>();
     private UserDefinedCarver carver;
-    private MaxMin length;
-    private MaxMin height;
     private String id;
+    private final Set<Material> replaceableInner = new HashSet<>();
+    private final Set<Material> replaceableOuter = new HashSet<>();
+    private boolean replaceIsBlacklistInner;
+    private boolean replaceIsBlacklistOuter;
     public CarverConfig(File file) throws IOException, InvalidConfigurationException {
         super();
         this.load(file);
     }
 
 
-    public MaxMin getHeight() {
-        return height;
-    }
-
     public String getID() {
         return id;
-    }
-
-    public MaxMin getLength() {
-        return length;
     }
 
     public UserDefinedCarver getCarver() {
@@ -55,30 +52,43 @@ public class CarverConfig extends YamlConfiguration {
     @Override
     public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
         super.load(file);
-        BlockPalette inner;
-        if(Objects.requireNonNull(getString("palette.interior")).startsWith("BLOCK:")) {
-            inner = new BlockPalette().addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(getString("palette.interior").substring(6)), 1), 1);
-        } else {
-            inner = PaletteConfig.fromID(getString("palette.interior")).getPalette();
-        }
 
-        BlockPalette walls;
-        if(Objects.requireNonNull(getString("palette.walls")).startsWith("BLOCK:")) {
-            walls = new BlockPalette().addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(getString("palette.walls").substring(6)), 1), 1);
-        } else {
-            walls = PaletteConfig.fromID(getString("palette.walls")).getPalette();
+        if(contains("palette.inner.replace")) {
+            for(String s : getStringList("palette.inner.replace")) {
+                replaceableInner.add(Bukkit.createBlockData(s).getMaterial());
+            }
         }
+        if(contains("palette.outer.replace")) {
+            for(String s : getStringList("palette.outer.replace")) {
+                replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
+            }
+        }
+        replaceIsBlacklistInner = getBoolean("palette.inner.replace-blacklist", false);
+        replaceIsBlacklistOuter = getBoolean("palette.outer.replace-blacklist", false);
 
 
         double[] start = new double[] {getDouble("start.x"), getDouble("start.y"), getDouble("start.z")};
         double[] mutate = new double[] {getDouble("mutate.x"), getDouble("mutate.y"), getDouble("mutate.z"), getDouble("mutate.radius")};
         double[] radiusMultiplier = new double[] {getDouble("start.radius.multiply.x"), getDouble("start.radius.multiply.y"), getDouble("start.radius.multiply.z")};
-        length = new MaxMin(getInt("length.min"), getInt("length.max"));
+        MaxMin length = new MaxMin(getInt("length.min"), getInt("length.max"));
         MaxMin radius = new MaxMin(getInt("start.radius.min"), getInt("start.radius.max"));
-        height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
-        double radMutate = getDouble("mutate.radius");
+        MaxMin height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
         id = getString("id");
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier);
+    }
+
+    public boolean isReplaceableInner(Material m) {
+        if(replaceIsBlacklistInner) {
+            return !replaceableInner.contains(m);
+        }
+        return replaceableInner.contains(m);
+    }
+
+    public boolean isReplaceableOuter(Material m) {
+        if(replaceIsBlacklistOuter) {
+            return !replaceableOuter.contains(m);
+        }
+        return replaceableOuter.contains(m);
     }
 
     protected static void loadCaves(JavaPlugin main) {
@@ -91,11 +101,10 @@ public class CarverConfig extends YamlConfiguration {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
-                        logger.info("Loading cave from " + path.toString());
                         try {
                             CarverConfig cave = new CarverConfig(path.toFile());
                             caveConfig.put(cave.getID(), cave);
-                            logger.info("ID: " + cave.getID());
+                            logger.info("Loaded Carver with ID " + cave.getID() + " from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {

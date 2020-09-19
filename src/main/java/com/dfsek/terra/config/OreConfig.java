@@ -57,7 +57,6 @@ public class OreConfig extends YamlConfiguration {
 
         try {
             replaceable = ConfigUtil.getElements(getStringList("replace"), Material.class);
-            Bukkit.getLogger().info("[Terra] Added " + replaceable.size() + " items to replaceable list.");
         } catch(IllegalArgumentException e) {
             throw new InvalidConfigurationException("Invalid material ID in replace list: " + e.getMessage());
         }
@@ -106,11 +105,10 @@ public class OreConfig extends YamlConfiguration {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
-                        logger.info("Loading ore from " + path.toString());
                         try {
                             OreConfig ore = new OreConfig(path.toFile());
                             ores.put(ore.getID(), ore);
-                            logger.info("ID: " + ore.getID());
+                            logger.info("Loaded ore with ID " + ore.getID() + " from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {
