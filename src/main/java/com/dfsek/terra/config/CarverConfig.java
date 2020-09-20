@@ -8,6 +8,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.commons.io.FilenameUtils;
 import org.polydev.gaea.math.ProbabilityCollection;
@@ -20,10 +21,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -33,6 +36,9 @@ public class CarverConfig extends YamlConfiguration {
     private String id;
     private final Set<Material> replaceableInner = new HashSet<>();
     private final Set<Material> replaceableOuter = new HashSet<>();
+    private final Map<Material, Set<Material>> shift = new HashMap<>();
+    private Map<Integer, ProbabilityCollection<BlockData>> inner;
+    private Map<Integer, ProbabilityCollection<BlockData>> outer;
     private boolean replaceIsBlacklistInner;
     private boolean replaceIsBlacklistOuter;
     public CarverConfig(File file) throws IOException, InvalidConfigurationException {
@@ -53,19 +59,28 @@ public class CarverConfig extends YamlConfiguration {
     public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
         super.load(file);
 
-        if(contains("palette.inner.replace")) {
-            for(String s : getStringList("palette.inner.replace")) {
-                replaceableInner.add(Bukkit.createBlockData(s).getMaterial());
-            }
+        inner = getBlocks("palette.inner.blocks");
+
+        outer = getBlocks("palette.outer.blocks");
+
+        for(String s : getStringList("palette.inner.replace")) {
+            replaceableInner.add(Bukkit.createBlockData(s).getMaterial());
         }
-        if(contains("palette.outer.replace")) {
-            for(String s : getStringList("palette.outer.replace")) {
-                replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
-            }
+        for(String s : getStringList("palette.outer.replace")) {
+            replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
         }
+        for(Map.Entry<String, Object> e : getConfigurationSection("shift").getValues(false).entrySet()) {
+            Set<Material> l = new HashSet<>();
+            for(String s : (List<String>) e.getValue()) {
+                l.add(Bukkit.createBlockData(s).getMaterial());
+                Bukkit.getLogger().info("Added " + s + " to shift-able blocks");
+            }
+            shift.put(Bukkit.createBlockData(e.getKey()).getMaterial(), l);
+            Bukkit.getLogger().info("Added " + e.getKey() + " as master block");
+        }
+
         replaceIsBlacklistInner = getBoolean("palette.inner.replace-blacklist", false);
         replaceIsBlacklistOuter = getBoolean("palette.outer.replace-blacklist", false);
-
 
         double[] start = new double[] {getDouble("start.x"), getDouble("start.y"), getDouble("start.z")};
         double[] mutate = new double[] {getDouble("mutate.x"), getDouble("mutate.y"), getDouble("mutate.z"), getDouble("mutate.radius")};
@@ -75,6 +90,29 @@ public class CarverConfig extends YamlConfiguration {
         MaxMin height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
         id = getString("id");
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier);
+    }
+
+    private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
+        if(!contains(key)) throw new InvalidConfigurationException("Missing Carver Palette!");
+        Map<Integer, ProbabilityCollection<BlockData>> result = new TreeMap<>();
+        for(Map<?, ?> m : getMapList(key)) {
+            try {
+                ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
+                for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
+                    layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
+                    Bukkit.getLogger().info("Added " + type.getKey() + " with probability " + type.getValue());
+                }
+                result.put((Integer) m.get("y"), layer);
+                Bukkit.getLogger().info("Added at level " + m.get("y"));
+            } catch(ClassCastException e) {
+                throw new InvalidConfigurationException("SEVERE configuration error for Carver Palette: \n\n" + e.getMessage());
+            }
+        }
+        return result;
+    }
+
+    public Map<Material, Set<Material>> getShiftedBlocks() {
+        return shift;
     }
 
     public boolean isReplaceableInner(Material m) {
@@ -89,6 +127,20 @@ public class CarverConfig extends YamlConfiguration {
             return !replaceableOuter.contains(m);
         }
         return replaceableOuter.contains(m);
+    }
+
+    public ProbabilityCollection<BlockData> getPaletteInner(int y) {
+        for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : inner.entrySet()) {
+            if(e.getKey() >= y ) return e.getValue();
+        }
+        return null;
+    }
+
+    public ProbabilityCollection<BlockData> getPaletteOuter(int y) {
+        for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : outer.entrySet()) {
+            if(e.getKey() >= y ) return e.getValue();
+        }
+        return null;
     }
 
     protected static void loadCaves(JavaPlugin main) {
@@ -108,7 +160,7 @@ public class CarverConfig extends YamlConfiguration {
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Carver. ");
+                            logger.severe("Configuration error for Carver. File: " + path.toString());
                             logger.severe(e.getMessage());
                             logger.severe("Correct this before proceeding!");
                         }

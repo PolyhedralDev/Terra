@@ -10,7 +10,6 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.population.GaeaBlockPopulator;
-import org.polydev.gaea.population.PopulationManager;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.util.WorldUtil;
 

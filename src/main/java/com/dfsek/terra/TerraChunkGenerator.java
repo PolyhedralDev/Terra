@@ -16,6 +16,7 @@ import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.InterpolationType;
 import org.polydev.gaea.population.PopulationManager;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -55,7 +56,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public List<GenerationPopulator> getGenerationPopulators(World world) {
-        return Collections.singletonList(new CavePopulator());
+        return Collections.emptyList();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Collections.singletonList(popMan);
+        return Arrays.asList(new CavePopulator(), popMan);
     }
 
     @Override

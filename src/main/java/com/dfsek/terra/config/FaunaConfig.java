@@ -105,7 +105,7 @@ public class FaunaConfig extends YamlConfiguration implements Fauna {
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Fauna. ");
+                            logger.severe("Configuration error for Fauna. File: " + path.toString());
                             logger.severe(e.getMessage());
                             logger.severe("Correct this before proceeding!");
                         }

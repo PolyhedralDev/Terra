@@ -214,7 +214,7 @@ public class BiomeConfig extends YamlConfiguration {
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Biome. ");
+                            logger.severe("Configuration error for Biome. File: " + path.toString());
                             logger.severe(e.getMessage());
                             logger.severe("Correct this before proceeding!");
                         }

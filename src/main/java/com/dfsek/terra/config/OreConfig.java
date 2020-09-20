@@ -112,7 +112,7 @@ public class OreConfig extends YamlConfiguration {
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Ore. ");
+                            logger.severe("Configuration error for Ore. File: " + path.toString());
                             logger.severe(e.getMessage());
                             logger.severe("Correct this before proceeding!");
                         }

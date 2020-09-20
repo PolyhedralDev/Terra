@@ -15,9 +15,10 @@ public class TerraProfiler extends WorldProfiler {
         this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime")
                 .addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "ChunkBaseGenTime")
                 .addMeasurement(new Measurement(2000000, DataType.PERIOD_MILLISECONDS), "BiomeSetTime")
-                .addMeasurement(new Measurement(25000000, DataType.PERIOD_MILLISECONDS), "TreeGenTime")
+                .addMeasurement(new Measurement(25000000, DataType.PERIOD_NANOSECONDS), "TreeGenTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "FaunaTime")
-                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveTime");
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveTime")
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveBlockUpdate");
         profilerMap.put(w, this);
     }
     public static TerraProfiler fromWorld(World w) {

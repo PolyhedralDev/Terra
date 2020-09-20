@@ -59,7 +59,7 @@ public class UserDefinedCarver extends Carver {
         public void step() {
             setRadius(new int[] {(int) (runningRadius*radiusMultiplier[0]), (int) (runningRadius*radiusMultiplier[1]), (int) (runningRadius*radiusMultiplier[2])});
             runningRadius += (getRandom().nextDouble()-0.5)*mutate[3];
-            runningRadius = Math.min(runningRadius, maxRad);
+            runningRadius = Math.max(Math.min(runningRadius, maxRad), 1);
             direction.rotateAroundX(Math.toRadians(getRandom().nextDouble()*mutate[0]));
             direction.rotateAroundY(Math.toRadians(getRandom().nextDouble()*mutate[1]));
             direction.rotateAroundZ(Math.toRadians(getRandom().nextDouble()*mutate[2]));

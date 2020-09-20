@@ -91,7 +91,7 @@ public class BiomeGridConfig extends YamlConfiguration {
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            Bukkit.getLogger().severe("[Terra] Configuration error for BiomeGrid. ");
+                            Bukkit.getLogger().severe("[Terra] Configuration error for BiomeGrid. File: " + path.toString());
                             Bukkit.getLogger().severe("[Terra] " + e.getMessage());
                             Bukkit.getLogger().severe("[Terra] Correct this before proceeding!");
                         }
