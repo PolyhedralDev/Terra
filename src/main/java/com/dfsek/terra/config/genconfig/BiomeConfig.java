@@ -1,4 +1,4 @@
-package com.dfsek.terra.config;
+package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.TerraTree;
@@ -6,14 +6,13 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedDecorator;
 import com.dfsek.terra.biome.UserDefinedGenerator;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.ConfigLoader;
+import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.commons.io.FilenameUtils;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.tree.Tree;
@@ -24,40 +23,35 @@ import org.polydev.gaea.world.FaunaType;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 
-public class BiomeConfig extends YamlConfiguration {
+public class BiomeConfig extends TerraConfigObject {
     private static final Map<String, BiomeConfig> biomes = new HashMap<>();
     private UserDefinedBiome biome;
     private String biomeID;
     private String friendlyName;
     private org.bukkit.block.Biome vanillaBiome;
     private boolean isEnabled = false;
-    private final Map<OreConfig, MaxMin> ores = new HashMap<>();
-    private final Map<OreConfig, MaxMin> oreHeights = new HashMap<>();
-    private final Map<CarverConfig, Integer> carvers = new HashMap<>();
-    private final ProbabilityCollection<Fauna> fauna = new ProbabilityCollection<>();
-    private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
+    private Map<OreConfig, MaxMin> ores;
+    private Map<OreConfig, MaxMin> oreHeights;
+    private Map<CarverConfig, Integer> carvers;
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
-        super();
-        load(file);
+        super(file);
     }
 
     @Override
-    public void load(@NotNull File file) throws InvalidConfigurationException, IOException {
+    public void init() throws InvalidConfigurationException {
         isEnabled = false;
-        super.load(file);
+        oreHeights = new HashMap<>();
+        ores = new HashMap<>();
+        carvers = new HashMap<>();
+        ProbabilityCollection<Fauna> fauna = new ProbabilityCollection<>();
+        ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
         if(!contains("id")) throw new InvalidConfigurationException("Biome ID unspecified!");
         this.biomeID = getString("id");
         if(!contains("name")) throw new InvalidConfigurationException("Biome Name unspecified!");
@@ -83,7 +77,7 @@ public class BiomeConfig extends YamlConfiguration {
                         }
                     }
                 } catch(ClassCastException ex) {
-                    throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome" + getFriendlyName() + ", ID: " + biomeID);
+                    throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome " + getFriendlyName() + ", ID: " + biomeID);
                 }
             }
         }
@@ -93,9 +87,13 @@ public class BiomeConfig extends YamlConfiguration {
                 for(Map.Entry<?, ?> entry : e.entrySet()) {
                     try {
                         //carvers.add(new UserDefinedCarver((Integer) entry.getValue(), ConfigUtil.getCarver((String) entry.getKey())));
-                        carvers.put(CarverConfig.fromID((String) entry.getKey()), (Integer) entry.getValue());
+                        CarverConfig c = CarverConfig.fromID((String) entry.getKey());
+                        Bukkit.getLogger().info("Got carver " + c + ". Adding with weight " + entry.getValue());
+                        carvers.put(c, (Integer) entry.getValue());
                     } catch(ClassCastException ex) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome" + getFriendlyName() + ", ID: " + biomeID);
+                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome " + getFriendlyName() + ", ID: " + biomeID);
+                    } catch(NullPointerException ex) {
+                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome " + getFriendlyName() + ", ID: " + biomeID + "\n\n" + "No such carver " + entry.getKey());
                     }
                 }
             }
@@ -112,7 +110,7 @@ public class BiomeConfig extends YamlConfiguration {
                         Fauna faunaCustom = FaunaConfig.fromID(e.getKey());
                         fauna.add(faunaCustom, (Integer) e.getValue());
                     } catch(NullPointerException ex2) {
-                        throw new IllegalArgumentException("SEVERE configuration error for fauna in biome " + getFriendlyName() + ", ID " +  getBiomeID() + "\n\nFauna with ID " + e.getKey() + " cannot be found!");
+                        throw new IllegalArgumentException("SEVERE configuration error for fauna in biome " + getFriendlyName() + ", ID " +  getID() + "\n\nFauna with ID " + e.getKey() + " cannot be found!");
                     }
                 }
             }
@@ -156,6 +154,7 @@ public class BiomeConfig extends YamlConfiguration {
         if(!contains("palette")) throw new InvalidConfigurationException("Palette unspecified!");
 
         isEnabled = true;
+        biomes.put(biomeID, this);
     }
 
     public MaxMin getOreHeight(OreConfig c) {
@@ -170,7 +169,7 @@ public class BiomeConfig extends YamlConfiguration {
         return biome;
     }
 
-    public String getBiomeID() {
+    public String getID() {
         return biomeID;
     }
 
@@ -197,32 +196,9 @@ public class BiomeConfig extends YamlConfiguration {
         return biomes.get(id);
     }
 
-    protected static void loadBiomes(JavaPlugin main) {
-        // TODO: Merge all load methods
-        Logger logger = main.getLogger();
-        biomes.clear();
-        File biomeFolder = new File(main.getDataFolder() + File.separator + "biomes");
-        biomeFolder.mkdirs();
-        try (Stream<Path> paths = Files.walk(biomeFolder.toPath())) {
-            paths
-                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
-                    .forEach(path -> {
-                        try {
-                            BiomeConfig biome = new BiomeConfig(path.toFile());
-                            biomes.put(biome.getBiomeID(), biome);
-                            logger.info("Loaded Biome with name " + biome.getFriendlyName() + ", ID " + biome.getBiomeID() + " and noise equation " + biome.get("noise-equation") + " from " + path.toString());
-                        } catch(IOException e) {
-                            e.printStackTrace();
-                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Biome. File: " + path.toString());
-                            logger.severe(e.getMessage());
-                            logger.severe("Correct this before proceeding!");
-                        }
-                    });
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        main.getLogger().info("Loaded " + biomes.size() + " biomes.");
+    @Override
+    public String toString() {
+        return "Biome with name " + getFriendlyName() + ", ID " + getID() + " and noise equation " + get("noise-equation");
     }
 
     public int getCarverChance(UserDefinedCarver c) {

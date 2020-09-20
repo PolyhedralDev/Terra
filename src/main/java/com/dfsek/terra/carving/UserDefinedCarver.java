@@ -3,16 +3,13 @@ package com.dfsek.terra.carving;
 import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.BiomeConfig;
-import com.dfsek.terra.config.CarverConfig;
-import org.bukkit.Material;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 
-import java.util.List;
 import java.util.Random;
 
 public class UserDefinedCarver extends Carver {

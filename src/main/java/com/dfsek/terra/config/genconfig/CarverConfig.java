@@ -1,51 +1,42 @@
-package com.dfsek.terra.config;
+package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.ConfigLoader;
+import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.commons.io.FilenameUtils;
 import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.world.BlockPalette;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 
-public class CarverConfig extends YamlConfiguration {
+public class CarverConfig extends TerraConfigObject {
     private static final Map<String, CarverConfig> caveConfig = new HashMap<>();
     private UserDefinedCarver carver;
     private String id;
-    private final Set<Material> replaceableInner = new HashSet<>();
-    private final Set<Material> replaceableOuter = new HashSet<>();
-    private final Map<Material, Set<Material>> shift = new HashMap<>();
+    private Set<Material> replaceableInner;
+    private Set<Material> replaceableOuter;
+    private Map<Material, Set<Material>> shift;
     private Map<Integer, ProbabilityCollection<BlockData>> inner;
     private Map<Integer, ProbabilityCollection<BlockData>> outer;
     private boolean replaceIsBlacklistInner;
     private boolean replaceIsBlacklistOuter;
-    public CarverConfig(File file) throws IOException, InvalidConfigurationException {
-        super();
-        this.load(file);
-    }
 
+    public CarverConfig(File file) throws IOException, InvalidConfigurationException {
+        super(file);
+    }
 
     public String getID() {
         return id;
@@ -56,19 +47,31 @@ public class CarverConfig extends YamlConfiguration {
     }
 
     @Override
-    public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
-        super.load(file);
-
+    public void init() throws InvalidConfigurationException {
         inner = getBlocks("palette.inner.blocks");
 
         outer = getBlocks("palette.outer.blocks");
 
+        replaceableInner = new HashSet<>();
+        replaceableOuter = new HashSet<>();
+
         for(String s : getStringList("palette.inner.replace")) {
-            replaceableInner.add(Bukkit.createBlockData(s).getMaterial());
+            try {
+                if(replaceableInner.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
+                replaceableInner.add(Bukkit.createBlockData(s).getMaterial());
+            } catch(NullPointerException | IllegalArgumentException e) {
+                throw new InvalidConfigurationException("Could not load data for " + s);
+            }
         }
         for(String s : getStringList("palette.outer.replace")) {
-            replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
+            try {
+                if(replaceableOuter.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
+                replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
+            } catch(NullPointerException | IllegalArgumentException e) {
+                throw new InvalidConfigurationException("Could not load data for " + s);
+            }
         }
+        shift = new HashMap<>();
         for(Map.Entry<String, Object> e : getConfigurationSection("shift").getValues(false).entrySet()) {
             Set<Material> l = new HashSet<>();
             for(String s : (List<String>) e.getValue()) {
@@ -90,6 +93,7 @@ public class CarverConfig extends YamlConfiguration {
         MaxMin height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
         id = getString("id");
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier);
+        caveConfig.put(id, this);
     }
 
     private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
@@ -143,37 +147,21 @@ public class CarverConfig extends YamlConfiguration {
         return null;
     }
 
-    protected static void loadCaves(JavaPlugin main) {
-        // TODO: Merge all load methods
-        Logger logger = main.getLogger();
-        caveConfig.clear();
-        File oreFolder = new File(main.getDataFolder() + File.separator + "carving");
-        oreFolder.mkdirs();
-        try (Stream<Path> paths = Files.walk(oreFolder.toPath())) {
-            paths
-                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
-                    .forEach(path -> {
-                        try {
-                            CarverConfig cave = new CarverConfig(path.toFile());
-                            caveConfig.put(cave.getID(), cave);
-                            logger.info("Loaded Carver with ID " + cave.getID() + " from " + path.toString());
-                        } catch(IOException e) {
-                            e.printStackTrace();
-                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Carver. File: " + path.toString());
-                            logger.severe(e.getMessage());
-                            logger.severe("Correct this before proceeding!");
-                        }
-                    });
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        main.getLogger().info("Loaded " + caveConfig.size() + " carvers.");
+    @Override
+    public String toString() {
+        return "Carver with ID " + getID();
     }
+
     public static List<CarverConfig> getCarvers() {
         return new ArrayList<>(caveConfig.values());
     }
     public static CarverConfig fromID(String id) {
+        Bukkit.getLogger().info("Accessing carvers...");
+        for(Map.Entry<String, CarverConfig> e : caveConfig.entrySet()) {
+            Bukkit.getLogger().info("Carver ID " + e.getKey() + ", carver: " + e.getValue());
+        }
+        Bukkit.getLogger().info("ID requested: " + id);
+        Bukkit.getLogger().info("Fetched " + caveConfig.get(id));
         return caveConfig.get(id);
     }
 

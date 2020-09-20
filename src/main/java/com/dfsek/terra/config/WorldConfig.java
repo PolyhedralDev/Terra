@@ -3,6 +3,8 @@ package com.dfsek.terra.config;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.genconfig.BiomeGridConfig;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;

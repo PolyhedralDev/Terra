@@ -1,5 +1,11 @@
 package com.dfsek.terra.config;
 
+import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.genconfig.BiomeGridConfig;
+import com.dfsek.terra.config.genconfig.CarverConfig;
+import com.dfsek.terra.config.genconfig.FaunaConfig;
+import com.dfsek.terra.config.genconfig.OreConfig;
+import com.dfsek.terra.config.genconfig.PaletteConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -11,17 +17,17 @@ public class ConfigUtil {
         Logger logger = main.getLogger();
         logger.info("Loading config values");
 
-        OreConfig.loadOres(main);
+        new ConfigLoader("ores").load(main, OreConfig.class);
 
-        PaletteConfig.loadPalettes(main);
+        new ConfigLoader("palettes").load(main, PaletteConfig.class);
 
-        CarverConfig.loadCaves(main);
+        new ConfigLoader("carving").load(main, CarverConfig.class);
 
-        FaunaConfig.loadFauna(main);
+        new ConfigLoader("fauna").load(main, FaunaConfig.class);
 
-        BiomeConfig.loadBiomes(main);
+        new ConfigLoader("biomes").load(main, BiomeConfig.class);
 
-        BiomeGridConfig.loadBiomeGrids(main);
+        new ConfigLoader("grids").load(main, BiomeGridConfig.class);
 
         WorldConfig.reloadAll();
     }

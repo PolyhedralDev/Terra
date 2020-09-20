@@ -1,32 +1,26 @@
-package com.dfsek.terra.config;
+package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.ConfigLoader;
+import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.commons.io.FilenameUtils;
 import org.polydev.gaea.math.FastNoise;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 
-public class OreConfig extends YamlConfiguration {
+public class OreConfig extends TerraConfigObject {
     private static final Map<String, OreConfig> ores = new HashMap<>();
     private BlockData oreData;
     private int min;
@@ -38,12 +32,11 @@ public class OreConfig extends YamlConfiguration {
     private int h;
     List<Material> replaceable;
     public OreConfig(File file) throws IOException, InvalidConfigurationException {
-        this.load(file);
+        super(file);
     }
 
     @Override
-    public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
-        super.load(file);
+    public void init() throws InvalidConfigurationException {
         if(!contains("material")) throw new InvalidConfigurationException("Ore material not found!");
         if(!contains("deform")) throw new InvalidConfigurationException("Ore vein deformation not found!");
         if(!contains("id")) throw new InvalidConfigurationException("Ore ID not found!");
@@ -66,6 +59,7 @@ public class OreConfig extends YamlConfiguration {
         } catch(NullPointerException | IllegalArgumentException e) {
             throw new InvalidConfigurationException("Invalid ore material: " + getString("material"));
         }
+        ores.put(id, this);
     }
     private int randomInRange(Random r) {
         return r.nextInt(max-min+1)+min;
@@ -87,6 +81,11 @@ public class OreConfig extends YamlConfiguration {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Ore with name " + getFriendlyName() + ", ID " + getID();
+    }
+
     public String getID() {
         return id;
     }
@@ -95,33 +94,6 @@ public class OreConfig extends YamlConfiguration {
         return friendlyName;
     }
 
-    protected static void loadOres(JavaPlugin main) {
-        // TODO: Merge all load methods
-        Logger logger = main.getLogger();
-        ores.clear();
-        File oreFolder = new File(main.getDataFolder() + File.separator + "ores");
-        oreFolder.mkdirs();
-        try (Stream<Path> paths = Files.walk(oreFolder.toPath())) {
-            paths
-                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
-                    .forEach(path -> {
-                        try {
-                            OreConfig ore = new OreConfig(path.toFile());
-                            ores.put(ore.getID(), ore);
-                            logger.info("Loaded ore with ID " + ore.getID() + " from " + path.toString());
-                        } catch(IOException e) {
-                            e.printStackTrace();
-                        } catch(InvalidConfigurationException | IllegalArgumentException e) {
-                            logger.severe("Configuration error for Ore. File: " + path.toString());
-                            logger.severe(e.getMessage());
-                            logger.severe("Correct this before proceeding!");
-                        }
-                    });
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        main.getLogger().info("Loaded " + ores.size() + " ores.");
-    }
     public static OreConfig fromID(String id) {
         return ores.get(id);
     }

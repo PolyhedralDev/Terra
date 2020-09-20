@@ -1,26 +1,21 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
-import com.dfsek.terra.config.CarverConfig;
+import com.dfsek.terra.config.genconfig.CarverConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.world.carving.CarvingData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
     @Override

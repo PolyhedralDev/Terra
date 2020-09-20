@@ -2,9 +2,9 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.BiomeConfig;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.ConfigUtil;
-import com.dfsek.terra.config.OreConfig;
+import com.dfsek.terra.config.genconfig.OreConfig;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.profiler.WorldProfiler;
-import org.polydev.gaea.structures.NMSStructure;
 
 import java.util.Random;
 

@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.BiomeGridConfig;
+import com.dfsek.terra.config.genconfig.BiomeGridConfig;
 import org.bukkit.World;
 import org.polydev.gaea.biome.BiomeGrid;
 

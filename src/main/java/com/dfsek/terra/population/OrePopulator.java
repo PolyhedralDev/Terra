@@ -1,15 +1,13 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.MaxMin;
-import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.BiomeConfig;
-import com.dfsek.terra.config.OreConfig;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.genconfig.OreConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.population.GaeaBlockPopulator;

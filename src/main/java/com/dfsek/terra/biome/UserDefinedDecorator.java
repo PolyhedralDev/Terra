@@ -1,19 +1,10 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.TerraTree;
-import com.dfsek.terra.config.BiomeConfig;
-import com.dfsek.terra.config.ConfigUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.biome.Decorator;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
 import org.polydev.gaea.world.Fauna;
-import org.polydev.gaea.world.FaunaType;
-
-import java.util.Map;
 
 public class UserDefinedDecorator extends Decorator {
 
