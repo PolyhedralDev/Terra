@@ -25,7 +25,9 @@ public class BiomeGridConfig extends YamlConfiguration {
     private String gridID;
     private String friendlyName;
     private boolean isEnabled = false;
-    private final UserDefinedBiome[][] gridRaw = new UserDefinedBiome[16][16];
+    private UserDefinedBiome[][] gridRaw;
+    private int sizeX;
+    private int sizeZ;
 
     public BiomeGridConfig(File file) throws IOException, InvalidConfigurationException {
         super();
@@ -40,9 +42,12 @@ public class BiomeGridConfig extends YamlConfiguration {
         if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
         this.friendlyName = getString("name");
         if(!contains("grid")) throw new InvalidConfigurationException("Grid not found!");
+        this.sizeX = ((List<List<String>>) getList("grid")).size();
+        this.sizeZ = ((List<List<String>>) getList("grid")).get(0).size();
+        gridRaw = new UserDefinedBiome[sizeX][sizeZ];
         try {
-            for(int x = 0; x < 16; x++) {
-                for(int z = 0; z < 16; z++) {
+            for(int x = 0; x < sizeX; x++) {
+                for(int z = 0; z < sizeZ; z++) {
                     try {
                         gridRaw[x][z] = BiomeConfig.fromID(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
                     } catch(NullPointerException e) {
@@ -54,6 +59,14 @@ public class BiomeGridConfig extends YamlConfiguration {
             throw new InvalidConfigurationException("Malformed grid!");
         }
         isEnabled = true;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeZ() {
+        return sizeZ;
     }
 
     public String getFriendlyName() {
@@ -87,7 +100,7 @@ public class BiomeGridConfig extends YamlConfiguration {
                         try {
                             BiomeGridConfig grid = new BiomeGridConfig(path.toFile());
                             biomeGrids.put(grid.getGridID(), grid);
-                            main.getLogger().info("Loaded BiomeGrid with name " + grid.getFriendlyName() + ", ID " + grid.getGridID() + " from " + path.toString());
+                            main.getLogger().info("Loaded BiomeGrid with name " + grid.getFriendlyName() + ", ID " + grid.getGridID() + " Size: " + grid.getSizeX() + ", " + grid.getSizeZ() + " from " + path.toString());
                         } catch(IOException e) {
                             e.printStackTrace();
                         } catch(InvalidConfigurationException | IllegalArgumentException e) {

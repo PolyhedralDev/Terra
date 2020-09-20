@@ -1,4 +1,5 @@
 import com.dfsek.terra.biome.BiomeZone;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import org.polydev.gaea.math.FastNoise;
 
 import java.util.ArrayList;
@@ -9,14 +10,19 @@ import java.util.Random;
 public class LookupGenerator {
     private static double[] lookup;
 
-    public static void main(String[] args) {
-        int dist = 16;
+    public static void main(String[] args) throws InterruptedException {
+        int dist = 4096;
 
         List<Double> vals = new ArrayList<>();
-        FastNoise noise = new FastNoise(new Random().nextInt());
-        noise.setFrequency(0.01f);
-        noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
-        noise.setFractalOctaves(5);
+        FastNoise noise = new FastNoise();
+        FastNoise noiseLookup = new FastNoise();
+        noiseLookup.setNoiseType(FastNoise.NoiseType.Simplex);
+        noiseLookup.setFrequency(0.02f);
+        noise.setFrequency(0.02f);
+        noise.setNoiseType(FastNoise.NoiseType.Cellular);
+        noise.setCellularDistanceFunction(FastNoise.CellularDistanceFunction.Natural);
+        noise.setCellularReturnType(FastNoise.CellularReturnType.NoiseLookup);
+        noise.setCellularNoiseLookup(noiseLookup);
         int[] numbers = new int[dist];
         double min = Integer.MAX_VALUE;
         double max = Integer.MIN_VALUE;
@@ -24,13 +30,28 @@ public class LookupGenerator {
             numbers[i] = 0;
         }
 
-        for(int i = 0; i < 10000000; i++) {
-            double n = noise.getNoise(0, i);
-            max = Math.max(max, n);
-            min = Math.min(min, n);
-            vals.add(n);
-            numbers[normalize(n, dist)]++;
+
+        int workerAmount = 16;
+
+        List<Worker> workers = new ArrayList<>();
+
+        for(int i = 0; i < workerAmount; i++) {
+            workers.add(new Worker(new ArrayList<>(), 10000000, noise));
         }
+
+        for(Worker w : workers) {
+            w.start();
+        }
+        for(Worker w : workers) {
+            System.out.println("Waiting for Worker " + workers.indexOf(w));
+            w.join();
+        }
+
+        for(Worker w : workers) {
+            vals.addAll(w.getResult());
+        }
+
+        System.out.println("Generated " + vals.size() + " values.");
 
         for(int i = 0; i < dist; i++) {
             System.out.println(i + ": " + numbers[i]);
@@ -58,7 +79,7 @@ public class LookupGenerator {
         s.append("}");
         numbers = new int[dist];
         vals = new ArrayList<>();
-        for(int i = 0; i < 10000000; i++) {
+        for(int i = 0; i < 50000000; i++) {
             double n = noise.getNoise(0, i);
             vals.add(n);
             numbers[normalizeNew(n)]++;
@@ -69,7 +90,7 @@ public class LookupGenerator {
         }
         for(int i = 0; i < dist; i++) {
             System.out.print(i + (String.valueOf(i).length() ==1 ? " " : "") + " |");
-            for(int j = 0; j < numbers[i]/3000; j++) {
+            for(int j = 0; j < numbers[i]/100; j++) {
                 System.out.print("-");
             }
             System.out.println("|");
@@ -88,5 +109,32 @@ public class LookupGenerator {
             if(d < lookup[i]) return i;
         }
         return lookup.length-1;
+    }
+
+    private static class Worker extends Thread {
+        private final List<Double> l;
+        private final int searches;
+        private final FastNoise noise;
+        public Worker(List<Double> l, int searches, FastNoise noise) {
+            this.l = l;
+            this.searches = searches;
+            this.noise = noise;
+        }
+
+        @Override
+        public void run() {
+            for(int i = 0; i < searches; i++) {
+                double n = noise.getNoise(0, i);
+                l.add(n);
+            }
+        }
+
+        public List<Double> getResult() {
+            return l;
+        }
+
+        public String getStatus() {
+            return "Generating values. " + l.size() + "/" + searches + " (" + ((long)l.size()*100L)/searches + "%)";
+        }
     }
 }
