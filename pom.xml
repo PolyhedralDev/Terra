@@ -27,11 +27,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.polydev.gaea</pattern>
-                            <shadedPattern>com.dfsek.terra.gaea</shadedPattern>
+                            <shadedPattern>com.dfsek.terra.lib.gaea</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons</pattern>
-                            <shadedPattern>com.dfsek.terra.commons</shadedPattern>
+                            <shadedPattern>com.dfsek.terra.lib.commons</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.lucko.commodore</pattern>
+                            <shadedPattern>com.dfsek.terra.lib</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -54,6 +58,10 @@
         <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>minecraft-repo</id>
+            <url>https://libraries.minecraft.net/</url>
         </repository>
         <repository>
             <id>gaea.local</id>
@@ -83,7 +91,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.9.0</version>
+            <version>1.9.4</version>
         </dependency>
         <dependency>
             <groupId>javax.vecmath</groupId>
@@ -92,10 +100,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.vecmath</groupId>
-            <artifactId>vecmath</artifactId>
-            <version>1.5.2</version>
+            <groupId>me.lucko</groupId>
+            <artifactId>commodore</artifactId>
+            <version>1.9</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-imaging</artifactId>
+            <version>1.0-alpha2</version>
         </dependency>
     </dependencies>
 

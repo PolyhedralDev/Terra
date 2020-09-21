@@ -32,7 +32,6 @@ public class CavePopulator extends BlockPopulator {
                 Vector v = e.getKey();
                 Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                 Material m = b.getType();
-                boolean liquid = b.getType().equals(Material.WATER) || b.getType().equals(Material.LAVA);
                 if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
                     b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), false);
@@ -40,7 +39,7 @@ public class CavePopulator extends BlockPopulator {
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
                     b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), false);
                 }
-                if(liquid) {
+                if(c.getUpdateBlocks().contains(m)) {
                     updateNeeded.add(b);
                 }
             }

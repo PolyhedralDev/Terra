@@ -24,8 +24,11 @@ import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -192,6 +195,10 @@ public class BiomeConfig extends TerraConfigObject {
             if(biome.getBiome().equals(b)) return biome;
         }
         throw new IllegalArgumentException("No BiomeConfig for provided biome.");
+    }
+
+    public static List<String> getBiomeIDs() {
+        return new ArrayList<>(biomes.keySet());
     }
 
     public static BiomeConfig fromID(String id) {

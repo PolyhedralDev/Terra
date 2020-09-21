@@ -14,6 +14,7 @@ import org.polydev.gaea.math.FastNoise;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,10 @@ public class OreConfig extends TerraConfigObject {
                 }
             }
         }
+    }
+
+    public static List<String> getOreIDs() {
+        return new ArrayList<>(ores.keySet());
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.dfsek.terra.biome;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.image.ImageLoader;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
+import org.bukkit.World;
 import org.polydev.gaea.biome.BiomeTerrain;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.parsii.eval.Expression;
@@ -45,7 +48,7 @@ public class UserDefinedGenerator extends BiomeTerrain {
      * @return double - Noise value at the specified coordinates.
      */
     @Override
-    public double getNoise(FastNoise gen, int x, int z) {
+    public double getNoise(FastNoise gen, World w, int x, int z) {
         synchronized(noiseLock) {
             xVar.setValue(x);
             yVar.setValue(0);
@@ -66,7 +69,7 @@ public class UserDefinedGenerator extends BiomeTerrain {
      * @return double - Noise value at the specified coordinates.
      */
     @Override
-    public double getNoise(FastNoise gen, int x, int y, int z) {
+    public double getNoise(FastNoise gen, World w, int x, int y, int z) {
         synchronized(noiseLock) {
             xVar.setValue(x);
             yVar.setValue(y);

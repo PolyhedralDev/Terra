@@ -28,6 +28,7 @@ public class CarverConfig extends TerraConfigObject {
     private String id;
     private Set<Material> replaceableInner;
     private Set<Material> replaceableOuter;
+    private Set<Material> update;
     private Map<Material, Set<Material>> shift;
     private Map<Integer, ProbabilityCollection<BlockData>> inner;
     private Map<Integer, ProbabilityCollection<BlockData>> outer;
@@ -67,6 +68,16 @@ public class CarverConfig extends TerraConfigObject {
             try {
                 if(replaceableOuter.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
                 replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
+            } catch(NullPointerException | IllegalArgumentException e) {
+                throw new InvalidConfigurationException("Could not load data for " + s);
+            }
+        }
+
+        update = new HashSet<>();
+        for(String s : getStringList("update")) {
+            try {
+                if(update.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in update list: " + s);
+                update.add(Bukkit.createBlockData(s).getMaterial());
             } catch(NullPointerException | IllegalArgumentException e) {
                 throw new InvalidConfigurationException("Could not load data for " + s);
             }
@@ -118,6 +129,10 @@ public class CarverConfig extends TerraConfigObject {
 
     public Map<Material, Set<Material>> getShiftedBlocks() {
         return shift;
+    }
+
+    public Set<Material> getUpdateBlocks() {
+        return update;
     }
 
     public boolean isReplaceableInner(Material m) {

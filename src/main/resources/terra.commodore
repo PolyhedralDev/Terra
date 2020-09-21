@@ -1,0 +1,16 @@
+terra {
+  biome;
+  reload;
+  profile {
+    start;
+    stop;
+    reset;
+    query;
+  }
+  tpbiome {
+    biome brigadier:string single_word;
+  }
+  ore {
+    ore brigadier:string single_word;
+  }
+}

@@ -5,6 +5,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
+import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,7 +27,13 @@ public class WorldConfig {
     public float freq1;
     public float freq2;
     public int seaLevel;
+    public boolean fromImage;
     public UserDefinedGrid[] definedGrids = new UserDefinedGrid[32];
+    public ImageLoader.Channel biomeXChannel;
+    public ImageLoader.Channel biomeZChannel;
+    public ImageLoader.Channel zoneChannel;
+    public ImageLoader.Channel terrainChannel;
+    public ImageLoader imageLoader;
 
 
     public WorldConfig(World w, JavaPlugin main) {
@@ -67,6 +74,16 @@ public class WorldConfig {
         zoneFreq = 1f/config.getInt("frequencies.zone", 1536);
         freq1 = 1f/config.getInt("frequencies.grid-1", 256);
         freq2 = 1f/config.getInt("frequencies.grid-2", 512);
+        fromImage = config.getBoolean("image.use-image", false);
+        biomeXChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-x", "red")).toUpperCase());
+        biomeZChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-z", "green")).toUpperCase());
+        zoneChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.zone", "blue")).toUpperCase());
+        try {
+            imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.image-location"))));
+        } catch(IOException | NullPointerException e) {
+            e.printStackTrace();
+            fromImage = false;
+        }
 
 
         configs.put(w, this); // WorldConfig must be included in map before Grids are loaded.
