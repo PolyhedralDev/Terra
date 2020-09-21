@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -14,8 +15,10 @@ import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.world.carving.CarvingData;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
     @Override
@@ -23,20 +26,22 @@ public class CavePopulator extends BlockPopulator {
         ProfileFuture cave = TerraProfiler.fromWorld(world).measure("CaveTime");
         for(CarverConfig c : CarverConfig.getCarvers()) {
             Map<Location, Material> shiftCandidate = new HashMap<>();
+            Set<Block> updateNeeded = new HashSet<>();
             Map<Vector, CarvingData.CarvingType> blocks = c.getCarver().carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks();
             for(Map.Entry<Vector, CarvingData.CarvingType> e : blocks.entrySet()) {
                 Vector v = e.getKey();
                 Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                 Material m = b.getType();
-                boolean liquid = m.equals(Material.WATER) || m.equals(Material.LAVA);
+                boolean liquid = b.getType().equals(Material.WATER) || b.getType().equals(Material.LAVA);
                 if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), liquid);
+                    b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), false);
                 } else if(c.isReplaceableOuter(m)){
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), liquid);
-                } else if(liquid) {
-                    b.setBlockData(b.getBlockData(), true);
+                    b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), false);
+                }
+                if(liquid) {
+                    updateNeeded.add(b);
                 }
             }
             int i = 0;
@@ -54,7 +59,12 @@ public class CavePopulator extends BlockPopulator {
                 } catch(NullPointerException ignored) {}
                 i++;
             }
-            if(i > 0) System.out.println("Shifted " + i + " blocks. " + j + " successful shifts.");
+            for(Block b : updateNeeded) {
+                BlockData orig = b.getBlockData();
+                b.setBlockData(Material.AIR.createBlockData(), true);
+                b.setBlockData(orig, true);
+            }
+            if(i > 0) System.out.println("Shifted " + i + " blocks. " + j + " successful shifts. " + updateNeeded.size() + " blocks updated.");
         }
 
         if(cave != null) cave.complete();

@@ -12,8 +12,8 @@ import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPopulator;
+import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.math.FastNoise;
-import org.polydev.gaea.math.InterpolationType;
 import org.polydev.gaea.population.PopulationManager;
 
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import java.util.Random;
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager();
     public TerraChunkGenerator() {
-        super(InterpolationType.TRILINEAR);
+        super(ChunkInterpolator.InterpolationType.TRILINEAR);
         popMan.attach(new TreePopulator());
         popMan.attach(new FaunaPopulator());
         popMan.attach(new OrePopulator());

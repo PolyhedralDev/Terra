@@ -10,7 +10,7 @@ import org.polydev.gaea.math.parsii.eval.Parser;
 import org.polydev.gaea.math.parsii.eval.Scope;
 import org.polydev.gaea.math.parsii.eval.Variable;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
-import org.polydev.gaea.world.BlockPalette;
+import org.polydev.gaea.world.palette.BlockPalette;
 
 import java.util.List;
 import java.util.Map;

@@ -9,9 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.Fauna;
+import org.polydev.gaea.world.palette.BlockPalette;
+import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,9 @@ public class FaunaConfig extends TerraConfigObject implements Fauna {
             throw new InvalidConfigurationException("Invalid material ID in spawnable list: " + e.getMessage());
         }
 
-        faunaPalette  = PaletteConfig.getPalette(getMapList("blocks"));
+        BlockPalette p = new RandomPalette(new Random(getInt("seed", 4)));
+
+        faunaPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
         if(!contains("id")) throw new InvalidConfigurationException("Fauna ID unspecified!");
         this.id = getString("id");
         if(!contains("name")) throw new InvalidConfigurationException("Fauna Name unspecified!");
@@ -76,7 +78,7 @@ public class FaunaConfig extends TerraConfigObject implements Fauna {
             if(!location.clone().add(0, i+1, 0).getBlock().isEmpty()) return false;
         }
         for(int i = 0; i < size; i++) {
-            location.clone().add(0, i+1, 0).getBlock().setBlockData(faunaPalette.getBlockData(size-(i+1), new Random()), false);
+            location.clone().add(0, i+1, 0).getBlock().setBlockData(faunaPalette.getBlockData(size-(i+1), location.getBlockX(), location.getBlockZ()), false);
         }
         return true;
     }

@@ -6,32 +6,31 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 
 import java.util.Random;
 
 public class UserDefinedCarver extends Carver {
-    private BlockPalette inner;
-    private BlockPalette walls;
     private final double[] start; // 0, 1, 2 = x, y, z.
     private final double[] mutate; // 0, 1, 2 = x, y, z. 3 = radius.
     private final double[] radiusMultiplier;
     private final MaxMin length;
     private final MaxMin radius;
-    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length, double[] start, double[] mutate, double[] radiusMultiplier) {
+    private final int hash;
+    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length, double[] start, double[] mutate, double[] radiusMultiplier, int hash) {
         super(height.getMin(), height.getMax());
         this.radius = radius;
         this.length = length;
         this.start = start;
         this.mutate = mutate;
         this.radiusMultiplier = radiusMultiplier;
+        this.hash = hash;
     }
 
     @Override
     public Worm getWorm(long l, Vector vector) {
-        Random r = new Random(l);
+        Random r = new Random(l+hash);
         return new UserDefinedWorm(length.get(r), r, vector, radius.getMax());
     }
 

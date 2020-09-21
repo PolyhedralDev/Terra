@@ -15,14 +15,9 @@ public class LookupGenerator {
 
         List<Double> vals = new ArrayList<>();
         FastNoise noise = new FastNoise();
-        FastNoise noiseLookup = new FastNoise();
-        noiseLookup.setNoiseType(FastNoise.NoiseType.Simplex);
-        noiseLookup.setFrequency(0.02f);
+        noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
         noise.setFrequency(0.02f);
-        noise.setNoiseType(FastNoise.NoiseType.Cellular);
-        noise.setCellularDistanceFunction(FastNoise.CellularDistanceFunction.Natural);
-        noise.setCellularReturnType(FastNoise.CellularReturnType.NoiseLookup);
-        noise.setCellularNoiseLookup(noiseLookup);
+        noise.setFractalOctaves(4);
         int[] numbers = new int[dist];
         double min = Integer.MAX_VALUE;
         double max = Integer.MIN_VALUE;

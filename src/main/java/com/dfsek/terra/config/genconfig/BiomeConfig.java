@@ -17,9 +17,10 @@ import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
-import org.polydev.gaea.world.BlockPalette;
 import org.polydev.gaea.world.Fauna;
 import org.polydev.gaea.world.FaunaType;
+import org.polydev.gaea.world.palette.BlockPalette;
+import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.TreeMap;
 
 public class BiomeConfig extends TerraConfigObject {
@@ -64,7 +66,7 @@ public class BiomeConfig extends TerraConfigObject {
                 try {
                     if(((String) entry.getKey()).startsWith("BLOCK:")) {
                         try {
-                            paletteMap.put((Integer) entry.getValue(), new BlockPalette().addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
+                            paletteMap.put((Integer) entry.getValue(), new RandomPalette(new Random(0)).addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
                             throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in biome " + getFriendlyName() + ", ID: " + biomeID + ". BlockData " + entry.getKey() + " is invalid!");
                         }

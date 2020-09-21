@@ -92,7 +92,8 @@ public class CarverConfig extends TerraConfigObject {
         MaxMin radius = new MaxMin(getInt("start.radius.min"), getInt("start.radius.max"));
         MaxMin height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
         id = getString("id");
-        carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier);
+        if(id == null) throw new InvalidConfigurationException("No ID specified for Carver!");
+        carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode());
         caveConfig.put(id, this);
     }
 
