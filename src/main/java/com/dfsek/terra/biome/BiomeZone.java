@@ -22,7 +22,7 @@ public class BiomeZone {
     private final ImageLoader imageLoader;
     private final boolean useImage;
     private final ImageLoader.Channel channel;
-    private BiomeZone(World w, float freq) {
+    private BiomeZone(World w) {
         this.w = w;
         this.noise = new FastNoise((int) w.getSeed()+2);
         this.noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
@@ -45,8 +45,16 @@ public class BiomeZone {
         return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), 32)];
     }
 
-    protected static BiomeZone fromWorld(World w) {
+    public int getNoise(int x, int z) {
+        return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), 32);
+    }
+
+    public double getRawNoise(int x, int z) {
+        return useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z);
+    }
+
+    public static BiomeZone fromWorld(World w) {
         if(zones.containsKey(w)) return zones.get(w);
-        else return new BiomeZone(w, WorldConfig.fromWorld(w).zoneFreq);
+        else return new BiomeZone(w);
     }
 }

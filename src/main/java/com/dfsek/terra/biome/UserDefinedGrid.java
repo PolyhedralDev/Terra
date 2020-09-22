@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeGrid;
+import org.polydev.gaea.biome.NormalizationUtil;
 
 public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader imageLoader;
@@ -37,9 +38,9 @@ public class UserDefinedGrid extends BiomeGrid {
     @Override
     public Biome getBiome(int x, int z) {
         if(fromImage) {
-            int xi = imageLoader.getChannel(x, z, channelX);
-            int zi = imageLoader.getChannel(x, z, channelZ);
-            return super.getGrid()[getSizeX() * (xi/256)][getSizeZ() * (zi/256)];
+            double xi = imageLoader.getNoiseVal(x, z, channelX);
+            double zi = imageLoader.getNoiseVal(x, z, channelZ);
+            return super.getGrid()[NormalizationUtil.normalize(xi, getSizeX())][NormalizationUtil.normalize(zi, getSizeZ())];
         }
         return super.getBiome(x, z);
     }

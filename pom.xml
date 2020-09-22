@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.9.4</version>
+            <version>1.9.6</version>
         </dependency>
         <dependency>
             <groupId>javax.vecmath</groupId>

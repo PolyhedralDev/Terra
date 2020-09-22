@@ -26,7 +26,7 @@ cp $DIRECTORY/prod/$PROJECT.jar $DIRECTORY/server/plugins/$PROJECT.jar
 cd $DIRECTORY/server || exit
 if ! test -f "paperclip.jar"; then
     echo "Paper not found. Downloading now."
-    wget https://papermc.io/api/v1/paper/1.16.2/latest/download -O paperclip.jar
+    wget https://papermc.io/api/v1/paper/1.16.3/latest/download -O paperclip.jar
 fi
 if [ -z "$(grep true eula.txt 2>/dev/null)" ]; then
     echo

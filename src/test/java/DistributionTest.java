@@ -19,7 +19,7 @@ public class DistributionTest {
         noise.setFrequency(0.02f);
         noise.setFractalOctaves(4);
         System.out.println(noise);
-        int attempts = 3;
+        int attempts = 8;
         int[] numbers = new int[attempts];
         double min = Integer.MAX_VALUE;
         double max = Integer.MIN_VALUE;

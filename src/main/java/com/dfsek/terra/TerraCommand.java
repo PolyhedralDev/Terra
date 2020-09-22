@@ -2,9 +2,11 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.genconfig.OreConfig;
+import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.profiler.WorldProfiler;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +74,42 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                 }
                 ore.doVein(bl.getLocation(), new Random());
                 return true;
-
+            case "image":
+                if("render".equals(args[1])) {
+                    if(! (sender instanceof Player)) {
+                        sender.sendMessage("Command is for players only.");
+                        return true;
+                    }
+                    Player pl = (Player) sender;
+                    if(args.length != 4) return false;
+                    try {
+                        WorldImageGenerator g = new WorldImageGenerator(pl.getWorld(), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+                        g.drawWorld(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ());
+                        File file = new File(Terra.getInstance().getDataFolder() + File.separator + "map_export" + File.separator + "map_" + System.currentTimeMillis() + ".png");
+                        file.mkdirs();
+                        file.createNewFile();
+                        g.save(file);
+                        sender.sendMessage("Saved image to " + file.getPath());
+                        return true;
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                } else if("gui".equals(args[1])) {
+                    if(! (sender instanceof Player)) {
+                        sender.sendMessage("Command is for players only.");
+                        return true;
+                    }
+                    Player pl = (Player) sender;
+                    try {
+                        if("raw".equals(args[2])) WorldConfig.fromWorld(pl.getWorld()).imageLoader.debug(false, pl.getWorld());
+                        else if("step".equals(args[2])) WorldConfig.fromWorld(pl.getWorld()).imageLoader.debug(true, pl.getWorld());
+                        else return false;
+                        return true;
+                    } catch(NullPointerException e) {
+                        return false;
+                    }
+                }
         }
         return false;
     }

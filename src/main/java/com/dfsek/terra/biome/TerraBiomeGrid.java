@@ -36,4 +36,8 @@ public class TerraBiomeGrid extends BiomeGrid {
     public Biome getBiome(Location l) {
         return getBiome(l.getBlockX(), l.getBlockZ());
     }
+
+    public UserDefinedGrid getGrid(int x, int z) {
+        return (UserDefinedGrid) BiomeZone.fromWorld(w).getGrid(x, z);
+    }
 }

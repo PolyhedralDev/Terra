@@ -13,4 +13,15 @@ terra {
   ore {
     ore brigadier:string single_word;
   }
+  image {
+    render {
+      size_x brigadier:integer {
+        size_z brigadier:integer;
+      }
+    }
+    gui {
+      raw;
+      step;
+    }
+  }
 }

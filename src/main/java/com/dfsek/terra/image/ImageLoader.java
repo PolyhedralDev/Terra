@@ -1,5 +1,11 @@
 package com.dfsek.terra.image;
 
+import com.dfsek.terra.biome.BiomeZone;
+import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
+import org.bukkit.World;
+import org.polydev.gaea.biome.NormalizationUtil;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,8 +41,34 @@ public class ImageLoader {
         }
     }
 
+    public void debug(boolean genStep, World w) {
+        BufferedImage newImg = copyImage(image);
+        TerraBiomeGrid tb = TerraBiomeGrid.fromWorld(w);
+        BiomeZone z = BiomeZone.fromWorld(w);
+        if(genStep) {
+            for(int x = 0; x < newImg.getWidth(); x++) {
+                for(int y = 0; y < newImg.getHeight(); y++) {
+                    float[] noise = tb.getGrid(x, y).getRawNoise(x, y);
+                    newImg.setRGB(x, y, new Color((int) (NormalizationUtil.normalize(noise[0], tb.getGrid(x, y).getSizeX()) * ((double) 255/tb.getGrid(x, y).getSizeX())),
+                            (int) (NormalizationUtil.normalize(noise[1], tb.getGrid(x, y).getSizeZ()) * ((double) 255/tb.getGrid(x, y).getSizeZ())),
+                            (int) (z.getNoise(x, y) * ((double) 255/32)))
+                            .getRGB());
+                }
+            }
+        }
+        DebugGUI debugGUI = new DebugGUI(newImg);
+        debugGUI.start();
+    }
+
     public double getNoiseVal(int x, int y, Channel channel) {
         return ((double) (getChannel(x, y, channel) - 128)/128)*inverseRoot2;
+    }
+    private static BufferedImage copyImage(BufferedImage source){
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+        Graphics g = b.getGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+        return b;
     }
 
     public enum Channel {
