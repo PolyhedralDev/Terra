@@ -31,11 +31,12 @@ public class DebugFrame extends JFrame implements ActionListener {
         for(Player p : Bukkit.getOnlinePlayers()) {
             int xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX(), x)/x)*getWidth());
             int zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ(), z)/z)*getHeight());
-            g.setColor(new Color(255, 255, 255, 64));
-            g.drawRect(xp+10, zp-5, 20, 20);
+            String str = BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(p.getWorld()).getBiome(p.getLocation())).getID();
+            g.setColor(new Color(255, 255, 255, 128));
+            g.fillRect(xp+13, zp-13, (int) (8 + 8.25*str.length()), 33);
             g.setColor(Color.BLACK);
             g.drawString(p.getName(), xp+15, zp);
-            g.drawString(BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(p.getWorld()).getBiome(p.getLocation())).getID(), xp+15, zp+15);
+            g.drawString(str, xp+15, zp+15);
             g.fillOval(xp, zp, 10, 10);
             g.setColor(Color.RED);
             g.fillOval(xp+3, zp+3, 5, 5);
