@@ -15,7 +15,6 @@ import java.util.Objects;
 
 public class BiomeZone {
     private BiomeGrid[] grids;
-    private final World w;
     private final FastNoise noise;
     private static final Map<World, BiomeZone> zones = new HashMap<>();
     @Nullable
@@ -24,7 +23,6 @@ public class BiomeZone {
     private final ImageLoader.Channel channel;
 
     private BiomeZone(World w) {
-        this.w = w;
         this.noise = new FastNoise((int) w.getSeed()+2);
         this.noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
         this.noise.setFractalOctaves(4);
@@ -56,5 +54,9 @@ public class BiomeZone {
     public static BiomeZone fromWorld(World w) {
         if(zones.containsKey(w)) return zones.get(w);
         else return new BiomeZone(w);
+    }
+
+    public static void invalidate() {
+        zones.clear();
     }
 }

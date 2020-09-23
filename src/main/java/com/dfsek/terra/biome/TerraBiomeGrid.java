@@ -16,7 +16,7 @@ public class TerraBiomeGrid extends BiomeGrid {
     private final World w;
 
     public TerraBiomeGrid(World w) {
-        super(w, 1f/256, 1f/512);
+        super(w, WorldConfig.fromWorld(w).freq1, WorldConfig.fromWorld(w).freq2);
         this.w = w;
         grids.put(w, this);
     }
@@ -35,6 +35,10 @@ public class TerraBiomeGrid extends BiomeGrid {
     @Override
     public Biome getBiome(Location l) {
         return getBiome(l.getBlockX(), l.getBlockZ());
+    }
+
+    public static void invalidate() {
+        grids.clear();
     }
 
     public UserDefinedGrid getGrid(int x, int z) {

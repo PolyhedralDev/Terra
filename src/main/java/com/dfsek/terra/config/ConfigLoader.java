@@ -1,5 +1,6 @@
 package com.dfsek.terra.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.commons.io.FilenameUtils;
 
@@ -9,7 +10,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -22,6 +25,7 @@ public class ConfigLoader {
     public <T extends TerraConfigObject> void load(JavaPlugin main, Class<T> clazz) {
         File folder = new File(main.getDataFolder() + File.separator + "config" + File.separator + path);
         folder.mkdirs();
+        List<String> ids = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(folder.toPath())) {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
@@ -29,6 +33,8 @@ public class ConfigLoader {
                         try {
                             Constructor<T> c = clazz.getConstructor(File.class);
                             T o = c.newInstance(path.toFile());
+                            if(ids.contains(o.getID())) Bukkit.getLogger().severe("Duplicate ID found in file: " + path.toString());
+                            ids.add(o.getID());
                             main.getLogger().info("Loaded " + o.toString() + " from file " + path.toString());
                         } catch(IllegalAccessException | InstantiationException | NoSuchMethodException e) {
                             e.printStackTrace();

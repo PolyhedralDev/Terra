@@ -11,13 +11,14 @@ public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
     private final UserDefinedDecorator decorator;
     private final org.bukkit.block.Biome vanilla;
+    private final String id;
 
 
-    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, UserDefinedGenerator gen) {
-
+    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, UserDefinedGenerator gen, String id) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
+        this.id = id;
     }
 
     /**
@@ -58,5 +59,9 @@ public class UserDefinedBiome implements Biome {
     @Override
     public Decorator getDecorator() {
         return decorator;
+    }
+
+    public String getID() {
+        return id;
     }
 }

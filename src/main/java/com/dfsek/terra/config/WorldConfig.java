@@ -30,7 +30,7 @@ public class WorldConfig {
     public float freq2;
     public int seaLevel;
     public boolean fromImage;
-    public UserDefinedGrid[] definedGrids = new UserDefinedGrid[32];
+    public UserDefinedGrid[] definedGrids;
     public ImageLoader.Channel biomeXChannel;
     public ImageLoader.Channel biomeZChannel;
     public ImageLoader.Channel zoneChannel;
@@ -102,6 +102,7 @@ public class WorldConfig {
 
             // Load BiomeGrids from BiomeZone
             List<String> biomeList = config.getStringList("grids");
+            definedGrids = new UserDefinedGrid[biomeList.size()];
             for(int i = 0; i < biomeList.size(); i++) {
                 String partName = biomeList.get(i);
                 if(partName.startsWith("BIOME:")) {

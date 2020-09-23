@@ -1,5 +1,7 @@
 package com.dfsek.terra.config;
 
+import com.dfsek.terra.biome.BiomeZone;
+import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
@@ -29,6 +31,8 @@ public class ConfigUtil {
 
         new ConfigLoader("abstract" + File.separator + "biomes").load(main, AbstractBiomeConfig.class);
 
+        TerraBiomeGrid.invalidate();
+        BiomeZone.invalidate(); // Invalidate BiomeZone and BiomeGrid caches to prevent old instances from being accessed.
         new ConfigLoader("biomes").load(main, BiomeConfig.class);
 
         new ConfigLoader("grids").load(main, BiomeGridConfig.class);

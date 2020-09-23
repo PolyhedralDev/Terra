@@ -188,14 +188,6 @@ public class BiomeConfig extends TerraConfigObject {
             throw new InvalidConfigurationException("Invalid Vanilla biome: " + getString("vanilla"));
         }
 
-        try {
-            // Get UserDefinedBiome instance representing this config.
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap));
-        } catch(ParseException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Unable to parse noise equation!");
-        }
-
         // Check if ores should be handled by super biome.
         if(extending && abstractBiome.getOres() != null && !contains("ores")) {
             ores = abstractBiome.getOres();
@@ -212,8 +204,13 @@ public class BiomeConfig extends TerraConfigObject {
             oreHeights = new HashMap<>();
         }
 
-
-
+        try {
+            // Get UserDefinedBiome instance representing this config.
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap), biomeID);
+        } catch(ParseException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Unable to parse noise equation!");
+        }
         biomes.put(biomeID, this);
     }
 
@@ -244,6 +241,9 @@ public class BiomeConfig extends TerraConfigObject {
     public static BiomeConfig fromBiome(UserDefinedBiome b) {
         for(BiomeConfig biome : biomes.values()) {
             if(biome.getBiome().equals(b)) return biome;
+        }
+        for(BiomeConfig biome : biomes.values()) {
+            Bukkit.getLogger().info(biome.getID() + ":" + biome.hashCode() + " : " + b.getID() + ":" + b.hashCode());
         }
         throw new IllegalArgumentException("No BiomeConfig for provided biome.");
     }

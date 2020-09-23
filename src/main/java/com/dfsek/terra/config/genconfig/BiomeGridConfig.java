@@ -83,7 +83,7 @@ public class BiomeGridConfig extends TerraConfigObject {
 
     public UserDefinedGrid getGrid(World w) {
         WorldConfig c = WorldConfig.fromWorld(w);
-        return new UserDefinedGrid(w, c.freq1, c.freq2, this);
+        return new UserDefinedGrid(w, c.freq1, c.freq2, gridRaw);
     }
 
     @Override
