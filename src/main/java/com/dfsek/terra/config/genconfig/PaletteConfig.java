@@ -71,8 +71,10 @@ public class PaletteConfig extends TerraConfigObject {
         for(Map<?, ?> m : maps) {
             try {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
-                for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
-                    layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
+                for(Map<?, ?> entry : (List<Map<?, ?>>) m.get("materials")) {
+                    for(Map.Entry<?, ?> type : entry.entrySet()) {
+                        layer.add(Bukkit.createBlockData((String) type.getKey()), (Integer) type.getValue());
+                    }
                 }
                 p.addBlockData(layer, (Integer) m.get("layers"));
             } catch(ClassCastException e) {

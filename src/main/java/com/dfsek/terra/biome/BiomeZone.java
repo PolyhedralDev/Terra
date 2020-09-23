@@ -22,6 +22,7 @@ public class BiomeZone {
     private final ImageLoader imageLoader;
     private final boolean useImage;
     private final ImageLoader.Channel channel;
+
     private BiomeZone(World w) {
         this.w = w;
         this.noise = new FastNoise((int) w.getSeed()+2);
@@ -37,16 +38,15 @@ public class BiomeZone {
     }
 
     public void setZones(@NotNull BiomeGrid[] grids) {
-        if(grids.length != 32) throw new IllegalArgumentException("Illegal number of grids!");
         this.grids = grids;
     }
 
     protected BiomeGrid getGrid(int x, int z) {
-        return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), 32)];
+        return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length)];
     }
 
     public int getNoise(int x, int z) {
-        return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), 32);
+        return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length);
     }
 
     public double getRawNoise(int x, int z) {

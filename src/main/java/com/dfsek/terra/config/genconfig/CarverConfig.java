@@ -172,12 +172,6 @@ public class CarverConfig extends TerraConfigObject {
         return new ArrayList<>(caveConfig.values());
     }
     public static CarverConfig fromID(String id) {
-        Bukkit.getLogger().info("Accessing carvers...");
-        for(Map.Entry<String, CarverConfig> e : caveConfig.entrySet()) {
-            Bukkit.getLogger().info("Carver ID " + e.getKey() + ", carver: " + e.getValue());
-        }
-        Bukkit.getLogger().info("ID requested: " + id);
-        Bukkit.getLogger().info("Fetched " + caveConfig.get(id));
         return caveConfig.get(id);
     }
 

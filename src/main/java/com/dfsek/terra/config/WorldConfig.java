@@ -17,6 +17,7 @@ import org.polydev.gaea.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -73,6 +74,8 @@ public class WorldConfig {
             freq1 = 1f/config.getInt("frequencies.grid-1", 256);
             freq2 = 1f/config.getInt("frequencies.grid-2", 512);
             fromImage = config.getBoolean("image.use-image", false);
+
+            // Load image stuff
             try {
                 biomeXChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-x", "red")).toUpperCase());
                 biomeZChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-z", "green")).toUpperCase());
@@ -97,20 +100,20 @@ public class WorldConfig {
 
             configs.put(w, this); // WorldConfig must be included in map before Grids are loaded.
 
-            for(int i = 0; i < 32; i++) {
-                String partName = config.getStringList("grids").get(i);
+            // Load BiomeGrids from BiomeZone
+            List<String> biomeList = config.getStringList("grids");
+            for(int i = 0; i < biomeList.size(); i++) {
+                String partName = biomeList.get(i);
                 if(partName.startsWith("BIOME:")) {
-                    UserDefinedBiome[][] temp = new UserDefinedBiome[16][16];
+                    UserDefinedBiome[][] temp = new UserDefinedBiome[1][1];
                     UserDefinedBiome b = BiomeConfig.fromID(partName.substring(6)).getBiome();
-                    for(int x = 0; x < 16; x++) {
-                        for(int z = 0; z < 16; z++) {
-                            temp[x][z] = b;
-                        }
-                    }
+                    temp[0][0] = b;
                     definedGrids[i] = new UserDefinedGrid(w, freq1, freq2, temp);
                     main.getLogger().info("Loaded single-biome grid " + partName);
                 } else definedGrids[i] = BiomeGridConfig.getBiomeGrids().get(partName).getGrid(w);
             }
+
+            Bukkit.getLogger().info("Loaded " + biomeList.size() + " BiomeGrids from list.");
 
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();

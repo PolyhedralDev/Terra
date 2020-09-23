@@ -63,7 +63,6 @@ public class CavePopulator extends BlockPopulator {
                 b.setBlockData(Material.AIR.createBlockData(), true);
                 b.setBlockData(orig, true);
             }
-            if(i > 0) System.out.println("Shifted " + i + " blocks. " + j + " successful shifts. " + updateNeeded.size() + " blocks updated.");
         }
 
         if(cave != null) cave.complete();
