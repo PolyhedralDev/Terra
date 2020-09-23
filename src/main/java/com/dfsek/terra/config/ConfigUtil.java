@@ -9,6 +9,7 @@ import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.config.genconfig.FaunaConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -17,7 +18,13 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ConfigUtil {
+    public static boolean debug;
     public static void loadConfig(JavaPlugin main) {
+        main.saveDefaultConfig();
+        FileConfiguration config = main.getConfig();
+
+        debug = config.getBoolean("debug", false);
+
         Logger logger = main.getLogger();
         logger.info("Loading config values");
 

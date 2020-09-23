@@ -125,10 +125,25 @@ public class BiomeConfig extends TerraConfigObject {
             }
         } else  carvers = new HashMap<>();
 
+        int faunaChance, treeChance, treeDensity;
+
+        // Get various simple values using getOrDefault config methods.
+        try {
+            faunaChance = getInt("fauna-chance", Objects.requireNonNull(abstractBiome).getFaunaChance());
+            treeChance = getInt("tree-chance", Objects.requireNonNull(abstractBiome).getTreeChance());
+            treeDensity = getInt("tree-density", Objects.requireNonNull(abstractBiome).getTreeDensity());
+            eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
+        } catch(NullPointerException e) {
+            faunaChance = getInt("fauna-chance", 0);
+            treeChance = getInt("tree-chance", 0);
+            treeDensity = getInt("tree-density", 0);
+            eq = getString("noise-equation", null);
+        }
+
         // Check if fauna should be handled by super biome.
         if(extending && abstractBiome.getFauna() != null && !contains("fauna")) {
             fauna = abstractBiome.getFauna();
-            Bukkit.getLogger().info("Using super fauna");
+            Bukkit.getLogger().info("Using super fauna (" + fauna.size() + " entries, " + faunaChance + " % chance)");
         } else if(contains("fauna")) {
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("fauna")).getValues(false).entrySet()) {
                 try {
@@ -158,21 +173,6 @@ public class BiomeConfig extends TerraConfigObject {
                 }
             }
         } else trees = new ProbabilityCollection<>();
-
-        int faunaChance, treeChance, treeDensity;
-
-        // Get various simple values using getOrDefault config methods.
-        try {
-            faunaChance = getInt("fauna-chance", Objects.requireNonNull(abstractBiome).getFaunaChance());
-            treeChance = getInt("tree-chance", Objects.requireNonNull(abstractBiome).getTreeChance());
-            treeDensity = getInt("tree-density", Objects.requireNonNull(abstractBiome).getTreeDensity());
-            eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
-        } catch(NullPointerException e) {
-            faunaChance = getInt("fauna-chance", 0);
-            treeChance = getInt("tree-chance", 0);
-            treeDensity = getInt("tree-density", 0);
-            eq = getString("noise-equation", null);
-        }
 
         //Make sure equation is non-null
         if(eq == null) throw new InvalidConfigurationException("Noise equation must be specified in biome or super biome.");

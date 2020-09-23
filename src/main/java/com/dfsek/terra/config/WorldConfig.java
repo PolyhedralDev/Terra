@@ -105,13 +105,17 @@ public class WorldConfig {
             definedGrids = new UserDefinedGrid[biomeList.size()];
             for(int i = 0; i < biomeList.size(); i++) {
                 String partName = biomeList.get(i);
-                if(partName.startsWith("BIOME:")) {
-                    UserDefinedBiome[][] temp = new UserDefinedBiome[1][1];
-                    UserDefinedBiome b = BiomeConfig.fromID(partName.substring(6)).getBiome();
-                    temp[0][0] = b;
-                    definedGrids[i] = new UserDefinedGrid(w, freq1, freq2, temp);
-                    main.getLogger().info("Loaded single-biome grid " + partName);
-                } else definedGrids[i] = BiomeGridConfig.getBiomeGrids().get(partName).getGrid(w);
+                try {
+                    if(partName.startsWith("BIOME:")) {
+                        UserDefinedBiome[][] temp = new UserDefinedBiome[1][1];
+                        UserDefinedBiome b = BiomeConfig.fromID(partName.substring(6)).getBiome();
+                        temp[0][0] = b;
+                        definedGrids[i] = new UserDefinedGrid(w, freq1, freq2, temp);
+                        main.getLogger().info("Loaded single-biome grid " + partName);
+                    } else definedGrids[i] = BiomeGridConfig.getBiomeGrids().get(partName).getGrid(w);
+                } catch(NullPointerException e) {
+                    Bukkit.getLogger().severe("No such BiomeGrid " + partName);
+                }
             }
 
             Bukkit.getLogger().info("Loaded " + biomeList.size() + " BiomeGrids from list.");
@@ -120,10 +124,6 @@ public class WorldConfig {
             e.printStackTrace();
             main.getLogger().severe("Unable to load configuration for world " + w + ".");
         }
-
-
-
-
 
         main.getLogger().info("World load complete. Time elapsed: " + ((double) (System.nanoTime() - start)) / 1000000 + "ms");
     }

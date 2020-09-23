@@ -39,7 +39,7 @@ public class ConfigLoader {
                         } catch(IllegalAccessException | InstantiationException | NoSuchMethodException e) {
                             e.printStackTrace();
                         } catch(IllegalArgumentException | InvocationTargetException e) {
-                            e.printStackTrace();
+                            if(ConfigUtil.debug) e.printStackTrace();
                             main.getLogger().severe("Configuration error for Terra object. File: " + path.toString());
                             main.getLogger().severe(((e instanceof InvocationTargetException) ? "INVOCATION: " + e.getCause().getMessage() : e.getMessage()));
                             main.getLogger().severe("Correct this before proceeding!");

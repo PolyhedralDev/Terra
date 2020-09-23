@@ -31,9 +31,9 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private Map<CarverConfig, Integer> carvers;
     private ProbabilityCollection<Fauna> fauna;
     private ProbabilityCollection<Tree> trees;
-    private int faunaChance = 0;
-    private int treeChance = 0;
-    private int treeDensity = 0;
+    private int faunaChance;
+    private int treeChance;
+    private int treeDensity;
     private String equation;
     private TreeMap<Integer, BlockPalette> paletteMap;
 
@@ -93,7 +93,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
             fauna = new ProbabilityCollection<>();
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("fauna")).getValues(false).entrySet()) {
                 try {
-                    Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to astract biome's fauna list with weight " + e.getValue());
+                    Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to abstract biome's fauna list with weight " + e.getValue());
                     fauna.add(FaunaType.valueOf(e.getKey()), (Integer) e.getValue());
                 } catch(IllegalArgumentException ex) {
                     try {
