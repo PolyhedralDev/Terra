@@ -18,20 +18,17 @@ import javax.imageio.ImageIO;
 
 public class ImageLoader {
     private final BufferedImage image;
+    private final Align align;
     double inverseRoot2 = 0.7071067811865475;
-    public ImageLoader(File file) throws IOException {
+    public ImageLoader(File file, Align align) throws IOException {
         image = ImageIO.read(file);
+        this.align = align;
     }
 
 
     public int getChannel(int x, int y, Channel channel) {
         int rgb;
-        try {
-            rgb = image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(y, image.getHeight()));
-        } catch(ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Index " + x + "/" + x + "out of bounds for size " + image.getWidth() + "/" + image.getHeight());
-        }
+        rgb = align.getRGB(image, x, y);
         switch(channel) {
             case RED: return rgb >> 16 & 0xff;
             case GREEN: return rgb >> 8 & 0xff;
@@ -63,7 +60,7 @@ public class ImageLoader {
     public double getNoiseVal(int x, int y, Channel channel) {
         return ((double) (getChannel(x, y, channel) - 128)/128)*inverseRoot2;
     }
-    private static BufferedImage copyImage(BufferedImage source){
+    private static BufferedImage copyImage(BufferedImage source) {
         BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
         Graphics g = b.getGraphics();
         g.drawImage(source, 0, 0, null);
@@ -71,7 +68,29 @@ public class ImageLoader {
         return b;
     }
 
+    public Align getAlign() {
+        return align;
+    }
+
     public enum Channel {
         RED, GREEN, BLUE, ALPHA
+    }
+    public enum Align {
+        CENTER {
+            @Override
+            public int getRGB(BufferedImage image, int x, int y) {
+                return Align.getRGBNoAlign(image, x-(image.getWidth()/2), y-(image.getHeight()/2));
+            }
+        },
+        NONE {
+            @Override
+            public int getRGB(BufferedImage image, int x, int y) {
+                return image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(y, image.getHeight()));
+            }
+        };
+        public abstract int getRGB(BufferedImage image, int x, int y);
+        private static int getRGBNoAlign(BufferedImage image, int x, int y) {
+            return image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(y, image.getHeight()));
+        }
     }
 }

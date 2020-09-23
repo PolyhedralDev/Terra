@@ -20,7 +20,7 @@ public class ConfigLoader {
     }
 
     public <T extends TerraConfigObject> void load(JavaPlugin main, Class<T> clazz) {
-        File folder = new File(main.getDataFolder() + File.separator + path);
+        File folder = new File(main.getDataFolder() + File.separator + "config" + File.separator + path);
         folder.mkdirs();
         try (Stream<Path> paths = Files.walk(folder.toPath())) {
             paths

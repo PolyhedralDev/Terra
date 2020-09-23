@@ -3,6 +3,7 @@ main: com.dfsek.terra.Terra
 version: 1.0.0
 load: STARTUP
 api-version: "1.15"
+softdepend: ["WorldEdit"]
 commands:
   terra:
     description: Terra base command

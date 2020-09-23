@@ -24,4 +24,14 @@ terra {
       step;
     }
   }
+  structure {
+    export {
+      structure brigadier:string single_word;
+    }
+    load {
+      structure brigadier:string single_word {
+        respect_chunk brigadier:bool;
+      }
+    }
+  }
 }

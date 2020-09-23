@@ -12,6 +12,11 @@
       <option name="url" value="https://repo.aikar.co/content/groups/aikar/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="enginehub-maven" />
+      <option name="name" value="enginehub-maven" />
+      <option name="url" value="http://maven.enginehub.org/repo/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="spigotmc-repo" />
       <option name="name" value="spigotmc-repo" />
       <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
@@ -25,6 +30,11 @@
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="enginehub" />
+      <option name="name" value="enginehub" />
+      <option name="url" value="https://maven.enginehub.org/repo/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="minecraft-repo" />

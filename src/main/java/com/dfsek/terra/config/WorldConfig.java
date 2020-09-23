@@ -73,19 +73,25 @@ public class WorldConfig {
             freq1 = 1f/config.getInt("frequencies.grid-1", 256);
             freq2 = 1f/config.getInt("frequencies.grid-2", 512);
             fromImage = config.getBoolean("image.use-image", false);
-            biomeXChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-x", "red")).toUpperCase());
-            biomeZChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-z", "green")).toUpperCase());
-            if(biomeZChannel.equals(biomeXChannel)) throw new InvalidConfigurationException("2 objects share the same image channels: biome-x and biome-z");
-            zoneChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.zone", "blue")).toUpperCase());
-            if(zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel)) throw new InvalidConfigurationException("2 objects share the same image channels: zone and biome-x/z");
-            if(fromImage) {
-                try {
-                    imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.image-location"))));
-                    Bukkit.getLogger().info("[Terra] Loading world from image.");
-                } catch(IOException | NullPointerException e) {
-                    e.printStackTrace();
-                    fromImage = false;
+            try {
+                biomeXChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-x", "red")).toUpperCase());
+                biomeZChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-z", "green")).toUpperCase());
+                if(biomeZChannel.equals(biomeXChannel))
+                    throw new InvalidConfigurationException("2 objects share the same image channels: biome-x and biome-z");
+                zoneChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.zone", "blue")).toUpperCase());
+                if(zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel))
+                    throw new InvalidConfigurationException("2 objects share the same image channels: zone and biome-x/z");
+                if(fromImage) {
+                    try {
+                        imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.image-location"))), ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
+                        Bukkit.getLogger().info("[Terra] Loading world from image.");
+                    } catch(IOException | NullPointerException e) {
+                        e.printStackTrace();
+                        fromImage = false;
+                    }
                 }
+            } catch(IllegalArgumentException e) {
+                throw new InvalidConfigurationException(e.getCause());
             }
 
 
