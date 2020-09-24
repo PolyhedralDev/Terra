@@ -10,9 +10,10 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
-import org.polydev.gaea.world.Fauna;
-import org.polydev.gaea.world.FaunaType;
-import org.polydev.gaea.world.palette.BlockPalette;
+import org.polydev.gaea.world.Flora;
+import org.polydev.gaea.world.FloraType;
+import org.polydev.gaea.world.palette.Palette;
+import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
@@ -29,13 +30,13 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private Map<OreConfig, MaxMin> ores;
     private Map<OreConfig, MaxMin> oreHeights;
     private Map<CarverConfig, Integer> carvers;
-    private ProbabilityCollection<Fauna> fauna;
+    private ProbabilityCollection<Flora> flora;
     private ProbabilityCollection<Tree> trees;
-    private int faunaChance;
+    private int floraChance;
     private int treeChance;
     private int treeDensity;
     private String equation;
-    private TreeMap<Integer, BlockPalette> paletteMap;
+    private TreeMap<Integer, Palette<BlockData>> paletteMap;
 
     public AbstractBiomeConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
@@ -53,19 +54,19 @@ public class AbstractBiomeConfig extends TerraConfigObject {
                     try {
                         if(((String) entry.getKey()).startsWith("BLOCK:")) {
                             try {
-                                paletteMap.put((Integer) entry.getValue(), new RandomPalette(new Random(0)).addBlockData(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
+                                paletteMap.put((Integer) entry.getValue(), new RandomPalette(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
                             } catch(IllegalArgumentException ex) {
-                                throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in abstract biome, ID: " + biomeID + ". BlockData " + entry.getKey() + " is invalid!");
+                                throw new InvalidConfigurationException("SEVERE configuration error for Palettes in abstract biome, ID: " + biomeID + ". BlockData " + entry.getKey() + " is invalid!");
                             }
                         } else {
                             try {
                                 paletteMap.put((Integer) entry.getValue(), PaletteConfig.fromID((String) entry.getKey()).getPalette());
                             } catch(NullPointerException ex) {
-                                throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in abstract biome, ID: " + biomeID + "\n\nPalette " + entry.getKey() + " cannot be found!");
+                                throw new InvalidConfigurationException("SEVERE configuration error for Palettes in abstract biome, ID: " + biomeID + "\n\nPalette " + entry.getKey() + " cannot be found!");
                             }
                         }
                     } catch(ClassCastException ex) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for BlockPalettes in abstract biome, ID: " + biomeID);
+                        throw new InvalidConfigurationException("SEVERE configuration error for Palettes in abstract biome, ID: " + biomeID);
                     }
                 }
             }
@@ -89,19 +90,19 @@ public class AbstractBiomeConfig extends TerraConfigObject {
             }
         }
 
-        if(contains("fauna")) {
-            fauna = new ProbabilityCollection<>();
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("fauna")).getValues(false).entrySet()) {
+        if(contains("flora")) {
+            flora = new ProbabilityCollection<>();
+            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("flora")).getValues(false).entrySet()) {
                 try {
-                    Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to abstract biome's fauna list with weight " + e.getValue());
-                    fauna.add(FaunaType.valueOf(e.getKey()), (Integer) e.getValue());
+                    Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to abstract biome's flora list with weight " + e.getValue());
+                    flora.add(FloraType.valueOf(e.getKey()), (Integer) e.getValue());
                 } catch(IllegalArgumentException ex) {
                     try {
-                        Bukkit.getLogger().info("[Terra] Is custom fauna: true");
-                        Fauna faunaCustom = FaunaConfig.fromID(e.getKey());
-                        fauna.add(faunaCustom, (Integer) e.getValue());
+                        Bukkit.getLogger().info("[Terra] Is custom flora: true");
+                        Flora floraCustom = FloraConfig.fromID(e.getKey());
+                        flora.add(floraCustom, (Integer) e.getValue());
                     } catch(NullPointerException ex2) {
-                        throw new IllegalArgumentException("SEVERE configuration error for fauna in abstract biome, ID " +  getID() + "\n\nFauna with ID " + e.getKey() + " cannot be found!");
+                        throw new IllegalArgumentException("SEVERE configuration error for flora in abstract biome, ID " +  getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
                     }
                 }
             }
@@ -116,7 +117,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
                 }
             }
         }
-        faunaChance = getInt("fauna-chance", 0);
+        floraChance = getInt("flora-chance", 0);
         treeChance = getInt("tree-chance", 0);
         treeDensity = getInt("tree-density", 0);
         equation = getString("noise-equation");
@@ -138,8 +139,8 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         return biomeID;
     }
 
-    public int getFaunaChance() {
-        return faunaChance;
+    public int getFloraChance() {
+        return floraChance;
     }
 
     public int getTreeChance() {
@@ -166,8 +167,8 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         return biomes;
     }
 
-    public ProbabilityCollection<Fauna> getFauna() {
-        return fauna;
+    public ProbabilityCollection<Flora> getFlora() {
+        return flora;
     }
 
     public ProbabilityCollection<Tree> getTrees() {
@@ -178,7 +179,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         return equation;
     }
 
-    public TreeMap<Integer, BlockPalette> getPaletteMap() {
+    public TreeMap<Integer, Palette<BlockData>> getPaletteMap() {
         return paletteMap;
     }
 

@@ -19,9 +19,9 @@ colorend() {
 if [ ! -d "$DIRECTORY/server" ]; then
   echo "$DIRECTORY/server not found. Cloning now."
   git clone $REPO $DIRECTORY/server
-  sed -i "s/\${gen}/$NAME/g" $DIRECTORY/server/bukkit.yml
-  sed -i "s/\${world}/$WORLD/g" $DIRECTORY/server/bukkit.yml
 fi
+sed -i "s/\${gen}/$NAME/g" $DIRECTORY/server/bukkit.yml
+sed -i "s/\${world}/$WORLD/g" $DIRECTORY/server/bukkit.yml
 cp $DIRECTORY/prod/$PROJECT.jar $DIRECTORY/server/plugins/$PROJECT.jar
 cd $DIRECTORY/server || exit
 if ! test -f "paperclip.jar"; then
@@ -39,8 +39,6 @@ if [ -z "$(grep true eula.txt 2>/dev/null)" ]; then
     fi
     echo "eula=true" > eula.txt
 fi
-
-
 
 java -Xms5G -Xmx5G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC \
 -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 \

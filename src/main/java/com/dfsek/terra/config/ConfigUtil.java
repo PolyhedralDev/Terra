@@ -6,7 +6,7 @@ import com.dfsek.terra.config.genconfig.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
 import com.dfsek.terra.config.genconfig.CarverConfig;
-import com.dfsek.terra.config.genconfig.FaunaConfig;
+import com.dfsek.terra.config.genconfig.FloraConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,7 +34,7 @@ public class ConfigUtil {
 
         new ConfigLoader("carving").load(main, CarverConfig.class);
 
-        new ConfigLoader("fauna").load(main, FaunaConfig.class);
+        new ConfigLoader("flora").load(main, FloraConfig.class);
 
         new ConfigLoader("abstract" + File.separator + "biomes").load(main, AbstractBiomeConfig.class);
 

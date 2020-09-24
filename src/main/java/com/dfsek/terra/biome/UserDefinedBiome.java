@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome;
 
 import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.biome.BiomeTerrain;
+import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.biome.Decorator;
 import org.polydev.gaea.structures.features.Feature;
 
@@ -32,12 +32,12 @@ public class UserDefinedBiome implements Biome {
     }
 
     /**
-     * Gets the BiomeTerrain instance used to generate the biome.
+     * Gets the Generator instance used to generate the biome.
      *
-     * @return BiomeTerrain - The terrain generation instance.
+     * @return Generator - The terrain generation instance.
      */
     @Override
-    public BiomeTerrain getGenerator() {
+    public Generator getGenerator() {
         return gen;
     }
 

@@ -4,21 +4,21 @@ import org.bukkit.block.Biome;
 import org.polydev.gaea.biome.Decorator;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.world.Fauna;
+import org.polydev.gaea.world.Flora;
 
 public class UserDefinedDecorator extends Decorator {
 
-    private final ProbabilityCollection<Fauna> fauna;
+    private final ProbabilityCollection<Flora> flora;
     private final ProbabilityCollection<Tree> trees;
-    private final int faunaChance;
+    private final int floraChance;
     private final int treeChance;
     private final int treeDensity;
 
-    public UserDefinedDecorator(ProbabilityCollection<Fauna> fauna, ProbabilityCollection<Tree> trees, int faunaChance, int treeChance, int treeDensity) {
-        this.fauna = fauna;
+    public UserDefinedDecorator(ProbabilityCollection<Flora> flora, ProbabilityCollection<Tree> trees, int floraChance, int treeChance, int treeDensity) {
+        this.flora = flora;
         this.trees = trees;
 
-        this.faunaChance = faunaChance;
+        this.floraChance = floraChance;
         this.treeChance = treeChance;
         this.treeDensity = treeDensity;
     }
@@ -43,22 +43,17 @@ public class UserDefinedDecorator extends Decorator {
     }
 
     @Override
-    public boolean shouldGenerateSnow() {
-        return false;
-    }
-
-    @Override
     public Biome getVanillaBiome() {
         return null;
     }
 
     @Override
-    public ProbabilityCollection<Fauna> getFauna() {
-        return fauna;
+    public ProbabilityCollection<Flora> getFlora() {
+        return flora;
     }
 
     @Override
-    public int getFaunaChance() {
-        return faunaChance;
+    public int getFloraChance() {
+        return floraChance;
     }
 }

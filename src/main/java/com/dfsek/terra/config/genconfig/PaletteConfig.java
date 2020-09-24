@@ -8,7 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.world.palette.BlockPalette;
+import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 import org.polydev.gaea.world.palette.SimplexPalette;
 
@@ -21,27 +21,26 @@ import java.util.Random;
 
 public class PaletteConfig extends TerraConfigObject {
     private static final Map<String, PaletteConfig> palettes = new HashMap<>();
-    private BlockPalette palette;
+    private Palette<BlockData> palette;
     private String paletteID;
     private boolean isEnabled = false;
     private String friendlyName;
     private boolean useNoise = false;
-    private float nFreq;
     public PaletteConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
     }
 
     @Override
     public void init() throws InvalidConfigurationException {
-        BlockPalette pal;
+        Palette<BlockData> pal;
         if(getBoolean("simplex", false)) {
             useNoise = true;
             FastNoise pNoise = new FastNoise(getInt("seed", 3));
             pNoise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
             pNoise.setFractalOctaves(4);
             pNoise.setFrequency((float) getDouble("frequency", 0.02));
-            pal = new SimplexPalette(pNoise);
-        } else pal = new RandomPalette(new Random(getInt("seed", 3)));
+            pal = new SimplexPalette<>(pNoise);
+        } else pal = new RandomPalette<>(new Random(getInt("seed", 3)));
         palette = getPalette(getMapList("blocks"), pal);
         if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
         this.paletteID = getString("id");
@@ -51,7 +50,7 @@ public class PaletteConfig extends TerraConfigObject {
         palettes.put(paletteID, this);
     }
 
-    public BlockPalette getPalette() {
+    public Palette<BlockData> getPalette() {
         return palette;
     }
 
@@ -67,7 +66,7 @@ public class PaletteConfig extends TerraConfigObject {
         return paletteID;
     }
 
-    protected static BlockPalette getPalette(List<Map<?, ?>> maps, BlockPalette p) throws InvalidConfigurationException {
+    protected static Palette<BlockData> getPalette(List<Map<?, ?>> maps, Palette<BlockData> p) throws InvalidConfigurationException {
         for(Map<?, ?> m : maps) {
             try {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
@@ -76,9 +75,9 @@ public class PaletteConfig extends TerraConfigObject {
                         layer.add(Bukkit.createBlockData((String) type.getKey()), (Integer) type.getValue());
                     }
                 }
-                p.addBlockData(layer, (Integer) m.get("layers"));
+                p.add(layer, (Integer) m.get("layers"));
             } catch(ClassCastException e) {
-                throw new InvalidConfigurationException("SEVERE configuration error for BlockPalette: \n\n" + e.getMessage());
+                throw new InvalidConfigurationException("SEVERE configuration error for Palette: \n\n" + e.getMessage());
             }
         }
         return p;
@@ -86,7 +85,7 @@ public class PaletteConfig extends TerraConfigObject {
 
     @Override
     public String toString() {
-        return "BlockPalette with name: " + getFriendlyName() + ", ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
+        return "Palette with name: " + getFriendlyName() + ", ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
     }
 
     public static PaletteConfig fromID(String id) {

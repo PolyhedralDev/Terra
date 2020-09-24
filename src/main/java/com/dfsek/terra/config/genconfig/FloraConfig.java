@@ -1,6 +1,5 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
@@ -8,9 +7,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.polydev.gaea.world.Fauna;
-import org.polydev.gaea.world.palette.BlockPalette;
+import org.polydev.gaea.world.Flora;
+import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
@@ -20,23 +20,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class FaunaConfig extends TerraConfigObject implements Fauna {
-    private static final Map<String, FaunaConfig> faunaConfig = new HashMap<>();
-    private BlockPalette faunaPalette;
+public class FloraConfig extends TerraConfigObject implements Flora {
+    private static final Map<String, FloraConfig> floraConfig = new HashMap<>();
+    private Palette<BlockData> floraPalette;
     private String id;
     private String friendlyName;
     
     List<Material> spawnable;
-    public FaunaConfig(File file) throws IOException, InvalidConfigurationException {
+    public FloraConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
     }
 
     @Override
     public void init() throws InvalidConfigurationException {
-        if(!contains("blocks")) throw new InvalidConfigurationException("No blocks defined in custom fauna!");
-        if(!contains("id")) throw new InvalidConfigurationException("Fauna ID unspecified!");
-        if(!contains("name")) throw new InvalidConfigurationException("Fauna name unspecified!");
-        if(!contains("spawnable")) throw new InvalidConfigurationException("Fauna spawnable blocks unspecified!");
+        if(!contains("blocks")) throw new InvalidConfigurationException("No blocks defined in custom flora!");
+        if(!contains("id")) throw new InvalidConfigurationException("Flora ID unspecified!");
+        if(!contains("name")) throw new InvalidConfigurationException("Flora name unspecified!");
+        if(!contains("spawnable")) throw new InvalidConfigurationException("Flora spawnable blocks unspecified!");
 
         try {
             spawnable = ConfigUtil.getElements(getStringList("spawnable"), Material.class);
@@ -45,14 +45,14 @@ public class FaunaConfig extends TerraConfigObject implements Fauna {
             throw new InvalidConfigurationException("Invalid material ID in spawnable list: " + e.getMessage());
         }
 
-        BlockPalette p = new RandomPalette(new Random(getInt("seed", 4)));
+        Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
-        faunaPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
-        if(!contains("id")) throw new InvalidConfigurationException("Fauna ID unspecified!");
+        floraPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
+        if(!contains("id")) throw new InvalidConfigurationException("Flora ID unspecified!");
         this.id = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Fauna Name unspecified!");
+        if(!contains("name")) throw new InvalidConfigurationException("Flora Name unspecified!");
         this.friendlyName = getString("name");
-        faunaConfig.put(id, this);
+        floraConfig.put(id, this);
     }
 
     public String getFriendlyName() {
@@ -73,22 +73,22 @@ public class FaunaConfig extends TerraConfigObject implements Fauna {
 
     @Override
     public boolean plant(Location location) {
-        int size = faunaPalette.getSize();
+        int size = floraPalette.getSize();
         for(int i = 0; i < size; i++) {
             if(!location.clone().add(0, i+1, 0).getBlock().isEmpty()) return false;
         }
         for(int i = 0; i < size; i++) {
-            location.clone().add(0, i+1, 0).getBlock().setBlockData(faunaPalette.getBlockData(size-(i+1), location.getBlockX(), location.getBlockZ()), false);
+            location.clone().add(0, i+1, 0).getBlock().setBlockData(floraPalette.get(size-(i+1), location.getBlockX(), location.getBlockZ()), false);
         }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Fauna with name " + getFriendlyName() + ", ID " + getID();
+        return "Flora with name " + getFriendlyName() + ", ID " + getID();
     }
 
-    public static FaunaConfig fromID(String id) {
-        return faunaConfig.get(id);
+    public static FloraConfig fromID(String id) {
+        return floraConfig.get(id);
     }
 }
