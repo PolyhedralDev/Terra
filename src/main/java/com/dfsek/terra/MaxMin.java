@@ -10,6 +10,10 @@ public class MaxMin {
         this.min = min;
     }
 
+    public boolean isInRange(int test) {
+        return test >= min && test < max;
+    }
+
     public int getMax() {
         return max;
     }

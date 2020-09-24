@@ -6,6 +6,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedDecorator;
 import com.dfsek.terra.biome.UserDefinedGenerator;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
@@ -39,7 +40,9 @@ public class BiomeConfig extends TerraConfigObject {
     private Map<OreConfig, MaxMin> ores;
     private Map<OreConfig, MaxMin> oreHeights;
     private Map<CarverConfig, Integer> carvers;
+    private Map<Flora, MaxMin> floraHeights;
     private String eq;
+    private int floraAttempts;
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
         super(file);
@@ -47,10 +50,6 @@ public class BiomeConfig extends TerraConfigObject {
 
     @Override
     public void init() throws InvalidConfigurationException {
-        oreHeights = new HashMap<>();
-        ores = new HashMap<>();
-        ProbabilityCollection<Flora> flora = new ProbabilityCollection<>();
-        ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
         if(!contains("id")) throw new InvalidConfigurationException("Biome ID unspecified!");
         this.biomeID = getString("id");
         if(!contains("name")) throw new InvalidConfigurationException("Biome Name unspecified!");
@@ -128,38 +127,55 @@ public class BiomeConfig extends TerraConfigObject {
         // Get various simple values using getOrDefault config methods.
         try {
             floraChance = getInt("flora-chance", Objects.requireNonNull(abstractBiome).getFloraChance());
+            floraAttempts = getInt("flora-attempts", Objects.requireNonNull(abstractBiome).getFloraAttempts());
             treeChance = getInt("tree-chance", Objects.requireNonNull(abstractBiome).getTreeChance());
             treeDensity = getInt("tree-density", Objects.requireNonNull(abstractBiome).getTreeDensity());
             eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
             floraChance = getInt("flora-chance", 0);
+            floraAttempts = getInt("flora-attempts", 1);
             treeChance = getInt("tree-chance", 0);
             treeDensity = getInt("tree-density", 0);
             eq = getString("noise-equation", null);
         }
 
         // Check if flora should be handled by super biome.
+        ProbabilityCollection<Flora> flora = new ProbabilityCollection<>();
         if(extending && abstractBiome.getFlora() != null && !contains("flora")) {
             flora = abstractBiome.getFlora();
+            floraHeights = abstractBiome.getFloraHeights();
             Bukkit.getLogger().info("Using super flora (" + flora.size() + " entries, " + floraChance + " % chance)");
         } else if(contains("flora")) {
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("flora")).getValues(false).entrySet()) {
-                try {
-                    Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
-                    flora.add(FloraType.valueOf(e.getKey()), (Integer) e.getValue());
-                } catch(IllegalArgumentException ex) {
+            floraHeights = new HashMap<>();
+            try {
+                for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("flora")).getValues(false).entrySet()) {
+                    Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
+                    Map<?, ?> y = ((ConfigurationSection) val.get("y")).getValues(false);
                     try {
-                        Bukkit.getLogger().info("[Terra] Is custom flora: true");
-                        Flora floraCustom = FloraConfig.fromID(e.getKey());
-                        flora.add(floraCustom, (Integer) e.getValue());
-                    } catch(NullPointerException ex2) {
-                        throw new IllegalArgumentException("SEVERE configuration error for flora in biome " + getFriendlyName() + ", ID " +  getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
+                        Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
+                        Flora floraObj = FloraType.valueOf(e.getKey());
+                        flora.add(floraObj, (Integer) val.get("weight"));
+                        floraHeights.put(floraObj, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                    } catch(IllegalArgumentException ex) {
+                        try {
+                            Bukkit.getLogger().info("[Terra] Is custom flora: true");
+                            Flora floraCustom = FloraConfig.fromID(e.getKey());
+                            flora.add(floraCustom, (Integer) val.get("weight"));
+                            floraHeights.put(floraCustom, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                        } catch(NullPointerException ex2) {
+                            throw new InvalidConfigurationException("SEVERE configuration error for flora in biome " + getFriendlyName() + ", ID " + getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
+                        }
                     }
                 }
+            } catch(ClassCastException e) {
+                if(ConfigUtil.debug) e.printStackTrace();
+                throw new InvalidConfigurationException("SEVERE configuration error for flora in biome " + getFriendlyName() + ", ID " + getID());
             }
         } else flora = new ProbabilityCollection<>();
 
-        if(extending && abstractBiome.getTrees() != null && !contains("trees")) { // Check if trees should be handled by super biome.
+        // Check if trees should be handled by super biome.
+        ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
+        if(extending && abstractBiome.getTrees() != null && !contains("trees")) {
             trees = abstractBiome.getTrees();
             Bukkit.getLogger().info("Using super trees");
         } else if(contains("trees")) {
@@ -188,6 +204,8 @@ public class BiomeConfig extends TerraConfigObject {
         }
 
         // Check if ores should be handled by super biome.
+        oreHeights = new HashMap<>();
+        ores = new HashMap<>();
         if(extending && abstractBiome.getOres() != null && !contains("ores")) {
             ores = abstractBiome.getOres();
             oreHeights = abstractBiome.getOreHeights();
@@ -221,6 +239,10 @@ public class BiomeConfig extends TerraConfigObject {
         return biome;
     }
 
+    public int getFloraAttempts() {
+        return floraAttempts;
+    }
+
     public String getID() {
         return biomeID;
     }
@@ -231,6 +253,10 @@ public class BiomeConfig extends TerraConfigObject {
 
     public Map<OreConfig, MaxMin> getOres() {
         return ores;
+    }
+
+    public MaxMin getFloraHeights(Flora f) {
+        return floraHeights.computeIfAbsent(f, input -> new MaxMin(-1, -1));
     }
 
     public static BiomeConfig fromBiome(UserDefinedBiome b) {

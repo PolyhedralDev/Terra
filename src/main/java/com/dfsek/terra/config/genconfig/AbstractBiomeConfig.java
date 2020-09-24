@@ -2,6 +2,7 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.TerraTree;
+import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
@@ -36,6 +37,8 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private int treeChance;
     private int treeDensity;
     private String equation;
+    private int floraAttempts;
+    private Map<Flora, MaxMin> floraHeights;
     private TreeMap<Integer, Palette<BlockData>> paletteMap;
 
     public AbstractBiomeConfig(File file) throws IOException, InvalidConfigurationException {
@@ -91,20 +94,31 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         }
 
         if(contains("flora")) {
+            floraHeights = new HashMap<>();
             flora = new ProbabilityCollection<>();
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("flora")).getValues(false).entrySet()) {
-                try {
-                    Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to abstract biome's flora list with weight " + e.getValue());
-                    flora.add(FloraType.valueOf(e.getKey()), (Integer) e.getValue());
-                } catch(IllegalArgumentException ex) {
+            try {
+                for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("flora")).getValues(false).entrySet()) {
+                    Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
+                    Map<?, ?> y = ((ConfigurationSection) val.get("y")).getValues(false);
                     try {
-                        Bukkit.getLogger().info("[Terra] Is custom flora: true");
-                        Flora floraCustom = FloraConfig.fromID(e.getKey());
-                        flora.add(floraCustom, (Integer) e.getValue());
-                    } catch(NullPointerException ex2) {
-                        throw new IllegalArgumentException("SEVERE configuration error for flora in abstract biome, ID " +  getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
+                        Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
+                        Flora floraObj = FloraType.valueOf(e.getKey());
+                        flora.add(floraObj, (Integer) val.get("weight"));
+                        floraHeights.put(floraObj, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                    } catch(IllegalArgumentException ex) {
+                        try {
+                            Bukkit.getLogger().info("[Terra] Is custom flora: true");
+                            Flora floraCustom = FloraConfig.fromID(e.getKey());
+                            flora.add(floraCustom, (Integer) val.get("weight"));
+                            floraHeights.put(floraCustom, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                        } catch(NullPointerException ex2) {
+                            throw new InvalidConfigurationException("SEVERE configuration error for flora in biome, ID " + getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
+                        }
                     }
                 }
+            } catch(ClassCastException e) {
+                if(ConfigUtil.debug) e.printStackTrace();
+                throw new InvalidConfigurationException("SEVERE configuration error for flora in biome, ID " + getID());
             }
         }
         if(contains("trees")) {
@@ -118,6 +132,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
             }
         }
         floraChance = getInt("flora-chance", 0);
+        floraAttempts = getInt("flora-attempts", 1);
         treeChance = getInt("tree-chance", 0);
         treeDensity = getInt("tree-density", 0);
         equation = getString("noise-equation");
@@ -137,6 +152,10 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     @Override
     public String getID() {
         return biomeID;
+    }
+
+    public int getFloraAttempts() {
+        return floraAttempts;
     }
 
     public int getFloraChance() {
@@ -161,6 +180,10 @@ public class AbstractBiomeConfig extends TerraConfigObject {
 
     public Map<OreConfig, MaxMin> getOres() {
         return ores;
+    }
+
+    public Map<Flora, MaxMin> getFloraHeights() {
+        return floraHeights;
     }
 
     public static Map<String, AbstractBiomeConfig> getBiomes() {
