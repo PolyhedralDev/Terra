@@ -5,6 +5,7 @@ import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -40,6 +41,10 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private int floraAttempts;
     private Map<Flora, MaxMin> floraHeights;
     private TreeMap<Integer, Palette<BlockData>> paletteMap;
+    private double slabThreshold;
+    private Map<Material, Palette<BlockData>> slabs;
+    private Map<Material, Palette<BlockData>> stairs;
+    private boolean useStairs;
 
     public AbstractBiomeConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
@@ -146,6 +151,17 @@ public class AbstractBiomeConfig extends TerraConfigObject {
             }
         }
 
+        // Get slab stuff
+        useStairs = false;
+        if(contains("slabs") && getBoolean("slabs.enable", false)) {
+            slabThreshold = getDouble("slabs.threshold", 0.1D);
+            slabs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.palettes"), this);
+            if(contains("slabs.stair-palettes") && getBoolean("slabs.use-stairs-if-available", false)) {
+                stairs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.stair-palettes"), this);
+                useStairs = true;
+            }
+        }
+
         biomes.put(biomeID, this);
     }
 
@@ -208,5 +224,21 @@ public class AbstractBiomeConfig extends TerraConfigObject {
 
     public static AbstractBiomeConfig fromID(String id) {
         return biomes.get(id);
+    }
+
+    public Map<Material, Palette<BlockData>> getSlabs() {
+        return slabs;
+    }
+
+    public double getSlabThreshold() {
+        return slabThreshold;
+    }
+
+    public Map<Material, Palette<BlockData>> getStairs() {
+        return stairs;
+    }
+
+    public boolean shouldUseStairs() {
+        return useStairs;
     }
 }

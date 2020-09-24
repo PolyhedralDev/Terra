@@ -1,4 +1,4 @@
-package com.dfsek.terra;
+package com.dfsek.terra.generation;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.WorldConfig;
@@ -6,6 +6,7 @@ import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.TreePopulator;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
@@ -38,8 +39,8 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         ChunkData chunk = createChunkData(world);
         int sea = WorldConfig.fromWorld(world).seaLevel;
         for(byte x = 0; x < 16; x++) {
-            for(int y = 0; y < 256; y++) {
-                for(byte z = 0; z < 16; z++) {
+            for(byte z = 0; z < 16; z++) {
+                for(int y = 0; y < 256; y++) {
                     if(super.getInterpolatedNoise(x, y, z) > 0) chunk.setBlock(x, y, z, STONE);
                     else if(y < sea) chunk.setBlock(x, y, z, WATER);
                 }
@@ -59,7 +60,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public List<GenerationPopulator> getGenerationPopulators(World world) {
-        return Collections.emptyList();
+        return Collections.singletonList(new SlabGenerator());
     }
 
 

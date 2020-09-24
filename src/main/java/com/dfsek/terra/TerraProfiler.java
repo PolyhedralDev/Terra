@@ -1,5 +1,6 @@
 package com.dfsek.terra;
 
+import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
 import org.polydev.gaea.profiler.DataType;
 import org.polydev.gaea.profiler.Measurement;

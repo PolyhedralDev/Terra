@@ -9,7 +9,9 @@ import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Stairs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +46,9 @@ public class BiomeConfig extends TerraConfigObject {
     private Map<Flora, MaxMin> floraHeights;
     private String eq;
     private int floraAttempts;
+    private Map<Material, Palette<BlockData>> slabs;
+    private Map<Material, Palette<BlockData>> stairs;
+    private double slabThreshold;
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
         super(file);
@@ -126,12 +132,14 @@ public class BiomeConfig extends TerraConfigObject {
 
         // Get various simple values using getOrDefault config methods.
         try {
+            slabThreshold = getDouble("slabs.threshold", Objects.requireNonNull(abstractBiome).getSlabThreshold());
             floraChance = getInt("flora-chance", Objects.requireNonNull(abstractBiome).getFloraChance());
             floraAttempts = getInt("flora-attempts", Objects.requireNonNull(abstractBiome).getFloraAttempts());
             treeChance = getInt("tree-chance", Objects.requireNonNull(abstractBiome).getTreeChance());
             treeDensity = getInt("tree-density", Objects.requireNonNull(abstractBiome).getTreeDensity());
             eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
+            slabThreshold = getDouble("slabs.threshold", 0.1D);
             floraChance = getInt("flora-chance", 0);
             floraAttempts = getInt("flora-attempts", 1);
             treeChance = getInt("tree-chance", 0);
@@ -221,6 +229,39 @@ public class BiomeConfig extends TerraConfigObject {
             oreHeights = new HashMap<>();
         }
 
+
+        // Get slab stuff
+        if(contains("slabs") && getBoolean("slabs.enable", false)) {
+            if(extending && abstractBiome.getSlabs() != null) {
+                slabs = abstractBiome.getSlabs();
+                if(abstractBiome.shouldUseStairs()) {
+                    stairs = abstractBiome.getStairs();
+                }
+                Bukkit.getLogger().info("Using super slabs");
+            } else {
+                slabs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.palettes"), this);
+                if(contains("slabs.stair-palettes") && getBoolean("slabs.use-stairs-if-available", false)) {
+                    stairs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.stair-palettes"), this);
+                } else stairs = new HashMap<>();
+            }
+            for(Map.Entry<Material, Palette<BlockData>> p : stairs.entrySet()) {
+                try {
+                    for(Palette.PaletteLayer l : p.getValue().getLayers()) {
+                        Iterator i = l.getCollection().iterator();
+                        while(i.hasNext()) {
+                            Stairs s = (Stairs) ((ProbabilityCollection.ProbabilitySetElement<BlockData>) i.next()).getObject();
+                            Bukkit.getLogger().info("Stair added: " + s.getAsString());
+                        }
+
+                    }
+                } catch(ClassCastException e) {
+                    if(ConfigUtil.debug) e.printStackTrace();
+                    throw new InvalidConfigurationException("Material in stair config is not stair.");
+                }
+            }
+            Bukkit.getLogger().info("[Terra] Slabs: " + slabs.size());
+        }
+
         try {
             // Get UserDefinedBiome instance representing this config.
             this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap), biomeID);
@@ -284,5 +325,17 @@ public class BiomeConfig extends TerraConfigObject {
 
     public int getCarverChance(UserDefinedCarver c) {
         return carvers.getOrDefault(CarverConfig.fromDefinedCarver(c), 0);
+    }
+
+    public double getSlabThreshold() {
+        return slabThreshold;
+    }
+
+    public Map<Material, Palette<BlockData>> getStairs() {
+        return stairs;
+    }
+
+    public Map<Material, Palette<BlockData>> getSlabs() {
+        return slabs;
     }
 }

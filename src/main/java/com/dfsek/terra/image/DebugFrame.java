@@ -1,7 +1,6 @@
 package com.dfsek.terra.image;
 
-import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraChunkGenerator;
+import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.WorldConfig;

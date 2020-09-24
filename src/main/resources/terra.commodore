@@ -33,5 +33,6 @@ terra {
         respect_chunk brigadier:bool;
       }
     }
+    getspawn;
   }
 }

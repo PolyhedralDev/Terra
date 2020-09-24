@@ -6,8 +6,10 @@ import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
+import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.WorldImageGenerator;
 import com.dfsek.terra.structure.GaeaStructure;
+import com.dfsek.terra.structure.StructureSpawn;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -20,6 +22,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.profiler.WorldProfiler;
 
@@ -170,6 +173,9 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                             sender.sendMessage("Structure not found.");
                         }
                         return true;
+                    } else if("getspawn".equals(args[1])) {
+                        Vector v = new StructureSpawn(50, 25).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
+                        sender.sendMessage(v.getBlockX() + ":" + v.getBlockZ());
                     }
             }
         } catch(ArrayIndexOutOfBoundsException e) {
