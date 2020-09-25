@@ -18,7 +18,9 @@ public class UserDefinedCarver extends Carver {
     private final MaxMin length;
     private final MaxMin radius;
     private final int hash;
-    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length, double[] start, double[] mutate, double[] radiusMultiplier, int hash) {
+    private final int topCut;
+    private final int bottomCut;
+    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length, double[] start, double[] mutate, double[] radiusMultiplier, int hash, int topCut, int bottomCut) {
         super(height.getMin(), height.getMax());
         this.radius = radius;
         this.length = length;
@@ -26,12 +28,14 @@ public class UserDefinedCarver extends Carver {
         this.mutate = mutate;
         this.radiusMultiplier = radiusMultiplier;
         this.hash = hash;
+        this.topCut = topCut;
+        this.bottomCut = bottomCut;
     }
 
     @Override
     public Worm getWorm(long l, Vector vector) {
         Random r = new Random(l+hash);
-        return new UserDefinedWorm(length.get(r), r, vector, radius.getMax());
+        return new UserDefinedWorm(length.get(r), r, vector, radius.getMax(), topCut, bottomCut);
     }
 
     @Override
@@ -43,8 +47,10 @@ public class UserDefinedCarver extends Carver {
         private final Vector direction;
         private final int maxRad;
         private double runningRadius;
-        public UserDefinedWorm(int length, Random r, Vector origin, int maxRad) {
+        public UserDefinedWorm(int length, Random r, Vector origin, int maxRad, int topCut, int bottomCut) {
             super(length, r, origin);
+            super.setTopCut(topCut);
+            super.setBottomCut(bottomCut);
             runningRadius = radius.get(r);
             this.maxRad = maxRad;
             direction = new Vector((r.nextDouble()-0.5D)*start[0], (r.nextDouble()-0.5D)*start[1], (r.nextDouble()-0.5D)*start[2]).normalize();

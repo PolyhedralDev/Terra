@@ -65,7 +65,7 @@
         </repository>
         <repository>
             <id>gaea.local</id>
-            <name>gaea</name>
+            <name>gaea-local</name>
             <url>file:/home/dfsek/Documents/Gaea/repo</url>
         </repository>
         <repository>
@@ -95,7 +95,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.10.5</version>
+            <version>1.10.17</version>
         </dependency>
         <dependency>
             <groupId>javax.vecmath</groupId>

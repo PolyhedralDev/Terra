@@ -71,8 +71,8 @@ public class WorldConfig {
             // Get values from config.
             seaLevel = config.getInt("sea-level", 63);
             zoneFreq = 1f/config.getInt("frequencies.zone", 1536);
-            freq1 = 1f/config.getInt("frequencies.grid-1", 256);
-            freq2 = 1f/config.getInt("frequencies.grid-2", 512);
+            freq1 = 1f/config.getInt("frequencies.grid-x", 256);
+            freq2 = 1f/config.getInt("frequencies.grid-z", 512);
             fromImage = config.getBoolean("image.use-image", false);
 
             // Load image stuff

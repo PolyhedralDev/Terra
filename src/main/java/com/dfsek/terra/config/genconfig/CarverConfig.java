@@ -28,12 +28,18 @@ public class CarverConfig extends TerraConfigObject {
     private String id;
     private Set<Material> replaceableInner;
     private Set<Material> replaceableOuter;
+    private Set<Material> replaceableTop;
+    private Set<Material> replaceableBottom;
     private Set<Material> update;
     private Map<Material, Set<Material>> shift;
     private Map<Integer, ProbabilityCollection<BlockData>> inner;
     private Map<Integer, ProbabilityCollection<BlockData>> outer;
+    private Map<Integer, ProbabilityCollection<BlockData>> top;
+    private Map<Integer, ProbabilityCollection<BlockData>> bottom;
     private boolean replaceIsBlacklistInner;
     private boolean replaceIsBlacklistOuter;
+    private boolean replaceIsBlacklistTop;
+    private boolean replaceIsBlacklistBottom;
 
     public CarverConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
@@ -53,8 +59,14 @@ public class CarverConfig extends TerraConfigObject {
 
         outer = getBlocks("palette.outer.blocks");
 
+        top = getBlocks("palette.top.blocks");
+
+        bottom = getBlocks("palette.bottom.blocks");
+
         replaceableInner = new HashSet<>();
         replaceableOuter = new HashSet<>();
+        replaceableTop = new HashSet<>();
+        replaceableBottom = new HashSet<>();
 
         for(String s : getStringList("palette.inner.replace")) {
             try {
@@ -68,6 +80,22 @@ public class CarverConfig extends TerraConfigObject {
             try {
                 if(replaceableOuter.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
                 replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
+            } catch(NullPointerException | IllegalArgumentException e) {
+                throw new InvalidConfigurationException("Could not load data for " + s);
+            }
+        }
+        for(String s : getStringList("palette.top.replace")) {
+            try {
+                if(replaceableTop.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
+                replaceableTop.add(Bukkit.createBlockData(s).getMaterial());
+            } catch(NullPointerException | IllegalArgumentException e) {
+                throw new InvalidConfigurationException("Could not load data for " + s);
+            }
+        }
+        for(String s : getStringList("palette.bottom.replace")) {
+            try {
+                if(replaceableBottom.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
+                replaceableBottom.add(Bukkit.createBlockData(s).getMaterial());
             } catch(NullPointerException | IllegalArgumentException e) {
                 throw new InvalidConfigurationException("Could not load data for " + s);
             }
@@ -104,7 +132,7 @@ public class CarverConfig extends TerraConfigObject {
         MaxMin height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
         id = getString("id");
         if(id == null) throw new InvalidConfigurationException("No ID specified for Carver!");
-        carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode());
+        carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), getInt("cut.top", 0), getInt("cut.bottom", 0));
         caveConfig.put(id, this);
     }
 
@@ -149,6 +177,20 @@ public class CarverConfig extends TerraConfigObject {
         return replaceableOuter.contains(m);
     }
 
+    public boolean isReplaceableTop(Material m) {
+        if(replaceIsBlacklistTop) {
+            return !replaceableTop.contains(m);
+        }
+        return replaceableTop.contains(m);
+    }
+
+    public boolean isReplaceableBottom(Material m) {
+        if(replaceIsBlacklistBottom) {
+            return !replaceableBottom.contains(m);
+        }
+        return replaceableBottom.contains(m);
+    }
+
     public ProbabilityCollection<BlockData> getPaletteInner(int y) {
         for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : inner.entrySet()) {
             if(e.getKey() >= y ) return e.getValue();
@@ -158,6 +200,20 @@ public class CarverConfig extends TerraConfigObject {
 
     public ProbabilityCollection<BlockData> getPaletteOuter(int y) {
         for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : outer.entrySet()) {
+            if(e.getKey() >= y ) return e.getValue();
+        }
+        return null;
+    }
+
+    public ProbabilityCollection<BlockData> getPaletteBottom(int y) {
+        for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : bottom.entrySet()) {
+            if(e.getKey() >= y ) return e.getValue();
+        }
+        return null;
+    }
+
+    public ProbabilityCollection<BlockData> getPaletteTop(int y) {
+        for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : top.entrySet()) {
             if(e.getKey() >= y ) return e.getValue();
         }
         return null;

@@ -35,9 +35,15 @@ public class CavePopulator extends BlockPopulator {
                 if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
                     b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), false);
-                } else if(c.isReplaceableOuter(m)){
+                } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)){
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
                     b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), false);
+                } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)){
+                    if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
+                    b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), false);
+                } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)){
+                    if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
+                    b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), false);
                 }
                 if(c.getUpdateBlocks().contains(m)) {
                     updateNeeded.add(b);
