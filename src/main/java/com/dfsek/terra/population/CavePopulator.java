@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
+    private static final Map<Material, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         ProfileFuture cave = TerraProfiler.fromWorld(world).measure("CaveTime");
@@ -34,16 +35,16 @@ public class CavePopulator extends BlockPopulator {
                 Material m = b.getType();
                 if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), false);
+                    b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
                 } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)){
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), false);
+                    b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
                 } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)){
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), false);
+                    b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
                 } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)){
                     if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), false);
+                    b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
                 }
                 if(c.getUpdateBlocks().contains(m)) {
                     updateNeeded.add(b);
@@ -58,7 +59,7 @@ public class CavePopulator extends BlockPopulator {
                 while(mut.getBlock().getType().equals(orig));
                 try {
                     if(c.getShiftedBlocks().get(shiftCandidate.get(l)).contains(mut.getBlock().getType())) {
-                        mut.getBlock().setType(shiftCandidate.get(l));
+                        mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(shiftCandidate.get(l), Material::createBlockData), false);
                         j++;
                     }
                 } catch(NullPointerException ignored) {}

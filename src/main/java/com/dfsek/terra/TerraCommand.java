@@ -16,6 +16,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class TerraCommand implements CommandExecutor, TabExecutor {
@@ -123,6 +125,10 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         }
                     }
                     break;
+                case "save-data":
+                    TerraChunkGenerator.saveAll();
+                    sender.sendMessage("Saved population data.");
+                    return true;
                 case "structure":
                     if(! (sender instanceof Player)) {
                         sender.sendMessage("Command is for players only.");
@@ -152,13 +158,13 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         BlockVector3 max = selection.getMaximumPoint();
                         Location l1 = new Location(pl.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
                         Location l2 = new Location(pl.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
-                        GaeaStructure structure = new GaeaStructure(l1, l2);
+                        GaeaStructure structure = new GaeaStructure(l1, l2, args[2]);
                         try {
                             File file = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[2] + ".tstructure");
                             file.getParentFile().mkdirs();
                             file.createNewFile();
                             structure.save(file);
-                            sender.sendMessage("Saved to " + file.getPath());
+                            sender.sendMessage("Saved structure with ID " + structure.getId() + ", UUID: " + structure.getUuid().toString() + " to " + file.getPath());
                         } catch(IOException e) {
                             e.printStackTrace();
                         }
@@ -174,7 +180,7 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         }
                         return true;
                     } else if("getspawn".equals(args[1])) {
-                        Vector v = new StructureSpawn(50, 25).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
+                        Vector v = new StructureSpawn(500, 100).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
                         sender.sendMessage(v.getBlockX() + ":" + v.getBlockZ());
                     }
             }

@@ -95,13 +95,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.10.17</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.vecmath</groupId>
-            <artifactId>vecmath</artifactId>
-            <version>1.5.2</version>
-            <scope>test</scope>
+            <version>1.10.42</version>
         </dependency>
         <dependency>
             <groupId>me.lucko</groupId>

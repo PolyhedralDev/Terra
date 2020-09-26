@@ -1,4 +1,4 @@
-package com.dfsek.terra.biome;
+package com.dfsek.terra.generation;
 
 import org.bukkit.block.Biome;
 import org.polydev.gaea.biome.Decorator;

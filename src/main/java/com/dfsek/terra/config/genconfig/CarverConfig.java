@@ -2,14 +2,11 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.MaxMin;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 import org.polydev.gaea.math.ProbabilityCollection;
 
 import java.io.File;
@@ -123,6 +120,8 @@ public class CarverConfig extends TerraConfigObject {
 
         replaceIsBlacklistInner = getBoolean("palette.inner.replace-blacklist", false);
         replaceIsBlacklistOuter = getBoolean("palette.outer.replace-blacklist", false);
+        replaceIsBlacklistTop = getBoolean("palette.top.replace-blacklist", false);
+        replaceIsBlacklistBottom = getBoolean("palette.bottom.replace-blacklist", false);
 
         double[] start = new double[] {getDouble("start.x"), getDouble("start.y"), getDouble("start.z")};
         double[] mutate = new double[] {getDouble("mutate.x"), getDouble("mutate.y"), getDouble("mutate.z"), getDouble("mutate.radius")};

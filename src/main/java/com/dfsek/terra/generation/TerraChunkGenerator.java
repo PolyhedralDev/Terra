@@ -5,6 +5,7 @@ import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
+import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,17 +19,25 @@ import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.population.PopulationManager;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private static final BlockData STONE = Material.STONE.createBlockData();
     private static final BlockData WATER = Material.WATER.createBlockData();
     private final PopulationManager popMan = new PopulationManager();
+    private boolean needsLoad = true;
+    private static final Map<World, PopulationManager> popMap = new HashMap<>();
+
     public TerraChunkGenerator() {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
+        popMan.attach(new StructurePopulator());
         popMan.attach(new TreePopulator());
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
@@ -36,6 +45,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoise fastNoise) {
+        if(needsLoad) load(world);
         ChunkData chunk = createChunkData(world);
         int sea = WorldConfig.fromWorld(world).seaLevel;
         for(byte x = 0; x < 16; x++) {
@@ -47,6 +57,31 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             }
         }
         return chunk;
+    }
+
+    private void load(World w) {
+        try {
+            popMan.loadBlocks(w);
+        } catch(IOException e) {
+            if(e instanceof FileNotFoundException) {
+                Bukkit.getLogger().warning("[Terra] No population chunks were loaded. If this is your first time starting your server with Terra, or if you are creating a new world, this is normal.");
+            } else e.printStackTrace();
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        popMap.put(w, popMan);
+        needsLoad = false;
+    }
+
+    public static void saveAll() {
+        for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
+            try {
+                e.getValue().saveBlocks(e.getKey());
+                Bukkit.getLogger().info("[Terra] Saved data for world " + e.getKey().getName());
+            } catch(IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
     }
 
     @Override

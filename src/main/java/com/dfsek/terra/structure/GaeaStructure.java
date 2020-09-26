@@ -15,10 +15,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class GaeaStructure implements Serializable {
-    public static final long serialVersionUID = -6664585217063842034L;
+    public static final long serialVersionUID = -6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
+    private final String id;
+    private final UUID uuid;
 
     public static GaeaStructure load(File f) throws IOException {
         try {
@@ -28,7 +31,9 @@ public class GaeaStructure implements Serializable {
         }
     }
 
-    public GaeaStructure(Location l1, Location l2) {
+    public GaeaStructure(Location l1, Location l2, String id) {
+        this.id = id;
+        this.uuid = UUID.randomUUID();
         if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ()) throw new IllegalArgumentException("Invalid locations provided!");
         structure = new StructureContainedBlock[l2.getBlockX()-l1.getBlockX()+1][l2.getBlockY()-l1.getBlockY()+1][l2.getBlockZ()-l1.getBlockZ()+1];
         for(int x = 0; x <= l2.getBlockX()-l1.getBlockX(); x++) {
@@ -86,5 +91,13 @@ public class GaeaStructure implements Serializable {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
         oos.writeObject(o);
         oos.close();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 }

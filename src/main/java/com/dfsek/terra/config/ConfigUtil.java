@@ -13,17 +13,21 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ConfigUtil {
     public static boolean debug;
+    public static long dataSave;
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
         FileConfiguration config = main.getConfig();
 
         debug = config.getBoolean("debug", false);
+        dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis()/20L;
 
         Logger logger = main.getLogger();
         logger.info("Loading config values");

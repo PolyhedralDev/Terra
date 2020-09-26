@@ -35,4 +35,5 @@ terra {
     }
     getspawn;
   }
+  save-data;
 }

@@ -33,13 +33,11 @@ public class StructureSpawn {
         return shortest;
     }
     private Vector getStructureChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
-        if(ConfigUtil.debug) Bukkit.getLogger().info("Structure chunk: " + structureChunkX + ":" + structureChunkZ);
         Random r = new Random(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2*separation) + offsetX;
         int sz = structureChunkZ * (width + 2*separation) + offsetZ;
-        if(ConfigUtil.debug) Bukkit.getLogger().info("Structure coords: " + sx + ":" + sz);
         return new Vector(sx, 0, sz);
     }
 }

@@ -1,4 +1,4 @@
-package com.dfsek.terra.biome;
+package com.dfsek.terra.generation;
 
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
