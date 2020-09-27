@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.world.Flora;
@@ -27,7 +28,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
             pop.add(chunk);
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    UserDefinedBiome biome = (UserDefinedBiome) TerraBiomeGrid.fromWorld(world).getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    UserDefinedBiome biome = (UserDefinedBiome) TerraBiomeGrid.fromWorld(world).getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
                     if(biome.getDecorator().getFloraChance() <= 0 || random.nextInt(100) > biome.getDecorator().getFloraChance())
                         continue;
                     try {

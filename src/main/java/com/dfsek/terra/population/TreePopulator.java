@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.util.WorldUtil;
@@ -22,14 +23,14 @@ public class TreePopulator extends GaeaBlockPopulator {
             int x = random.nextInt(16); // Decrease chances of chunk-crossing trees
             int z = random.nextInt(16);
             Location origin = chunk.getBlock(x, 0, z).getLocation();
-            Biome b = TerraBiomeGrid.fromWorld(world).getBiome(origin);
+            Biome b = TerraBiomeGrid.fromWorld(world).getBiome(origin, GenerationPhase.POPULATE);
             if(((UserDefinedDecorator) b.getDecorator()).getTreeChance() < random.nextInt(100)) return;
             int numTrees = 0;
             for(int i = 0; i < 48; i++) {
                 int y = WorldUtil.getHighestValidSpawnAt(chunk, x, z);
                 if(y <= 0) continue;
                 origin = chunk.getBlock(x, y, z).getLocation().add(0, 1, 0);
-                b = TerraBiomeGrid.fromWorld(world).getBiome(origin);
+                b = TerraBiomeGrid.fromWorld(world).getBiome(origin, GenerationPhase.POPULATE);
                 numTrees++;
                 try {
                     b.getDecorator().getTrees().get(random).plant(origin, random, false, Terra.getInstance());

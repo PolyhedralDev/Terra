@@ -26,6 +26,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.profiler.WorldProfiler;
 
 import java.io.File;
@@ -46,7 +47,7 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                     return true;
                 case "biome":
                     if(! (sender instanceof Player)) return false;
-                    sender.sendMessage("You are in " + BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation())).getFriendlyName());
+                    sender.sendMessage("You are in " + BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation(), GenerationPhase.POPULATE)).getFriendlyName());
                     return true;
                 case "profile":
                     if(! (sender instanceof Player)) {

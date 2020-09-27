@@ -19,8 +19,8 @@ public class NoiseFunction2 implements Function {
         return gen.getSimplexFractal((float) list.get(0).evaluate(), (float) list.get(1).evaluate());
     }
 
-    public void setNoise(FastNoise gen, boolean override) {
-        if(this.gen == null || override) this.gen = gen;
+    public void setNoise(FastNoise gen) {
+        this.gen = gen;
     }
 
     @Override

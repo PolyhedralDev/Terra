@@ -34,8 +34,11 @@ public class WorldConfig {
     public ImageLoader.Channel biomeXChannel;
     public ImageLoader.Channel biomeZChannel;
     public ImageLoader.Channel zoneChannel;
-    public ImageLoader.Channel terrainChannel;
+    public boolean biomeBlend;
     public ImageLoader imageLoader;
+    public int blendAmp;
+    public float blendFreq;
+    public boolean perturbPaletteOnly;
 
 
     public WorldConfig(World w, JavaPlugin main) {
@@ -74,6 +77,12 @@ public class WorldConfig {
             freq1 = 1f/config.getInt("frequencies.grid-x", 256);
             freq2 = 1f/config.getInt("frequencies.grid-z", 512);
             fromImage = config.getBoolean("image.use-image", false);
+            biomeBlend = config.getBoolean("blend.enable", false);
+            blendAmp = config.getInt("blend.amplitude", 8);
+            blendFreq = (float) config.getDouble("blend.frequency", 0.01);
+            perturbPaletteOnly = config.getBoolean("blend.ignore-terrain", true);
+
+
 
             // Load image stuff
             try {

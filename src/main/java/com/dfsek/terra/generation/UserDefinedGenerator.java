@@ -1,10 +1,14 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.biome.Generator;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.parsii.eval.Expression;
 import org.polydev.gaea.math.parsii.eval.Parser;
@@ -20,9 +24,9 @@ import java.util.TreeMap;
 public class UserDefinedGenerator extends Generator {
     private final Expression noiseExp;
     private final Scope s = new Scope();
-    private final Variable xVar = s.getVariable("x");;
+    private final Variable xVar = s.getVariable("x");
     private final Variable yVar = s.getVariable("y");
-    private final Variable zVar = s.getVariable("z");;
+    private final Variable zVar = s.getVariable("z");
     private final TreeMap<Integer, Palette<BlockData>> paletteMap;
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
@@ -51,8 +55,8 @@ public class UserDefinedGenerator extends Generator {
             xVar.setValue(x);
             yVar.setValue(0);
             zVar.setValue(z);
-            n2.setNoise(gen, false);
-            n3.setNoise(gen, false);
+            n2.setNoise(gen);
+            n3.setNoise(gen);
             return noiseExp.evaluate();
         }
     }
@@ -72,8 +76,8 @@ public class UserDefinedGenerator extends Generator {
             xVar.setValue(x);
             yVar.setValue(y);
             zVar.setValue(z);
-            n2.setNoise(gen, false);
-            n3.setNoise(gen, false);
+            n2.setNoise(gen);
+            n3.setNoise(gen);
             return noiseExp.evaluate();
         }
     }

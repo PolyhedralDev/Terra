@@ -13,6 +13,7 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.world.palette.Palette;
@@ -32,7 +33,7 @@ public class SlabGenerator extends GenerationPopulator {
             for(byte z = 0; z < 16; z++) {
                 int xi = (chunkX << 4) + x;
                 int zi = (chunkZ << 4) + z;
-                BiomeConfig config = BiomeConfig.fromBiome((UserDefinedBiome) g.getBiome(xi, zi));
+                BiomeConfig config = BiomeConfig.fromBiome((UserDefinedBiome) g.getBiome(xi, zi, GenerationPhase.PALETTE_APPLY));
                 if(config.getSlabs() == null) continue;
                 double thresh = config.getSlabThreshold();
                 for(int y = 0; y < world.getMaxHeight(); y++) {

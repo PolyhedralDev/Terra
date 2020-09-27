@@ -8,6 +8,8 @@ import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.biome.NormalizationUtil;
+import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.math.Interpolator;
 
 public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader imageLoader;
@@ -26,17 +28,17 @@ public class UserDefinedGrid extends BiomeGrid {
     }
 
     @Override
-    public Biome getBiome(int x, int z) {
+    public Biome getBiome(int x, int z, GenerationPhase phase) {
         if(fromImage) {
             double xi = imageLoader.getNoiseVal(x, z, channelX);
             double zi = imageLoader.getNoiseVal(x, z, channelZ);
             return super.getGrid()[NormalizationUtil.normalize(xi, getSizeX())][NormalizationUtil.normalize(zi, getSizeZ())];
         }
-        return super.getBiome(x, z);
+        return super.getBiome(x, z, phase);
     }
 
     @Override
-    public Biome getBiome(Location l) {
-        return this.getBiome(l.getBlockX(), l.getBlockZ());
+    public Biome getBiome(Location l, GenerationPhase phase) {
+        return this.getBiome(l.getBlockX(), l.getBlockZ(), phase);
     }
 }

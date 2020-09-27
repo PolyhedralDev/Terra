@@ -7,6 +7,7 @@ import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.polydev.gaea.generation.GenerationPhase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +38,7 @@ public class DebugFrame extends JFrame implements ActionListener {
                 xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
                 zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
             }
-            String str = BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(p.getWorld()).getBiome(p.getLocation())).getID();
+            String str = BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(p.getWorld()).getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
             g.setColor(new Color(255, 255, 255, 128));
             g.fillRect(xp + 13, zp - 13, (int) (8 + 8.25 * str.length()), 33);
             g.setColor(Color.BLACK);

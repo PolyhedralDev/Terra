@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 
@@ -22,7 +23,7 @@ public class OrePopulator extends GaeaBlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
             Location l = chunk.getBlock(8, 0, 0).getLocation();
-            Biome b = TerraBiomeGrid.fromWorld(world).getBiome(l.getBlockX(), l.getBlockZ());
+            Biome b = TerraBiomeGrid.fromWorld(world).getBiome(l.getBlockX(), l.getBlockZ(), GenerationPhase.POPULATE);
             for(Map.Entry<OreConfig, Range> e : BiomeConfig.fromBiome((UserDefinedBiome) b).getOres().entrySet()) {
                 int num = e.getValue().get(random);
                 for(int i = 0; i < num; i++) {
