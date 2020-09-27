@@ -1,6 +1,6 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.MaxMin;
+import com.dfsek.terra.Range;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -23,7 +23,7 @@ public class OrePopulator extends GaeaBlockPopulator {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
             Location l = chunk.getBlock(8, 0, 0).getLocation();
             Biome b = TerraBiomeGrid.fromWorld(world).getBiome(l.getBlockX(), l.getBlockZ());
-            for(Map.Entry<OreConfig, MaxMin> e : BiomeConfig.fromBiome((UserDefinedBiome) b).getOres().entrySet()) {
+            for(Map.Entry<OreConfig, Range> e : BiomeConfig.fromBiome((UserDefinedBiome) b).getOres().entrySet()) {
                 int num = e.getValue().get(random);
                 for(int i = 0; i < num; i++) {
                     int x = random.nextInt(16);

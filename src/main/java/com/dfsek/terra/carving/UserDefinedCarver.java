@@ -1,6 +1,6 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.MaxMin;
+import com.dfsek.terra.Range;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
@@ -15,12 +15,12 @@ public class UserDefinedCarver extends Carver {
     private final double[] start; // 0, 1, 2 = x, y, z.
     private final double[] mutate; // 0, 1, 2 = x, y, z. 3 = radius.
     private final double[] radiusMultiplier;
-    private final MaxMin length;
-    private final MaxMin radius;
+    private final Range length;
+    private final Range radius;
     private final int hash;
     private final int topCut;
     private final int bottomCut;
-    public UserDefinedCarver(MaxMin height, MaxMin radius, MaxMin length, double[] start, double[] mutate, double[] radiusMultiplier, int hash, int topCut, int bottomCut) {
+    public UserDefinedCarver(Range height, Range radius, Range length, double[] start, double[] mutate, double[] radiusMultiplier, int hash, int topCut, int bottomCut) {
         super(height.getMin(), height.getMax());
         this.radius = radius;
         this.length = length;

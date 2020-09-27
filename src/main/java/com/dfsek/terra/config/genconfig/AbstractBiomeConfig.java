@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.MaxMin;
+import com.dfsek.terra.Range;
 import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
@@ -15,7 +15,6 @@ import org.polydev.gaea.tree.TreeType;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.FloraType;
 import org.polydev.gaea.world.palette.Palette;
-import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
@@ -29,8 +28,8 @@ import java.util.TreeMap;
 public class AbstractBiomeConfig extends TerraConfigObject {
     private static final Map<String, AbstractBiomeConfig> biomes = new HashMap<>();
     private String biomeID;
-    private Map<OreConfig, MaxMin> ores;
-    private Map<OreConfig, MaxMin> oreHeights;
+    private Map<OreConfig, Range> ores;
+    private Map<OreConfig, Range> oreHeights;
     private Map<CarverConfig, Integer> carvers;
     private ProbabilityCollection<Flora> flora;
     private ProbabilityCollection<Tree> trees;
@@ -39,7 +38,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private int treeDensity;
     private String equation;
     private int floraAttempts;
-    private Map<Flora, MaxMin> floraHeights;
+    private Map<Flora, Range> floraHeights;
     private TreeMap<Integer, Palette<BlockData>> paletteMap;
     private double slabThreshold;
     private Map<Material, Palette<BlockData>> slabs;
@@ -109,13 +108,13 @@ public class AbstractBiomeConfig extends TerraConfigObject {
                         Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
                         Flora floraObj = FloraType.valueOf(e.getKey());
                         flora.add(floraObj, (Integer) val.get("weight"));
-                        floraHeights.put(floraObj, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                        floraHeights.put(floraObj, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                     } catch(IllegalArgumentException ex) {
                         try {
                             Bukkit.getLogger().info("[Terra] Is custom flora: true");
                             Flora floraCustom = FloraConfig.fromID(e.getKey());
                             flora.add(floraCustom, (Integer) val.get("weight"));
-                            floraHeights.put(floraCustom, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                            floraHeights.put(floraCustom, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                         } catch(NullPointerException ex2) {
                             throw new InvalidConfigurationException("SEVERE configuration error for flora in biome, ID " + getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
                         }
@@ -146,8 +145,8 @@ public class AbstractBiomeConfig extends TerraConfigObject {
             ores = new HashMap<>();
             oreHeights = new HashMap<>();
             for(Map.Entry<String, Object> m : Objects.requireNonNull(getConfigurationSection("ores")).getValues(false).entrySet()) {
-                ores.put(OreConfig.fromID(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
-                oreHeights.put(OreConfig.fromID(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
+                ores.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
+                oreHeights.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
             }
         }
 
@@ -190,15 +189,15 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         return carvers;
     }
 
-    public Map<OreConfig, MaxMin> getOreHeights() {
+    public Map<OreConfig, Range> getOreHeights() {
         return oreHeights;
     }
 
-    public Map<OreConfig, MaxMin> getOres() {
+    public Map<OreConfig, Range> getOres() {
         return ores;
     }
 
-    public Map<Flora, MaxMin> getFloraHeights() {
+    public Map<Flora, Range> getFloraHeights() {
         return floraHeights;
     }
 

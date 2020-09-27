@@ -1,0 +1,29 @@
+import com.dfsek.terra.Range;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+public class RangeTest {
+    @Test
+    public void iterator() {
+        Range m = new Range(0, 100);
+        int i = 0;
+        for(int mint : m) {
+            assertEquals(i, mint);
+            i++;
+        }
+        assertEquals(100, i);
+    }
+    @Test
+    public void intersect() {
+        Range one = new Range(10, 100);
+        Range two = new Range(1, 20);
+        Range intersect = one.intersects(two);
+        assertEquals(20, intersect.getMax());
+        assertEquals(10, intersect.getMin());
+        assertEquals(one.intersects(two), two.intersects(one));
+
+        one = new Range(25, 50);
+        assertNull(one.intersects(two));
+    }
+}

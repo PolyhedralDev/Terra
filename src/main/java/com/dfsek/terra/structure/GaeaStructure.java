@@ -1,11 +1,12 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.MaxMin;
+import com.dfsek.terra.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class GaeaStructure implements Serializable {
     public static final long serialVersionUID = -6664585217063842035L;
@@ -49,23 +49,30 @@ public class GaeaStructure implements Serializable {
             for(int y = 0; y <= l2.getBlockY()-l1.getBlockY(); y++) {
                 for(int z = 0; z <= l2.getBlockZ()-l1.getBlockZ(); z++) {
                     Block b = Objects.requireNonNull(l1.getWorld()).getBlockAt(l1.clone().add(x, y, z));
+                    BlockState state = b.getState();
                     BlockData d = b.getBlockData();
-                    if(d instanceof Sign) {
+                    boolean useState = true;
+                    if(state instanceof Sign) {
                         Sign s = (Sign) b.getState();
                         if(s.getLine(0).equals("[TERRA]")) {
-                            d = Bukkit.createBlockData(s.getLine(2)+s.getLine(3));
-                            if(s.getLine(1).equals("[CENTER]")) {
-                                centerX = x;
-                                centerZ = z;
+                            try {
+                                d = Bukkit.createBlockData(s.getLine(2) + s.getLine(3));
+                                useState = false;
+                                if(s.getLine(1).equals("[CENTER]")) {
+                                    centerX = x;
+                                    centerZ = z;
+                                }
+                            } catch(IllegalArgumentException e) {
+                                throw new InitializationException("Invalid Block Data on sign: \"" + s.getLine(2) + s.getLine(3) + "\"");
                             }
                         }
                     }
-                    structure[x][y][z] = new StructureContainedBlock(x, y, z, d);
+                    structure[x][y][z] = new StructureContainedBlock(x, y, z, useState ? state : null, d);
                 }
             }
         }
-        if(centerX == -1 || centerZ == -1) throw new InitializationException("No structure center specified.");
-        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX(), l2.getBlockY()-l1.getBlockY(), l2.getBlockZ()-l1.getBlockZ(), centerX, centerZ);
+        if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
+        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, centerX, centerZ);
     }
 
     @NotNull
@@ -74,19 +81,28 @@ public class GaeaStructure implements Serializable {
     }
 
     public void paste(@NotNull Location origin) {
-        for(StructureContainedBlock[][] bList2 : structure) {
-            for(StructureContainedBlock[] bList1 : bList2) {
-                for(StructureContainedBlock block : bList1) {
-                    BlockData data = block.getBlockData();
-                    Block worldBlock = origin.clone().add(block.getX(), block.getY(), block.getZ()).getBlock();
-                    if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) worldBlock.setBlockData(data);
-                }
-            }
+        this.executeForBlocksInRange(getRange(Axis.X), getRange(Axis.Y), getRange(Axis.Z), block -> pasteBlock(block, origin));
+    }
+
+    public void paste(Location origin, Chunk chunk) {
+        int xOr = (chunk.getX() << 4);
+        int zOr = (chunk.getZ() << 4);
+        Range intersectX = new Range(xOr, xOr+16).sub(origin.getBlockX() - structureInfo.getCenterX());
+        Range intersectZ = new Range(zOr, zOr+16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
+        if(intersectX == null || intersectZ == null) return;
+        executeForBlocksInRange(intersectX, getRange(Axis.Y), intersectZ, block -> pasteBlock(block, origin));
+    }
+
+    private void pasteBlock(StructureContainedBlock block, Location origin) {
+        BlockData data = block.getBlockData();
+        Block worldBlock = origin.clone().add(block.getX()-structureInfo.getCenterX(), block.getY(), block.getZ()-structureInfo.getCenterZ()).getBlock();
+        if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) worldBlock.setBlockData(data);
+        if(block.getState() != null) {
+            block.getState().getState(worldBlock.getState()).update();
         }
     }
 
-    private StructureContainedBlock[][][] executeForBlocksInRange(MaxMin xM, MaxMin yM, MaxMin zM, Consumer<StructureContainedBlock> exec) {
-        StructureContainedBlock[][][] temp = new StructureContainedBlock[xM.getMax()-xM.getMin()+1][yM.getMax()-yM.getMin()+1][zM.getMax()-zM.getMin()+1];
+    private void executeForBlocksInRange(Range xM, Range yM, Range zM, Consumer<StructureContainedBlock> exec) {
         for(int x : xM) {
             for(int y : yM) {
                 for(int z : zM) {
@@ -94,11 +110,10 @@ public class GaeaStructure implements Serializable {
                 }
             }
         }
-        return temp;
     }
 
     private boolean isInStructure(int x, int y, int z) {
-        return x < structure.length && y < structure[0].length && z < structure[0][0].length;
+        return x < structureInfo.getSizeX() && y < structureInfo.getSizeY() && z < structureInfo.getSizeZ() && x >= 0 && y >= 0 && z >= 0;
     }
 
     public void save(@NotNull File f) throws IOException {
@@ -135,5 +150,21 @@ public class GaeaStructure implements Serializable {
     @NotNull
     public UUID getUuid() {
         return uuid;
+    }
+
+    public Range getRange(Axis a) {
+        switch(a) {
+            case X:
+                return new Range(0, structureInfo.getSizeX());
+            case Y:
+                return new Range(0, structureInfo.getSizeY());
+            case Z:
+                return new Range(0, structureInfo.getSizeZ());
+            default: return null;
+        }
+    }
+
+    enum Axis {
+        X, Y, Z
     }
 }

@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.MaxMin;
+import com.dfsek.terra.Range;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
@@ -126,9 +126,9 @@ public class CarverConfig extends TerraConfigObject {
         double[] start = new double[] {getDouble("start.x"), getDouble("start.y"), getDouble("start.z")};
         double[] mutate = new double[] {getDouble("mutate.x"), getDouble("mutate.y"), getDouble("mutate.z"), getDouble("mutate.radius")};
         double[] radiusMultiplier = new double[] {getDouble("start.radius.multiply.x"), getDouble("start.radius.multiply.y"), getDouble("start.radius.multiply.z")};
-        MaxMin length = new MaxMin(getInt("length.min"), getInt("length.max"));
-        MaxMin radius = new MaxMin(getInt("start.radius.min"), getInt("start.radius.max"));
-        MaxMin height = new MaxMin(getInt("start.height.min"), getInt("start.height.max"));
+        Range length = new Range(getInt("length.min"), getInt("length.max"));
+        Range radius = new Range(getInt("start.radius.min"), getInt("start.radius.max"));
+        Range height = new Range(getInt("start.height.min"), getInt("start.height.max"));
         id = getString("id");
         if(id == null) throw new InvalidConfigurationException("No ID specified for Carver!");
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), getInt("cut.top", 0), getInt("cut.bottom", 0));

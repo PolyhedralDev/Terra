@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.MaxMin;
+import com.dfsek.terra.Range;
 import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.UserDefinedDecorator;
@@ -40,10 +40,10 @@ public class BiomeConfig extends TerraConfigObject {
     private UserDefinedBiome biome;
     private String biomeID;
     private String friendlyName;
-    private Map<OreConfig, MaxMin> ores;
-    private Map<OreConfig, MaxMin> oreHeights;
+    private Map<OreConfig, Range> ores;
+    private Map<OreConfig, Range> oreHeights;
     private Map<CarverConfig, Integer> carvers;
-    private Map<Flora, MaxMin> floraHeights;
+    private Map<Flora, Range> floraHeights;
     private String eq;
     private int floraAttempts;
     private Map<Material, Palette<BlockData>> slabs;
@@ -163,13 +163,13 @@ public class BiomeConfig extends TerraConfigObject {
                         Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
                         Flora floraObj = FloraType.valueOf(e.getKey());
                         flora.add(floraObj, (Integer) val.get("weight"));
-                        floraHeights.put(floraObj, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                        floraHeights.put(floraObj, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                     } catch(IllegalArgumentException ex) {
                         try {
                             Bukkit.getLogger().info("[Terra] Is custom flora: true");
                             Flora floraCustom = FloraConfig.fromID(e.getKey());
                             flora.add(floraCustom, (Integer) val.get("weight"));
-                            floraHeights.put(floraCustom, new MaxMin((Integer) y.get("min"), (Integer) y.get("max")));
+                            floraHeights.put(floraCustom, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                         } catch(NullPointerException ex2) {
                             throw new InvalidConfigurationException("SEVERE configuration error for flora in biome " + getFriendlyName() + ", ID " + getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
                         }
@@ -221,8 +221,8 @@ public class BiomeConfig extends TerraConfigObject {
         } else if(contains("ores")) {
             ores.clear();
             for(Map.Entry<String, Object> m : Objects.requireNonNull(getConfigurationSection("ores")).getValues(false).entrySet()) {
-                ores.put(OreConfig.fromID(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
-                oreHeights.put(OreConfig.fromID(m.getKey()), new MaxMin(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
+                ores.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
+                oreHeights.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
             }
         } else {
             ores = new HashMap<>();
@@ -272,7 +272,7 @@ public class BiomeConfig extends TerraConfigObject {
         biomes.put(biomeID, this);
     }
 
-    public MaxMin getOreHeight(OreConfig c) {
+    public Range getOreHeight(OreConfig c) {
         return oreHeights.get(c);
     }
 
@@ -292,12 +292,12 @@ public class BiomeConfig extends TerraConfigObject {
         return friendlyName;
     }
 
-    public Map<OreConfig, MaxMin> getOres() {
+    public Map<OreConfig, Range> getOres() {
         return ores;
     }
 
-    public MaxMin getFloraHeights(Flora f) {
-        return floraHeights.computeIfAbsent(f, input -> new MaxMin(-1, -1));
+    public Range getFloraHeights(Flora f) {
+        return floraHeights.computeIfAbsent(f, input -> new Range(-1, -1));
     }
 
     public static BiomeConfig fromBiome(UserDefinedBiome b) {

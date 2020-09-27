@@ -1,26 +1,31 @@
 package com.dfsek.terra.structure;
 
+import com.dfsek.terra.structure.serialize.SerializableBlockData;
+import com.dfsek.terra.structure.serialize.block.SerializableBlockState;
+import com.dfsek.terra.structure.serialize.block.SerializableSign;
 import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.block.BlockDamageEvent;
 
 import java.io.Serializable;
 
 public class StructureContainedBlock implements Serializable {
     public static final long serialVersionUID = 6143969483382710947L;
-    private final transient BlockData bl;
-    private final String dataString;
+    private final SerializableBlockData bl;
+    private transient BlockData data;
     private final int x;
     private final int y;
     private final int z;
-    public StructureContainedBlock(int x, int y, int z, BlockData block) {
+    private final SerializableBlockState state;
+    public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d) {
+        if(state instanceof Sign) {
+            this.state = new SerializableSign((org.bukkit.block.Sign) state);
+        } else this.state = null;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.bl = block;
-        dataString = bl.getAsString(false);
+        this.bl = new SerializableBlockData(d);
     }
 
     public int getX() {
@@ -36,10 +41,14 @@ public class StructureContainedBlock implements Serializable {
     }
 
     public BlockData getBlockData() {
-        return bl == null ? Bukkit.createBlockData(dataString) : bl;
+        if(data == null) {
+            data = bl.getData();
+        }
+        return data;
     }
 
-    public String getDataAsString() {
-        return dataString;
+
+    public SerializableBlockState getState() {
+        return state;
     }
 }
