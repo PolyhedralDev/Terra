@@ -9,6 +9,7 @@ import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.WorldImageGenerator;
 import com.dfsek.terra.structure.GaeaStructure;
+import com.dfsek.terra.structure.InitializationException;
 import com.dfsek.terra.structure.StructureSpawn;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -158,7 +159,13 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         BlockVector3 max = selection.getMaximumPoint();
                         Location l1 = new Location(pl.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
                         Location l2 = new Location(pl.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
-                        GaeaStructure structure = new GaeaStructure(l1, l2, args[2]);
+                        GaeaStructure structure = null;
+                        try {
+                            structure = new GaeaStructure(l1, l2, args[2]);
+                        } catch(InitializationException e) {
+                            sender.sendMessage(e.getMessage());
+                            return true;
+                        }
                         try {
                             File file = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[2] + ".tstructure");
                             file.getParentFile().mkdirs();
@@ -173,14 +180,14 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         try {
                             GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[2] + ".tstructure"));
                             if("true".equals(args[3])) struc.paste(pl.getLocation());
-                            else struc.paste(pl.getLocation(), pl.getLocation().getChunk());
+                            //else struc.paste(pl.getLocation(), pl.getLocation().getChunk());
                         } catch(IOException e) {
                             e.printStackTrace();
                             sender.sendMessage("Structure not found.");
                         }
                         return true;
                     } else if("getspawn".equals(args[1])) {
-                        Vector v = new StructureSpawn(500, 100).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
+                        Vector v = new StructureSpawn(250, 250).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
                         sender.sendMessage(v.getBlockX() + ":" + v.getBlockZ());
                     }
             }

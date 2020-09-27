@@ -22,24 +22,25 @@ public class FloraPopulator extends GaeaBlockPopulator {
     Set<Chunk> pop = new HashSet<>();
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        if(pop.contains(chunk)) Bukkit.getLogger().warning("Already populated flora in chunk: " + chunk);
-        pop.add(chunk);
-        ProfileFuture flora = TerraProfiler.fromWorld(world).measure("FloraTime");
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                UserDefinedBiome biome = (UserDefinedBiome) TerraBiomeGrid.fromWorld(world).getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                if(biome.getDecorator().getFloraChance() <= 0 || random.nextInt(100) > biome.getDecorator().getFloraChance())
-                    continue;
-                try {
-                    BiomeConfig c = BiomeConfig.fromBiome(biome);
-                    for(int i = 0; i < c.getFloraAttempts(); i++) {
-                        Flora item = biome.getDecorator().getFlora().get(random);
-                        Block highest = item.getHighestValidSpawnAt(chunk, x, z);
-                        if(highest != null && c.getFloraHeights(item).isInRange(highest.getY())) item.plant(highest.getLocation());
-                    }
-                } catch(NullPointerException ignored) {}
+        try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
+            if(pop.contains(chunk)) Bukkit.getLogger().warning("Already populated flora in chunk: " + chunk);
+            pop.add(chunk);
+            for(int x = 0; x < 16; x++) {
+                for(int z = 0; z < 16; z++) {
+                    UserDefinedBiome biome = (UserDefinedBiome) TerraBiomeGrid.fromWorld(world).getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    if(biome.getDecorator().getFloraChance() <= 0 || random.nextInt(100) > biome.getDecorator().getFloraChance())
+                        continue;
+                    try {
+                        BiomeConfig c = BiomeConfig.fromBiome(biome);
+                        for(int i = 0; i < c.getFloraAttempts(); i++) {
+                            Flora item = biome.getDecorator().getFlora().get(random);
+                            Block highest = item.getHighestValidSpawnAt(chunk, x, z);
+                            if(highest != null && c.getFloraHeights(item).isInRange(highest.getY()))
+                                item.plant(highest.getLocation());
+                        }
+                    } catch(NullPointerException ignore) {}
+                }
             }
         }
-        if(flora!=null) flora.complete();
     }
 }

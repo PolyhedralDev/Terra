@@ -2,13 +2,11 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
-import com.dfsek.terra.structure.StructureManager;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import me.lucko.commodore.Commodore;
 import me.lucko.commodore.CommodoreProvider;
 import me.lucko.commodore.file.CommodoreFileFormat;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,13 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
-import java.util.Map;
-import java.util.logging.Logger;
 
 public class Terra extends JavaPlugin {
     private static FileConfiguration config;
     private static Terra instance;
-    private static StructureManager manager;
 
     public static Terra getInstance() {
         return instance;
@@ -38,7 +33,6 @@ public class Terra extends JavaPlugin {
     @Override
     public void onEnable() {
         ConfigUtil.loadConfig(this);
-        manager = new StructureManager(this);
 
         PluginCommand command = getCommand("terra");
         command.setExecutor(new TerraCommand());
@@ -65,10 +59,6 @@ public class Terra extends JavaPlugin {
             LiteralCommandNode<?> commandNode = CommodoreFileFormat.parse(is);
             commodore.register(pluginCommand, commandNode, player -> player.hasPermission("terra.command"));
         }
-    }
-
-    public static StructureManager getStructureManager() {
-        return manager;
     }
 
     @Override

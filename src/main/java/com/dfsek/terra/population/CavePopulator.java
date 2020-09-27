@@ -22,56 +22,59 @@ import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
     private static final Map<Material, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
+    private static final BlockData AIR = Material.AIR.createBlockData();
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        ProfileFuture cave = TerraProfiler.fromWorld(world).measure("CaveTime");
-        for(CarverConfig c : CarverConfig.getCarvers()) {
-            Map<Location, Material> shiftCandidate = new HashMap<>();
-            Set<Block> updateNeeded = new HashSet<>();
-            Map<Vector, CarvingData.CarvingType> blocks = c.getCarver().carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks();
-            for(Map.Entry<Vector, CarvingData.CarvingType> e : blocks.entrySet()) {
-                Vector v = e.getKey();
-                Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
-                Material m = b.getType();
-                if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
-                    if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
-                } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)){
-                    if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
-                } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)){
-                    if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
-                } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)){
-                    if(c.getShiftedBlocks().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
-                }
-                if(c.getUpdateBlocks().contains(m)) {
-                    updateNeeded.add(b);
-                }
-            }
-            int i = 0;
-            int j = 0;
-            for(Location l : shiftCandidate.keySet()) {
-                Location mut = l.clone();
-                Material orig = l.getBlock().getType();
-                do mut.subtract(0, 1, 0);
-                while(mut.getBlock().getType().equals(orig));
-                try {
-                    if(c.getShiftedBlocks().get(shiftCandidate.get(l)).contains(mut.getBlock().getType())) {
-                        mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(shiftCandidate.get(l), Material::createBlockData), false);
-                        j++;
+        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
+            for(CarverConfig c : CarverConfig.getCarvers()) {
+                Map<Location, Material> shiftCandidate = new HashMap<>();
+                Set<Block> updateNeeded = new HashSet<>();
+                Map<Vector, CarvingData.CarvingType> blocks = c.getCarver().carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks();
+                for(Map.Entry<Vector, CarvingData.CarvingType> e : blocks.entrySet()) {
+                    Vector v = e.getKey();
+                    Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
+                    Material m = b.getType();
+                    if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
+                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                            shiftCandidate.put(b.getLocation(), b.getType());
+                        b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                    } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)) {
+                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                            shiftCandidate.put(b.getLocation(), b.getType());
+                        b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                    } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)) {
+                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                            shiftCandidate.put(b.getLocation(), b.getType());
+                        b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                    } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)) {
+                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                            shiftCandidate.put(b.getLocation(), b.getType());
+                        b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
                     }
-                } catch(NullPointerException ignored) {}
-                i++;
+                    if(c.getUpdateBlocks().contains(m)) {
+                        updateNeeded.add(b);
+                    }
+                }
+                for(Location l : shiftCandidate.keySet()) {
+                    Location mut = l.clone();
+                    Material orig = l.getBlock().getType();
+                    do mut.subtract(0, 1, 0);
+                    while(mut.getBlock().getType().equals(orig));
+                    try {
+                        if(c.getShiftedBlocks().get(shiftCandidate.get(l)).contains(mut.getBlock().getType())) {
+                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(shiftCandidate.get(l), Material::createBlockData), false);
+                        }
+                    } catch(NullPointerException ignore) {}
+                }
+                try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("CaveBlockUpdate")) {
+                    for(Block b : updateNeeded) {
+                        BlockData orig = b.getBlockData();
+                        b.setBlockData(AIR, false);
+                        b.setBlockData(orig, true);
+                    }
+                }
             }
-            for(Block b : updateNeeded) {
-                BlockData orig = b.getBlockData();
-                b.setBlockData(Material.AIR.createBlockData(), true);
-                b.setBlockData(orig, true);
-            }
-        }
 
-        if(cave != null) cave.complete();
+        }
     }
 }

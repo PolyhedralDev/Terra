@@ -37,7 +37,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     public TerraChunkGenerator() {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
-        popMan.attach(new StructurePopulator());
         popMan.attach(new TreePopulator());
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
