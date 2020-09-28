@@ -75,7 +75,7 @@ public class OreConfig extends TerraConfigObject {
                 for(int z = -rad; z <= rad; z++) {
                     if(l.clone().add(x, y, z).distance(l) < (rad + 0.5) * ((ore.getSimplexFractal(x, y, z)+1)*deform)) {
                         Block b = l.clone().add(x, y, z).getBlock();
-                        if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0) b.setBlockData(oreData);
+                        if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0) b.setBlockData(oreData, false);
                     }
                 }
             }
