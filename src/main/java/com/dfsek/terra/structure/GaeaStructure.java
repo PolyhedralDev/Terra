@@ -96,7 +96,7 @@ public class GaeaStructure implements Serializable {
     private void pasteBlock(StructureContainedBlock block, Location origin) {
         BlockData data = block.getBlockData();
         Block worldBlock = origin.clone().add(block.getX()-structureInfo.getCenterX(), block.getY(), block.getZ()-structureInfo.getCenterZ()).getBlock();
-        if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) worldBlock.setBlockData(data);
+        if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) worldBlock.setBlockData(data, false);
         if(block.getState() != null) {
             block.getState().getState(worldBlock.getState()).update();
         }

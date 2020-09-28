@@ -118,7 +118,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Arrays.asList(new CavePopulator(), popMan);
+        try {
+            return Arrays.asList(new CavePopulator(), new StructurePopulator(), popMan);
+        } catch(IOException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
