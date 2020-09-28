@@ -14,6 +14,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.tree.Tree;
@@ -37,6 +38,7 @@ import java.util.TreeMap;
 
 public class BiomeConfig extends TerraConfigObject {
     private static final Map<String, BiomeConfig> biomes = new HashMap<>();
+    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
     private UserDefinedBiome biome;
     private String biomeID;
     private String friendlyName;
@@ -49,6 +51,10 @@ public class BiomeConfig extends TerraConfigObject {
     private Map<Material, Palette<BlockData>> slabs;
     private Map<Material, Palette<BlockData>> stairs;
     private double slabThreshold;
+    private boolean floraSimplex;
+    private FastNoise floraNoise;
+    private Palette<BlockData> ocean;
+    private int seaLevel;
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
         super(file);
@@ -78,12 +84,18 @@ public class BiomeConfig extends TerraConfigObject {
 
         TreeMap<Integer, Palette<BlockData>> paletteMap;
         // Check if biome is extending abstract biome, only use abstract biome's palette if palette is NOT defined for current biome.
-        if(extending && abstractBiome.getPaletteMap() != null && !contains("palette")) {
-            paletteMap = abstractBiome.getPaletteMap();
-            Bukkit.getLogger().info("Using super palette");
-        } else if(contains("palette")) {
+        List<Map<?, ?>> paletteData;
+        try {
+            if(extending && abstractBiome.getPaletteData() != null && ! contains("palette")) {
+                paletteData = abstractBiome.getPaletteData();
+                Bukkit.getLogger().info("Using super palette");
+            } else paletteData = getMapList("palette");
+        } catch(NullPointerException e) {
+            paletteData = null;
+        }
+        if(paletteData != null) {
             paletteMap = new TreeMap<>();
-            for(Map<?, ?> e : getMapList("palette")) {
+            for(Map<?, ?> e : paletteData) {
                 for(Map.Entry<?, ?> entry : e.entrySet()) {
                     try {
                         if(((String) entry.getKey()).startsWith("BLOCK:")) {
@@ -108,12 +120,19 @@ public class BiomeConfig extends TerraConfigObject {
         } else throw new InvalidConfigurationException("No palette specified in biome or super biome.");
 
         // Check if carving should be handled by super biome.
-        if(extending && abstractBiome.getCarvers() != null && !contains("carving")) {
-            carvers = abstractBiome.getCarvers();
-            Bukkit.getLogger().info("Using super carvers");
-        } else if(contains("carving")) {
-            carvers = new HashMap<>();
-            for(Map<?, ?> e : getMapList("carving")) {
+        List<Map<?, ?>> carvingData;
+        try {
+            if(extending && abstractBiome.getCarvingData() != null && ! contains("carving")) {
+                carvingData = abstractBiome.getCarvingData();
+                Bukkit.getLogger().info("Using super carvers");
+            } else carvingData = getMapList("carving");
+        } catch(NullPointerException e) {
+            carvingData = null;
+        }
+
+        carvers = new HashMap<>();
+        if(carvingData != null) {
+            for(Map<?, ?> e : carvingData) {
                 for(Map.Entry<?, ?> entry : e.entrySet()) {
                     try {
                         CarverConfig c = CarverConfig.fromID((String) entry.getKey());
@@ -126,17 +145,23 @@ public class BiomeConfig extends TerraConfigObject {
                     }
                 }
             }
-        } else  carvers = new HashMap<>();
+        }
 
         int floraChance, treeChance, treeDensity;
 
         // Get various simple values using getOrDefault config methods.
+        float floraFreq;
+        int floraSeed;
         try {
             slabThreshold = getDouble("slabs.threshold", Objects.requireNonNull(abstractBiome).getSlabThreshold());
             floraChance = getInt("flora-chance", Objects.requireNonNull(abstractBiome).getFloraChance());
             floraAttempts = getInt("flora-attempts", Objects.requireNonNull(abstractBiome).getFloraAttempts());
             treeChance = getInt("tree-chance", Objects.requireNonNull(abstractBiome).getTreeChance());
             treeDensity = getInt("tree-density", Objects.requireNonNull(abstractBiome).getTreeDensity());
+            floraSeed = getInt("flora-simplex.seed", Objects.requireNonNull(abstractBiome).getFloraSeed());
+            floraSimplex = getBoolean("flora-simplex.enable", Objects.requireNonNull(abstractBiome).isFloraSimplex());
+            floraFreq = (float) getDouble("flora-simplex.frequency", Objects.requireNonNull(abstractBiome).getFloraFreq());
+            seaLevel = getInt("ocean.level", Objects.requireNonNull(abstractBiome).getSeaLevel());
             eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
             slabThreshold = getDouble("slabs.threshold", 0.1D);
@@ -144,19 +169,34 @@ public class BiomeConfig extends TerraConfigObject {
             floraAttempts = getInt("flora-attempts", 1);
             treeChance = getInt("tree-chance", 0);
             treeDensity = getInt("tree-density", 0);
+            floraSeed = getInt("flora-simplex.seed", 0);
+            floraSimplex = getBoolean("flora-simplex.enable", false);
+            floraFreq = (float) getDouble("flora-simplex.frequency", 0.1);
+            seaLevel = getInt("ocean.level", 62);
             eq = getString("noise-equation", null);
+        }
+
+        if(floraSimplex) {
+            floraNoise = new FastNoise(floraSeed);
+            floraNoise.setNoiseType(FastNoise.NoiseType.Simplex);
+            floraNoise.setFrequency(floraFreq);
         }
 
         // Check if flora should be handled by super biome.
         ProbabilityCollection<Flora> flora = new ProbabilityCollection<>();
-        if(extending && abstractBiome.getFlora() != null && !contains("flora")) {
-            flora = abstractBiome.getFlora();
-            floraHeights = abstractBiome.getFloraHeights();
-            Bukkit.getLogger().info("Using super flora (" + flora.size() + " entries, " + floraChance + " % chance)");
-        } else if(contains("flora")) {
+        Map<String, Object> floraData;
+        try {
+            if(extending && abstractBiome.getFloraData() != null && ! contains("flora")) {
+                floraData = abstractBiome.getFloraData();
+                Bukkit.getLogger().info("Using super flora (" + flora.size() + " entries, " + floraChance + " % chance)");
+            } else floraData = Objects.requireNonNull(getConfigurationSection("flora")).getValues(false);
+        } catch(NullPointerException e) {
+            floraData = null;
+        }
+        if(floraData != null) {
             floraHeights = new HashMap<>();
             try {
-                for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("flora")).getValues(false).entrySet()) {
+                for(Map.Entry<String, Object> e : floraData.entrySet()) {
                     Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
                     Map<?, ?> y = ((ConfigurationSection) val.get("y")).getValues(false);
                     try {
@@ -182,12 +222,18 @@ public class BiomeConfig extends TerraConfigObject {
         } else flora = new ProbabilityCollection<>();
 
         // Check if trees should be handled by super biome.
+        Map<String, Object> treeData;
         ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
-        if(extending && abstractBiome.getTrees() != null && !contains("trees")) {
-            trees = abstractBiome.getTrees();
-            Bukkit.getLogger().info("Using super trees");
-        } else if(contains("trees")) {
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("trees")).getValues(false).entrySet()) {
+        try {
+            if(extending && abstractBiome.getTreeData() != null && ! contains("trees")) {
+                treeData = abstractBiome.getTreeData();
+                Bukkit.getLogger().info("Using super trees");
+            } else treeData = Objects.requireNonNull(getConfigurationSection("trees")).getValues(false);
+        } catch(NullPointerException e) {
+            treeData = null;
+        }
+        if(treeData != null) {
+            for(Map.Entry<String, Object> e : treeData.entrySet()) {
                 if(e.getKey().startsWith("TERRA:")) {
                     trees.add(TerraTree.valueOf(e.getKey().substring(6)), (Integer) e.getValue());
                 } else {
@@ -214,13 +260,17 @@ public class BiomeConfig extends TerraConfigObject {
         // Check if ores should be handled by super biome.
         oreHeights = new HashMap<>();
         ores = new HashMap<>();
-        if(extending && abstractBiome.getOres() != null && !contains("ores")) {
-            ores = abstractBiome.getOres();
-            oreHeights = abstractBiome.getOreHeights();
-            Bukkit.getLogger().info("Using super ores");
-        } else if(contains("ores")) {
-            ores.clear();
-            for(Map.Entry<String, Object> m : Objects.requireNonNull(getConfigurationSection("ores")).getValues(false).entrySet()) {
+        Map<String, Object> oreData;
+        try {
+            if(extending && abstractBiome.getOreData() != null && ! contains("ores")) {
+                oreData = abstractBiome.getOreData();
+                Bukkit.getLogger().info("Using super ores");
+            } else oreData = Objects.requireNonNull(getConfigurationSection("ores")).getValues(false);
+        } catch(NullPointerException e) {
+            oreData = null;
+        }
+        if(oreData != null) {
+            for(Map.Entry<String, Object> m : oreData.entrySet()) {
                 ores.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
                 oreHeights.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
             }
@@ -228,6 +278,29 @@ public class BiomeConfig extends TerraConfigObject {
             ores = new HashMap<>();
             oreHeights = new HashMap<>();
         }
+
+        // Ocean stuff
+        String oceanPalette;
+        try {
+            oceanPalette = getString("ocean.palette", Objects.requireNonNull(abstractBiome).getOceanPalette());
+        } catch(NullPointerException e) {
+            oceanPalette = null;
+        }
+        if(contains("ocean") && oceanPalette != null) {
+            if(oceanPalette.startsWith("BLOCK:")) {
+                try {
+                    ocean = new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanPalette.substring(6)), 1), 1);
+                } catch(IllegalArgumentException ex) {
+                    throw new InvalidConfigurationException("SEVERE configuration error for Ocean Palette in biome " + getFriendlyName() + ", ID: " + biomeID + ". BlockData " + oceanPalette + " is invalid!");
+                }
+            } else {
+                try {
+                    ocean = PaletteConfig.fromID(oceanPalette).getPalette();
+                } catch(NullPointerException ex) {
+                    throw new InvalidConfigurationException("SEVERE configuration error for Ocean Palette in biome " + getFriendlyName() + ", ID: " + biomeID + "\n\nPalette " + oceanPalette + " cannot be found!");
+                }
+            }
+        } else ocean = oceanDefault;
 
 
         // Get slab stuff
@@ -337,5 +410,21 @@ public class BiomeConfig extends TerraConfigObject {
 
     public Map<Material, Palette<BlockData>> getSlabs() {
         return slabs;
+    }
+
+    public boolean isFloraSimplex() {
+        return floraSimplex;
+    }
+
+    public FastNoise getFloraNoise() {
+        return floraNoise;
+    }
+
+    public Palette<BlockData> getOceanPalette() {
+        return ocean;
+    }
+
+    public int getSeaLevel() {
+        return seaLevel;
     }
 }

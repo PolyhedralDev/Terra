@@ -1,7 +1,9 @@
 package com.dfsek.terra.generation;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -13,11 +15,15 @@ import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.population.PopulationManager;
+import org.polydev.gaea.world.palette.Palette;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,12 +52,19 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoise fastNoise) {
         if(needsLoad) load(world);
         ChunkData chunk = createChunkData(world);
-        int sea = WorldConfig.fromWorld(world).seaLevel;
+        int xOrig = (chunkX << 4);
+        int zOrig = (chunkZ << 4);
         for(byte x = 0; x < 16; x++) {
             for(byte z = 0; z < 16; z++) {
+                Biome b = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.PALETTE_APPLY);
+                BiomeConfig c = BiomeConfig.fromBiome((UserDefinedBiome) b);
+                int sea = c.getSeaLevel();
+                Palette<BlockData> seaPalette = c.getOceanPalette();
                 for(int y = 0; y < 256; y++) {
                     if(super.getInterpolatedNoise(x, y, z) > 0) chunk.setBlock(x, y, z, STONE);
-                    else if(y < sea) chunk.setBlock(x, y, z, WATER);
+                    else if(y <= sea) {
+                        chunk.setBlock(x, y, z, seaPalette.get(sea-y, x+xOrig, z+zOrig));
+                    }
                 }
             }
         }

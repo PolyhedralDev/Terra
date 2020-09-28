@@ -34,7 +34,9 @@ public class FloraPopulator extends GaeaBlockPopulator {
                     try {
                         BiomeConfig c = BiomeConfig.fromBiome(biome);
                         for(int i = 0; i < c.getFloraAttempts(); i++) {
-                            Flora item = biome.getDecorator().getFlora().get(random);
+                            Flora item;
+                            if(c.isFloraSimplex()) item = biome.getDecorator().getFlora().get(c.getFloraNoise(), (chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                            else item = biome.getDecorator().getFlora().get(random);
                             Block highest = item.getHighestValidSpawnAt(chunk, x, z);
                             if(highest != null && c.getFloraHeights(item).isInRange(highest.getY()))
                                 item.plant(highest.getLocation());

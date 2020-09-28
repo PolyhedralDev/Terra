@@ -28,7 +28,6 @@ public class WorldConfig {
     public float zoneFreq;
     public float freq1;
     public float freq2;
-    public int seaLevel;
     public boolean fromImage;
     public UserDefinedGrid[] definedGrids;
     public ImageLoader.Channel biomeXChannel;
@@ -72,7 +71,6 @@ public class WorldConfig {
 
 
             // Get values from config.
-            seaLevel = config.getInt("sea-level", 63);
             zoneFreq = 1f/config.getInt("frequencies.zone", 1536);
             freq1 = 1f/config.getInt("frequencies.grid-x", 256);
             freq2 = 1f/config.getInt("frequencies.grid-z", 512);
