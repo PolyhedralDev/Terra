@@ -41,7 +41,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        return random.nextInt(100) < BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(w).getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
+        return new Random(random.nextLong()+hash).nextInt(100) < BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(w).getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
     }
 
     private class UserDefinedWorm extends Worm {

@@ -15,6 +15,7 @@ import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -81,11 +82,15 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     }
 
     @Override
-    public Block getHighestValidSpawnAt(Chunk chunk, int x, int z) {
+    public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z) {
+        List<Block> blocks = new ArrayList<>();
         int y;
-        for(y = chunk.getWorld().getMaxHeight() - 1; (!spawnable.contains(chunk.getBlock(x, y, z).getType())) && y > 0; y--);
-        if(y <= 0) return null;
-        return chunk.getBlock(x, y, z);
+        for(y = chunk.getWorld().getMaxHeight() - 1; y > 0; y--) {
+            if(spawnable.contains(chunk.getBlock(x, y, z).getType()) && replaceable.contains(chunk.getBlock(x, y+1, z).getType())) {
+                blocks.add(chunk.getBlock(x, y, z));
+            }
+        }
+        return blocks;
     }
 
     @Override
