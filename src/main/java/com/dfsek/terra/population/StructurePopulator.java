@@ -44,6 +44,10 @@ public class StructurePopulator extends BlockPopulator {
                     spawn.setY(y);
                     for(StructureSpawnRequirement s : struc.getSpawns()) {
                         if(! s.isValidSpawn(spawn)) continue main;
+                        if(!b.equals(TerraBiomeGrid.fromWorld(world).getBiome(spawn.clone().add(s.getX(), s.getY(), s.getZ()), GenerationPhase.POPULATE))) {
+                            Bukkit.getLogger().info("PREVENTED invalid spawn at " + spawn);
+                            continue structure;
+                        }
                     }
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     Bukkit.getLogger().info("Valid spawn at " + spawn);
