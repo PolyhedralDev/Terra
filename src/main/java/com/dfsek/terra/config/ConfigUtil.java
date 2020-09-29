@@ -41,9 +41,9 @@ public class ConfigUtil {
 
         new ConfigLoader("flora").load(main, FloraConfig.class);
 
-        new ConfigLoader("abstract" + File.separator + "biomes").load(main, AbstractBiomeConfig.class);
+        new ConfigLoader("structures" + File.separator + "single").load(main, StructureConfig.class);
 
-        new ConfigLoader("structure" + File.separator + "single").load(main, StructureConfig.class);
+        new ConfigLoader("abstract" + File.separator + "biomes").load(main, AbstractBiomeConfig.class);
 
         TerraBiomeGrid.invalidate();
         BiomeZone.invalidate(); // Invalidate BiomeZone and BiomeGrid caches to prevent old instances from being accessed.

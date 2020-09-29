@@ -48,6 +48,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private Map<String, Object> oreData;
     private Map<String, Object> treeData;
     private List<Map<?, ?>> carvingData;
+    private List<String> structureConfigs;
 
     public AbstractBiomeConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
@@ -89,6 +90,8 @@ public class AbstractBiomeConfig extends TerraConfigObject {
                 useStairs = true;
             }
         }
+
+        if(contains("structures")) structureConfigs = getStringList("structures");
 
         biomes.put(biomeID, this);
     }
@@ -176,5 +179,9 @@ public class AbstractBiomeConfig extends TerraConfigObject {
 
     public String getOceanPalette() {
         return oceanPalette;
+    }
+
+    public List<String> getStructureConfigs() {
+        return structureConfigs;
     }
 }

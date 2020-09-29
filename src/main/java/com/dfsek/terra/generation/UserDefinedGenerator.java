@@ -1,14 +1,10 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.biome.TerraBiomeGrid;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.biome.Generator;
-import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.parsii.eval.Expression;
 import org.polydev.gaea.math.parsii.eval.Parser;
@@ -94,5 +90,4 @@ public class UserDefinedGenerator extends Generator {
         }
         return null;
     }
-
 }

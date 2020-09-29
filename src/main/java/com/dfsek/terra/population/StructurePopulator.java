@@ -2,6 +2,10 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
+import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.structure.StructureSpawn;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
@@ -11,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 
@@ -23,33 +28,33 @@ import java.util.Random;
 import java.util.Set;
 
 public class StructurePopulator extends BlockPopulator {
-    StructureSpawn spawnTest = new StructureSpawn(75, 25);
-    GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", "desert.tstructure"));
-    double horizontal = struc.getStructureInfo().getMaxHorizontal();
-
-    public StructurePopulator() throws IOException {
-    }
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("StructureTime")) {
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
-            Location spawn = spawnTest.getNearestSpawn(cx+ 8, cz + 8, world.getSeed()).toLocation(world);
-            main: for(int y = 72; y > 0; y--) {
-                spawn.setY(y);
-                for(StructureSpawnRequirement s : struc.getSpawns()) {
-                    if(!s.isValidSpawn(spawn)) continue main;
-                }
-                Bukkit.getLogger().info("Valid spawn at " + spawn);
-                if(Math.abs((cx+8)-spawn.getBlockX()) <= horizontal && Math.abs((cz+8)-spawn.getBlockZ()) <= horizontal) {
-                    try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
-                        struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(new Random(spawn.hashCode()).nextInt(4)*90), Collections.emptyList());
-                        break;
+            UserDefinedBiome b = (UserDefinedBiome) TerraBiomeGrid.fromWorld(world).getBiome(cx+ 8, cz + 8, GenerationPhase.POPULATE);
+            structure: for(StructureConfig conf : BiomeConfig.fromBiome(b).getStructures()) {
+                GaeaStructure struc = conf.getStructure();
+                Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
+                Random r2 = new Random(spawn.hashCode());
+                main: for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
+                    if(y > conf.getBound().getMax() || y < conf.getBound().getMin()) continue structure;
+                    spawn.setY(y);
+                    for(StructureSpawnRequirement s : struc.getSpawns()) {
+                        if(! s.isValidSpawn(spawn)) continue main;
+                    }
+                    double horizontal = struc.getStructureInfo().getMaxHorizontal();
+                    Bukkit.getLogger().info("Valid spawn at " + spawn);
+                    if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
+                        try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
+                            struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90), Collections.emptyList());
+                            break;
+                        }
                     }
                 }
             }
-
         }
     }
     public enum SearchType {

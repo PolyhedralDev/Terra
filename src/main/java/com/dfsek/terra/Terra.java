@@ -32,6 +32,7 @@ public class Terra extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         ConfigUtil.loadConfig(this);
 
         PluginCommand command = getCommand("terra");
@@ -47,7 +48,7 @@ public class Terra extends JavaPlugin {
         saveDefaultConfig();
         config = getConfig();
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
-        instance = this;
+
     }
 
     public static void register(JavaPlugin plugin, Command pluginCommand, Commodore commodore) throws Exception {

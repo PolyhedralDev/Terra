@@ -55,6 +55,7 @@ public class BiomeConfig extends TerraConfigObject {
     private FastNoise floraNoise;
     private Palette<BlockData> ocean;
     private int seaLevel;
+    private List<StructureConfig> structures;
 
     public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
         super(file);
@@ -335,6 +336,19 @@ public class BiomeConfig extends TerraConfigObject {
             Bukkit.getLogger().info("[Terra] Slabs: " + slabs.size());
         }
 
+        // Structure stuff
+        structures = new ArrayList<>();
+        List<String> st = new ArrayList<>();
+        if(abstractBiome != null && abstractBiome.getStructureConfigs() != null) st = abstractBiome.getStructureConfigs();
+        if(contains("structures")) st = getStringList("structures");
+        for(String s : st) {
+            try {
+                structures.add(Objects.requireNonNull(StructureConfig.fromID(s)));
+            } catch(NullPointerException e) {
+                throw new InvalidConfigurationException("No such structure " + s);
+            }
+        }
+
         try {
             // Get UserDefinedBiome instance representing this config.
             this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap), biomeID);
@@ -426,5 +440,9 @@ public class BiomeConfig extends TerraConfigObject {
 
     public int getSeaLevel() {
         return seaLevel;
+    }
+
+    public List<StructureConfig> getStructures() {
+        return structures;
     }
 }
