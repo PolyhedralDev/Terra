@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,7 @@ import java.util.function.Consumer;
 public class GaeaStructure implements Serializable {
     public static final long serialVersionUID = -6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
+    private final ArrayList<StructureSpawnRequirement> spawns = new ArrayList<>();
     private final GaeaStructureInfo structureInfo;
     private final String id;
     private final UUID uuid;
@@ -68,6 +70,21 @@ public class GaeaStructure implements Serializable {
                                 if(s.getLine(1).equals("[CENTER]")) {
                                     centerX = x;
                                     centerZ = z;
+                                } else if(s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
+                                    String og = s.getLine(1);
+                                    String spawn = og.substring(og.indexOf("=")+1, og.length()-1);
+                                    switch(spawn.toUpperCase()) {
+                                        case "LAND":
+                                            spawns.add(new StructureSpawnRequirement(StructureSpawnRequirement.RequirementType.LAND, x, y, z));
+                                            break;
+                                        case "OCEAN":
+                                            spawns.add(new StructureSpawnRequirement(StructureSpawnRequirement.RequirementType.OCEAN, x, y, z));
+                                            break;
+                                        case "AIR":
+                                            spawns.add(new StructureSpawnRequirement(StructureSpawnRequirement.RequirementType.AIR, x, y, z));
+                                            break;
+                                        default: throw new InitializationException("Invalid spawn type, " + spawn);
+                                    }
                                 }
                             } catch(IllegalArgumentException e) {
                                 throw new InitializationException("Invalid Block Data on sign: \"" + s.getLine(2) + s.getLine(3) + "\"");
@@ -82,15 +99,36 @@ public class GaeaStructure implements Serializable {
         structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, centerX, centerZ);
     }
 
+    public ArrayList<StructureSpawnRequirement> getSpawns() {
+        return spawns;
+    }
+
+    /**
+     * Get GaeaStructureInfo object
+     * @return Structure Info
+     */
     @NotNull
     public GaeaStructureInfo getStructureInfo() {
         return structureInfo;
     }
 
+    /**
+     * Paste the structure at a Location, ignoring chunk boundaries.
+     * @param origin Origin location
+     * @param r Rotation
+     * @param m Mirror
+     */
     public void paste(@NotNull Location origin, Rotation r, List<Mirror> m) {
         this.executeForBlocksInRange(getRange(Axis.X), getRange(Axis.Y), getRange(Axis.Z), block -> pasteBlock(block, origin, r, m), r, m);
     }
 
+    /**
+     * Rotate and mirror a coordinate pair.
+     * @param arr Array containing X and Z coordinates.
+     * @param r Rotation
+     * @param m Mirror
+     * @return Rotated coordinate pair
+     */
     private int[] getRotatedCoords(int[] arr, Rotation r, List<Mirror> m) {
         int[] cp = Arrays.copyOf(arr, 2);
         switch(r) {
@@ -105,34 +143,6 @@ public class GaeaStructure implements Serializable {
             case CW_180:
                 arr[0] = - cp[0];
                 arr[1] = - cp[1];
-                break;
-        }
-        if(m.contains(Mirror.X)) arr[0] = - arr[0];
-        if(m.contains(Mirror.Z)) arr[1] = - arr[1];
-        return arr;
-    }
-
-    /**
-     * Inverse of {@link GaeaStructure#getRotatedCoords(int[], Rotation, List)}, gets the coordinates <i>before</i> rotation
-     * @param arr 2-integer array holding X and Z coordinates
-     * @param r Rotation
-     * @param m Mirror
-     * @return New coordinates
-     */
-    private int[] getOriginalCoords(int[] arr, Rotation r, List<Mirror> m) {
-        int[] cp = Arrays.copyOf(arr, 2);
-        switch(r) {
-            case CW_90:
-                arr[1] = cp[0];
-                arr[0] = - cp[1];
-                break;
-            case CCW_90:
-                arr[1] = - cp[0];
-                arr[0] = cp[1];
-                break;
-            case CW_180:
-                arr[1] = - cp[1];
-                arr[0] = - cp[0];
                 break;
         }
         if(m.contains(Mirror.X)) arr[0] = - arr[0];
@@ -246,11 +256,9 @@ public class GaeaStructure implements Serializable {
         if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
             if(data instanceof Rotatable) {
                 BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r, m);
-                Bukkit.getLogger().info("Previous: " + ((Rotatable) data).getRotation() + ", New: " + rt);
                 ((Rotatable) data).setRotation(rt);
             } else if(data instanceof Directional) {
                 BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r, m);
-                Bukkit.getLogger().info("Previous: " + ((Directional) data).getFacing() + ", New: " + rt);
                 ((Directional) data).setFacing(rt);
             }
             worldBlock.setBlockData(data, false);
@@ -276,7 +284,6 @@ public class GaeaStructure implements Serializable {
                     int[] c = getRotatedCoords(new int[] {x-structureInfo.getCenterX(), z-structureInfo.getCenterZ()}, r, m);
                     c[0] = c[0] + structureInfo.getCenterX();
                     c[1] = c[1] + structureInfo.getCenterZ();
-                    Bukkit.getLogger().info("Before: " + x + ", " + z + " After: " + c[0] + ", " + c[1]);
                     if(isInStructure(c[0], y, c[1])) {
                         StructureContainedBlock b = structure[c[0]][c[1]][y];
                         exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData()));
@@ -295,6 +302,15 @@ public class GaeaStructure implements Serializable {
      */
     private boolean isInStructure(int x, int y, int z) {
         return x < structureInfo.getSizeX() && y < structureInfo.getSizeY() && z < structureInfo.getSizeZ() && x >= 0 && y >= 0 && z >= 0;
+    }
+
+    /**
+     * From an origin location (First bound) fetch the second bound.
+     * @param origin Origin location
+     * @return Other bound location
+     */
+    public Location getOtherBound(Location origin) {
+        return origin.clone().add(structureInfo.getSizeX(), structureInfo.getSizeY(), structureInfo.getSizeZ());
     }
 
     /**

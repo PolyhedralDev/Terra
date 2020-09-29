@@ -4,6 +4,7 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.structure.StructureSpawn;
+import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -35,12 +36,23 @@ public class StructurePopulator extends BlockPopulator {
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             Location spawn = spawnTest.getNearestSpawn(cx+ 8, cz + 8, world.getSeed()).toLocation(world);
-            spawn.setY(72);
-            if(Math.abs((cx+8)-spawn.getBlockX()) <= horizontal && Math.abs((cz+8)-spawn.getBlockZ()) <= horizontal) {
-                try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
-                    struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(random.nextInt(4)*90), Collections.emptyList());
+            main: for(int y = 72; y > 0; y--) {
+                spawn.setY(y);
+                for(StructureSpawnRequirement s : struc.getSpawns()) {
+                    if(!s.isValidSpawn(spawn)) continue main;
+                }
+                Bukkit.getLogger().info("Valid spawn at " + spawn);
+                if(Math.abs((cx+8)-spawn.getBlockX()) <= horizontal && Math.abs((cz+8)-spawn.getBlockZ()) <= horizontal) {
+                    try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
+                        struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(new Random(spawn.hashCode()).nextInt(4)*90), Collections.emptyList());
+                        break;
+                    }
                 }
             }
+
         }
+    }
+    public enum SearchType {
+        UP, DOWN
     }
 }

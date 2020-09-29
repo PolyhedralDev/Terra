@@ -9,6 +9,7 @@ import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
+import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -51,6 +52,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoise fastNoise) {
         if(needsLoad) load(world);
+        StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
@@ -130,4 +132,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     public boolean shouldGenerateStructures() {
         return true;
     }
+
+
 }

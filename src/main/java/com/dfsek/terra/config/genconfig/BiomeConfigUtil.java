@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class BiomeConfigUtil {
-    public static Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection, TerraConfigObject config) throws InvalidConfigurationException {
+    protected static Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection, TerraConfigObject config) throws InvalidConfigurationException {
         Map<Material, Palette<BlockData>> paletteMap = new HashMap<>();
 
         for(Map<?, ?> e : paletteConfigSection) {

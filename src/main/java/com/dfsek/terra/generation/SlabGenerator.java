@@ -73,7 +73,7 @@ public class SlabGenerator extends GenerationPopulator {
             BlockData slab = slabs.getOrDefault(down.getMaterial(), AIRPALETTE).get(0, block.getBlockX(), block.getBlockZ());
             if(slab instanceof Waterlogged) {
                 ((Waterlogged) slab).setWaterlogged(orig.matches(WATER));
-            }
+            } else if(orig.matches(WATER)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
     }

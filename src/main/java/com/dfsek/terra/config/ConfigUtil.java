@@ -9,6 +9,7 @@ import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.config.genconfig.FloraConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
+import com.dfsek.terra.config.genconfig.StructureConfig;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class ConfigUtil {
     public static boolean debug;
-    public static long dataSave;
+    public static long dataSave; // Period of population data saving, in ticks.
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
         FileConfiguration config = main.getConfig();
@@ -41,6 +42,8 @@ public class ConfigUtil {
         new ConfigLoader("flora").load(main, FloraConfig.class);
 
         new ConfigLoader("abstract" + File.separator + "biomes").load(main, AbstractBiomeConfig.class);
+
+        new ConfigLoader("structure" + File.separator + "single").load(main, StructureConfig.class);
 
         TerraBiomeGrid.invalidate();
         BiomeZone.invalidate(); // Invalidate BiomeZone and BiomeGrid caches to prevent old instances from being accessed.
