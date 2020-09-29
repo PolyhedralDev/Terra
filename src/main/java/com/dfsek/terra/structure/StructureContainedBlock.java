@@ -27,6 +27,15 @@ public class StructureContainedBlock implements Serializable {
         this.z = z;
         this.bl = new SerializableBlockData(d);
     }
+    public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d) {
+        if(state instanceof SerializableSign) {
+            this.state = state;
+        } else this.state = null;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.bl = new SerializableBlockData(d);
+    }
 
     public int getX() {
         return x;

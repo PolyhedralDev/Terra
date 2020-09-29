@@ -26,6 +26,30 @@ public class Range implements Iterable<Integer> {
         return min;
     }
 
+    public Range setMax(int max) {
+        this.max = max;
+        return this;
+    }
+
+    public int getRange() {
+        return max-min;
+    }
+
+    public Range multiply(int mult) {
+        min*=mult;
+        max*=mult;
+        return this;
+    }
+
+    public Range reflect(int pt) {
+        return new Range(2*pt-this.getMax(), 2*pt-this.getMin());
+    }
+
+    public Range setMin(int min) {
+        this.min = min;
+        return this;
+    }
+
     public int get(Random r) {
         return r.nextInt((max-min)+1)+min;
     }

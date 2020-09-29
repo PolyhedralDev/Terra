@@ -30,7 +30,9 @@ terra {
     }
     load {
       structure brigadier:string single_word {
-        respect_chunk brigadier:bool;
+        rotation brigadier:integer {
+          respect_chunk brigadier:bool;
+        }
       }
     }
     getspawn;

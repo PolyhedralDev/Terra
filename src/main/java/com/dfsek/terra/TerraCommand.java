@@ -179,9 +179,10 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         return true;
                     } else if("load".equals(args[1])) {
                         try {
+                            GaeaStructure.Rotation r = GaeaStructure.Rotation.fromDegrees(Integer.parseInt(args[3]));
                             GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[2] + ".tstructure"));
-                            if("true".equals(args[3])) struc.paste(pl.getLocation());
-                            else struc.paste(pl.getLocation(), pl.getLocation().getChunk());
+                            if("true".equals(args[4])) struc.paste(pl.getLocation(), r, Collections.emptyList());
+                            else struc.paste(pl.getLocation(), pl.getLocation().getChunk(), r, Collections.emptyList());
                         } catch(IOException e) {
                             e.printStackTrace();
                             sender.sendMessage("Structure not found.");

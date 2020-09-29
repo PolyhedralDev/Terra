@@ -26,4 +26,11 @@ public class RangeTest {
         one = new Range(25, 50);
         assertNull(one.intersects(two));
     }
+    @Test
+    public void reflect() {
+        Range t = new Range(3, 10);
+        Range other = t.reflect(5);
+        assertEquals(7, other.getMax());
+        assertEquals(0, other.getMin());
+    }
 }
