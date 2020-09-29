@@ -152,7 +152,7 @@ public class GaeaStructure implements Serializable {
         int rotateNum = r.getDegrees()/90;
         int rn = faceRotation(f);
         if(rn >= 0) {
-            n = fromRotation(faceRotation(n) - 4*rotateNum);
+            n = fromRotation(faceRotation(n) + 4*rotateNum);
         }
         if(f.getModX()!=0 && m.contains(Mirror.X)) n = n.getOppositeFace();
         if(f.getModZ()!=0 && m.contains(Mirror.Z)) n = n.getOppositeFace();
@@ -273,10 +273,13 @@ public class GaeaStructure implements Serializable {
         for(int x : xM) {
             for(int y : yM) {
                 for(int z : zM) {
-                    int[] c = getOriginalCoords(new int[] {structure[x][z][y].getX()-structureInfo.getCenterX(), structure[x][z][y].getZ()-structureInfo.getCenterZ()}, r, m);
+                    int[] c = getRotatedCoords(new int[] {x-structureInfo.getCenterX(), z-structureInfo.getCenterZ()}, r, m);
+                    c[0] = c[0] + structureInfo.getCenterX();
+                    c[1] = c[1] + structureInfo.getCenterZ();
+                    Bukkit.getLogger().info("Before: " + x + ", " + z + " After: " + c[0] + ", " + c[1]);
                     if(isInStructure(c[0], y, c[1])) {
                         StructureContainedBlock b = structure[c[0]][c[1]][y];
-                        exec.accept(new StructureContainedBlock(x, y, z, b.getState(), b.getBlockData()));
+                        exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData()));
                     }
                 }
             }
