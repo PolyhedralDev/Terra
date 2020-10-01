@@ -1,5 +1,6 @@
 package com.dfsek.terra;
 
+import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.mojang.brigadier.tree.LiteralCommandNode;
