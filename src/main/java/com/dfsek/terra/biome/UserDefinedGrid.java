@@ -1,7 +1,6 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.WorldConfig;
-import com.dfsek.terra.config.genconfig.BiomeGridConfig;
+import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,7 +8,6 @@ import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.biome.NormalizationUtil;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.Interpolator;
 
 public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader imageLoader;

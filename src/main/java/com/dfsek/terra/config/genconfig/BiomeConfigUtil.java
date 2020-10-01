@@ -1,6 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -26,7 +28,7 @@ public class BiomeConfigUtil {
                             Bukkit.getLogger().info("Adding slab palette with single material " + entry.getKey());
                             paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getValue()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
-                            throw new InvalidConfigurationException("SEVERE configuration error for Slab Palettes in biome " + config.getID() + ": " + ex.getMessage());
+                            throw new ConfigException("Invalid BlockData in slab configuration: " + ex.getMessage(), config.getID());
                         }
                     } else {
                         try {
@@ -34,11 +36,11 @@ public class BiomeConfigUtil {
                             if(p.getSize() != 1) throw new InvalidConfigurationException("Slab palette must hold only one layer. Palette " + entry.getValue() + " is too large/small");
                             paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), p);
                         } catch(NullPointerException ex) {
-                            throw new InvalidConfigurationException("SEVERE configuration error for Slab Palettes in biome " + config.getID() + "\n\nPalette " + entry.getValue() + " cannot be found!");
+                            throw new NotFoundException("Slab Palette", (String) entry.getValue(), config.getID());
                         }
                     }
                 } catch(ClassCastException ex) {
-                    throw new InvalidConfigurationException("SEVERE configuration error for Slab Palettes in biome " + config.getID());
+                    throw new ConfigException("Unable to parse Slab Palette configuration! Check YAML syntax.", config.getID());
                 }
             }
         }

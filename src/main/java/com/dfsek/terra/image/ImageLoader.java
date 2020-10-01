@@ -2,9 +2,7 @@ package com.dfsek.terra.image;
 
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
-import com.dfsek.terra.config.ConfigUtil;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
-import org.bukkit.Location;
+import com.dfsek.terra.config.base.ConfigUtil;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 
@@ -12,8 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 import javax.imageio.ImageIO;

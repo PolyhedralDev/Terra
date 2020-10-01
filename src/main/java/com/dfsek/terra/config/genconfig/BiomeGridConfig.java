@@ -2,12 +2,12 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
-import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.TerraConfigObject;
-import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.config.base.WorldConfig;
+import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,11 +29,12 @@ public class BiomeGridConfig extends TerraConfigObject {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void init() throws InvalidConfigurationException {
         isEnabled = false;
-        if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
+        if(!contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
         this.gridID = getString("id");
-        if(!contains("grid")) throw new InvalidConfigurationException("Grid not found!");
+        if(!contains("grid")) throw new ConfigException("Grid key not found!", getID());
         this.sizeX = Objects.requireNonNull(getList("grid")).size();
         this.sizeZ = ((List<List<String>>) getList("grid")).get(0).size();
         gridRaw = new UserDefinedBiome[sizeX][sizeZ];
@@ -41,14 +42,14 @@ public class BiomeGridConfig extends TerraConfigObject {
             for(int x = 0; x < sizeX; x++) {
                 for(int z = 0; z < sizeZ; z++) {
                     try {
-                        gridRaw[x][z] = BiomeConfig.fromID(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
+                        gridRaw[x][z] = BiomeConfig.fromID(((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z)).getBiome();
                     } catch(NullPointerException e) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for BiomeGrid ID: " + getID() + "\n\nNo such biome " + ((List<List<String>>) getList("grid")).get(x).get(z));
+                        throw new NotFoundException("Biome",((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z), getID());
                     }
                 }
             }
-        } catch(ClassCastException e) {
-            throw new InvalidConfigurationException("Malformed grid!");
+        } catch(ClassCastException |NullPointerException e) {
+            throw new ConfigException("Malformed grid! Ensure all dimensions are correct.", getID());
         }
         isEnabled = true;
         biomeGrids.put(gridID, this);

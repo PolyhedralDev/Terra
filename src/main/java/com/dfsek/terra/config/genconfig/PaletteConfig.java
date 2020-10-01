@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -28,6 +29,8 @@ public class PaletteConfig extends TerraConfigObject {
 
     @Override
     public void init() throws InvalidConfigurationException {
+        if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
+        this.paletteID = getString("id");
         Palette<BlockData> pal;
         if(getBoolean("simplex", false)) {
             useNoise = true;
@@ -38,8 +41,6 @@ public class PaletteConfig extends TerraConfigObject {
             pal = new SimplexPalette<>(pNoise);
         } else pal = new RandomPalette<>(new Random(getInt("seed", 3)));
         palette = getPalette(getMapList("blocks"), pal);
-        if(!contains("id")) throw new InvalidConfigurationException("Palette ID unspecified!");
-        this.paletteID = getString("id");
         palettes.put(paletteID, this);
     }
 
@@ -72,7 +73,6 @@ public class PaletteConfig extends TerraConfigObject {
                     }
                     p.add(Bukkit.createBlockData(data), (Integer) m.get("layers"));
                 }
-
             } catch(ClassCastException e) {
                 throw new InvalidConfigurationException("SEVERE configuration error for Palette: \n\n" + e.getMessage());
             }

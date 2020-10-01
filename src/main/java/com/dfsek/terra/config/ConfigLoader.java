@@ -1,5 +1,6 @@
 package com.dfsek.terra.config;
 
+import com.dfsek.terra.config.base.ConfigUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.commons.io.FilenameUtils;
@@ -11,9 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class ConfigLoader {

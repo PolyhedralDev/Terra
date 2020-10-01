@@ -1,21 +1,11 @@
 package com.dfsek.terra.config.genconfig;
 
-import org.polydev.gaea.math.Range;
-import com.dfsek.terra.TerraTree;
-import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.TerraConfigObject;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
-import org.polydev.gaea.world.Flora;
-import org.polydev.gaea.world.FloraType;
 import org.polydev.gaea.world.palette.Palette;
-import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
-import java.util.TreeMap;
 
 public class AbstractBiomeConfig extends TerraConfigObject {
     private static final Map<String, AbstractBiomeConfig> biomes = new HashMap<>();
@@ -56,7 +44,7 @@ public class AbstractBiomeConfig extends TerraConfigObject {
 
     @Override
     public void init() throws InvalidConfigurationException {
-        if(!contains("id")) throw new InvalidConfigurationException("Abstract Biome ID unspecified!");
+        if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
         if(contains("carving")) carvingData = getMapList("carving");

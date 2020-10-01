@@ -2,7 +2,7 @@ package com.dfsek.terra.command;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.command.type.Command;
-import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.base.ConfigUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

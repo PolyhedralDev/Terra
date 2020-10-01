@@ -1,8 +1,8 @@
 package com.dfsek.terra.command.image.gui;
 
 import com.dfsek.terra.command.type.WorldCommand;
-import com.dfsek.terra.config.ConfigUtil;
-import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
 import org.bukkit.command.Command;

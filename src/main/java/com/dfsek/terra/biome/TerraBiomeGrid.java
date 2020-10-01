@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.ConfigUtil;
-import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.WorldConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -1,12 +1,14 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.exception.NotFoundException;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -63,9 +65,8 @@ public class BiomeConfig extends TerraConfigObject {
     @Override
     @SuppressWarnings("unchecked, rawtypes")
     public void init() throws InvalidConfigurationException {
-        if(!contains("id")) throw new InvalidConfigurationException("Biome ID unspecified!");
+        if(!contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
         this.biomeID = getString("id");
-        if(!contains("noise-equation") && !contains("extends")) throw new InvalidConfigurationException("Biomes must either include noise equation or extend biome containing an equation.");
 
         AbstractBiomeConfig abstractBiome = null;
         // Whether an abstract biome is to be extended. Default to false.
@@ -77,7 +78,7 @@ public class BiomeConfig extends TerraConfigObject {
                 extending = true;
                 Bukkit.getLogger().info("Extending biome " + getString("extends"));
             } catch(NullPointerException e) {
-                throw new InvalidConfigurationException("No abstract biome, " +getString("extends") + ", found.");
+                throw new ConfigException("No abstract biome with ID " + getString("extends") + " found.", getID());
             }
         }
 
@@ -101,22 +102,22 @@ public class BiomeConfig extends TerraConfigObject {
                             try {
                                 paletteMap.put((Integer) entry.getValue(), new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
                             } catch(IllegalArgumentException ex) {
-                                throw new InvalidConfigurationException("SEVERE configuration error for Palettes in biome ID: " + biomeID + ". BlockData " + entry.getKey() + " is invalid!");
+                                throw new ConfigException("BlockData " + entry.getKey() + " is invalid! (Palettes)", getID());
                             }
                         }
                         else {
                             try {
                                 paletteMap.put((Integer) entry.getValue(), PaletteConfig.fromID((String) entry.getKey()).getPalette());
                             } catch(NullPointerException ex) {
-                                throw new InvalidConfigurationException("SEVERE configuration error for Palettes in biome ID: " + biomeID + "\n\nPalette " + entry.getKey() + " cannot be found!");
+                                throw new NotFoundException("Palette", (String) entry.getKey(), getID());
                             }
                         }
                     } catch(ClassCastException ex) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for Palettes in biome ID: " + biomeID);
+                        throw new ConfigException("Unable to parse Palette configuration! Check YAML syntax.", getID());
                     }
                 }
             }
-        } else throw new InvalidConfigurationException("No palette specified in biome or super biome.");
+        } else throw new ConfigException("No Palette specified in biome or super biome.", getID());
 
         // Check if carving should be handled by super biome.
         List<Map<?, ?>> carvingData;
@@ -138,9 +139,9 @@ public class BiomeConfig extends TerraConfigObject {
                         Bukkit.getLogger().info("Got carver " + c + ". Adding with weight " + entry.getValue());
                         carvers.put(c, (Integer) entry.getValue());
                     } catch(ClassCastException ex) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome ID: " + biomeID);
+                        throw new ConfigException("Unable to parse Carver configuration! Check YAML syntax.", getID());
                     } catch(NullPointerException ex) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for Carvers in biome ID: " + biomeID + "\n\n" + "No such carver " + entry.getKey());
+                        throw new NotFoundException("carver", (String) entry.getKey(), getID());
                     }
                 }
             }
@@ -210,13 +211,13 @@ public class BiomeConfig extends TerraConfigObject {
                             flora.add(floraCustom, (Integer) val.get("weight"));
                             floraHeights.put(floraCustom, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                         } catch(NullPointerException ex2) {
-                            throw new InvalidConfigurationException("SEVERE configuration error for flora in biome ID " + getID() + "\n\nFlora with ID " + e.getKey() + " cannot be found!");
+                            throw new NotFoundException("Flora", e.getKey(), getID());
                         }
                     }
                 }
             } catch(ClassCastException e) {
                 if(ConfigUtil.debug) e.printStackTrace();
-                throw new InvalidConfigurationException("SEVERE configuration error for flora in biome ID " + getID());
+                throw new ConfigException("Unable to parse Flora configuration! Check YAML syntax.", getID());
             }
         } else flora = new ProbabilityCollection<>();
 
@@ -242,7 +243,7 @@ public class BiomeConfig extends TerraConfigObject {
         } else trees = new ProbabilityCollection<>();
 
         //Make sure equation is non-null
-        if(eq == null) throw new InvalidConfigurationException("Noise equation must be specified in biome or super biome.");
+        if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.
         UserDefinedDecorator dec = new UserDefinedDecorator(flora, trees, floraChance, treeChance, treeDensity);
@@ -250,10 +251,10 @@ public class BiomeConfig extends TerraConfigObject {
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;
         try {
-            if(!contains("vanilla")) throw new InvalidConfigurationException("Vanilla Biome unspecified!");
+            if(!contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
             vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
         } catch(IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid Vanilla biome: " + getString("vanilla"));
+            throw new ConfigException("Invalid Vanilla biome: \"" + getString("vanilla") + "\"", getID());
         }
 
         // Check if ores should be handled by super biome.
@@ -290,13 +291,13 @@ public class BiomeConfig extends TerraConfigObject {
                 try {
                     ocean = new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanPalette.substring(6)), 1), 1);
                 } catch(IllegalArgumentException ex) {
-                    throw new InvalidConfigurationException("SEVERE configuration error for Ocean Palette in biome ID: " + biomeID + ". BlockData " + oceanPalette + " is invalid!");
+                    throw new ConfigException("BlockData \"" + oceanPalette + "\" is invalid! (Ocean Palette)", getID());
                 }
             } else {
                 try {
                     ocean = PaletteConfig.fromID(oceanPalette).getPalette();
                 } catch(NullPointerException ex) {
-                    throw new InvalidConfigurationException("SEVERE configuration error for Ocean Palette in biome ID: " + biomeID + "\n\nPalette " + oceanPalette + " cannot be found!");
+                    throw new NotFoundException("Palette", oceanPalette, getID());
                 }
             }
         } else ocean = oceanDefault;
@@ -328,7 +329,7 @@ public class BiomeConfig extends TerraConfigObject {
                     }
                 } catch(ClassCastException e) {
                     if(ConfigUtil.debug) e.printStackTrace();
-                    throw new InvalidConfigurationException("Material in stair config is not stair.");
+                    throw new ConfigException("Materials in stair config must be stairs.", getID());
                 }
             }
             Bukkit.getLogger().info("[Terra] Slabs: " + slabs.size());
@@ -343,7 +344,7 @@ public class BiomeConfig extends TerraConfigObject {
             try {
                 structures.add(Objects.requireNonNull(StructureConfig.fromID(s)));
             } catch(NullPointerException e) {
-                throw new InvalidConfigurationException("No such structure " + s);
+                throw new NotFoundException("Structure", s, getID());
             }
         }
 
@@ -352,7 +353,7 @@ public class BiomeConfig extends TerraConfigObject {
             this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException("Unable to parse noise equation!");
+            throw new ConfigException("Unable to parse noise equation!", getID());
         }
         biomes.put(biomeID, this);
     }

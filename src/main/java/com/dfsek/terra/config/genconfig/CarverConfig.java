@@ -1,5 +1,7 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.exception.ConfigException;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.TerraConfigObject;
@@ -52,6 +54,9 @@ public class CarverConfig extends TerraConfigObject {
 
     @Override
     public void init() throws InvalidConfigurationException {
+        if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
+        id = getString("id");
+
         inner = getBlocks("palette.inner.blocks");
 
         outer = getBlocks("palette.outer.blocks");
@@ -60,53 +65,16 @@ public class CarverConfig extends TerraConfigObject {
 
         bottom = getBlocks("palette.bottom.blocks");
 
-        replaceableInner = new HashSet<>();
-        replaceableOuter = new HashSet<>();
-        replaceableTop = new HashSet<>();
-        replaceableBottom = new HashSet<>();
+        replaceableInner = ConfigUtil.toBlockData(getStringList("palette.inner.replace"), "replaceable inner", getID());
 
-        for(String s : getStringList("palette.inner.replace")) {
-            try {
-                if(replaceableInner.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
-                replaceableInner.add(Bukkit.createBlockData(s).getMaterial());
-            } catch(NullPointerException | IllegalArgumentException e) {
-                throw new InvalidConfigurationException("Could not load data for " + s);
-            }
-        }
-        for(String s : getStringList("palette.outer.replace")) {
-            try {
-                if(replaceableOuter.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
-                replaceableOuter.add(Bukkit.createBlockData(s).getMaterial());
-            } catch(NullPointerException | IllegalArgumentException e) {
-                throw new InvalidConfigurationException("Could not load data for " + s);
-            }
-        }
-        for(String s : getStringList("palette.top.replace")) {
-            try {
-                if(replaceableTop.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
-                replaceableTop.add(Bukkit.createBlockData(s).getMaterial());
-            } catch(NullPointerException | IllegalArgumentException e) {
-                throw new InvalidConfigurationException("Could not load data for " + s);
-            }
-        }
-        for(String s : getStringList("palette.bottom.replace")) {
-            try {
-                if(replaceableBottom.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in replaceable list: " + s);
-                replaceableBottom.add(Bukkit.createBlockData(s).getMaterial());
-            } catch(NullPointerException | IllegalArgumentException e) {
-                throw new InvalidConfigurationException("Could not load data for " + s);
-            }
-        }
+        replaceableOuter = ConfigUtil.toBlockData(getStringList("palette.outer.replace"), "replaceable outer", getID());
 
-        update = new HashSet<>();
-        for(String s : getStringList("update")) {
-            try {
-                if(update.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in update list: " + s);
-                update.add(Bukkit.createBlockData(s).getMaterial());
-            } catch(NullPointerException | IllegalArgumentException e) {
-                throw new InvalidConfigurationException("Could not load data for " + s);
-            }
-        }
+        replaceableTop = ConfigUtil.toBlockData(getStringList("palette.top.replace"), "replaceable top", getID());
+
+        replaceableBottom = ConfigUtil.toBlockData(getStringList("palette.bottom.replace"), "replaceable bottom", getID());
+
+        update = ConfigUtil.toBlockData(getStringList("update"), "update", getID());
+
         shift = new HashMap<>();
         for(Map.Entry<String, Object> e : getConfigurationSection("shift").getValues(false).entrySet()) {
             Set<Material> l = new HashSet<>();
@@ -129,14 +97,13 @@ public class CarverConfig extends TerraConfigObject {
         Range length = new Range(getInt("length.min"), getInt("length.max"));
         Range radius = new Range(getInt("start.radius.min"), getInt("start.radius.max"));
         Range height = new Range(getInt("start.height.min"), getInt("start.height.max"));
-        id = getString("id");
-        if(id == null) throw new InvalidConfigurationException("No ID specified for Carver!");
+
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), getInt("cut.top", 0), getInt("cut.bottom", 0));
         caveConfig.put(id, this);
     }
 
     private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
-        if(!contains(key)) throw new InvalidConfigurationException("Missing Carver Palette!");
+        if(!contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
         Map<Integer, ProbabilityCollection<BlockData>> result = new TreeMap<>();
         for(Map<?, ?> m : getMapList(key)) {
             try {
@@ -148,7 +115,7 @@ public class CarverConfig extends TerraConfigObject {
                 result.put((Integer) m.get("y"), layer);
                 Bukkit.getLogger().info("Added at level " + m.get("y"));
             } catch(ClassCastException e) {
-                throw new InvalidConfigurationException("SEVERE configuration error for Carver Palette: \n\n" + e.getMessage());
+                throw new ConfigException("Unable to parse Carver Palette configuration! Check YAML syntax:" + e.getMessage(), getID());
             }
         }
         return result;

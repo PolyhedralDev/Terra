@@ -1,4 +1,4 @@
-package com.dfsek.terra.config;
+package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;

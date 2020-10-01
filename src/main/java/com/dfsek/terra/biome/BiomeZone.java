@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;

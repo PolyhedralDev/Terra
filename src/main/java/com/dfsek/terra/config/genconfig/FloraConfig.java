@@ -1,6 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -37,36 +39,18 @@ public class FloraConfig extends TerraConfigObject implements Flora {
 
     @Override
     public void init() throws InvalidConfigurationException {
-        if(!contains("blocks")) throw new InvalidConfigurationException("No blocks defined in custom flora!");
-        if(!contains("id")) throw new InvalidConfigurationException("Flora ID unspecified!");
-        if(!contains("name")) throw new InvalidConfigurationException("Flora name unspecified!");
-        if(!contains("spawnable")) throw new InvalidConfigurationException("Flora spawnable blocks unspecified!");
+        if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
+        this.id = getString("id");
+        if(!contains("blocks")) throw new ConfigException("No blocks defined in custom flora!", getID());
+        if(!contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
 
-        spawnable = new HashSet<>();
-        replaceable = new HashSet<>();
-
-        try {
-            for(String s : getStringList("spawnable")) {
-                spawnable.add(Bukkit.createBlockData(s).getMaterial());
-            }
-            Bukkit.getLogger().info("[Terra] Added " + spawnable.size() + " items to spawnable list.");
-        } catch(IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid material ID in spawnable list: " + e.getMessage());
-        }
-        try {
-            for(String s : getStringList("replaceable")) {
-                replaceable.add(Bukkit.createBlockData(s).getMaterial());
-            }
-            Bukkit.getLogger().info("[Terra] Added " + spawnable.size() + " items to replaceable list.");
-        } catch(IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid material ID in replaceable list: " + e.getMessage());
-        }
+        spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
+        replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
 
         Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
         floraPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
-        if(!contains("id")) throw new InvalidConfigurationException("Flora ID unspecified!");
-        this.id = getString("id");
+
         floraConfig.put(id, this);
     }
 

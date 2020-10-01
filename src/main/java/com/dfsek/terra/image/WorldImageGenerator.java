@@ -2,7 +2,6 @@ package com.dfsek.terra.image;
 
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
-import com.dfsek.terra.config.WorldConfig;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 

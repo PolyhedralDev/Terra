@@ -1,7 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 public class OreConfig extends TerraConfigObject {
     private static final Map<String, OreConfig> ores = new HashMap<>();
@@ -27,33 +29,29 @@ public class OreConfig extends TerraConfigObject {
     private double deform;
     private double deformFrequency;
     private String id;
-    List<Material> replaceable;
+    Set<Material> replaceable;
     public OreConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
     }
 
     @Override
     public void init() throws InvalidConfigurationException {
-        if(!contains("material")) throw new InvalidConfigurationException("Ore material not found!");
-        if(!contains("deform")) throw new InvalidConfigurationException("Ore vein deformation not found!");
-        if(!contains("id")) throw new InvalidConfigurationException("Ore ID not found!");
-        if(!contains("replace")) throw new InvalidConfigurationException("Ore replaceable materials not found!");
+        if(!contains("id")) throw new ConfigException("Ore ID not found!", "null");
+        this.id = getString("id");
+        if(!contains("material")) throw new ConfigException("Ore material not found!", getID());
+        if(!contains("deform")) throw new ConfigException("Ore vein deformation not found!", getID());
+        if(!contains("replace")) throw new ConfigException("Ore replaceable materials not found!", getID());
         min = getInt("radius.min", 1);
         max = getInt("radius.max", 1);
         deform = getDouble("deform");
         deformFrequency = getDouble("deform-frequency");
-        this.id = getString("id");
 
-        try {
-            replaceable = ConfigUtil.getElements(getStringList("replace"), Material.class);
-        } catch(IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid material ID in replace list: " + e.getMessage());
-        }
+        replaceable = ConfigUtil.toBlockData(getStringList("replace"), "replaceable", getID());
 
         try {
             oreData = Bukkit.createBlockData(Objects.requireNonNull(getString("material")));
         } catch(NullPointerException | IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid ore material: " + getString("material"));
+            throw new ConfigException("Invalid ore material: " + getString("material"), getID());
         }
         ores.put(id, this);
     }

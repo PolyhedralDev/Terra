@@ -1,7 +1,7 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
-import com.dfsek.terra.config.ConfigUtil;
+import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -17,7 +17,6 @@ import org.polydev.gaea.world.carving.CarvingData;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
