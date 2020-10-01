@@ -1,8 +1,8 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
@@ -13,11 +13,15 @@ import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Stairs;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
@@ -25,6 +29,7 @@ import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.population.PopulationManager;
 import org.polydev.gaea.world.palette.Palette;
+import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,10 +41,10 @@ import java.util.Map;
 import java.util.Random;
 
 public class TerraChunkGenerator extends GaeaChunkGenerator {
-    private static final BlockData STONE = Material.STONE.createBlockData();
-    private static final BlockData WATER = Material.WATER.createBlockData();
-    private final PopulationManager popMan = new PopulationManager();
+    private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private boolean needsLoad = true;
+
+
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
 
     public TerraChunkGenerator() {
@@ -58,19 +63,77 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         int zOrig = (chunkZ << 4);
         for(byte x = 0; x < 16; x++) {
             for(byte z = 0; z < 16; z++) {
+                int paletteLevel = 0;
+                int cx = xOrig + x;
+                int cz = zOrig + z;
                 Biome b = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.PALETTE_APPLY);
                 BiomeConfig c = BiomeConfig.fromBiome((UserDefinedBiome) b);
                 int sea = c.getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOceanPalette();
-                for(int y = 0; y < 256; y++) {
-                    if(super.getInterpolatedNoise(x, y, z) > 0) chunk.setBlock(x, y, z, STONE);
-                    else if(y <= sea) {
+                for(int y = world.getMaxHeight()-1; y >= 0; y--) {
+                    BlockData data;
+                    if(super.getInterpolatedNoise(x, y, z) > 0) {
+                        data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
+                        chunk.setBlock(x, y, z, data);
+                        if(paletteLevel == 0 && c.getSlabs() != null) {
+                            prepareBlockPart(data, chunk.getBlockData(x, y+1, z), chunk, new Vector(x, y+1, z), c.getSlabs(), c.getStairs(), c.getSlabThreshold());
+                        }
+                        paletteLevel++;
+                    } else if(y <= sea) {
                         chunk.setBlock(x, y, z, seaPalette.get(sea-y, x+xOrig, z+zOrig));
-                    }
+                        paletteLevel = 0;
+                    } else paletteLevel = 0;
                 }
             }
         }
         return chunk;
+    }
+
+    private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs, Map<Material, Palette<BlockData>> stairs, double thresh) {
+        double _11 = getInterpolatedNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ());
+        if(_11 > thresh) {
+            //double _00 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ() - 0.5);
+            double _01 = getInterpolatedNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ());
+            //double _02 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ() + 0.5);
+            double _10 = getInterpolatedNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.5);
+            double _12 = getInterpolatedNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.5);
+            //double _20 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ() - 0.5);
+            double _21 = getInterpolatedNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ());
+            //double _22 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ() + 0.5);
+
+            if(stairs != null) {
+                Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
+                if(stairPalette != null) {
+                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
+                    Stairs finalStair = getStair(new double[] {_01, _10, _12, _21}, (Stairs) stair, thresh);
+                    if(finalStair != null) {
+                        if(orig.matches(Util.WATER)) finalStair.setWaterlogged(true);
+                        chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), finalStair);
+                        return;
+                    }
+                }
+            }
+            BlockData slab = slabs.getOrDefault(down.getMaterial(), Util.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
+            if(slab instanceof Waterlogged) {
+                ((Waterlogged) slab).setWaterlogged(orig.matches(Util.WATER));
+            } else if(orig.matches(Util.WATER)) return;
+            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
+        }
+    }
+
+    private static Stairs getStair(double[] vals, Stairs stair, double thresh) {
+        if(vals.length != 4) throw new IllegalArgumentException();
+        Stairs stairNew = (Stairs) stair.clone();
+        if(vals[0] > thresh) {
+            stairNew.setFacing(BlockFace.WEST);
+        } else if(vals[1] > thresh) {
+            stairNew.setFacing(BlockFace.NORTH);
+        } else if(vals[2] > thresh) {
+            stairNew.setFacing(BlockFace.SOUTH);
+        } else if(vals[3] > thresh) {
+            stairNew.setFacing(BlockFace.EAST);
+        } else return null;
+        return stairNew;
     }
 
     private void load(World w) {

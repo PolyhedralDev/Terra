@@ -23,19 +23,29 @@ public class UserDefinedGenerator extends Generator {
     private final Variable xVar = s.getVariable("x");
     private final Variable yVar = s.getVariable("y");
     private final Variable zVar = s.getVariable("z");
-    private final TreeMap<Integer, Palette<BlockData>> paletteMap;
+    @SuppressWarnings("unchecked")
+    private final Palette<BlockData>[] palettes = new Palette[256];
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
 
     private static final Object noiseLock = new Object();
 
 
-    public UserDefinedGenerator(String e, List<Variable> v, TreeMap<Integer, Palette<BlockData>> pa) throws ParseException {
+    public UserDefinedGenerator(String equation, List<Variable> v, TreeMap<Integer, Palette<BlockData>> pa) throws ParseException {
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
         p.registerFunction("noise3", n3);
-        this.paletteMap = pa;
-        this.noiseExp = p.parse(e, s);
+        for(int y = 0; y < 256; y++) {
+            Palette<BlockData> d = Util.BLANK_PALETTE;
+            for(Map.Entry<Integer, Palette<BlockData>> e : pa.entrySet()) {
+                if(e.getKey() >= y) {
+                    d = e.getValue();
+                    break;
+                }
+            }
+            palettes[y] = d;
+        }
+        this.noiseExp = p.parse(equation, s);
     }
     /**
      * Gets the 2D noise at a pair of coordinates using the provided FastNoise instance.
@@ -85,9 +95,6 @@ public class UserDefinedGenerator extends Generator {
      */
     @Override
     public Palette<BlockData> getPalette(int y) {
-        for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
-            if(e.getKey() >= y ) return e.getValue();
-        }
-        return null;
+        return palettes[y];
     }
 }

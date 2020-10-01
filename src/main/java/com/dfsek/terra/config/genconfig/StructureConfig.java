@@ -6,9 +6,7 @@ import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.structure.GaeaStructure;
-import com.dfsek.terra.structure.StructureSpawn;
-import com.dfsek.terra.structure.StructureSpawnRequirement;
-import org.bukkit.Bukkit;
+import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
@@ -20,7 +18,7 @@ import java.util.Objects;
 public class StructureConfig extends TerraConfigObject {
     private static final Map<String, StructureConfig> configs = new HashMap<>();
     private GaeaStructure structure;
-    private StructureSpawn spawn;
+    private GridSpawn spawn;
     private String id;
     private Range searchStart;
     private Range bound;
@@ -42,7 +40,7 @@ public class StructureConfig extends TerraConfigObject {
         }
         if(!contains("id")) throw new InvalidConfigurationException("No ID specified!");
         id = getString("id");
-        spawn = new StructureSpawn(getInt("spawn.width", 500), getInt("spawn.padding", 100));
+        spawn = new GridSpawn(getInt("spawn.width", 500), getInt("spawn.padding", 100));
         searchStart = new Range(getInt("spawn.start.min", 72), getInt("spawn.start.max", 72));
         bound = new Range(getInt("spawn.bound.min", 48), getInt("spawn.bound.max", 72));
         try {
@@ -62,7 +60,7 @@ public class StructureConfig extends TerraConfigObject {
         return structure;
     }
 
-    public StructureSpawn getSpawn() {
+    public GridSpawn getSpawn() {
         return spawn;
     }
 

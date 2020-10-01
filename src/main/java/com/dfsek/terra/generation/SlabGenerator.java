@@ -37,59 +37,13 @@ public class SlabGenerator extends GenerationPopulator {
                 if(config.getSlabs() == null) continue;
                 double thresh = config.getSlabThreshold();
                 for(int y = 0; y < world.getMaxHeight(); y++) {
-                    if(chunk.getType(x, y, z).isSolid()) continue;
-                    prepareBlockPart(interp, chunk, new Vector(x, y, z), config.getSlabs(), config.getStairs(), thresh);
+
                 }
             }
         }
         return chunk;
     }
-    private static void prepareBlockPart(ChunkInterpolator interp, ChunkGenerator.ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs, Map<Material, Palette<BlockData>> stairs, double thresh) {
-        BlockData down = chunk.getBlockData(block.getBlockX(), block.getBlockY()-1, block.getBlockZ());
-        double _11 = interp.getNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ());
-        if(_11 > thresh) {
-            BlockData orig = chunk.getBlockData(block.getBlockX(), block.getBlockY(), block.getBlockZ());
-            //double _00 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ() - 0.5);
-            double _01 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ());
-            //double _02 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ() + 0.5);
-            double _10 = interp.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.5);
-            double _12 = interp.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.5);
-            //double _20 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ() - 0.5);
-            double _21 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ());
-            //double _22 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ() + 0.5);
 
-            if(stairs != null) {
-                Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
-                if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
-                    Stairs finalStair = getStair(new double[] {_01, _10, _12, _21}, (Stairs) stair, thresh);
-                    if(finalStair != null) {
-                        if(orig.matches(WATER)) finalStair.setWaterlogged(true);
-                        chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), finalStair);
-                        return;
-                    }
-                }
-            }
-            BlockData slab = slabs.getOrDefault(down.getMaterial(), AIRPALETTE).get(0, block.getBlockX(), block.getBlockZ());
-            if(slab instanceof Waterlogged) {
-                ((Waterlogged) slab).setWaterlogged(orig.matches(WATER));
-            } else if(orig.matches(WATER)) return;
-            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
-        }
-    }
 
-    private static Stairs getStair(double[] vals, Stairs stair, double thresh) {
-        if(vals.length != 4) throw new IllegalArgumentException();
-        Stairs stairNew = (Stairs) stair.clone();
-        if(vals[0] > thresh) {
-            stairNew.setFacing(BlockFace.WEST);
-        } else if(vals[1] > thresh) {
-            stairNew.setFacing(BlockFace.NORTH);
-        } else if(vals[2] > thresh) {
-            stairNew.setFacing(BlockFace.SOUTH);
-        } else if(vals[3] > thresh) {
-            stairNew.setFacing(BlockFace.EAST);
-        } else return null;
-        return stairNew;
-    }
+
 }

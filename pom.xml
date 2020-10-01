@@ -95,7 +95,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.10.48</version>
+            <version>1.10.80</version>
         </dependency>
         <dependency>
             <groupId>me.lucko</groupId>

@@ -1,6 +1,5 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
@@ -9,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.math.FastNoise;
 
 import java.io.File;

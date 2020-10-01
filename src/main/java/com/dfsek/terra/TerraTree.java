@@ -45,8 +45,8 @@ public enum TerraTree implements Tree {
     }
 
     @Override
-    public void plant(Location location, Random random, boolean b, JavaPlugin javaPlugin) {
-        if(!validSpawns.contains(location.clone().subtract(0, 1, 0).getBlock().getType())) return;
+    public boolean plant(Location location, Random random, boolean b, JavaPlugin javaPlugin) {
+        if(!validSpawns.contains(location.clone().subtract(0, 1, 0).getBlock().getType())) return false;
         NMSStructure temp = getInstance(location, random);
         int[] size = temp.getDimensions();
         switch(random.nextInt(4)) {
@@ -67,6 +67,6 @@ public enum TerraTree implements Tree {
                 break;
         }
         temp.paste();
-        //location.getBlock().setType(Material.GOLD_BLOCK);
+        return true;
     }
 }

@@ -10,14 +10,13 @@ import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.WorldImageGenerator;
 import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.structure.InitializationException;
-import com.dfsek.terra.structure.StructureSpawn;
+import com.dfsek.terra.procgen.GridSpawn;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class TerraCommand implements CommandExecutor, TabExecutor {
@@ -189,7 +187,7 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                         }
                         return true;
                     } else if("getspawn".equals(args[1])) {
-                        Vector v = new StructureSpawn(250, 250).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
+                        Vector v = new GridSpawn(250, 250).getNearestSpawn(pl.getLocation().getBlockX(), pl.getLocation().getBlockZ(), pl.getWorld().getSeed());
                         sender.sendMessage(v.getBlockX() + ":" + v.getBlockZ());
                     }
             }

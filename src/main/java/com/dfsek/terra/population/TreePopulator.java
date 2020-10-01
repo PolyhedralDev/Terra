@@ -25,18 +25,18 @@ public class TreePopulator extends GaeaBlockPopulator {
             Location origin = chunk.getBlock(x, 0, z).getLocation();
             Biome b = TerraBiomeGrid.fromWorld(world).getBiome(origin, GenerationPhase.POPULATE);
             if(((UserDefinedDecorator) b.getDecorator()).getTreeChance() < random.nextInt(100)) return;
-            int numTrees = 0;
-            for(int i = 0; i < 48; i++) {
+            int max = 50;
+            int att = 0;
+            for(int i = 0; i < b.getDecorator().getTreeDensity() && att < max; ) {
+                att++;
                 int y = WorldUtil.getHighestValidSpawnAt(chunk, x, z);
                 if(y <= 0) continue;
                 origin = chunk.getBlock(x, y, z).getLocation().add(0, 1, 0);
                 b = TerraBiomeGrid.fromWorld(world).getBiome(origin, GenerationPhase.POPULATE);
-                numTrees++;
                 try {
-                    b.getDecorator().getTrees().get(random).plant(origin, random, false, Terra.getInstance());
+                    if(b.getDecorator().getTrees().get(random).plant(origin, random, false, Terra.getInstance())) i++;
                 } catch(NullPointerException ignore) {}
-                if(numTrees >= b.getDecorator().getTreeDensity()) break;
-                x = random.nextInt(16); // Decrease chances of chunk-crossing trees
+                x = random.nextInt(16);
                 z = random.nextInt(16);
             }
         }
