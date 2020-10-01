@@ -1,28 +1,25 @@
-package com.dfsek.terra.command.profile;
+package com.dfsek.terra.command.image.gui;
 
-import com.dfsek.terra.TerraProfiler;
-import com.dfsek.terra.command.PlayerCommand;
 import com.dfsek.terra.command.WorldCommand;
+import com.dfsek.terra.config.WorldConfig;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.profiler.WorldProfiler;
 
 import java.util.Collections;
 import java.util.List;
 
-public class QueryCommand extends WorldCommand {
+public class RawGUICommand extends WorldCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        WorldProfiler profile = TerraProfiler.fromWorld(w);
-        sender.sendMessage(profile.getResultsFormatted());
+    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+        WorldConfig.fromWorld(world).imageLoader.debug(false, sender.getWorld());
         return true;
     }
 
     @Override
     public String getName() {
-        return "query";
+        return "raw";
     }
 
     @Override

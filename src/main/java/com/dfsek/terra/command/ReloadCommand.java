@@ -25,4 +25,9 @@ public class ReloadCommand extends Command {
         sender.sendMessage("Reloaded Terra config.");
         return true;
     }
+
+    @Override
+    public int arguments() {
+        return 0;
+    }
 }

@@ -21,6 +21,11 @@ public class SaveDataCommand extends Command {
     }
 
     @Override
+    public int arguments() {
+        return 0;
+    }
+
+    @Override
     public List<Command> getSubCommands() {
         return Collections.emptyList();
     }

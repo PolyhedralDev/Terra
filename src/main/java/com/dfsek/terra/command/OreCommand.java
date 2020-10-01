@@ -14,22 +14,32 @@ public class OreCommand extends PlayerCommand {
     @Override
     public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Block bl = sender.getTargetBlockExact(25);
-        OreConfig ore = OreConfig.fromID(args[0]);
-        if(ore == null) {
-            sender.sendMessage("Unable to find Ore");
-            return true;
+        if(args.length > 0) {
+            OreConfig ore = OreConfig.fromID(args[0]);
+            if(ore == null) {
+                sender.sendMessage("Unable to find Ore");
+                return true;
+            }
+            if(bl == null) {
+                sender.sendMessage("Block out of range");
+                return true;
+            }
+            ore.doVein(bl.getLocation(), new Random());
+        } else {
+            sender.sendMessage("---------------Terra/ore---------------");
+            sender.sendMessage("Generates a vein of ore at the block you are looking at.");
         }
-        if(bl == null) {
-            sender.sendMessage("Block out of range");
-            return true;
-        }
-        ore.doVein(bl.getLocation(), new Random());
         return true;
     }
 
     @Override
     public List<com.dfsek.terra.command.Command> getSubCommands() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public int arguments() {
+        return 1;
     }
 
     @Override

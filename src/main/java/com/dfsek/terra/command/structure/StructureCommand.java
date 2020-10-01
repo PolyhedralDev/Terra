@@ -23,6 +23,11 @@ public class StructureCommand extends PlayerCommand {
     }
 
     @Override
+    public int arguments() {
+        return 1;
+    }
+
+    @Override
     public String getName() {
         return "structure";
     }

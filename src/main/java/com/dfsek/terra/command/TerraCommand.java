@@ -1,5 +1,6 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.command.image.ImageCommand;
 import com.dfsek.terra.command.profile.ProfileCommand;
 import com.dfsek.terra.command.structure.StructureCommand;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
@@ -22,7 +23,8 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
             new OreCommand(),
             new ProfileCommand(),
             new SaveDataCommand(),
-            new StructureCommand());
+            new StructureCommand(),
+            new ImageCommand());
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

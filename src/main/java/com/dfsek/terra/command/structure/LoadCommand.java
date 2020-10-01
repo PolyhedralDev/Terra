@@ -36,4 +36,9 @@ public class LoadCommand extends PlayerCommand {
     public List<com.dfsek.terra.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
+
+    @Override
+    public int arguments() {
+        return 3;
+    }
 }
