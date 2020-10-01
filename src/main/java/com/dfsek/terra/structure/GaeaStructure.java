@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.Range;
+import org.polydev.gaea.math.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;

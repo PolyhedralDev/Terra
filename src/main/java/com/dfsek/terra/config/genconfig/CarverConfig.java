@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.Range;
+import org.polydev.gaea.math.Range;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;

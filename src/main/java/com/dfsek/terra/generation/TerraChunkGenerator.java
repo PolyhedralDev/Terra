@@ -71,9 +71,8 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int sea = c.getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOceanPalette();
                 for(int y = world.getMaxHeight()-1; y >= 0; y--) {
-                    BlockData data;
                     if(super.getInterpolatedNoise(x, y, z) > 0) {
-                        data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
+                        BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && c.getSlabs() != null) {
                             prepareBlockPart(data, chunk.getBlockData(x, y+1, z), chunk, new Vector(x, y+1, z), c.getSlabs(), c.getStairs(), c.getSlabThreshold());
@@ -92,15 +91,10 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs, Map<Material, Palette<BlockData>> stairs, double thresh) {
         double _11 = getInterpolatedNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ());
         if(_11 > thresh) {
-            //double _00 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ() - 0.5);
             double _01 = getInterpolatedNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ());
-            //double _02 = interp.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ() + 0.5);
             double _10 = getInterpolatedNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.5);
             double _12 = getInterpolatedNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.5);
-            //double _20 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ() - 0.5);
             double _21 = getInterpolatedNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ());
-            //double _22 = interp.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ() + 0.5);
-
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {

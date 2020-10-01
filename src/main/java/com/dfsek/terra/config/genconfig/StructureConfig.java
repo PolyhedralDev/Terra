@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.Range;
+import org.polydev.gaea.math.Range;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;

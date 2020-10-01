@@ -1,6 +1,6 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Range;
+import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;

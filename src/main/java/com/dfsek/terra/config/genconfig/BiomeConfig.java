@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.Range;
+import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.UserDefinedDecorator;

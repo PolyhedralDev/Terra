@@ -66,16 +66,28 @@ public class PaletteConfig extends TerraConfigObject {
         return paletteID;
     }
 
+    @SuppressWarnings("unchecked")
     protected static Palette<BlockData> getPalette(List<Map<?, ?>> maps, Palette<BlockData> p) throws InvalidConfigurationException {
         for(Map<?, ?> m : maps) {
             try {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
-                for(Map<?, ?> entry : (List<Map<?, ?>>) m.get("materials")) {
-                    for(Map.Entry<?, ?> type : entry.entrySet()) {
-                        layer.add(Bukkit.createBlockData((String) type.getKey()), (Integer) type.getValue());
+                List<Map<?, ?>> map = (List<Map<?, ?>>) m.get("materials");
+                if(map.size() > 1) {
+                    for(Map<?, ?> entry : map) {
+                        for(Map.Entry<?, ?> type : entry.entrySet()) {
+                            layer.add(Bukkit.createBlockData((String) type.getKey()), (Integer) type.getValue());
+                        }
                     }
+                    p.add(layer, (Integer) m.get("layers"));
+                } else {
+                    Bukkit.getLogger().info("One-block palette layer!");
+                    String data = "null";
+                    for(Map.Entry<?, ?> e: map.get(0).entrySet()) {
+                        data = (String) e.getKey();
+                    }
+                    p.add(Bukkit.createBlockData(data), (Integer) m.get("layers"));
                 }
-                p.add(layer, (Integer) m.get("layers"));
+
             } catch(ClassCastException e) {
                 throw new InvalidConfigurationException("SEVERE configuration error for Palette: \n\n" + e.getMessage());
             }

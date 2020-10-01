@@ -1,6 +1,7 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
+import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -26,6 +27,7 @@ public class CavePopulator extends BlockPopulator {
     private static final BlockData AIR = Material.AIR.createBlockData();
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+        if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
             for(CarverConfig c : CarverConfig.getCarvers()) {
                 Map<Location, Material> shiftCandidate = new HashMap<>();

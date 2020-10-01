@@ -23,12 +23,9 @@ import java.util.Random;
 import java.util.Set;
 
 public class FloraPopulator extends GaeaBlockPopulator {
-    Set<Chunk> pop = new HashSet<>();
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
-            if(pop.contains(chunk)) Bukkit.getLogger().warning("Already populated flora in chunk: " + chunk);
-            pop.add(chunk);
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     UserDefinedBiome biome = (UserDefinedBiome) TerraBiomeGrid.fromWorld(world).getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
@@ -39,8 +36,8 @@ public class FloraPopulator extends GaeaBlockPopulator {
                             Flora item;
                             if(c.isFloraSimplex()) item = biome.getDecorator().getFlora().get(c.getFloraNoise(), (chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                             else item = biome.getDecorator().getFlora().get(random);
-                            for(Block highest : item.getValidSpawnsAt(chunk, x, z)) {
-                                if(c.getFloraHeights(item).isInRange(highest.getY()) && random.nextInt(100) < biome.getDecorator().getFloraChance())
+                            for(Block highest : item.getValidSpawnsAt(chunk, x, z, c.getFloraHeights(item))) {
+                                if(random.nextInt(100) < biome.getDecorator().getFloraChance())
                                     item.plant(highest.getLocation());
                             }
                         }

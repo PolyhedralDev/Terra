@@ -4,11 +4,14 @@ import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.util.Vector;
+import org.polydev.gaea.math.Range;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
@@ -82,12 +85,12 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     }
 
     @Override
-    public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z) {
+    public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
         List<Block> blocks = new ArrayList<>();
-        int y;
-        for(y = chunk.getWorld().getMaxHeight() - 1; y > 0; y--) {
-            if(spawnable.contains(chunk.getBlock(x, y, z).getType()) && replaceable.contains(chunk.getBlock(x, y+1, z).getType())) {
-                blocks.add(chunk.getBlock(x, y, z));
+        for(int y : range) {
+            Block check = chunk.getBlock(x, y, z);
+            if(spawnable.contains(check.getType())) {
+                blocks.add(check);
             }
         }
         return blocks;
