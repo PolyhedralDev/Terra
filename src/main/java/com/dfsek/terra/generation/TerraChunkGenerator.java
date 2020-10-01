@@ -1,8 +1,11 @@
 package com.dfsek.terra.generation;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
@@ -59,6 +62,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         if(needsLoad) load(world);
         StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
+        TerraConfig config = TerraWorld.getWorld(world).getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         for(byte x = 0; x < 16; x++) {
@@ -67,7 +71,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int cx = xOrig + x;
                 int cz = zOrig + z;
                 Biome b = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.PALETTE_APPLY);
-                BiomeConfig c = BiomeConfig.fromBiome((UserDefinedBiome) b);
+                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
                 int sea = c.getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOceanPalette();
                 for(int y = world.getMaxHeight()-1; y >= 0; y--) {
@@ -166,13 +170,13 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public List<GenerationPopulator> getGenerationPopulators(World world) {
-        return Collections.singletonList(new SlabGenerator());
+        return Collections.emptyList();
     }
 
 
     @Override
     public org.polydev.gaea.biome.BiomeGrid getBiomeGrid(World world) {
-        return TerraBiomeGrid.fromWorld(world);
+        return TerraWorld.getWorld(world).getGrid();
     }
 
     @Override

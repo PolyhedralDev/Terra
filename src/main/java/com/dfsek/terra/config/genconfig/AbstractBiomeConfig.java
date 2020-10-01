@@ -1,7 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -9,28 +10,26 @@ import org.polydev.gaea.world.palette.Palette;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class AbstractBiomeConfig extends TerraConfigObject {
-    private static final Map<String, AbstractBiomeConfig> biomes = new HashMap<>();
-    private String biomeID;
-    private int floraChance;
-    private int treeChance;
-    private int treeDensity;
-    private String equation;
-    private int floraAttempts;
+    private final String biomeID;
+    private final int floraChance;
+    private final int treeChance;
+    private final int treeDensity;
+    private final String equation;
+    private final int floraAttempts;
     private double slabThreshold;
     private Map<Material, Palette<BlockData>> slabs;
     private Map<Material, Palette<BlockData>> stairs;
     private boolean useStairs;
-    private boolean floraSimplex;
-    private int floraSeed;
-    private float floraFreq;
-    private String oceanPalette;
-    private int seaLevel;
+    private final boolean floraSimplex;
+    private final int floraSeed;
+    private final float floraFreq;
+    private final String oceanPalette;
+    private final int seaLevel;
     private List<Map<?, ?>> paletteData;
     private Map<String, Object> floraData;
     private Map<String, Object> oreData;
@@ -38,12 +37,9 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private List<Map<?, ?>> carvingData;
     private List<String> structureConfigs;
 
-    public AbstractBiomeConfig(File file) throws IOException, InvalidConfigurationException {
-        super(file);
-    }
-
-    @Override
-    public void init() throws InvalidConfigurationException {
+    public AbstractBiomeConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+        super(file, config);
+        load(file);
         if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
@@ -80,8 +76,6 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         }
 
         if(contains("structures")) structureConfigs = getStringList("structures");
-
-        biomes.put(biomeID, this);
     }
 
     @Override
@@ -107,10 +101,6 @@ public class AbstractBiomeConfig extends TerraConfigObject {
 
     public String getEquation() {
         return equation;
-    }
-
-    public static AbstractBiomeConfig fromID(String id) {
-        return biomes.get(id);
     }
 
     public Map<Material, Palette<BlockData>> getSlabs() {

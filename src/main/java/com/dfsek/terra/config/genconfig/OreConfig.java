@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -22,20 +23,15 @@ import java.util.Random;
 import java.util.Set;
 
 public class OreConfig extends TerraConfigObject {
-    private static final Map<String, OreConfig> ores = new HashMap<>();
-    private BlockData oreData;
-    private int min;
-    private int max;
-    private double deform;
-    private double deformFrequency;
-    private String id;
+    private final BlockData oreData;
+    private final int min;
+    private final int max;
+    private final double deform;
+    private final double deformFrequency;
+    private final String id;
     Set<Material> replaceable;
-    public OreConfig(File file) throws IOException, InvalidConfigurationException {
-        super(file);
-    }
-
-    @Override
-    public void init() throws InvalidConfigurationException {
+    public OreConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+        super(file, config);
         if(!contains("id")) throw new ConfigException("Ore ID not found!", "null");
         this.id = getString("id");
         if(!contains("material")) throw new ConfigException("Ore material not found!", getID());
@@ -53,8 +49,8 @@ public class OreConfig extends TerraConfigObject {
         } catch(NullPointerException | IllegalArgumentException e) {
             throw new ConfigException("Invalid ore material: " + getString("material"), getID());
         }
-        ores.put(id, this);
     }
+
     private int randomInRange(Random r) {
         return r.nextInt(max-min+1)+min;
     }
@@ -75,10 +71,6 @@ public class OreConfig extends TerraConfigObject {
         }
     }
 
-    public static List<String> getOreIDs() {
-        return new ArrayList<>(ores.keySet());
-    }
-
     @Override
     public String toString() {
         return "Ore with ID " + getID();
@@ -86,9 +78,5 @@ public class OreConfig extends TerraConfigObject {
 
     public String getID() {
         return id;
-    }
-
-    public static OreConfig fromID(String id) {
-        return ores.get(id);
     }
 }

@@ -1,59 +1,49 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
-import org.polydev.gaea.math.Range;
-import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.math.Range;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
 public class CarverConfig extends TerraConfigObject {
-    private static final Map<String, CarverConfig> caveConfig = new HashMap<>();
-    private UserDefinedCarver carver;
-    private String id;
-    private Set<Material> replaceableInner;
-    private Set<Material> replaceableOuter;
-    private Set<Material> replaceableTop;
-    private Set<Material> replaceableBottom;
-    private Set<Material> update;
-    private Map<Material, Set<Material>> shift;
-    private Map<Integer, ProbabilityCollection<BlockData>> inner;
-    private Map<Integer, ProbabilityCollection<BlockData>> outer;
-    private Map<Integer, ProbabilityCollection<BlockData>> top;
-    private Map<Integer, ProbabilityCollection<BlockData>> bottom;
-    private boolean replaceIsBlacklistInner;
-    private boolean replaceIsBlacklistOuter;
-    private boolean replaceIsBlacklistTop;
-    private boolean replaceIsBlacklistBottom;
+    private final UserDefinedCarver carver;
+    private final String id;
+    private final Set<Material> replaceableInner;
+    private final Set<Material> replaceableOuter;
+    private final Set<Material> replaceableTop;
+    private final Set<Material> replaceableBottom;
+    private final Set<Material> update;
+    private final Map<Material, Set<Material>> shift;
+    private final Map<Integer, ProbabilityCollection<BlockData>> inner;
+    private final Map<Integer, ProbabilityCollection<BlockData>> outer;
+    private final Map<Integer, ProbabilityCollection<BlockData>> top;
+    private final Map<Integer, ProbabilityCollection<BlockData>> bottom;
+    private final boolean replaceIsBlacklistInner;
+    private final boolean replaceIsBlacklistOuter;
+    private final boolean replaceIsBlacklistTop;
+    private final boolean replaceIsBlacklistBottom;
 
-    public CarverConfig(File file) throws IOException, InvalidConfigurationException {
-        super(file);
-    }
-
-    public String getID() {
-        return id;
-    }
-
-    public UserDefinedCarver getCarver() {
-        return carver;
-    }
-
-    @Override
-    public void init() throws InvalidConfigurationException {
+    @SuppressWarnings("unchecked")
+    public CarverConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+        super(file, config);
+        load(file);
         if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
         id = getString("id");
 
@@ -76,7 +66,7 @@ public class CarverConfig extends TerraConfigObject {
         update = ConfigUtil.toBlockData(getStringList("update"), "update", getID());
 
         shift = new HashMap<>();
-        for(Map.Entry<String, Object> e : getConfigurationSection("shift").getValues(false).entrySet()) {
+        for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("shift")).getValues(false).entrySet()) {
             Set<Material> l = new HashSet<>();
             for(String s : (List<String>) e.getValue()) {
                 l.add(Bukkit.createBlockData(s).getMaterial());
@@ -99,9 +89,17 @@ public class CarverConfig extends TerraConfigObject {
         Range height = new Range(getInt("start.height.min"), getInt("start.height.max"));
 
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), getInt("cut.top", 0), getInt("cut.bottom", 0));
-        caveConfig.put(id, this);
     }
 
+    public String getID() {
+        return id;
+    }
+
+    public UserDefinedCarver getCarver() {
+        return carver;
+    }
+
+    @SuppressWarnings("unchecked")
     private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
         if(!contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
         Map<Integer, ProbabilityCollection<BlockData>> result = new TreeMap<>();
@@ -188,19 +186,5 @@ public class CarverConfig extends TerraConfigObject {
     @Override
     public String toString() {
         return "Carver with ID " + getID();
-    }
-
-    public static List<CarverConfig> getCarvers() {
-        return new ArrayList<>(caveConfig.values());
-    }
-    public static CarverConfig fromID(String id) {
-        return caveConfig.get(id);
-    }
-
-    public static CarverConfig fromDefinedCarver(UserDefinedCarver c) {
-        for(CarverConfig co : caveConfig.values()) {
-            if(co.getCarver().equals(c)) return co;
-        }
-        throw new IllegalArgumentException("Unable to find carver!");
     }
 }

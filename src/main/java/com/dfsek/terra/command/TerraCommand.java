@@ -45,8 +45,8 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
     }
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(args[0].equals("tpbiome")) return BiomeConfig.getBiomeIDs();
+        /*if(args[0].equals("tpbiome")) return BiomeConfig.getBiomeIDs();
         else if(args[0].equals("ore")) return OreConfig.getOreIDs();
-        else return Collections.emptyList();
+        else*/ return Collections.emptyList();
     }
 }

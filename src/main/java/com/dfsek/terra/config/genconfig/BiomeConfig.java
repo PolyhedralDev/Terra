@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import org.polydev.gaea.math.Range;
@@ -39,13 +40,12 @@ import java.util.Random;
 import java.util.TreeMap;
 
 public class BiomeConfig extends TerraConfigObject {
-    private static final Map<String, BiomeConfig> biomes = new HashMap<>();
     private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
-    private UserDefinedBiome biome;
-    private String biomeID;
+    private final UserDefinedBiome biome;
+    private final String biomeID;
     private Map<OreConfig, Range> ores;
     private Map<OreConfig, Range> oreHeights;
-    private Map<CarverConfig, Integer> carvers;
+    private final Map<CarverConfig, Integer> carvers;
     private Map<Flora, Range> floraHeights;
     private String eq;
     private int floraAttempts;
@@ -54,17 +54,16 @@ public class BiomeConfig extends TerraConfigObject {
     private double slabThreshold;
     private boolean floraSimplex;
     private FastNoise floraNoise;
-    private Palette<BlockData> ocean;
+    private final Palette<BlockData> ocean;
     private int seaLevel;
-    private List<StructureConfig> structures;
+    private final List<StructureConfig> structures;
+    private final TerraConfig config;
 
-    public BiomeConfig(File file) throws InvalidConfigurationException, IOException {
-        super(file);
-    }
-
-    @Override
     @SuppressWarnings("unchecked, rawtypes")
-    public void init() throws InvalidConfigurationException {
+    public BiomeConfig(File file, TerraConfig config) throws InvalidConfigurationException, IOException {
+        super(file, config);
+        load(file);
+        this.config = config;
         if(!contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
@@ -74,7 +73,7 @@ public class BiomeConfig extends TerraConfigObject {
         // Check if biome extends an abstract biome, load abstract biome if so.
         if(contains("extends")) {
             try {
-                abstractBiome = AbstractBiomeConfig.fromID(getString("extends"));
+                abstractBiome = config.getAbstractBiomes().get(getString("extends"));
                 extending = true;
                 Bukkit.getLogger().info("Extending biome " + getString("extends"));
             } catch(NullPointerException e) {
@@ -107,7 +106,7 @@ public class BiomeConfig extends TerraConfigObject {
                         }
                         else {
                             try {
-                                paletteMap.put((Integer) entry.getValue(), PaletteConfig.fromID((String) entry.getKey()).getPalette());
+                                paletteMap.put((Integer) entry.getValue(), config.getPalette((String) entry.getKey()).getPalette());
                             } catch(NullPointerException ex) {
                                 throw new NotFoundException("Palette", (String) entry.getKey(), getID());
                             }
@@ -135,7 +134,7 @@ public class BiomeConfig extends TerraConfigObject {
             for(Map<?, ?> e : carvingData) {
                 for(Map.Entry<?, ?> entry : e.entrySet()) {
                     try {
-                        CarverConfig c = CarverConfig.fromID((String) entry.getKey());
+                        CarverConfig c = getConfig().getCarver((String) entry.getKey());
                         Bukkit.getLogger().info("Got carver " + c + ". Adding with weight " + entry.getValue());
                         carvers.put(c, (Integer) entry.getValue());
                     } catch(ClassCastException ex) {
@@ -207,7 +206,7 @@ public class BiomeConfig extends TerraConfigObject {
                     } catch(IllegalArgumentException ex) {
                         try {
                             Bukkit.getLogger().info("[Terra] Is custom flora: true");
-                            Flora floraCustom = FloraConfig.fromID(e.getKey());
+                            Flora floraCustom = getConfig().getFlora(e.getKey());
                             flora.add(floraCustom, (Integer) val.get("weight"));
                             floraHeights.put(floraCustom, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                         } catch(NullPointerException ex2) {
@@ -271,8 +270,8 @@ public class BiomeConfig extends TerraConfigObject {
         }
         if(oreData != null) {
             for(Map.Entry<String, Object> m : oreData.entrySet()) {
-                ores.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
-                oreHeights.put(OreConfig.fromID(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
+                ores.put(config.getOre(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
+                oreHeights.put(config.getOre(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
             }
         } else {
             ores = new HashMap<>();
@@ -295,7 +294,7 @@ public class BiomeConfig extends TerraConfigObject {
                 }
             } else {
                 try {
-                    ocean = PaletteConfig.fromID(oceanPalette).getPalette();
+                    ocean = config.getPalette(oceanPalette).getPalette();
                 } catch(NullPointerException ex) {
                     throw new NotFoundException("Palette", oceanPalette, getID());
                 }
@@ -342,7 +341,7 @@ public class BiomeConfig extends TerraConfigObject {
         if(contains("structures")) st = getStringList("structures");
         for(String s : st) {
             try {
-                structures.add(Objects.requireNonNull(StructureConfig.fromID(s)));
+                structures.add(Objects.requireNonNull(config.getStructure(s)));
             } catch(NullPointerException e) {
                 throw new NotFoundException("Structure", s, getID());
             }
@@ -355,7 +354,6 @@ public class BiomeConfig extends TerraConfigObject {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());
         }
-        biomes.put(biomeID, this);
     }
 
     public Range getOreHeight(OreConfig c) {
@@ -382,31 +380,13 @@ public class BiomeConfig extends TerraConfigObject {
         return floraHeights.computeIfAbsent(f, input -> new Range(-1, -1));
     }
 
-    public static BiomeConfig fromBiome(UserDefinedBiome b) {
-        for(BiomeConfig biome : biomes.values()) {
-            if(biome.getBiome().equals(b)) return biome;
-        }
-        for(BiomeConfig biome : biomes.values()) {
-            Bukkit.getLogger().info(biome.getID() + ":" + biome.hashCode() + " : " + b.getID() + ":" + b.hashCode());
-        }
-        throw new IllegalArgumentException("No BiomeConfig for provided biome.");
-    }
-
-    public static List<String> getBiomeIDs() {
-        return new ArrayList<>(biomes.keySet());
-    }
-
-    public static BiomeConfig fromID(String id) {
-        return biomes.get(id);
-    }
-
     @Override
     public String toString() {
         return "Biome with ID " + getID() + " and noise equation " + eq;
     }
 
     public int getCarverChance(UserDefinedCarver c) {
-        return carvers.getOrDefault(CarverConfig.fromDefinedCarver(c), 0);
+        return carvers.getOrDefault(config.getCarver(c), 0);
     }
 
     public double getSlabThreshold() {

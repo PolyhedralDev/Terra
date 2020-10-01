@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
@@ -13,22 +14,16 @@ import org.polydev.gaea.world.palette.SimplexPalette;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class PaletteConfig extends TerraConfigObject {
-    private static final Map<String, PaletteConfig> palettes = new HashMap<>();
-    private Palette<BlockData> palette;
-    private String paletteID;
+    private final Palette<BlockData> palette;
+    private final String paletteID;
     private boolean useNoise = false;
-    public PaletteConfig(File file) throws IOException, InvalidConfigurationException {
-        super(file);
-    }
-
-    @Override
-    public void init() throws InvalidConfigurationException {
+    public PaletteConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+        super(file, config);
         if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
         this.paletteID = getString("id");
         Palette<BlockData> pal;
@@ -41,7 +36,6 @@ public class PaletteConfig extends TerraConfigObject {
             pal = new SimplexPalette<>(pNoise);
         } else pal = new RandomPalette<>(new Random(getInt("seed", 3)));
         palette = getPalette(getMapList("blocks"), pal);
-        palettes.put(paletteID, this);
     }
 
     public Palette<BlockData> getPalette() {
@@ -83,9 +77,5 @@ public class PaletteConfig extends TerraConfigObject {
     @Override
     public String toString() {
         return "Palette with ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
-    }
-
-    public static PaletteConfig fromID(String id) {
-        return palettes.get(id);
     }
 }

@@ -14,11 +14,10 @@ public class UserDefinedGrid extends BiomeGrid {
     private final boolean fromImage;
     private final ImageLoader.Channel channelX;
     private final ImageLoader.Channel channelZ;
-    public UserDefinedGrid(World w, float freq1, float freq2, UserDefinedBiome[][] b) {
+    public UserDefinedGrid(World w, float freq1, float freq2, UserDefinedBiome[][] b, WorldConfig c) {
         super(w, freq1, freq2, b.length, b[0].length);
         super.setNormalType(NormalType.LOOKUP4096);
         super.setGrid(b);
-        WorldConfig c = WorldConfig.fromWorld(w);
         imageLoader = c.imageLoader;
         fromImage = c.fromImage;
         channelX = c.biomeXChannel;

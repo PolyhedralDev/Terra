@@ -1,8 +1,10 @@
 package com.dfsek.terra.image;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.WorldConfig;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 
@@ -45,8 +47,8 @@ public class ImageLoader {
     }
     private static BufferedImage redrawStepped(BufferedImage original, World w, Align align) {
         BufferedImage newImg = copyImage(original);
-        TerraBiomeGrid tb = TerraBiomeGrid.fromWorld(w);
-        BiomeZone z = BiomeZone.fromWorld(w);
+        TerraBiomeGrid tb = TerraWorld.getWorld(w).getGrid();
+        BiomeZone z = TerraWorld.getWorld(w).getZone();
         for(int x = 0; x < newImg.getWidth(); x++) {
             for(int y = 0; y < newImg.getHeight(); y++) {
                 float[] noise;

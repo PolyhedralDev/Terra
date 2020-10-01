@@ -1,5 +1,6 @@
 package com.dfsek.terra.image;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -34,12 +35,12 @@ public class DebugFrame extends JFrame implements ActionListener {
             if(! (p.getWorld().getGenerator() instanceof TerraChunkGenerator)) break;
             int xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
             int zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
-            ImageLoader loader = WorldConfig.fromWorld(p.getWorld()).imageLoader;
+            ImageLoader loader = TerraWorld.getWorld(p.getWorld()).getWorldConfig().imageLoader;
             if(loader != null && loader.getAlign().equals(ImageLoader.Align.NONE)) {
                 xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX(), x) / x) * getWidth());
                 zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ(), z) / z) * getHeight());
             }
-            String str = BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(p.getWorld()).getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
+            String str = TerraWorld.getWorld(p.getWorld()).getConfig().getBiome((UserDefinedBiome) TerraWorld.getWorld(p.getWorld()).getGrid().getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
             g.setColor(new Color(255, 255, 255, 128));
             g.fillRect(xp + 13, zp - 13, (int) (8 + 8.25 * str.length()), 33);
             g.setColor(Color.BLACK);

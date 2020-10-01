@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import org.polydev.gaea.math.Range;
@@ -18,24 +19,19 @@ import java.util.Map;
 import java.util.Objects;
 
 public class StructureConfig extends TerraConfigObject {
-    private static final Map<String, StructureConfig> configs = new HashMap<>();
-    private GaeaStructure structure;
-    private GridSpawn spawn;
-    private String id;
-    private Range searchStart;
-    private Range bound;
+    private final GaeaStructure structure;
+    private final GridSpawn spawn;
+    private final String id;
+    private final Range searchStart;
+    private final Range bound;
     StructurePopulator.SearchType type;
-    public StructureConfig(File file) throws IOException, InvalidConfigurationException {
-        super(file);
-    }
-
-    @Override
-    public void init() throws InvalidConfigurationException {
+    public StructureConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+        super(file, config);
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");
         try {
-            File file = new File(Terra.getInstance().getDataFolder() + File.separator + "config" + File.separator + "structures" + File.separator + "data", Objects.requireNonNull(getString("file")));
-            structure = GaeaStructure.load(file);
+            File structureFile = new File(config.getDataFolder() + File.separator + "structures" + File.separator + "data", Objects.requireNonNull(getString("file")));
+            structure = GaeaStructure.load(structureFile);
         } catch(IOException | NullPointerException e) {
             if(ConfigUtil.debug) {
                 e.printStackTrace();
@@ -51,7 +47,6 @@ public class StructureConfig extends TerraConfigObject {
         } catch(IllegalArgumentException e) {
             throw new ConfigException("Invalid search type, " + getString("spawn.search"), getID());
         }
-        configs.put(id, this);
     }
 
     @Override
@@ -73,9 +68,5 @@ public class StructureConfig extends TerraConfigObject {
 
     public Range getSearchStart() {
         return searchStart;
-    }
-
-    public static StructureConfig fromID(String id) {
-        return configs.get(id);
     }
 }

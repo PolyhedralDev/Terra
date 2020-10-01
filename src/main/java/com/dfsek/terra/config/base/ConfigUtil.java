@@ -3,6 +3,7 @@ package com.dfsek.terra.config.base;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.ConfigLoader;
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.genconfig.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
@@ -27,7 +28,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class ConfigUtil {
+public final class ConfigUtil {
     public static boolean debug;
     public static long dataSave; // Period of population data saving, in ticks.
     public static boolean masterDisableCaves;
@@ -42,25 +43,7 @@ public class ConfigUtil {
         Logger logger = main.getLogger();
         logger.info("Loading config values");
 
-        new ConfigLoader("ores").load(main, OreConfig.class);
-
-        new ConfigLoader("palettes").load(main, PaletteConfig.class);
-
-        new ConfigLoader("carving").load(main, CarverConfig.class);
-
-        new ConfigLoader("flora").load(main, FloraConfig.class);
-
-        new ConfigLoader("structures" + File.separator + "single").load(main, StructureConfig.class);
-
-        new ConfigLoader("abstract" + File.separator + "biomes").load(main, AbstractBiomeConfig.class);
-
-        TerraBiomeGrid.invalidate();
-        BiomeZone.invalidate(); // Invalidate BiomeZone and BiomeGrid caches to prevent old instances from being accessed.
-        new ConfigLoader("biomes").load(main, BiomeConfig.class);
-
-        new ConfigLoader("grids").load(main, BiomeGridConfig.class);
-
-        WorldConfig.reloadAll();
+        TerraConfig.loadAll(main);
     }
 
     public static <E extends Enum<E>> List<E> getElements(List<String> st, Class<E> clazz) {

@@ -32,7 +32,7 @@ public class BiomeConfigUtil {
                         }
                     } else {
                         try {
-                            Palette<BlockData> p = PaletteConfig.fromID((String) entry.getValue()).getPalette();
+                            Palette<BlockData> p = config.getConfig().getPalette((String) entry.getValue()).getPalette();
                             if(p.getSize() != 1) throw new InvalidConfigurationException("Slab palette must hold only one layer. Palette " + entry.getValue() + " is too large/small");
                             paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), p);
                         } catch(NullPointerException ex) {

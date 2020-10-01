@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -26,19 +27,15 @@ import java.util.Random;
 import java.util.Set;
 
 public class FloraConfig extends TerraConfigObject implements Flora {
-    private static final Map<String, FloraConfig> floraConfig = new HashMap<>();
-    private Palette<BlockData> floraPalette;
-    private String id;
+    private final Palette<BlockData> floraPalette;
+    private final String id;
     
     Set<Material> spawnable;
     Set<Material> replaceable;
 
-    public FloraConfig(File file) throws IOException, InvalidConfigurationException {
-        super(file);
-    }
-
-    @Override
-    public void init() throws InvalidConfigurationException {
+    public FloraConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+        super(file, config);
+        load(file);
         if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
         this.id = getString("id");
         if(!contains("blocks")) throw new ConfigException("No blocks defined in custom flora!", getID());
@@ -50,8 +47,6 @@ public class FloraConfig extends TerraConfigObject implements Flora {
         Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
         floraPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
-
-        floraConfig.put(id, this);
     }
 
     public String getID() {
@@ -85,9 +80,5 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     @Override
     public String toString() {
         return "Flora with name ID " + getID();
-    }
-
-    public static FloraConfig fromID(String id) {
-        return floraConfig.get(id);
     }
 }

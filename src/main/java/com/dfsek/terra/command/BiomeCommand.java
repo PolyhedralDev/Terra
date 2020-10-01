@@ -1,9 +1,11 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.command.type.PlayerCommand;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.base.WorldConfig;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,16 +14,12 @@ import org.polydev.gaea.generation.GenerationPhase;
 import java.util.Collections;
 import java.util.List;
 
-public class BiomeCommand extends PlayerCommand {
+public class BiomeCommand extends WorldCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        TerraBiomeGrid grid = TerraBiomeGrid.fromWorld(sender.getWorld());
-        if(grid == null) {
-            sender.sendMessage("Not a Terra world!");
-            return true;
-        }
+    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
+        TerraBiomeGrid grid = TerraWorld.getWorld(sender.getWorld()).getGrid();
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(sender.getLocation(), GenerationPhase.POPULATE);
-        sender.sendMessage("You are in " + BiomeConfig.fromBiome(biome).getID());
+        sender.sendMessage("You are in " + TerraWorld.getWorld(w).getConfig().getBiome(biome).getID());
         return true;
     }
 

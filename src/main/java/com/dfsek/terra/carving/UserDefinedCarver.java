@@ -1,5 +1,8 @@
 package com.dfsek.terra.carving;
 
+import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.WorldConfig;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -44,7 +47,8 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        return new Random(random.nextLong()+hash).nextInt(100) < BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(w).getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
+        TerraConfig c = TerraWorld.getWorld(w).getConfig();
+        return new Random(random.nextLong()+hash).nextInt(100) < c.getBiome((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
     }
 
     private class UserDefinedWorm extends Worm {

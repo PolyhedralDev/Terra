@@ -1,5 +1,6 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
@@ -14,29 +15,22 @@ import java.util.Map;
 import java.util.Objects;
 
 public class BiomeZone {
-    private BiomeGrid[] grids;
+    private final BiomeGrid[] grids;
     private final FastNoise noise;
-    private static final Map<World, BiomeZone> zones = new HashMap<>();
     @Nullable
     private final ImageLoader imageLoader;
     private final boolean useImage;
     private final ImageLoader.Channel channel;
 
-    private BiomeZone(World w) {
+    public BiomeZone(World w, WorldConfig wc, BiomeGrid[] grids) {
         this.noise = new FastNoise((int) w.getSeed()+2);
         this.noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
         this.noise.setFractalOctaves(4);
-        this.noise.setFrequency(WorldConfig.fromWorld(w).zoneFreq);
-        WorldConfig c = WorldConfig.fromWorld(w);
-        setZones(c.definedGrids);
-        imageLoader = c.imageLoader;
-        useImage = c.fromImage;
-        channel = c.zoneChannel;
-        zones.put(w, this);
-    }
-
-    public void setZones(@NotNull BiomeGrid[] grids) {
+        this.noise.setFrequency(wc.getConfig().zoneFreq);
         this.grids = grids;
+        imageLoader = wc.imageLoader;
+        useImage = wc.fromImage;
+        channel = wc.zoneChannel;
     }
 
     protected BiomeGrid getGrid(int x, int z) {
@@ -53,14 +47,5 @@ public class BiomeZone {
 
     public double getRawNoise(int x, int z) {
         return useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z);
-    }
-
-    public static BiomeZone fromWorld(World w) {
-        if(zones.containsKey(w)) return zones.get(w);
-        else return new BiomeZone(w);
-    }
-
-    public static void invalidate() {
-        zones.clear();
     }
 }

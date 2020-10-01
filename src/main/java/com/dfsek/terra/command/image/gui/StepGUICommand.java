@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.base.WorldConfig;
@@ -19,7 +20,7 @@ public class StepGUICommand extends WorldCommand {
             sender.sendMessage("Debug mode must be enabled to use the debug GUI! The debug GUI is NOT PRODUCTION SAFE!");
             return true;
         }
-        ImageLoader loader = WorldConfig.fromWorld(world).imageLoader;
+        ImageLoader loader = TerraWorld.getWorld(world).getWorldConfig().imageLoader;
         if(loader != null) loader.debug(true, sender.getWorld());
         else ImageLoader.debugWorld(true, world);
         return true;

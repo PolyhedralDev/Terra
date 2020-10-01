@@ -1,7 +1,9 @@
 package com.dfsek.terra.structure;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -50,21 +52,23 @@ public class StructureSpawnRequirement  implements Serializable {
         AIR {
             @Override
             public boolean matches(World w, int x, int y, int z) {
-                UserDefinedBiome b = (UserDefinedBiome) TerraBiomeGrid.fromWorld(w).getBiome(x, z, GenerationPhase.POPULATE);
-                if(y <= BiomeConfig.fromBiome(b).getSeaLevel()) return false;
+                UserDefinedBiome b = (UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(x, z, GenerationPhase.POPULATE);
+                BiomeConfig c = TerraWorld.getWorld(w).getConfig().getBiome(b);
+                if(y <= c.getSeaLevel()) return false;
                 return b.getGenerator().getNoise(getNoise(w), w, x, y, z) <= 0;
             }
         }, OCEAN {
             @Override
             public boolean matches(World w, int x, int y, int z) {
-                UserDefinedBiome b = (UserDefinedBiome) TerraBiomeGrid.fromWorld(w).getBiome(x, z, GenerationPhase.POPULATE);
-                if(y > BiomeConfig.fromBiome(b).getSeaLevel()) return false;
+                UserDefinedBiome b = (UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(x, z, GenerationPhase.POPULATE);
+                BiomeConfig c = TerraWorld.getWorld(w).getConfig().getBiome(b);
+                if(y > c.getSeaLevel()) return false;
                 return b.getGenerator().getNoise(getNoise(w), w, x, y, z) <= 0;
             }
         }, LAND {
             @Override
             public boolean matches(World w, int x, int y, int z) {
-                UserDefinedBiome b = (UserDefinedBiome) TerraBiomeGrid.fromWorld(w).getBiome(x, z, GenerationPhase.POPULATE);
+                UserDefinedBiome b = (UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(x, z, GenerationPhase.POPULATE);
                 return b.getGenerator().getNoise(getNoise(w), w, x, y, z) > 0;
             }
         };

@@ -12,28 +12,26 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class ConfigLoader {
-    private final String path;
-    public ConfigLoader(String path) {
-        this.path = path;
-    }
-
-    public <T extends TerraConfigObject> void load(JavaPlugin main, Class<T> clazz) {
-        File folder = new File(main.getDataFolder() + File.separator + "config" + File.separator + path);
-        folder.mkdirs();
+    public static  <T extends TerraConfigObject> Map<String, T> load(JavaPlugin main, Path file, TerraConfig config,  Class<T> clazz) {
+        Map<String, T> configs = new HashMap<>();
+        file.toFile().mkdirs();
         List<String> ids = new ArrayList<>();
-        try (Stream<Path> paths = Files.walk(folder.toPath())) {
+        try (Stream<Path> paths = Files.walk(file)) {
             paths
                     .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
                         try {
-                            Constructor<T> c = clazz.getConstructor(File.class);
-                            T o = c.newInstance(path.toFile());
+                            Constructor<T> c = clazz.getConstructor(File.class, TerraConfig.class);
+                            T o = c.newInstance(path.toFile(), config);
                             if(ids.contains(o.getID())) Bukkit.getLogger().severe("Duplicate ID found in file: " + path.toString());
                             ids.add(o.getID());
+                            configs.put(o.getID(), o);
                             main.getLogger().info("Loaded " + o.toString() + " from file " + path.toString());
                         } catch(IllegalAccessException | InstantiationException | NoSuchMethodException e) {
                             e.printStackTrace();
@@ -47,5 +45,6 @@ public class ConfigLoader {
         } catch(IOException e) {
             e.printStackTrace();
         }
+        return configs;
     }
 }
