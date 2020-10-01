@@ -1,4 +1,4 @@
-package com.dfsek.terra.command;
+package com.dfsek.terra.command.type;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

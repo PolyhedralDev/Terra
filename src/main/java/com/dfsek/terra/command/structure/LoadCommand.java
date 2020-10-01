@@ -1,7 +1,7 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.command.PlayerCommand;
+import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.structure.GaeaStructure;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class LoadCommand extends PlayerCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

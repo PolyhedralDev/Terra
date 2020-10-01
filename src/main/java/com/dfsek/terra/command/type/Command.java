@@ -1,4 +1,4 @@
-package com.dfsek.terra.command;
+package com.dfsek.terra.command.type;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ public abstract class Command {
     public abstract int arguments();
     public final boolean execute(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length > 0) {
-            for(com.dfsek.terra.command.Command c : getSubCommands()) {
+            for(Command c : getSubCommands()) {
                 if(c.getName().equals(args[0])) return c.execute(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
             }
             if(args.length != arguments()) {

@@ -1,5 +1,6 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.command.type.Command;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

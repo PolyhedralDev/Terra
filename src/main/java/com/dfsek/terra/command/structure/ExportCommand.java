@@ -2,7 +2,7 @@ package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.WorldEditUtil;
-import com.dfsek.terra.command.PlayerCommand;
+import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.structure.InitializationException;
 import com.sk89q.worldedit.IncompleteRegionException;
@@ -69,7 +69,7 @@ public class ExportCommand extends PlayerCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

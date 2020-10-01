@@ -2,6 +2,7 @@ package com.dfsek.terra.command;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class BiomeCommand extends PlayerCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

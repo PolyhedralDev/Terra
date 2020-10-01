@@ -1,5 +1,6 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -33,7 +34,7 @@ public class OreCommand extends PlayerCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

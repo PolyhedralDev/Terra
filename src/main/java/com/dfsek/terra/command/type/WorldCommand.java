@@ -1,4 +1,4 @@
-package com.dfsek.terra.command;
+package com.dfsek.terra.command.type;
 
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;

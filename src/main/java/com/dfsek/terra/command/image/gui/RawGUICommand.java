@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
-import com.dfsek.terra.command.WorldCommand;
+import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
@@ -31,7 +31,7 @@ public class RawGUICommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

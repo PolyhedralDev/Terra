@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.structure;
 
-import com.dfsek.terra.command.PlayerCommand;
+import com.dfsek.terra.command.type.PlayerCommand;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,7 @@ public class StructureCommand extends PlayerCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Arrays.asList(new ExportCommand(), new LoadCommand());
     }
 

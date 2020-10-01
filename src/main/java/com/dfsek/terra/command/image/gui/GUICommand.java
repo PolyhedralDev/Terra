@@ -1,7 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
-import com.dfsek.terra.command.WorldCommand;
-import com.dfsek.terra.config.WorldConfig;
+import com.dfsek.terra.command.type.WorldCommand;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -25,7 +24,7 @@ public class GUICommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Arrays.asList(new StepGUICommand(), new RawGUICommand());
     }
 

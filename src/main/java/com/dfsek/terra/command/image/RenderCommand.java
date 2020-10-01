@@ -1,7 +1,7 @@
 package com.dfsek.terra.command.image;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.command.WorldCommand;
+import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -37,7 +37,7 @@ public class RenderCommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
         return Collections.emptyList();
     }
 
