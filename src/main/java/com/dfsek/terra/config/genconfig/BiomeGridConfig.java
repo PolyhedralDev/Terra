@@ -19,7 +19,6 @@ import java.util.Objects;
 public class BiomeGridConfig extends TerraConfigObject {
     private static final Map<String, BiomeGridConfig> biomeGrids = new HashMap<>();
     private String gridID;
-    private String friendlyName;
     private boolean isEnabled = false;
     private UserDefinedBiome[][] gridRaw;
     private int sizeX;
@@ -34,8 +33,6 @@ public class BiomeGridConfig extends TerraConfigObject {
         isEnabled = false;
         if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
         this.gridID = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
-        this.friendlyName = getString("name");
         if(!contains("grid")) throw new InvalidConfigurationException("Grid not found!");
         this.sizeX = Objects.requireNonNull(getList("grid")).size();
         this.sizeZ = ((List<List<String>>) getList("grid")).get(0).size();
@@ -46,7 +43,7 @@ public class BiomeGridConfig extends TerraConfigObject {
                     try {
                         gridRaw[x][z] = BiomeConfig.fromID(((List<List<String>>) getList("grid")).get(x).get(z)).getBiome();
                     } catch(NullPointerException e) {
-                        throw new InvalidConfigurationException("SEVERE configuration error for BiomeGrid " + getFriendlyName() + ", ID: " + getID() + "\n\nNo such biome " + ((List<List<String>>) getList("grid")).get(x).get(z));
+                        throw new InvalidConfigurationException("SEVERE configuration error for BiomeGrid ID: " + getID() + "\n\nNo such biome " + ((List<List<String>>) getList("grid")).get(x).get(z));
                     }
                 }
             }
@@ -63,10 +60,6 @@ public class BiomeGridConfig extends TerraConfigObject {
 
     public int getSizeZ() {
         return sizeZ;
-    }
-
-    public String getFriendlyName() {
-        return friendlyName;
     }
 
     public UserDefinedBiome[][] getBiomeGrid() {
@@ -88,7 +81,7 @@ public class BiomeGridConfig extends TerraConfigObject {
 
     @Override
     public String toString() {
-        return "BiomeGrid with ID " + getID() + ", name " + getFriendlyName() + ", dimensions " + getSizeX() + ":" + getSizeZ();
+        return "BiomeGrid with ID " + getID() + ", dimensions " + getSizeX() + ":" + getSizeZ();
     }
 
     public static Map<String, BiomeGridConfig> getBiomeGrids() {

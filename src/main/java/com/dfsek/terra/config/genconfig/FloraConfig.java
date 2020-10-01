@@ -1,16 +1,13 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.ConfigUtil;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.util.Vector;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
@@ -30,7 +27,6 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     private static final Map<String, FloraConfig> floraConfig = new HashMap<>();
     private Palette<BlockData> floraPalette;
     private String id;
-    private String friendlyName;
     
     Set<Material> spawnable;
     Set<Material> replaceable;
@@ -71,13 +67,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
         floraPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
         if(!contains("id")) throw new InvalidConfigurationException("Flora ID unspecified!");
         this.id = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Flora Name unspecified!");
-        this.friendlyName = getString("name");
         floraConfig.put(id, this);
-    }
-
-    public String getFriendlyName() {
-        return friendlyName;
     }
 
     public String getID() {
@@ -110,7 +100,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
 
     @Override
     public String toString() {
-        return "Flora with name " + getFriendlyName() + ", ID " + getID();
+        return "Flora with name ID " + getID();
     }
 
     public static FloraConfig fromID(String id) {

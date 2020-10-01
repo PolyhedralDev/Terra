@@ -27,8 +27,6 @@ public class OreConfig extends TerraConfigObject {
     private double deform;
     private double deformFrequency;
     private String id;
-    private String friendlyName;
-    private int h;
     List<Material> replaceable;
     public OreConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
@@ -42,7 +40,6 @@ public class OreConfig extends TerraConfigObject {
         if(!contains("replace")) throw new InvalidConfigurationException("Ore replaceable materials not found!");
         min = getInt("radius.min", 1);
         max = getInt("radius.max", 1);
-        h = 2;
         deform = getDouble("deform");
         deformFrequency = getDouble("deform-frequency");
         this.id = getString("id");
@@ -86,15 +83,11 @@ public class OreConfig extends TerraConfigObject {
 
     @Override
     public String toString() {
-        return "Ore with name " + getFriendlyName() + ", ID " + getID();
+        return "Ore with ID " + getID();
     }
 
     public String getID() {
         return id;
-    }
-
-    public String getFriendlyName() {
-        return friendlyName;
     }
 
     public static OreConfig fromID(String id) {

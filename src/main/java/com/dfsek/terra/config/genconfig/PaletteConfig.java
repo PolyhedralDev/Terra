@@ -1,11 +1,9 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.TerraConfigObject;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.world.palette.Palette;
@@ -23,8 +21,6 @@ public class PaletteConfig extends TerraConfigObject {
     private static final Map<String, PaletteConfig> palettes = new HashMap<>();
     private Palette<BlockData> palette;
     private String paletteID;
-    private boolean isEnabled = false;
-    private String friendlyName;
     private boolean useNoise = false;
     public PaletteConfig(File file) throws IOException, InvalidConfigurationException {
         super(file);
@@ -42,24 +38,13 @@ public class PaletteConfig extends TerraConfigObject {
             pal = new SimplexPalette<>(pNoise);
         } else pal = new RandomPalette<>(new Random(getInt("seed", 3)));
         palette = getPalette(getMapList("blocks"), pal);
-        if(!contains("id")) throw new InvalidConfigurationException("Grid ID unspecified!");
+        if(!contains("id")) throw new InvalidConfigurationException("Palette ID unspecified!");
         this.paletteID = getString("id");
-        if(!contains("name")) throw new InvalidConfigurationException("Grid Name unspecified!");
-        this.friendlyName = getString("name");
-        isEnabled = true;
         palettes.put(paletteID, this);
     }
 
     public Palette<BlockData> getPalette() {
         return palette;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public String getFriendlyName() {
-        return friendlyName;
     }
 
     public String getID() {
@@ -97,7 +82,7 @@ public class PaletteConfig extends TerraConfigObject {
 
     @Override
     public String toString() {
-        return "Palette with name: " + getFriendlyName() + ", ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
+        return "Palette with ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
     }
 
     public static PaletteConfig fromID(String id) {

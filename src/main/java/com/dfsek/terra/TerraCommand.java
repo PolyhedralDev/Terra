@@ -45,7 +45,7 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
                     return true;
                 case "biome":
                     if(! (sender instanceof Player)) return false;
-                    sender.sendMessage("You are in " + BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation(), GenerationPhase.POPULATE)).getFriendlyName());
+                    sender.sendMessage("You are in " + BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(((Player) sender).getWorld()).getBiome(((Player) sender).getLocation(), GenerationPhase.POPULATE)).getID());
                     return true;
                 case "profile":
                     if(! (sender instanceof Player)) {
