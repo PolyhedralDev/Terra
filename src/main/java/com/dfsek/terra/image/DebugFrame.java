@@ -32,11 +32,12 @@ public class DebugFrame extends JFrame implements ActionListener {
         super.paintComponents(g);
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(! (p.getWorld().getGenerator() instanceof TerraChunkGenerator)) break;
-            int xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX(), x) / x) * getWidth());
-            int zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ(), z) / z) * getHeight());
-            if(WorldConfig.fromWorld(p.getWorld()).imageLoader.getAlign().equals(ImageLoader.Align.CENTER)) {
-                xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
-                zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
+            int xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
+            int zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
+            ImageLoader loader = WorldConfig.fromWorld(p.getWorld()).imageLoader;
+            if(loader != null && loader.getAlign().equals(ImageLoader.Align.NONE)) {
+                xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX(), x) / x) * getWidth());
+                zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ(), z) / z) * getHeight());
             }
             String str = BiomeConfig.fromBiome((UserDefinedBiome) TerraBiomeGrid.fromWorld(p.getWorld()).getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
             g.setColor(new Color(255, 255, 255, 128));

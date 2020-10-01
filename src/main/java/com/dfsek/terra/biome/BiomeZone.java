@@ -43,6 +43,10 @@ public class BiomeZone {
         return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length)];
     }
 
+    public int getSize() {
+        return grids.length;
+    }
+
     public int getNoise(int x, int z) {
         return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length);
     }

@@ -19,7 +19,7 @@ public class WorldImageGenerator {
         draw = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         this.w = w;
     }
-    public void drawWorld(int centerX, int centerZ) {
+    public WorldImageGenerator drawWorld(int centerX, int centerZ) {
         TerraBiomeGrid tb = TerraBiomeGrid.fromWorld(w);
         int imY = 0;
         for(int y = centerZ - (draw.getHeight()/2); y < centerZ + (draw.getHeight()/2); y++) {
@@ -33,7 +33,13 @@ public class WorldImageGenerator {
             }
             imY++;
         }
+        return this;
     }
+
+    public BufferedImage getDraw() {
+        return draw;
+    }
+
     public void save(File file) {
         try {
             ImageIO.write(draw, "png", file);
