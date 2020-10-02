@@ -136,6 +136,7 @@ public class BiomeConfig extends TerraConfigObject {
                 for(Map.Entry<?, ?> entry : e.entrySet()) {
                     try {
                         CarverConfig c = getConfig().getCarver((String) entry.getKey());
+                        if(c == null) throw new NotFoundException("Carver", (String) entry.getKey(), getID());
                         Debug.info("Got carver " + c + ". Adding with weight " + entry.getValue());
                         carvers.put(c, (Integer) entry.getValue());
                     } catch(ClassCastException ex) {

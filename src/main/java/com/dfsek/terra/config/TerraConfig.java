@@ -66,7 +66,7 @@ public class TerraConfig extends YamlConfiguration {
 
         palettes = ConfigLoader.load(main, new File(file, "palettes").toPath(), this, PaletteConfig.class);
 
-        carvers = ConfigLoader.load(main, new File(file, "carvers").toPath(), this, CarverConfig.class);
+        carvers = ConfigLoader.load(main, new File(file, "carving").toPath(), this, CarverConfig.class);
 
         flora = ConfigLoader.load(main, new File(file, "flora").toPath(), this, FloraConfig.class);
 

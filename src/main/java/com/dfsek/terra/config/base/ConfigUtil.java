@@ -46,12 +46,8 @@ public final class ConfigUtil {
 
         TerraConfig.loadAll(main);
         TerraWorld.invalidate();
-        TerraWorld.invalidate();
     }
 
-    public static <E extends Enum<E>> List<E> getElements(List<String> st, Class<E> clazz) {
-        return st.stream().map((s) -> E.valueOf(clazz, s)).collect(Collectors.toList());
-    }
     public static Set<Material> toBlockData(List<String> list, String phase, String id) throws InvalidConfigurationException {
         Set<Material> bl = new HashSet<>();
         for(String s : list) {
