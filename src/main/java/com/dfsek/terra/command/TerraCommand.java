@@ -1,5 +1,6 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.command.biome.BiomeCommand;
 import com.dfsek.terra.command.image.ImageCommand;
 import com.dfsek.terra.command.profile.ProfileCommand;
 import com.dfsek.terra.command.structure.StructureCommand;

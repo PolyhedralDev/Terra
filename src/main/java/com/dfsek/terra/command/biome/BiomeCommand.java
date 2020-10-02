@@ -1,4 +1,4 @@
-package com.dfsek.terra.command;
+package com.dfsek.terra.command.biome;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class BiomeCommand extends WorldCommand {
 
     @Override
     public List<com.dfsek.terra.command.type.Command> getSubCommands() {
-        return Collections.emptyList();
+        return Arrays.asList(new BiomeLocateCommand(true), new BiomeLocateCommand(false));
     }
 
     @Override

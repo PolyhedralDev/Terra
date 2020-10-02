@@ -67,7 +67,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
                 if(c.getName().equals(args[0])) return c.onCommand(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
             }
             if(args.length != arguments()) {
-                sender.sendMessage("Invalid command.");
+                sender.sendMessage("Invalid command. (Expected " + arguments() + " arguments, found " + args.length + ").");
                 return true;
             }
             return execute(sender, command, label, args);
