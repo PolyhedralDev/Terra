@@ -33,8 +33,12 @@ public class TreePopulator extends GaeaBlockPopulator {
             int att = 0;
             for(int i = 0; i < b.getDecorator().getTreeDensity() && att < max; ) {
                 att++;
-                int y = WorldUtil.getHighestValidSpawnAt(chunk, x, z);
-                if(y <= 0) continue;
+                int y = 255;
+                while(y > 1) {
+                    if(chunk.getBlock(x, y, z).getType().isAir() && chunk.getBlock(x, y-1, z).getType().isSolid()) break;
+                    y--;
+                }
+                if(y == 0) continue;
                 origin = chunk.getBlock(x, y, z).getLocation().add(0, 1, 0);
                 b = grid.getBiome(origin, GenerationPhase.POPULATE);
                 try {
