@@ -26,6 +26,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     private final Palette<BlockData> floraPalette;
     private final String id;
     private final boolean physics;
+    private final boolean ceiling;
     
     Set<Material> spawnable;
     Set<Material> replaceable;
@@ -41,6 +42,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
         replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
         physics = getBoolean("physics", false);
+        ceiling = getBoolean("ceiling", false);
 
         Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
@@ -54,9 +56,18 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     @Override
     public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
         List<Block> blocks = new ArrayList<>();
-        for(int y : range) {
+        if(ceiling) for(int y : range) {
+            if(y > 255 || y < 1) continue;
             Block check = chunk.getBlock(x, y, z);
-            if(spawnable.contains(check.getType())) {
+            Block other = chunk.getBlock(x, y-1, z);
+            if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
+                blocks.add(check);
+            }
+        } else for(int y : range) {
+            if(y > 254 || y < 0) continue;
+            Block check = chunk.getBlock(x, y, z);
+            Block other = chunk.getBlock(x, y+1, z);
+            if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
                 blocks.add(check);
             }
         }
@@ -66,11 +77,14 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     @Override
     public boolean plant(Location location) {
         int size = floraPalette.getSize();
-        for(int i = 0; i < size; i++) {
-            if(!replaceable.contains(location.clone().add(0, i+1, 0).getBlock().getType())) return false;
+        int c = ceiling ? -1 : 1;
+        for(int i = 0; Math.abs(i) < size; i+= c) { // Down if ceiling, up if floor
+            if(i+1 > 255) return false;
+            if(!replaceable.contains(location.clone().add(0, i+c, 0).getBlock().getType())) return false;
         }
-        for(int i = 0; i < size; i++) {
-            location.clone().add(0, i+1, 0).getBlock().setBlockData(floraPalette.get(size-(i+1), location.getBlockX(), location.getBlockZ()), physics);
+        for(int i = 0; Math.abs(i) < size; i+=c) { // Down if ceiling, up if floor
+            int lvl = (Math.abs(i));
+            location.clone().add(0, i+c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size-lvl+1), location.getBlockX(), location.getBlockZ()), physics);
         }
         return true;
     }

@@ -29,6 +29,7 @@ public class OreConfig extends TerraConfigObject {
     private final double deform;
     private final double deformFrequency;
     private final String id;
+    private final boolean update;
     Set<Material> replaceable;
     public OreConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -41,6 +42,7 @@ public class OreConfig extends TerraConfigObject {
         max = getInt("radius.max", 1);
         deform = getDouble("deform");
         deformFrequency = getDouble("deform-frequency");
+        update = getBoolean("update", false);
 
         replaceable = ConfigUtil.toBlockData(getStringList("replace"), "replaceable", getID());
 
@@ -64,7 +66,7 @@ public class OreConfig extends TerraConfigObject {
                 for(int z = -rad; z <= rad; z++) {
                     if(l.clone().add(x, y, z).distance(l) < (rad + 0.5) * ((ore.getSimplexFractal(x, y, z)+1)*deform)) {
                         Block b = l.clone().add(x, y, z).getBlock();
-                        if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0) b.setBlockData(oreData, false);
+                        if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0) b.setBlockData(oreData, update);
                     }
                 }
             }

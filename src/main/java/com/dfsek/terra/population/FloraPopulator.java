@@ -1,11 +1,13 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.genconfig.FloraConfig;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;

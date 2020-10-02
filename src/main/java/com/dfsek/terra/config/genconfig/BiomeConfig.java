@@ -4,6 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
+import com.dfsek.terra.population.OrePopulator;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -75,10 +76,11 @@ public class BiomeConfig extends TerraConfigObject {
         if(contains("extends")) {
             try {
                 abstractBiome = config.getAbstractBiomes().get(getString("extends"));
+                if(abstractBiome == null) throw new NotFoundException("Abstract Biome", getString("extends"), getID());
                 extending = true;
                 Debug.info("Extending biome " + getString("extends"));
             } catch(NullPointerException e) {
-                throw new ConfigException("No abstract biome with ID " + getString("extends") + " found.", getID());
+                throw new NotFoundException("Abstract Biome", getString("extends"), getID());
             }
         }
 
@@ -209,6 +211,7 @@ public class BiomeConfig extends TerraConfigObject {
                         try {
                             Debug.info("[Terra] Is custom flora: true");
                             Flora floraCustom = getConfig().getFlora(e.getKey());
+                            if(floraCustom == null) throw new NotFoundException("Flora", e.getKey(), getID());
                             flora.add(floraCustom, (Integer) val.get("weight"));
                             floraHeights.put(floraCustom, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                         } catch(NullPointerException ex2) {
@@ -272,8 +275,10 @@ public class BiomeConfig extends TerraConfigObject {
         }
         if(oreData != null) {
             for(Map.Entry<String, Object> m : oreData.entrySet()) {
-                ores.put(config.getOre(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
-                oreHeights.put(config.getOre(m.getKey()), new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
+                OreConfig ore = config.getOre(m.getKey());
+                if(ore == null) throw new NotFoundException("Ore", m.getKey(), getID());
+                ores.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
+                oreHeights.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
             }
         } else {
             ores = new HashMap<>();
