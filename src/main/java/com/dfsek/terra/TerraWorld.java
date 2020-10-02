@@ -18,7 +18,7 @@ import java.util.Map;
 public class TerraWorld {
     private static Map<World, TerraWorld> map = new HashMap<>();
     private final TerraBiomeGrid grid;
-    private BiomeZone zone;
+    private final BiomeZone zone;
     private final TerraConfig config;
     private final WorldConfig worldConfig;
     private static final Object lock = new Object();
@@ -69,5 +69,9 @@ public class TerraWorld {
 
     public BiomeZone getZone() {
         return zone;
+    }
+
+    public static void invalidate() {
+        map.clear();
     }
 }

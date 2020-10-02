@@ -1,13 +1,7 @@
 package com.dfsek.terra.config;
 
-import com.dfsek.terra.biome.BiomeZone;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.command.TerraCommand;
-import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.genconfig.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeConfig;
@@ -18,14 +12,11 @@ import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,9 +37,6 @@ public class TerraConfig extends YamlConfiguration {
     private final Map<String, BiomeConfig> biomes;
     private final Map<String, BiomeGridConfig> grids;
     private final File dataFolder;
-
-    private final Map<World, TerraBiomeGrid> grid = new HashMap<>();
-    private final Map<World, BiomeZone> zones = new HashMap<>();
 
     private final String id;
 
@@ -101,14 +89,6 @@ public class TerraConfig extends YamlConfiguration {
         configs.put(id, this);
     }
 
-    public Map<String, OreConfig> getOres() {
-        return ores;
-    }
-
-    public Map<String, PaletteConfig> getPalettes() {
-        return palettes;
-    }
-
     public Map<String, AbstractBiomeConfig> getAbstractBiomes() {
         return abstractBiomes;
     }
@@ -117,24 +97,8 @@ public class TerraConfig extends YamlConfiguration {
         return biomes;
     }
 
-    public Map<String, BiomeGridConfig> getGrids() {
-        return grids;
-    }
-
     public Map<String, CarverConfig> getCarvers() {
         return carvers;
-    }
-
-    public Map<String, FloraConfig> getFlora() {
-        return flora;
-    }
-
-    public Map<String, StructureConfig> getStructures() {
-        return structures;
-    }
-
-    public static Map<String, TerraConfig> getConfigs() {
-        return configs;
     }
 
     public static void loadAll(JavaPlugin main) {

@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.ConfigLoader;
@@ -44,6 +45,8 @@ public final class ConfigUtil {
         logger.info("Loading config values");
 
         TerraConfig.loadAll(main);
+        TerraWorld.invalidate();
+        TerraWorld.invalidate();
     }
 
     public static <E extends Enum<E>> List<E> getElements(List<String> st, Class<E> clazz) {
