@@ -1,17 +1,13 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.biome.NormalizationUtil;
 import org.polydev.gaea.math.FastNoise;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class BiomeZone {

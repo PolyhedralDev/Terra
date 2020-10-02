@@ -7,9 +7,7 @@ import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.base.WorldConfig;
-import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -34,15 +32,15 @@ public class TerraWorld {
                     UserDefinedBiome b = config.getBiomes().get(partName.substring(6)).getBiome();
                     temp[0][0] = b;
                     definedGrids[i] = new UserDefinedGrid(w, config.freq1, config.freq2, temp, worldConfig);
-                    Terra.getInstance().getLogger().info("Loaded single-biome grid " + partName);
+                    Debug.info("Loaded single-biome grid " + partName);
                 } else {
                     BiomeGridConfig g = config.getBiomeGrid(partName);
-                    Debug.info(g.getID());
+                    Debug.info("Loaded BiomeGrid " + g.getID());
                     definedGrids[i] = g.getGrid(w, worldConfig);
                 }
             } catch(NullPointerException e) {
                 if(ConfigUtil.debug) e.printStackTrace();
-                Bukkit.getLogger().severe("No suck BiomeGrid " + partName);
+                Bukkit.getLogger().severe("No such BiomeGrid " + partName);
             }
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);

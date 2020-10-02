@@ -188,7 +188,6 @@ public class TerraConfig extends YamlConfiguration {
     }
 
     public BiomeGridConfig getBiomeGrid(String id) {
-        Debug.info(id + ", " + grids.get(id).getID());
         return grids.get(id);
     }
 }
