@@ -21,7 +21,7 @@ public class ReloadCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         ConfigUtil.loadConfig(Terra.getInstance());
         sender.sendMessage("Reloaded Terra config.");
         return true;
@@ -30,5 +30,10 @@ public class ReloadCommand extends Command {
     @Override
     public int arguments() {
         return 0;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

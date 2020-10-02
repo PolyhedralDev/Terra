@@ -4,6 +4,7 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.structure.GaeaStructure;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class LoadCommand extends PlayerCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
             GaeaStructure.Rotation r = GaeaStructure.Rotation.fromDegrees(Integer.parseInt(args[1]));
             GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
@@ -30,6 +31,11 @@ public class LoadCommand extends PlayerCommand {
     @Override
     public String getName() {
         return "load";
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 
     @Override

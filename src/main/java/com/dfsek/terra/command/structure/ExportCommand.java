@@ -12,6 +12,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class ExportCommand extends PlayerCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         WorldEditPlugin we = WorldEditUtil.getWorldEdit();
         if(we == null) {
             sender.sendMessage("WorldEdit is not installed! Please install WorldEdit before attempting to export structures.");
@@ -61,6 +62,11 @@ public class ExportCommand extends PlayerCommand {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 
     @Override

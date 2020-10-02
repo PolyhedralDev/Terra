@@ -23,9 +23,9 @@ public abstract class WorldCommand extends PlayerCommand {
      * @return true if a valid command, otherwise false
      */
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public final boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender.getWorld().getGenerator() instanceof TerraChunkGenerator) {
-            return onCommand(sender, command, label, args, sender.getWorld());
+            return execute(sender, command, label, args, sender.getWorld());
         } else {
             sender.sendMessage("World is not a Terra world!");
         }
@@ -45,5 +45,5 @@ public abstract class WorldCommand extends PlayerCommand {
      * @param world World in which command was executed
      * @return true if a valid command, otherwise false
      */
-    public abstract boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world);
+    public abstract boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world);
 }

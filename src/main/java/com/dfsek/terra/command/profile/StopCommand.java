@@ -4,6 +4,7 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.command.type.WorldCommand;
 import org.bukkit.World;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.profiler.WorldProfiler;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class StopCommand extends WorldCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         WorldProfiler profile = TerraProfiler.fromWorld(world);
         profile.setProfiling(false);
         sender.sendMessage("Profiler has stopped.");
@@ -33,5 +34,10 @@ public class StopCommand extends WorldCommand {
     @Override
     public int arguments() {
         return 0;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

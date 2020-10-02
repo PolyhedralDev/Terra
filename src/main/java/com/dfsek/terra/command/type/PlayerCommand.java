@@ -21,13 +21,13 @@ public abstract class PlayerCommand extends Command {
      * @return true if a valid command, otherwise false
      */
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public final boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!(sender instanceof Player)) {
             sender.sendMessage("Command is for players only.");
             return true;
         }
         Player p = (Player) sender;
-        return onCommand(p, command, label, args);
+        return execute(p, command, label, args);
     }
     /**
      * Executes the given command, returning its success.
@@ -41,5 +41,5 @@ public abstract class PlayerCommand extends Command {
      * @param args Passed command arguments
      * @return true if a valid command, otherwise false
      */
-    public abstract boolean onCommand(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args);
+    public abstract boolean execute(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args);
 }

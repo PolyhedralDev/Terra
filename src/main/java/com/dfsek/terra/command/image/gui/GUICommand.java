@@ -3,15 +3,17 @@ package com.dfsek.terra.command.image.gui;
 import com.dfsek.terra.command.type.WorldCommand;
 import org.bukkit.World;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GUICommand extends WorldCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         sender.sendMessage("-------------Terra/image/gui-------------");
         sender.sendMessage("raw  - Open GUI with raw Biome data");
         sender.sendMessage("step - Re-render data to show borders more clearly");
@@ -31,5 +33,10 @@ public class GUICommand extends WorldCommand {
     @Override
     public int arguments() {
         return 1;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

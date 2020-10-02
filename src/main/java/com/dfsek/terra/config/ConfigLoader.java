@@ -34,7 +34,9 @@ public class ConfigLoader {
                             configs.put(o.getID(), o);
                             main.getLogger().info("Loaded " + o.toString() + " from file " + path.toString());
                         } catch(IllegalAccessException | InstantiationException | NoSuchMethodException e) {
+                            main.getLogger().severe("An error occurred while loading configurations.");
                             e.printStackTrace();
+                            main.getLogger().severe("Please report this to Terra.");
                         } catch(IllegalArgumentException | InvocationTargetException e) {
                             if(ConfigUtil.debug) e.printStackTrace();
                             main.getLogger().severe("Configuration error for Terra object. File: " + path.toString());

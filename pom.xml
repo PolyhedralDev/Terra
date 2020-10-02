@@ -33,10 +33,6 @@
                             <pattern>org.apache.commons</pattern>
                             <shadedPattern>com.dfsek.terra.lib.commons</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>me.lucko.commodore</pattern>
-                            <shadedPattern>com.dfsek.terra.lib</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -58,10 +54,6 @@
         <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>minecraft-repo</id>
-            <url>https://libraries.minecraft.net/</url>
         </repository>
         <repository>
             <id>gaea.local</id>
@@ -96,12 +88,6 @@
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
             <version>1.10.82</version>
-        </dependency>
-        <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>commodore</artifactId>
-            <version>1.9</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

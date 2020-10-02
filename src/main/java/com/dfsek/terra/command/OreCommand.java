@@ -8,6 +8,7 @@ import com.dfsek.terra.config.genconfig.OreConfig;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class OreCommand extends WorldCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
         Block bl = sender.getTargetBlockExact(25);
         if(args.length > 0) {
             OreConfig ore = TerraWorld.getWorld(w).getConfig().getOre(args[0]);
@@ -50,5 +51,10 @@ public class OreCommand extends WorldCommand {
     @Override
     public String getName() {
         return "ore";
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

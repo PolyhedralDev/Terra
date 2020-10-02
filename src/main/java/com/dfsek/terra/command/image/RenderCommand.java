@@ -5,6 +5,7 @@ import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class RenderCommand extends WorldCommand {
     @Override
-    public boolean onCommand(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         try {
             WorldImageGenerator g = new WorldImageGenerator(world, Integer.parseInt(args[0]), Integer.parseInt(args[1]));
             g.drawWorld(sender.getLocation().getBlockX(), sender.getLocation().getBlockZ());
@@ -44,5 +45,10 @@ public class RenderCommand extends WorldCommand {
     @Override
     public int arguments() {
         return 2;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

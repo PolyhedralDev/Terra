@@ -3,19 +3,15 @@ package com.dfsek.terra.command;
 import com.dfsek.terra.command.image.ImageCommand;
 import com.dfsek.terra.command.profile.ProfileCommand;
 import com.dfsek.terra.command.structure.StructureCommand;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
-import com.dfsek.terra.config.genconfig.OreConfig;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import com.dfsek.terra.command.type.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class TerraCommand implements CommandExecutor, TabExecutor {
+public class TerraCommand extends Command {
     private final List<com.dfsek.terra.command.type.Command> commands = Arrays.asList(new ReloadCommand(),
             new BiomeCommand(),
             new OreCommand(),
@@ -25,7 +21,17 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
             new ImageCommand());
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public String getName() {
+        return "terra";
+    }
+
+    @Override
+    public List<Command> getSubCommands() {
+        return commands;
+    }
+
+    @Override
+    public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length > 0) {
             for(com.dfsek.terra.command.type.Command c : commands) {
                 if(c.getName().equals(args[0])) return c.execute(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
@@ -41,12 +47,16 @@ public class TerraCommand implements CommandExecutor, TabExecutor {
             sender.sendMessage("structure - Load and export structures");
             sender.sendMessage("profile   - Profiler options");
         }
-        return false;
+        return true;
     }
+
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        /*if(args[0].equals("tpbiome")) return BiomeConfig.getBiomeIDs();
-        else if(args[0].equals("ore")) return OreConfig.getOreIDs();
-        else*/ return Collections.emptyList();
+    public int arguments() {
+        return 0;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

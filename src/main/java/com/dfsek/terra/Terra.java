@@ -3,12 +3,7 @@ package com.dfsek.terra;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
-import com.mojang.brigadier.tree.LiteralCommandNode;
-import me.lucko.commodore.Commodore;
-import me.lucko.commodore.CommodoreProvider;
-import me.lucko.commodore.file.CommodoreFileFormat;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator;
@@ -16,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.InputStream;
+import java.util.Objects;
 
 public class Terra extends JavaPlugin {
     private static FileConfiguration config;
@@ -37,31 +32,15 @@ public class Terra extends JavaPlugin {
         Debug.setMain(this);
         ConfigUtil.loadConfig(this);
 
-        PluginCommand command = getCommand("terra");
-        command.setExecutor(new TerraCommand());
-        if (CommodoreProvider.isSupported()) {
-            Commodore commodore = CommodoreProvider.getCommodore(this);
-            try {
-                register(this, command, commodore);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        } else getLogger().severe("Brigadier is not properly supported! Commands will NOT work properly!");
+        PluginCommand c = Objects.requireNonNull(getCommand("terra"));
+        TerraCommand command = new TerraCommand();
+        c.setExecutor(command);
+        c.setTabCompleter(command);
+
         saveDefaultConfig();
         config = getConfig();
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
 
-    }
-
-    public static void register(JavaPlugin plugin, Command pluginCommand, Commodore commodore) throws Exception {
-        try (InputStream is = Terra.class.getResourceAsStream("/terra.commodore")) {
-            if (is == null) {
-                throw new Exception("Brigadier command data missing from jar");
-            }
-
-            LiteralCommandNode<?> commandNode = CommodoreFileFormat.parse(is);
-            commodore.register(pluginCommand, commandNode, player -> player.hasPermission("terra.command"));
-        }
     }
 
     @Override
