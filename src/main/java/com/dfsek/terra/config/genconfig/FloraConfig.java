@@ -25,6 +25,7 @@ import java.util.Set;
 public class FloraConfig extends TerraConfigObject implements Flora {
     private final Palette<BlockData> floraPalette;
     private final String id;
+    private final boolean physics;
     
     Set<Material> spawnable;
     Set<Material> replaceable;
@@ -39,6 +40,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
 
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
         replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
+        physics = getBoolean("physics", false);
 
         Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
@@ -68,7 +70,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
             if(!replaceable.contains(location.clone().add(0, i+1, 0).getBlock().getType())) return false;
         }
         for(int i = 0; i < size; i++) {
-            location.clone().add(0, i+1, 0).getBlock().setBlockData(floraPalette.get(size-(i+1), location.getBlockX(), location.getBlockZ()), false);
+            location.clone().add(0, i+1, 0).getBlock().setBlockData(floraPalette.get(size-(i+1), location.getBlockX(), location.getBlockZ()), physics);
         }
         return true;
     }
