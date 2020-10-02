@@ -84,7 +84,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
         }
         for(int i = 0; Math.abs(i) < size; i+=c) { // Down if ceiling, up if floor
             int lvl = (Math.abs(i));
-            location.clone().add(0, i+c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size-lvl+1), location.getBlockX(), location.getBlockZ()), physics);
+            location.clone().add(0, i+c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size-lvl-1), location.getBlockX(), location.getBlockZ()), physics);
         }
         return true;
     }
