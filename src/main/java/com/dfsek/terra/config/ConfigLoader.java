@@ -19,12 +19,12 @@ import java.util.stream.Stream;
 
 public class ConfigLoader {
     public static  <T extends TerraConfigObject> Map<String, T> load(JavaPlugin main, Path file, TerraConfig config,  Class<T> clazz) {
+        long l = System.nanoTime();
         Map<String, T> configs = new HashMap<>();
         file.toFile().mkdirs();
         List<String> ids = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(file)) {
-            paths
-                    .filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
+            paths.filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
                         try {
                             Constructor<T> c = clazz.getConstructor(File.class, TerraConfig.class);
@@ -42,6 +42,7 @@ public class ConfigLoader {
                             main.getLogger().severe("Correct this before proceeding!");
                         }
                     });
+            main.getLogger().info("\nLoaded " + configs.size() + " " + clazz.getSimpleName() + "(s) in " + (System.nanoTime() - l) / 1000000D + "ms.\n");
         } catch(IOException e) {
             e.printStackTrace();
         }

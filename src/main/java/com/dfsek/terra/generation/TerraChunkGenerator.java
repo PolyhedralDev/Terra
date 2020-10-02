@@ -1,5 +1,6 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
@@ -152,7 +153,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());
-                Bukkit.getLogger().info("[Terra] Saved data for world " + e.getKey().getName());
+                Debug.info("[Terra] Saved data for world " + e.getKey().getName());
             } catch(IOException ioException) {
                 ioException.printStackTrace();
             }

@@ -35,7 +35,7 @@ public enum TerraTree implements Tree {
         this.permutations = number;
         this.validSpawns = validSpawns;
         for(int i = 0; i < number; i++) {
-            Bukkit.getLogger().info("[Terra] Loading tree " + directory + i + " to memory.");
+            Debug.info("[Terra] Loading tree " + directory + i + " to memory.");
             loadedStructures.put(directory+i, NMSStructure.getAsTag(TerraTree.class.getResourceAsStream(directory + i + ".nbt")));
         }
     }

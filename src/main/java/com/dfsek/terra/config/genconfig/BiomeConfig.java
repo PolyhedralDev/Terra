@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -75,7 +76,7 @@ public class BiomeConfig extends TerraConfigObject {
             try {
                 abstractBiome = config.getAbstractBiomes().get(getString("extends"));
                 extending = true;
-                Bukkit.getLogger().info("Extending biome " + getString("extends"));
+                Debug.info("Extending biome " + getString("extends"));
             } catch(NullPointerException e) {
                 throw new ConfigException("No abstract biome with ID " + getString("extends") + " found.", getID());
             }
@@ -87,7 +88,7 @@ public class BiomeConfig extends TerraConfigObject {
         try {
             if(extending && abstractBiome.getPaletteData() != null && ! contains("palette")) {
                 paletteData = abstractBiome.getPaletteData();
-                Bukkit.getLogger().info("Using super palette");
+                Debug.info("Using super palette");
             } else paletteData = getMapList("palette");
         } catch(NullPointerException e) {
             paletteData = null;
@@ -123,7 +124,7 @@ public class BiomeConfig extends TerraConfigObject {
         try {
             if(extending && abstractBiome.getCarvingData() != null && ! contains("carving")) {
                 carvingData = abstractBiome.getCarvingData();
-                Bukkit.getLogger().info("Using super carvers");
+                Debug.info("Using super carvers");
             } else carvingData = getMapList("carving");
         } catch(NullPointerException e) {
             carvingData = null;
@@ -135,7 +136,7 @@ public class BiomeConfig extends TerraConfigObject {
                 for(Map.Entry<?, ?> entry : e.entrySet()) {
                     try {
                         CarverConfig c = getConfig().getCarver((String) entry.getKey());
-                        Bukkit.getLogger().info("Got carver " + c + ". Adding with weight " + entry.getValue());
+                        Debug.info("Got carver " + c + ". Adding with weight " + entry.getValue());
                         carvers.put(c, (Integer) entry.getValue());
                     } catch(ClassCastException ex) {
                         throw new ConfigException("Unable to parse Carver configuration! Check YAML syntax.", getID());
@@ -187,7 +188,7 @@ public class BiomeConfig extends TerraConfigObject {
         try {
             if(extending && abstractBiome.getFloraData() != null && ! contains("flora")) {
                 floraData = abstractBiome.getFloraData();
-                Bukkit.getLogger().info("Using super flora (" + flora.size() + " entries, " + floraChance + " % chance)");
+                Debug.info("Using super flora (" + flora.size() + " entries, " + floraChance + " % chance)");
             } else floraData = Objects.requireNonNull(getConfigurationSection("flora")).getValues(false);
         } catch(NullPointerException e) {
             floraData = null;
@@ -199,13 +200,13 @@ public class BiomeConfig extends TerraConfigObject {
                     Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
                     Map<?, ?> y = ((ConfigurationSection) val.get("y")).getValues(false);
                     try {
-                        Bukkit.getLogger().info("[Terra] Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
+                        Debug.info("Adding " + e.getKey() + " to biome's flora list with weight " + e.getValue());
                         Flora floraObj = FloraType.valueOf(e.getKey());
                         flora.add(floraObj, (Integer) val.get("weight"));
                         floraHeights.put(floraObj, new Range((Integer) y.get("min"), (Integer) y.get("max")));
                     } catch(IllegalArgumentException ex) {
                         try {
-                            Bukkit.getLogger().info("[Terra] Is custom flora: true");
+                            Debug.info("[Terra] Is custom flora: true");
                             Flora floraCustom = getConfig().getFlora(e.getKey());
                             flora.add(floraCustom, (Integer) val.get("weight"));
                             floraHeights.put(floraCustom, new Range((Integer) y.get("min"), (Integer) y.get("max")));
@@ -226,7 +227,7 @@ public class BiomeConfig extends TerraConfigObject {
         try {
             if(extending && abstractBiome.getTreeData() != null && ! contains("trees")) {
                 treeData = abstractBiome.getTreeData();
-                Bukkit.getLogger().info("Using super trees");
+                Debug.info("Using super trees");
             } else treeData = Objects.requireNonNull(getConfigurationSection("trees")).getValues(false);
         } catch(NullPointerException e) {
             treeData = null;
@@ -263,7 +264,7 @@ public class BiomeConfig extends TerraConfigObject {
         try {
             if(extending && abstractBiome.getOreData() != null && ! contains("ores")) {
                 oreData = abstractBiome.getOreData();
-                Bukkit.getLogger().info("Using super ores");
+                Debug.info("Using super ores");
             } else oreData = Objects.requireNonNull(getConfigurationSection("ores")).getValues(false);
         } catch(NullPointerException e) {
             oreData = null;
@@ -309,7 +310,7 @@ public class BiomeConfig extends TerraConfigObject {
                 if(abstractBiome.shouldUseStairs()) {
                     stairs = abstractBiome.getStairs();
                 }
-                Bukkit.getLogger().info("Using super slabs");
+                Debug.info("Using super slabs");
             } else {
                 slabs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.palettes"), this);
                 if(contains("slabs.stair-palettes") && getBoolean("slabs.use-stairs-if-available", false)) {
@@ -322,7 +323,7 @@ public class BiomeConfig extends TerraConfigObject {
                         Iterator i = l.getCollection().iterator();
                         while(i.hasNext()) {
                             Stairs s = (Stairs) ((ProbabilityCollection.ProbabilitySetElement<BlockData>) i.next()).getObject();
-                            Bukkit.getLogger().info("Stair added: " + s.getAsString());
+                            Debug.info("Stair added: " + s.getAsString());
                         }
 
                     }
@@ -331,7 +332,7 @@ public class BiomeConfig extends TerraConfigObject {
                     throw new ConfigException("Materials in stair config must be stairs.", getID());
                 }
             }
-            Bukkit.getLogger().info("[Terra] Slabs: " + slabs.size());
+            Debug.info("[Terra] Slabs: " + slabs.size());
         }
 
         // Structure stuff

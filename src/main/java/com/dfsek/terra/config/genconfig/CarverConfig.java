@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigObject;
@@ -70,10 +71,10 @@ public class CarverConfig extends TerraConfigObject {
             Set<Material> l = new HashSet<>();
             for(String s : (List<String>) e.getValue()) {
                 l.add(Bukkit.createBlockData(s).getMaterial());
-                Bukkit.getLogger().info("Added " + s + " to shift-able blocks");
+                Debug.info("Added " + s + " to shift-able blocks");
             }
             shift.put(Bukkit.createBlockData(e.getKey()).getMaterial(), l);
-            Bukkit.getLogger().info("Added " + e.getKey() + " as master block");
+            Debug.info("Added " + e.getKey() + " as master block");
         }
 
         replaceIsBlacklistInner = getBoolean("palette.inner.replace-blacklist", false);
@@ -108,10 +109,10 @@ public class CarverConfig extends TerraConfigObject {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
                 for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {
                     layer.add(Bukkit.createBlockData(type.getKey()), type.getValue());
-                    Bukkit.getLogger().info("Added " + type.getKey() + " with probability " + type.getValue());
+                    Debug.info("Added " + type.getKey() + " with probability " + type.getValue());
                 }
                 result.put((Integer) m.get("y"), layer);
-                Bukkit.getLogger().info("Added at level " + m.get("y"));
+                Debug.info("Added at level " + m.get("y"));
             } catch(ClassCastException e) {
                 throw new ConfigException("Unable to parse Carver Palette configuration! Check YAML syntax:" + e.getMessage(), getID());
             }

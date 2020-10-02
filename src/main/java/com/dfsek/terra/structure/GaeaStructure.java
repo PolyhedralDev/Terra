@@ -1,5 +1,6 @@
 package com.dfsek.terra.structure;
 
+import com.dfsek.terra.Debug;
 import org.polydev.gaea.math.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -240,7 +241,7 @@ public class GaeaStructure implements Serializable {
         intersectZ = new Range(zOr, zOr+16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
         if(intersectX == null || intersectZ == null) return;
         executeForBlocksInRange(intersectX, getRange(Axis.Y), intersectZ, block -> pasteBlock(block, origin, r, m), r, m);
-        Bukkit.getLogger().info(intersectX.toString() + " : " + intersectZ.toString());
+        Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 
     /**

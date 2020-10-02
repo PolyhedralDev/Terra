@@ -1,5 +1,6 @@
 package com.dfsek.terra.config;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class TerraConfig extends YamlConfiguration {
@@ -52,8 +54,10 @@ public class TerraConfig extends YamlConfiguration {
     public boolean perturbPaletteOnly;
 
     public TerraConfig(JavaPlugin main, File file) throws IOException, InvalidConfigurationException {
+        long l = System.nanoTime();
         load(new File(file, "config.yml"));
         dataFolder = file;
+        Logger logger = main.getLogger();
 
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         this.id = getString("id");
@@ -87,6 +91,7 @@ public class TerraConfig extends YamlConfiguration {
         biomeList = getStringList("grids");
 
         configs.put(id, this);
+        logger.info("\n\nLoaded config \"" + getID() + "\" in " + (System.nanoTime() - l)/1000000D + "ms\n\n\n");
     }
 
     public Map<String, AbstractBiomeConfig> getAbstractBiomes() {
@@ -140,9 +145,6 @@ public class TerraConfig extends YamlConfiguration {
         for(BiomeConfig biome : biomes.values()) {
             if(biome.getBiome().equals(b)) return biome;
         }
-        for(BiomeConfig biome : biomes.values()) {
-            Bukkit.getLogger().info(biome.getID() + ":" + biome.hashCode() + " : " + b.getID() + ":" + b.hashCode());
-        }
         throw new IllegalArgumentException("No BiomeConfig for provided biome.");
     }
 
@@ -186,7 +188,7 @@ public class TerraConfig extends YamlConfiguration {
     }
 
     public BiomeGridConfig getBiomeGrid(String id) {
-        Bukkit.getLogger().info(id + ", " + grids.get(id).getID());
+        Debug.info(id + ", " + grids.get(id).getID());
         return grids.get(id);
     }
 }

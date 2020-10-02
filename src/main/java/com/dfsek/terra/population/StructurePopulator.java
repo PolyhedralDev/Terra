@@ -42,13 +42,9 @@ public class StructurePopulator extends BlockPopulator {
                     spawn.setY(y);
                     for(StructureSpawnRequirement s : struc.getSpawns()) {
                         if(! s.isValidSpawn(spawn)) continue main;
-                        if(!b.equals(grid.getBiome(spawn.clone().add(s.getX(), s.getY(), s.getZ()), GenerationPhase.POPULATE))) {
-                            Bukkit.getLogger().info("PREVENTED invalid spawn at " + spawn);
-                            continue structure;
-                        }
+                        if(!b.equals(grid.getBiome(spawn.clone().add(s.getX(), s.getY(), s.getZ()), GenerationPhase.POPULATE))) continue structure;
                     }
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
-                    Bukkit.getLogger().info("Valid spawn at " + spawn);
                     if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
                             struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90), Collections.emptyList());

@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -60,7 +61,7 @@ public class PaletteConfig extends TerraConfigObject {
                     }
                     p.add(layer, (Integer) m.get("layers"));
                 } else {
-                    Bukkit.getLogger().info("One-block palette layer!");
+                    Debug.info("One-block palette layer!");
                     String data = "null";
                     for(Map.Entry<?, ?> e: map.get(0).entrySet()) {
                         data = (String) e.getKey();

@@ -34,6 +34,7 @@ public class Terra extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        Debug.setMain(this);
         ConfigUtil.loadConfig(this);
 
         PluginCommand command = getCommand("terra");

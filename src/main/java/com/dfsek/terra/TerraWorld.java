@@ -7,6 +7,7 @@ import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.base.WorldConfig;
+import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
@@ -16,13 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TerraWorld {
-    private static Map<World, TerraWorld> map = new HashMap<>();
+    private static final Map<World, TerraWorld> map = new HashMap<>();
     private final TerraBiomeGrid grid;
     private final BiomeZone zone;
     private final TerraConfig config;
     private final WorldConfig worldConfig;
-    private static final Object lock = new Object();
-    public TerraWorld(World w) {
+    private TerraWorld(World w) {
         worldConfig = new WorldConfig(w, Terra.getInstance());
         config = worldConfig.getConfig();
         UserDefinedGrid[] definedGrids = new UserDefinedGrid[config.biomeList.size()];
@@ -37,12 +37,12 @@ public class TerraWorld {
                     Terra.getInstance().getLogger().info("Loaded single-biome grid " + partName);
                 } else {
                     BiomeGridConfig g = config.getBiomeGrid(partName);
-                    Bukkit.getLogger().info(g.getID());
+                    Debug.info(g.getID());
                     definedGrids[i] = g.getGrid(w, worldConfig);
                 }
             } catch(NullPointerException e) {
                 if(ConfigUtil.debug) e.printStackTrace();
-                Bukkit.getLogger().severe("No such BiomeGrid " + partName);
+                Bukkit.getLogger().severe("No suck BiomeGrid " + partName);
             }
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);
@@ -50,9 +50,7 @@ public class TerraWorld {
     }
 
     public static TerraWorld getWorld(World w) {
-        synchronized(lock) {
-            return map.computeIfAbsent(w, TerraWorld::new);
-        }
+        return map.computeIfAbsent(w, TerraWorld::new);
     }
 
     public TerraBiomeGrid getGrid() {

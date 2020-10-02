@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -25,7 +26,7 @@ public class BiomeConfigUtil {
                 try {
                     if(((String) entry.getValue()).startsWith("BLOCK:")) {
                         try {
-                            Bukkit.getLogger().info("Adding slab palette with single material " + entry.getKey());
+                            Debug.info("Adding slab palette with single material " + entry.getKey());
                             paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getValue()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
                             throw new ConfigException("Invalid BlockData in slab configuration: " + ex.getMessage(), config.getID());
@@ -44,7 +45,7 @@ public class BiomeConfigUtil {
                 }
             }
         }
-        Bukkit.getLogger().info("Adding " + paletteMap.size() + " slab palettes...");
+        Debug.info("Adding " + paletteMap.size() + " slab palettes...");
         return paletteMap;
     }
 }
