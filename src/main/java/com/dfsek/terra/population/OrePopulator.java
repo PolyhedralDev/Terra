@@ -1,16 +1,12 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.base.WorldConfig;
+import com.dfsek.terra.config.ConfigPack;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraProfiler;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
@@ -25,7 +21,7 @@ public class OrePopulator extends GaeaBlockPopulator {
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
-            TerraConfig config = TerraWorld.getWorld(world).getConfig();
+            ConfigPack config = TerraWorld.getWorld(world).getConfig();
             Biome b = TerraWorld.getWorld(world).getGrid().getBiome((chunk.getX() << 4)+8, (chunk.getZ() << 4) + 8, GenerationPhase.POPULATE);
             for(Map.Entry<OreConfig, Range> e : config.getBiome((UserDefinedBiome) b).getOres().entrySet()) {
                 int num = e.getValue().get(random);

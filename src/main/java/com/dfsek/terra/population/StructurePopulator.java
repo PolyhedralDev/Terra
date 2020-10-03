@@ -4,13 +4,10 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.base.WorldConfig;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,7 +28,7 @@ public class StructurePopulator extends BlockPopulator {
             int cz = (chunk.getZ() << 4);
             TerraWorld tw = TerraWorld.getWorld(world);
             TerraBiomeGrid grid = tw.getGrid();
-            TerraConfig config = tw.getConfig();
+            ConfigPack config = tw.getConfig();
             UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(cx+ 8, cz + 8, GenerationPhase.POPULATE);
             structure: for(StructureConfig conf : config.getBiome(b).getStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);

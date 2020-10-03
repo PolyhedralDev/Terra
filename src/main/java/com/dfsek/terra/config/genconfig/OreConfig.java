@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,15 +14,11 @@ import org.polydev.gaea.math.FastNoise;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class OreConfig extends TerraConfigObject {
+public class OreConfig extends TerraConfig {
     private final BlockData oreData;
     private final int min;
     private final int max;
@@ -31,7 +27,7 @@ public class OreConfig extends TerraConfigObject {
     private final String id;
     private final boolean update;
     Set<Material> replaceable;
-    public OreConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public OreConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         if(!contains("id")) throw new ConfigException("Ore ID not found!", "null");
         this.id = getString("id");

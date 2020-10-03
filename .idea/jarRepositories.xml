@@ -51,5 +51,10 @@
       <option name="name" value="gaea-local" />
       <option name="url" value="file:$PROJECT_DIR$/../Gaea/repo" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="CodeMC" />
+      <option name="name" value="CodeMC" />
+      <option name="url" value="https://repo.codemc.org/repository/maven-public" />
+    </remote-repository>
   </component>
 </project>

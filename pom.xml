@@ -33,6 +33,10 @@
                             <pattern>org.apache.commons</pattern>
                             <shadedPattern>com.dfsek.terra.lib.commons</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.bstats.bukkit</pattern>
+                            <shadedPattern>com.dfsek.terra.lib.bstats</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -63,6 +67,10 @@
         <repository>
             <id>enginehub-maven</id>
             <url>http://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
     </repositories>
 
@@ -105,6 +113,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

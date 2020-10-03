@@ -1,8 +1,8 @@
-package com.dfsek.terra.config.genconfig;
+package com.dfsek.terra.config.genconfig.biome;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.exception.ConfigException;
-import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class BiomeConfigUtil {
-    protected static Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection, TerraConfigObject config) throws InvalidConfigurationException {
+    protected static Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection, TerraConfig config) throws InvalidConfigurationException {
         Map<Material, Palette<BlockData>> paletteMap = new HashMap<>();
 
         for(Map<?, ?> e : paletteConfigSection) {

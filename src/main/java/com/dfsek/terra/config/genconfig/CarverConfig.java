@@ -2,8 +2,8 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class CarverConfig extends TerraConfigObject {
+public class CarverConfig extends TerraConfig {
     private final UserDefinedCarver carver;
     private final String id;
     private final Set<Material> replaceableInner;
@@ -42,7 +42,7 @@ public class CarverConfig extends TerraConfigObject {
     private final boolean replaceIsBlacklistBottom;
 
     @SuppressWarnings("unchecked")
-    public CarverConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public CarverConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
         if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");

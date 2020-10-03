@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class ConfigLoader {
-    public static  <T extends TerraConfigObject> Map<String, T> load(JavaPlugin main, Path file, TerraConfig config,  Class<T> clazz) {
+    public static  <T extends TerraConfig> Map<String, T> load(JavaPlugin main, Path file, ConfigPack config, Class<T> clazz) {
         long l = System.nanoTime();
         Map<String, T> configs = new HashMap<>();
         file.toFile().mkdirs();
@@ -27,7 +27,7 @@ public class ConfigLoader {
             paths.filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
                         try {
-                            Constructor<T> c = clazz.getConstructor(File.class, TerraConfig.class);
+                            Constructor<T> c = clazz.getConstructor(File.class, ConfigPack.class);
                             T o = c.newInstance(path.toFile(), config);
                             if(ids.contains(o.getID())) Bukkit.getLogger().severe("Duplicate ID found in file: " + path.toString());
                             ids.add(o.getID());

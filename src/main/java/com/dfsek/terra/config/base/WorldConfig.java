@@ -1,12 +1,6 @@
 package com.dfsek.terra.config.base;
 
-import com.dfsek.terra.Terra;
-import com.dfsek.terra.biome.TerraBiomeGrid;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.UserDefinedGrid;
-import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
-import com.dfsek.terra.config.genconfig.BiomeGridConfig;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -18,16 +12,13 @@ import org.polydev.gaea.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class WorldConfig {
 
 
     public boolean fromImage;
-    public TerraConfig config;
+    public ConfigPack config;
     public ImageLoader.Channel biomeXChannel;
     public ImageLoader.Channel biomeZChannel;
     public ImageLoader.Channel zoneChannel;
@@ -35,7 +26,7 @@ public class WorldConfig {
     public ImageLoader imageLoader;
 
 
-    private TerraConfig tConfig;
+    private ConfigPack tConfig;
 
 
     public WorldConfig(World w, JavaPlugin main) {
@@ -56,7 +47,7 @@ public class WorldConfig {
             fromImage = config.getBoolean("image.use-image", false);
 
 
-            tConfig = TerraConfig.fromID(config.getString("config"));
+            tConfig = ConfigPack.fromID(config.getString("config"));
 
             // Load image stuff
             try {
@@ -89,7 +80,7 @@ public class WorldConfig {
         main.getLogger().info("World load complete. Time elapsed: " + ((double) (System.nanoTime() - start)) / 1000000 + "ms");
     }
 
-    public TerraConfig getConfig() {
+    public ConfigPack getConfig() {
         return tConfig;
     }
 }

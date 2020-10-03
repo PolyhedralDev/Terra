@@ -1,13 +1,11 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
-import com.dfsek.terra.config.genconfig.FloraConfig;
+import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -25,7 +23,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
             TerraBiomeGrid grid = tw.getGrid();
-            TerraConfig config = tw.getConfig();
+            ConfigPack config = tw.getConfig();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);

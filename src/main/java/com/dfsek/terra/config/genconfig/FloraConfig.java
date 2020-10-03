@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Chunk;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class FloraConfig extends TerraConfigObject implements Flora {
+public class FloraConfig extends TerraConfig implements Flora {
     private final Palette<BlockData> floraPalette;
     private final String id;
     private final boolean physics;
@@ -31,7 +31,7 @@ public class FloraConfig extends TerraConfigObject implements Flora {
     Set<Material> spawnable;
     Set<Material> replaceable;
 
-    public FloraConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public FloraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
         if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");

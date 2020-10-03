@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -20,14 +20,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
-public class StructureConfig extends TerraConfigObject {
+public class StructureConfig extends TerraConfig {
     private final ProbabilityCollection<GaeaStructure> structure = new ProbabilityCollection<>();
     private final GridSpawn spawn;
     private final String id;
     private final Range searchStart;
     private final Range bound;
     StructurePopulator.SearchType type;
-    public StructureConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public StructureConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");

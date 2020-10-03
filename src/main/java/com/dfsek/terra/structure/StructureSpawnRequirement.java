@@ -1,13 +1,10 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.base.WorldConfig;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.FastNoise;
 

@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class PaletteConfig extends TerraConfigObject {
+public class PaletteConfig extends TerraConfig {
     private final Palette<BlockData> palette;
     private final String paletteID;
     private boolean useNoise = false;
-    public PaletteConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public PaletteConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
         this.paletteID = getString("id");

@@ -2,10 +2,7 @@ package com.dfsek.terra.image;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.generation.TerraChunkGenerator;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.base.WorldConfig;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.polydev.gaea.generation.GenerationPhase;

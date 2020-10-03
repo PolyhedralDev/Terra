@@ -2,8 +2,8 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -12,19 +12,17 @@ import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public class BiomeGridConfig extends TerraConfigObject {
+public class BiomeGridConfig extends TerraConfig {
     private final String gridID;
     private final UserDefinedBiome[][] gridRaw;
     private final int sizeX;
     private final int sizeZ;
 
     @SuppressWarnings("unchecked")
-    public BiomeGridConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public BiomeGridConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
         if(!contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
@@ -65,7 +63,7 @@ public class BiomeGridConfig extends TerraConfigObject {
     }
 
     public UserDefinedGrid getGrid(World w, WorldConfig wc) {
-        TerraConfig c = wc.getConfig();
+        ConfigPack c = wc.getConfig();
         return new UserDefinedGrid(w, c.freq1, c.freq2, gridRaw, wc);
     }
 

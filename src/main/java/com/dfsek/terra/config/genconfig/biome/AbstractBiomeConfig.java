@@ -1,8 +1,9 @@
-package com.dfsek.terra.config.genconfig;
+package com.dfsek.terra.config.genconfig.biome;
 
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.genconfig.biome.BiomeConfigUtil;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class AbstractBiomeConfig extends TerraConfigObject {
+public class AbstractBiomeConfig extends TerraConfig {
     private final String biomeID;
     private final int floraChance;
     private final int treeChance;
@@ -30,14 +31,15 @@ public class AbstractBiomeConfig extends TerraConfigObject {
     private final float floraFreq;
     private final String oceanPalette;
     private final int seaLevel;
-    private List<Map<?, ?>> paletteData;
     private Map<String, Object> floraData;
     private Map<String, Object> oreData;
     private Map<String, Object> treeData;
     private List<Map<?, ?>> carvingData;
     private List<String> structureConfigs;
+    private BiomePaletteConfig palette;
+    private BiomeFloraConfig flora;
 
-    public AbstractBiomeConfig(File file, TerraConfig config) throws IOException, InvalidConfigurationException {
+    public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
         if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
@@ -45,9 +47,9 @@ public class AbstractBiomeConfig extends TerraConfigObject {
 
         if(contains("carving")) carvingData = getMapList("carving");
 
-        if(contains("palette")) paletteData = getMapList("palette");
+        if(contains("palette")) palette = new BiomePaletteConfig(this);
 
-        if(contains("flora")) floraData = Objects.requireNonNull(getConfigurationSection("flora")).getValues(false);
+        if(contains("flora")) flora = new BiomeFloraConfig(this);
 
         if(contains("trees")) treeData = Objects.requireNonNull(getConfigurationSection("trees")).getValues(false);
 
@@ -131,8 +133,12 @@ public class AbstractBiomeConfig extends TerraConfigObject {
         return floraSimplex;
     }
 
-    public List<Map<?, ?>> getPaletteData() {
-        return paletteData;
+    public BiomePaletteConfig getPaletteData() {
+        return palette;
+    }
+
+    public BiomeFloraConfig getFlora() {
+        return flora;
     }
 
     public Map<String, Object> getFloraData() {

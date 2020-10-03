@@ -1,18 +1,13 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.config.base.WorldConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.generation.GenerationPhase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class TerraBiomeGrid extends BiomeGrid {
     private static int failNum = 0;
@@ -21,7 +16,7 @@ public class TerraBiomeGrid extends BiomeGrid {
     private final BiomeZone zone;
     private final boolean perturbPaletteOnly;
 
-    public TerraBiomeGrid(World w, float freq1, float freq2, BiomeZone zone, TerraConfig c) {
+    public TerraBiomeGrid(World w, float freq1, float freq2, BiomeZone zone, ConfigPack c) {
         super(w, freq1, freq2);
         if(c.biomeBlend) {
             perturb = new CoordinatePerturb(c.blendFreq, c.blendAmp, w.getSeed());

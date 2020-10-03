@@ -3,11 +3,9 @@ package com.dfsek.terra.generation;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.base.WorldConfig;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
+import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -22,7 +20,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
@@ -33,7 +30,6 @@ import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.population.PopulationManager;
 import org.polydev.gaea.world.palette.Palette;
-import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -63,7 +59,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         if(needsLoad) load(world);
         StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
-        TerraConfig config = TerraWorld.getWorld(world).getConfig();
+        ConfigPack config = TerraWorld.getWorld(world).getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         for(byte x = 0; x < 16; x++) {

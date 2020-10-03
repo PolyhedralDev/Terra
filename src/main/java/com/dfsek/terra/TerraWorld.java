@@ -4,7 +4,7 @@ import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
-import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
@@ -18,7 +18,7 @@ public class TerraWorld {
     private static final Map<World, TerraWorld> map = new HashMap<>();
     private final TerraBiomeGrid grid;
     private final BiomeZone zone;
-    private final TerraConfig config;
+    private final ConfigPack config;
     private final WorldConfig worldConfig;
     private TerraWorld(World w) {
         worldConfig = new WorldConfig(w, Terra.getInstance());
@@ -50,7 +50,7 @@ public class TerraWorld {
         grid = new TerraBiomeGrid(w, config.freq1, config.freq2, zone, config);
     }
 
-    public static TerraWorld getWorld(World w) {
+    public static synchronized TerraWorld getWorld(World w) {
         return map.computeIfAbsent(w, TerraWorld::new);
     }
 
@@ -58,7 +58,7 @@ public class TerraWorld {
         return grid;
     }
 
-    public TerraConfig getConfig() {
+    public ConfigPack getConfig() {
         return config;
     }
 
@@ -70,7 +70,11 @@ public class TerraWorld {
         return zone;
     }
 
-    public static void invalidate() {
+    public static synchronized void invalidate() {
         map.clear();
+    }
+
+    public static int numWorlds() {
+        return map.size();
     }
 }

@@ -3,6 +3,7 @@ package com.dfsek.terra;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class Terra extends JavaPlugin {
-    private static FileConfiguration config;
     private static Terra instance;
 
     public static Terra getInstance() {
@@ -29,6 +29,8 @@ public class Terra extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        Metrics metrics = new Metrics(this, 9017);
+        metrics.addCustomChart(new Metrics.SingleLineChart("worlds", TerraWorld::numWorlds));
         Debug.setMain(this);
         ConfigUtil.loadConfig(this);
 
@@ -38,7 +40,6 @@ public class Terra extends JavaPlugin {
         c.setTabCompleter(command);
 
         saveDefaultConfig();
-        config = getConfig();
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
 
     }

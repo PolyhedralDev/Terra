@@ -1,20 +1,15 @@
 package com.dfsek.terra.carving;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.TerraConfig;
-import com.dfsek.terra.config.base.WorldConfig;
+import com.dfsek.terra.config.ConfigPack;
 import org.polydev.gaea.math.Range;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.genconfig.BiomeConfig;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class UserDefinedCarver extends Carver {
@@ -47,7 +42,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        TerraConfig c = TerraWorld.getWorld(w).getConfig();
+        ConfigPack c = TerraWorld.getWorld(w).getConfig();
         return new Random(random.nextLong()+hash).nextInt(100) < c.getBiome((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
     }
 
