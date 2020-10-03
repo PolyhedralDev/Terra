@@ -1,25 +1,27 @@
 package com.dfsek.terra.config.genconfig;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.TerraConfigObject;
+import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import org.polydev.gaea.math.Range;
-import com.dfsek.terra.Terra;
-import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.config.TerraConfigObject;
 import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.procgen.GridSpawn;
+import com.dfsek.terra.structure.GaeaStructure;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.math.Range;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 public class StructureConfig extends TerraConfigObject {
-    private final GaeaStructure structure;
+    private final ProbabilityCollection<GaeaStructure> structure = new ProbabilityCollection<>();
     private final GridSpawn spawn;
     private final String id;
     private final Range searchStart;
@@ -29,9 +31,20 @@ public class StructureConfig extends TerraConfigObject {
         super(file, config);
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");
+        if(!contains("files")) throw new ConfigException("No files specified!", getID());
         try {
-            File structureFile = new File(config.getDataFolder() + File.separator + "structures" + File.separator + "data", Objects.requireNonNull(getString("file")));
-            structure = GaeaStructure.load(structureFile);
+            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
+                try {
+                    File structureFile = new File(config.getDataFolder() + File.separator + "structures" + File.separator + "data", e.getKey() + ".tstructure");
+                    structure.add(GaeaStructure.load(structureFile), (Integer) e.getValue());
+                } catch(FileNotFoundException ex) {
+                    Debug.stack(ex);
+                    throw new NotFoundException("Structure File", e.getKey(), getID());
+                } catch(ClassCastException ex) {
+                    Debug.stack(ex);
+                    throw new ConfigException("Unable to parse Structure configuration! Check YAML syntax.", getID());
+                }
+            }
         } catch(IOException | NullPointerException e) {
             if(ConfigUtil.debug) {
                 e.printStackTrace();
@@ -54,8 +67,8 @@ public class StructureConfig extends TerraConfigObject {
         return id;
     }
 
-    public GaeaStructure getStructure() {
-        return structure;
+    public GaeaStructure getStructure(Random r) {
+        return structure.get(r);
     }
 
     public GridSpawn getSpawn() {

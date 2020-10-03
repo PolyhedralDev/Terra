@@ -34,9 +34,9 @@ public class StructurePopulator extends BlockPopulator {
             TerraConfig config = tw.getConfig();
             UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(cx+ 8, cz + 8, GenerationPhase.POPULATE);
             structure: for(StructureConfig conf : config.getBiome(b).getStructures()) {
-                GaeaStructure struc = conf.getStructure();
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
                 Random r2 = new Random(spawn.hashCode());
+                GaeaStructure struc = conf.getStructure(r2);
                 main: for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
                     if(y > conf.getBound().getMax() || y < conf.getBound().getMin()) continue structure;
                     spawn.setY(y);

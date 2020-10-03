@@ -20,4 +20,8 @@ public class Debug {
     public static void error(String message) {
         if(ConfigUtil.debug) main.getLogger().severe(message);
     }
+
+    public static void stack(Exception e) {
+        if(ConfigUtil.debug) e.printStackTrace();
+    }
 }

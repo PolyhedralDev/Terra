@@ -41,6 +41,9 @@ public class TerraWorld {
             } catch(NullPointerException e) {
                 if(ConfigUtil.debug) e.printStackTrace();
                 Bukkit.getLogger().severe("No such BiomeGrid " + partName);
+                Bukkit.getLogger().severe("Please check configuration files for errors. Configuration errors will have been reported during initialization.");
+                Bukkit.getLogger().severe("ONLY report this to Terra if you are SURE your config is error-free.");
+                Bukkit.getLogger().severe("Terrain will NOT generate properly at this point. Correct your config before using your server!");
             }
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);
