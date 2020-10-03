@@ -18,12 +18,13 @@ import java.util.Random;
 import java.util.TreeMap;
 
 public class BiomePaletteConfig extends TerraConfigSection {
-    private final TreeMap<Integer, Palette<BlockData>> paletteMap = new TreeMap<>();
+    private TreeMap<Integer, Palette<BlockData>> paletteMap;
     @SuppressWarnings("unchecked")
     public BiomePaletteConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         List<Map<?, ?>> cfg = parent.getMapList("palette");
-        if(cfg.size() == 0) throw new ConfigException("Palette unspecified.", parent.getID());
+        if(cfg.size() == 0) return;
+        paletteMap = new TreeMap<>();
         for(Map<?, ?> e : cfg) {
             for(Map.Entry<?, ?> entry : e.entrySet()) {
                 try {

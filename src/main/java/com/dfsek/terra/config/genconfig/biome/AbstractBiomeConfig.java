@@ -38,6 +38,9 @@ public class AbstractBiomeConfig extends TerraConfig {
     private List<String> structureConfigs;
     private BiomePaletteConfig palette;
     private BiomeFloraConfig flora;
+    private BiomeCarverConfig carving;
+    private BiomeTreeConfig trees;
+    private BiomeOreConfig ores;
 
     public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -45,15 +48,15 @@ public class AbstractBiomeConfig extends TerraConfig {
         if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
-        if(contains("carving")) carvingData = getMapList("carving");
+        if(contains("carving")) carving = new BiomeCarverConfig(this);
 
         if(contains("palette")) palette = new BiomePaletteConfig(this);
 
         if(contains("flora")) flora = new BiomeFloraConfig(this);
 
-        if(contains("trees")) treeData = Objects.requireNonNull(getConfigurationSection("trees")).getValues(false);
+        if(contains("trees")) trees = new BiomeTreeConfig(this);
 
-        if(contains("ores")) oreData = Objects.requireNonNull(getConfigurationSection("ores")).getValues(false);
+        if(contains("ores")) ores = new BiomeOreConfig(this);
 
         floraChance = getInt("flora-chance", 0);
         floraAttempts = getInt("flora-attempts", 1);
@@ -141,20 +144,16 @@ public class AbstractBiomeConfig extends TerraConfig {
         return flora;
     }
 
-    public Map<String, Object> getFloraData() {
-        return floraData;
+    public BiomeCarverConfig getCarving() {
+        return carving;
     }
 
-    public Map<String, Object> getOreData() {
-        return oreData;
+    public BiomeTreeConfig getTrees() {
+        return trees;
     }
 
-    public Map<String, Object> getTreeData() {
-        return treeData;
-    }
-
-    public List<Map<?, ?>> getCarvingData() {
-        return carvingData;
+    public BiomeOreConfig getOres() {
+        return ores;
     }
 
     public int getSeaLevel() {

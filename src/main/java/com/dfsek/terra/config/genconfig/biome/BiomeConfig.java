@@ -85,48 +85,9 @@ public class BiomeConfig extends TerraConfig {
             }
         }
 
-        TreeMap<Integer, Palette<BlockData>> paletteMap;
-        // Check if biome is extending abstract biome, only use abstract biome's palette if palette is NOT defined for current biome.
-        if(extending && abstractBiome.getPaletteData() != null && ! contains("palette")) {
-            paletteMap = abstractBiome.getPaletteData().getPaletteMap();
-            Debug.info("Using super palette");
-        } else paletteMap = new BiomePaletteConfig(this).getPaletteMap();
-        if(paletteMap == null) throw new ConfigException("No Palette specified in biome or super biome.", getID());
-
-        // Check if carving should be handled by super biome.
-        List<Map<?, ?>> carvingData;
-        try {
-            if(extending && abstractBiome.getCarvingData() != null && ! contains("carving")) {
-                carvingData = abstractBiome.getCarvingData();
-                Debug.info("Using super carvers");
-            } else carvingData = getMapList("carving");
-        } catch(NullPointerException e) {
-            carvingData = null;
-        }
-
-        carvers = new HashMap<>();
-        if(carvingData != null) {
-            for(Map<?, ?> e : carvingData) {
-                for(Map.Entry<?, ?> entry : e.entrySet()) {
-                    try {
-                        CarverConfig c = getConfig().getCarver((String) entry.getKey());
-                        if(c == null) throw new NotFoundException("Carver", (String) entry.getKey(), getID());
-                        Debug.info("Got carver " + c + ". Adding with weight " + entry.getValue());
-                        carvers.put(c, (Integer) entry.getValue());
-                    } catch(ClassCastException ex) {
-                        throw new ConfigException("Unable to parse Carver configuration! Check YAML syntax.", getID());
-                    } catch(NullPointerException ex) {
-                        throw new NotFoundException("carver", (String) entry.getKey(), getID());
-                    }
-                }
-            }
-        }
-
-        int floraChance, treeChance, treeDensity;
-
         // Get various simple values using getOrDefault config methods.
         float floraFreq;
-        int floraSeed;
+        int floraSeed, floraChance, treeChance, treeDensity;
         try {
             slabThreshold = getDouble("slabs.threshold", Objects.requireNonNull(abstractBiome).getSlabThreshold());
             floraChance = getInt("flora-chance", Objects.requireNonNull(abstractBiome).getFloraChance());
@@ -157,28 +118,45 @@ public class BiomeConfig extends TerraConfig {
             floraNoise.setFrequency(floraFreq);
         }
 
+        TreeMap<Integer, Palette<BlockData>> paletteMap;
+        // Check if biome is extending abstract biome, only use abstract biome's palette if palette is NOT defined for current biome.
+        if(extending && abstractBiome.getPaletteData() != null && ! contains("palette")) {
+            paletteMap = abstractBiome.getPaletteData().getPaletteMap();
+            Debug.info("Using super palette");
+        } else paletteMap = new BiomePaletteConfig(this).getPaletteMap();
+
+        // Palette must not be null
+        if(paletteMap == null) throw new ConfigException("No Palette specified in biome or super biome.", getID());
+
+        // Check if carving should be handled by super biome.
+        if(extending && abstractBiome.getCarving() != null && ! contains("carving")) {
+            carvers = abstractBiome.getCarving().getCarvers();
+            Debug.info("Using super carvers");
+        } else carvers = new BiomeCarverConfig(this).getCarvers();
+
         // Check if flora should be handled by super biome.
-        if(extending && abstractBiome.getFloraData() != null && ! contains("flora")) {
+        if(extending && abstractBiome.getFlora() != null && ! contains("flora")) {
             flora = abstractBiome.getFlora();
             Debug.info("Using super flora (" + flora.getFlora().size() + " entries, " + floraChance + " % chance)");
         } else flora = new BiomeFloraConfig(this);
 
         // Check if trees should be handled by super biome.
-        Map<String, Object> treeData;
-        ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
-        try {
-            if(extending && abstractBiome.getTreeData() != null && ! contains("trees")) {
-                treeData = abstractBiome.getTreeData();
-                Debug.info("Using super trees");
-            } else treeData = Objects.requireNonNull(getConfigurationSection("trees")).getValues(false);
-        } catch(NullPointerException e) {
-            treeData = null;
+        ProbabilityCollection<Tree> trees;
+        if(extending && abstractBiome.getTrees() != null && ! contains("trees")) {
+            trees = abstractBiome.getTrees().getTrees();
+            Debug.info("Using super trees");
+        } else trees = new BiomeTreeConfig(this).getTrees();
+
+        // Check if ores should be handled by super biome.
+        if(extending && abstractBiome.getOres() != null && ! contains("ores")) {
+            oreHeights = abstractBiome.getOres().getOreHeights();
+            ores = abstractBiome.getOres().getOres();
+            Debug.info("Using super ores");
+        } else {
+            BiomeOreConfig oreConfig = new BiomeOreConfig(this);
+            oreHeights = oreConfig.getOreHeights();
+            ores = oreConfig.getOres();
         }
-        if(treeData != null) {
-            for(Map.Entry<String, Object> e : treeData.entrySet()) {
-                trees.add(TreeType.valueOf(e.getKey()), (Integer) e.getValue());
-            }
-        } else trees = new ProbabilityCollection<>();
 
         //Make sure equation is non-null
         if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
@@ -193,30 +171,6 @@ public class BiomeConfig extends TerraConfig {
             vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
         } catch(IllegalArgumentException e) {
             throw new ConfigException("Invalid Vanilla biome: \"" + getString("vanilla") + "\"", getID());
-        }
-
-        // Check if ores should be handled by super biome.
-        oreHeights = new HashMap<>();
-        ores = new HashMap<>();
-        Map<String, Object> oreData;
-        try {
-            if(extending && abstractBiome.getOreData() != null && ! contains("ores")) {
-                oreData = abstractBiome.getOreData();
-                Debug.info("Using super ores");
-            } else oreData = Objects.requireNonNull(getConfigurationSection("ores")).getValues(false);
-        } catch(NullPointerException e) {
-            oreData = null;
-        }
-        if(oreData != null) {
-            for(Map.Entry<String, Object> m : oreData.entrySet()) {
-                OreConfig ore = config.getOre(m.getKey());
-                if(ore == null) throw new NotFoundException("Ore", m.getKey(), getID());
-                ores.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
-                oreHeights.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
-            }
-        } else {
-            ores = new HashMap<>();
-            oreHeights = new HashMap<>();
         }
 
         // Ocean stuff
