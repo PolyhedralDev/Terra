@@ -23,8 +23,7 @@ public class AbstractBiomeConfig extends TerraConfig {
     private final String equation;
     private final int floraAttempts;
     private double slabThreshold;
-    private Map<Material, Palette<BlockData>> slabs;
-    private Map<Material, Palette<BlockData>> stairs;
+    private BiomeSlabConfig slabs;
     private boolean useStairs;
     private final boolean floraSimplex;
     private final int floraSeed;
@@ -48,16 +47,6 @@ public class AbstractBiomeConfig extends TerraConfig {
         if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
-        if(contains("carving")) carving = new BiomeCarverConfig(this);
-
-        if(contains("palette")) palette = new BiomePaletteConfig(this);
-
-        if(contains("flora")) flora = new BiomeFloraConfig(this);
-
-        if(contains("trees")) trees = new BiomeTreeConfig(this);
-
-        if(contains("ores")) ores = new BiomeOreConfig(this);
-
         floraChance = getInt("flora-chance", 0);
         floraAttempts = getInt("flora-attempts", 1);
         treeChance = getInt("tree-chance", 0);
@@ -68,17 +57,19 @@ public class AbstractBiomeConfig extends TerraConfig {
         floraSeed = getInt("flora-simplex.seed", 0);
         seaLevel = getInt("ocean.level", 62);
         oceanPalette = getString("ocean.palette");
+        useStairs = getBoolean("slabs.use-stairs-if-available", false);
 
-        // Get slab stuff
-        useStairs = false;
-        if(contains("slabs") && getBoolean("slabs.enable", false)) {
-            slabThreshold = getDouble("slabs.threshold", 0.1D);
-            slabs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.palettes"), this);
-            if(contains("slabs.stair-palettes") && getBoolean("slabs.use-stairs-if-available", false)) {
-                stairs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.stair-palettes"), this);
-                useStairs = true;
-            }
-        }
+        if(contains("carving")) carving = new BiomeCarverConfig(this);
+
+        if(contains("palette")) palette = new BiomePaletteConfig(this);
+
+        if(contains("flora")) flora = new BiomeFloraConfig(this);
+
+        if(contains("trees")) trees = new BiomeTreeConfig(this);
+
+        if(contains("ores")) ores = new BiomeOreConfig(this);
+
+        if(contains("slabs") && getBoolean("slabs.enable", false)) slabs = new BiomeSlabConfig(this);
 
         if(contains("structures")) structureConfigs = getStringList("structures");
     }
@@ -108,20 +99,8 @@ public class AbstractBiomeConfig extends TerraConfig {
         return equation;
     }
 
-    public Map<Material, Palette<BlockData>> getSlabs() {
-        return slabs;
-    }
-
     public double getSlabThreshold() {
         return slabThreshold;
-    }
-
-    public Map<Material, Palette<BlockData>> getStairs() {
-        return stairs;
-    }
-
-    public boolean shouldUseStairs() {
-        return useStairs;
     }
 
     public float getFloraFreq() {
@@ -154,6 +133,10 @@ public class AbstractBiomeConfig extends TerraConfig {
 
     public BiomeOreConfig getOres() {
         return ores;
+    }
+
+    public BiomeSlabConfig getSlabs() {
+        return slabs;
     }
 
     public int getSeaLevel() {

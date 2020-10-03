@@ -75,7 +75,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                     if(super.getInterpolatedNoise(x, y, z) > 0) {
                         BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
-                        if(paletteLevel == 0 && c.getSlabs() != null) {
+                        if(paletteLevel == 0 && c.getSlabs() != null && y < 255) {
                             prepareBlockPart(data, chunk.getBlockData(x, y+1, z), chunk, new Vector(x, y+1, z), c.getSlabs(), c.getStairs(), c.getSlabThreshold());
                         }
                         paletteLevel++;

@@ -1,32 +1,25 @@
 package com.dfsek.terra.config.genconfig.biome;
 
 import com.dfsek.terra.Debug;
+import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
-import org.polydev.gaea.math.Range;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
-import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.config.TerraConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Stairs;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.math.Range;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
 import org.polydev.gaea.world.Flora;
-import org.polydev.gaea.world.FloraType;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
@@ -34,26 +27,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.TreeMap;
 
 public class BiomeConfig extends TerraConfig {
     private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
     private final UserDefinedBiome biome;
     private final String biomeID;
-    private Map<OreConfig, Range> ores;
-    private Map<OreConfig, Range> oreHeights;
-    private final Map<CarverConfig, Integer> carvers;
+    private final BiomeOreConfig ore;
+    private final BiomeCarverConfig carver;
     private final BiomeFloraConfig flora;
     private String eq;
     private int floraAttempts;
-    private Map<Material, Palette<BlockData>> slabs;
-    private Map<Material, Palette<BlockData>> stairs;
+    private final BiomeSlabConfig slab;
     private double slabThreshold;
     private boolean floraSimplex;
     private FastNoise floraNoise;
@@ -62,7 +50,6 @@ public class BiomeConfig extends TerraConfig {
     private final List<StructureConfig> structures;
     private final ConfigPack config;
 
-    @SuppressWarnings("unchecked, rawtypes")
     public BiomeConfig(File file, ConfigPack config) throws InvalidConfigurationException, IOException {
         super(file, config);
         load(file);
@@ -118,21 +105,21 @@ public class BiomeConfig extends TerraConfig {
             floraNoise.setFrequency(floraFreq);
         }
 
-        TreeMap<Integer, Palette<BlockData>> paletteMap;
+        BiomePaletteConfig palette;
         // Check if biome is extending abstract biome, only use abstract biome's palette if palette is NOT defined for current biome.
         if(extending && abstractBiome.getPaletteData() != null && ! contains("palette")) {
-            paletteMap = abstractBiome.getPaletteData().getPaletteMap();
+            palette = abstractBiome.getPaletteData();
             Debug.info("Using super palette");
-        } else paletteMap = new BiomePaletteConfig(this).getPaletteMap();
+        } else palette = new BiomePaletteConfig(this);
 
         // Palette must not be null
-        if(paletteMap == null) throw new ConfigException("No Palette specified in biome or super biome.", getID());
+        if(palette.getPaletteMap() == null) throw new ConfigException("No Palette specified in biome or super biome.", getID());
 
         // Check if carving should be handled by super biome.
         if(extending && abstractBiome.getCarving() != null && ! contains("carving")) {
-            carvers = abstractBiome.getCarving().getCarvers();
+            carver = abstractBiome.getCarving();
             Debug.info("Using super carvers");
-        } else carvers = new BiomeCarverConfig(this).getCarvers();
+        } else carver = new BiomeCarverConfig(this);
 
         // Check if flora should be handled by super biome.
         if(extending && abstractBiome.getFlora() != null && ! contains("flora")) {
@@ -141,28 +128,29 @@ public class BiomeConfig extends TerraConfig {
         } else flora = new BiomeFloraConfig(this);
 
         // Check if trees should be handled by super biome.
-        ProbabilityCollection<Tree> trees;
+        BiomeTreeConfig tree;
         if(extending && abstractBiome.getTrees() != null && ! contains("trees")) {
-            trees = abstractBiome.getTrees().getTrees();
+            tree = abstractBiome.getTrees();
             Debug.info("Using super trees");
-        } else trees = new BiomeTreeConfig(this).getTrees();
+        } else tree = new BiomeTreeConfig(this);
 
         // Check if ores should be handled by super biome.
         if(extending && abstractBiome.getOres() != null && ! contains("ores")) {
-            oreHeights = abstractBiome.getOres().getOreHeights();
-            ores = abstractBiome.getOres().getOres();
+            ore = abstractBiome.getOres();
             Debug.info("Using super ores");
-        } else {
-            BiomeOreConfig oreConfig = new BiomeOreConfig(this);
-            oreHeights = oreConfig.getOreHeights();
-            ores = oreConfig.getOres();
-        }
+        } else ore = new BiomeOreConfig(this);
+
+        // Get slab stuff
+        if(extending && abstractBiome.getSlabs() != null && !contains("slabs")) {
+            slab = abstractBiome.getSlabs();
+            Debug.info("Using super slabs");
+        } else slab = new BiomeSlabConfig(this);
 
         //Make sure equation is non-null
         if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.
-        UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), trees, floraChance, treeChance, treeDensity);
+        UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), tree.getTrees(), floraChance, treeChance, treeDensity);
 
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;
@@ -197,37 +185,7 @@ public class BiomeConfig extends TerraConfig {
         } else ocean = oceanDefault;
 
 
-        // Get slab stuff
-        if(contains("slabs") && getBoolean("slabs.enable", false)) {
-            if(extending && abstractBiome.getSlabs() != null) {
-                slabs = abstractBiome.getSlabs();
-                if(abstractBiome.shouldUseStairs()) {
-                    stairs = abstractBiome.getStairs();
-                }
-                Debug.info("Using super slabs");
-            } else {
-                slabs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.palettes"), this);
-                if(contains("slabs.stair-palettes") && getBoolean("slabs.use-stairs-if-available", false)) {
-                    stairs = BiomeConfigUtil.getSlabPalettes(getMapList("slabs.stair-palettes"), this);
-                } else stairs = new HashMap<>();
-            }
-            for(Map.Entry<Material, Palette<BlockData>> p : stairs.entrySet()) {
-                try {
-                    for(Palette.PaletteLayer l : p.getValue().getLayers()) {
-                        Iterator i = l.getCollection().iterator();
-                        while(i.hasNext()) {
-                            Stairs s = (Stairs) ((ProbabilityCollection.ProbabilitySetElement<BlockData>) i.next()).getObject();
-                            Debug.info("Stair added: " + s.getAsString());
-                        }
 
-                    }
-                } catch(ClassCastException e) {
-                    if(ConfigUtil.debug) e.printStackTrace();
-                    throw new ConfigException("Materials in stair config must be stairs.", getID());
-                }
-            }
-            Debug.info("[Terra] Slabs: " + slabs.size());
-        }
 
         // Structure stuff
         structures = new ArrayList<>();
@@ -244,7 +202,7 @@ public class BiomeConfig extends TerraConfig {
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), paletteMap), biomeID);
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap()), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());
@@ -252,7 +210,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Range getOreHeight(OreConfig c) {
-        return oreHeights.get(c);
+        return ore.getOreHeights().get(c);
     }
 
     public UserDefinedBiome getBiome() {
@@ -268,7 +226,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Map<OreConfig, Range> getOres() {
-        return ores;
+        return ore.getOres();
     }
 
     public Range getFloraHeights(Flora f) {
@@ -281,7 +239,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public int getCarverChance(UserDefinedCarver c) {
-        return carvers.getOrDefault(config.getCarver(c), 0);
+        return carver.getCarvers().getOrDefault(config.getCarver(c), 0);
     }
 
     public double getSlabThreshold() {
@@ -289,11 +247,11 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Map<Material, Palette<BlockData>> getStairs() {
-        return stairs;
+        return slab.getStairs();
     }
 
     public Map<Material, Palette<BlockData>> getSlabs() {
-        return slabs;
+        return slab.getSlabs();
     }
 
     public boolean isFloraSimplex() {
