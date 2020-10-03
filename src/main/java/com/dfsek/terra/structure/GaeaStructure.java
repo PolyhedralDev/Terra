@@ -1,6 +1,7 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
+import org.bukkit.block.data.MultipleFacing;
 import org.polydev.gaea.math.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -261,6 +262,13 @@ public class GaeaStructure implements Serializable {
             } else if(data instanceof Directional) {
                 BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r, m);
                 ((Directional) data).setFacing(rt);
+            } else if(data instanceof MultipleFacing) {
+                MultipleFacing mfData = (MultipleFacing) data;
+                List<BlockFace> faces = new ArrayList<>(mfData.getFaces());
+                for(BlockFace face : faces) {
+                    mfData.setFace(face, false);
+                    mfData.setFace(getRotatedFace(face, r, m), true);
+                }
             }
             worldBlock.setBlockData(data, false);
             if(block.getState() != null) {
