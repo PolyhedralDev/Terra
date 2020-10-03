@@ -2,6 +2,7 @@ package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
 import org.bukkit.block.data.MultipleFacing;
+import org.bukkit.util.Vector;
 import org.polydev.gaea.math.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -51,7 +52,7 @@ public class GaeaStructure implements Serializable {
     }
 
     public GaeaStructure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
-        int centerX = -1, centerZ = -1;
+        int centerX = -1, centerY = -1, centerZ = -1;
         this.id = id;
         this.uuid = UUID.randomUUID();
         if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ()) throw new IllegalArgumentException("Invalid locations provided!");
@@ -71,6 +72,7 @@ public class GaeaStructure implements Serializable {
                                 useState = false;
                                 if(s.getLine(1).equals("[CENTER]")) {
                                     centerX = x;
+                                    centerY = y;
                                     centerZ = z;
                                 } else if(s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
                                     String og = s.getLine(1);
@@ -97,8 +99,8 @@ public class GaeaStructure implements Serializable {
                 }
             }
         }
-        if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
-        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, centerX, centerZ);
+        if(centerX < 0 || centerY < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
+        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector(centerX, centerY, centerZ));
     }
 
     public ArrayList<StructureSpawnRequirement> getSpawns() {
