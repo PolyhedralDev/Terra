@@ -4,9 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.population.OrePopulator;
 import org.polydev.gaea.math.Range;
-import com.dfsek.terra.TerraTree;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
@@ -238,11 +236,7 @@ public class BiomeConfig extends TerraConfigObject {
         }
         if(treeData != null) {
             for(Map.Entry<String, Object> e : treeData.entrySet()) {
-                if(e.getKey().startsWith("TERRA:")) {
-                    trees.add(TerraTree.valueOf(e.getKey().substring(6)), (Integer) e.getValue());
-                } else {
-                    trees.add(TreeType.valueOf(e.getKey()), (Integer) e.getValue());
-                }
+                trees.add(TreeType.valueOf(e.getKey()), (Integer) e.getValue());
             }
         } else trees = new ProbabilityCollection<>();
 
