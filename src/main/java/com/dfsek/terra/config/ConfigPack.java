@@ -181,6 +181,14 @@ public class ConfigPack extends YamlConfiguration {
         return fill;
     }
 
+    public List<String> getStructureIDs() {
+        List<String> fill = new ArrayList<>();
+        for(StructureConfig s : structures.values()) {
+            fill.add(s.getID());
+        }
+        return fill;
+    }
+
     public FloraConfig getFlora(String id) {
         return flora.get(id);
     }

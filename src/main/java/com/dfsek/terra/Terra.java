@@ -6,7 +6,6 @@ import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;

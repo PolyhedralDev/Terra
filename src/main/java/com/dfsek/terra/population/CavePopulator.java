@@ -2,6 +2,7 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.carving.SimplexCarver;
 import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
@@ -31,6 +32,7 @@ public class CavePopulator extends BlockPopulator {
         if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
             ConfigPack config = TerraWorld.getWorld(world).getConfig();
+
             for(CarverConfig c : config.getCarvers().values()) {
                 Map<Location, Material> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
@@ -77,6 +79,10 @@ public class CavePopulator extends BlockPopulator {
                         b.setBlockData(AIR, false);
                         b.setBlockData(orig, true);
                     }
+                }
+                for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
+                    Vector v = e.getKey();
+                    chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(AIR, false);
                 }
             }
 

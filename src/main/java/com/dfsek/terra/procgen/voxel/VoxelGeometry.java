@@ -20,7 +20,6 @@ public abstract class VoxelGeometry {
         geometry.addAll(other.getGeometry());
     }
     public static VoxelGeometry getBlank() {
-        return new Blank();
+        return new VoxelGeometry() {};
     }
-    private static class Blank extends VoxelGeometry {}
 }

@@ -1,6 +1,7 @@
 package com.dfsek.terra.command;
 
 import com.dfsek.terra.command.biome.BiomeCommand;
+import com.dfsek.terra.command.geometry.GeometryCommand;
 import com.dfsek.terra.command.image.ImageCommand;
 import com.dfsek.terra.command.profile.ProfileCommand;
 import com.dfsek.terra.command.structure.StructureCommand;
@@ -19,7 +20,8 @@ public class TerraCommand extends Command {
             new ProfileCommand(),
             new SaveDataCommand(),
             new StructureCommand(),
-            new ImageCommand());
+            new ImageCommand(),
+            new GeometryCommand());
 
     @Override
     public String getName() {
@@ -33,21 +35,13 @@ public class TerraCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(args.length > 0) {
-            for(com.dfsek.terra.command.type.Command c : commands) {
-                if(c.getName().equals(args[0])) return c.execute(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
-            }
-            sender.sendMessage("Invalid command.");
-            return true;
-        } else {
-            sender.sendMessage("--------------------Terra--------------------");
-            sender.sendMessage("reload    - Reload configuration data");
-            sender.sendMessage("biome     - Get current biome");
-            sender.sendMessage("ore       - Generate an ore vein at the location you are facing (For debugging)");
-            sender.sendMessage("save-data - Save population data");
-            sender.sendMessage("structure - Load and export structures");
-            sender.sendMessage("profile   - Profiler options");
-        }
+        sender.sendMessage("--------------------Terra--------------------");
+        sender.sendMessage("reload    - Reload configuration data");
+        sender.sendMessage("biome     - Get current biome");
+        sender.sendMessage("ore       - Generate an ore vein at the location you are facing (For debugging)");
+        sender.sendMessage("save-data - Save population data");
+        sender.sendMessage("structure - Load and export structures");
+        sender.sendMessage("profile   - Profiler options");
         return true;
     }
 

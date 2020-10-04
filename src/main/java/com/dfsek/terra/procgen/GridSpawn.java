@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class to procedurally determine the spawn point of an object based on a grid with padding between cells.
+ */
 public class GridSpawn {
     private final int separation;
     private final int width;
@@ -16,7 +19,7 @@ public class GridSpawn {
     }
 
     /**
-     * Get nearest spawnpoint
+     * Get nearest spawn point
      * @param x X coordinate
      * @param z Z coordinate
      * @param seed Seed for RNG
@@ -40,7 +43,7 @@ public class GridSpawn {
     }
 
     /**
-     * Get the X/Z coordinates of the spawnpoint in the nearest Chunk (not Minecraft chunk)
+     * Get the X/Z coordinates of the spawn point in the nearest Chunk (not Minecraft chunk)
      * @param structureChunkX Chunk X coordinate
      * @param structureChunkZ Chunk Z coordinate
      * @param seed Seed for RNG
@@ -53,5 +56,13 @@ public class GridSpawn {
         int sx = structureChunkX * (width + 2*separation) + offsetX;
         int sz = structureChunkZ * (width + 2*separation) + offsetZ;
         return new Vector(sx, 0, sz);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getSeparation() {
+        return separation;
     }
 }

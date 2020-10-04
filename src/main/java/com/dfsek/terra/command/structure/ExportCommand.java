@@ -24,28 +24,11 @@ import java.util.List;
 public class ExportCommand extends PlayerCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        WorldEditPlugin we = WorldEditUtil.getWorldEdit();
-        if(we == null) {
-            sender.sendMessage("WorldEdit is not installed! Please install WorldEdit before attempting to export structures.");
-            return true;
-        }
-        Region selection;
-        try {
-            selection = we.getSession(sender).getSelection(BukkitAdapter.adapt(sender.getWorld()));
-        } catch(IncompleteRegionException e) {
-            sender.sendMessage("Invalid/incomplete selection!");
-            return true;
-        }
-        BukkitAdapter.adapt(sender);
-        if(selection == null) {
-            sender.sendMessage("Please make a selection before attempting to export!");
-            return true;
-        }
-        BlockVector3 min = selection.getMinimumPoint();
-        BlockVector3 max = selection.getMaximumPoint();
-        Location l1 = new Location(sender.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
-        Location l2 = new Location(sender.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
-        GaeaStructure structure = null;
+        Location[] l = WorldEditUtil.getSelectionLocations(sender);
+        if(l == null) return true;
+        Location l1 = l[0];
+        Location l2 = l[1];
+        GaeaStructure structure;
         try {
             structure = new GaeaStructure(l1, l2, args[0]);
         } catch(InitializationException e) {

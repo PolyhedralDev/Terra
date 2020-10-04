@@ -149,7 +149,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());
-                Debug.info("[Terra] Saved data for world " + e.getKey().getName());
+                Debug.info("Saved data for world " + e.getKey().getName());
             } catch(IOException ioException) {
                 ioException.printStackTrace();
             }
