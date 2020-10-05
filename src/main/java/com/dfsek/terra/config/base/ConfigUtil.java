@@ -1,7 +1,6 @@
 package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

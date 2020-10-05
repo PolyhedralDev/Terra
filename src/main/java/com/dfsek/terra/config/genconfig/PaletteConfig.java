@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;

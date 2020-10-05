@@ -24,9 +24,9 @@ public class BiomeSlabConfig extends TerraConfigSection {
     private final Map<Material, Palette<BlockData>> stairs;
     public BiomeSlabConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        slabs = BiomeConfigUtil.getSlabPalettes(parent.getMapList("slabs.palettes"), parent);
+        slabs = getSlabPalettes(parent.getMapList("slabs.palettes"));
         if(parent.contains("slabs.stair-palettes") && parent.getBoolean("slabs.use-stairs-if-available", false)) {
-            stairs = BiomeConfigUtil.getSlabPalettes(parent.getMapList("slabs.stair-palettes"), parent);
+            stairs = getSlabPalettes(parent.getMapList("slabs.stair-palettes"));
         } else stairs = new HashMap<>();
     }
     protected Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection) throws InvalidConfigurationException {

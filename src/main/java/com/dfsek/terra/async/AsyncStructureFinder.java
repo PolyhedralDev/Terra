@@ -1,7 +1,6 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.genconfig.StructureConfig;
@@ -13,9 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.profiler.ProfileFuture;
 
-import java.util.Collections;
 import java.util.Random;
 
 public class AsyncStructureFinder implements Runnable {
@@ -53,11 +50,13 @@ public class AsyncStructureFinder implements Runnable {
         int run = 1;
         boolean toggle = true;
         boolean found = false;
+        Vector spawn = null;
         main: for(int i = startRadius; i < maxRadius; i++) {
             for(int j = 0; j < run; j++) {
                 if(toggle) x += 16;
                 else x -= 16;
-                if(hasValidSpawn(x, z)) {
+                spawn = target.getSpawn().getNearestSpawn(x, z, seed);
+                if(isValidSpawn(spawn.getBlockX(), spawn.getBlockZ())) {
                     found = true;
                     break main;
                 }
@@ -65,7 +64,8 @@ public class AsyncStructureFinder implements Runnable {
             for(int j = 0; j < run; j++) {
                 if(toggle) z += 16;
                 else z -= 16;
-                if(hasValidSpawn(x, z)) {
+                spawn = target.getSpawn().getNearestSpawn(x, z, seed);
+                if(isValidSpawn(spawn.getBlockX(), spawn.getBlockZ())) {
                     found = true;
                     break main;
                 }
@@ -74,25 +74,22 @@ public class AsyncStructureFinder implements Runnable {
             toggle = !toggle;
         }
         if(found) {
-            Vector v = target.getSpawn().getNearestSpawn(x, z, seed);
-            x = v.getBlockX();
-            z = v.getBlockZ();
-            p.sendMessage("Located structure at (" + x + ", " + z + ").");
+            p.sendMessage("Located structure at (" + spawn.getBlockX() + ", " + spawn.getBlockZ() + ").");
             if(tp) {
                 int finalX = x;
                 int finalZ = z;
                 Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
             }
-        } else if(p.isOnline()) p.sendMessage("Unable to locate structure.");
+        } else if(p.isOnline()) p.sendMessage("Unable to locate structure. " + spawn);
     }
-    private boolean hasValidSpawn(int x, int z) {
-        UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(x, z, GenerationPhase.POPULATE);
-        Location spawn = target.getSpawn().getNearestSpawn(x, z, seed).toLocation(world); // Probably(tm) async safe
+    private boolean isValidSpawn(int x, int z) {
+        Location spawn = new Location(world, x, 255, z); // Probably(tm) async safe
+        UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(spawn, GenerationPhase.POPULATE);
         Random r2 = new Random(spawn.hashCode());
         GaeaStructure struc = target.getStructure(r2);
         main: for(int y = target.getSearchStart().get(r2); y > 0; y--) {
-            if(y > target.getBound().getMax() || y < target.getBound().getMin()) return false;
             spawn.setY(y);
+            if(y > target.getBound().getMax() || y < target.getBound().getMin()) return false;
             for(StructureSpawnRequirement s : struc.getSpawns()) {
                 if(! s.isValidSpawn(spawn)) continue main; // Probably(tm) async safe
                 if(!b.equals(grid.getBiome(spawn.clone().add(s.getX(), s.getY(), s.getZ()), GenerationPhase.POPULATE))) return false;

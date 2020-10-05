@@ -17,7 +17,7 @@ public abstract class VoxelGeometry {
     }
 
     public void merge(VoxelGeometry other) {
-        geometry.addAll(other.getGeometry());
+        geometry.addAll(other.geometry);
     }
     public static VoxelGeometry getBlank() {
         return new VoxelGeometry() {};

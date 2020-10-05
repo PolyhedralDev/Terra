@@ -1,5 +1,6 @@
 package com.dfsek.terra.config;
 
+import com.dfsek.terra.config.base.ConfigPack;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 

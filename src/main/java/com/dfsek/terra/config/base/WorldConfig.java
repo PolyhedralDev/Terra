@@ -1,6 +1,5 @@
 package com.dfsek.terra.config.base;
 
-import com.dfsek.terra.config.ConfigPack;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

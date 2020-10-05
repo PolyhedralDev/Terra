@@ -3,7 +3,7 @@ package com.dfsek.terra.config.genconfig.biome;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -19,6 +19,7 @@ import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
+import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
@@ -39,6 +40,7 @@ public class BiomeConfig extends TerraConfig {
     private final BiomeOreConfig ore;
     private final BiomeCarverConfig carver;
     private final BiomeFloraConfig flora;
+    private final BiomeTreeConfig tree;
     private String eq;
     private int floraAttempts;
     private final BiomeSlabConfig slab;
@@ -128,7 +130,6 @@ public class BiomeConfig extends TerraConfig {
         } else flora = new BiomeFloraConfig(this);
 
         // Check if trees should be handled by super biome.
-        BiomeTreeConfig tree;
         if(extending && abstractBiome.getTrees() != null && ! contains("trees")) {
             tree = abstractBiome.getTrees();
             Debug.info("Using super trees");
@@ -272,5 +273,9 @@ public class BiomeConfig extends TerraConfig {
 
     public List<StructureConfig> getStructures() {
         return structures;
+    }
+
+    public Range getTreeRange(Tree t) {
+        return tree.getTreeHeights().getOrDefault(t, new Range(-1, -1));
     }
 }

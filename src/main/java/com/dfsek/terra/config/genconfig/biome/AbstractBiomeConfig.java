@@ -1,19 +1,14 @@
 package com.dfsek.terra.config.genconfig.biome;
 
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.exception.ConfigException;
-import com.dfsek.terra.config.genconfig.biome.BiomeConfigUtil;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.polydev.gaea.world.palette.Palette;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class AbstractBiomeConfig extends TerraConfig {
     private final String biomeID;

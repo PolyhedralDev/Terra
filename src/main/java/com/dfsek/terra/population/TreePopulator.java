@@ -4,18 +4,24 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.math.Range;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
+import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.util.WorldUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TreePopulator extends GaeaBlockPopulator {
@@ -26,8 +32,9 @@ public class TreePopulator extends GaeaBlockPopulator {
             TerraBiomeGrid grid = tw.getGrid();;
             int x = random.nextInt(16); // Decrease chances of chunk-crossing trees
             int z = random.nextInt(16);
-            Location origin = chunk.getBlock(x, 0, z).getLocation();
-            Biome b = grid.getBiome(origin, GenerationPhase.POPULATE);
+            int origX = chunk.getX() << 4;
+            int origZ = chunk.getZ() << 4;
+            Biome b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
             if(((UserDefinedDecorator) b.getDecorator()).getTreeChance() < random.nextInt(100)) return;
             int max = 50;
             int att = 0;
@@ -38,15 +45,28 @@ public class TreePopulator extends GaeaBlockPopulator {
                     if(chunk.getBlock(x, y, z).getType().isAir() && chunk.getBlock(x, y-1, z).getType().isSolid()) break;
                     y--;
                 }
-                if(y == 0) continue;
-                origin = chunk.getBlock(x, y, z).getLocation().add(0, 1, 0);
-                b = grid.getBiome(origin, GenerationPhase.POPULATE);
-                try {
-                    if(b.getDecorator().getTrees().get(random).plant(origin, random, false, Terra.getInstance())) i++;
-                } catch(NullPointerException ignore) {}
+                Tree tree = b.getDecorator().getTrees().get(random);
+                Range range = tw.getConfig().getBiome((UserDefinedBiome) b).getTreeRange(tree);
+                if(!tw.getConfig().getBiome((UserDefinedBiome) b).getTreeRange(tree).isInRange(y)) continue;
+                b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
+                for(Block block : getValidSpawnsAt(chunk, x, z, range)) {
+                    try {
+                        if(tree.plant(block.getLocation(), random, false, Terra.getInstance())) i++;
+                    } catch(NullPointerException ignore) {}
+                }
+
                 x = random.nextInt(16);
                 z = random.nextInt(16);
             }
         }
+    }
+    public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z, Range check) {
+        List<Block> blocks = new ArrayList<>();
+        for(int y : check) {
+            if(chunk.getBlock(x, y, z).getType().isSolid() && chunk.getBlock(x, y + 1, z).getType().isAir()) {
+                blocks.add(chunk.getBlock(x, y, z));
+            }
+        }
+        return blocks;
     }
 }

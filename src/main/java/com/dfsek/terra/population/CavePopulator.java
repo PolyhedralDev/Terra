@@ -2,8 +2,7 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.carving.SimplexCarver;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
 import org.bukkit.Chunk;
@@ -80,10 +79,10 @@ public class CavePopulator extends BlockPopulator {
                         b.setBlockData(orig, true);
                     }
                 }
-                for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
+                /*for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
                     Vector v = e.getKey();
                     chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(AIR, false);
-                }
+                }*/
             }
 
         }

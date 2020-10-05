@@ -2,7 +2,7 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;

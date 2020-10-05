@@ -57,9 +57,17 @@ public class SimplexCarver extends Carver {
                 double mainNoise = noise.getNoise(x, z)*2;
                 double columnNoise = Math.pow(Math.max(column.getNoise(x, z), 0)*2, 3);
                 double hc = (acot(16*(hasCaves.getNoise(x, z)-0.2))/Math.PI)-0.1;
+                CarvingData.CarvingType type = CarvingData.CarvingType.BOTTOM;
+                double simplex = (Math.pow(mainNoise + root2inverse, 3)/2 + columnNoise) * hc;
                 for(int y = 0; y < 64; y++) {
-                    double finalNoise = (-0.05*Math.abs(y-(heightNoise*16 + 24))+1 - (Math.pow(mainNoise + root2inverse, 3)/2 + columnNoise)) * hc;
-                    if(finalNoise > 0.5) c.carve(x-ox, y, z-oz, CarvingData.CarvingType.CENTER);
+                    double finalNoise = (-0.05*Math.abs(y-(heightNoise*16 + 24))+1 - simplex) * hc;
+                    if(finalNoise > 0.5) {
+                        c.carve(x-ox, y, z-oz, type);
+                        double finalNoiseUp = (-0.05*Math.abs((y+1)-(heightNoise*16 + 24))+1 - simplex) * hc;
+                        if(finalNoiseUp > 0.5) {
+                            type = CarvingData.CarvingType.CENTER;
+                        } else type = CarvingData.CarvingType.TOP;
+                    }
                 }
             }
         }

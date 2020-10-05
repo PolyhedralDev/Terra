@@ -2,7 +2,7 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.exception.ConfigException;

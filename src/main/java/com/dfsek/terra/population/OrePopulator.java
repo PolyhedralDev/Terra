@@ -1,7 +1,7 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.biome.UserDefinedBiome;

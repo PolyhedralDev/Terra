@@ -4,7 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
@@ -145,7 +145,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         needsLoad = false;
     }
 
-    public static void saveAll() {
+    public static synchronized void saveAll() {
         for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());

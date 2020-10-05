@@ -1,7 +1,8 @@
-package com.dfsek.terra.config;
+package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
@@ -26,6 +27,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a Terra configuration pack.
+ */
 public class ConfigPack extends YamlConfiguration {
     private static final Map<String, ConfigPack> configs = new HashMap<>();
     private final Map<String, OreConfig> ores;
@@ -104,7 +108,7 @@ public class ConfigPack extends YamlConfiguration {
         return carvers;
     }
 
-    public static void loadAll(JavaPlugin main) {
+    public static synchronized void loadAll(JavaPlugin main) {
         configs.clear();
         List<Path> subfolder;
         try {
@@ -135,7 +139,7 @@ public class ConfigPack extends YamlConfiguration {
         return id;
     }
 
-    public static ConfigPack fromID(String id) {
+    public static synchronized ConfigPack fromID(String id) {
         return configs.get(id);
     }
 
