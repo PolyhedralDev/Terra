@@ -154,4 +154,14 @@ public class Vector2 implements Cloneable {
             throw new Error(e);
         }
     }
+
+    public Vector2 setX(double x) {
+        this.x = x;
+        return this;
+    }
+
+    public Vector2 setZ(double z) {
+        this.z = z;
+        return this;
+    }
 }

@@ -1,15 +1,10 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.WorldEditUtil;
+import com.dfsek.terra.util.structure.WorldEditUtil;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.structure.GaeaStructure;
 import com.dfsek.terra.structure.InitializationException;
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
