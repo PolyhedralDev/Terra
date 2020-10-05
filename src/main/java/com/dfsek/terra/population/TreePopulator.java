@@ -30,7 +30,7 @@ public class TreePopulator extends GaeaBlockPopulator {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("TreeGenTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
             TerraBiomeGrid grid = tw.getGrid();;
-            int x = random.nextInt(16); // Decrease chances of chunk-crossing trees
+            int x = random.nextInt(16);
             int z = random.nextInt(16);
             int origX = chunk.getX() << 4;
             int origZ = chunk.getZ() << 4;
@@ -40,16 +40,11 @@ public class TreePopulator extends GaeaBlockPopulator {
             int att = 0;
             for(int i = 0; i < b.getDecorator().getTreeDensity() && att < max; ) {
                 att++;
-                int y = 255;
-                while(y > 1) {
-                    if(chunk.getBlock(x, y, z).getType().isAir() && chunk.getBlock(x, y-1, z).getType().isSolid()) break;
-                    y--;
-                }
-                Tree tree = b.getDecorator().getTrees().get(random);
-                Range range = tw.getConfig().getBiome((UserDefinedBiome) b).getTreeRange(tree);
-                if(!tw.getConfig().getBiome((UserDefinedBiome) b).getTreeRange(tree).isInRange(y)) continue;
-                b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
-                for(Block block : getValidSpawnsAt(chunk, x, z, range)) {
+                for(Block block : getValidSpawnsAt(chunk, x, z, new Range(0, 254))) {
+                    Tree tree = b.getDecorator().getTrees().get(random);
+                    Range range = tw.getConfig().getBiome((UserDefinedBiome) b).getTreeRange(tree);
+                    if(!range.isInRange(block.getY())) continue;
+                    b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
                     try {
                         if(tree.plant(block.getLocation(), random, false, Terra.getInstance())) i++;
                     } catch(NullPointerException ignore) {}

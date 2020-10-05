@@ -2,6 +2,7 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.carving.SimplexCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
@@ -81,7 +82,15 @@ public class CavePopulator extends BlockPopulator {
                 }
                 /*for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
                     Vector v = e.getKey();
-                    chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(AIR, false);
+                    switch(e.getValue()) {
+                        case TOP:
+                        case CENTER:
+                            chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(AIR, false);
+                            break;
+                        case BOTTOM:
+                            chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(Material.MYCELIUM.createBlockData(), false);
+                    }
+
                 }*/
             }
 

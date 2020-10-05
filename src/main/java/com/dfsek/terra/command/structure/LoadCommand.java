@@ -19,8 +19,8 @@ public class LoadCommand extends PlayerCommand {
         try {
             GaeaStructure.Rotation r = GaeaStructure.Rotation.fromDegrees(Integer.parseInt(args[1]));
             GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
-            if("true".equals(args[2])) struc.paste(sender.getLocation(), r, Collections.emptyList());
-            else struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r, Collections.emptyList());
+            if("true".equals(args[2])) struc.paste(sender.getLocation(), r);
+            else struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r);
         } catch(IOException e) {
             e.printStackTrace();
             sender.sendMessage("Structure not found.");

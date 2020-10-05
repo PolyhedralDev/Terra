@@ -1,9 +1,6 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
-import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.util.Vector;
-import org.polydev.gaea.math.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -14,10 +11,13 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.MultipleFacing;
+import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.block.data.type.Chest;
-import org.bukkit.block.data.type.Stairs;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.math.Range;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -120,20 +120,18 @@ public class GaeaStructure implements Serializable {
      * Paste the structure at a Location, ignoring chunk boundaries.
      * @param origin Origin location
      * @param r Rotation
-     * @param m Mirror
      */
-    public void paste(@NotNull Location origin, Rotation r, List<Mirror> m) {
-        this.executeForBlocksInRange(getRange(Axis.X), getRange(Axis.Y), getRange(Axis.Z), block -> pasteBlock(block, origin, r, m), r, m);
+    public void paste(@NotNull Location origin, Rotation r) {
+        this.executeForBlocksInRange(getRange(Axis.X), getRange(Axis.Y), getRange(Axis.Z), block -> pasteBlock(block, origin, r), r);
     }
 
     /**
      * Rotate and mirror a coordinate pair.
      * @param arr Array containing X and Z coordinates.
      * @param r Rotation
-     * @param m Mirror
      * @return Rotated coordinate pair
      */
-    private int[] getRotatedCoords(int[] arr, Rotation r, List<Mirror> m) {
+    private int[] getRotatedCoords(int[] arr, Rotation r) {
         int[] cp = Arrays.copyOf(arr, 2);
         switch(r) {
             case CW_90:
@@ -149,8 +147,6 @@ public class GaeaStructure implements Serializable {
                 arr[1] = - cp[1];
                 break;
         }
-        if(m.contains(Mirror.X)) arr[0] = - arr[0];
-        if(m.contains(Mirror.Z)) arr[1] = - arr[1];
         return arr;
     }
 
@@ -158,19 +154,82 @@ public class GaeaStructure implements Serializable {
      * Get the BlockFace with rotation and mirrors applied to it
      * @param f BlockFace to apply rotation to
      * @param r Rotation
-     * @param m Mirror
      * @return Rotated BlockFace
      */
-    private BlockFace getRotatedFace(BlockFace f, Rotation r, List<Mirror> m) {
+    private BlockFace getRotatedFace(BlockFace f, Rotation r) {
         BlockFace n = f;
         int rotateNum = r.getDegrees()/90;
         int rn = faceRotation(f);
         if(rn >= 0) {
             n = fromRotation(faceRotation(n) + 4*rotateNum);
         }
-        if(f.getModX()!=0 && m.contains(Mirror.X)) n = n.getOppositeFace();
-        if(f.getModZ()!=0 && m.contains(Mirror.Z)) n = n.getOppositeFace();
         return n;
+    }
+
+    private org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, Rotation r) {
+        org.bukkit.Axis other = orig;
+        final boolean shouldSwitch = r.equals(Rotation.CW_90) || r.equals(Rotation.CCW_90);
+        switch(orig) {
+            case X:
+                if(shouldSwitch) other = org.bukkit.Axis.Z;
+                break;
+            case Z:
+                if(shouldSwitch) other = org.bukkit.Axis.X;
+                break;
+        }
+        return other;
+    }
+
+
+    /**
+     * Method to rotate the incredibly obnoxious Rail.Shape enum
+     * @param orig Original shape
+     * @param r Rotate
+     * @return Rotated/mirrored shape
+     */
+    private Rail.Shape getRotatedRail(Rail.Shape orig, Rotation r) {
+        switch(r) {
+            case CCW_90:
+                switch(orig) {
+                    case NORTH_WEST: return Rail.Shape.SOUTH_WEST;
+                    case NORTH_SOUTH: return Rail.Shape.EAST_WEST;
+                    case SOUTH_WEST: return Rail.Shape.SOUTH_EAST;
+                    case SOUTH_EAST: return Rail.Shape.NORTH_EAST;
+                    case EAST_WEST: return Rail.Shape.NORTH_SOUTH;
+                    case NORTH_EAST: return Rail.Shape.NORTH_WEST;
+                    case ASCENDING_EAST: return Rail.Shape.ASCENDING_NORTH;
+                    case ASCENDING_WEST: return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_NORTH: return Rail.Shape.ASCENDING_WEST;
+                    case ASCENDING_SOUTH: return Rail.Shape.ASCENDING_EAST;
+                }
+            case CW_90:
+                switch(orig) {
+                    case NORTH_WEST: return Rail.Shape.NORTH_EAST;
+                    case NORTH_SOUTH: return Rail.Shape.EAST_WEST;
+                    case SOUTH_WEST: return Rail.Shape.NORTH_WEST;
+                    case SOUTH_EAST: return Rail.Shape.SOUTH_WEST;
+                    case EAST_WEST: return Rail.Shape.NORTH_SOUTH;
+                    case NORTH_EAST: return Rail.Shape.SOUTH_EAST;
+                    case ASCENDING_EAST: return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_WEST: return Rail.Shape.ASCENDING_NORTH;
+                    case ASCENDING_NORTH: return Rail.Shape.ASCENDING_EAST;
+                    case ASCENDING_SOUTH: return Rail.Shape.ASCENDING_WEST;
+                }
+            case CW_180:
+                switch(orig) {
+                    case NORTH_WEST: return Rail.Shape.SOUTH_EAST;
+                    case NORTH_SOUTH: return Rail.Shape.NORTH_SOUTH;
+                    case SOUTH_WEST: return Rail.Shape.NORTH_EAST;
+                    case SOUTH_EAST: return Rail.Shape.NORTH_WEST;
+                    case EAST_WEST: return Rail.Shape.EAST_WEST;
+                    case NORTH_EAST: return Rail.Shape.SOUTH_WEST;
+                    case ASCENDING_EAST: return Rail.Shape.ASCENDING_WEST;
+                    case ASCENDING_WEST: return Rail.Shape.ASCENDING_EAST;
+                    case ASCENDING_NORTH: return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_SOUTH: return Rail.Shape.ASCENDING_NORTH;
+                }
+        }
+        return orig;
     }
 
     /**
@@ -233,9 +292,8 @@ public class GaeaStructure implements Serializable {
      * @param origin Origin location
      * @param chunk Chunk to confine pasting to
      * @param r Rotation
-     * @param m Mirror
      */
-    public void paste(Location origin, Chunk chunk, Rotation r, List<Mirror> m) {
+    public void paste(Location origin, Chunk chunk, Rotation r) {
         int xOr = (chunk.getX() << 4);
         int zOr = (chunk.getZ() << 4);
         Range intersectX;
@@ -243,7 +301,7 @@ public class GaeaStructure implements Serializable {
         intersectX = new Range(xOr, xOr+16).sub(origin.getBlockX() - structureInfo.getCenterX());
         intersectZ = new Range(zOr, zOr+16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
         if(intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Axis.Y), intersectZ, block -> pasteBlock(block, origin, r, m), r, m);
+        executeForBlocksInRange(intersectX, getRange(Axis.Y), intersectZ, block -> pasteBlock(block, origin, r), r);
         Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 
@@ -252,25 +310,30 @@ public class GaeaStructure implements Serializable {
      * @param block The block to paste
      * @param origin The origin location
      * @param r The rotation of the structure
-     * @param m The mirror type of the structure
      */
-    private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r, List<Mirror> m) {
+    private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r) {
         BlockData data = block.getBlockData().clone();
         Block worldBlock = origin.clone().add(block.getX(), block.getY(), block.getZ()).getBlock();
         if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
             if(data instanceof Rotatable) {
-                BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r, m);
+                BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
                 ((Rotatable) data).setRotation(rt);
             } else if(data instanceof Directional) {
-                BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r, m);
+                BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r);
                 ((Directional) data).setFacing(rt);
             } else if(data instanceof MultipleFacing) {
                 MultipleFacing mfData = (MultipleFacing) data;
                 List<BlockFace> faces = new ArrayList<>(mfData.getFaces());
                 for(BlockFace face : faces) {
                     mfData.setFace(face, false);
-                    mfData.setFace(getRotatedFace(face, r, m), true);
+                    mfData.setFace(getRotatedFace(face, r), true);
                 }
+            } else if(data instanceof Rail) {
+                Rail.Shape newShape = getRotatedRail(((Rail) data).getShape(), r);
+                ((Rail) data).setShape(newShape);
+            } else if(data instanceof Orientable) {
+                org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
+                ((Orientable) data).setAxis(newAxis);
             }
             worldBlock.setBlockData(data, false);
             if(block.getState() != null) {
@@ -286,13 +349,12 @@ public class GaeaStructure implements Serializable {
      * @param zM Z Range
      * @param exec Consumer to execute for each block.
      * @param r Rotation
-     * @param m Mirror
      */
-    private void executeForBlocksInRange(Range xM, Range yM, Range zM, Consumer<StructureContainedBlock> exec, Rotation r, List<Mirror> m) {
+    private void executeForBlocksInRange(Range xM, Range yM, Range zM, Consumer<StructureContainedBlock> exec, Rotation r) {
         for(int x : xM) {
             for(int y : yM) {
                 for(int z : zM) {
-                    int[] c = getRotatedCoords(new int[] {x-structureInfo.getCenterX(), z-structureInfo.getCenterZ()}, r, m);
+                    int[] c = getRotatedCoords(new int[] {x-structureInfo.getCenterX(), z-structureInfo.getCenterZ()}, r);
                     c[0] = c[0] + structureInfo.getCenterX();
                     c[1] = c[1] + structureInfo.getCenterZ();
                     if(isInStructure(c[0], y, c[1])) {
@@ -406,8 +468,5 @@ public class GaeaStructure implements Serializable {
                 default: throw new IllegalArgumentException();
             }
         }
-    }
-    public enum Mirror {
-        NONE, X, Z
     }
 }

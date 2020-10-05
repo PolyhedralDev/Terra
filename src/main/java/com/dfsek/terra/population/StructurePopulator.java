@@ -44,7 +44,7 @@ public class StructurePopulator extends BlockPopulator {
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
-                            struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90), Collections.emptyList());
+                            struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90));
                             break;
                         }
                     }
