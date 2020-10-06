@@ -17,12 +17,16 @@ import java.util.Map;
 public class BiomeTreeConfig extends TerraConfigSection {
     private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
     private final Map<Tree, Range> treeHeights = new HashMap<>();
+    private int treeChance;
+    private int treeDensity;
     public BiomeTreeConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        ConfigurationSection c = parent.getConfigurationSection("trees");
+        ConfigurationSection c = parent.getConfigurationSection("trees.items");
         if(c == null) return;
         Map<String, Object> cfg = c.getValues(false);
         if(cfg.size() == 0) return;
+        treeChance = parent.getInt("trees.chance", 0);
+        treeDensity = parent.getInt("trees.density", 0);
         for(Map.Entry<String, Object> e : cfg.entrySet()) {
             try {
                 Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
@@ -44,5 +48,13 @@ public class BiomeTreeConfig extends TerraConfigSection {
 
     public Map<Tree, Range> getTreeHeights() {
         return treeHeights;
+    }
+
+    public int getTreeDensity() {
+        return treeDensity;
+    }
+
+    public int getTreeChance() {
+        return treeChance;
     }
 }

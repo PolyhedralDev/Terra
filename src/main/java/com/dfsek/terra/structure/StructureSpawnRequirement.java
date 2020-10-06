@@ -51,7 +51,7 @@ public class StructureSpawnRequirement  implements Serializable {
             public boolean matches(World w, int x, int y, int z) {
                 UserDefinedBiome b = (UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(x, z, GenerationPhase.POPULATE);
                 BiomeConfig c = TerraWorld.getWorld(w).getConfig().getBiome(b);
-                if(y <= c.getSeaLevel()) return false;
+                if(y <= c.getOcean().getSeaLevel()) return false;
                 return b.getGenerator().getNoise(getNoise(w), w, x, y, z) <= 0;
             }
         }, OCEAN {
@@ -59,7 +59,7 @@ public class StructureSpawnRequirement  implements Serializable {
             public boolean matches(World w, int x, int y, int z) {
                 UserDefinedBiome b = (UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(x, z, GenerationPhase.POPULATE);
                 BiomeConfig c = TerraWorld.getWorld(w).getConfig().getBiome(b);
-                if(y > c.getSeaLevel()) return false;
+                if(y > c.getOcean().getSeaLevel()) return false;
                 return b.getGenerator().getNoise(getNoise(w), w, x, y, z) <= 0;
             }
         }, LAND {

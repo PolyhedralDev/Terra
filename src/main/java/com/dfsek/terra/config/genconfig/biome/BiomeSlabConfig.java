@@ -22,8 +22,10 @@ import java.util.Random;
 public class BiomeSlabConfig extends TerraConfigSection {
     private final Map<Material, Palette<BlockData>> slabs;
     private final Map<Material, Palette<BlockData>> stairs;
+    private double slabThreshold;
     public BiomeSlabConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
+        slabThreshold = parent.getDouble("slabs.threshold", 0.1D);
         slabs = getSlabPalettes(parent.getMapList("slabs.palettes"));
         if(parent.contains("slabs.stair-palettes") && parent.getBoolean("slabs.use-stairs-if-available", false)) {
             stairs = getSlabPalettes(parent.getMapList("slabs.stair-palettes"));
@@ -66,5 +68,9 @@ public class BiomeSlabConfig extends TerraConfigSection {
 
     public Map<Material, Palette<BlockData>> getSlabs() {
         return slabs;
+    }
+
+    public double getSlabThreshold() {
+        return slabThreshold;
     }
 }

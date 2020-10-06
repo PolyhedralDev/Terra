@@ -6,6 +6,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.config.genconfig.biome.BiomeSlabConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -71,14 +72,15 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int cz = zOrig + z;
                 Biome b = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.PALETTE_APPLY);
                 BiomeConfig c = config.getBiome((UserDefinedBiome) b);
-                int sea = c.getSeaLevel();
-                Palette<BlockData> seaPalette = c.getOceanPalette();
+                BiomeSlabConfig slab = c.getSlabs();
+                int sea = c.getOcean().getSeaLevel();
+                Palette<BlockData> seaPalette = c.getOcean().getOcean();
                 for(int y = world.getMaxHeight()-1; y >= 0; y--) {
                     if(super.getInterpolatedNoise(x, y, z) > 0) {
                         BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && c.getSlabs() != null && y < 255) {
-                            prepareBlockPart(data, chunk.getBlockData(x, y+1, z), chunk, new Vector(x, y+1, z), c.getSlabs(), c.getStairs(), c.getSlabThreshold());
+                            prepareBlockPart(data, chunk.getBlockData(x, y+1, z), chunk, new Vector(x, y+1, z), slab.getSlabs(), slab.getStairs(), slab.getSlabThreshold());
                         }
                         paletteLevel++;
                     } else if(y <= sea) {

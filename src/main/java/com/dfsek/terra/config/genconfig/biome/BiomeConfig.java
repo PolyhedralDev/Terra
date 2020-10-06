@@ -34,21 +34,17 @@ import java.util.Objects;
 import java.util.Random;
 
 public class BiomeConfig extends TerraConfig {
-    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
+
     private final UserDefinedBiome biome;
     private final String biomeID;
     private final BiomeOreConfig ore;
     private final BiomeCarverConfig carver;
     private final BiomeFloraConfig flora;
     private final BiomeTreeConfig tree;
-    private String eq;
-    private int floraAttempts;
+    private final BiomeOceanConfig ocean;
     private final BiomeSlabConfig slab;
-    private double slabThreshold;
-    private boolean floraSimplex;
-    private FastNoise floraNoise;
-    private final Palette<BlockData> ocean;
-    private int seaLevel;
+    private String eq;
+
     private int snowChance;
     private final List<StructureConfig> structures;
     private final ConfigPack config;
@@ -76,38 +72,12 @@ public class BiomeConfig extends TerraConfig {
         }
 
         // Get various simple values using getOrDefault config methods.
-        float floraFreq;
-        int floraSeed, floraChance, treeChance, treeDensity;
         try {
-            slabThreshold = getDouble("slabs.threshold", Objects.requireNonNull(abstractBiome).getSlabThreshold());
-            floraChance = getInt("flora-chance", Objects.requireNonNull(abstractBiome).getFloraChance());
-            floraAttempts = getInt("flora-attempts", Objects.requireNonNull(abstractBiome).getFloraAttempts());
-            treeChance = getInt("tree-chance", Objects.requireNonNull(abstractBiome).getTreeChance());
-            treeDensity = getInt("tree-density", Objects.requireNonNull(abstractBiome).getTreeDensity());
-            floraSeed = getInt("flora-simplex.seed", Objects.requireNonNull(abstractBiome).getFloraSeed());
-            floraSimplex = getBoolean("flora-simplex.enable", Objects.requireNonNull(abstractBiome).isFloraSimplex());
-            floraFreq = (float) getDouble("flora-simplex.frequency", Objects.requireNonNull(abstractBiome).getFloraFreq());
-            seaLevel = getInt("ocean.level", Objects.requireNonNull(abstractBiome).getSeaLevel());
             snowChance = getInt("snow-chance", Objects.requireNonNull(abstractBiome).getSnowChance());
             eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
-            slabThreshold = getDouble("slabs.threshold", 0.1D);
-            floraChance = getInt("flora-chance", 0);
-            floraAttempts = getInt("flora-attempts", 1);
-            treeChance = getInt("tree-chance", 0);
-            treeDensity = getInt("tree-density", 0);
-            floraSeed = getInt("flora-simplex.seed", 0);
-            floraSimplex = getBoolean("flora-simplex.enable", false);
-            floraFreq = (float) getDouble("flora-simplex.frequency", 0.1);
-            seaLevel = getInt("ocean.level", 62);
             snowChance = getInt("snow-chance", 0);
             eq = getString("noise-equation", null);
-        }
-
-        if(floraSimplex) {
-            floraNoise = new FastNoise(floraSeed);
-            floraNoise.setNoiseType(FastNoise.NoiseType.Simplex);
-            floraNoise.setFrequency(floraFreq);
         }
 
         BiomePaletteConfig palette;
@@ -129,7 +99,7 @@ public class BiomeConfig extends TerraConfig {
         // Check if flora should be handled by super biome.
         if(extending && abstractBiome.getFlora() != null && ! contains("flora")) {
             flora = abstractBiome.getFlora();
-            Debug.info("Using super flora (" + flora.getFlora().size() + " entries, " + floraChance + " % chance)");
+            Debug.info("Using super flora (" + flora.getFlora().size() + " entries, " + flora.getFloraChance() + " % chance)");
         } else flora = new BiomeFloraConfig(this);
 
         // Check if trees should be handled by super biome.
@@ -150,11 +120,17 @@ public class BiomeConfig extends TerraConfig {
             Debug.info("Using super slabs");
         } else slab = new BiomeSlabConfig(this);
 
+        // Get ocean stuff
+        if(extending && abstractBiome.getOcean() != null) {
+            ocean = abstractBiome.getOcean();
+            Debug.info("Using super ocean");
+        } else ocean = new BiomeOceanConfig(this);
+
         //Make sure equation is non-null
         if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.
-        UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), tree.getTrees(), floraChance, treeChance, treeDensity);
+        UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), tree.getTrees(), flora.getFloraChance(), tree.getTreeChance(), tree.getTreeDensity());
 
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;
@@ -164,32 +140,6 @@ public class BiomeConfig extends TerraConfig {
         } catch(IllegalArgumentException e) {
             throw new ConfigException("Invalid Vanilla biome: \"" + getString("vanilla") + "\"", getID());
         }
-
-        // Ocean stuff
-        String oceanPalette;
-        try {
-            oceanPalette = getString("ocean.palette", Objects.requireNonNull(abstractBiome).getOceanPalette());
-        } catch(NullPointerException e) {
-            oceanPalette = null;
-        }
-        if(contains("ocean") && oceanPalette != null) {
-            if(oceanPalette.startsWith("BLOCK:")) {
-                try {
-                    ocean = new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanPalette.substring(6)), 1), 1);
-                } catch(IllegalArgumentException ex) {
-                    throw new ConfigException("BlockData \"" + oceanPalette + "\" is invalid! (Ocean Palette)", getID());
-                }
-            } else {
-                try {
-                    ocean = config.getPalette(oceanPalette).getPalette();
-                } catch(NullPointerException ex) {
-                    throw new NotFoundException("Palette", oceanPalette, getID());
-                }
-            }
-        } else ocean = oceanDefault;
-
-
-
 
         // Structure stuff
         structures = new ArrayList<>();
@@ -213,24 +163,16 @@ public class BiomeConfig extends TerraConfig {
         }
     }
 
-    public Range getOreHeight(OreConfig c) {
-        return ore.getOreHeights().get(c);
-    }
-
     public UserDefinedBiome getBiome() {
         return biome;
-    }
-
-    public int getFloraAttempts() {
-        return floraAttempts;
     }
 
     public String getID() {
         return biomeID;
     }
 
-    public Map<OreConfig, Range> getOres() {
-        return ore.getOres();
+    public BiomeOreConfig getOres() {
+        return ore;
     }
 
     public Range getFloraHeights(Flora f) {
@@ -246,32 +188,16 @@ public class BiomeConfig extends TerraConfig {
         return carver.getCarvers().getOrDefault(config.getCarver(c), 0);
     }
 
-    public double getSlabThreshold() {
-        return slabThreshold;
+    public BiomeSlabConfig getSlabs() {
+        return slab;
     }
 
-    public Map<Material, Palette<BlockData>> getStairs() {
-        return slab.getStairs();
-    }
-
-    public Map<Material, Palette<BlockData>> getSlabs() {
-        return slab.getSlabs();
-    }
-
-    public boolean isFloraSimplex() {
-        return floraSimplex;
-    }
-
-    public FastNoise getFloraNoise() {
-        return floraNoise;
-    }
-
-    public Palette<BlockData> getOceanPalette() {
+    public BiomeOceanConfig getOcean() {
         return ocean;
     }
 
-    public int getSeaLevel() {
-        return seaLevel;
+    public BiomeFloraConfig getFlora() {
+        return flora;
     }
 
     public List<StructureConfig> getStructures() {

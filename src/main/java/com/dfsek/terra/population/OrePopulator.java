@@ -23,12 +23,12 @@ public class OrePopulator extends GaeaBlockPopulator {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
             ConfigPack config = TerraWorld.getWorld(world).getConfig();
             Biome b = TerraWorld.getWorld(world).getGrid().getBiome((chunk.getX() << 4)+8, (chunk.getZ() << 4) + 8, GenerationPhase.POPULATE);
-            for(Map.Entry<OreConfig, Range> e : config.getBiome((UserDefinedBiome) b).getOres().entrySet()) {
+            for(Map.Entry<OreConfig, Range> e : config.getBiome((UserDefinedBiome) b).getOres().getOres().entrySet()) {
                 int num = e.getValue().get(random);
                 for(int i = 0; i < num; i++) {
                     int x = random.nextInt(16);
                     int z = random.nextInt(16);
-                    int y = config.getBiome((UserDefinedBiome) b).getOreHeight(e.getKey()).get(random);
+                    int y = config.getBiome((UserDefinedBiome) b).getOres().getOreHeights().get(e.getKey()).get(random);
                     e.getKey().doVein(chunk.getBlock(x, y, z).getLocation(), random);
                 }
             }

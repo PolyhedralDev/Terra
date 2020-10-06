@@ -6,6 +6,7 @@ import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -30,9 +31,10 @@ public class FloraPopulator extends GaeaBlockPopulator {
                     if(biome.getDecorator().getFloraChance() <= 0) continue;
                     try {
                         BiomeConfig c = config.getBiome(biome);
-                        for(int i = 0; i < c.getFloraAttempts(); i++) {
+                        BiomeFloraConfig f = c.getFlora();
+                        for(int i = 0; i < f.getFloraAttempts(); i++) {
                             Flora item;
-                            if(c.isFloraSimplex()) item = biome.getDecorator().getFlora().get(c.getFloraNoise(), (chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                            if(f.isFloraSimplex()) item = biome.getDecorator().getFlora().get(f.getFloraNoise(), (chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                             else item = biome.getDecorator().getFlora().get(random);
                             for(Block highest : item.getValidSpawnsAt(chunk, x, z, c.getFloraHeights(item))) {
                                 if(random.nextInt(100) < biome.getDecorator().getFloraChance())

@@ -20,22 +20,17 @@ public class AbstractBiomeConfig extends TerraConfig {
     private final int snowChance;
     private double slabThreshold;
     private BiomeSlabConfig slabs;
-    private boolean useStairs;
     private final boolean floraSimplex;
     private final int floraSeed;
     private final float floraFreq;
-    private final String oceanPalette;
     private final int seaLevel;
-    private Map<String, Object> floraData;
-    private Map<String, Object> oreData;
-    private Map<String, Object> treeData;
-    private List<Map<?, ?>> carvingData;
     private List<String> structureConfigs;
     private BiomePaletteConfig palette;
     private BiomeFloraConfig flora;
     private BiomeCarverConfig carving;
     private BiomeTreeConfig trees;
     private BiomeOreConfig ores;
+    private BiomeOceanConfig ocean;
 
     public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -53,8 +48,6 @@ public class AbstractBiomeConfig extends TerraConfig {
         floraSeed = getInt("flora-simplex.seed", 0);
         seaLevel = getInt("ocean.level", 62);
         snowChance = getInt("snow-chance", 0);
-        oceanPalette = getString("ocean.palette");
-        useStairs = getBoolean("slabs.use-stairs-if-available", false);
 
         if(contains("carving")) carving = new BiomeCarverConfig(this);
 
@@ -65,6 +58,8 @@ public class AbstractBiomeConfig extends TerraConfig {
         if(contains("trees")) trees = new BiomeTreeConfig(this);
 
         if(contains("ores")) ores = new BiomeOreConfig(this);
+
+        if(contains("ocean")) ocean = new BiomeOceanConfig(this);
 
         if(contains("slabs") && getBoolean("slabs.enable", false)) slabs = new BiomeSlabConfig(this);
 
@@ -136,12 +131,12 @@ public class AbstractBiomeConfig extends TerraConfig {
         return slabs;
     }
 
-    public int getSeaLevel() {
-        return seaLevel;
+    public BiomeOceanConfig getOcean() {
+        return ocean;
     }
 
-    public String getOceanPalette() {
-        return oceanPalette;
+    public int getSeaLevel() {
+        return seaLevel;
     }
 
     public List<String> getStructureConfigs() {

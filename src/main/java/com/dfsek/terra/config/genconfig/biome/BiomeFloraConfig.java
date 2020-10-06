@@ -8,6 +8,7 @@ import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.polydev.gaea.math.FastNoise;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.world.Flora;
@@ -19,10 +20,25 @@ import java.util.Map;
 public class BiomeFloraConfig extends TerraConfigSection {
     private final ProbabilityCollection<Flora> flora = new ProbabilityCollection<>();
     private final Map<Flora, Range> floraHeights = new HashMap<>();
+    private int floraAttempts;
+    private int floraChance;
+    private boolean floraSimplex;
+    private FastNoise floraNoise;
     public BiomeFloraConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        ConfigurationSection cfg = parent.getConfigurationSection("flora");
+        ConfigurationSection cfg = parent.getConfigurationSection("flora.items");
         if(cfg == null) return;
+        floraSimplex = parent.getBoolean("flora.simplex.enable", false);
+        floraAttempts = parent.getInt("flora.attempts", 1);
+        floraChance = parent.getInt("flora.chance", 0);
+        float floraFreq = (float) parent.getDouble("flora.simplex.frequency", 0.1);
+        int floraSeed = parent.getInt("flora.simplex.seed", 0);
+        if(floraSimplex) {
+            floraNoise = new FastNoise(floraSeed);
+            floraNoise.setNoiseType(FastNoise.NoiseType.Simplex);
+            floraNoise.setFrequency(floraFreq);
+        }
+
         try {
             for(Map.Entry<String, Object> e : cfg.getValues(false).entrySet()) {
                 Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
@@ -56,5 +72,21 @@ public class BiomeFloraConfig extends TerraConfigSection {
 
     public Map<Flora, Range> getFloraHeights() {
         return floraHeights;
+    }
+
+    public FastNoise getFloraNoise() {
+        return floraNoise;
+    }
+
+    public int getFloraAttempts() {
+        return floraAttempts;
+    }
+
+    public boolean isFloraSimplex() {
+        return floraSimplex;
+    }
+
+    public int getFloraChance() {
+        return floraChance;
     }
 }
