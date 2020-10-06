@@ -36,7 +36,7 @@ public class UserDefinedGenerator extends Generator {
         p.registerFunction("noise2", n2);
         p.registerFunction("noise3", n3);
         for(int y = 0; y < 256; y++) {
-            Palette<BlockData> d = Util.BLANK_PALETTE;
+            Palette<BlockData> d = DataUtil.BLANK_PALETTE;
             for(Map.Entry<Integer, Palette<BlockData>> e : pa.entrySet()) {
                 if(e.getKey() >= y) {
                     d = e.getValue();

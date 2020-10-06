@@ -14,13 +14,15 @@ public class UserDefinedBiome implements Biome {
     private final UserDefinedDecorator decorator;
     private final org.bukkit.block.Biome vanilla;
     private final String id;
+    private final boolean erode;
 
 
-    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, UserDefinedGenerator gen, String id) {
+    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, UserDefinedGenerator gen, boolean erode, String id) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
         this.id = id;
+        this.erode = erode;
     }
 
     /**
@@ -65,5 +67,9 @@ public class UserDefinedBiome implements Biome {
 
     public String getID() {
         return id;
+    }
+
+    public boolean isErodible() {
+        return erode;
     }
 }

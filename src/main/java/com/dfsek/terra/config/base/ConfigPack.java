@@ -1,6 +1,8 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -50,6 +52,11 @@ public class ConfigPack extends YamlConfiguration {
     public float freq1;
     public float freq2;
 
+    public float erosionFreq;
+    public double erosionThresh;
+    public boolean erosionEnable;
+    public String erosionName;
+
     public int blendAmp;
     public boolean biomeBlend;
     public float blendFreq;
@@ -88,6 +95,12 @@ public class ConfigPack extends YamlConfiguration {
         blendAmp = getInt("blend.amplitude", 8);
         blendFreq = (float) getDouble("blend.frequency", 0.01);
         perturbPaletteOnly = getBoolean("blend.ignore-terrain", true);
+
+        erosionEnable = getBoolean("erode.enable", false);
+        erosionFreq = (float) getDouble("erode.frequency", 0.01);
+        erosionThresh = getDouble("erode.threshold", 0.04);
+
+        erosionName = getString("erode.grid");
 
         // Load BiomeGrids from BiomeZone
         biomeList = getStringList("grids");

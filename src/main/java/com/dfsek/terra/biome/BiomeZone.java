@@ -10,6 +10,9 @@ import org.polydev.gaea.math.FastNoise;
 
 import java.util.Objects;
 
+/**
+ * Holds 1D array of BiomeGrids.
+ */
 public class BiomeZone {
     private final BiomeGrid[] grids;
     private final FastNoise noise;
@@ -29,18 +32,40 @@ public class BiomeZone {
         channel = wc.zoneChannel;
     }
 
+    /**
+     * Get BiomeGrid at location
+     * @param x X coordinate
+     * @param z Z coordinate
+     * @return BiomeGrid at coordinates.
+     */
     protected BiomeGrid getGrid(int x, int z) {
         return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length)];
     }
 
+    /**
+     * Get the number of BiomeGrids this BiomeZone holds.
+     * @return Number of grids
+     */
     public int getSize() {
         return grids.length;
     }
 
+    /**
+     * Get the normalized grid noise at location
+     * @param x X coordinate
+     * @param z Z coordinate
+     * @return Normalized noise at coordinates
+     */
     public int getNoise(int x, int z) {
         return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length);
     }
 
+    /**
+     * Get raw grid noise at location
+     * @param x X coordinate
+     * @param z Z coordinate
+     * @return Raw noise at coordinates
+     */
     public double getRawNoise(int x, int z) {
         return useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z);
     }

@@ -17,6 +17,7 @@ public class AbstractBiomeConfig extends TerraConfig {
     private final int treeDensity;
     private final String equation;
     private final int floraAttempts;
+    private final int snowChance;
     private double slabThreshold;
     private BiomeSlabConfig slabs;
     private boolean useStairs;
@@ -51,6 +52,7 @@ public class AbstractBiomeConfig extends TerraConfig {
         floraFreq = (float) getDouble("flora-simplex.frequency", 0.1);
         floraSeed = getInt("flora-simplex.seed", 0);
         seaLevel = getInt("ocean.level", 62);
+        snowChance = getInt("snow-chance", 0);
         oceanPalette = getString("ocean.palette");
         useStairs = getBoolean("slabs.use-stairs-if-available", false);
 
@@ -144,5 +146,9 @@ public class AbstractBiomeConfig extends TerraConfig {
 
     public List<String> getStructureConfigs() {
         return structureConfigs;
+    }
+
+    public int getSnowChance() {
+        return snowChance;
     }
 }

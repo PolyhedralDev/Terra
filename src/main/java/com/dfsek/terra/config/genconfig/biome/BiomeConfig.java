@@ -49,6 +49,7 @@ public class BiomeConfig extends TerraConfig {
     private FastNoise floraNoise;
     private final Palette<BlockData> ocean;
     private int seaLevel;
+    private int snowChance;
     private final List<StructureConfig> structures;
     private final ConfigPack config;
 
@@ -87,6 +88,7 @@ public class BiomeConfig extends TerraConfig {
             floraSimplex = getBoolean("flora-simplex.enable", Objects.requireNonNull(abstractBiome).isFloraSimplex());
             floraFreq = (float) getDouble("flora-simplex.frequency", Objects.requireNonNull(abstractBiome).getFloraFreq());
             seaLevel = getInt("ocean.level", Objects.requireNonNull(abstractBiome).getSeaLevel());
+            snowChance = getInt("snow-chance", Objects.requireNonNull(abstractBiome).getSnowChance());
             eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
             slabThreshold = getDouble("slabs.threshold", 0.1D);
@@ -98,6 +100,7 @@ public class BiomeConfig extends TerraConfig {
             floraSimplex = getBoolean("flora-simplex.enable", false);
             floraFreq = (float) getDouble("flora-simplex.frequency", 0.1);
             seaLevel = getInt("ocean.level", 62);
+            snowChance = getInt("snow-chance", 0);
             eq = getString("noise-equation", null);
         }
 
@@ -203,7 +206,7 @@ public class BiomeConfig extends TerraConfig {
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap()), biomeID);
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap()), getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());
@@ -277,5 +280,9 @@ public class BiomeConfig extends TerraConfig {
 
     public Range getTreeRange(Tree t) {
         return tree.getTreeHeights().getOrDefault(t, new Range(-1, -1));
+    }
+
+    public int getSnowChance() {
+        return snowChance;
     }
 }

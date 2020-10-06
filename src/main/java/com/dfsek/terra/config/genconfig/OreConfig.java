@@ -36,8 +36,8 @@ public class OreConfig extends TerraConfig {
         if(!contains("replace")) throw new ConfigException("Ore replaceable materials not found!", getID());
         min = getInt("radius.min", 1);
         max = getInt("radius.max", 1);
-        deform = getDouble("deform");
-        deformFrequency = getDouble("deform-frequency");
+        deform = getDouble("deform", 0.75);
+        deformFrequency = getDouble("deform-frequency", 0.1);
         update = getBoolean("update", false);
 
         replaceable = ConfigUtil.toBlockData(getStringList("replace"), "replaceable", getID());

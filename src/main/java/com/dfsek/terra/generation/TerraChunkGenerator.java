@@ -9,6 +9,7 @@ import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
+import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
@@ -52,6 +53,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attach(new TreePopulator());
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
+        popMan.attach(new SnowPopulator());
     }
 
     @Override
@@ -102,16 +104,16 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
                     Stairs finalStair = getStair(new double[] {_01, _10, _12, _21}, (Stairs) stair, thresh);
                     if(finalStair != null) {
-                        if(orig.matches(Util.WATER)) finalStair.setWaterlogged(true);
+                        if(orig.matches(DataUtil.WATER)) finalStair.setWaterlogged(true);
                         chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), finalStair);
                         return;
                     }
                 }
             }
-            BlockData slab = slabs.getOrDefault(down.getMaterial(), Util.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
+            BlockData slab = slabs.getOrDefault(down.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
             if(slab instanceof Waterlogged) {
-                ((Waterlogged) slab).setWaterlogged(orig.matches(Util.WATER));
-            } else if(orig.matches(Util.WATER)) return;
+                ((Waterlogged) slab).setWaterlogged(orig.matches(DataUtil.WATER));
+            } else if(orig.matches(DataUtil.WATER)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
     }
