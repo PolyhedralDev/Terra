@@ -2,6 +2,7 @@ package com.dfsek.terra.command.image;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -23,11 +24,11 @@ public class RenderCommand extends WorldCommand {
             file.mkdirs();
             file.createNewFile();
             g.save(file);
-            sender.sendMessage("Saved image to " + file.getPath());
+            LangUtil.send("command.image.render.save", sender, file.getAbsolutePath());
             return true;
         } catch(Exception e) {
             e.printStackTrace();
-            sender.sendMessage("An error occurred while generating the image!");
+            LangUtil.send("command.image.render.error", sender);
             return true;
         }
     }

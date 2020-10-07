@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.type;
 
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -27,7 +28,7 @@ public abstract class WorldCommand extends PlayerCommand {
         if(sender.getWorld().getGenerator() instanceof TerraChunkGenerator) {
             return execute(sender, command, label, args, sender.getWorld());
         } else {
-            sender.sendMessage("This world is not a Terra world!");
+            LangUtil.send("command.world", sender);
         }
         return true;
     }

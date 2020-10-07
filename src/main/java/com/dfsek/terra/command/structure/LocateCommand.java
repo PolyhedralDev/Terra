@@ -6,6 +6,7 @@ import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.Bukkit;
@@ -35,14 +36,14 @@ public class LocateCommand extends WorldCommand {
         try {
             maxRadius = Integer.parseInt(args[1]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid radius: " + args[1]);
+            LangUtil.send("command.structure.invalid-radius", sender, args[1]);
             return true;
         }
         StructureConfig s;
         try {
             s = Objects.requireNonNull(TerraWorld.getWorld(world).getConfig().getStructure(id));
         } catch(IllegalArgumentException | NullPointerException e) {
-            sender.sendMessage("Invalid biome ID: " + id);
+            LangUtil.send("command.structure.invalid", sender, id);
             return true;
         }
         Bukkit.getScheduler().runTaskAsynchronously(Terra.getInstance(), new AsyncStructureFinder(TerraWorld.getWorld(world).getGrid(), s, sender, 0, maxRadius, tp));

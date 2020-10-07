@@ -2,6 +2,7 @@ package com.dfsek.terra.config.lang;
 
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,13 +12,13 @@ public class SingleLineMessage implements Message {
         this.message = message;
     }
     @Override
-    public void log(Logger logger, Level level) {
-        logger.log(level, message);
+    public void log(Logger logger, Level level, String... args) {
+        logger.log(level, String.format(message, Arrays.asList(args).toArray()));
     }
 
     @Override
-    public void send(CommandSender sender) {
-        sender.sendMessage(message);
+    public void send(CommandSender sender, String... args) {
+        sender.sendMessage(String.format(message, Arrays.asList(args).toArray()));
     }
 
     @Override

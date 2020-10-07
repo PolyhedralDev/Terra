@@ -7,6 +7,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeSlabConfig;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
@@ -142,7 +144,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             popMan.loadBlocks(w);
         } catch(IOException e) {
             if(e instanceof FileNotFoundException) {
-                Bukkit.getLogger().warning("[Terra] No population chunks were loaded. If this is your first time starting your server with Terra, or if you are creating a new world, this is normal.");
+                LangUtil.log("warning.no-population", Level.WARNING);
             } else e.printStackTrace();
         } catch(ClassNotFoundException e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.type;
 
 import com.dfsek.terra.Debug;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -67,7 +68,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
                 if(c.getName().equals(args[0])) return c.onCommand(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
             }
             if(args.length != arguments()) {
-                sender.sendMessage("Invalid command. (Expected " + arguments() + " arguments, found " + args.length + ").");
+                LangUtil.send("command.invalid", sender, String.valueOf(arguments()), String.valueOf(args.length));
                 return true;
             }
             return execute(sender, command, label, args);

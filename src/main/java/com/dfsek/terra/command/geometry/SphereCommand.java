@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.geometry;
 
 import com.dfsek.terra.command.type.PlayerCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.Sphere;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -19,7 +20,7 @@ public class SphereCommand extends PlayerCommand {
         try {
             radius = Integer.parseInt(args[0]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid radius: " + args[0]);
+            LangUtil.send("command.geometry.sphere.invalid-radius", sender, args[0]);
             return true;
         }
         Sphere sphere = new Sphere(sender.getLocation().toVector(), radius);

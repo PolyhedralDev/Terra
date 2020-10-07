@@ -2,6 +2,7 @@ package com.dfsek.terra.config;
 
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.commons.io.FilenameUtils;
@@ -16,10 +17,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 public class ConfigLoader {
-    public static  <T extends TerraConfig> Map<String, T> load(JavaPlugin main, Path file, ConfigPack config, Class<T> clazz) {
+    public static  <T extends TerraConfig> Map<String, T> load(Path file, ConfigPack config, Class<T> clazz) {
         long l = System.nanoTime();
         Map<String, T> configs = new HashMap<>();
         file.toFile().mkdirs();
@@ -30,22 +32,19 @@ public class ConfigLoader {
                         try {
                             Constructor<T> c = clazz.getConstructor(File.class, ConfigPack.class);
                             T o = c.newInstance(path.toFile(), config);
-                            if(ids.contains(o.getID())) Bukkit.getLogger().severe("Duplicate ID found in file: " + path.toString());
+                            if(ids.contains(o.getID())) LangUtil.log("config.error.duplicate", Level.SEVERE, path.toString());
                             ids.add(o.getID());
                             configs.put(o.getID(), o);
-                            main.getLogger().info("Loaded " + o.toString() + " from file " + path.toString());
+                            LangUtil.log("config.loaded", Level.INFO, o.toString(), path.toString());
                         } catch(IllegalAccessException | InstantiationException | NoSuchMethodException e) {
-                            main.getLogger().severe("An error occurred while loading configurations.");
                             e.printStackTrace();
-                            main.getLogger().severe("Please report this to Terra.");
+                            LangUtil.log("config.error.generic", Level.SEVERE, path.toString());
                         } catch(IllegalArgumentException | InvocationTargetException e) {
                             if(ConfigUtil.debug) e.printStackTrace();
-                            main.getLogger().severe("Configuration error for Terra object. File: " + path.toString());
-                            main.getLogger().severe(((e instanceof InvocationTargetException) ? "INVOCATION: " + e.getCause().getMessage() : e.getMessage()));
-                            main.getLogger().severe("Correct this before proceeding!");
+                            LangUtil.log("config.error.file", Level.SEVERE, path.toString(), ((e instanceof InvocationTargetException) ? "INVOCATION: " + e.getCause().getMessage() : e.getMessage()));
                         }
                     });
-            main.getLogger().info("\nLoaded " + configs.size() + " " + clazz.getSimpleName() + "(s) in " + (System.nanoTime() - l) / 1000000D + "ms.\n");
+            LangUtil.log("config.loaded-all", Level.INFO, String.valueOf(configs.size()), clazz.getSimpleName(), String.valueOf((System.nanoTime() - l) / 1000000D));
         } catch(IOException e) {
             e.printStackTrace();
         }

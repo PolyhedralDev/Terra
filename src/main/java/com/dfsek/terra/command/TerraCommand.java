@@ -6,6 +6,7 @@ import com.dfsek.terra.command.image.ImageCommand;
 import com.dfsek.terra.command.profile.ProfileCommand;
 import com.dfsek.terra.command.structure.StructureCommand;
 import com.dfsek.terra.command.type.Command;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,13 +36,7 @@ public class TerraCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        sender.sendMessage("--------------------Terra--------------------");
-        sender.sendMessage("reload    - Reload configuration data");
-        sender.sendMessage("biome     - Get current biome");
-        sender.sendMessage("ore       - Generate an ore vein at the location you are facing (For debugging)");
-        sender.sendMessage("save-data - Save population data");
-        sender.sendMessage("structure - Load and export structures");
-        sender.sendMessage("profile   - Profiler options");
+        LangUtil.send("command.main-menu", sender);
         return true;
     }
 

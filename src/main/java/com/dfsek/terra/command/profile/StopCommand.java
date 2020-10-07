@@ -2,6 +2,7 @@ package com.dfsek.terra.command.profile;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,7 @@ public class StopCommand extends WorldCommand {
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         WorldProfiler profile = TerraProfiler.fromWorld(world);
         profile.setProfiling(false);
-        sender.sendMessage("Profiler has stopped.");
+        LangUtil.send("command.profile.stop", sender);
         return true;
     }
 

@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.type;
 
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,7 @@ public abstract class PlayerCommand extends Command {
     @Override
     public final boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage("Command is for players only.");
+            LangUtil.send("command.players-only", sender);
             return true;
         }
         Player p = (Player) sender;

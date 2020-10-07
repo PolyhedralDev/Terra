@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.profile;
 
 import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,11 +15,7 @@ import java.util.List;
 public class ProfileCommand extends WorldCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        sender.sendMessage("---------------Terra/profile---------------");
-        sender.sendMessage("start - Starts the profiler");
-        sender.sendMessage("stop  - Stops the profiler");
-        sender.sendMessage("query - Fetches profiler data");
-        sender.sendMessage("reset - Resets profiler data");
+        LangUtil.send("command.profile.main-menu", sender);
         return true;
     }
 

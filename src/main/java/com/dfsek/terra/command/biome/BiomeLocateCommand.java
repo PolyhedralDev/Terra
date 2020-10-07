@@ -5,6 +5,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncBiomeFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -30,14 +31,14 @@ public class BiomeLocateCommand extends WorldCommand {
         try {
             maxRadius = Integer.parseInt(args[1]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid radius: " + args[1]);
+            LangUtil.send("command.biome.invalid-radius", sender, args[1]);
             return true;
         }
         UserDefinedBiome b;
         try {
             b = TerraWorld.getWorld(world).getConfig().getBiome(id).getBiome();
         } catch(IllegalArgumentException | NullPointerException e) {
-            sender.sendMessage("Invalid biome ID: " + id);
+            LangUtil.send("command.biome.invalid", sender, id);
             return true;
         }
         Bukkit.getScheduler().runTaskAsynchronously(Terra.getInstance(), new AsyncBiomeFinder(TerraWorld.getWorld(world).getGrid(), b, sender, 0, maxRadius, tp));

@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.geometry;
 
 import com.dfsek.terra.command.type.PlayerCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,11 +14,7 @@ import java.util.List;
 public class GeometryCommand extends PlayerCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        sender.sendMessage("---------------Terra/geometry----------------");
-        sender.sendMessage("Various voxel geometry debugging commands");
-        sender.sendMessage("sphere       - Generate a sphere");
-        sender.sendMessage("deformsphere - Generate a deformed sphere");
-        sender.sendMessage("tube         - Generate a tube");
+        LangUtil.send("command.geometry.main-menu", sender);
         return true;
     }
 

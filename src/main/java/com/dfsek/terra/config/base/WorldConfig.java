@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -12,6 +13,7 @@ import org.polydev.gaea.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class WorldConfig {
 
@@ -30,13 +32,13 @@ public class WorldConfig {
 
     public WorldConfig(World w, JavaPlugin main) {
         long start = System.nanoTime();
-        main.getLogger().info("Loading world configuration values for " + w + "...");
+        LangUtil.log("world-config.load", Level.INFO, w.getName());
         FileConfiguration config = new YamlConfiguration();
         try { // Load/create world config file
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", w.getName() + ".yml");
             if(! configFile.exists()) {
                 configFile.getParentFile().mkdirs();
-                main.getLogger().info("Configuration for world \"" + w + "\" not found. Copying default config.");
+                LangUtil.log("world-config.not-found", Level.SEVERE, w.getName());
                 FileUtils.copyInputStreamToFile(Objects.requireNonNull(main.getResource("world.yml")), configFile);
             }
             config.load(configFile);
@@ -60,7 +62,7 @@ public class WorldConfig {
                 if(fromImage) {
                     try {
                         imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.image-location"))), ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
-                        Bukkit.getLogger().info("[Terra] Loading world from image.");
+                        LangUtil.log("world-config.using-image", Level.INFO, w.getName());
                     } catch(IOException | NullPointerException e) {
                         e.printStackTrace();
                         fromImage = false;
@@ -73,10 +75,9 @@ public class WorldConfig {
 
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-            main.getLogger().severe("Unable to load configuration for world " + w + ".");
+            LangUtil.log("world-config.error", Level.SEVERE, w.getName());
         }
-
-        main.getLogger().info("World load complete. Time elapsed: " + ((double) (System.nanoTime() - start)) / 1000000 + "ms");
+        LangUtil.log("world-config.done", Level.INFO, w.getName(), String.valueOf(((double) (System.nanoTime() - start)) / 1000000));
     }
 
     public ConfigPack getConfig() {

@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.geometry;
 
 import com.dfsek.terra.command.type.PlayerCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.DeformedSphere;
 import com.dfsek.terra.procgen.voxel.Sphere;
 import org.bukkit.Material;
@@ -21,14 +22,14 @@ public class DeformedSphereCommand extends PlayerCommand {
         try {
             radius = Integer.parseInt(args[0]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid radius: " + args[0]);
+            LangUtil.send("command.geometry.deform.invalid-radius", sender, args[0]);
             return true;
         }
         double deform;
         try {
             deform = Double.parseDouble(args[1]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid deform: " + args[1]);
+            LangUtil.send("command.geometry.deform.invalid-deform", sender, args[1]);
             return true;
         }
 
@@ -36,7 +37,7 @@ public class DeformedSphereCommand extends PlayerCommand {
         try {
             freq = Float.parseFloat(args[2]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid frequency: " + args[2]);
+            LangUtil.send("command.geometry.deform.invalid-frequency", sender, args[2]);
             return true;
         }
         FastNoise n = new FastNoise((int) sender.getWorld().getSeed());

@@ -2,6 +2,7 @@ package com.dfsek.terra.biome;
 
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.math.Vector2;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import org.polydev.gaea.generation.GenerationPhase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class TerraBiomeGrid extends BiomeGrid {
     private static int failNum = 0;
@@ -48,7 +50,7 @@ public class TerraBiomeGrid extends BiomeGrid {
             b = (UserDefinedBiome) zone.getGrid(xp, zp).getBiome(xp, zp, phase);
         } catch(NullPointerException e) {
             if(ConfigUtil.debug) e.printStackTrace();
-            if(failNum % 256 == 0) Bukkit.getLogger().severe("[Terra] A severe configuration error has prevented Terra from properly generating terrain at coordinates: " + x + ", " + z + ". Please check your configuration for errors. Any config errors will have been reported above.");
+            if(failNum % 256 == 0) LangUtil.log("error.severe-config", Level.SEVERE, String.valueOf(x), String.valueOf(z));
             failNum++;
             return null;
         }

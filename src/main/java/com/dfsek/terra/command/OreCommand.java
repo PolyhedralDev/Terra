@@ -5,6 +5,7 @@ import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -23,17 +24,16 @@ public class OreCommand extends WorldCommand {
         if(args.length > 0) {
             OreConfig ore = TerraWorld.getWorld(w).getConfig().getOre(args[0]);
             if(ore == null) {
-                sender.sendMessage("Unable to find Ore");
+                LangUtil.send("command.ore.invalid-ore", sender, args[0]);
                 return true;
             }
             if(bl == null) {
-                sender.sendMessage("Block out of range");
+                LangUtil.send("command.ore.out-of-range", sender);
                 return true;
             }
             ore.doVein(bl.getLocation(), new Random());
         } else {
-            sender.sendMessage("---------------Terra/ore---------------");
-            sender.sendMessage("Generates a vein of ore at the block you are looking at.");
+            LangUtil.send("command.ore.main-menu", sender);
         }
         return true;
     }

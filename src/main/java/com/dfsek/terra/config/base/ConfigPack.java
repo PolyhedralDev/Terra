@@ -1,8 +1,6 @@
 package com.dfsek.terra.config.base;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -14,6 +12,7 @@ import com.dfsek.terra.config.genconfig.FloraConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -61,30 +60,29 @@ public class ConfigPack extends YamlConfiguration {
     public boolean biomeBlend;
     public float blendFreq;
 
-    public ConfigPack(JavaPlugin main, File file) throws IOException, InvalidConfigurationException {
+    public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
         load(new File(file, "config.yml"));
         dataFolder = file;
-        Logger logger = main.getLogger();
 
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         this.id = getString("id");
 
-        ores = ConfigLoader.load(main, new File(file, "ores").toPath(), this, OreConfig.class);
+        ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);
 
-        palettes = ConfigLoader.load(main, new File(file, "palettes").toPath(), this, PaletteConfig.class);
+        palettes = ConfigLoader.load(new File(file, "palettes").toPath(), this, PaletteConfig.class);
 
-        carvers = ConfigLoader.load(main, new File(file, "carving").toPath(), this, CarverConfig.class);
+        carvers = ConfigLoader.load(new File(file, "carving").toPath(), this, CarverConfig.class);
 
-        flora = ConfigLoader.load(main, new File(file, "flora").toPath(), this, FloraConfig.class);
+        flora = ConfigLoader.load(new File(file, "flora").toPath(), this, FloraConfig.class);
 
-        structures = ConfigLoader.load(main, new File(file, "structures").toPath(), this, StructureConfig.class);
+        structures = ConfigLoader.load(new File(file, "structures").toPath(), this, StructureConfig.class);
 
-        abstractBiomes = ConfigLoader.load(main, new File(file, "abstract" + File.separator + "biomes").toPath(), this, AbstractBiomeConfig.class);
+        abstractBiomes = ConfigLoader.load(new File(file, "abstract" + File.separator + "biomes").toPath(), this, AbstractBiomeConfig.class);
 
-        biomes = ConfigLoader.load(main, new File(file, "biomes").toPath(), this, BiomeConfig.class);
+        biomes = ConfigLoader.load(new File(file, "biomes").toPath(), this, BiomeConfig.class);
 
-        grids = ConfigLoader.load(main, new File(file, "grids").toPath(), this, BiomeGridConfig.class);
+        grids = ConfigLoader.load(new File(file, "grids").toPath(), this, BiomeGridConfig.class);
 
         zoneFreq = 1f/getInt("frequencies.zone", 1536);
         freq1 = 1f/getInt("frequencies.grid-x", 256);
@@ -104,7 +102,7 @@ public class ConfigPack extends YamlConfiguration {
         biomeList = getStringList("grids");
 
         configs.put(id, this);
-        logger.info("\n\nLoaded config \"" + getID() + "\" in " + (System.nanoTime() - l)/1000000D + "ms\n\n\n");
+        LangUtil.log("config-pack.load", Level.INFO, getID(), String.valueOf((System.nanoTime() - l)/1000000D));
     }
 
     public Map<String, AbstractBiomeConfig> getAbstractBiomes() {
@@ -134,7 +132,7 @@ public class ConfigPack extends YamlConfiguration {
         for(Path folder : subfolder) {
             ConfigPack config;
             try {
-                config = new ConfigPack(main, folder.toFile());
+                config = new ConfigPack(folder.toFile());
                 configs.put(config.getID(), config);
             } catch(IOException | InvalidConfigurationException e) {
                 e.printStackTrace();

@@ -2,6 +2,7 @@ package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.command.type.PlayerCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.GaeaStructure;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,7 +24,7 @@ public class LoadCommand extends PlayerCommand {
             else struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r);
         } catch(IOException e) {
             e.printStackTrace();
-            sender.sendMessage("Structure not found.");
+            LangUtil.send("command.structure.invalid", sender, args[0]);
         }
         return true;
     }

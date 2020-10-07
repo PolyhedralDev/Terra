@@ -3,6 +3,7 @@ package com.dfsek.terra.command;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.command.type.Command;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +24,7 @@ public class ReloadCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         ConfigUtil.loadConfig(Terra.getInstance());
-        sender.sendMessage("Reloaded Terra config.");
+        LangUtil.send("command.reload", sender);
         return true;
     }
 

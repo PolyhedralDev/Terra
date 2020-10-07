@@ -4,6 +4,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ public class BiomeCommand extends WorldCommand {
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
         TerraBiomeGrid grid = TerraWorld.getWorld(sender.getWorld()).getGrid();
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(sender.getLocation(), GenerationPhase.POPULATE);
-        sender.sendMessage("You are in " + TerraWorld.getWorld(w).getConfig().getBiome(biome).getID());
+        LangUtil.send("command.biome.in", sender, TerraWorld.getWorld(w).getConfig().getBiome(biome).getID());
         return true;
     }
 

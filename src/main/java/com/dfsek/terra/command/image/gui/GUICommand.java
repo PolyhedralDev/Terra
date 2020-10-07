@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.image.gui;
 
 import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,9 +15,7 @@ import java.util.List;
 public class GUICommand extends WorldCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        sender.sendMessage("-------------Terra/image/gui-------------");
-        sender.sendMessage("raw  - Open GUI with raw Biome data");
-        sender.sendMessage("step - Re-render data to show borders more clearly");
+        LangUtil.send("command.image.gui.main-menu", sender);
         return true;
     }
 

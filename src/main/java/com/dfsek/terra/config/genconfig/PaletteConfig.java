@@ -30,12 +30,12 @@ public class PaletteConfig extends TerraConfig {
         Palette<BlockData> pal;
         if(getBoolean("simplex", false)) {
             useNoise = true;
-            FastNoise pNoise = new FastNoise(getInt("seed", 3));
+            FastNoise pNoise = new FastNoise(getInt("seed", 2403));
             pNoise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
             pNoise.setFractalOctaves(4);
             pNoise.setFrequency((float) getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
-        } else pal = new RandomPalette<>(new Random(getInt("seed", 3)));
+        } else pal = new RandomPalette<>(new Random(getInt("seed", 2403)));
         palette = getPalette(getMapList("blocks"), pal);
     }
 

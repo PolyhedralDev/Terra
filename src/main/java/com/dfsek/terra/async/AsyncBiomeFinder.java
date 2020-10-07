@@ -2,6 +2,7 @@ package com.dfsek.terra.async;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -51,13 +52,13 @@ public class AsyncBiomeFinder implements Runnable {
             toggle = !toggle;
         }
         if(checkBiome(x, z).equals(target) && p.isOnline()) {
-            p.sendMessage("Located biome at (" + x + ", " + z + ").");
+            LangUtil.send("command.biome.biome-found", p, String.valueOf(x), String.valueOf(z));
             if(tp) {
                 int finalX = x;
                 int finalZ = z;
                 Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
             }
-        } else if(p.isOnline()) p.sendMessage("Unable to locate biome.");
+        } else if(p.isOnline()) LangUtil.send("command.biome.unable-to-locate", p);
 
     }
     private Biome checkBiome(int x, int z) {

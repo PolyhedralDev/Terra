@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.structure.WorldEditUtil;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.structure.GaeaStructure;
@@ -35,7 +36,7 @@ public class ExportCommand extends PlayerCommand {
             file.getParentFile().mkdirs();
             file.createNewFile();
             structure.save(file);
-            sender.sendMessage("Saved structure with ID " + structure.getId() + ", UUID: " + structure.getUuid().toString() + " to " + file.getPath());
+            LangUtil.send("command.structure.export", sender, file.getAbsolutePath());
         } catch(IOException e) {
             e.printStackTrace();
         }

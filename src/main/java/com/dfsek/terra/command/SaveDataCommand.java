@@ -1,6 +1,8 @@
 package com.dfsek.terra.command;
 
 import com.dfsek.terra.command.type.Command;
+import com.dfsek.terra.command.type.WorldCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -10,16 +12,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-public class SaveDataCommand extends Command {
+public class SaveDataCommand extends WorldCommand {
     @Override
     public String getName() {
         return "save-data";
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
         TerraChunkGenerator.saveAll();
-        sender.sendMessage("Saved population data.");
+        LangUtil.send("debug.data-save", sender, w.getName());
         return true;
     }
 

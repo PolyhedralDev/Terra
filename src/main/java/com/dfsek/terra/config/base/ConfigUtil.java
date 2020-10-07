@@ -2,6 +2,7 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -22,6 +23,7 @@ public final class ConfigUtil {
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
         FileConfiguration config = main.getConfig();
+        LangUtil.load(config.getString("language", "en_us"), main);
 
         debug = config.getBoolean("debug", false);
         dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis()/20L;

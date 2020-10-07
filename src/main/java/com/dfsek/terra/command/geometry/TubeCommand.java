@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.geometry;
 
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.structure.WorldEditUtil;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.procgen.voxel.Tube;
@@ -23,7 +24,7 @@ public class TubeCommand extends PlayerCommand {
         try {
             radius = Integer.parseInt(args[0]);
         } catch(NumberFormatException e) {
-            sender.sendMessage("Invalid radius: " + args[0]);
+            LangUtil.send("command.geometry.tube.invalid-radius", sender, args[0]);
             return true;
         }
         Tube tube = new Tube(l[0].toVector(), l[1].toVector(), radius);

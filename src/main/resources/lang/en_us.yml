@@ -7,3 +7,101 @@ disable:
 command:
   player-only: "This command is for players only!"
   terra-world: "This command must be executed in a Terra world!"
+  invalid: "Invalid command. (Expected %1$s arguments, found %2$s)."
+  players-only: "Command is for players only."
+  world: "This command must be executed in a Terra world!"
+  reload: "Reloaded Terra config."
+  main-menu:
+    - "--------------------Terra--------------------"
+    - "reload    - Reload configuration data"
+    - "biome     - Get current biome"
+    - "ore       - Generate an ore vein at the location you are facing (For debugging)"
+    - "save-data - Save population data"
+    - "structure - Load and export structures"
+    - "profile   - Profiler options"
+    - "image     - Image/GUI options"
+  biome:
+    biome-found: "Located biome at (%1$s, %2$s)"
+    unable-to-locate: "Unable to locate biome."
+    invalid-radius: "Invalid radius: \"%s\""
+    invalid: "Invalid Biome ID: \"%s\""
+    in: "You are in \"%s\""
+  ore:
+    main-menu:
+      - "---------------Terra/ore---------------"
+      - "Generates a vein of ore at the block you are looking at."
+    out-of-range: "Block out of range"
+    invalid-ore: "Unable to find Ore \"%s\""
+  geometry:
+    main-menu:
+      - "---------------Terra/geometry----------------"
+      - "Various voxel geometry debugging commands"
+      - "sphere       - Generate a sphere"
+      - "deformsphere - Generate a deformed sphere"
+      - "tube         - Generate a tube"
+    deform:
+      invalid-radius: "Invalid radius: \"%s\""
+      invalid-deform: "Invalid deform: \"%s\""
+      invalid-frequency: "Invalid frequency: \"%s\""
+    sphere:
+      invalid-radius: "Invalid radius: \"%s\""
+    tube:
+      invalid-radius: "Invalid radius: \"%s\""
+  image:
+    main-menu:
+      - "---------------Terra/image---------------"
+      - "render - Render an image with a given width and height, that can later be imported as a world."
+      - "gui    - Open debug GUI (Must be enabled in config)"
+    gui:
+      main-menu:
+        - "-------------Terra/image/gui-------------"
+        - "raw  - Open GUI with raw Biome data"
+        - "step - Re-render data to show borders more clearly"
+      debug: "Debug mode must be enabled to use the debug GUI! The debug GUI is NOT PRODUCTION SAFE!"
+    render:
+      save: "Saved image as \"%s\""
+      error: "An error occurred while generating the image!"
+  profile:
+    main-menu:
+      - "---------------Terra/profile---------------"
+      - "start - Starts the profiler"
+      - "stop  - Stops the profiler"
+      - "query - Fetches profiler data"
+      - "reset - Resets profiler data"
+    reset: "Profiler has been reset."
+    start: "Profiler has started."
+    stop: "Profiler has stopped."
+  structure:
+    main-menu:
+      - "---------------Terra/structure---------------"
+      - "export - Export your current WorldEdit selection as a Terra structure."
+      - "load   - Load a Terra structure"
+    invalid-radius: "Invalid radius: \"%s\""
+    invalid: "Invalid Structure ID: \"%s\""
+    export: "Saved structure to \"%s\""
+world-config:
+  loading: "Loading world configuration values for world %s..."
+  not-found: "Configuration for world \"%s\" not found. Copying default config."
+  using-image: "Loading world from image."
+  error: "Unable to load configuration for world %s"
+  done: "World load complete. Time elapsed: %sms"
+config-pack:
+  loaded: "Loaded config %1$s in %2$sms."
+config:
+  loaded: "Loaded %1$s from file %2$s"
+  loaded-all: "Loaded %1$s %2$s(s) in %3$sms."
+  error:
+    duplicate: "Duplicate ID found in file: %s"
+    file:
+      - "Configuration error for Terra object. File: %1$s"
+      - "%2$s"
+      - "Correct this before proceeding!"
+    generic:
+      - "An error occurred while loading configurations."
+      - "Please report this to Terra."
+warning:
+  no-population: "No population chunks were loaded. If this is your first time starting your server with Terra, or if you are creating a new world, this is normal."
+error:
+  severe-config: "A severe configuration error has prevented Terra from properly generating terrain at coordinates: %1$s, %2$s. Please check your configuration for errors. Any config errors will have been reported above."
+debug:
+  data-save: "Saved population data for world \"%s\""
