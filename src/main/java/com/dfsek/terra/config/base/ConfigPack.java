@@ -102,7 +102,7 @@ public class ConfigPack extends YamlConfiguration {
         biomeList = getStringList("grids");
 
         configs.put(id, this);
-        LangUtil.log("config-pack.load", Level.INFO, getID(), String.valueOf((System.nanoTime() - l)/1000000D));
+        LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l)/1000000D));
     }
 
     public Map<String, AbstractBiomeConfig> getAbstractBiomes() {

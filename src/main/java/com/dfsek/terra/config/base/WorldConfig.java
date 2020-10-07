@@ -68,7 +68,7 @@ public class WorldConfig {
                         fromImage = false;
                     }
                 }
-            } catch(IllegalArgumentException e) {
+            } catch(IllegalArgumentException | NullPointerException e) {
                 throw new InvalidConfigurationException(e.getCause());
             }
             Bukkit.getLogger().info("Loaded " + tConfig.biomeList.size() + " BiomeGrids from list.");

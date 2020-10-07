@@ -6,9 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Language extends YamlConfiguration {
     public Language(File file) throws IOException, InvalidConfigurationException {
@@ -18,13 +16,14 @@ public class Language extends YamlConfiguration {
     public void load(@NotNull File file) throws IOException, InvalidConfigurationException {
         super.load(file);
     }
+    @SuppressWarnings("unchecked")
     public Message getMessage(String id) {
         Object m = get(id);
         Message temp;
         if(m instanceof List) {
-            temp = new MultiLineMessage(getStringList(id));
+            temp = new MultiLineMessage((List<String>) m);
         } else if(m instanceof String) {
-            temp = new SingleLineMessage(getString(id));
+            temp = new SingleLineMessage((String) m);
         } else return new SingleLineMessage("message:" + id + ":translation_undefined");
         if(temp.isEmpty()) return new SingleLineMessage("message:" + id + ":translation_undefined");
         return temp;

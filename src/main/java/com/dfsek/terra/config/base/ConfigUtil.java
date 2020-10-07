@@ -22,6 +22,7 @@ public final class ConfigUtil {
     public static boolean masterDisableCaves;
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
+        main.reloadConfig();
         FileConfiguration config = main.getConfig();
         LangUtil.load(config.getString("language", "en_us"), main);
 
