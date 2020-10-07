@@ -73,6 +73,10 @@ public abstract class Command implements CommandExecutor, TabCompleter {
             }
             return execute(sender, command, label, args);
         }
+        if(args.length != arguments()) {
+            LangUtil.send("command.invalid", sender, String.valueOf(arguments()), String.valueOf(args.length));
+            return true;
+        }
         return execute(sender, command, label, new String[] {});
     }
 

@@ -42,7 +42,7 @@ public class BiomeLocateCommand extends WorldCommand {
             return true;
         }
         Bukkit.getScheduler().runTaskAsynchronously(Terra.getInstance(), new AsyncBiomeFinder(TerraWorld.getWorld(world).getGrid(), b, sender, 0, maxRadius, tp));
-        return false;
+        return true;
     }
 
     @Override
