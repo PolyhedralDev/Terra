@@ -27,7 +27,7 @@ public abstract class WorldCommand extends PlayerCommand {
         if(sender.getWorld().getGenerator() instanceof TerraChunkGenerator) {
             return execute(sender, command, label, args, sender.getWorld());
         } else {
-            sender.sendMessage("World is not a Terra world!");
+            sender.sendMessage("This world is not a Terra world!");
         }
         return true;
     }

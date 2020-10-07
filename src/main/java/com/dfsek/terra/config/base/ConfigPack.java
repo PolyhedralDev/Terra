@@ -60,7 +60,6 @@ public class ConfigPack extends YamlConfiguration {
     public int blendAmp;
     public boolean biomeBlend;
     public float blendFreq;
-    public boolean perturbPaletteOnly;
 
     public ConfigPack(JavaPlugin main, File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
@@ -94,7 +93,6 @@ public class ConfigPack extends YamlConfiguration {
         biomeBlend = getBoolean("blend.enable", false);
         blendAmp = getInt("blend.amplitude", 8);
         blendFreq = (float) getDouble("blend.frequency", 0.01);
-        perturbPaletteOnly = getBoolean("blend.ignore-terrain", true);
 
         erosionEnable = getBoolean("erode.enable", false);
         erosionFreq = (float) getDouble("erode.frequency", 0.01);

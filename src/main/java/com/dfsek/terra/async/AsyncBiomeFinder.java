@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
 
+/**
+ * Runnable that locates a biome
+ */
 public class AsyncBiomeFinder implements Runnable {
     private final TerraBiomeGrid grid;
     private final int centerX;

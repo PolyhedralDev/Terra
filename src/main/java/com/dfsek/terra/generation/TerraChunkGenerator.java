@@ -14,6 +14,7 @@ import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
+import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -70,10 +71,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int paletteLevel = 0;
                 int cx = xOrig + x;
                 int cz = zOrig + z;
+                Biome orig = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.BASE);
                 Biome b = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.PALETTE_APPLY);
                 BiomeConfig c = config.getBiome((UserDefinedBiome) b);
                 BiomeSlabConfig slab = c.getSlabs();
-                int sea = c.getOcean().getSeaLevel();
+                int sea = config.getBiome((UserDefinedBiome) orig).getOcean().getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOcean().getOcean();
                 for(int y = world.getMaxHeight()-1; y >= 0; y--) {
                     if(super.getInterpolatedNoise(x, y, z) > 0) {

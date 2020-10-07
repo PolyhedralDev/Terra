@@ -4,7 +4,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.generation.DataUtil;
+import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -15,14 +15,12 @@ import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class SnowPopulator extends GaeaBlockPopulator {
     private static final Set<Material> blacklistSpawn = new HashSet<>();
-    private static final BlockData snow = Material.SNOW.createBlockData();
     static {
         for(Material m : Material.values()) {
             String name = m.toString().toLowerCase();
@@ -35,7 +33,8 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     || name.contains("door")
                     || name.contains("repeater")
                     || name.equals("lily_pad")
-                    || name.equals("snow")) blacklistSpawn.add(m);
+                    || name.equals("snow")
+                    || name.equals("pane")) blacklistSpawn.add(m);
         }
         blacklistSpawn.add(Material.END_STONE);
         if(ConfigUtil.debug)

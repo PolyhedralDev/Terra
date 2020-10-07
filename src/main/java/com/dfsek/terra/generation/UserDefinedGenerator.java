@@ -2,6 +2,7 @@ package com.dfsek.terra.generation;
 
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
+import com.dfsek.terra.util.DataUtil;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.biome.Generator;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation;
+package com.dfsek.terra.util;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;

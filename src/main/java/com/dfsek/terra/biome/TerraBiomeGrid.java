@@ -2,6 +2,7 @@ package com.dfsek.terra.biome;
 
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.procgen.math.Vector2;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -19,14 +20,12 @@ public class TerraBiomeGrid extends BiomeGrid {
     private UserDefinedGrid erosionGrid;
 
     private final BiomeZone zone;
-    private final boolean perturbPaletteOnly;
 
     public TerraBiomeGrid(World w, float freq1, float freq2, BiomeZone zone, ConfigPack c, UserDefinedGrid erosion) {
         super(w, freq1, freq2);
         if(c.biomeBlend) {
             perturb = new CoordinatePerturb(c.blendFreq, c.blendAmp, w.getSeed());
         }
-        perturbPaletteOnly = c.perturbPaletteOnly;
         this.zone = zone;
         if(c.erosionEnable) {
             erode = new ErosionNoise(c.erosionFreq, c.erosionThresh, w.getSeed());
@@ -38,10 +37,10 @@ public class TerraBiomeGrid extends BiomeGrid {
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x;
         int zp = z;
-        if(perturb != null && (!perturbPaletteOnly || phase.equals(GenerationPhase.PALETTE_APPLY))) {
-            int[] perturbCoords = perturb.getShiftedCoords(x, z);
-            xp = perturbCoords[0];
-            zp = perturbCoords[1];
+        if(perturb != null && phase.equals(GenerationPhase.PALETTE_APPLY)) {
+            Vector2 perturbCoords = perturb.getShiftedCoords(x, z);
+            xp = (int) perturbCoords.getX();
+            zp = (int) perturbCoords.getZ();
         }
 
         UserDefinedBiome b;

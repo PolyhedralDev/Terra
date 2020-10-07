@@ -1,0 +1,9 @@
+enable:
+  - "If you like Terra, please consider supporting the project on Patreon!"
+  - "You'll gain access to experimental features before they are released!"
+  - "Support the project here: https://www.patreon.com/dfsek"
+disable:
+  - "Thank you for using Terra!"
+command:
+  player-only: "This command is for players only!"
+  terra-world: "This command must be executed in a Terra world!"

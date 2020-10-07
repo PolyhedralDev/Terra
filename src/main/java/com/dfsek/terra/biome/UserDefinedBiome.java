@@ -9,6 +9,9 @@ import org.polydev.gaea.structures.features.Feature;
 
 import java.util.List;
 
+/**
+ * Class representing a config-defined biome
+ */
 public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerator gen;
     private final UserDefinedDecorator decorator;
