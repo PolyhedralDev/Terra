@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.command.type.DebugCommand;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.GaeaStructure;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class LoadCommand extends PlayerCommand {
+public class LoadCommand extends PlayerCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {

@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.geometry;
 
+import com.dfsek.terra.command.type.DebugCommand;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.Command;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GeometryCommand extends PlayerCommand {
+public class GeometryCommand extends PlayerCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         LangUtil.send("command.geometry.main-menu", sender);

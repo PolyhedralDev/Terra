@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.type;
 
 import com.dfsek.terra.Debug;
+import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -63,9 +64,15 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      */
     @Override
     public final boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
+        if(this instanceof DebugCommand && ! ConfigUtil.debug) {
+            LangUtil.send("command.debug-only", sender);
+            return true;
+        }
         if(args.length > 0) {
             for(Command c : getSubCommands()) {
-                if(c.getName().equals(args[0])) return c.onCommand(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
+                if(c.getName().equals(args[0])) {
+                    return c.onCommand(sender, command, label, Arrays.stream(args, 1, args.length).toArray(String[]::new));
+                }
             }
             if(args.length != arguments()) {
                 LangUtil.send("command.invalid", sender, String.valueOf(arguments()), String.valueOf(args.length));
