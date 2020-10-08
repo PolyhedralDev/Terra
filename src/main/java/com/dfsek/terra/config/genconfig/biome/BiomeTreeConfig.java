@@ -13,6 +13,7 @@ import org.polydev.gaea.world.Flora;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BiomeTreeConfig extends TerraConfigSection {
     private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
@@ -31,13 +32,20 @@ public class BiomeTreeConfig extends TerraConfigSection {
             try {
                 Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
                 Map<?, ?> y = ((ConfigurationSection) val.get("y")).getValues(false);
-                Tree tree = TreeType.valueOf(e.getKey());
+                Tree tree;
+                try {
+                    tree = TreeType.valueOf(e.getKey());
+                } catch(IllegalArgumentException ex) {
+                    try {
+                        tree = Objects.requireNonNull(parent.getConfig().getTree(e.getKey()));
+                    } catch(NullPointerException ex2) {
+                        throw new ConfigException("Invalid tree type: \"" + e.getKey() + "\"", parent.getID());
+                    }
+                }
                 trees.add(tree, (Integer) val.get("weight"));
                 treeHeights.put(tree, new Range((Integer) y.get("min"), (Integer) y.get("max")));
             } catch(ClassCastException ex) {
                 throw new ConfigException("Unable to parse Tree configuration! Check YAML syntax.", parent.getID());
-            } catch(IllegalArgumentException ex) {
-                throw new ConfigException("Invalid tree type: \"" + e.getKey() + "\"", parent.getID());
             }
         }
     }

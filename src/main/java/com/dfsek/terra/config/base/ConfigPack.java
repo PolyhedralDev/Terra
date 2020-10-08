@@ -4,6 +4,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
@@ -41,6 +42,7 @@ public class ConfigPack extends YamlConfiguration {
     private final Map<String, AbstractBiomeConfig> abstractBiomes;
     private final Map<String, BiomeConfig> biomes;
     private final Map<String, BiomeGridConfig> grids;
+    private final Map<String, TreeConfig> trees;
     private final File dataFolder;
 
     private final String id;
@@ -77,6 +79,8 @@ public class ConfigPack extends YamlConfiguration {
         flora = ConfigLoader.load(new File(file, "flora").toPath(), this, FloraConfig.class);
 
         structures = ConfigLoader.load(new File(file, "structures").toPath(), this, StructureConfig.class);
+
+        trees = ConfigLoader.load(new File(file, "trees").toPath(), this, TreeConfig.class);
 
         abstractBiomes = ConfigLoader.load(new File(file, "abstract" + File.separator + "biomes").toPath(), this, AbstractBiomeConfig.class);
 
@@ -208,5 +212,9 @@ public class ConfigPack extends YamlConfiguration {
 
     public BiomeGridConfig getBiomeGrid(String id) {
         return grids.get(id);
+    }
+
+    public TreeConfig getTree(String id) {
+        return trees.get(id);
     }
 }

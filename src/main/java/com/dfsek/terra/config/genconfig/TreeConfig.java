@@ -26,6 +26,7 @@ import java.util.Set;
 public class TreeConfig extends TerraConfig implements Tree {
     private final Set<Material> spawnable;
     private final String id;
+    private final int yOffset;
     private final ProbabilityCollection<GaeaStructure> structure = new ProbabilityCollection<>();
     public TreeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -33,6 +34,7 @@ public class TreeConfig extends TerraConfig implements Tree {
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");
         if(!contains("files")) throw new ConfigException("No files specified!", getID());
+        yOffset = getInt("y-offset", 0);
         try {
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
                 try {
@@ -61,6 +63,12 @@ public class TreeConfig extends TerraConfig implements Tree {
 
     @Override
     public boolean plant(Location location, Random random, boolean b, JavaPlugin javaPlugin) {
-        return false;
+        Location mut = location.clone().subtract(0, yOffset, 0);
+        if(!spawnable.contains(location.getBlock().getType())) return false;
+        GaeaStructure struc = structure.get(random);
+        GaeaStructure.Rotation rotation = GaeaStructure.Rotation.fromDegrees(random.nextInt(4) * 90);
+        if(!struc.checkSpawns(mut, rotation)) return false;
+        struc.paste(mut, rotation);
+        return true;
     }
 }
