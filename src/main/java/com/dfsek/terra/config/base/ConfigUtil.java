@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.biome.failsafe.FailType;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.Bukkit;
@@ -14,12 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class ConfigUtil {
     public static boolean debug;
     public static long dataSave; // Period of population data saving, in ticks.
     public static boolean masterDisableCaves;
+    public static FailType failType;
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
         main.reloadConfig();
@@ -29,6 +32,13 @@ public final class ConfigUtil {
         debug = config.getBoolean("debug", false);
         dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis()/20L;
         masterDisableCaves = config.getBoolean("master-disable.caves", false);
+
+        String fail = config.getString("fail-type", "SHUTDOWN");
+        try {
+            failType = FailType.valueOf(fail);
+        } catch(IllegalArgumentException e) {
+            LangUtil.log("config.invalid-failover", Level.SEVERE, fail);
+        }
 
         Logger logger = main.getLogger();
         logger.info("Loading config values");

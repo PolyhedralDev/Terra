@@ -27,6 +27,7 @@ public class StructurePopulator extends BlockPopulator {
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             TerraWorld tw = TerraWorld.getWorld(world);
+            if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
             UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(cx+ 8, cz + 8, GenerationPhase.POPULATE);

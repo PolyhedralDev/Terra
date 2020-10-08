@@ -62,10 +62,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoise fastNoise) {
-        if(needsLoad) load(world);
+        if(needsLoad) load(world); // Load population data for world.
         StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
-        ConfigPack config = TerraWorld.getWorld(world).getConfig();
+        TerraWorld tw = TerraWorld.getWorld(world);
+        if(!tw.isSafe()) return chunk;
+        ConfigPack config = tw.getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         for(byte x = 0; x < 16; x++) {

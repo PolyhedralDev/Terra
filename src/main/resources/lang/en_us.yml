@@ -78,6 +78,7 @@ command:
       - "export - Export your current WorldEdit selection as a Terra structure."
       - "load   - Load a Terra structure"
     invalid-radius: "Invalid radius: \"%s\""
+    invalid-rotation: "Invalid rotation: \"%s\""
     invalid: "Invalid Structure ID: \"%s\""
     export: "Saved structure to \"%s\""
 world-config:
@@ -92,6 +93,7 @@ config:
   loaded: "Loaded %1$s from file %2$s"
   loaded-all: "Loaded %1$s %2$s(s) in %3$sms."
   error:
+    invalid-failover: "Invalid failover type: \"%s\""
     duplicate: "Duplicate ID found in file: %s"
     file:
       - "Configuration error for Terra object. File: %1$s"

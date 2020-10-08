@@ -23,6 +23,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
+            if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
             for(int x = 0; x < 16; x++) {

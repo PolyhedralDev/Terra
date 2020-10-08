@@ -21,7 +21,9 @@ public class OrePopulator extends GaeaBlockPopulator {
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
-            ConfigPack config = TerraWorld.getWorld(world).getConfig();
+            TerraWorld tw = TerraWorld.getWorld(world);
+            if(!tw.isSafe()) return;
+            ConfigPack config = tw.getConfig();
             Biome b = TerraWorld.getWorld(world).getGrid().getBiome((chunk.getX() << 4)+8, (chunk.getZ() << 4) + 8, GenerationPhase.POPULATE);
             for(Map.Entry<OreConfig, Range> e : config.getBiome((UserDefinedBiome) b).getOres().getOres().entrySet()) {
                 int num = e.getValue().get(random);

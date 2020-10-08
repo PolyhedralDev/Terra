@@ -22,8 +22,10 @@ public class TerraWorld {
     private final BiomeZone zone;
     private final ConfigPack config;
     private final WorldConfig worldConfig;
+    private boolean safe;
 
     private TerraWorld(World w) {
+        safe = true;
         worldConfig = new WorldConfig(w, Terra.getInstance());
         config = worldConfig.getConfig();
         UserDefinedGrid[] definedGrids = new UserDefinedGrid[config.biomeList.size()];
@@ -42,6 +44,7 @@ public class TerraWorld {
                     definedGrids[i] = g.getGrid(w, worldConfig);
                 }
             } catch(NullPointerException e) {
+                safe = false;
                 Debug.stack(e);
                 Bukkit.getLogger().severe("No such BiomeGrid " + partName);
                 Bukkit.getLogger().severe("Please check configuration files for errors. Configuration errors will have been reported during initialization.");
@@ -64,6 +67,7 @@ public class TerraWorld {
                     erosion = g.getGrid(w, worldConfig);
                 }
             } catch(NullPointerException e) {
+                safe = false;
                 Debug.stack(e);
                 Bukkit.getLogger().severe("No such BiomeGrid (erosion): " + config.erosionName);
                 Bukkit.getLogger().severe("Please check configuration files for errors. Configuration errors will have been reported during initialization.");
@@ -73,6 +77,7 @@ public class TerraWorld {
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);
         grid = new TerraBiomeGrid(w, config.freq1, config.freq2, zone, config, erosion);
+
     }
 
     public static synchronized TerraWorld getWorld(World w) {
@@ -101,5 +106,9 @@ public class TerraWorld {
 
     public static int numWorlds() {
         return map.size();
+    }
+
+    public boolean isSafe() {
+        return safe;
     }
 }

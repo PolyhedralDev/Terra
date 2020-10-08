@@ -31,7 +31,9 @@ public class CavePopulator extends BlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
-            ConfigPack config = TerraWorld.getWorld(world).getConfig();
+            TerraWorld tw = TerraWorld.getWorld(world);
+            if(!tw.isSafe()) return;
+            ConfigPack config = tw.getConfig();
 
             for(CarverConfig c : config.getCarvers().values()) {
                 Map<Location, Material> shiftCandidate = new HashMap<>();

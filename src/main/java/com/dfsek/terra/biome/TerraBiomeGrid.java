@@ -1,5 +1,6 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.biome.failsafe.FailoverBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -10,6 +11,7 @@ import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class TerraBiomeGrid extends BiomeGrid {
             if(ConfigUtil.debug) e.printStackTrace();
             if(failNum % 256 == 0) LangUtil.log("error.severe-config", Level.SEVERE, String.valueOf(x), String.valueOf(z));
             failNum++;
-            return null;
+            return ConfigUtil.failType.fail();
         }
         if(erode != null && b.isErodible() && erode.isEroded(xp, zp)) {
             return erosionGrid.getBiome(xp, zp, phase);

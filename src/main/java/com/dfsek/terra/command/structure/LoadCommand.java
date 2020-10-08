@@ -19,7 +19,13 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-            GaeaStructure.Rotation r = GaeaStructure.Rotation.fromDegrees(Integer.parseInt(args[1]));
+            GaeaStructure.Rotation r;
+            try {
+                r =GaeaStructure.Rotation.fromDegrees(Integer.parseInt(args[1]));
+            } catch(NumberFormatException e) {
+                LangUtil.send("command.structure.invalid-rotation", sender, args[1]);
+                return true;
+            }
             GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
             if("true".equals(args[2])) struc.paste(sender.getLocation(), r);
             else struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r);

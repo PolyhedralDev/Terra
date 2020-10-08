@@ -1,4 +1,4 @@
-package com.dfsek.terra.image;
+package com.dfsek.terra.debug.gui;
 
 import javax.swing.*;
 import java.awt.*;

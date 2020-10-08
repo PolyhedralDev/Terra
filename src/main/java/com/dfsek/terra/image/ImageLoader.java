@@ -4,7 +4,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigUtil;
-import com.dfsek.terra.config.base.WorldConfig;
+import com.dfsek.terra.debug.gui.DebugGUI;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 

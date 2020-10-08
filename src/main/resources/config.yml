@@ -1,5 +1,6 @@
 debug: false
 data-save: PT6M
 language: "en_us"
+fail-type: SHUTDOWN
 master-disable:
   caves: false

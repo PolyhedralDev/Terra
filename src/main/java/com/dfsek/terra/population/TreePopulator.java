@@ -5,6 +5,7 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import org.bukkit.Chunk;
@@ -29,6 +30,7 @@ public class TreePopulator extends GaeaBlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("TreeGenTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
+            if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();;
             int x = random.nextInt(16);
             int z = random.nextInt(16);

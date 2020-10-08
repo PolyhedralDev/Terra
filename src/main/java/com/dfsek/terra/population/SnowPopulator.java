@@ -3,6 +3,7 @@ package com.dfsek.terra.population;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
@@ -45,6 +46,7 @@ public class SnowPopulator extends GaeaBlockPopulator {
         int origX = chunk.getX() << 4;
         int origZ = chunk.getZ() << 4;
         TerraWorld w = TerraWorld.getWorld(world);
+        if(!w.isSafe()) return;
         TerraBiomeGrid g = w.getGrid();
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
