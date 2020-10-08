@@ -90,10 +90,6 @@ public class AsyncStructureFinder implements Runnable {
         main: for(int y = target.getSearchStart().get(r2); y > 0; y--) {
             spawn.setY(y);
             if(y > target.getBound().getMax() || y < target.getBound().getMin()) return false;
-            for(StructureSpawnRequirement s : struc.getSpawns()) {
-                if(! s.isValidSpawn(spawn)) continue main; // Probably(tm) async safe
-                if(!b.equals(grid.getBiome(spawn.clone().add(s.getX(), s.getY(), s.getZ()), GenerationPhase.POPULATE))) return false;
-            }
         }
         return true;
     }

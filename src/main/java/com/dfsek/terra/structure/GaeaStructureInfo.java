@@ -1,5 +1,6 @@
 package com.dfsek.terra.structure;
 
+import com.dfsek.terra.procgen.math.Vector2;
 import org.bukkit.util.Vector;
 
 import java.io.Serializable;
@@ -11,14 +12,12 @@ public class GaeaStructureInfo implements Serializable {
     private final int sizeZ;
     private final int centerX;
     private final int centerZ;
-    private final int centerY;
-    public GaeaStructureInfo(int sizeX, int sizeY, int sizeZ, Vector center) {
+    public GaeaStructureInfo(int sizeX, int sizeY, int sizeZ, Vector2 center) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
-        this.centerX = center.getBlockX();
-        this.centerZ = center.getBlockZ();
-        this.centerY = center.getBlockY();
+        this.centerX = (int) center.getX();
+        this.centerZ = (int) center.getZ();
     }
 
     public int getSizeX() {
@@ -35,10 +34,6 @@ public class GaeaStructureInfo implements Serializable {
 
     public int getCenterX() {
         return centerX;
-    }
-
-    public int getCenterY() {
-        return centerY;
     }
 
     public int getCenterZ() {

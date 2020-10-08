@@ -22,6 +22,7 @@ public class LoadCommand extends PlayerCommand {
             GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
             if("true".equals(args[2])) struc.paste(sender.getLocation(), r);
             else struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r);
+            //sender.sendMessage(String.valueOf(struc.checkSpawns(sender.getLocation(), r)));
         } catch(IOException e) {
             e.printStackTrace();
             LangUtil.send("command.structure.invalid", sender, args[0]);

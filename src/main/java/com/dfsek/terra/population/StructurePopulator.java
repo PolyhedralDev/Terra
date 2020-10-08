@@ -34,17 +34,15 @@ public class StructurePopulator extends BlockPopulator {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
                 Random r2 = new Random(spawn.hashCode());
                 GaeaStructure struc = conf.getStructure(r2);
+                GaeaStructure.Rotation rotation = GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90);
                 main: for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
                     if(y > conf.getBound().getMax() || y < conf.getBound().getMin()) continue structure;
                     spawn.setY(y);
-                    for(StructureSpawnRequirement s : struc.getSpawns()) {
-                        if(! s.isValidSpawn(spawn)) continue main;
-                        if(!b.equals(grid.getBiome(spawn.clone().add(s.getX(), s.getY(), s.getZ()), GenerationPhase.POPULATE))) continue structure;
-                    }
+                    if(!struc.checkSpawns(spawn, rotation)) continue;
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {
-                            struc.paste(spawn, chunk, GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90));
+                            struc.paste(spawn, chunk, rotation);
                             break;
                         }
                     }

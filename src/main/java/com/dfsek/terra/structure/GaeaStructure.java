@@ -31,8 +31,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -41,10 +43,10 @@ import static com.dfsek.terra.util.structure.RotationUtil.*;
 public class GaeaStructure implements Serializable {
     public static final long serialVersionUID = -6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
-    private final ArrayList<StructureSpawnRequirement> spawns = new ArrayList<>();
     private final GaeaStructureInfo structureInfo;
     private final String id;
     private final UUID uuid;
+    private final HashSet<StructureContainedBlock> spawns;
 
     @NotNull
     public static GaeaStructure load(@NotNull File f) throws IOException {
@@ -56,9 +58,10 @@ public class GaeaStructure implements Serializable {
     }
 
     public GaeaStructure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
-        int centerX = -1, centerY = -1, centerZ = -1;
+        int centerX = -1, centerZ = -1;
         this.id = id;
         this.uuid = UUID.randomUUID();
+        this.spawns = new HashSet<>();
         if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ()) throw new IllegalArgumentException("Invalid locations provided!");
         structure = new StructureContainedBlock[l2.getBlockX()-l1.getBlockX()+1][l2.getBlockZ()-l1.getBlockZ()+1][l2.getBlockY()-l1.getBlockY()+1];
         for(int x = 0; x <= l2.getBlockX()-l1.getBlockX(); x++) {
@@ -68,6 +71,7 @@ public class GaeaStructure implements Serializable {
                     BlockState state = b.getState();
                     BlockData d = b.getBlockData();
                     boolean useState = true;
+                    StructureSpawnRequirement requirement = StructureSpawnRequirement.BLANK;
                     if(state instanceof Sign) {
                         Sign s = (Sign) b.getState();
                         if(s.getLine(0).equals("[TERRA]")) {
@@ -76,22 +80,14 @@ public class GaeaStructure implements Serializable {
                                 useState = false;
                                 if(s.getLine(1).equals("[CENTER]")) {
                                     centerX = x;
-                                    centerY = y;
                                     centerZ = z;
                                 } else if(s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
                                     String og = s.getLine(1);
                                     String spawn = og.substring(og.indexOf("=")+1, og.length()-1);
-                                    switch(spawn.toUpperCase()) {
-                                        case "LAND":
-                                            spawns.add(new StructureSpawnRequirement(StructureSpawnRequirement.RequirementType.LAND, x, y, z));
-                                            break;
-                                        case "OCEAN":
-                                            spawns.add(new StructureSpawnRequirement(StructureSpawnRequirement.RequirementType.OCEAN, x, y, z));
-                                            break;
-                                        case "AIR":
-                                            spawns.add(new StructureSpawnRequirement(StructureSpawnRequirement.RequirementType.AIR, x, y, z));
-                                            break;
-                                        default: throw new InitializationException("Invalid spawn type, " + spawn);
+                                    try {
+                                        requirement = StructureSpawnRequirement.valueOf(spawn.toUpperCase());
+                                    } catch(IllegalArgumentException e) {
+                                        throw new InitializationException("Invalid spawn type: " + spawn);
                                     }
                                 }
                             } catch(IllegalArgumentException e) {
@@ -99,16 +95,14 @@ public class GaeaStructure implements Serializable {
                             }
                         }
                     }
-                    structure[x][z][y] = new StructureContainedBlock(x, y, z, useState ? state : null, d);
+                    StructureContainedBlock block = new StructureContainedBlock(x, y, z, useState ? state : null, d, requirement);
+                    if(!requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
+                    structure[x][z][y] = block;
                 }
             }
         }
-        if(centerX < 0 || centerY < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
-        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector(centerX, centerY, centerZ));
-    }
-
-    public ArrayList<StructureSpawnRequirement> getSpawns() {
-        return spawns;
+        if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
+        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector2(centerX, centerZ));
     }
 
     /**
@@ -129,6 +123,13 @@ public class GaeaStructure implements Serializable {
         this.executeForBlocksInRange(getRange(Axis.X), getRange(Axis.Y), getRange(Axis.Z), block -> pasteBlock(block, origin, r), r);
     }
 
+    public boolean checkSpawns(Location origin, Rotation r) {
+        for(StructureContainedBlock b : spawns) {
+            Vector2 rot = getRotatedCoords(new Vector2(b.getX()-structureInfo.getCenterX(), b.getZ()-structureInfo.getCenterZ()), r);
+            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX()+origin.getBlockX(), origin.getBlockY(), (int) rot.getZ()+origin.getBlockZ())) return false;
+        }
+        return true;
+    }
 
 
 
@@ -158,7 +159,8 @@ public class GaeaStructure implements Serializable {
      */
     private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r) {
         BlockData data = block.getBlockData().clone();
-        Block worldBlock = origin.clone().add(block.getX(), block.getY(), block.getZ()).getBlock();
+        Location loc = origin.clone().add(block.getX(), block.getY(), block.getZ());
+        Block worldBlock = loc.getBlock();
         if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
             if(data instanceof Rotatable) {
                 BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
@@ -203,7 +205,7 @@ public class GaeaStructure implements Serializable {
                     c.add(new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ()));
                     if(isInStructure((int) c.getX(), y, (int) c.getZ())) {
                         StructureContainedBlock b = structure[(int) c.getX()][(int) c.getZ()][y];
-                        exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData()));
+                        exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData(), b.getRequirement()));
                     }
                 }
             }
