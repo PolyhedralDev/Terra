@@ -4,7 +4,7 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.structure.WorldEditUtil;
 import com.dfsek.terra.command.type.PlayerCommand;
-import com.dfsek.terra.structure.GaeaStructure;
+import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.InitializationException;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -24,9 +24,9 @@ public class ExportCommand extends PlayerCommand {
         if(l == null) return true;
         Location l1 = l[0];
         Location l2 = l[1];
-        GaeaStructure structure;
+        Structure structure;
         try {
-            structure = new GaeaStructure(l1, l2, args[0]);
+            structure = new Structure(l1, l2, args[0]);
         } catch(InitializationException e) {
             sender.sendMessage(e.getMessage());
             return true;

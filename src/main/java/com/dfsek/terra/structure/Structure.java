@@ -2,7 +2,6 @@ package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
-import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -10,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -17,7 +17,8 @@ import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.util.Vector;
+import org.bukkit.block.data.type.RedstoneWire;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.math.Range;
 
@@ -30,26 +31,25 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import static com.dfsek.terra.util.structure.RotationUtil.*;
 
-public class GaeaStructure implements Serializable {
+public class Structure implements Serializable {
     public static final long serialVersionUID = -6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
-    private final GaeaStructureInfo structureInfo;
+    private final StructureInfo structureInfo;
     private final String id;
     private final UUID uuid;
     private final HashSet<StructureContainedBlock> spawns;
+    private final HashSet<StructureContainedInventory> inventories;
 
     @NotNull
-    public static GaeaStructure load(@NotNull File f) throws IOException {
+    public static Structure load(@NotNull File f) throws IOException {
         try {
             return fromFile(f);
         } catch(ClassNotFoundException e) {
@@ -57,11 +57,12 @@ public class GaeaStructure implements Serializable {
         }
     }
 
-    public GaeaStructure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
+    public Structure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
         int centerX = -1, centerZ = -1;
         this.id = id;
         this.uuid = UUID.randomUUID();
         this.spawns = new HashSet<>();
+        this.inventories = new HashSet<>();
         if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ()) throw new IllegalArgumentException("Invalid locations provided!");
         structure = new StructureContainedBlock[l2.getBlockX()-l1.getBlockX()+1][l2.getBlockZ()-l1.getBlockZ()+1][l2.getBlockY()-l1.getBlockY()+1];
         for(int x = 0; x <= l2.getBlockX()-l1.getBlockX(); x++) {
@@ -96,13 +97,16 @@ public class GaeaStructure implements Serializable {
                         }
                     }
                     StructureContainedBlock block = new StructureContainedBlock(x, y, z, useState ? state : null, d, requirement);
+                    if(state instanceof BlockInventoryHolder) {
+                        inventories.add(new StructureContainedInventory(((BlockInventoryHolder) state).getInventory(), block));
+                    }
                     if(!requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
                     structure[x][z][y] = block;
                 }
             }
         }
         if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
-        structureInfo = new GaeaStructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector2(centerX, centerZ));
+        structureInfo = new StructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector2(centerX, centerZ));
     }
 
     /**
@@ -110,7 +114,7 @@ public class GaeaStructure implements Serializable {
      * @return Structure Info
      */
     @NotNull
-    public GaeaStructureInfo getStructureInfo() {
+    public StructureInfo getStructureInfo() {
         return structureInfo;
     }
 
@@ -131,7 +135,9 @@ public class GaeaStructure implements Serializable {
         return true;
     }
 
-
+    public HashSet<StructureContainedInventory> getInventories() {
+        return inventories;
+    }
 
     /**
      * Paste structure at an origin location, confined to a single chunk.
@@ -181,10 +187,15 @@ public class GaeaStructure implements Serializable {
             } else if(data instanceof Orientable) {
                 org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
                 ((Orientable) data).setAxis(newAxis);
+            } else if(data instanceof RedstoneWire) {
+                RedstoneWire rData = (RedstoneWire) data;
+                for(BlockFace f : rData.getAllowedFaces()) {
+                    rData.setFace(getRotatedFace(f, r), rData.getFace(f));
+                }
             }
             worldBlock.setBlockData(data, false);
             if(block.getState() != null) {
-                block.getState().getState(worldBlock.getState()).update();
+                block.getState().getState(worldBlock.getState()).update(true, false);
             }
         }
     }
@@ -249,19 +260,19 @@ public class GaeaStructure implements Serializable {
      * @throws ClassNotFoundException If structure data is invalid.
      */
     @NotNull
-    private static GaeaStructure fromFile(@NotNull File f) throws IOException, ClassNotFoundException {
+    private static Structure fromFile(@NotNull File f) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
         Object o = ois.readObject();
         ois.close();
-        return (GaeaStructure) o;
+        return (Structure) o;
     }
 
     @NotNull
-    public static GaeaStructure fromStream(@NotNull InputStream f) throws IOException, ClassNotFoundException {
+    public static Structure fromStream(@NotNull InputStream f) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(f);
         Object o = ois.readObject();
         ois.close();
-        return (GaeaStructure) o;
+        return (Structure) o;
     }
 
     private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {

@@ -4,7 +4,7 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.command.type.DebugCommand;
 import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.structure.GaeaStructure;
+import com.dfsek.terra.structure.Structure;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,14 +19,14 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-            GaeaStructure.Rotation r;
+            Structure.Rotation r;
             try {
-                r =GaeaStructure.Rotation.fromDegrees(Integer.parseInt(args[1]));
+                r = Structure.Rotation.fromDegrees(Integer.parseInt(args[1]));
             } catch(NumberFormatException e) {
                 LangUtil.send("command.structure.invalid-rotation", sender, args[1]);
                 return true;
             }
-            GaeaStructure struc = GaeaStructure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
+            Structure struc = Structure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
             if("true".equals(args[2])) struc.paste(sender.getLocation(), r);
             else struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r);
             //sender.sendMessage(String.valueOf(struc.checkSpawns(sender.getLocation(), r)));

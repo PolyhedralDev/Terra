@@ -3,7 +3,6 @@ package com.dfsek.terra.structure;
 import com.dfsek.terra.structure.serialize.SerializableBlockData;
 import com.dfsek.terra.structure.serialize.block.SerializableBlockState;
 import com.dfsek.terra.structure.serialize.block.SerializableSign;
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;

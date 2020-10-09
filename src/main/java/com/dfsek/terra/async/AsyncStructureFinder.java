@@ -1,20 +1,16 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.genconfig.StructureConfig;
-import com.dfsek.terra.structure.GaeaStructure;
-import com.dfsek.terra.structure.StructureSpawnRequirement;
+import com.dfsek.terra.structure.Structure;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.profiler.ProfileFuture;
 
 import java.util.Random;
 
@@ -91,8 +87,8 @@ public class AsyncStructureFinder implements Runnable {
         Location spawn = target.getSpawn().getNearestSpawn(x, z, world.getSeed()).toLocation(world);
         if(! TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(target)) return false;
         Random r2 = new Random(spawn.hashCode());
-        GaeaStructure struc = target.getStructure(r2);
-        GaeaStructure.Rotation rotation = GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90);
+        Structure struc = target.getStructure(r2);
+        Structure.Rotation rotation = Structure.Rotation.fromDegrees(r2.nextInt(4) * 90);
         for(int y = target.getSearchStart().get(r2); y > 0; y--) {
             if(!target.getBound().isInRange(y)) return false;
             spawn.setY(y);

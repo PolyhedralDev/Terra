@@ -6,7 +6,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.structure.GaeaStructure;
+import com.dfsek.terra.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -17,7 +17,6 @@ import org.polydev.gaea.tree.Tree;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -27,7 +26,7 @@ public class TreeConfig extends TerraConfig implements Tree {
     private final Set<Material> spawnable;
     private final String id;
     private final int yOffset;
-    private final ProbabilityCollection<GaeaStructure> structure = new ProbabilityCollection<>();
+    private final ProbabilityCollection<Structure> structure = new ProbabilityCollection<>();
     public TreeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
@@ -39,7 +38,7 @@ public class TreeConfig extends TerraConfig implements Tree {
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
                 try {
                     File structureFile = new File(config.getDataFolder() + File.separator + "trees" + File.separator + "data", e.getKey() + ".tstructure");
-                    structure.add(GaeaStructure.load(structureFile), (Integer) e.getValue());
+                    structure.add(Structure.load(structureFile), (Integer) e.getValue());
                 } catch(FileNotFoundException ex) {
                     Debug.stack(ex);
                     throw new NotFoundException("Tree Structure File", e.getKey(), getID());
@@ -65,8 +64,8 @@ public class TreeConfig extends TerraConfig implements Tree {
     public boolean plant(Location location, Random random, boolean b, JavaPlugin javaPlugin) {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
-        GaeaStructure struc = structure.get(random);
-        GaeaStructure.Rotation rotation = GaeaStructure.Rotation.fromDegrees(random.nextInt(4) * 90);
+        Structure struc = structure.get(random);
+        Structure.Rotation rotation = Structure.Rotation.fromDegrees(random.nextInt(4) * 90);
         if(!struc.checkSpawns(mut, rotation)) return false;
         struc.paste(mut, rotation);
         return true;

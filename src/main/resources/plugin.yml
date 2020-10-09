@@ -1,4 +1,5 @@
 name: Terra
+depend: [ "Gaea" ]
 main: com.dfsek.terra.Terra
 version: 1.0.0
 load: STARTUP

@@ -1,11 +1,9 @@
 package com.dfsek.terra.util.structure;
 
 import com.dfsek.terra.procgen.math.Vector2;
-import com.dfsek.terra.structure.GaeaStructure;
+import com.dfsek.terra.structure.Structure;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rail;
-
-import java.util.Arrays;
 
 public class RotationUtil {
     /**
@@ -14,7 +12,7 @@ public class RotationUtil {
      * @param r Rotation
      * @return Rotated coordinate pair
      */
-    public static Vector2 getRotatedCoords(Vector2 orig, GaeaStructure.Rotation r) {
+    public static Vector2 getRotatedCoords(Vector2 orig, Structure.Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
             case CW_90:
@@ -36,7 +34,7 @@ public class RotationUtil {
      * @param r Rotation
      * @return Rotated BlockFace
      */
-    public static BlockFace getRotatedFace(BlockFace f, GaeaStructure.Rotation r) {
+    public static BlockFace getRotatedFace(BlockFace f, Structure.Rotation r) {
         BlockFace n = f;
         int rotateNum = r.getDegrees()/90;
         int rn = faceRotation(f);
@@ -46,9 +44,9 @@ public class RotationUtil {
         return n;
     }
 
-    public static org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, GaeaStructure.Rotation r) {
+    public static org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, Structure.Rotation r) {
         org.bukkit.Axis other = orig;
-        final boolean shouldSwitch = r.equals(GaeaStructure.Rotation.CW_90) || r.equals(GaeaStructure.Rotation.CCW_90);
+        final boolean shouldSwitch = r.equals(Structure.Rotation.CW_90) || r.equals(Structure.Rotation.CCW_90);
         switch(orig) {
             case X:
                 if(shouldSwitch) other = org.bukkit.Axis.Z;
@@ -67,7 +65,7 @@ public class RotationUtil {
      * @param r Rotate
      * @return Rotated/mirrored shape
      */
-    public static Rail.Shape getRotatedRail(Rail.Shape orig, GaeaStructure.Rotation r) {
+    public static Rail.Shape getRotatedRail(Rail.Shape orig, Structure.Rotation r) {
         switch(r) {
             case CCW_90:
                 switch(orig) {

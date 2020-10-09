@@ -26,10 +26,6 @@
                 <configuration>
                     <relocations>
                         <relocation>
-                            <pattern>org.polydev.gaea</pattern>
-                            <shadedPattern>com.dfsek.terra.lib.gaea</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>org.apache.commons</pattern>
                             <shadedPattern>com.dfsek.terra.lib.commons</shadedPattern>
                         </relocation>
@@ -96,6 +92,7 @@
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
             <version>1.10.93</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -119,6 +116,12 @@
             <artifactId>bstats-bukkit</artifactId>
             <version>1.7</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
