@@ -30,16 +30,16 @@ public class StructurePopulator extends BlockPopulator {
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
-            UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(cx+ 8, cz + 8, GenerationPhase.POPULATE);
-            structure: for(StructureConfig conf : config.getBiome(b).getStructures()) {
+            structure: for(StructureConfig conf : config.getAllStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
+                if(!config.getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(conf)) continue;
                 Random r2 = new Random(spawn.hashCode());
                 GaeaStructure struc = conf.getStructure(r2);
                 GaeaStructure.Rotation rotation = GaeaStructure.Rotation.fromDegrees(r2.nextInt(4) * 90);
-                main: for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
-                    if(y > conf.getBound().getMax() || y < conf.getBound().getMin()) continue structure;
+                for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
+                    if(!conf.getBound().isInRange(y)) continue structure;
                     spawn.setY(y);
-                    if(!struc.checkSpawns(spawn, rotation)) continue;
+                    if(! struc.checkSpawns(spawn, rotation)) continue;
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {

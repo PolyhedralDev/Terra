@@ -24,8 +24,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,9 @@ public class ConfigPack extends YamlConfiguration {
     private final Map<String, BiomeConfig> biomes;
     private final Map<String, BiomeGridConfig> grids;
     private final Map<String, TreeConfig> trees;
+    private final Set<StructureConfig> allStructures = new HashSet<>();
+
+
     private final File dataFolder;
 
     private final String id;
@@ -106,6 +111,11 @@ public class ConfigPack extends YamlConfiguration {
         biomeList = getStringList("grids");
 
         configs.put(id, this);
+
+        for(BiomeConfig b : getBiomes().values()) {
+            allStructures.addAll(b.getStructures());
+        }
+
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l)/1000000D));
     }
 
@@ -119,6 +129,10 @@ public class ConfigPack extends YamlConfiguration {
 
     public Map<String, CarverConfig> getCarvers() {
         return carvers;
+    }
+
+    public Set<StructureConfig> getAllStructures() {
+        return allStructures;
     }
 
     public static synchronized void loadAll(JavaPlugin main) {
