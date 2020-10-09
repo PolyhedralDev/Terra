@@ -39,14 +39,14 @@ public class AsyncBiomeFinder implements Runnable {
         boolean toggle = true;
         main: for(int i = startRadius; i < maxRadius; i++) {
             for(int j = 0; j < run; j++) {
+                if(checkBiome(x, z).equals(target)) break main;
                 if(toggle) x++;
                 else x--;
-                if(checkBiome(x, z).equals(target)) break main;
             }
             for(int j = 0; j < run; j++) {
+                if(checkBiome(x, z).equals(target)) break main;
                 if(toggle) z++;
                 else z--;
-                if(checkBiome(x, z).equals(target)) break main;
             }
             run++;
             toggle = !toggle;

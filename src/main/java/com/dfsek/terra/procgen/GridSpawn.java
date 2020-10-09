@@ -49,7 +49,7 @@ public class GridSpawn {
      * @param seed Seed for RNG
      * @return Vector representing spawnpoint
      */
-    private Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
+    public Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
         Random r = new Random(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);

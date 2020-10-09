@@ -20,7 +20,7 @@ public class StructureCommand extends PlayerCommand {
 
     @Override
     public List<com.dfsek.terra.command.type.Command> getSubCommands() {
-        return Arrays.asList(new ExportCommand(), new LoadCommand(), new LocateCommand(false), new LocateCommand(true));
+        return Arrays.asList(new ExportCommand(), new LoadCommand(), new LocateCommand(false), new LocateCommand(true), new SpawnCommand());
     }
 
     @Override

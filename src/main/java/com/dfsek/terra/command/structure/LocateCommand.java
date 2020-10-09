@@ -52,7 +52,7 @@ public class LocateCommand extends WorldCommand {
 
     @Override
     public String getName() {
-        return tp ? "tp" : "locate";
+        return tp ? "teleport" : "locate";
     }
 
     @Override

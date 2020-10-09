@@ -49,6 +49,8 @@ public class AsyncStructureFinder implements Runnable {
         int z = centerZ;
 
         int wid = target.getSpawn().getWidth() + 2*target.getSpawn().getSeparation();
+        x/=wid;
+        z/=wid;
 
         int run = 1;
         boolean toggle = true;
@@ -56,22 +58,22 @@ public class AsyncStructureFinder implements Runnable {
         Vector spawn = null;
         main: for(int i = startRadius; i < maxRadius; i++) {
             for(int j = 0; j < run; j++) {
-                if(toggle) x += 16;
-                else x -= 16;
-                spawn = target.getSpawn().getNearestSpawn(x, z, seed);
+                spawn = target.getSpawn().getChunkSpawn(x, z, seed);
                 if(isValidSpawn(spawn.getBlockX(), spawn.getBlockZ())) {
                     found = true;
                     break main;
                 }
+                if(toggle) x += 1;
+                else x -= 1;
             }
             for(int j = 0; j < run; j++) {
-                if(toggle) z += 16;
-                else z -= 16;
-                spawn = target.getSpawn().getNearestSpawn(x, z, seed);
+                spawn = target.getSpawn().getChunkSpawn(x, z, seed);
                 if(isValidSpawn(spawn.getBlockX(), spawn.getBlockZ())) {
                     found = true;
                     break main;
                 }
+                if(toggle) z += 1;
+                else z -= 1;
             }
             run++;
             toggle = !toggle;
@@ -79,8 +81,8 @@ public class AsyncStructureFinder implements Runnable {
         if(found) {
             p.sendMessage("Located structure at (" + spawn.getBlockX() + ", " + spawn.getBlockZ() + ").");
             if(tp) {
-                int finalX = x;
-                int finalZ = z;
+                int finalX = spawn.getBlockX();
+                int finalZ = spawn.getBlockZ();
                 Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
             }
         } else if(p.isOnline()) p.sendMessage("Unable to locate structure. " + spawn);
