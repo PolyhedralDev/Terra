@@ -325,5 +325,14 @@ public class Structure implements Serializable {
                 default: throw new IllegalArgumentException();
             }
         }
+        public Rotation inverse() {
+            switch(this) {
+                case NONE: return NONE;
+                case CCW_90: return CW_90;
+                case CW_90: return CCW_90;
+                case CW_180: return CW_180;
+                default: throw new IllegalArgumentException();
+            }
+        }
     }
 }
