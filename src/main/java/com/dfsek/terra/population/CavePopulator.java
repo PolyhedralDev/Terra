@@ -6,11 +6,13 @@ import com.dfsek.terra.carving.SimplexCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
+import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
@@ -46,19 +48,19 @@ public class CavePopulator extends BlockPopulator {
                     if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
                         if(c.getShiftedBlocks().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                        b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)) {
                         if(c.getShiftedBlocks().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                        b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)) {
                         if(c.getShiftedBlocks().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                        b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)) {
                         if(c.getShiftedBlocks().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.getUpdateBlocks().contains(m));
+                        b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     }
                     if(c.getUpdateBlocks().contains(m)) {
                         updateNeeded.add(b);
@@ -97,5 +99,8 @@ public class CavePopulator extends BlockPopulator {
             }
 
         }
+    }
+    private boolean borderingOcean(Block b) {
+        return b.getRelative(BlockFace.UP).getType().equals(Material.WATER) || b.getType().equals(Material.LAVA);
     }
 }

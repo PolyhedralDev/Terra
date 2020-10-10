@@ -40,6 +40,7 @@ public class CarverConfig extends TerraConfig {
     private final boolean replaceIsBlacklistOuter;
     private final boolean replaceIsBlacklistTop;
     private final boolean replaceIsBlacklistBottom;
+    private final boolean updateOcean;
 
     @SuppressWarnings("unchecked")
     public CarverConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
@@ -65,6 +66,8 @@ public class CarverConfig extends TerraConfig {
         replaceableBottom = ConfigUtil.toBlockData(getStringList("palette.bottom.replace"), "replaceable bottom", getID());
 
         update = ConfigUtil.toBlockData(getStringList("update"), "update", getID());
+
+        updateOcean = getBoolean("update-liquids", false);
 
         shift = new HashMap<>();
         for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("shift")).getValues(false).entrySet()) {
@@ -182,6 +185,10 @@ public class CarverConfig extends TerraConfig {
             if(e.getKey() >= y ) return e.getValue();
         }
         return null;
+    }
+
+    public boolean shouldUpdateOcean() {
+        return updateOcean;
     }
 
     @Override
