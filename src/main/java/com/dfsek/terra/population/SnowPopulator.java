@@ -50,13 +50,13 @@ public class SnowPopulator extends GaeaBlockPopulator {
         TerraBiomeGrid g = w.getGrid();
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
-                if(random.nextInt(100) >= w.getConfig().getBiome((UserDefinedBiome) g.getBiome(origX+x, origZ+z, GenerationPhase.PALETTE_APPLY)).getSnowChance()) continue;
                 int y;
                 Block b = null;
                 for(y = 254; y > 0; y--) {
                     b = chunk.getBlock(x, y, z);
                     if(!b.getType().isAir()) break;
                 }
+                if(random.nextInt(100) >= w.getConfig().getBiome((UserDefinedBiome) g.getBiome(origX+x, origZ+z, GenerationPhase.PALETTE_APPLY)).getSnow().getSnowChance(y)) continue;
                 if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
                 chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW);
             }

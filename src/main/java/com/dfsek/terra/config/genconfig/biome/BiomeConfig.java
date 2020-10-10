@@ -3,35 +3,25 @@ package com.dfsek.terra.config.genconfig.biome;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.polydev.gaea.math.FastNoise;
-import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
-import org.polydev.gaea.world.palette.Palette;
-import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 
 public class BiomeConfig extends TerraConfig {
 
@@ -43,9 +33,9 @@ public class BiomeConfig extends TerraConfig {
     private final BiomeTreeConfig tree;
     private final BiomeOceanConfig ocean;
     private final BiomeSlabConfig slab;
+    private final BiomeSnowConfig snow;
     private String eq;
 
-    private int snowChance;
     private final List<StructureConfig> structures;
     private final ConfigPack config;
 
@@ -73,10 +63,8 @@ public class BiomeConfig extends TerraConfig {
 
         // Get various simple values using getOrDefault config methods.
         try {
-            snowChance = getInt("snow-chance", Objects.requireNonNull(abstractBiome).getSnowChance());
             eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
-            snowChance = getInt("snow-chance", 0);
             eq = getString("noise-equation", null);
         }
 
@@ -125,6 +113,12 @@ public class BiomeConfig extends TerraConfig {
             ocean = abstractBiome.getOcean();
             Debug.info("Using super ocean");
         } else ocean = new BiomeOceanConfig(this);
+
+        // Get ocean stuff
+        if(extending && abstractBiome.getSnow() != null) {
+            snow = abstractBiome.getSnow();
+            Debug.info("Using super snow");
+        } else snow = new BiomeSnowConfig(this);
 
         //Make sure equation is non-null
         if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
@@ -208,7 +202,7 @@ public class BiomeConfig extends TerraConfig {
         return tree.getTreeHeights().getOrDefault(t, new Range(-1, -1));
     }
 
-    public int getSnowChance() {
-        return snowChance;
+    public BiomeSnowConfig getSnow() {
+        return snow;
     }
 }

@@ -32,7 +32,7 @@ public class BiomeCommand extends WorldCommand {
 
     @Override
     public List<com.dfsek.terra.command.type.Command> getSubCommands() {
-        return Arrays.asList(new BiomeLocateCommand(true), new BiomeLocateCommand(false));
+        return Arrays.asList(new BiomeLocateCommand(true), new BiomeLocateCommand(false), new BiomeInfoCommand());
     }
 
     @Override

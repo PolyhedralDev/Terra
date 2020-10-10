@@ -12,17 +12,8 @@ import java.util.Map;
 
 public class AbstractBiomeConfig extends TerraConfig {
     private final String biomeID;
-    private final int floraChance;
-    private final int treeChance;
-    private final int treeDensity;
     private final String equation;
-    private final int floraAttempts;
-    private final int snowChance;
-    private double slabThreshold;
     private BiomeSlabConfig slabs;
-    private final boolean floraSimplex;
-    private final int floraSeed;
-    private final float floraFreq;
     private final int seaLevel;
     private List<String> structureConfigs;
     private BiomePaletteConfig palette;
@@ -31,6 +22,7 @@ public class AbstractBiomeConfig extends TerraConfig {
     private BiomeTreeConfig trees;
     private BiomeOreConfig ores;
     private BiomeOceanConfig ocean;
+    private BiomeSnowConfig snow;
 
     public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -38,16 +30,8 @@ public class AbstractBiomeConfig extends TerraConfig {
         if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
-        floraChance = getInt("flora-chance", 0);
-        floraAttempts = getInt("flora-attempts", 1);
-        treeChance = getInt("tree-chance", 0);
-        treeDensity = getInt("tree-density", 0);
         equation = getString("noise-equation");
-        floraSimplex = getBoolean("flora-simplex.enable", false);
-        floraFreq = (float) getDouble("flora-simplex.frequency", 0.1);
-        floraSeed = getInt("flora-simplex.seed", 0);
         seaLevel = getInt("ocean.level", 62);
-        snowChance = getInt("snow-chance", 0);
 
         if(contains("carving")) carving = new BiomeCarverConfig(this);
 
@@ -64,6 +48,8 @@ public class AbstractBiomeConfig extends TerraConfig {
         if(contains("slabs") && getBoolean("slabs.enable", false)) slabs = new BiomeSlabConfig(this);
 
         if(contains("structures")) structureConfigs = getStringList("structures");
+
+        if(contains("snow")) snow = new BiomeSnowConfig(this);
     }
 
     @Override
@@ -71,40 +57,8 @@ public class AbstractBiomeConfig extends TerraConfig {
         return biomeID;
     }
 
-    public int getFloraAttempts() {
-        return floraAttempts;
-    }
-
-    public int getFloraChance() {
-        return floraChance;
-    }
-
-    public int getTreeChance() {
-        return treeChance;
-    }
-
-    public int getTreeDensity() {
-        return treeDensity;
-    }
-
     public String getEquation() {
         return equation;
-    }
-
-    public double getSlabThreshold() {
-        return slabThreshold;
-    }
-
-    public float getFloraFreq() {
-        return floraFreq;
-    }
-
-    public int getFloraSeed() {
-        return floraSeed;
-    }
-
-    public boolean isFloraSimplex() {
-        return floraSimplex;
     }
 
     public BiomePaletteConfig getPaletteData() {
@@ -143,7 +97,7 @@ public class AbstractBiomeConfig extends TerraConfig {
         return structureConfigs;
     }
 
-    public int getSnowChance() {
-        return snowChance;
+    public BiomeSnowConfig getSnow() {
+        return snow;
     }
 }

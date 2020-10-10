@@ -2,6 +2,7 @@ package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
+import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -31,8 +32,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -188,9 +191,13 @@ public class Structure implements Serializable {
                 org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
                 ((Orientable) data).setAxis(newAxis);
             } else if(data instanceof RedstoneWire) {
+                Map<BlockFace, RedstoneWire.Connection> connections = new HashMap<>();
                 RedstoneWire rData = (RedstoneWire) data;
                 for(BlockFace f : rData.getAllowedFaces()) {
-                    rData.setFace(getRotatedFace(f, r), rData.getFace(f));
+                    connections.put(f, rData.getFace(f));
+                }
+                for(Map.Entry<BlockFace, RedstoneWire.Connection> e : connections.entrySet()) {
+                    rData.setFace(RotationUtil.getRotatedFace(e.getKey(), r), e.getValue());
                 }
             }
             worldBlock.setBlockData(data, false);
