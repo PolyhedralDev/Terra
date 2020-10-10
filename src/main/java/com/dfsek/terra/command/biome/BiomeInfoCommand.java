@@ -8,6 +8,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.config.genconfig.biome.BiomeSnowConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
@@ -36,13 +37,51 @@ public class BiomeInfoCommand extends WorldCommand {
         sender.sendMessage("Biome info for \"" + b.getID() + "\".");
         sender.sendMessage("Vanilla biome: " + b.getVanillaBiome());
         sender.sendMessage("Erodible: " + b.isErodible());
-        sender.sendMessage("-------Structures-------");
 
-        List<StructureConfig> structureConfigs = cfg.getBiome(b).getStructures();
 
-        for(StructureConfig c : structureConfigs) {
-            sender.sendMessage(" - " + c.getID());
+        BiomeConfig bio = cfg.getBiome(b);
+        List<StructureConfig> structureConfigs = bio.getStructures();
+
+        if(structureConfigs.size() == 0) sender.sendMessage("No Structures");
+        else {
+            sender.sendMessage("-------Structures-------");
+            for(StructureConfig c : structureConfigs) {
+                sender.sendMessage(" - " + c.getID());
+            }
         }
+
+        // Get snow info
+        BiomeSnowConfig snowConfig = bio.getSnow();
+        StringBuilder snowMessage = new StringBuilder("----------Snow----------\n");
+        int comp = snowConfig.getSnowChance(0);
+        int compHeight = 0;
+        boolean changed = false;
+        // Rebuild original snow data (rather than simply getting it, since it may have changed during initial assembly, if any overlaps occurred)
+        for(int i = 0; i <= 255; i++) {
+            int snow = snowConfig.getSnowChance(i);
+            if(snow != comp) {
+                changed = true;
+                snowMessage.append("Y=")
+                        .append(compHeight)
+                        .append("-")
+                        .append(i)
+                        .append(": ")
+                        .append(comp)
+                        .append("% snow\n");
+                comp = snow;
+                compHeight = i;
+            }
+        }
+        if(!changed) {
+            snowMessage.append("Y=0")
+                    .append("-255")
+                    .append(": ")
+                    .append(comp)
+                    .append("% snow\n");
+        }
+        sender.sendMessage(snowMessage.toString());
+
+        sender.sendMessage("Do snow: " + snowConfig.doSnow());
 
         return true;
     }

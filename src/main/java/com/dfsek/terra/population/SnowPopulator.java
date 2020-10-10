@@ -1,10 +1,12 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -15,6 +17,7 @@ import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
+import org.polydev.gaea.profiler.ProfileFuture;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -43,22 +46,27 @@ public class SnowPopulator extends GaeaBlockPopulator {
     }
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        int origX = chunk.getX() << 4;
-        int origZ = chunk.getZ() << 4;
-        TerraWorld w = TerraWorld.getWorld(world);
-        if(!w.isSafe()) return;
-        TerraBiomeGrid g = w.getGrid();
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                int y;
-                Block b = null;
-                for(y = 254; y > 0; y--) {
-                    b = chunk.getBlock(x, y, z);
-                    if(!b.getType().isAir()) break;
+        try (ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("SnowTime")) {
+            int origX = chunk.getX() << 4;
+            int origZ = chunk.getZ() << 4;
+            TerraWorld w = TerraWorld.getWorld(world);
+            if(! w.isSafe()) return;
+            TerraBiomeGrid g = w.getGrid();
+            for(int x = 0; x < 16; x++) {
+                for(int z = 0; z < 16; z++) {
+                    BiomeConfig biome = w.getConfig().getBiome((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY));
+                    if(!biome.getSnow().doSnow()) continue;
+                    int y;
+                    Block b = null;
+                    for(y = 254; y > 0; y--) {
+                        b = chunk.getBlock(x, y, z);
+                        if(! b.getType().isAir()) break;
+                    }
+                    if(random.nextInt(100) >= biome.getSnow().getSnowChance(y))
+                        continue;
+                    if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
+                    chunk.getBlock(x, ++ y, z).setBlockData(DataUtil.SNOW);
                 }
-                if(random.nextInt(100) >= w.getConfig().getBiome((UserDefinedBiome) g.getBiome(origX+x, origZ+z, GenerationPhase.PALETTE_APPLY)).getSnow().getSnowChance(y)) continue;
-                if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
-                chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW);
             }
         }
     }
