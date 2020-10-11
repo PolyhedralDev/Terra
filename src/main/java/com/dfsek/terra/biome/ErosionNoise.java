@@ -8,10 +8,10 @@ import org.polydev.gaea.math.FastNoise;
 public class ErosionNoise {
     private final double thresh;
     private final FastNoise noise;
-    public ErosionNoise(float freq1, double thresh, long seed) {
+    public ErosionNoise(float freq1, double thresh, int octaves, long seed) {
         FastNoise main = new FastNoise((int) (seed+1));
         main.setNoiseType(FastNoise.NoiseType.SimplexFractal);
-        main.setFractalOctaves(3);
+        main.setFractalOctaves(octaves);
         main.setFrequency(freq1);
         this.thresh = thresh;
         this.noise = main;

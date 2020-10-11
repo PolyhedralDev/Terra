@@ -52,20 +52,21 @@ public class ConfigPack extends YamlConfiguration {
 
     private final String id;
 
-    public List<String> biomeList;
+    public final List<String> biomeList;
 
-    public float zoneFreq;
-    public float freq1;
-    public float freq2;
+    public final float zoneFreq;
+    public final float freq1;
+    public final float freq2;
 
-    public float erosionFreq;
-    public double erosionThresh;
-    public boolean erosionEnable;
-    public String erosionName;
+    public final float erosionFreq;
+    public final double erosionThresh;
+    public final int erosionOctaves;
+    public final boolean erosionEnable;
+    public final String erosionName;
 
-    public int blendAmp;
-    public boolean biomeBlend;
-    public float blendFreq;
+    public final int blendAmp;
+    public final boolean biomeBlend;
+    public final float blendFreq;
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
@@ -104,6 +105,7 @@ public class ConfigPack extends YamlConfiguration {
         erosionEnable = getBoolean("erode.enable", false);
         erosionFreq = (float) getDouble("erode.frequency", 0.01);
         erosionThresh = getDouble("erode.threshold", 0.04);
+        erosionOctaves = getInt("erosion.octaves", 4);
 
         erosionName = getString("erode.grid");
 
