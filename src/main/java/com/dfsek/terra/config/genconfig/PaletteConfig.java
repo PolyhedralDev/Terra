@@ -36,7 +36,7 @@ public class PaletteConfig extends TerraConfig {
             pNoise.setFrequency((float) getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
         } else pal = new RandomPalette<>(new Random(getInt("seed", 2403)));
-        palette = getPalette(getMapList("blocks"), pal);
+        palette = getPalette(getMapList("layers"), pal);
     }
 
     public Palette<BlockData> getPalette() {

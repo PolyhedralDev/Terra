@@ -49,13 +49,13 @@ public class CarverConfig extends TerraConfig {
         if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
         id = getString("id");
 
-        inner = getBlocks("palette.inner.blocks");
+        inner = getBlocks("palette.inner.layers");
 
-        outer = getBlocks("palette.outer.blocks");
+        outer = getBlocks("palette.outer.layers");
 
-        top = getBlocks("palette.top.blocks");
+        top = getBlocks("palette.top.layers");
 
-        bottom = getBlocks("palette.bottom.blocks");
+        bottom = getBlocks("palette.bottom.layers");
 
         replaceableInner = ConfigUtil.toBlockData(getStringList("palette.inner.replace"), "replaceable inner", getID());
 

@@ -36,7 +36,7 @@ public class FloraConfig extends TerraConfig implements Flora {
         load(file);
         if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
         this.id = getString("id");
-        if(!contains("blocks")) throw new ConfigException("No blocks defined in custom flora!", getID());
+        if(!contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
         if(!contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
 
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
@@ -46,7 +46,7 @@ public class FloraConfig extends TerraConfig implements Flora {
 
         Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
-        floraPalette  = PaletteConfig.getPalette(getMapList("blocks"), p);
+        floraPalette  = PaletteConfig.getPalette(getMapList("layers"), p);
     }
 
     public String getID() {
