@@ -18,6 +18,7 @@ import java.util.Objects;
 
 public class TerraWorld {
     private static final Map<World, TerraWorld> map = new HashMap<>();
+    private static final Map<String, WorldConfig> loaded = new HashMap<>();
     private final TerraBiomeGrid grid;
     private final BiomeZone zone;
     private final ConfigPack config;
@@ -26,7 +27,7 @@ public class TerraWorld {
 
     private TerraWorld(World w) {
         safe = true;
-        worldConfig = new WorldConfig(w, Terra.getInstance());
+        worldConfig = loaded.get(w.getName());
         config = worldConfig.getConfig();
         UserDefinedGrid[] definedGrids = new UserDefinedGrid[config.biomeList.size()];
         for(int i = 0; i < config.biomeList.size(); i++) {
@@ -77,7 +78,10 @@ public class TerraWorld {
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);
         grid = new TerraBiomeGrid(w, config.freq1, config.freq2, zone, config, erosion);
+    }
 
+    public static void loadWorld(WorldConfig w) {
+        loaded.put(w.getWorldID(), w);
     }
 
     public static synchronized TerraWorld getWorld(World w) {
@@ -102,6 +106,7 @@ public class TerraWorld {
 
     public static synchronized void invalidate() {
         map.clear();
+        loaded.clear();
     }
 
     public static int numWorlds() {

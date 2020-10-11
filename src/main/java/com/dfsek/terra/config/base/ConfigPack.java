@@ -69,7 +69,7 @@ public class ConfigPack extends YamlConfiguration {
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
-        load(new File(file, "config.yml"));
+        load(new File(file, "pack.yml"));
         dataFolder = file;
 
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
@@ -110,6 +110,12 @@ public class ConfigPack extends YamlConfiguration {
         // Load BiomeGrids from BiomeZone
         biomeList = getStringList("grids");
 
+        for(String biome : biomeList) {
+            if(getBiomeGrid(biome) == null) {
+                throw new ConfigException("No such BiomeGrid: " + biome, getID());
+            }
+        }
+
         configs.put(id, this);
 
         for(BiomeConfig b : getBiomes().values()) {
@@ -137,9 +143,11 @@ public class ConfigPack extends YamlConfiguration {
 
     public static synchronized void loadAll(JavaPlugin main) {
         configs.clear();
+        File file = new File(main.getDataFolder(), "packs");
+        file.mkdirs();
         List<Path> subfolder;
         try {
-            subfolder = Files.walk(new File(main.getDataFolder(), "config").toPath(), 1)
+            subfolder = Files.walk(file.toPath(), 1)
                     .filter(Files::isDirectory)
                     .collect(Collectors.toList());
         } catch(IOException e) {

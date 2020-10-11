@@ -11,7 +11,7 @@ public class ErosionNoise {
     public ErosionNoise(float freq1, double thresh, long seed) {
         FastNoise main = new FastNoise((int) (seed+1));
         main.setNoiseType(FastNoise.NoiseType.SimplexFractal);
-        main.setFractalOctaves(2);
+        main.setFractalOctaves(3);
         main.setFrequency(freq1);
         this.thresh = thresh;
         this.noise = main;

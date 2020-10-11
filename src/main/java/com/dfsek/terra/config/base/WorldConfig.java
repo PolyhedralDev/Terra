@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
 import org.apache.commons.io.FileUtils;
@@ -29,26 +30,32 @@ public class WorldConfig {
 
     private ConfigPack tConfig;
 
+    private final String worldID;
 
-    public WorldConfig(World w, JavaPlugin main) {
+
+    public WorldConfig(String w, JavaPlugin main) {
         long start = System.nanoTime();
-        LangUtil.log("world-config.load", Level.INFO, w.getName());
+        this.worldID = w;
+        LangUtil.log("world-config.load", Level.INFO, w);
         FileConfiguration config = new YamlConfiguration();
         try { // Load/create world config file
-            File configFile = new File(main.getDataFolder() + File.separator + "worlds", w.getName() + ".yml");
+            File configFile = new File(main.getDataFolder() + File.separator + "worlds", w + ".yml");
             if(! configFile.exists()) {
                 configFile.getParentFile().mkdirs();
-                LangUtil.log("world-config.not-found", Level.SEVERE, w.getName());
+                LangUtil.log("world-config.not-found", Level.WARNING, w);
                 FileUtils.copyInputStreamToFile(Objects.requireNonNull(main.getResource("world.yml")), configFile);
             }
             config.load(configFile);
 
-
             // Get values from config.
-            fromImage = config.getBoolean("image.use-image", false);
+            fromImage = config.getBoolean("image.enable", false);
+
+            String packID = config.getString("config");
 
 
-            tConfig = ConfigPack.fromID(config.getString("config"));
+            tConfig = ConfigPack.fromID(packID);
+
+            if(tConfig == null) throw new ConfigException("No such config pack: \"" + packID + "\"", worldID);
 
             // Load image stuff
             try {
@@ -61,8 +68,8 @@ public class WorldConfig {
                     throw new InvalidConfigurationException("2 objects share the same image channels: zone and biome-x/z");
                 if(fromImage) {
                     try {
-                        imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.image-location"))), ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
-                        LangUtil.log("world-config.using-image", Level.INFO, w.getName());
+                        imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.file"))), ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
+                        LangUtil.log("world-config.using-image", Level.INFO, w);
                     } catch(IOException | NullPointerException e) {
                         e.printStackTrace();
                         fromImage = false;
@@ -75,9 +82,14 @@ public class WorldConfig {
 
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-            LangUtil.log("world-config.error", Level.SEVERE, w.getName());
+            LangUtil.log("world-config.error", Level.SEVERE, w);
+            throw new IllegalStateException("Unable to proceed due to fatal configuration error.");
         }
-        LangUtil.log("world-config.done", Level.INFO, w.getName(), String.valueOf(((double) (System.nanoTime() - start)) / 1000000));
+        LangUtil.log("world-config.done", Level.INFO, w, String.valueOf(((double) (System.nanoTime() - start)) / 1000000));
+    }
+
+    public String getWorldID() {
+        return worldID;
     }
 
     public ConfigPack getConfig() {

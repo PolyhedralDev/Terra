@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.failsafe.FailType;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -44,6 +45,7 @@ public final class ConfigUtil {
         logger.info("Loading config values");
 
         ConfigPack.loadAll(main);
+        Terra.invalidate();
         TerraWorld.invalidate();
     }
 
