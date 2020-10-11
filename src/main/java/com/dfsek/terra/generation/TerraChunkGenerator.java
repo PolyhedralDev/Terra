@@ -17,6 +17,7 @@ import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
@@ -154,6 +155,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 ioException.printStackTrace();
             }
         }
+    }
+
+    public static synchronized void fixChunk(Chunk c) {
+        if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
+        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
     @Override

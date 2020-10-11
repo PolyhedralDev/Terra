@@ -23,7 +23,8 @@ public class TerraCommand extends Command {
             new SaveDataCommand(this),
             new StructureCommand(this),
             new ImageCommand(this),
-            new GeometryCommand(this));
+            new GeometryCommand(this),
+            new FixChunkCommand(this));
 
     public TerraCommand(GaeaPlugin main) {
         super(main);
