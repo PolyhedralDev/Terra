@@ -1,17 +1,21 @@
 package com.dfsek.terra.command;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.command.type.Command;
-import com.dfsek.terra.command.type.DebugCommand;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.Command;
+import org.polydev.gaea.command.DebugCommand;
 
 import java.util.Collections;
 import java.util.List;
 
 public class ReloadCommand extends Command implements DebugCommand {
+    public ReloadCommand(Command parent) {
+        super(parent);
+    }
+
     @Override
     public String getName() {
         return "reload";

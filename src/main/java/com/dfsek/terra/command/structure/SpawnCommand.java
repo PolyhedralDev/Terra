@@ -1,7 +1,5 @@
 package com.dfsek.terra.command.structure;
 
-import com.dfsek.terra.command.type.DebugCommand;
-import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,11 +7,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.DebugCommand;
+import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SpawnCommand extends WorldCommand implements DebugCommand {
+    public SpawnCommand(org.polydev.gaea.command.Command parent) {
+        super(parent);
+    }
+
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         Location p = sender.getLocation();
@@ -34,7 +38,7 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

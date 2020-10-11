@@ -5,24 +5,29 @@ import com.dfsek.terra.command.geometry.GeometryCommand;
 import com.dfsek.terra.command.image.ImageCommand;
 import com.dfsek.terra.command.profile.ProfileCommand;
 import com.dfsek.terra.command.structure.StructureCommand;
-import com.dfsek.terra.command.type.Command;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.GaeaPlugin;
+import org.polydev.gaea.command.Command;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class TerraCommand extends Command {
-    private final List<com.dfsek.terra.command.type.Command> commands = Arrays.asList(new ReloadCommand(),
-            new BiomeCommand(),
-            new OreCommand(),
-            new ProfileCommand(),
-            new SaveDataCommand(),
-            new StructureCommand(),
-            new ImageCommand(),
-            new GeometryCommand());
+    private final List<Command> commands = Arrays.asList(new ReloadCommand(this),
+            new BiomeCommand(this),
+            new OreCommand(this),
+            new ProfileCommand(this),
+            new SaveDataCommand(this),
+            new StructureCommand(this),
+            new ImageCommand(this),
+            new GeometryCommand(this));
+
+    public TerraCommand(GaeaPlugin main) {
+        super(main);
+    }
 
     @Override
     public String getName() {

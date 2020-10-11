@@ -1,6 +1,5 @@
 package com.dfsek.terra.command.image;
 
-import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.command.image.gui.GUICommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
@@ -8,12 +7,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ImageCommand extends WorldCommand {
+    public ImageCommand(org.polydev.gaea.command.Command parent) {
+        super(parent);
+    }
+
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
         LangUtil.send("command.image.main-menu", sender);
@@ -21,8 +25,8 @@ public class ImageCommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
-        return Arrays.asList(new RenderCommand(), new GUICommand());
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
+        return Arrays.asList(new RenderCommand(this), new GUICommand(this));
     }
 
     @Override

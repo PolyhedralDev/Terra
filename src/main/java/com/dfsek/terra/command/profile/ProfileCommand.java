@@ -1,18 +1,22 @@
 package com.dfsek.terra.command.profile;
 
-import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ProfileCommand extends WorldCommand {
+    public ProfileCommand(org.polydev.gaea.command.Command parent) {
+        super(parent);
+    }
+
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
         LangUtil.send("command.profile.main-menu", sender);
@@ -25,8 +29,8 @@ public class ProfileCommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
-        return Arrays.asList(new QueryCommand(), new ResetCommand(), new StartCommand(), new StopCommand());
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
+        return Arrays.asList(new QueryCommand(this), new ResetCommand(this), new StartCommand(this), new StopCommand(this));
     }
 
     @Override

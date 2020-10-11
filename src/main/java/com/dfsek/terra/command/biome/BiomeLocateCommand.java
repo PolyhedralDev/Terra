@@ -4,7 +4,6 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncBiomeFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
@@ -13,15 +12,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.WorldCommand;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BiomeLocateCommand extends WorldCommand {
     private final boolean tp;
-    public BiomeLocateCommand(boolean teleport) {
+    public BiomeLocateCommand(org.polydev.gaea.command.Command parent, boolean teleport) {
+        super(parent);
         this.tp = teleport;
     }
     @Override
@@ -51,7 +51,7 @@ public class BiomeLocateCommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

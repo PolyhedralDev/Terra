@@ -1,18 +1,22 @@
 package com.dfsek.terra.command.geometry;
 
-import com.dfsek.terra.command.type.DebugCommand;
-import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.DebugCommand;
+import org.polydev.gaea.command.PlayerCommand;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GeometryCommand extends PlayerCommand implements DebugCommand {
+    public GeometryCommand(org.polydev.gaea.command.Command parent) {
+        super(parent);
+    }
+
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         LangUtil.send("command.geometry.main-menu", sender);
@@ -25,8 +29,8 @@ public class GeometryCommand extends PlayerCommand implements DebugCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
-        return Arrays.asList(new SphereCommand(), new TubeCommand(), new DeformedSphereCommand());
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
+        return Arrays.asList(new SphereCommand(this), new TubeCommand(this), new DeformedSphereCommand(this));
     }
 
     @Override

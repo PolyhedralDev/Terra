@@ -3,21 +3,16 @@ package com.dfsek.terra.command.structure;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncStructureFinder;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.command.type.WorldCommand;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
-import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.structures.UserDefinedStructure;
+import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +21,8 @@ import java.util.stream.Collectors;
 
 public class LocateCommand extends WorldCommand {
     private final boolean tp;
-    public LocateCommand(boolean tp) {
+    public LocateCommand(org.polydev.gaea.command.Command parent, boolean tp) {
+        super(parent);
         this.tp = tp;
     }
     @Override
@@ -56,7 +52,7 @@ public class LocateCommand extends WorldCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

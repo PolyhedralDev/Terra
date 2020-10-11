@@ -5,6 +5,7 @@ import com.dfsek.terra.Terra;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.polydev.gaea.lang.Language;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,6 +64,11 @@ public final class LangUtil {
             }
         }
     }
+
+    public static Language getLanguage() {
+        return language;
+    }
+
     public static void log(String messageID, Level level, String... args) {
         language.getMessage(messageID).log(logger, level, args);
     }

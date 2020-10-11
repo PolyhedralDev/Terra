@@ -7,12 +7,12 @@ import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.math.FastNoise;
-import org.polydev.gaea.math.parsii.eval.Expression;
-import org.polydev.gaea.math.parsii.eval.Parser;
-import org.polydev.gaea.math.parsii.eval.Scope;
-import org.polydev.gaea.math.parsii.eval.Variable;
-import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.world.palette.Palette;
+import parsii.eval.Expression;
+import parsii.eval.Parser;
+import parsii.eval.Scope;
+import parsii.eval.Variable;
+import parsii.tokenizer.ParseException;
 
 import java.util.List;
 import java.util.Map;

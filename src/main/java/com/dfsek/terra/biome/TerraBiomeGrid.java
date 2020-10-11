@@ -1,20 +1,15 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.biome.failsafe.FailoverBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.math.Vector2;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
 public class TerraBiomeGrid extends BiomeGrid {

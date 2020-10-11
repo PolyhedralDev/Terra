@@ -12,9 +12,9 @@ import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
-import org.polydev.gaea.math.parsii.tokenizer.ParseException;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
+import parsii.tokenizer.ParseException;
 
 import java.io.File;
 import java.io.IOException;

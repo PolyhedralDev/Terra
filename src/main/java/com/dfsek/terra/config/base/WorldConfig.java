@@ -2,13 +2,13 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.polydev.gaea.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

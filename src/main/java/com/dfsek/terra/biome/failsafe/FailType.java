@@ -2,7 +2,7 @@ package com.dfsek.terra.biome.failsafe;
 
 import org.bukkit.Bukkit;
 import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.math.parsii.tokenizer.ParseException;
+import parsii.tokenizer.ParseException;
 
 /**
  * What happens if terrain generation is attempted with an unrecoverable config error.

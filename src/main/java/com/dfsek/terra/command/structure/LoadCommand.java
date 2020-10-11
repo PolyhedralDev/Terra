@@ -1,14 +1,14 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.command.type.DebugCommand;
-import com.dfsek.terra.command.type.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.command.DebugCommand;
+import org.polydev.gaea.command.PlayerCommand;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class LoadCommand extends PlayerCommand implements DebugCommand {
+    public LoadCommand(org.polydev.gaea.command.Command parent) {
+        super(parent);
+    }
+
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
@@ -48,7 +52,7 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     }
 
     @Override
-    public List<com.dfsek.terra.command.type.Command> getSubCommands() {
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

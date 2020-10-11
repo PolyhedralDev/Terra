@@ -1,8 +1,8 @@
 package com.dfsek.terra.math;
 
 import org.polydev.gaea.math.FastNoise;
-import org.polydev.gaea.math.parsii.eval.Expression;
-import org.polydev.gaea.math.parsii.eval.Function;
+import parsii.eval.Expression;
+import parsii.eval.Function;
 
 import java.util.List;
 

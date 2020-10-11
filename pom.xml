@@ -33,6 +33,10 @@
                             <pattern>org.bstats.bukkit</pattern>
                             <shadedPattern>com.dfsek.terra.lib.bstats</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>parsii</pattern>
+                            <shadedPattern>com.dfsek.terra.lib.parsii</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -68,6 +72,11 @@
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
+        <repository>
+            <id>parsii.local</id>
+            <name>parsii</name>
+            <url>file:/home/dfsek/Documents/parsii/repo</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -91,7 +100,7 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.10.93</version>
+            <version>1.11.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -122,6 +131,11 @@
             <artifactId>json-simple</artifactId>
             <version>1.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.scireum</groupId>
+            <artifactId>parsii</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 

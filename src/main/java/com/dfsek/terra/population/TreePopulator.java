@@ -43,10 +43,10 @@ public class TreePopulator extends GaeaBlockPopulator {
             for(int i = 0; i < b.getDecorator().getTreeDensity() && att < max; ) {
                 att++;
                 for(Block block : getValidSpawnsAt(chunk, x, z, new Range(0, 254))) {
+                    b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
                     Tree tree = b.getDecorator().getTrees().get(random);
                     Range range = tw.getConfig().getBiome((UserDefinedBiome) b).getTreeRange(tree);
                     if(!range.isInRange(block.getY())) continue;
-                    b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
                     try {
                         if(tree.plant(block.getLocation(), random, false, Terra.getInstance())) i++;
                     } catch(NullPointerException ignore) {}

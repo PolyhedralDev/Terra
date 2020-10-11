@@ -3,9 +3,7 @@ package com.dfsek.terra.config;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.polydev.gaea.commons.io.FilenameUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
