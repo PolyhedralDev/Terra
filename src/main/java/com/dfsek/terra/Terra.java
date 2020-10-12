@@ -54,13 +54,9 @@ public class Terra extends GaeaPlugin {
 
     @Override
     public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-        if(!loadedWorlds.contains(worldName)) TerraWorld.loadWorld(new WorldConfig(worldName, this));
+        if(!loadedWorlds.contains(worldName)) TerraWorld.loadWorld(new WorldConfig(worldName, id, this));
         loadedWorlds.add(worldName); // Ensure world config is only loaded once for world.
         return new TerraChunkGenerator();
-    }
-
-    public static void invalidate() {
-        loadedWorlds.clear();
     }
 
     @Override

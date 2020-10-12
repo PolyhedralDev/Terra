@@ -10,6 +10,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.polydev.gaea.GaeaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,18 +32,27 @@ public class WorldConfig {
     private ConfigPack tConfig;
 
     private final String worldID;
+    private final String configID;
+    private final GaeaPlugin main;
 
 
-    public WorldConfig(String w, JavaPlugin main) {
-        long start = System.nanoTime();
+    public WorldConfig(String w, String configID, GaeaPlugin main) {
         this.worldID = w;
-        LangUtil.log("world-config.load", Level.INFO, w);
+        this.configID = configID;
+        this.main = main;
+        load();
+    }
+
+    public void load() {
+        long start = System.nanoTime();
+        LangUtil.log("world-config.load", Level.INFO, worldID);
         FileConfiguration config = new YamlConfiguration();
         try { // Load/create world config file
-            File configFile = new File(main.getDataFolder() + File.separator + "worlds", w + ".yml");
+            if(configID == null || configID.equals("")) throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
+            File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
             if(! configFile.exists()) {
                 configFile.getParentFile().mkdirs();
-                LangUtil.log("world-config.not-found", Level.WARNING, w);
+                LangUtil.log("world-config.not-found", Level.WARNING, worldID);
                 FileUtils.copyInputStreamToFile(Objects.requireNonNull(main.getResource("world.yml")), configFile);
             }
             config.load(configFile);
@@ -50,12 +60,9 @@ public class WorldConfig {
             // Get values from config.
             fromImage = config.getBoolean("image.enable", false);
 
-            String packID = config.getString("config");
+            tConfig = ConfigPack.fromID(configID);
 
-
-            tConfig = ConfigPack.fromID(packID);
-
-            if(tConfig == null) throw new ConfigException("No such config pack: \"" + packID + "\"", worldID);
+            if(tConfig == null) throw new ConfigException("No such config pack: \"" + configID + "\"", worldID);
 
             // Load image stuff
             try {
@@ -69,7 +76,7 @@ public class WorldConfig {
                 if(fromImage) {
                     try {
                         imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.file"))), ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
-                        LangUtil.log("world-config.using-image", Level.INFO, w);
+                        LangUtil.log("world-config.using-image", Level.INFO, worldID);
                     } catch(IOException | NullPointerException e) {
                         e.printStackTrace();
                         fromImage = false;
@@ -79,13 +86,12 @@ public class WorldConfig {
                 throw new InvalidConfigurationException(e.getCause());
             }
             Bukkit.getLogger().info("Loaded " + tConfig.biomeList.size() + " BiomeGrids from list.");
-
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-            LangUtil.log("world-config.error", Level.SEVERE, w);
+            LangUtil.log("world-config.error", Level.SEVERE, worldID);
             throw new IllegalStateException("Unable to proceed due to fatal configuration error.");
         }
-        LangUtil.log("world-config.done", Level.INFO, w, String.valueOf(((double) (System.nanoTime() - start)) / 1000000));
+        LangUtil.log("world-config.done", Level.INFO, worldID, String.valueOf(((double) (System.nanoTime() - start)) / 1000000));
     }
 
     public String getWorldID() {

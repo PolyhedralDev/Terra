@@ -45,7 +45,6 @@ public final class ConfigUtil {
         logger.info("Loading config values");
 
         ConfigPack.loadAll(main);
-        Terra.invalidate();
         TerraWorld.invalidate();
     }
 
