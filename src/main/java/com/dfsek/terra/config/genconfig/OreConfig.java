@@ -32,6 +32,7 @@ public class OreConfig extends TerraConfig {
     private final String id;
     private final boolean update;
     private final boolean crossChunks;
+    private final int chunkEdgeOffset;
     Set<Material> replaceable;
     public OreConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -46,6 +47,9 @@ public class OreConfig extends TerraConfig {
         deformFrequency = getDouble("deform-frequency", 0.1);
         update = getBoolean("update", false);
         crossChunks = getBoolean("cross-chunks", true);
+        chunkEdgeOffset = getInt("edge-offset", 1);
+
+        if(chunkEdgeOffset > 7 || chunkEdgeOffset < 0) throw new ConfigException("Edge offset is too high/low!", getID());
 
         replaceable = ConfigUtil.toBlockData(getStringList("replace"), "replaceable", getID());
 
@@ -76,7 +80,7 @@ public class OreConfig extends TerraConfig {
                     if(source.distance(l) < (rad + 0.5) * ((ore.getSimplexFractal(x, y, z)+1)*deform)) {
                         ChunkCoordinate coord = new ChunkCoordinate(Math.floorDiv(oreLoc.getBlockX(), 16), Math.floorDiv(oreLoc.getBlockZ(), 16), chunk.getWorld().getUID());
                         Block b = chunks.computeIfAbsent(coord, k -> chunk.getWorld().getChunkAt(oreLoc.toLocation(chunk.getWorld())))
-                                .getBlock(Math.floorMod(source.getBlockX(), 16), source.getBlockY(), Math.floorMod(source.getBlockZ(), 16));
+                                .getBlock(Math.floorMod(source.getBlockX(), 16), source.getBlockY(), Math.floorMod(source.getBlockZ(), 16)); // Chunk caching conditional computation
                         if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0) b.setBlockData(oreData, update);
                     }
                 }
@@ -113,5 +117,9 @@ public class OreConfig extends TerraConfig {
 
     public boolean crossChunks() {
         return crossChunks;
+    }
+
+    public int getChunkEdgeOffset() {
+        return chunkEdgeOffset;
     }
 }

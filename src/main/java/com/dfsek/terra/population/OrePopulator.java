@@ -30,9 +30,10 @@ public class OrePopulator extends GaeaBlockPopulator {
             BiomeOreConfig ores = config.getBiome((UserDefinedBiome) b).getOres();
             for(Map.Entry<OreConfig, Range> e : ores.getOres().entrySet()) {
                 int num = e.getValue().get(random);
+                int edgeOffset = e.getKey().getChunkEdgeOffset();
                 for(int i = 0; i < num; i++) {
-                    int x = random.nextInt(16);
-                    int z = random.nextInt(16);
+                    int x = random.nextInt(16 - edgeOffset*2) + edgeOffset;
+                    int z = random.nextInt(16 - edgeOffset*2) + edgeOffset;
                     int y = ores.getOreHeights().get(e.getKey()).get(random);
                     if(e.getKey().crossChunks()) e.getKey().doVein(new Vector(x, y, z), chunk, random);
                     else e.getKey().doVeinSingle(new Vector(x, y, z), chunk, random);
