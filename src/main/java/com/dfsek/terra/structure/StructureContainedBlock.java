@@ -13,12 +13,13 @@ public class StructureContainedBlock implements Serializable {
     public static final long serialVersionUID = 6143969483382710947L;
     private final SerializableBlockData bl;
     private transient BlockData data;
+    private final Pull pull;
     private final int x;
     private final int y;
     private final int z;
     private final SerializableBlockState state;
     private final StructureSpawnRequirement requirement;
-    public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn) {
+    public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull) {
         if(state instanceof Sign) {
             this.state = new SerializableSign((org.bukkit.block.Sign) state);
         } else this.state = null;
@@ -27,8 +28,9 @@ public class StructureContainedBlock implements Serializable {
         this.z = z;
         this.bl = new SerializableBlockData(d);
         this.requirement = spawn;
+        this.pull = pull;
     }
-    public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d, StructureSpawnRequirement spawn) {
+    public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull) {
         if(state instanceof SerializableSign) {
             this.state = state;
         } else this.state = null;
@@ -37,6 +39,7 @@ public class StructureContainedBlock implements Serializable {
         this.z = z;
         this.bl = new SerializableBlockData(d);
         this.requirement = spawn;
+        this.pull = pull;
     }
 
     public StructureSpawnRequirement getRequirement() {
@@ -62,8 +65,15 @@ public class StructureContainedBlock implements Serializable {
         return data;
     }
 
+    public Pull getPull() {
+        return pull;
+    }
 
     public SerializableBlockState getState() {
         return state;
+    }
+
+    public enum Pull {
+        UP, NONE, DOWN;
     }
 }
