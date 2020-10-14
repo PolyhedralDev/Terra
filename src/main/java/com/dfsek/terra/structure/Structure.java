@@ -76,6 +76,7 @@ public class Structure implements Serializable {
                     BlockData d = b.getBlockData();
                     boolean useState = true;
                     StructureContainedBlock.Pull pull = StructureContainedBlock.Pull.NONE;
+                    int pullOffset = 0;
                     StructureSpawnRequirement requirement = StructureSpawnRequirement.BLANK;
                     if(state instanceof Sign) { // Magic sign stuff
                         Sign s = (Sign) b.getState();
@@ -96,7 +97,8 @@ public class Structure implements Serializable {
                                     }
                                 } else if(s.getLine(1).startsWith("[PULL=") && s.getLine(1).endsWith("]")) {
                                     String og = s.getLine(1);
-                                    String spawn = og.substring(og.indexOf("=")+1, og.length()-1);
+                                    String spawn = og.substring(og.indexOf("=")+1, og.indexOf("_"));
+                                    pullOffset = Integer.parseInt(og.substring(og.indexOf("_")+1, og.length()-1));
                                     try {
                                         pull = StructureContainedBlock.Pull.valueOf(spawn);
                                     } catch(IllegalArgumentException e) {
@@ -108,7 +110,7 @@ public class Structure implements Serializable {
                             }
                         }
                     }
-                    StructureContainedBlock block = new StructureContainedBlock(x, y, z, useState ? state : null, d, requirement, pull);
+                    StructureContainedBlock block = new StructureContainedBlock(x, y, z, useState ? state : null, d, requirement, pull, pullOffset);
                     if(state instanceof BlockInventoryHolder) {
                         inventories.add(new StructureContainedInventory(((BlockInventoryHolder) state).getInventory(), block));
                     }
@@ -179,25 +181,23 @@ public class Structure implements Serializable {
         BlockData data = block.getBlockData().clone();
         if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
 
-            Block worldBlock;
-
-            boolean empty;
             Location loc = origin.clone().add(block.getX(), block.getY(), block.getZ());
-            main: do {
-                worldBlock = loc.getBlock();
+            Block worldBlock = loc.getBlock();
+            main: while(worldBlock.isEmpty()) {
                 if(block.getPull() == null) break;
-                empty = worldBlock.isEmpty();
                 switch(block.getPull()) {
                     case UP:
-                        loc.add(0, 1, 0);
+                        worldBlock = worldBlock.getRelative(BlockFace.UP);
                         break;
                     case DOWN:
-                        loc.subtract(0, 1, 0);
+                        worldBlock = worldBlock.getRelative(BlockFace.DOWN);
                         break;
-                    case NONE: break main;
+                    default: break main;
                 }
                 if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
-            } while(empty);
+            }
+            int offset = block.getPullOffset();
+            if(offset != 0) worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
 
             if(data instanceof Rotatable) {
                 BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
@@ -251,7 +251,7 @@ public class Structure implements Serializable {
                     c.add(new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ()));
                     if(isInStructure((int) c.getX(), y, (int) c.getZ())) {
                         StructureContainedBlock b = structure[(int) c.getX()][(int) c.getZ()][y];
-                        exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData(), b.getRequirement(), b.getPull()));
+                        exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData(), b.getRequirement(), b.getPull(), b.getPullOffset()));
                     }
                 }
             }

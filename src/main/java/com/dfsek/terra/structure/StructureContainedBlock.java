@@ -14,12 +14,13 @@ public class StructureContainedBlock implements Serializable {
     private final SerializableBlockData bl;
     private transient BlockData data;
     private final Pull pull;
+    private final int pullOffset;
     private final int x;
     private final int y;
     private final int z;
     private final SerializableBlockState state;
     private final StructureSpawnRequirement requirement;
-    public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull) {
+    public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         if(state instanceof Sign) {
             this.state = new SerializableSign((org.bukkit.block.Sign) state);
         } else this.state = null;
@@ -29,8 +30,9 @@ public class StructureContainedBlock implements Serializable {
         this.bl = new SerializableBlockData(d);
         this.requirement = spawn;
         this.pull = pull;
+        this.pullOffset = pullOffset;
     }
-    public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull) {
+    public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         if(state instanceof SerializableSign) {
             this.state = state;
         } else this.state = null;
@@ -40,6 +42,7 @@ public class StructureContainedBlock implements Serializable {
         this.bl = new SerializableBlockData(d);
         this.requirement = spawn;
         this.pull = pull;
+        this.pullOffset = pullOffset;
     }
 
     public StructureSpawnRequirement getRequirement() {
@@ -67,6 +70,10 @@ public class StructureContainedBlock implements Serializable {
 
     public Pull getPull() {
         return pull;
+    }
+
+    public int getPullOffset() {
+        return pullOffset;
     }
 
     public SerializableBlockState getState() {
