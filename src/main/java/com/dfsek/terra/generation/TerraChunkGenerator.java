@@ -13,10 +13,8 @@ import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.structure.StructureSpawnRequirement;
 import com.dfsek.terra.util.DataUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -55,7 +53,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     public TerraChunkGenerator() {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
-        popMan.attach(new TreePopulator());
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
         popMan.attach(new SnowPopulator());

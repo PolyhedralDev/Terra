@@ -7,6 +7,6 @@ import org.polydev.gaea.world.Flora;
 
 public final class FailoverDecorator extends UserDefinedDecorator {
     public FailoverDecorator() {
-        super(new ProbabilityCollection<>(), new ProbabilityCollection<>(), 0, 0, 0);
+        super(new ProbabilityCollection<>(), new ProbabilityCollection<>(), 0, 0);
     }
 }

@@ -11,25 +11,19 @@ public class UserDefinedDecorator extends Decorator {
     private final ProbabilityCollection<Flora> flora;
     private final ProbabilityCollection<Tree> trees;
     private final int floraChance;
-    private final int treeChance;
     private final int treeDensity;
 
-    public UserDefinedDecorator(ProbabilityCollection<Flora> flora, ProbabilityCollection<Tree> trees, int floraChance, int treeChance, int treeDensity) {
+    public UserDefinedDecorator(ProbabilityCollection<Flora> flora, ProbabilityCollection<Tree> trees, int floraChance, int treeDensity) {
         this.flora = flora;
         this.trees = trees;
 
         this.floraChance = floraChance;
-        this.treeChance = treeChance;
         this.treeDensity = treeDensity;
     }
 
     @Override
     public ProbabilityCollection<Tree> getTrees() {
         return trees;
-    }
-
-    public int getTreeChance() {
-        return treeChance;
     }
 
     @Override

@@ -124,7 +124,7 @@ public class BiomeConfig extends TerraConfig {
         if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.
-        UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), tree.getTrees(), flora.getFloraChance(), tree.getTreeChance(), tree.getTreeDensity());
+        UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), tree.getTrees(), flora.getFloraChance(), tree.getTreeDensity());
 
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;

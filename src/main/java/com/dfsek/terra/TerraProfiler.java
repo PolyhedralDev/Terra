@@ -14,7 +14,6 @@ public class TerraProfiler extends WorldProfiler {
     public TerraProfiler(World w) {
         super(w);
         this
-                .addMeasurement(new Measurement(25000000, DataType.PERIOD_MILLISECONDS), "TreeGenTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "FloraTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "OreTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveTime")

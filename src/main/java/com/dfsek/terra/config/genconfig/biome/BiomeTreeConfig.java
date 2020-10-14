@@ -18,7 +18,6 @@ import java.util.Objects;
 public class BiomeTreeConfig extends TerraConfigSection {
     private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
     private final Map<Tree, Range> treeHeights = new HashMap<>();
-    private int treeChance;
     private int treeDensity;
     public BiomeTreeConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
@@ -26,7 +25,6 @@ public class BiomeTreeConfig extends TerraConfigSection {
         if(c == null) return;
         Map<String, Object> cfg = c.getValues(false);
         if(cfg.size() == 0) return;
-        treeChance = parent.getInt("trees.chance", 0);
         treeDensity = parent.getInt("trees.density", 0);
         for(Map.Entry<String, Object> e : cfg.entrySet()) {
             try {
@@ -60,9 +58,5 @@ public class BiomeTreeConfig extends TerraConfigSection {
 
     public int getTreeDensity() {
         return treeDensity;
-    }
-
-    public int getTreeChance() {
-        return treeChance;
     }
 }
