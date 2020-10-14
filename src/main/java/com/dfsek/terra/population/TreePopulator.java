@@ -38,7 +38,7 @@ public class TreePopulator extends GaeaBlockPopulator {
             int origZ = chunk.getZ() << 4;
             Biome b = grid.getBiome(x+origX, z+origZ, GenerationPhase.POPULATE);
             if(((UserDefinedDecorator) b.getDecorator()).getTreeChance() < random.nextInt(100)) return;
-            int max = 50;
+            int max = 32;
             int att = 0;
             for(int i = 0; i < b.getDecorator().getTreeDensity() && att < max; ) {
                 att++;
