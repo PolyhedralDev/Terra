@@ -81,7 +81,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
         List<Block> blocks = new ArrayList<>();
         for(int y : check) {
             if(chunk.getBlock(x, y, z).getType().isSolid() && chunk.getBlock(x, y + 1, z).getType().isAir()) {
-                blocks.add(chunk.getBlock(x, y, z));
+                blocks.add(chunk.getBlock(x, y+1, z));
             }
         }
         return blocks;
