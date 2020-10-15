@@ -1,0 +1,35 @@
+extends: "MOUNTAINS_PRETTY"
+id: "MOUNTAINS_STONE"
+noise-equation: "((-((y / 76)^2)) + 1) + ((noise2(x, z)+0.5) / 3) + max(noise2(x/2, z/2)*6, 0)"
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - MOUNTAIN_STONE: 255
+  - MOUNTAIN_STONE_GRASS: 108
+  - MOUNTAIN_GRASS: 84
+vanilla: MOUNTAINS
+snow:
+  - min: 0
+    max: 120
+    chance: 50
+  - min: 120
+    max: 140
+    chance: 75
+  - min: 140
+    max: 255
+    chance: 100
+trees:
+  density: 200
+  items:
+    SPRUCE:
+      weight: 1
+      y:
+        min: 58
+        max: 92
+
+flora:
+  chance: 0
+  attempts: 0
+  items: {}

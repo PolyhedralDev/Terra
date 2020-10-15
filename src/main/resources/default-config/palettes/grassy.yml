@@ -1,0 +1,11 @@
+layers:
+  - materials:
+      - "minecraft:grass_block": 1
+    layers: 1
+  - materials:
+      - "minecraft:dirt": 1
+    layers: 2
+  - materials:
+      - "minecraft:stone": 1
+    layers: 1
+id: GRASSY

@@ -1,2 +1,2 @@
 # Terra
-Overworld generator based on Gaea.
+Terra is a data-driven world generator based on [Gaea](https://github.com/PolyhedralDev/Gaea).

@@ -1,0 +1,18 @@
+layers:
+  - materials:
+      - "minecraft:kelp": 1
+    layers: 1
+  - materials:
+      - "minecraft:kelp_plant": 1
+    layers: 6
+
+id: KELP_MEDIUM
+name: "Medium Kelp"
+spawnable:
+  - "minecraft:sand"
+  - "minecraft:stone"
+  - "minecraft:red_sand"
+  - "minecraft:gravel"
+  - "minecraft:dirt"
+replaceable:
+  - "minecraft:water"

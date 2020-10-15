@@ -1,0 +1,65 @@
+noise-equation: "((-((y / 63)^2)) + 1) + |(noise2(x, z) / 2) + 0.1|"
+id: "PLAINS_ABSTRACT"
+
+carving:
+  - CAVE: 30
+  - RAVINE: 5
+  - CAVERN: 5
+
+erodible: true
+ores:
+  DIRT:
+    min: 0
+    max: 2
+    min-height: 0
+    max-height: 72
+  GRAVEL:
+    min: 0
+    max: 2
+    min-height: 0
+    max-height: 72
+  DIORITE:
+    min: 0
+    max: 2
+    min-height: 0
+    max-height: 72
+  ANDESITE:
+    min: 0
+    max: 2
+    min-height: 0
+    max-height: 72
+  GRANITE:
+    min: 0
+    max: 2
+    min-height: 0
+    max-height: 72
+  COAL_ORE:
+    min: 3
+    max: 7
+    min-height: 0
+    max-height: 72
+  IRON_ORE:
+    min: 2
+    max: 7
+    min-height: 0
+    max-height: 64
+  GOLD_ORE:
+    min: 1
+    max: 3
+    min-height: 0
+    max-height: 32
+  LAPIS_ORE:
+    min: 1
+    max: 4
+    min-height: 0
+    max-height: 32
+  REDSTONE_ORE:
+    min: 1
+    max: 4
+    min-height: 0
+    max-height: 16
+  DIAMOND_ORE:
+    min: 1
+    max: 2
+    min-height: 0
+    max-height: 16

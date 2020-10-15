@@ -1,0 +1,43 @@
+noise-equation: "-(y-62)*(y-156)*(y+25)*(y-160)*0.0000001 + if(max(y-72, 0), noise3(x, y, z)*0.75, (noise2(x, z)+0.5) / 2)"
+extends: "BASIC_ORES"
+id: "PLAINS_ISLANDS"
+name: "Plains Islands"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - SANDY: 62
+  - GRASSY: 255
+vanilla: PLAINS
+
+flora:
+  chance: 60
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 160
+      y:
+        min: 62
+        max: 84
+    GRASS:
+      weight: 100
+      y:
+        min: 62
+        max: 84
+    SUNFLOWER:
+      weight: 8
+      y:
+        min: 62
+        max: 84
+
+trees:
+  chance: 1
+  density: 1
+  items:
+    OAK:
+      weight: 1
+      y:
+        min: 58
+        max: 72

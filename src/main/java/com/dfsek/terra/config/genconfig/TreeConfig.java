@@ -61,7 +61,7 @@ public class TreeConfig extends TerraConfig implements Tree {
     }
 
     @Override
-    public boolean plant(Location location, Random random, boolean b, JavaPlugin javaPlugin) {
+    public boolean plant(Location location, Random random, JavaPlugin javaPlugin) {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);

@@ -1,0 +1,7 @@
+layers:
+  - materials:
+      - "minecraft:bedrock": 1
+      - "minecraft:stone": 2
+    layers: 1
+id: BEDROCK_LITTLE
+name: "Bedrock Palette"

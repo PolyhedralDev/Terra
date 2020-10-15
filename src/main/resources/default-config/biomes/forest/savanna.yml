@@ -1,0 +1,39 @@
+noise-equation: "((-((y / 62)^2)) + 1) + ((noise2(x, z)+0.5) / 2)"
+extends: "BASIC_ORES"
+id: "SAVANNA"
+name: "Savanna"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - RIVER_BOTTOM: 61
+  - RIVER_SHORE: 62
+  - GRASSY: 255
+vanilla: SAVANNA
+
+flora:
+  chance: 40
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 15
+      y:
+        min: 62
+        max: 84
+    GRASS:
+      weight: 70
+      y:
+        min: 62
+        max: 84
+erodible: true
+
+trees:
+  density: 20
+  items:
+    ACACIA:
+      weight: 1
+      y:
+        min: 58
+        max: 84

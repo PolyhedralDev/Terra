@@ -1,0 +1,14 @@
+extends: "BEACH_ABSTRACT"
+id: "FROZEN_BEACH"
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - GRAVEL: 64
+  - TUNDRA: 255
+erodible: true
+vanilla: SNOWY_BEACH
+ocean:
+  palette: "COLD_OCEAN"
+  level: 62

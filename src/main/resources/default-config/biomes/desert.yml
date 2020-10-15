@@ -1,0 +1,50 @@
+extends: "PLAINS_ABSTRACT"
+id: "DESERT"
+name: "Desert"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - DESERT: 255
+vanilla: DESERT
+
+flora:
+  chance: 2
+  items:
+    DEAD_BUSH:
+      weight: 1
+      y:
+        min: 62
+        max: 84
+    SMALL_ROCK:
+      weight: 1
+      y:
+        min: 62
+        max: 84
+
+erodible: true
+
+trees:
+  chance: 100
+  density: 1
+  items:
+    CACTUS:
+      weight: 1
+      y:
+        min: 58
+        max: 72
+
+slabs:
+  enable: true
+  threshold: 0.015
+  palettes:
+    - "minecraft:sand": "BLOCK:minecraft:sandstone_slab"
+  use-stairs-if-available: true
+  stair-palettes:
+    - "minecraft:sand": "BLOCK:minecraft:sandstone_stairs"
+
+
+
+# Carving and ores covered by super biome

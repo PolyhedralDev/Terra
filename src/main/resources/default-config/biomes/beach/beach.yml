@@ -1,0 +1,5 @@
+extends: "BEACH_ABSTRACT"
+id: "BEACH"
+name: "Beach"
+vanilla: BEACH
+erodible: true

@@ -1,0 +1,18 @@
+files:
+  jungle1: 1
+id: "JUNGLE"
+spawn:
+  start:
+    min: 72
+    max: 72
+  bound:
+    min: 48
+    max: 96
+  type: DISTRIBUTE
+  width: 75
+  padding: 25
+  search: DOWN
+  enable: true
+loot:
+  0: arrows
+  1: cobble_house

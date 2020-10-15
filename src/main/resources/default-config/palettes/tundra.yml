@@ -1,0 +1,22 @@
+layers:
+  - materials:
+      - "minecraft:gravel": 1
+      - "minecraft:stone": 1
+      - "minecraft:gravel": 1
+      - "minecraft:gravel": 1
+      - "minecraft:stone": 1
+      - "minecraft:snow_block": 2
+      - "minecraft:gravel": 1
+      - "minecraft:snow_block": 2
+    layers: 2
+  - materials:
+      - "minecraft:stone": 1
+    layers: 4
+  - materials:
+      - "minecraft:stone": 1
+    layers: 1
+id: TUNDRA
+name: "Tundra Palette"
+simplex: true
+frequency: 0.04
+seed: 4

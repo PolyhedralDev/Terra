@@ -1,0 +1,64 @@
+id: DEFAULT
+grids:
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - OCEAN
+  - BEACH
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - LAND
+  - MOUNTAIN_0
+  - MOUNTAIN_1
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+  - MOUNTAIN
+frequencies:
+  grid-x: 3072
+  grid-z: 2048
+  zone: 4096
+blend:
+  enable: true
+  frequency: 0.125
+  amplitude: 10
+erode:
+  enable: true
+  frequency: 0.002
+  threshold: 0.001
+  octaves: 4
+  grid: "BIOME:RIVER"

@@ -1,0 +1,645 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "item",
+          "weight": 8,
+          "name": "spruce_planks",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 8,
+                "max": 24
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "spruce_log",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 4,
+          "name": "torch",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 8,
+                "max": 24
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "arrow",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 8,
+                "max": 24
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "coal",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "charcoal",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 12
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 1,
+        "max": 3
+      },
+      "entries": [
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_helmet",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_chestplate",
+          "quality": null,
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_leggings",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_boots",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_sword",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_pickaxe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_axe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_shovel",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 6,
+          "name": "iron_hoe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 4,
+          "name": "bow",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "diamond_sword",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "diamond_shovel",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "diamond_pickaxe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "diamond_axe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "diamond_shovel",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_helmet",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_chestplate",
+          "quality": null,
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_leggings",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_boots",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_sword",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_pickaxe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_axe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_shovel",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 3,
+          "name": "iron_hoe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 2,
+          "name": "bow",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "diamond_sword",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "diamond_shovel",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "diamond_pickaxe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "diamond_axe",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              },
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "diamond_shovel",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 33,
+                "max": 100
+              }
+            },
+            {
+              "function": "enchant_with_levels",
+              "levels": {
+                "min": 1,
+                "max": 10
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

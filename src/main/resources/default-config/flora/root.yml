@@ -1,0 +1,24 @@
+layers:
+  - materials:
+      - "minecraft:spruce_fence": 1
+      - "minecraft:air": 2
+    layers: 1
+  - materials:
+      - "minecraft:spruce_fence": 1
+    layers: 1
+  - materials:
+      - "minecraft:spruce_fence": 1
+      - "minecraft:oak_log": 2
+    layers: 1
+  - materials:
+      - "minecraft:oak_log": 1
+    layers: 1
+
+id: ROOT
+name: "Swamp Root"
+spawnable:
+  - "minecraft:grass_block"
+  - "minecraft:coarse_dirt"
+  - "minecraft:dirt"
+replaceable:
+  - "minecraft:air"

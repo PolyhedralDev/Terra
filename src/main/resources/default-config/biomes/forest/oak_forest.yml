@@ -1,0 +1,59 @@
+noise-equation: "((-((y / 62)^2)) + 1) + ((noise2(x, z)+0.5) / 1.5)"
+extends: "BASIC_ORES"
+id: "FOREST"
+name: "Oak Forest"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - RIVER_BOTTOM: 61
+  - RIVER_SHORE: 62
+  - GRASSY: 255
+vanilla: FOREST
+
+flora:
+  chance: 40
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 150
+      y:
+        min: 62
+        max: 84
+    GRASS:
+      weight: 750
+      y:
+        min: 62
+        max: 84
+    POPPY:
+      weight: 50
+      y:
+        min: 62
+        max: 84
+    ROSE_BUSH:
+      weight: 4
+      y:
+        min: 62
+        max: 84
+    LILAC:
+      weight: 4
+      y:
+        min: 62
+        max: 84
+erodible: true
+
+trees:
+  density: 250
+  items:
+    OAK:
+      weight: 8
+      y:
+        min: 58
+        max: 84
+    LARGE_OAK:
+      weight: 2
+      y:
+        min: 58
+        max: 84

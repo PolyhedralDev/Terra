@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.failsafe.FailType;
@@ -11,13 +12,19 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.polydev.gaea.util.JarUtil.copyResourcesToDirectory;
 
 public final class ConfigUtil {
     public static boolean debug;
@@ -33,6 +40,17 @@ public final class ConfigUtil {
         debug = config.getBoolean("debug", false);
         dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis()/20L;
         masterDisableCaves = config.getBoolean("master-disable.caves", false);
+
+        if(config.getBoolean("dump-default", true)) {
+            try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
+                copyResourcesToDirectory(jar, "default-config", new File(main.getDataFolder(), "packs" + File.separator + "default").toString());
+            } catch(IOException | URISyntaxException e) {
+                Debug.error("Failed to dump default config files!");
+                e.printStackTrace();
+                Debug.error("Report this to Terra!");
+            }
+        }
+
 
         String fail = config.getString("fail-type", "SHUTDOWN");
         try {

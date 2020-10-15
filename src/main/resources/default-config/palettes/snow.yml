@@ -1,0 +1,12 @@
+layers:
+  - materials:
+      - "minecraft:snow_block": 2
+    layers: 3
+  - materials:
+      - "minecraft:stone": 1
+    layers: 4
+  - materials:
+      - "minecraft:stone": 1
+    layers: 1
+id: SNOW
+name: "Snowy Palette"

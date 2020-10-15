@@ -1,0 +1,60 @@
+noise-equation: "((-((y / 64)^2)) + 1) + min(floor(((max(noise2(x/1.5, z/1.5)+0.1, 0)) + 0.1)*5), 3)/1.75 + |(noise2(x/1.5, z/1.5)+0.1)*1.5|"
+extends: "BASIC_ORES"
+id: "MESA"
+name: "Mesa"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - RED_DESERT: 255
+  - "BLOCK:minecraft:red_terracotta": 128
+  - "BLOCK:minecraft:orange_terracotta": 124
+  - "BLOCK:minecraft:terracotta": 120
+  - "BLOCK:minecraft:yellow_terracotta": 116
+  - "BLOCK:minecraft:red_terracotta": 112
+  - "BLOCK:minecraft:orange_terracotta": 108
+  - "BLOCK:minecraft:terracotta": 104
+  - "BLOCK:minecraft:red_terracotta": 100
+  - "BLOCK:minecraft:orange_terracotta": 96
+  - "BLOCK:minecraft:terracotta": 92
+  - "BLOCK:minecraft:yellow_terracotta": 88
+  - "BLOCK:minecraft:red_terracotta": 84
+  - "BLOCK:minecraft:orange_terracotta": 80
+  - RED_DESERT: 72
+vanilla: BADLANDS
+
+flora-chance: 2
+flora:
+  chance: 2
+  attempts: 1
+  items:
+    DEAD_BUSH:
+      weight: 1
+      y:
+        min: 62
+        max: 84
+    SMALL_ROCK:
+      weight: 1
+      y:
+        min: 62
+        max: 84
+slabs:
+  enable: true
+  threshold: 0.015
+  palettes:
+    - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_slab"
+  use-stairs-if-available: true
+  stair-palettes:
+    - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_stairs"
+
+trees:
+  chance: 100
+  density: 1
+  items:
+    CACTUS:
+      weight: 1
+      y:
+        min: 58
+        max: 72

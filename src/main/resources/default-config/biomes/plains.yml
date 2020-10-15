@@ -1,0 +1,46 @@
+extends: "PLAINS_ABSTRACT"
+id: "PLAINS"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - RIVER_BOTTOM: 61
+  - RIVER_SHORE: 62
+  - GRASSY: 255
+vanilla: PLAINS
+
+erodible: true
+
+flora:
+  chance: 60
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 160
+      y:
+        min: 62
+        max: 84
+    GRASS:
+      weight: 100
+      y:
+        min: 62
+        max: 84
+    SUNFLOWER:
+      weight: 8
+      y:
+        min: 62
+        max: 84
+
+trees:
+  chance: 1
+  density: 1
+  items:
+    OAK:
+      weight: 1
+      y:
+        min: 58
+        max: 72
+
+# Carving and ores covered by super biome

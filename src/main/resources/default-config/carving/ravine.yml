@@ -1,0 +1,66 @@
+id: RAVINE
+length:
+  min: 30
+  max: 60
+start:
+  x: 1
+  y: 0.0
+  z: 1
+  radius:
+    multiply:
+      x: 1
+      y: 4
+      z: 1
+    min: 3
+    max: 4
+  height:
+    min: 12
+    max: 56
+cut:
+  top: 1
+  bottom: 2
+mutate:
+  x: 1
+  y: 4
+  z: 1
+  radius: 0.125
+palette:
+  inner:
+    replace-blacklist: true
+    replace:
+      - "minecraft:air"
+      - "minecraft:water"
+      - "minecraft:lava"
+      - "minecraft:bedrock"
+      - "minecraft:ice"
+    layers:
+      - materials: {"minecraft:air": 1}
+        y: 255
+      - materials: {"minecraft:lava": 1}
+        y: 8
+  outer:
+    replace-blacklist: false
+    replace: []
+    layers:
+      - materials: { "minecraft:stone": 1 }
+        y: 255
+  top:
+    replace-blacklist: false
+    replace: [ ]
+    layers:
+      - materials: { "minecraft:stone": 1 }
+        y: 255
+  bottom:
+    replace-blacklist: false
+    replace: [ ]
+    layers:
+      - materials: { "minecraft:stone": 1 }
+        y: 255
+shift:
+  "minecraft:grass_block": ["minecraft:dirt"]
+  "minecraft:podzol": ["minecraft:dirt"]
+  "minecraft:gravel": ["minecraft:dirt"]
+  "minecraft:sand": ["minecraft:dirt"]
+  "minecraft:coarse_dirt": ["minecraft:dirt"]
+
+update: []

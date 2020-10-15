@@ -69,7 +69,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
             Range range = world.getConfig().getBiome(biome).getTreeRange(tree);
             if(!range.isInRange(block.getY())) continue;
             try {
-                return tree.plant(block.getLocation(), random, false, Terra.getInstance());
+                return tree.plant(block.getLocation(), random, Terra.getInstance());
             } catch(NullPointerException ignore) {}
         }
         return false;

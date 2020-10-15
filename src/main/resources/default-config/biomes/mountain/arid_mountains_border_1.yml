@@ -1,0 +1,47 @@
+noise-equation: "((-((y / 64)^2)) + 1) + min(floor(((|noise2(x/2.5, z/2.5)|) + 0.1)*4), 3)/3 + |noise2(x/2.5, z/2.5)*2|"
+
+id: "ARID_MOUNTAINS_1"
+extends: "BASIC_ORES"
+
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - ARID: 255
+vanilla: SAVANNA
+
+erodible: false
+
+flora:
+  chance: 40
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 15
+      y:
+        min: 62
+        max: 128
+    GRASS:
+      weight: 70
+      y:
+        min: 62
+        max: 128
+
+trees:
+  density: 50
+  items:
+    ACACIA:
+      weight: 1
+      y:
+        min: 58
+        max: 128
+slabs:
+  enable: true
+  threshold: 0.015
+  palettes:
+    - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_slab"
+  use-stairs-if-available: true
+  stair-palettes:
+    - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_stairs"

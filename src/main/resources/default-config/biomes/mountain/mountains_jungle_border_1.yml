@@ -1,0 +1,28 @@
+extends: "MOUNTAINS_PRETTY_1"
+id: "MOUNTAINS_JUNGLE_1"
+
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - MOUNTAIN_JUNGLE: 255
+vanilla: JUNGLE
+trees:
+  density: 120
+  items:
+    JUNGLE_BUSH:
+      weight: 4
+      y:
+        min: 58
+        max: 92
+    SMALL_JUNGLE:
+      weight: 2
+      y:
+        min: 58
+        max: 92
+    JUNGLE:
+      weight: 4
+      y:
+        min: 58
+        max: 92
