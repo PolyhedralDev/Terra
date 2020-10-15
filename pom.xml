@@ -92,7 +92,7 @@
             <artifactId>gaea</artifactId>
             <version>1.11.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Gaea-1.11.6-javadoc.jar</systemPath>
+            <systemPath>${basedir}/lib/Gaea-1.11.6.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -128,7 +128,7 @@
             <artifactId>parsii</artifactId>
             <version>1.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/parsii-1.2-javadoc.jar</systemPath>
+            <systemPath>${basedir}/lib/parsii-1.2.jar</systemPath>
         </dependency>
     </dependencies>
 
