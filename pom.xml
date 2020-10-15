@@ -60,22 +60,12 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>gaea.local</id>
-            <name>gaea-local</name>
-            <url>file:/home/dfsek/Documents/Gaea/repo</url>
-        </repository>
-        <repository>
             <id>enginehub-maven</id>
             <url>http://maven.enginehub.org/repo/</url>
         </repository>
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-        <repository>
-            <id>parsii.local</id>
-            <name>parsii</name>
-            <url>file:/home/dfsek/Documents/parsii/repo</url>
         </repository>
     </repositories>
 
@@ -101,7 +91,8 @@
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
             <version>1.11.6</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/Gaea-1.11.6-javadoc.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -135,7 +126,9 @@
         <dependency>
             <groupId>com.scireum</groupId>
             <artifactId>parsii</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/parsii-1.2-javadoc.jar</systemPath>
         </dependency>
     </dependencies>
 

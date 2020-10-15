@@ -7,6 +7,21 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="parsii.local" />
+      <option name="name" value="parsii" />
+      <option name="url" value="file:$PROJECT_DIR$/../parsii/repo" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="local" />
+      <option name="name" value="local" />
+      <option name="url" value="file:lib" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="aikar" />
       <option name="name" value="aikar" />
       <option name="url" value="https://repo.aikar.co/content/groups/aikar/" />
@@ -20,16 +35,6 @@
       <option name="id" value="spigotmc-repo" />
       <option name="name" value="spigotmc-repo" />
       <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="parsii.local" />
-      <option name="name" value="parsii" />
-      <option name="url" value="file:$PROJECT_DIR$/../parsii/repo" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="central" />
-      <option name="name" value="Maven Central repository" />
-      <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="jboss.community" />
