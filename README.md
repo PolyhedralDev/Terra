@@ -11,3 +11,7 @@ also change the value after server installation, in `bukkit.yml` of the test ser
 ## Contributing
 Contributions are welcome! If you want to see a feature in Terra, please, open an issue, or implement it yourself and
 submit a PR!
+
+## Beta
+Terra is still in beta! It will have missing features, and may not work in full. It should **not** be used in production.
+Use at your own risk!
