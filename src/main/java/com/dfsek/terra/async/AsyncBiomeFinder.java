@@ -10,7 +10,7 @@ import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
 
 /**
- * Runnable that locates a biome
+ * Runnable that locates a biome asynchronously
  */
 public class AsyncBiomeFinder implements Runnable {
     private final TerraBiomeGrid grid;
@@ -21,6 +21,7 @@ public class AsyncBiomeFinder implements Runnable {
     private final Biome target;
     private final Player p;
     private final boolean tp;
+
     public AsyncBiomeFinder(TerraBiomeGrid grid, Biome target, Player p, int startRadius, int maxRadius, boolean tp) {
         this.grid = grid;
         this.target = target;
@@ -31,6 +32,7 @@ public class AsyncBiomeFinder implements Runnable {
         this.maxRadius = maxRadius;
         this.tp = tp;
     }
+
     @Override
     public void run() {
         int x = centerX;
@@ -51,16 +53,24 @@ public class AsyncBiomeFinder implements Runnable {
             run++;
             toggle = !toggle;
         }
-        if(checkBiome(x, z).equals(target) && p.isOnline()) {
-            LangUtil.send("command.biome.biome-found", p, String.valueOf(x), String.valueOf(z));
-            if(tp) {
-                int finalX = x;
-                int finalZ = z;
-                Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
-            }
-        } else if(p.isOnline()) LangUtil.send("command.biome.unable-to-locate", p);
-
+        if(p.isOnline()) {
+            if(checkBiome(x, z).equals(target)) {
+                LangUtil.send("command.biome.biome-found", p, String.valueOf(x), String.valueOf(z));
+                if(tp) {
+                    int finalX = x;
+                    int finalZ = z;
+                    Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
+                }
+            } else LangUtil.send("command.biome.unable-to-locate", p);
+        }
     }
+
+    /**
+     * Helper method to get biome at location
+     * @param x X coordinate
+     * @param z Z coordinate
+     * @return Biome at coordinates
+     */
     private Biome checkBiome(int x, int z) {
         return grid.getBiome(x, z, GenerationPhase.POST_GEN);
     }

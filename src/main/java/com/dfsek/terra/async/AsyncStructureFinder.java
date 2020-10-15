@@ -14,6 +14,9 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
+/**
+ * Runnable to locate structures asynchronously
+ */
 public class AsyncStructureFinder implements Runnable {
     private final TerraBiomeGrid grid;
     private final StructureConfig target;
@@ -74,15 +77,25 @@ public class AsyncStructureFinder implements Runnable {
             run++;
             toggle = !toggle;
         }
-        if(found) {
-            p.sendMessage("Located structure at (" + spawn.getBlockX() + ", " + spawn.getBlockZ() + ").");
-            if(tp) {
-                int finalX = spawn.getBlockX();
-                int finalZ = spawn.getBlockZ();
-                Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
+        if(p.isOnline()) {
+            if(found) {
+                p.sendMessage("Located structure at (" + spawn.getBlockX() + ", " + spawn.getBlockZ() + ").");
+                if(tp) {
+                    int finalX = spawn.getBlockX();
+                    int finalZ = spawn.getBlockZ();
+                    Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
+                }
             }
-        } else if(p.isOnline()) p.sendMessage("Unable to locate structure. " + spawn);
+            p.sendMessage("Unable to locate structure. " + spawn);
+        }
     }
+
+    /**
+     * Check if coordinate pair is a valid structure spawn
+     * @param x X coordinate
+     * @param z Z coordinate
+     * @return Whether location is a valid spawn for StructureConfig
+     */
     private boolean isValidSpawn(int x, int z) {
         Location spawn = target.getSpawn().getNearestSpawn(x, z, world.getSeed()).toLocation(world);
         if(! TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(target)) return false;
