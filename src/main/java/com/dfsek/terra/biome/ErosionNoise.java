@@ -1,16 +1,17 @@
 package com.dfsek.terra.biome;
 
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 /**
  * Class to hold noise function to determine erosion.
  */
 public class ErosionNoise {
     private final double thresh;
-    private final FastNoise noise;
+    private final FastNoiseLite noise;
     public ErosionNoise(float freq1, double thresh, int octaves, long seed) {
-        FastNoise main = new FastNoise((int) (seed+1));
-        main.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        FastNoiseLite main = new FastNoiseLite((int) (seed+1));
+        main.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        main.setFractalType(FastNoiseLite.FractalType.FBm);
         main.setFractalOctaves(octaves);
         main.setFrequency(freq1);
         this.thresh = thresh;

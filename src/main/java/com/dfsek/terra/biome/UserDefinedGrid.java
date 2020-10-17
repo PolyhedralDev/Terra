@@ -29,7 +29,7 @@ public class UserDefinedGrid extends BiomeGrid {
         if(fromImage) {
             double xi = imageLoader.getNoiseVal(x, z, channelX);
             double zi = imageLoader.getNoiseVal(x, z, channelZ);
-            return super.getGrid()[NormalizationUtil.normalize(xi, getSizeX())][NormalizationUtil.normalize(zi, getSizeZ())];
+            return super.getGrid()[NormalizationUtil.normalize(xi, getSizeX(), 4)][NormalizationUtil.normalize(zi, getSizeZ(), 4)];
         }
         return super.getBiome(x, z, phase);
     }

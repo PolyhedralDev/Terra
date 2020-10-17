@@ -27,9 +27,9 @@ public class WorldImageGenerator {
         for(int y = centerZ - (draw.getHeight()/2); y < centerZ + (draw.getHeight()/2); y++) {
             int imX = 0;
             for(int x = centerX - (draw.getWidth()/2); x < centerX + (draw.getWidth()/2); x++) {
-                int zone = NormalizationUtil.normalize(tw.getZone().getRawNoise(x, y), 256);
+                int zone = NormalizationUtil.normalize(tw.getZone().getRawNoise(x, y), 256, 4);
                 float[] noise = tb.getGrid(x, y).getRawNoise(x, y);
-                Color c = new Color(NormalizationUtil.normalize(noise[0], 256), NormalizationUtil.normalize(noise[1], 256), zone);
+                Color c = new Color(NormalizationUtil.normalize(noise[0], 256, 4), NormalizationUtil.normalize(noise[1], 256, 4), zone);
                 draw.setRGB(imX, imY, c.getRGB());
                 imX++;
             }

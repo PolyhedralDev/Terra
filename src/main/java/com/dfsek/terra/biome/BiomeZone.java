@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.biome.NormalizationUtil;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.Objects;
 
@@ -15,15 +15,16 @@ import java.util.Objects;
  */
 public class BiomeZone {
     private final BiomeGrid[] grids;
-    private final FastNoise noise;
+    private final FastNoiseLite noise;
     @Nullable
     private final ImageLoader imageLoader;
     private final boolean useImage;
     private final ImageLoader.Channel channel;
 
     public BiomeZone(World w, WorldConfig wc, BiomeGrid[] grids) {
-        this.noise = new FastNoise((int) w.getSeed()+2);
-        this.noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        this.noise = new FastNoiseLite((int) w.getSeed()+2);
+        this.noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        this.noise.setFractalType(FastNoiseLite.FractalType.FBm);
         this.noise.setFractalOctaves(4);
         this.noise.setFrequency(wc.getConfig().zoneFreq);
         this.grids = grids;
@@ -39,7 +40,7 @@ public class BiomeZone {
      * @return BiomeGrid at coordinates.
      */
     protected BiomeGrid getGrid(int x, int z) {
-        return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length)];
+        return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length, 4)];
     }
 
     /**
@@ -57,7 +58,7 @@ public class BiomeZone {
      * @return Normalized noise at coordinates
      */
     public int getNoise(int x, int z) {
-        return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length);
+        return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length, 4);
     }
 
     /**

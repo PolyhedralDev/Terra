@@ -12,7 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.population.ChunkCoordinate;
 
 import java.io.File;
@@ -64,8 +64,8 @@ public class OreConfig extends TerraConfig {
         return r.nextInt(max-min+1)+min;
     }
     public void doVein(Vector l, Chunk chunk, Random r) {
-        FastNoise ore = new FastNoise(r.nextInt());
-        ore.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        FastNoiseLite ore = new FastNoiseLite(r.nextInt());
+        ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         ore.setFrequency((float) deformFrequency);
         int rad = randomInRange(r);
         Map<ChunkCoordinate, Chunk> chunks = new HashMap<>();  // Cache chunks to prevent re-loading chunks every time one is needed.
@@ -77,7 +77,7 @@ public class OreConfig extends TerraConfig {
                     Vector oreLoc = orig.clone().add(new Vector(x, y, z));
                     Vector source = l.clone().add(new Vector(x, y, z));
                     if(oreLoc.getBlockY() > 255 || oreLoc.getBlockY() < 0) continue;
-                    if(source.distance(l) < (rad + 0.5) * ((ore.getSimplexFractal(x, y, z)+1)*deform)) {
+                    if(source.distance(l) < (rad + 0.5) * ((ore.getNoise(x, y, z)+1)*deform)) {
                         ChunkCoordinate coord = new ChunkCoordinate(Math.floorDiv(oreLoc.getBlockX(), 16), Math.floorDiv(oreLoc.getBlockZ(), 16), chunk.getWorld().getUID());
                         Block b = chunks.computeIfAbsent(coord, k -> chunk.getWorld().getChunkAt(oreLoc.toLocation(chunk.getWorld())))
                                 .getBlock(Math.floorMod(source.getBlockX(), 16), source.getBlockY(), Math.floorMod(source.getBlockZ(), 16)); // Chunk caching conditional computation
@@ -88,8 +88,8 @@ public class OreConfig extends TerraConfig {
         }
     }
     public void doVeinSingle(Vector l, Chunk chunk, Random r) {
-        FastNoise ore = new FastNoise(r.nextInt());
-        ore.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        FastNoiseLite ore = new FastNoiseLite(r.nextInt());
+        ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         ore.setFrequency((float) deformFrequency);
         int rad = randomInRange(r);
         for(int x = -rad; x <= rad; x++) {
@@ -97,7 +97,7 @@ public class OreConfig extends TerraConfig {
                 for(int z = -rad; z <= rad; z++) {
                     Vector oreLoc = l.clone().add(new Vector(x, y, z));
                     if(oreLoc.getBlockX() > 15 || oreLoc.getBlockZ() > 15 || oreLoc.getBlockY() > 255 || oreLoc.getBlockX() < 0 || oreLoc.getBlockZ() < 0 || oreLoc.getBlockY() < 0) continue;
-                    if(oreLoc.distance(l) < (rad + 0.5) * ((ore.getSimplexFractal(x, y, z)+1)*deform)) {
+                    if(oreLoc.distance(l) < (rad + 0.5) * ((ore.getNoise(x, y, z)+1)*deform)) {
                         Block b = chunk.getBlock(oreLoc.getBlockX(), oreLoc.getBlockY(), oreLoc.getBlockZ());
                         if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0) b.setBlockData(oreData, update);
                     }

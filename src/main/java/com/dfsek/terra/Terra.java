@@ -7,6 +7,7 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,12 +19,13 @@ import org.polydev.gaea.lang.Language;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 public class Terra extends GaeaPlugin {
     private static Terra instance;
-    private static final Set<String> loadedWorlds = new HashSet<>();
+    private Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
 
     public static Terra getInstance() {
         return instance;
@@ -54,9 +56,11 @@ public class Terra extends GaeaPlugin {
 
     @Override
     public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-        if(!loadedWorlds.contains(worldName)) TerraWorld.loadWorld(new WorldConfig(worldName, id, this));
-        loadedWorlds.add(worldName); // Ensure world config is only loaded once for world.
-        return new TerraChunkGenerator();
+        return generatorMap.computeIfAbsent(worldName, name -> {
+            WorldConfig c = new WorldConfig(worldName, id, this);
+            TerraWorld.loadWorld(c);
+            return new TerraChunkGenerator(c.getConfig());
+        });
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.dfsek.terra.carving;
 
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.CarvingData;
 import org.polydev.gaea.world.carving.Worm;
@@ -10,29 +10,31 @@ import org.polydev.gaea.world.carving.Worm;
 import java.util.Random;
 
 public class SimplexCarver extends Carver {
-    private final FastNoise noise;
-    private final FastNoise height;
-    private final FastNoise column;
-    private final FastNoise hasCaves;
+    private final FastNoiseLite noise;
+    private final FastNoiseLite height;
+    private final FastNoiseLite column;
+    private final FastNoiseLite hasCaves;
     private final double root2inverse = 1D/Math.sqrt(2);
     public SimplexCarver(int minY, int maxY) {
         super(minY, maxY);
-        noise = new FastNoise(2403);
-        noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        noise = new FastNoiseLite(2403);
+        noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        noise.setFractalType(FastNoiseLite.FractalType.FBm);
         noise.setFractalOctaves(3);
         noise.setFrequency(0.02f);
 
-        height = new FastNoise(2404);
-        height.setNoiseType(FastNoise.NoiseType.Simplex);
+        height = new FastNoiseLite(2404);
+        height.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         height.setFrequency(0.01f);
 
-        column = new FastNoise(2404);
-        column.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        column = new FastNoiseLite(2404);
+        column.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        column.setFractalType(FastNoiseLite.FractalType.FBm);
         column.setFractalOctaves(5);
         column.setFrequency(0.05f);
 
-        hasCaves = new FastNoise(2405);
-        hasCaves.setNoiseType(FastNoise.NoiseType.Simplex);
+        hasCaves = new FastNoiseLite(2405);
+        hasCaves.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         hasCaves.setFrequency(0.005f);
     }
 

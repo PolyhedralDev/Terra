@@ -8,7 +8,7 @@ import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.world.Flora;
@@ -23,7 +23,7 @@ public class BiomeFloraConfig extends TerraConfigSection {
     private int floraAttempts;
     private int floraChance;
     private boolean floraSimplex;
-    private FastNoise floraNoise;
+    private FastNoiseLite floraNoise;
     public BiomeFloraConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         ConfigurationSection cfg = parent.getConfigurationSection("flora.items");
@@ -34,8 +34,8 @@ public class BiomeFloraConfig extends TerraConfigSection {
         float floraFreq = (float) parent.getDouble("flora.simplex.frequency", 0.1);
         int floraSeed = parent.getInt("flora.simplex.seed", 0);
         if(floraSimplex) {
-            floraNoise = new FastNoise(floraSeed);
-            floraNoise.setNoiseType(FastNoise.NoiseType.Simplex);
+            floraNoise = new FastNoiseLite(floraSeed);
+            floraNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
             floraNoise.setFrequency(floraFreq);
         }
 
@@ -74,7 +74,7 @@ public class BiomeFloraConfig extends TerraConfigSection {
         return floraHeights;
     }
 
-    public FastNoise getFloraNoise() {
+    public FastNoiseLite getFloraNoise() {
         return floraNoise;
     }
 

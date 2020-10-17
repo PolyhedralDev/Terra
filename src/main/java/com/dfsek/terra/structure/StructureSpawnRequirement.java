@@ -6,7 +6,7 @@ import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -42,12 +42,12 @@ public enum StructureSpawnRequirement implements Serializable {
         }
     };
     private static final long serialVersionUID = -175639605885943679L;
-    private static final transient Map<World, FastNoise> noiseMap = new HashMap<>();
+    private static final transient Map<World, FastNoiseLite> noiseMap = new HashMap<>();
     public abstract boolean matches(World w, int x, int y, int z);
-    public static void putNoise(World w, FastNoise noise) {
+    public static void putNoise(World w, FastNoiseLite noise) {
         noiseMap.putIfAbsent(w, noise);
     }
-    private static FastNoise getNoise(World w) {
+    private static FastNoiseLite getNoise(World w) {
         return noiseMap.get(w);
     }
 }

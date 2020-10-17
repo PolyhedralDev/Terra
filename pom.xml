@@ -111,9 +111,9 @@
         <dependency>
             <groupId>org.polydev</groupId>
             <artifactId>gaea</artifactId>
-            <version>1.11.6</version>
+            <version>1.12.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Gaea-1.11.6.jar</systemPath>
+            <systemPath>${basedir}/lib/Gaea-1.12.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

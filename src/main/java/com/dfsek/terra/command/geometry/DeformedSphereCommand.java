@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.command.PlayerCommand;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,8 +43,8 @@ public class DeformedSphereCommand extends PlayerCommand {
             LangUtil.send("command.geometry.deform.invalid-frequency", sender, args[2]);
             return true;
         }
-        FastNoise n = new FastNoise((int) sender.getWorld().getSeed());
-        n.setNoiseType(FastNoise.NoiseType.Simplex);
+        FastNoiseLite n = new FastNoiseLite((int) sender.getWorld().getSeed());
+        n.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         n.setFrequency(freq);
         DeformedSphere sphere = new DeformedSphere(sender.getLocation().toVector(), radius, deform, n);
         for(Vector v : sphere.getGeometry()) {

@@ -7,7 +7,7 @@ import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
@@ -30,8 +30,8 @@ public class PaletteConfig extends TerraConfig {
         Palette<BlockData> pal;
         if(getBoolean("simplex", false)) {
             useNoise = true;
-            FastNoise pNoise = new FastNoise(getInt("seed", 2403));
-            pNoise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+            FastNoiseLite pNoise = new FastNoiseLite(getInt("seed", 2403));
+            pNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
             pNoise.setFractalOctaves(4);
             pNoise.setFrequency((float) getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);

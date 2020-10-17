@@ -54,9 +54,9 @@ public class ImageLoader {
                 float[] noise;
                 if(align.equals(Align.CENTER)) noise = tb.getGrid(x - original.getWidth()/2, y - original.getHeight()/2).getRawNoise(x - original.getWidth()/2, y - original.getHeight()/2);
                 else noise = tb.getGrid(x, y).getRawNoise(x, y);
-                newImg.setRGB(x, y, new Color((int) (NormalizationUtil.normalize(noise[0], tb.getGrid(x, y).getSizeX()) * ((double) 255 / tb.getGrid(x, y).getSizeX())),
-                        (int) (NormalizationUtil.normalize(noise[1], tb.getGrid(x, y).getSizeZ()) * ((double) 255 / tb.getGrid(x, y).getSizeZ())),
-                        (int) (NormalizationUtil.normalize(z.getNoise(x, y), z.getSize()) * ((double) 255 / z.getSize())))
+                newImg.setRGB(x, y, new Color((int) (NormalizationUtil.normalize(noise[0], tb.getGrid(x, y).getSizeX(), 4) * ((double) 255 / tb.getGrid(x, y).getSizeX())),
+                        (int) (NormalizationUtil.normalize(noise[1], tb.getGrid(x, y).getSizeZ(), 4) * ((double) 255 / tb.getGrid(x, y).getSizeZ())),
+                        (int) (NormalizationUtil.normalize(z.getNoise(x, y), z.getSize(), 4) * ((double) 255 / z.getSize())))
                         .getRGB());
             }
         }

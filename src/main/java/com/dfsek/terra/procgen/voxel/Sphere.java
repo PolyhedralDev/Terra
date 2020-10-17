@@ -1,7 +1,7 @@
 package com.dfsek.terra.procgen.voxel;
 
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 public class Sphere extends VoxelGeometry {
     public Sphere(Vector start, int rad) {

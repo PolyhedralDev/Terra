@@ -68,6 +68,9 @@ public class ConfigPack extends YamlConfiguration {
     public final boolean biomeBlend;
     public final float blendFreq;
 
+    public final int octaves;
+    public final float frequency;
+
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
         load(new File(file, "pack.yml"));
@@ -106,6 +109,9 @@ public class ConfigPack extends YamlConfiguration {
         erosionFreq = (float) getDouble("erode.frequency", 0.01);
         erosionThresh = getDouble("erode.threshold", 0.04);
         erosionOctaves = getInt("erosion.octaves", 4);
+
+        octaves = getInt("noise.octaves", 4);
+        frequency = (float) getDouble("noise.frequency", 1f/96);
 
         erosionName = getString("erode.grid");
 

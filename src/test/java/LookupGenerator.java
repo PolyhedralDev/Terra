@@ -1,6 +1,6 @@
 import com.dfsek.terra.biome.BiomeZone;
 import com.sun.corba.se.spi.orbutil.threadpool.Work;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +14,9 @@ public class LookupGenerator {
         int dist = 4096;
 
         List<Double> vals = new ArrayList<>();
-        FastNoise noise = new FastNoise();
-        noise.setNoiseType(FastNoise.NoiseType.SimplexFractal);
+        FastNoiseLite noise = new FastNoiseLite();
+        noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noise.setFrequency(0.02f);
-        noise.setFractalOctaves(4);
         int[] numbers = new int[dist];
         double min = Integer.MAX_VALUE;
         double max = Integer.MIN_VALUE;
@@ -25,13 +24,12 @@ public class LookupGenerator {
             numbers[i] = 0;
         }
 
-
         int workerAmount = 16;
 
         List<Worker> workers = new ArrayList<>();
 
         for(int i = 0; i < workerAmount; i++) {
-            workers.add(new Worker(new ArrayList<>(), 10000000, noise));
+            workers.add(new Worker(new ArrayList<>(), 5000000, noise));
         }
 
         for(Worker w : workers) {
@@ -53,7 +51,7 @@ public class LookupGenerator {
         }
         for(int i = 0; i < dist; i++) {
             System.out.print(i + (String.valueOf(i).length() ==1 ? " " : "") + " |");
-            for(int j = 0; j < numbers[i]/3000; j++) {
+            for(int j = 0; j < numbers[i]/300; j++) {
                 System.out.print("-");
             }
             System.out.println("|");
@@ -74,7 +72,7 @@ public class LookupGenerator {
         s.append("}");
         numbers = new int[dist];
         vals = new ArrayList<>();
-        for(int i = 0; i < 50000000; i++) {
+        for(int i = 0; i < 10000000; i++) {
             double n = noise.getNoise(0, i);
             vals.add(n);
             numbers[normalizeNew(n)]++;
@@ -109,8 +107,8 @@ public class LookupGenerator {
     private static class Worker extends Thread {
         private final List<Double> l;
         private final int searches;
-        private final FastNoise noise;
-        public Worker(List<Double> l, int searches, FastNoise noise) {
+        private final FastNoiseLite noise;
+        public Worker(List<Double> l, int searches, FastNoiseLite noise) {
             this.l = l;
             this.searches = searches;
             this.noise = noise;

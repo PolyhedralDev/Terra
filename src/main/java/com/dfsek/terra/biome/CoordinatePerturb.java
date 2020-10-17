@@ -1,14 +1,14 @@
 package com.dfsek.terra.biome;
 
 import com.dfsek.terra.procgen.math.Vector2;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 
 /**
  * Offset a coordinate pair by an amount.
  */
 public class CoordinatePerturb {
-    private final FastNoise perturbX;
-    private final FastNoise perturbZ;
+    private final FastNoiseLite perturbX;
+    private final FastNoiseLite perturbZ;
     private final int amplitude;
 
     /**
@@ -18,11 +18,11 @@ public class CoordinatePerturb {
      * @param seed Noise seed
      */
     public CoordinatePerturb(float frequency, int amplitude, long seed) {
-        perturbX = new FastNoise((int) seed);
-        perturbX.setNoiseType(FastNoise.NoiseType.Simplex);
+        perturbX = new FastNoiseLite((int) seed);
+        perturbX.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         perturbX.setFrequency(frequency);
-        perturbZ = new FastNoise((int) seed+1);
-        perturbZ.setNoiseType(FastNoise.NoiseType.Simplex);
+        perturbZ = new FastNoiseLite((int) seed+1);
+        perturbZ.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         perturbZ.setFrequency(frequency);
         this.amplitude = amplitude;
     }

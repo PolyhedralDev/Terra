@@ -1,7 +1,9 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.debug.gui.DebugGUI;
 import com.dfsek.terra.image.ImageLoader;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -47,6 +49,7 @@ public class WorldConfig {
         long start = System.nanoTime();
         LangUtil.log("world-config.load", Level.INFO, worldID);
         FileConfiguration config = new YamlConfiguration();
+        Debug.info("Loading config " + configID + " for world " + worldID);
         try { // Load/create world config file
             if(configID == null || configID.equals("")) throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");

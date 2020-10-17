@@ -7,7 +7,7 @@ import com.dfsek.terra.procgen.voxel.VoxelGeometry;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.world.carving.CarvingData;
 
@@ -26,9 +26,9 @@ public class Cavern {
         Vector org = node.getNodeLocation((chunkX << 4)+8, (chunkZ << 4)+8).clone().setY(chunk.nextInt(128));
         VoxelGeometry carve = VoxelGeometry.getBlank();
 
-        FastNoise smpl = new FastNoise((int) seedC);
+        FastNoiseLite smpl = new FastNoiseLite((int) seedC);
         smpl.setFrequency(0.01f);
-        smpl.setNoiseType(FastNoise.NoiseType.Simplex);
+        smpl.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         Bukkit.getLogger().info("Cavern: " + org.toString());
         carve.merge(new DeformedSphere(org.clone(), chunk.nextInt(4)+3, 0.75, smpl));
 

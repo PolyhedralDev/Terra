@@ -30,7 +30,7 @@ import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.population.PopulationManager;
 import org.polydev.gaea.world.palette.Palette;
 
@@ -47,19 +47,23 @@ import java.util.logging.Level;
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private boolean needsLoad = true;
+    private int octaves;
+    private float frequency;
 
 
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
 
-    public TerraChunkGenerator() {
+    public TerraChunkGenerator(ConfigPack c) {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
+        this.frequency = c.frequency;
+        this.octaves = c.octaves;
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
         popMan.attach(new SnowPopulator());
     }
 
     @Override
-    public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoise fastNoise) {
+    public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoiseLite fastNoise) {
         if(needsLoad) load(world); // Load population data for world.
         StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
@@ -161,11 +165,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public int getNoiseOctaves(World world) {
-        return 4;
+        return octaves;
     }
     @Override
     public float getNoiseFrequency(World world) {
-        return 1f/96;
+        return frequency;
     }
 
     @Override
@@ -186,7 +190,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public boolean shouldGenerateStructures() {
-        return true;
+        return false;
     }
 
 

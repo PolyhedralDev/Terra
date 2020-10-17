@@ -1,13 +1,13 @@
 package com.dfsek.terra.math;
 
-import org.polydev.gaea.math.FastNoise;
+import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
 import parsii.eval.Function;
 
 import java.util.List;
 
 public class NoiseFunction2 implements Function {
-    private FastNoise gen;
+    private FastNoiseLite gen;
 
     @Override
     public int getNumberOfArguments() {
@@ -16,10 +16,10 @@ public class NoiseFunction2 implements Function {
 
     @Override
     public double eval(List<Expression> list) {
-        return gen.getSimplexFractal((float) list.get(0).evaluate(), (float) list.get(1).evaluate());
+        return gen.getNoise((float) list.get(0).evaluate(), (float) list.get(1).evaluate());
     }
 
-    public void setNoise(FastNoise gen) {
+    public void setNoise(FastNoiseLite gen) {
         this.gen = gen;
     }
 
