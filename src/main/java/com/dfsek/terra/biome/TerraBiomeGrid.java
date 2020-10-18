@@ -27,7 +27,7 @@ public class TerraBiomeGrid extends BiomeGrid {
         }
         this.zone = zone;
         if(c.erosionEnable) {
-            erode = new ErosionNoise(c.erosionFreq, c.erosionThresh, c.erosionOctaves, w.getSeed());
+            erode = new ErosionNoise(c.erosionFreq, c.erosionThresh, w.getSeed());
             this.erosionGrid = erosion;
         }
     }
