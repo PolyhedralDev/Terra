@@ -86,7 +86,7 @@ public class AsyncStructureFinder implements Runnable {
                     Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
                 }
             }
-            p.sendMessage("Unable to locate structure. " + spawn);
+            else p.sendMessage("Unable to locate structure. " + spawn);
         }
     }
 
