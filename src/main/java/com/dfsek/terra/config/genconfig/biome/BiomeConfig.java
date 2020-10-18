@@ -150,7 +150,7 @@ public class BiomeConfig extends TerraConfig {
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap()), getBoolean("erodible", false), biomeID);
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap(), getBoolean("prevent-smooth", false)), getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());

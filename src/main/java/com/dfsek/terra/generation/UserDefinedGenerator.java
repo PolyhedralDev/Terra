@@ -29,10 +29,12 @@ public class UserDefinedGenerator extends Generator {
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
 
+    private final boolean preventSmooth;
+
     private static final Object noiseLock = new Object();
 
 
-    public UserDefinedGenerator(String equation, List<Variable> v, TreeMap<Integer, Palette<BlockData>> pa) throws ParseException {
+    public UserDefinedGenerator(String equation, List<Variable> v, TreeMap<Integer, Palette<BlockData>> pa, boolean preventSmooth) throws ParseException {
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
         p.registerFunction("noise3", n3);
@@ -47,6 +49,7 @@ public class UserDefinedGenerator extends Generator {
             palettes[y] = d;
         }
         this.noiseExp = p.parse(equation, s);
+        this.preventSmooth = preventSmooth;
     }
     /**
      * Gets the 2D noise at a pair of coordinates using the provided FastNoiseLite instance.
@@ -97,5 +100,10 @@ public class UserDefinedGenerator extends Generator {
     @Override
     public Palette<BlockData> getPalette(int y) {
         return palettes[y];
+    }
+
+    @Override
+    public boolean useMinimalInterpolation() {
+        return preventSmooth;
     }
 }
