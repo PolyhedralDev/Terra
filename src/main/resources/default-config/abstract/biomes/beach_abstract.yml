@@ -1,4 +1,4 @@
-noise-equation: "((-((y / 58)^2)) + 1) + (noise2(x, z)/4)"
+noise-equation: "((-((y / 58)^2)) + 1) + (noise2(x, z)/5)"
 id: "BEACH_ABSTRACT"
 
 

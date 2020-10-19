@@ -1,0 +1,43 @@
+extends: "DEEP_OCEAN_ABSTRACT"
+id: "WARM_OCEAN_DEEP"
+vanilla: WARM_OCEAN
+palette:
+  - BEDROCK: 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - SANDY: 255
+  - OCEANFLOOR: 60
+flora:
+  chance: 50
+  attempts: 1
+  simplex:
+    enable: true
+    frequency: 0.05
+    seed: 4
+  items:
+    TALL_SEAGRASS:
+      weight: 1
+      y:
+        min: 32
+        max: 64
+    SEAGRASS:
+      weight: 3
+      y:
+        min: 32
+        max: 64
+    KELP_SHORT:
+      weight: 1
+      y:
+        min: 32
+        max: 64
+    KELP_MEDIUM:
+      weight: 1
+      y:
+        min: 32
+        max: 64
+    KELP_TALL:
+      weight: 1
+      y:
+        min: 32
+        max: 64

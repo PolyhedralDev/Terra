@@ -38,7 +38,7 @@ trees:
 
 slabs:
   enable: true
-  threshold: 0.015
+  threshold: 0.0075
   palettes:
     - "minecraft:sand": "BLOCK:minecraft:sandstone_slab"
   use-stairs-if-available: true

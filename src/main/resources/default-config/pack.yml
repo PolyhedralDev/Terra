@@ -1,13 +1,13 @@
 id: DEFAULT
 grids:
-  - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
+  - OCEAN_DEEP
+  - OCEAN_DEEP
+  - OCEAN_DEEP
+  - OCEAN_DEEP
+  - OCEAN_DEEP
+  - OCEAN_DEEP
+  - OCEAN_DEEP
+  - OCEAN_SHELF
   - OCEAN
   - OCEAN
   - OCEAN
@@ -58,7 +58,9 @@ blend:
   amplitude: 10
 erode:
   enable: true
-  frequency: 0.002
-  threshold: 0.001
-  octaves: 4
+  frequency: 0.005
+  threshold: 0.1
   grid: "BIOME:RIVER"
+noise:
+  octaves: 5
+  frequency: 0.0075

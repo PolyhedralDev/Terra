@@ -25,5 +25,5 @@ layers:
     layers: 1
 id: ARID
 simplex: true
-frequency: 0.04
+frequency: 0.05
 seed: 3

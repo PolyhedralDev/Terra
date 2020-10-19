@@ -10,5 +10,5 @@ layers:
     layers: 1
 id: MOUNTAIN_STONE
 simplex: true
-frequency: 0.05
+frequency: 0.075
 seed: 3

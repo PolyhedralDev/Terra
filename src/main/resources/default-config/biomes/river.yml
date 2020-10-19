@@ -1,4 +1,4 @@
-noise-equation: "((-((y / 58)^2)) + 1) + ((noise2(x, z)/2.5))"
+noise-equation: "((-((y / 58)^2)) + 1) + ((noise2(x, z)/4))"
 extends: "BASIC_ORES"
 id: "RIVER"
 name: "River"

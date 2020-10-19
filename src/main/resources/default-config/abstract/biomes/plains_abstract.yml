@@ -1,4 +1,4 @@
-noise-equation: "((-((y / 63)^2)) + 1) + |(noise2(x, z) / 2) + 0.1|"
+noise-equation: "((-((y / 64)^2)) + 1) + |(noise2(x, z) / 3) + 0.1|"
 id: "PLAINS_ABSTRACT"
 
 carving:
