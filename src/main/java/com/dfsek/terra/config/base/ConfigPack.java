@@ -61,6 +61,7 @@ public class ConfigPack extends YamlConfiguration {
     public final float erosionFreq;
     public final double erosionThresh;
     public final boolean erosionEnable;
+    public final int erosionOctaves;
     public final String erosionName;
 
     public final int blendAmp;
@@ -107,6 +108,7 @@ public class ConfigPack extends YamlConfiguration {
         erosionEnable = getBoolean("erode.enable", false);
         erosionFreq = (float) getDouble("erode.frequency", 0.01);
         erosionThresh = getDouble("erode.threshold", 0.04);
+        erosionOctaves = getInt("erode.octaves", 3);
 
         octaves = getInt("noise.octaves", 4);
         frequency = (float) getDouble("noise.frequency", 1f/96);
