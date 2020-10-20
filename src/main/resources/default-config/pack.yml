@@ -59,8 +59,9 @@ blend:
 erode:
   enable: true
   frequency: 0.005
-  threshold: 0.1
+  threshold: 0.001
+  octaves: 4
   grid: "BIOME:RIVER"
 noise:
-  octaves: 5
-  frequency: 0.0075
+  octaves: 4
+  frequency: 0.01
