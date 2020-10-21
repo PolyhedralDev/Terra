@@ -7,7 +7,7 @@ import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.util.Random;
 
-public class DataUtil {
+public final class DataUtil {
     public static final BlockData STONE = Material.STONE.createBlockData();
     public static final BlockData SNOW = Material.SNOW.createBlockData();
     public static final BlockData WATER = Material.WATER.createBlockData();

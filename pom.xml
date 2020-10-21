@@ -58,6 +58,10 @@
                             <pattern>parsii</pattern>
                             <shadedPattern>com.dfsek.terra.lib.parsii</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.papermc.lib</pattern>
+                            <shadedPattern>com.dfsek.terra.lib.paperlib</shadedPattern> <!-- Replace this -->
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -87,6 +91,10 @@
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -148,6 +156,12 @@
             <groupId>com.scireum</groupId>
             <artifactId>parsii</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.5</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -5,10 +5,10 @@ import com.dfsek.terra.structure.Structure;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rail;
 
-public class RotationUtil {
+public final class RotationUtil {
     /**
      * Rotate and mirror a coordinate pair.
-     * @param arr Array containing X and Z coordinates.
+     * @param orig Vector to rotate.
      * @param r Rotation
      * @return Rotated coordinate pair
      */

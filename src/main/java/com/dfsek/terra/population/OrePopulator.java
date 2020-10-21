@@ -3,6 +3,8 @@ package com.dfsek.terra.population;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeOreConfig;
+import com.dfsek.terra.event.OreVeinGenerateEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.Range;
 import com.dfsek.terra.TerraProfiler;
@@ -30,13 +32,20 @@ public class OrePopulator extends GaeaBlockPopulator {
             BiomeOreConfig ores = config.getBiome((UserDefinedBiome) b).getOres();
             for(Map.Entry<OreConfig, Range> e : ores.getOres().entrySet()) {
                 int num = e.getValue().get(random);
-                int edgeOffset = e.getKey().getChunkEdgeOffset();
+                OreConfig ore = e.getKey();
+                int edgeOffset = ore.getChunkEdgeOffset();
                 for(int i = 0; i < num; i++) {
                     int x = random.nextInt(16 - edgeOffset*2) + edgeOffset;
                     int z = random.nextInt(16 - edgeOffset*2) + edgeOffset;
-                    int y = ores.getOreHeights().get(e.getKey()).get(random);
-                    if(e.getKey().crossChunks()) e.getKey().doVein(new Vector(x, y, z), chunk, random);
-                    else e.getKey().doVeinSingle(new Vector(x, y, z), chunk, random);
+                    int y = ores.getOreHeights().get(ore).get(random);
+
+                    Vector v = new Vector(x, y, z);
+                    OreVeinGenerateEvent event = new OreVeinGenerateEvent(tw, v.toLocation(world), ore);
+                    Bukkit.getPluginManager().callEvent(event);
+                    if(! event.isCancelled()) {
+                        if(ore.crossChunks()) ore.doVein(v, chunk, random);
+                        else ore.doVeinSingle(new Vector(x, y, z), chunk, random);
+                    }
                 }
             }
         }

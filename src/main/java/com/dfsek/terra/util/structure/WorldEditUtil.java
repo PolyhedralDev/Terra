@@ -11,7 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class WorldEditUtil {
+public final class WorldEditUtil {
     public static WorldEditPlugin getWorldEdit() {
         Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
         if (p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
