@@ -4,6 +4,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
@@ -14,6 +15,9 @@ import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.util.StructureTypeEnum;
+import org.bukkit.StructureType;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +74,8 @@ public class ConfigPack extends YamlConfiguration {
 
     public final int octaves;
     public final float frequency;
+
+    public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
@@ -130,7 +136,25 @@ public class ConfigPack extends YamlConfiguration {
             allStructures.addAll(b.getStructures());
         }
 
+        ConfigurationSection st = getConfigurationSection("locatable");
+        if(st != null) {
+            Map<String, Object> strucLocatable = st.getValues(false);
+            for(Map.Entry<String, Object> e : strucLocatable.entrySet()) {
+                StructureConfig c = getStructure((String) e.getValue());
+                if(c == null) throw new NotFoundException("Structure", (String) e.getValue(), getID());
+                try {
+                    locatable.put(StructureTypeEnum.valueOf(e.getKey()), c);
+                } catch(IllegalArgumentException ex) {
+                    throw new NotFoundException("Structure Type", e.getKey(), getID());
+                }
+            }
+        }
+
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l)/1000000D));
+    }
+
+    public Map<StructureTypeEnum, StructureConfig> getLocatable() {
+        return locatable;
     }
 
     public Map<String, AbstractBiomeConfig> getAbstractBiomes() {

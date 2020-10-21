@@ -51,7 +51,7 @@ public class Terra extends GaeaPlugin {
 
         saveDefaultConfig();
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
-
+        Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
     }
 
     @Override

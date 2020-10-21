@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * Runnable to locate structures asynchronously
@@ -20,26 +21,24 @@ import java.util.Random;
 public class AsyncStructureFinder implements Runnable {
     private final TerraBiomeGrid grid;
     private final StructureConfig target;
-    private final Player p;
     private final int startRadius;
     private final int maxRadius;
-    private final boolean tp;
     private final int centerX;
     private final int centerZ;
     private final long seed;
     private final World world;
+    private final Consumer<Vector> callback;
 
-    public AsyncStructureFinder(TerraBiomeGrid grid, StructureConfig target, Player p, int startRadius, int maxRadius, boolean tp) {
+    public AsyncStructureFinder(TerraBiomeGrid grid, StructureConfig target, Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
         this.grid = grid;
         this.target = target;
-        this.p = p;
         this.startRadius = startRadius;
         this.maxRadius = maxRadius;
-        this.tp = tp;
-        this.centerX = p.getLocation().getBlockX();
-        this.centerZ = p.getLocation().getBlockZ();
-        this.seed = p.getWorld().getSeed();
-        this.world = p.getWorld();
+        this.centerX = origin.getBlockX();
+        this.centerZ = origin.getBlockZ();
+        this.world = origin.getWorld();
+        this.seed = world.getSeed();
+        this.callback = callback;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class AsyncStructureFinder implements Runnable {
         int x = centerX;
         int z = centerZ;
 
-        int wid = target.getSpawn().getWidth() + 2*target.getSpawn().getSeparation();
+        final int wid = target.getSpawn().getWidth() + 2*target.getSpawn().getSeparation();
         x/=wid;
         z/=wid;
 
@@ -77,17 +76,8 @@ public class AsyncStructureFinder implements Runnable {
             run++;
             toggle = !toggle;
         }
-        if(p.isOnline()) {
-            if(found) {
-                p.sendMessage("Located structure at (" + spawn.getBlockX() + ", " + spawn.getBlockZ() + ").");
-                if(tp) {
-                    int finalX = spawn.getBlockX();
-                    int finalZ = spawn.getBlockZ();
-                    Bukkit.getScheduler().runTask(Terra.getInstance(), () -> p.teleport(new Location(p.getWorld(), finalX, p.getLocation().getY(), finalZ)));
-                }
-            }
-            else p.sendMessage("Unable to locate structure. " + spawn);
-        }
+        final Vector finalSpawn = found ? spawn: null;
+        Bukkit.getScheduler().runTask(Terra.getInstance(), () -> callback.accept(finalSpawn));
     }
 
     /**

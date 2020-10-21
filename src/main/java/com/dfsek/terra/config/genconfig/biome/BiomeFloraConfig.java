@@ -32,7 +32,7 @@ public class BiomeFloraConfig extends TerraConfigSection {
         floraAttempts = parent.getInt("flora.attempts", 1);
         floraChance = parent.getInt("flora.chance", 0);
         float floraFreq = (float) parent.getDouble("flora.simplex.frequency", 0.1);
-        int floraSeed = parent.getInt("flora.simplex.seed", 0);
+        int floraSeed = parent.getInt("flora.simplex.seed", 2403);
         if(floraSimplex) {
             floraNoise = new FastNoiseLite(floraSeed);
             floraNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
