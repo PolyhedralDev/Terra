@@ -138,7 +138,9 @@ public class Structure implements Serializable {
      * @param r Rotation
      */
     public void paste(@NotNull Location origin, Rotation r) {
-        this.executeForBlocksInRange(getRange(Axis.X), getRange(Axis.Y), getRange(Axis.Z), block -> pasteBlock(block, origin, r), r);
+        Range xRange = getRange(Axis.X);
+        Range zRange = getRange(Axis.Z);
+        this.executeForBlocksInRange(xRange, getRange(Axis.Y), zRange, block -> pasteBlock(block, origin, r), r);
     }
 
     public boolean checkSpawns(Location origin, Rotation r) {
@@ -184,6 +186,7 @@ public class Structure implements Serializable {
             Location loc = origin.clone().add(block.getX(), block.getY(), block.getZ());
             Block worldBlock = loc.getBlock();
             main: while(worldBlock.isEmpty()) {
+                if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
                 if(block.getPull() == null) break;
                 switch(block.getPull()) {
                     case UP:
@@ -194,7 +197,7 @@ public class Structure implements Serializable {
                         break;
                     default: break main;
                 }
-                if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
+
             }
             int offset = block.getPullOffset();
             if(offset != 0) worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
@@ -207,10 +210,12 @@ public class Structure implements Serializable {
                 ((Directional) data).setFacing(rt);
             } else if(data instanceof MultipleFacing) {
                 MultipleFacing mfData = (MultipleFacing) data;
-                List<BlockFace> faces = new ArrayList<>(mfData.getFaces());
-                for(BlockFace face : faces) {
-                    mfData.setFace(face, false);
-                    mfData.setFace(getRotatedFace(face, r), true);
+                Map<BlockFace, Boolean> faces = new HashMap<>();
+                for(BlockFace f : mfData.getAllowedFaces()) {
+                    faces.put(f, mfData.hasFace(f));
+                }
+                for(Map.Entry<BlockFace, Boolean> face : faces.entrySet()) {
+                    mfData.setFace(getRotatedFace(face.getKey(), r), face.getValue());
                 }
             } else if(data instanceof Rail) {
                 Rail.Shape newShape = getRotatedRail(((Rail) data).getShape(), r);
@@ -225,7 +230,7 @@ public class Structure implements Serializable {
                     connections.put(f, rData.getFace(f));
                 }
                 for(Map.Entry<BlockFace, RedstoneWire.Connection> e : connections.entrySet()) {
-                    rData.setFace(RotationUtil.getRotatedFace(e.getKey(), r), e.getValue());
+                    rData.setFace(getRotatedFace(e.getKey(), r), e.getValue());
                 }
             }
             worldBlock.setBlockData(data, false);

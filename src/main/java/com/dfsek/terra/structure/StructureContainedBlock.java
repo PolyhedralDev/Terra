@@ -1,9 +1,13 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.structure.serialize.SerializableBlockData;
+import com.dfsek.terra.structure.serialize.block.SerializableBanner;
 import com.dfsek.terra.structure.serialize.block.SerializableBlockState;
+import com.dfsek.terra.structure.serialize.block.SerializableMonsterCage;
 import com.dfsek.terra.structure.serialize.block.SerializableSign;
+import org.bukkit.block.Banner;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 
@@ -23,6 +27,10 @@ public class StructureContainedBlock implements Serializable {
     public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         if(state instanceof Sign) {
             this.state = new SerializableSign((org.bukkit.block.Sign) state);
+        } else if(state instanceof CreatureSpawner) {
+            this.state = new SerializableMonsterCage((CreatureSpawner) state);
+        } else if(state instanceof Banner) {
+            this.state = new SerializableBanner((Banner) state);
         } else this.state = null;
         this.x = x;
         this.y = y;
