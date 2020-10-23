@@ -1,5 +1,6 @@
 package com.dfsek.terra.structure;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.structure.serialize.SerializableBlockData;
 import com.dfsek.terra.structure.serialize.block.SerializableBanner;
 import com.dfsek.terra.structure.serialize.block.SerializableBlockState;
@@ -26,10 +27,13 @@ public class StructureContainedBlock implements Serializable {
     private final StructureSpawnRequirement requirement;
     public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         if(state instanceof Sign) {
+            Debug.info("Sign at (" + x + ", " + y  + ", " + z + ").");
             this.state = new SerializableSign((org.bukkit.block.Sign) state);
         } else if(state instanceof CreatureSpawner) {
+            Debug.info("Monster Spawner at (" + x + ", " + y  + ", " + z + ").");
             this.state = new SerializableMonsterCage((CreatureSpawner) state);
         } else if(state instanceof Banner) {
+            Debug.info("Banner at (" + x + ", " + y  + ", " + z + ").");
             this.state = new SerializableBanner((Banner) state);
         } else this.state = null;
         this.x = x;
@@ -41,9 +45,7 @@ public class StructureContainedBlock implements Serializable {
         this.pullOffset = pullOffset;
     }
     public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
-        if(state instanceof SerializableSign) {
-            this.state = state;
-        } else this.state = null;
+        this.state = state;
         this.x = x;
         this.y = y;
         this.z = z;

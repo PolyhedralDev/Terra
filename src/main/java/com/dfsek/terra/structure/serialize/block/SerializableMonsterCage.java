@@ -8,6 +8,7 @@ import org.polydev.gaea.math.Range;
 import java.util.Random;
 
 public class SerializableMonsterCage implements SerializableBlockState {
+    public static final long serialVersionUID = 529892860847864007L;
     private final EntityType type;
     private final int minDelay;
     private final int maxDelay;
@@ -35,6 +36,6 @@ public class SerializableMonsterCage implements SerializableBlockState {
         spawner.setRequiredPlayerRange(playerRange);
         spawner.setDelay(delay);
         spawner.setSpawnCount(count);
-        return null;
+        return spawner;
     }
 }

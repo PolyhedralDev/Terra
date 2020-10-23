@@ -21,6 +21,7 @@ import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.math.Range;
 
 import java.io.File;
@@ -104,6 +105,8 @@ public class Structure implements Serializable {
                                     } catch(IllegalArgumentException e) {
                                         throw new InitializationException("Invalid pull type: " + spawn);
                                     }
+                                } else {
+                                    throw new InitializationException("Invalid Magic Sign: \"" + s.getLine(1) + "\"");
                                 }
                             } catch(IllegalArgumentException e) {
                                 throw new InitializationException("Invalid Block Data on sign: \"" + s.getLine(2) + s.getLine(3) + "\"");
@@ -138,9 +141,9 @@ public class Structure implements Serializable {
      * @param r Rotation
      */
     public void paste(@NotNull Location origin, Rotation r) {
-        Range xRange = getRange(Axis.X);
-        Range zRange = getRange(Axis.Z);
-        this.executeForBlocksInRange(xRange, getRange(Axis.Y), zRange, block -> pasteBlock(block, origin, r), r);
+        Range xRange = getRange(Axis.X, r);
+        Range zRange = getRange(Axis.Z, r);
+        this.executeForBlocksInRange(xRange, getRange(Axis.Y, r), zRange, block -> pasteBlock(block, origin, r), r);
     }
 
     public boolean checkSpawns(Location origin, Rotation r) {
@@ -164,12 +167,10 @@ public class Structure implements Serializable {
     public void paste(Location origin, Chunk chunk, Rotation r) {
         int xOr = (chunk.getX() << 4);
         int zOr = (chunk.getZ() << 4);
-        Range intersectX;
-        Range intersectZ;
-        intersectX = new Range(xOr, xOr+16).sub(origin.getBlockX() - structureInfo.getCenterX());
-        intersectZ = new Range(zOr, zOr+16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
+        Range intersectX = new Range(xOr, xOr+16).sub(origin.getBlockX() - structureInfo.getCenterX());
+        Range intersectZ = new Range(zOr, zOr+16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
         if(intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Axis.Y), intersectZ, block -> pasteBlock(block, origin, r), r);
+        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
         Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 
@@ -331,7 +332,21 @@ public class Structure implements Serializable {
         return uuid;
     }
 
-    public Range getRange(Axis a) {
+    @NotNull
+    public Range getRange(@NotNull Axis a, @NotNull Rotation r) {
+        if(a.equals(Axis.Y)) return getRawRange(a);
+        Vector2 center = new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ());
+        Range x = getRawRange(Axis.X);
+        Range z = getRawRange(Axis.Z);
+        Vector2 min = getRotatedCoords(new Vector2(x.getMin(), z.getMin()).subtract(center), r.inverse()).add(center);
+        Vector2 max = getRotatedCoords(new Vector2(x.getMax(), z.getMax()).subtract(center), r.inverse()).add(center);
+
+        if(a.equals(Axis.X)) return new Range((int) Math.floor(Math.min(min.getX(), max.getX())), (int) Math.ceil(Math.max(min.getX(), max.getX())) + 1);
+        else return new Range((int) Math.floor(Math.min(min.getZ(), max.getZ())), (int) Math.ceil(Math.max(min.getZ(), max.getZ())) + 1);
+    }
+
+    @NotNull
+    private Range getRawRange(@NotNull Axis a) {
         switch(a) {
             case X:
                 return new Range(0, structureInfo.getSizeX());
@@ -339,7 +354,7 @@ public class Structure implements Serializable {
                 return new Range(0, structureInfo.getSizeY());
             case Z:
                 return new Range(0, structureInfo.getSizeZ());
-            default: return null;
+            default: throw new IllegalArgumentException();
         }
     }
 
