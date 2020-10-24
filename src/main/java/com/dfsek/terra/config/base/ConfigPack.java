@@ -16,6 +16,7 @@ import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
+import org.bukkit.Bukkit;
 import org.bukkit.StructureType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -191,6 +192,10 @@ public class ConfigPack extends YamlConfiguration {
             ConfigPack config;
             try {
                 config = new ConfigPack(folder.toFile());
+                if(configs.containsKey(config.getID())) {
+                    Bukkit.getLogger().severe("Duplicate Config Pack ID: \"" + config.getID() + "\"");
+                    continue;
+                }
                 configs.put(config.getID(), config);
             } catch(IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
