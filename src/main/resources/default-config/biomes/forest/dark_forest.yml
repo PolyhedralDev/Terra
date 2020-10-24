@@ -3,6 +3,8 @@ extends: "BASIC_ORES"
 id: "DARK_FOREST"
 name: "Birch Forest"
 
+structures:
+  - MANSION
 palette:
   - BEDROCK: 0
   - BEDROCK_MOST: 1

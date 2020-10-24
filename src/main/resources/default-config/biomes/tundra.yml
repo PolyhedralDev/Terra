@@ -10,9 +10,9 @@ palette:
   - TUNDRA: 255
 vanilla: SNOWY_TUNDRA
 carving:
-  - CAVE_TUNDRA: 35
-  - RAVINE: 5
-  - CAVERN: 5
+  CAVE_TUNDRA: 35
+  RAVINE: 5
+  CAVERN: 5
 
 snow:
   - min: 0

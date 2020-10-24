@@ -1,0 +1,14 @@
+files:
+  mansion: 1
+id: "MANSION"
+spawn:
+  start:
+    min: 72
+    max: 72
+  bound:
+    min: 48
+    max: 96
+  width: 250
+  padding: 100
+loot:
+  1: arrows

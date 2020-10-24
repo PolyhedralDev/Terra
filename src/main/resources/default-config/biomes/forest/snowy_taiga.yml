@@ -41,14 +41,9 @@ flora:
         max: 84
 
 trees:
-  density: 125
+  density: 75
   items:
-    SPRUCE:
-      weight: 1
-      y:
-        min: 58
-        max: 84
-    LARGE_SPRUCE:
+    SPRUCE_CUSTOM:
       weight: 1
       y:
         min: 58

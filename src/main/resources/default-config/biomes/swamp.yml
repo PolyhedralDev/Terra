@@ -41,7 +41,7 @@ flora:
         max: 84
 
 carving:
-  - CAVE_SWAMP: 30
+  CAVE_SWAMP: 30
 
 
 

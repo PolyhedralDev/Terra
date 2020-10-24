@@ -1,4 +1,4 @@
-id: DEFAULT
+id: OVERWORLD_DEMO
 grids:
   - OCEAN_DEEP
   - OCEAN_DEEP
@@ -58,10 +58,12 @@ blend:
   amplitude: 10
 erode:
   enable: true
-  frequency: 0.005
-  threshold: 0.001
-  octaves: 4
+  frequency: 0.001
+  threshold: 0.0015
+  octaves: 5
   grid: "BIOME:RIVER"
 noise:
-  octaves: 4
-  frequency: 0.01
+  octaves: 5
+  frequency: 0.0075
+locatable:
+  STRONGHOLD: JUNGLE

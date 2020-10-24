@@ -18,23 +18,22 @@ flora:
   attempts: 1
   items:
     TALL_GRASS:
-      weight: 160
+      weight: 29
       y:
         min: 62
         max: 84
     GRASS:
-      weight: 100
+      weight: 70
       y:
         min: 62
         max: 84
     SUNFLOWER:
-      weight: 8
+      weight: 1
       y:
         min: 62
         max: 84
 
 trees:
-  chance: 1
   density: 1
   items:
     OAK:

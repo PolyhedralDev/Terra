@@ -1,9 +1,9 @@
 id: "BASIC_ORES"
 
 carving:
-  - CAVE: 30
-  - RAVINE: 5
-  - CAVERN: 5
+  CAVE: 30
+  RAVINE: 5
+  CAVERN: 5
 ores:
   DIRT:
     min: 0
