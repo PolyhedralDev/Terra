@@ -79,39 +79,43 @@ public class Structure implements Serializable {
                     StructureContainedBlock.Pull pull = StructureContainedBlock.Pull.NONE;
                     int pullOffset = 0;
                     StructureSpawnRequirement requirement = StructureSpawnRequirement.BLANK;
-                    if(state instanceof Sign) { // Magic sign stuff
-                        Sign s = (Sign) b.getState();
-                        if(s.getLine(0).equals("[TERRA]")) {
-                            try {
-                                d = Bukkit.createBlockData(s.getLine(2) + s.getLine(3));
-                                useState = false;
-                                if(s.getLine(1).equals("[CENTER]")) {
-                                    centerX = x;
-                                    centerZ = z;
-                                } else if(s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
-                                    String og = s.getLine(1);
-                                    String spawn = og.substring(og.indexOf("=")+1, og.length()-1);
-                                    try {
-                                        requirement = StructureSpawnRequirement.valueOf(spawn.toUpperCase());
-                                    } catch(IllegalArgumentException e) {
-                                        throw new InitializationException("Invalid spawn type: " + spawn);
+                    try {
+                        if(state instanceof Sign) { // Magic sign stuff
+                            Sign s = (Sign) b.getState();
+                            if(s.getLine(0).equals("[TERRA]")) {
+                                try {
+                                    d = Bukkit.createBlockData(s.getLine(2) + s.getLine(3));
+                                    useState = false;
+                                    if(s.getLine(1).equals("[CENTER]")) {
+                                        centerX = x;
+                                        centerZ = z;
+                                    } else if(s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
+                                        String og = s.getLine(1);
+                                        String spawn = og.substring(og.indexOf("=") + 1, og.length() - 1);
+                                        try {
+                                            requirement = StructureSpawnRequirement.valueOf(spawn.toUpperCase());
+                                        } catch(IllegalArgumentException e) {
+                                            throw new InitializationException("Invalid spawn type: " + spawn, b.getLocation());
+                                        }
+                                    } else if(s.getLine(1).startsWith("[PULL=") && s.getLine(1).endsWith("]")) {
+                                        String og = s.getLine(1);
+                                        String spawn = og.substring(og.indexOf("=") + 1, og.indexOf("_"));
+                                        pullOffset = Integer.parseInt(og.substring(og.indexOf("_") + 1, og.length() - 1));
+                                        try {
+                                            pull = StructureContainedBlock.Pull.valueOf(spawn);
+                                        } catch(IllegalArgumentException e) {
+                                            throw new InitializationException("Invalid pull type: " + spawn, b.getLocation());
+                                        }
+                                    } else {
+                                        throw new InitializationException("Invalid Magic Sign: \"" + s.getLine(1) + "\"", b.getLocation());
                                     }
-                                } else if(s.getLine(1).startsWith("[PULL=") && s.getLine(1).endsWith("]")) {
-                                    String og = s.getLine(1);
-                                    String spawn = og.substring(og.indexOf("=")+1, og.indexOf("_"));
-                                    pullOffset = Integer.parseInt(og.substring(og.indexOf("_")+1, og.length()-1));
-                                    try {
-                                        pull = StructureContainedBlock.Pull.valueOf(spawn);
-                                    } catch(IllegalArgumentException e) {
-                                        throw new InitializationException("Invalid pull type: " + spawn);
-                                    }
-                                } else {
-                                    throw new InitializationException("Invalid Magic Sign: \"" + s.getLine(1) + "\"");
+                                } catch(IllegalArgumentException e) {
+                                    throw new InitializationException("Invalid Block Data on sign: \"" + s.getLine(2) + s.getLine(3) + "\"", b.getLocation());
                                 }
-                            } catch(IllegalArgumentException e) {
-                                throw new InitializationException("Invalid Block Data on sign: \"" + s.getLine(2) + s.getLine(3) + "\"");
                             }
                         }
+                    } catch(StringIndexOutOfBoundsException e) {
+                        throw new InitializationException("Invalid sign.", b.getLocation());
                     }
                     StructureContainedBlock block = new StructureContainedBlock(x, y, z, useState ? state : null, d, requirement, pull, pullOffset);
                     if(state instanceof BlockInventoryHolder) {
@@ -122,7 +126,7 @@ public class Structure implements Serializable {
                 }
             }
         }
-        if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.");
+        if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.", null);
         structureInfo = new StructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector2(centerX, centerZ));
     }
 
