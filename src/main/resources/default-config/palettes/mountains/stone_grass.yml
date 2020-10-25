@@ -16,7 +16,7 @@ layers:
   - materials:
       - "minecraft:stone": 1
     layers: 1
-id: MOUNTAIN_STONE_GRASS
+id: "MOUNTAIN_STONE_GRASS"
 simplex: true
 frequency: 0.075
 seed: 3

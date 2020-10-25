@@ -8,4 +8,4 @@ layers:
   - materials:
       - "minecraft:stone": 1
     layers: 1
-id: GRASSY
+id: "GRASSY"

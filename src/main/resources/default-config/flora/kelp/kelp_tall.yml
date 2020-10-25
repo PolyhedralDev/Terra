@@ -6,8 +6,7 @@ layers:
       - "minecraft:kelp_plant": 1
     layers: 9
 
-id: KELP_TALL
-name: "Tall Kelp"
+id: "KELP_TALL"
 spawnable:
   - "minecraft:sand"
   - "minecraft:stone"

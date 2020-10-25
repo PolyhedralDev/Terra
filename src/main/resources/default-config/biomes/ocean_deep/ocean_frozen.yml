@@ -2,7 +2,7 @@ extends: "DEEP_OCEAN_ABSTRACT"
 id: "FROZEN_OCEAN_DEEP"
 vanilla: COLD_OCEAN
 palette:
-  - BEDROCK: 0
+  - "BLOCK:minecraft:bedrock": 0
   - BEDROCK_MOST: 1
   - BEDROCK_HALF: 2
   - BEDROCK_LITTLE: 3

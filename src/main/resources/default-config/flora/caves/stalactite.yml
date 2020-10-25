@@ -9,7 +9,7 @@ layers:
   - materials:
       - "minecraft:iron_bars": 1
     layers: 1
-id: STALACTITE
+id: "STALACTITE"
 spawnable:
   - "minecraft:stone"
 replaceable:

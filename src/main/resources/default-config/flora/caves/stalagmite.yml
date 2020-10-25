@@ -10,7 +10,7 @@ layers:
      - "minecraft:cobblestone_wall": 1
     layers: 1
 
-id: STALAGMITE
+id: "STALAGMITE"
 spawnable:
   - "minecraft:stone"
 replaceable:

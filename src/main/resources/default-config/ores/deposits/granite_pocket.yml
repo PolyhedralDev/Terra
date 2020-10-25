@@ -4,6 +4,6 @@ radius:
   max: 4
 deform: 0.75
 deform-frequency: 0.1
-id: GRANITE
+id: "GRANITE"
 replace:
   - "minecraft:stone"

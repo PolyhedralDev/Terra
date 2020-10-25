@@ -5,10 +5,7 @@ grids:
   - OCEAN_DEEP
   - OCEAN_DEEP
   - OCEAN_DEEP
-  - OCEAN_DEEP
-  - OCEAN_DEEP
   - OCEAN_SHELF
-  - OCEAN
   - OCEAN
   - OCEAN
   - OCEAN
@@ -37,8 +34,6 @@ grids:
   - LAND
   - MOUNTAIN_0
   - MOUNTAIN_1
-  - MOUNTAIN
-  - MOUNTAIN
   - MOUNTAIN
   - MOUNTAIN
   - MOUNTAIN

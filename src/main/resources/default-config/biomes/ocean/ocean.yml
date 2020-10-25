@@ -1,5 +1,4 @@
 extends: "OCEAN_ABSTRACT"
 id: "OCEAN"
-name: "Ocean"
 vanilla: OCEAN
 

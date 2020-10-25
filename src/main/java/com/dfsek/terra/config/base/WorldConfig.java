@@ -65,7 +65,7 @@ public class WorldConfig {
 
             tConfig = ConfigPack.fromID(configID);
 
-            if(tConfig == null) throw new ConfigException("No such config pack: \"" + configID + "\"", worldID);
+            if(tConfig == null) throw new ConfigException("No such config pack: \"" + configID + "\". This pack either does not exist, or failed to load due to configuration errors.", worldID);
 
             // Load image stuff
             try {

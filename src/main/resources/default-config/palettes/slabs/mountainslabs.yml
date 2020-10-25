@@ -3,8 +3,7 @@ layers:
       - "minecraft:cobblestone_slab": 1
       - "minecraft:stone_slab": 3
     layers: 1
-id: MOUNTAIN_SLABS
-name: "Mountain Slabs palette"
+id: "MOUNTAIN_SLABS"
 simplex: true
 frequency: 0.1
 seed: 4

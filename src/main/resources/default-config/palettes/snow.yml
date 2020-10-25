@@ -8,5 +8,4 @@ layers:
   - materials:
       - "minecraft:stone": 1
     layers: 1
-id: SNOW
-name: "Snowy Palette"
+id: "SNOW"

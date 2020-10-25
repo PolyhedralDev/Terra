@@ -4,6 +4,6 @@ radius:
   max: 1
 deform: 0.75
 deform-frequency: 0.2
-id: DIAMOND_ORE
+id: "DIAMOND_ORE"
 replace:
   - "minecraft:stone"

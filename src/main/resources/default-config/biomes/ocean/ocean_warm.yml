@@ -1,9 +1,8 @@
 extends: "OCEAN_ABSTRACT"
 id: "WARM_OCEAN"
-name: "Ocean"
 vanilla: WARM_OCEAN
 palette:
-  - BEDROCK: 0
+  - "BLOCK:minecraft:bedrock": 0
   - BEDROCK_MOST: 1
   - BEDROCK_HALF: 2
   - BEDROCK_LITTLE: 3

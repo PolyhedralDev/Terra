@@ -9,6 +9,5 @@ layers:
   - materials:
       - "minecraft:stone": 1
     layers: 1
-id: OCEANFLOOR
-name: "Ocean Floor Palette"
+id: "OCEANFLOOR"
 

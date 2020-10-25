@@ -5,8 +5,7 @@ layers:
   - materials:
       - "minecraft:tall_seagrass[half=lower]": 1
     layers: 1
-id: TALL_SEAGRASS
-name: "Tall Sea Grass"
+id: "TALL_SEAGRASS"
 spawnable:
   - "minecraft:sand"
   - "minecraft:stone"

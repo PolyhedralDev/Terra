@@ -1,9 +1,8 @@
 noise-equation: "((-((y / 58)^2)) + 1) + ((noise2(x, z)/4))"
 extends: "BASIC_ORES"
 id: "RIVER"
-name: "River"
 palette:
-  - BEDROCK: 0
+  - "BLOCK:minecraft:bedrock": 0
   - BEDROCK_MOST: 1
   - BEDROCK_HALF: 2
   - BEDROCK_LITTLE: 3

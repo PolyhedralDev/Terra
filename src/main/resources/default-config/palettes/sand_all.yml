@@ -5,5 +5,4 @@ layers:
   - materials:
       - "minecraft:stone": 1
     layers: 1
-id: SAND_ALL
-name: "Sandy Palette"
+id: "SAND_ALL"
