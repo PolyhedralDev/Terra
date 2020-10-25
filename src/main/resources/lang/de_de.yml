@@ -10,8 +10,8 @@ command:
   invalid: "Ungültiger Befehl. (Erwartet %1$s Argumente, fand %2$s)."
   players-only: "Dieser Befehl kann nur von Spielern benutzt werden."
   world: "Dieser Befehl muss in einer von Terra generierten Welt ausgeführt werden!"
-  reload: "Reloaded Terra config."
-  version: "This server is running Terra version \"%s\""
+  reload: "Terra-Konfiguration wurde neu geladen."
+  version: "Dieser Server verwendet Terra \"%s\""
   main-menu:
     - "--------------------Terra--------------------"
     - "reload    - Lädt die Konfiguration neu"
