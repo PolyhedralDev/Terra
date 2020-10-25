@@ -1,0 +1,117 @@
+enable:
+  - "Wenn dir Terra gefällt, denk bitte darüber nach, das Projekt auf Patreon zu unterstützen!"
+  - "Dadurch erhältsts du Zugriff auf experimentelle Funktionen!"
+  - "Unterstütze das Projekt hier: https://www.patreon.com/dfsek"
+disable:
+  - "Danke, dass du Terra benutzt!!"
+command:
+  debug-only: "Dieser Befehl kann nur im Debugmodus benutzt werden!"
+  player-only: "Dieser Befehl kann nur von Spielern benutzt werden!"
+  invalid: "Ungültiger Befehl. (Erwartet %1$s Argumente, fand %2$s)."
+  players-only: "Dieser Befehl kann nur von Spielern benutzt werden."
+  world: "Dieser Befehl muss in einer von Terra generierten Welt ausgeführt werden!"
+  reload: "Terra-Konfiguration wurde neu geladen."
+  version: "Dieser Server verwendet Terra \"%s\""
+  main-menu:
+    - "--------------------Terra--------------------"
+    - "reload    - Lädt die Konfiguration neu"
+    - "biome     - Zeigt dir das derzeitige Biom"
+    - "ore       - Erzader an derzeitiger Position erzeugen (zum Debuggen)"
+    - "save-data - Bevölkerungsdaten speichern"
+    - "structure - Laden/Exportieren von Strukturen"
+    - "profile   - Profiler-Optionen"
+    - "image     - Bild-/GUI-Optionen"
+  biome:
+    biome-found: "Biom gefunden bei: (%1$s, %2$s)"
+    unable-to-locate: "Biom konnte nicht gefunden werden!"
+    invalid-radius: "Ungültiger Radius: \"%s\""
+    invalid: "Ungültige Biom-ID: \"%s\""
+    in: "Du bist in: \"%s\""
+  ore:
+    main-menu:
+      - "---------------Terra/Erz---------------"
+      - "Generiert eine Erzader an dem Block, den du anguckst"
+    out-of-range: "Block außer Reichweite"
+    invalid-ore: "Kann Erz \"%s\" nicht finden"
+  geometry:
+    main-menu:
+      - "---------------Terra/Geometrie----------------"
+      - "Verschiedene Debugging-Befehle für die Voxelgeometrie"
+      - "sphere       - Generiert eine Kugel"
+      - "deformsphere - Generiert eine deformierte Kugel"
+      - "tube         - Generiert ein Rohr"
+    deform:
+      invalid-radius: "Ungültiger Radius: \"%s\""
+      invalid-deform: "Ungültiger Deformation: \"%s\""
+      invalid-frequency: "Ungültige Frequenz: \"%s\""
+    sphere:
+      invalid-radius: "Ungültiger Radius: \"%s\""
+    tube:
+      invalid-radius: "Ungültiger Radius: \"%s\""
+  image:
+    main-menu:
+      - "---------------Terra/Bilde---------------"
+      - "render - Rendert ein Bild mit einer bestimmten Breite und Höhe, das später als Welt importiert werden kann."
+      - "gui    - Debug-GUI öffnen (muss in der Konfiguration aktiviert sein)"
+    gui:
+      main-menu:
+        - "-------------Terra/image/gui-------------"
+        - "raw  - Öffnet eine GUI mit Biome-Rohdaten"
+        - "step - Daten erneut rendern, um Ränder deutlicher darzustellen"
+      debug: "Der Debug-Modus muss aktiviert sein, um die Debug-GUI verwenden zu können! Die Debug-GUI ist NICHT PRODUKTIONSSICHER!"
+    render:
+      save: "Bild gespeichert unter: \"%s\""
+      error: "Beim speichern ist ein Fehler aufgetreten!"
+  profile:
+    main-menu:
+      - "---------------Terra/Profiler---------------"
+      - "start - Startet den Profiler"
+      - "stop  - Stoppt den Profiler"
+      - "query - Profiler-Daten anzeigen"
+      - "reset - Profiler-Daten zurücksetzen"
+    reset: "Profiler-Daten wurden zurückgesetzt."
+    start: "Der Profiler wurde gestartet."
+    stop: "Der Profiler wurde gestoppt."
+  structure:
+    main-menu:
+      - "---------------Terra/Strukturen---------------"
+      - "export - Exportiert deine aktuelle WorldEdit-Auswahl als Terra-Struktur."
+      - "load   - Ladt eine Terra-Struktur."
+    invalid-radius: "Ungültiger Radius: \"%s\""
+    invalid-rotation: "Ungültige Rotation: \"%s\""
+    invalid: "Ungültige Strukturen-ID: \"%s\""
+    export: "Struktur unter \"%s\" gespeichert."
+world-config:
+  loading: "Lade Weltkonfigurationswerte für Welt %s..."
+  not-found: "Weltkonfigurationswerte für Welt \"%s\" nicht gefunden. Lade Standardwerte."
+  using-image: "Lade Welt von Bild."
+  error: "Konfiguration für Welt %s kann nicht geladen werden!"
+  done: "Laden der Welt abgeschlossen. Ladedauer: %sms"
+config-pack:
+  loaded: "Konfiguration %1$s wurde in %2$sms geladen."
+config:
+  loaded: "Erfolgreich %1$s aus Datei %2$s geladen"
+  loaded-all: "%1$s %2$s(s) in %3$sms geladen."
+  error:
+    invalid-failover: "IUngültiger Failover-Typ: \"%s\""
+    duplicate: "ID doppelt belegt in Datei: %s"
+    file:
+      - "Konfigurationsfehler in Terra-Objekt. Datei: %1$s"
+      - "%2$s"
+      - "Korrigier bitte diese(n) Fehler, bevor du fortfährst!"
+    generic:
+      - "Ein Fehler ist beim laden der Konfiguration aufegtreten."
+      - "Bitte melde diesen Fehler!"
+warning:
+  no-population: "Es wurden keine Bevölkerungs-Chunks geladen. Wenn du den Server zum ersten Mal mit Terra startest oder eine neue Welt erstellst, ist dies normal."
+error:
+  severe-config: "Ein schwerwiegender Konfigurationsfehler hat Terra daran gehindert, Gelände an folgenden Koordinaten ordnungsgemäß zu generieren: %1$s, %2$s. Bitte überprüfe die Konfiguration auf Fehler. Alle Konfigurationsfehler wurden oben gemeldet."
+debug:
+  data-save: "Bevölkerungsdaten für Welt \"%s\" gespeichert."
+use-paper:
+  - "Anscheinend benutzt du Spigot/CraftBukkit."
+  - "Terra funktioniert auf Spigot/CraftBukkit, aber einige Funktionen gehen verloren. (Terra wurde nicht auf Spigot/CraftBukkit getestet; Es gibt keine Hilfe für Spigot/CraftBukkit-Server)."
+  - "Um Terra optimal zu benutzen, wechsle bitte zu Paper."
+  - "Außerdem bietet Paper immense Leistungsverbesserungen gegenüber Spigot und CraftBukkit und (normalerweise) funktionieren alle Spigot/CraftBukkit Plugins auch auf Paper!"
+  - "Benutze Paper, um die beste Erfahrung mit Terra und allen anderen Plugins zu haben."
+  - "Finde mehr über Paper heraus: https://papermc.io"
