@@ -11,6 +11,7 @@ command:
   players-only: "Command is for players only."
   world: "This command must be executed in a Terra world!"
   reload: "Reloaded Terra config."
+  version: "This server is running Terra version \"%s\""
   main-menu:
     - "--------------------Terra--------------------"
     - "reload    - Reload configuration data"

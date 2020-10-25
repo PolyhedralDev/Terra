@@ -1,5 +1,6 @@
 # Terra
-Terra is a data-driven world generator based on [Gaea](https://github.com/PolyhedralDev/Gaea).
+Terra is a data-driven world generator based on [Gaea](https://github.com/PolyhedralDev/Gaea). Find out more on our
+[Spigot page](https://www.spigotmc.org/resources/85151/)!
 
 ## Building and running Terra
 To run Terra on a test server, clone this repo, package with Maven, then run `test.sh`. The script will clone a test
@@ -13,5 +14,4 @@ Contributions are welcome! If you want to see a feature in Terra, please, open a
 submit a PR!
 
 ## Beta
-Terra is still in beta! It will have missing features, and may not work in full. It should **not** be used in production.
-Use at your own risk!
+Terra is still in beta! While it is stable, it is not feature-complete. There is a lot to be added!
