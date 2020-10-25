@@ -41,6 +41,7 @@ public class EventListener implements Listener {
     }
     @EventHandler
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
+        if(!(e.getEntity() instanceof Villager)) return;
         if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER))  e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
     }
     @EventHandler
