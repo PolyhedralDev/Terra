@@ -5,6 +5,7 @@ name: "Birch Forest"
 
 structures:
   - MANSION
+  - STRONGHOLD
 palette:
   - BEDROCK: 0
   - BEDROCK_MOST: 1

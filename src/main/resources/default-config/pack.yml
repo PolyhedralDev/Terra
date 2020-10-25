@@ -1,4 +1,4 @@
-id: DEFAULT
+id: OVERWORLD_DEMO
 grids:
   - OCEAN_DEEP
   - OCEAN_DEEP
@@ -66,4 +66,4 @@ noise:
   octaves: 5
   frequency: 0.0075
 locatable:
-  STRONGHOLD: JUNGLE
+  STRONGHOLD: STRONGHOLD

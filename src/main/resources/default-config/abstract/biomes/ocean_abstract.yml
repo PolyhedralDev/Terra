@@ -28,6 +28,9 @@ flora:
 carving:
   CAVE_OCEAN: 35
 
+structures:
+  - STRONGHOLD
+
 ores:
   DIRT:
     min: 0

@@ -16,6 +16,7 @@ vanilla: JUNGLE
 erodible: true
 structures:
   - JUNGLE
+  - STRONGHOLD
 flora:
   chance: 80
   attempts: 2

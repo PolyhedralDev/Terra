@@ -1,6 +1,6 @@
 files:
-  mansion: 1
-id: "MANSION"
+  jungle1: 1
+id: "JUNGLE"
 spawn:
   start:
     min: 72
@@ -8,7 +8,8 @@ spawn:
   bound:
     min: 48
     max: 96
-  width: 100
-  padding: 100
+  width: 250
+  padding: 50
 loot:
-  1: arrows
+  0: arrows
+  1: cobble_house

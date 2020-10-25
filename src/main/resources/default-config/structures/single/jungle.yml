@@ -1,15 +1,16 @@
 files:
-  jungle1: 1
-id: "JUNGLE"
+  stronghold: 1
+id: "STRONGHOLD"
 spawn:
   start:
-    min: 72
-    max: 72
+    min: 16
+    max: 64
   bound:
-    min: 48
-    max: 96
-  width: 250
-  padding: 50
+    min: 12
+    max: 84
+  width: 1000
+  padding: 500
 loot:
-  0: arrows
-  1: cobble_house
+  1: wood_house
+  2: cobble_house
+  3: cobble_house

@@ -10,6 +10,8 @@ palette:
   - SANDY: 64
   - GRASSY: 255
 
+structures:
+  - STRONGHOLD
 
 flora:
   chance: 60

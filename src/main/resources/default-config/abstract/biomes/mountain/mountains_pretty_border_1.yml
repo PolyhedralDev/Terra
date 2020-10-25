@@ -6,6 +6,9 @@ carving:
   RAVINE: 5
   CAVERN: 5
 
+structures:
+  - STRONGHOLD
+
 ores:
   DIRT:
     min: 0

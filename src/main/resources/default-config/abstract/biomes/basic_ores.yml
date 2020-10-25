@@ -1,5 +1,8 @@
 id: "BASIC_ORES"
 
+structures:
+  - STRONGHOLD
+
 carving:
   CAVE: 30
   RAVINE: 5

@@ -1,6 +1,8 @@
 noise-equation: "((-((y / 40)^2)) + 1) + ((noise2(x, z)/3))"
 id: "SHELF_OCEAN_ABSTRACT"
 
+structures:
+  - STRONGHOLD
 
 palette:
   - BEDROCK: 0
