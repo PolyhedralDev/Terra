@@ -1,4 +1,4 @@
-id: OVERWORLD_DEMO
+id: DEFAULT
 grids:
   - OCEAN_DEEP
   - OCEAN_DEEP
@@ -49,8 +49,8 @@ grids:
   - MOUNTAIN
   - MOUNTAIN
 frequencies:
-  grid-x: 3072
-  grid-z: 2048
+  grid-x: 5120
+  grid-z: 6144
   zone: 4096
 blend:
   enable: true

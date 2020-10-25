@@ -193,7 +193,7 @@ public class ConfigPack extends YamlConfiguration {
             try {
                 config = new ConfigPack(folder.toFile());
                 if(configs.containsKey(config.getID())) {
-                    Bukkit.getLogger().severe("Duplicate Config Pack ID: \"" + config.getID() + "\"");
+                    //Bukkit.getLogger().severe("Duplicate Config Pack ID: \"" + config.getID() + "\"");
                     continue;
                 }
                 configs.put(config.getID(), config);

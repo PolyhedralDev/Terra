@@ -6,10 +6,13 @@ import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.VillagerAcquireTradeEvent;
+import org.bukkit.event.entity.VillagerCareerChangeEvent;
 import org.polydev.gaea.GaeaPlugin;
 
 public class EventListener implements Listener {
@@ -34,6 +37,17 @@ public class EventListener implements Listener {
                 });
                 finder.run(); // Do this synchronously so eye doesn't change direction several ticks after spawning.
             } else main.getLogger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
+        }
+    }
+    @EventHandler
+    public void onCartographerChange(VillagerAcquireTradeEvent e) {
+        if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER))  e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
+    }
+    @EventHandler
+    public void onCartographerLevel(VillagerCareerChangeEvent e) {
+        if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
+            e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
+            e.setCancelled(true);
         }
     }
 }
