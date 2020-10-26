@@ -36,11 +36,11 @@ palette:
     layers:
       - materials: { "minecraft:air": 1 }
         y: 255
-      - materials: {"minecraft:water": 1}
+      - materials: { "minecraft:water": 1 }
         y: 62
       - materials: { "minecraft:lava": 1 }
         y: 7
-      - materials: {"minecraft:obsidian": 19, "minecraft:magma_block": 1}
+      - materials: { "minecraft:obsidian": 19, "minecraft:magma_block": 1 }
         y: 8
   outer:
     replace-blacklist: false
@@ -64,10 +64,10 @@ palette:
       - materials: { "minecraft:stone": 1 }
         y: 255
 shift:
-  "minecraft:grass_block": ["minecraft:dirt"]
-  "minecraft:podzol": ["minecraft:dirt"]
-  "minecraft:gravel": ["minecraft:dirt"]
-  "minecraft:sand": ["minecraft:dirt"]
-  "minecraft:coarse_dirt": ["minecraft:dirt"]
+  "minecraft:grass_block": [ "minecraft:dirt" ]
+  "minecraft:podzol": [ "minecraft:dirt" ]
+  "minecraft:gravel": [ "minecraft:dirt" ]
+  "minecraft:sand": [ "minecraft:dirt" ]
+  "minecraft:coarse_dirt": [ "minecraft:dirt" ]
 
-update: []
+update: [ ]

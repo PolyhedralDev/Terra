@@ -31,6 +31,7 @@ public final class ConfigUtil {
     public static long dataSave; // Period of population data saving, in ticks.
     public static boolean masterDisableCaves;
     public static FailType failType;
+
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
         main.reloadConfig();
@@ -38,7 +39,7 @@ public final class ConfigUtil {
         LangUtil.load(config.getString("language", "en_us"), main);
 
         debug = config.getBoolean("debug", false);
-        dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis()/20L;
+        dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis() / 20L;
         masterDisableCaves = config.getBoolean("master-disable.caves", false);
 
         if(config.getBoolean("dump-default", true)) {
@@ -70,7 +71,8 @@ public final class ConfigUtil {
         Set<Material> bl = new HashSet<>();
         for(String s : list) {
             try {
-                if(bl.contains(Bukkit.createBlockData(s).getMaterial())) Bukkit.getLogger().warning("Duplicate material in " + phase + " list: " + s);
+                if(bl.contains(Bukkit.createBlockData(s).getMaterial()))
+                    Bukkit.getLogger().warning("Duplicate material in " + phase + " list: " + s);
                 bl.add(Bukkit.createBlockData(s).getMaterial());
             } catch(NullPointerException | IllegalArgumentException e) {
                 throw new ConfigException("Could not load BlockData data for \"" + s + "\"", id);

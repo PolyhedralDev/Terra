@@ -27,12 +27,13 @@ public class TreeConfig extends TerraConfig implements Tree {
     private final String id;
     private final int yOffset;
     private final ProbabilityCollection<Structure> structure = new ProbabilityCollection<>();
+
     public TreeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
-        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
+        if(! contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");
-        if(!contains("files")) throw new ConfigException("No files specified!", getID());
+        if(! contains("files")) throw new ConfigException("No files specified!", getID());
         yOffset = getInt("y-offset", 0);
         try {
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
@@ -64,10 +65,10 @@ public class TreeConfig extends TerraConfig implements Tree {
     public boolean plant(Location location, Random random, JavaPlugin javaPlugin) {
         location.subtract(0, 1, 0);
         Location mut = location.clone().subtract(0, yOffset, 0);
-        if(!spawnable.contains(location.getBlock().getType())) return false;
+        if(! spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
         Structure.Rotation rotation = Structure.Rotation.fromDegrees(random.nextInt(4) * 90);
-        if(!struc.checkSpawns(mut, rotation)) return false;
+        if(! struc.checkSpawns(mut, rotation)) return false;
         struc.paste(mut, rotation);
         return true;
     }

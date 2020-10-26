@@ -2,11 +2,9 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.carving.SimplexCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
-import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,12 +27,13 @@ import java.util.Set;
 public class CavePopulator extends BlockPopulator {
     private static final Map<Material, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private static final BlockData AIR = Material.AIR.createBlockData();
+
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
-            if(!tw.isSafe()) return;
+            if(! tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
 
             for(CarverConfig c : config.getCarvers().values()) {
@@ -75,7 +74,8 @@ public class CavePopulator extends BlockPopulator {
                         if(c.getShiftedBlocks().get(shiftCandidate.get(l)).contains(mut.getBlock().getType())) {
                             mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(shiftCandidate.get(l), Material::createBlockData), false);
                         }
-                    } catch(NullPointerException ignore) {}
+                    } catch(NullPointerException ignore) {
+                    }
                 }
                 try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("CaveBlockUpdate")) {
                     for(Block b : updateNeeded) {
@@ -100,6 +100,7 @@ public class CavePopulator extends BlockPopulator {
 
         }
     }
+
     private boolean borderingOcean(Block b) {
         return b.getRelative(BlockFace.UP).getType().equals(Material.WATER) || b.getType().equals(Material.LAVA);
     }

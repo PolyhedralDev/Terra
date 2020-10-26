@@ -9,7 +9,7 @@ public class OreVeinGenerateEvent extends TerraWorldEvent implements Cancellable
     private boolean cancelled;
     private OreConfig config;
 
-    public OreVeinGenerateEvent(TerraWorld tw, Location l,  OreConfig config) {
+    public OreVeinGenerateEvent(TerraWorld tw, Location l, OreConfig config) {
         super(tw, l);
         this.config = config;
     }

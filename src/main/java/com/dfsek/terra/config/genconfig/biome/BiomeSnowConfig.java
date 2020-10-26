@@ -1,27 +1,19 @@
 package com.dfsek.terra.config.genconfig.biome;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
-import com.dfsek.terra.config.exception.NotFoundException;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
-import org.polydev.gaea.world.Flora;
-import org.polydev.gaea.world.FloraType;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class BiomeSnowConfig extends TerraConfigSection {
     private final int[] snowHeights;
     private boolean doSnow = false;
+
     public BiomeSnowConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         snowHeights = new int[256];

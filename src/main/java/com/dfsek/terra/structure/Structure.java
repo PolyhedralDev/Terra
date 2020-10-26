@@ -2,7 +2,6 @@ package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
-import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -10,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -21,7 +19,6 @@ import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.math.Range;
 
 import java.io.File;
@@ -32,10 +29,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -44,7 +39,7 @@ import java.util.function.Consumer;
 import static com.dfsek.terra.util.structure.RotationUtil.*;
 
 public class Structure implements Serializable {
-    public static final long serialVersionUID = -6664585217063842035L;
+    public static final long serialVersionUID = - 6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
     private final StructureInfo structureInfo;
     private final String id;
@@ -62,16 +57,17 @@ public class Structure implements Serializable {
     }
 
     public Structure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
-        int centerX = -1, centerZ = -1;
+        int centerX = - 1, centerZ = - 1;
         this.id = id;
         this.uuid = UUID.randomUUID();
         this.spawns = new HashSet<>();
         this.inventories = new HashSet<>();
-        if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ()) throw new IllegalArgumentException("Invalid locations provided!");
-        structure = new StructureContainedBlock[l2.getBlockX()-l1.getBlockX()+1][l2.getBlockZ()-l1.getBlockZ()+1][l2.getBlockY()-l1.getBlockY()+1];
-        for(int x = 0; x <= l2.getBlockX()-l1.getBlockX(); x++) {
-            for(int z = 0; z <= l2.getBlockZ()-l1.getBlockZ(); z++) {
-                for(int y = 0; y <= l2.getBlockY()-l1.getBlockY(); y++) {
+        if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ())
+            throw new IllegalArgumentException("Invalid locations provided!");
+        structure = new StructureContainedBlock[l2.getBlockX() - l1.getBlockX() + 1][l2.getBlockZ() - l1.getBlockZ() + 1][l2.getBlockY() - l1.getBlockY() + 1];
+        for(int x = 0; x <= l2.getBlockX() - l1.getBlockX(); x++) {
+            for(int z = 0; z <= l2.getBlockZ() - l1.getBlockZ(); z++) {
+                for(int y = 0; y <= l2.getBlockY() - l1.getBlockY(); y++) {
                     Block b = Objects.requireNonNull(l1.getWorld()).getBlockAt(l1.clone().add(x, y, z));
                     BlockState state = b.getState();
                     BlockData d = b.getBlockData();
@@ -121,17 +117,18 @@ public class Structure implements Serializable {
                     if(state instanceof BlockInventoryHolder) {
                         inventories.add(new StructureContainedInventory(((BlockInventoryHolder) state).getInventory(), block));
                     }
-                    if(!requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
+                    if(! requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
                     structure[x][z][y] = block;
                 }
             }
         }
         if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.", null);
-        structureInfo = new StructureInfo(l2.getBlockX()-l1.getBlockX()+1, l2.getBlockY()-l1.getBlockY()+1, l2.getBlockZ()-l1.getBlockZ()+1, new Vector2(centerX, centerZ));
+        structureInfo = new StructureInfo(l2.getBlockX() - l1.getBlockX() + 1, l2.getBlockY() - l1.getBlockY() + 1, l2.getBlockZ() - l1.getBlockZ() + 1, new Vector2(centerX, centerZ));
     }
 
     /**
      * Get GaeaStructureInfo object
+     *
      * @return Structure Info
      */
     @NotNull
@@ -141,8 +138,9 @@ public class Structure implements Serializable {
 
     /**
      * Paste the structure at a Location, ignoring chunk boundaries.
+     *
      * @param origin Origin location
-     * @param r Rotation
+     * @param r      Rotation
      */
     public void paste(@NotNull Location origin, Rotation r) {
         Range xRange = getRange(Axis.X, r);
@@ -152,8 +150,9 @@ public class Structure implements Serializable {
 
     public boolean checkSpawns(Location origin, Rotation r) {
         for(StructureContainedBlock b : spawns) {
-            Vector2 rot = getRotatedCoords(new Vector2(b.getX()-structureInfo.getCenterX(), b.getZ()-structureInfo.getCenterZ()), r);
-            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX()+origin.getBlockX(), origin.getBlockY()+b.getY(), (int) rot.getZ()+origin.getBlockZ())) return false;
+            Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
+            if(! b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
+                return false;
         }
         return true;
     }
@@ -164,15 +163,16 @@ public class Structure implements Serializable {
 
     /**
      * Paste structure at an origin location, confined to a single chunk.
+     *
      * @param origin Origin location
-     * @param chunk Chunk to confine pasting to
-     * @param r Rotation
+     * @param chunk  Chunk to confine pasting to
+     * @param r      Rotation
      */
     public void paste(Location origin, Chunk chunk, Rotation r) {
         int xOr = (chunk.getX() << 4);
         int zOr = (chunk.getZ() << 4);
-        Range intersectX = new Range(xOr, xOr+16).sub(origin.getBlockX() - structureInfo.getCenterX());
-        Range intersectZ = new Range(zOr, zOr+16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
+        Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
+        Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
         if(intersectX == null || intersectZ == null) return;
         executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
         Debug.info(intersectX.toString() + " : " + intersectZ.toString());
@@ -180,17 +180,19 @@ public class Structure implements Serializable {
 
     /**
      * Paste a single StructureDefinedBlock at an origin location, offset by its coordinates.
-     * @param block The block to paste
+     *
+     * @param block  The block to paste
      * @param origin The origin location
-     * @param r The rotation of the structure
+     * @param r      The rotation of the structure
      */
     private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r) {
         BlockData data = block.getBlockData().clone();
-        if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
+        if(! data.getMaterial().equals(Material.STRUCTURE_VOID)) {
 
             Location loc = origin.clone().add(block.getX(), block.getY(), block.getZ());
             Block worldBlock = loc.getBlock();
-            main: while(worldBlock.isEmpty()) {
+            main:
+            while(worldBlock.isEmpty()) {
                 if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
                 if(block.getPull() == null) break;
                 switch(block.getPull()) {
@@ -200,12 +202,14 @@ public class Structure implements Serializable {
                     case DOWN:
                         worldBlock = worldBlock.getRelative(BlockFace.DOWN);
                         break;
-                    default: break main;
+                    default:
+                        break main;
                 }
 
             }
             int offset = block.getPullOffset();
-            if(offset != 0) worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
+            if(offset != 0)
+                worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
 
             if(data instanceof Rotatable) {
                 BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
@@ -247,17 +251,18 @@ public class Structure implements Serializable {
 
     /**
      * Execute a Consumer for all blocks in a cuboid region defined by 3 Ranges, accounting for rotation.
-     * @param xM X Range
-     * @param yM Y Range
-     * @param zM Z Range
+     *
+     * @param xM   X Range
+     * @param yM   Y Range
+     * @param zM   Z Range
      * @param exec Consumer to execute for each block.
-     * @param r Rotation
+     * @param r    Rotation
      */
     private void executeForBlocksInRange(Range xM, Range yM, Range zM, Consumer<StructureContainedBlock> exec, Rotation r) {
         for(int x : xM) {
             for(int y : yM) {
                 for(int z : zM) {
-                    Vector2 c = getRotatedCoords(new Vector2(x-structureInfo.getCenterX(), z-structureInfo.getCenterZ()), r);
+                    Vector2 c = getRotatedCoords(new Vector2(x - structureInfo.getCenterX(), z - structureInfo.getCenterZ()), r);
                     c.add(new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ()));
                     if(isInStructure((int) c.getX(), y, (int) c.getZ())) {
                         StructureContainedBlock b = structure[(int) c.getX()][(int) c.getZ()][y];
@@ -270,6 +275,7 @@ public class Structure implements Serializable {
 
     /**
      * Test whether a set of coordinates is within the current structure
+     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param z Z coordinate
@@ -281,6 +287,7 @@ public class Structure implements Serializable {
 
     /**
      * From an origin location (First bound) fetch the second bound.
+     *
      * @param origin Origin location
      * @return Other bound location
      */
@@ -290,6 +297,7 @@ public class Structure implements Serializable {
 
     /**
      * Save the structure to a file
+     *
      * @param f File to save to
      * @throws IOException If file access error occurs
      */
@@ -299,9 +307,10 @@ public class Structure implements Serializable {
 
     /**
      * Load a structure from a file.
+     *
      * @param f File to load from
      * @return The structure loaded
-     * @throws IOException If file access error occurs
+     * @throws IOException            If file access error occurs
      * @throws ClassNotFoundException If structure data is invalid.
      */
     @NotNull
@@ -345,8 +354,10 @@ public class Structure implements Serializable {
         Vector2 min = getRotatedCoords(new Vector2(x.getMin(), z.getMin()).subtract(center), r.inverse()).add(center);
         Vector2 max = getRotatedCoords(new Vector2(x.getMax(), z.getMax()).subtract(center), r.inverse()).add(center);
 
-        if(a.equals(Axis.X)) return new Range((int) Math.floor(Math.min(min.getX(), max.getX())), (int) Math.ceil(Math.max(min.getX(), max.getX())) + 1);
-        else return new Range((int) Math.floor(Math.min(min.getZ(), max.getZ())), (int) Math.ceil(Math.max(min.getZ(), max.getZ())) + 1);
+        if(a.equals(Axis.X))
+            return new Range((int) Math.floor(Math.min(min.getX(), max.getX())), (int) Math.ceil(Math.max(min.getX(), max.getX())) + 1);
+        else
+            return new Range((int) Math.floor(Math.min(min.getZ(), max.getZ())), (int) Math.ceil(Math.max(min.getZ(), max.getZ())) + 1);
     }
 
     @NotNull
@@ -358,16 +369,19 @@ public class Structure implements Serializable {
                 return new Range(0, structureInfo.getSizeY());
             case Z:
                 return new Range(0, structureInfo.getSizeZ());
-            default: throw new IllegalArgumentException();
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
     public enum Axis {
         X, Y, Z
     }
+
     public enum Rotation {
         CW_90(90), CW_180(180), CCW_90(270), NONE(0);
         private final int degrees;
+
         Rotation(int degrees) {
             this.degrees = degrees;
         }
@@ -375,22 +389,34 @@ public class Structure implements Serializable {
         public int getDegrees() {
             return degrees;
         }
+
         public static Rotation fromDegrees(int deg) {
             switch(Math.floorMod(deg, 360)) {
-                case 0: return Rotation.NONE;
-                case 90: return Rotation.CW_90;
-                case 180: return Rotation.CW_180;
-                case 270: return Rotation.CCW_90;
-                default: throw new IllegalArgumentException();
+                case 0:
+                    return Rotation.NONE;
+                case 90:
+                    return Rotation.CW_90;
+                case 180:
+                    return Rotation.CW_180;
+                case 270:
+                    return Rotation.CCW_90;
+                default:
+                    throw new IllegalArgumentException();
             }
         }
+
         public Rotation inverse() {
             switch(this) {
-                case NONE: return NONE;
-                case CCW_90: return CW_90;
-                case CW_90: return CCW_90;
-                case CW_180: return CW_180;
-                default: throw new IllegalArgumentException();
+                case NONE:
+                    return NONE;
+                case CCW_90:
+                    return CW_90;
+                case CW_90:
+                    return CCW_90;
+                case CW_180:
+                    return CW_180;
+                default:
+                    throw new IllegalArgumentException();
             }
         }
     }

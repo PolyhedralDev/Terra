@@ -1,9 +1,7 @@
 package com.dfsek.terra.image;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.TerraBiomeGrid;
-import com.dfsek.terra.config.base.WorldConfig;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 
@@ -16,17 +14,19 @@ import java.io.IOException;
 public class WorldImageGenerator {
     private final World w;
     private final BufferedImage draw;
+
     public WorldImageGenerator(World w, int width, int height) {
         draw = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         this.w = w;
     }
+
     public WorldImageGenerator drawWorld(int centerX, int centerZ) {
         TerraWorld tw = TerraWorld.getWorld(w);
         TerraBiomeGrid tb = tw.getGrid();
         int imY = 0;
-        for(int y = centerZ - (draw.getHeight()/2); y < centerZ + (draw.getHeight()/2); y++) {
+        for(int y = centerZ - (draw.getHeight() / 2); y < centerZ + (draw.getHeight() / 2); y++) {
             int imX = 0;
-            for(int x = centerX - (draw.getWidth()/2); x < centerX + (draw.getWidth()/2); x++) {
+            for(int x = centerX - (draw.getWidth() / 2); x < centerX + (draw.getWidth() / 2); x++) {
                 int zone = NormalizationUtil.normalize(tw.getZone().getRawNoise(x, y), 256, 4);
                 float[] noise = tb.getGrid(x, y).getRawNoise(x, y);
                 Color c = new Color(NormalizationUtil.normalize(noise[0], 256, 4), NormalizationUtil.normalize(noise[1], 256, 4), zone);

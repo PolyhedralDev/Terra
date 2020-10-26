@@ -1,11 +1,8 @@
-import com.dfsek.terra.biome.BiomeZone;
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class LookupGenerator {
     private static double[] lookup;
@@ -50,8 +47,8 @@ public class LookupGenerator {
             System.out.println(i + ": " + numbers[i]);
         }
         for(int i = 0; i < dist; i++) {
-            System.out.print(i + (String.valueOf(i).length() ==1 ? " " : "") + " |");
-            for(int j = 0; j < numbers[i]/300; j++) {
+            System.out.print(i + (String.valueOf(i).length() == 1 ? " " : "") + " |");
+            for(int j = 0; j < numbers[i] / 300; j++) {
                 System.out.print("-");
             }
             System.out.println("|");
@@ -63,12 +60,12 @@ public class LookupGenerator {
         lookup = new double[dist];
         StringBuilder s = new StringBuilder("{");
         for(int i = 0; i < dist; i++) {
-            int current = vals.size()/dist;
-            System.out.println(i + ", max: " + vals.get(current*(i+1)-1));
-            lookup[i] = vals.get(current*(i+1)-1);
-            s.append(vals.get(current*(i+1)-1) + "D, ");
+            int current = vals.size() / dist;
+            System.out.println(i + ", max: " + vals.get(current * (i + 1) - 1));
+            lookup[i] = vals.get(current * (i + 1) - 1);
+            s.append(vals.get(current * (i + 1) - 1) + "D, ");
         }
-        s.delete(s.length()-2, s.length());
+        s.delete(s.length() - 2, s.length());
         s.append("}");
         numbers = new int[dist];
         vals = new ArrayList<>();
@@ -82,8 +79,8 @@ public class LookupGenerator {
             System.out.println(i + ": " + numbers[i]);
         }
         for(int i = 0; i < dist; i++) {
-            System.out.print(i + (String.valueOf(i).length() ==1 ? " " : "") + " |");
-            for(int j = 0; j < numbers[i]/100; j++) {
+            System.out.print(i + (String.valueOf(i).length() == 1 ? " " : "") + " |");
+            for(int j = 0; j < numbers[i] / 100; j++) {
                 System.out.print("-");
             }
             System.out.println("|");
@@ -91,23 +88,25 @@ public class LookupGenerator {
         System.out.println(s.toString());
 
     }
+
     public static int normalize(double i, int n) {
-        i*=1.42; // Magic simplex value (sqrt(2) plus a little)
-        i = Math.min(Math.max(i, -1),1);
-        return Math.min((int) Math.floor((i+1)*((double)n/2)), n-1);
+        i *= 1.42; // Magic simplex value (sqrt(2) plus a little)
+        i = Math.min(Math.max(i, - 1), 1);
+        return Math.min((int) Math.floor((i + 1) * ((double) n / 2)), n - 1);
     }
 
     public static int normalizeNew(double d) {
         for(int i = 0; i < lookup.length; i++) {
             if(d < lookup[i]) return i;
         }
-        return lookup.length-1;
+        return lookup.length - 1;
     }
 
     private static class Worker extends Thread {
         private final List<Double> l;
         private final int searches;
         private final FastNoiseLite noise;
+
         public Worker(List<Double> l, int searches, FastNoiseLite noise) {
             this.l = l;
             this.searches = searches;
@@ -127,7 +126,7 @@ public class LookupGenerator {
         }
 
         public String getStatus() {
-            return "Generating values. " + l.size() + "/" + searches + " (" + ((long)l.size()*100L)/searches + "%)";
+            return "Generating values. " + l.size() + "/" + searches + " (" + ((long) l.size() * 100L) / searches + "%)";
         }
     }
 }

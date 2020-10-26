@@ -13,9 +13,11 @@ import java.util.TreeMap;
 
 public final class FailoverGenerator extends UserDefinedGenerator {
     private static final TreeMap<Integer, Palette<BlockData>> palette = new TreeMap<>();
+
     static {
         palette.put(255, new RandomPalette<BlockData>(new Random(2403)).add(Material.STONE.createBlockData(), 1));
     }
+
     public FailoverGenerator() throws ParseException {
         super("0", Collections.emptyList(), palette, false);
     }

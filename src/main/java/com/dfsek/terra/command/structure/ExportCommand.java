@@ -2,9 +2,9 @@ package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.util.structure.WorldEditUtil;
-import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.InitializationException;
+import com.dfsek.terra.structure.Structure;
+import com.dfsek.terra.util.structure.WorldEditUtil;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

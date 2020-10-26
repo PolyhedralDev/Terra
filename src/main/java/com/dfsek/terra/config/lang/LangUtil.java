@@ -19,6 +19,7 @@ import static org.polydev.gaea.util.JarUtil.copyResourcesToDirectory;
 public final class LangUtil {
     private static Language language;
     private static Logger logger;
+
     public static void load(String langID, JavaPlugin main) {
         logger = main.getLogger();
         File file = new File(main.getDataFolder(), "lang");
@@ -45,6 +46,7 @@ public final class LangUtil {
     public static void log(String messageID, Level level, String... args) {
         language.getMessage(messageID).log(logger, level, args);
     }
+
     public static void send(String messageID, CommandSender sender, String... args) {
         language.getMessage(messageID).send(sender, args);
     }

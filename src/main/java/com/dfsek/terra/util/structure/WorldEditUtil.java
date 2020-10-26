@@ -14,10 +14,11 @@ import org.bukkit.plugin.Plugin;
 public final class WorldEditUtil {
     public static WorldEditPlugin getWorldEdit() {
         Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if (p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
+        if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
         Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
         return null;
     }
+
     public static Location[] getSelectionLocations(Player sender) {
         WorldEditPlugin we = WorldEditUtil.getWorldEdit();
         if(we == null) {
@@ -27,7 +28,7 @@ public final class WorldEditUtil {
         Region selection;
         try {
             selection = we.getSession(sender).getSelection(BukkitAdapter.adapt(sender.getWorld()));
-        } catch(IncompleteRegionException |ClassCastException e) {
+        } catch(IncompleteRegionException | ClassCastException e) {
             sender.sendMessage("Invalid/incomplete selection!");
             return null;
         }
@@ -41,6 +42,7 @@ public final class WorldEditUtil {
         Location l2 = new Location(sender.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
         return new Location[] {l1, l2};
     }
+
     public static Location[] getSelectionPositions(Player sender) {
         WorldEditPlugin we = WorldEditUtil.getWorldEdit();
         if(we == null) {
@@ -50,7 +52,7 @@ public final class WorldEditUtil {
         CuboidRegion selection;
         try {
             selection = (CuboidRegion) we.getSession(sender).getSelection(BukkitAdapter.adapt(sender.getWorld()));
-        } catch(IncompleteRegionException |ClassCastException e) {
+        } catch(IncompleteRegionException | ClassCastException e) {
             sender.sendMessage("Invalid/incomplete selection!");
             return null;
         }

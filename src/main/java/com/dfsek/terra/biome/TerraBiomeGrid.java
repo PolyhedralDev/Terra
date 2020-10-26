@@ -47,7 +47,8 @@ public class TerraBiomeGrid extends BiomeGrid {
             b = (UserDefinedBiome) zone.getGrid(xp, zp).getBiome(xp, zp, phase);
         } catch(NullPointerException e) {
             if(ConfigUtil.debug) e.printStackTrace();
-            if(failNum % 256 == 0) LangUtil.log("error.severe-config", Level.SEVERE, String.valueOf(x), String.valueOf(z));
+            if(failNum % 256 == 0)
+                LangUtil.log("error.severe-config", Level.SEVERE, String.valueOf(x), String.valueOf(z));
             failNum++;
             return ConfigUtil.failType.fail();
         }

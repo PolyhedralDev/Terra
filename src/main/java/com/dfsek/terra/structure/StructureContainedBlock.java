@@ -25,15 +25,16 @@ public class StructureContainedBlock implements Serializable {
     private final int z;
     private final SerializableBlockState state;
     private final StructureSpawnRequirement requirement;
+
     public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         if(state instanceof Sign) {
-            Debug.info("Sign at (" + x + ", " + y  + ", " + z + ").");
+            Debug.info("Sign at (" + x + ", " + y + ", " + z + ").");
             this.state = new SerializableSign((org.bukkit.block.Sign) state);
         } else if(state instanceof CreatureSpawner) {
-            Debug.info("Monster Spawner at (" + x + ", " + y  + ", " + z + ").");
+            Debug.info("Monster Spawner at (" + x + ", " + y + ", " + z + ").");
             this.state = new SerializableMonsterCage((CreatureSpawner) state);
         } else if(state instanceof Banner) {
-            Debug.info("Banner at (" + x + ", " + y  + ", " + z + ").");
+            Debug.info("Banner at (" + x + ", " + y + ", " + z + ").");
             this.state = new SerializableBanner((Banner) state);
         } else this.state = null;
         this.x = x;
@@ -44,6 +45,7 @@ public class StructureContainedBlock implements Serializable {
         this.pull = pull;
         this.pullOffset = pullOffset;
     }
+
     public StructureContainedBlock(int x, int y, int z, SerializableBlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         this.state = state;
         this.x = x;

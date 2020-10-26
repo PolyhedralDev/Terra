@@ -5,19 +5,17 @@ import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.config.genconfig.TreeConfig;
-import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
 import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.config.genconfig.FloraConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.TreeConfig;
+import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
+import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
-import org.bukkit.Bukkit;
-import org.bukkit.StructureType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -83,7 +81,7 @@ public class ConfigPack extends YamlConfiguration {
         load(new File(file, "pack.yml"));
         dataFolder = file;
 
-        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
+        if(! contains("id")) throw new ConfigException("No ID specified!", "null");
         this.id = getString("id");
 
         ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);
@@ -104,9 +102,9 @@ public class ConfigPack extends YamlConfiguration {
 
         grids = ConfigLoader.load(new File(file, "grids").toPath(), this, BiomeGridConfig.class);
 
-        zoneFreq = 1f/getInt("frequencies.zone", 1536);
-        freq1 = 1f/getInt("frequencies.grid-x", 256);
-        freq2 = 1f/getInt("frequencies.grid-z", 512);
+        zoneFreq = 1f / getInt("frequencies.zone", 1536);
+        freq1 = 1f / getInt("frequencies.grid-x", 256);
+        freq2 = 1f / getInt("frequencies.grid-z", 512);
 
         biomeBlend = getBoolean("blend.enable", false);
         blendAmp = getInt("blend.amplitude", 8);
@@ -118,7 +116,7 @@ public class ConfigPack extends YamlConfiguration {
         erosionOctaves = getInt("erode.octaves", 3);
 
         octaves = getInt("noise.octaves", 4);
-        frequency = (float) getDouble("noise.frequency", 1f/96);
+        frequency = (float) getDouble("noise.frequency", 1f / 96);
 
         erosionName = getString("erode.grid");
 
@@ -152,7 +150,7 @@ public class ConfigPack extends YamlConfiguration {
             }
         }
 
-        LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l)/1000000D));
+        LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
     public Map<StructureTypeEnum, StructureConfig> getLocatable() {

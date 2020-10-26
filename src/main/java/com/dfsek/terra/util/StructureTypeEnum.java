@@ -24,6 +24,7 @@ public enum StructureTypeEnum {
     NETHER_FOSSIL(StructureType.NETHER_FOSSIL),
     RUINED_PORTAL(StructureType.RUINED_PORTAL),
     BASTION_REMNANT(StructureType.BASTION_REMNANT);
+
     StructureTypeEnum(StructureType type) {
         this.type = type;
     }

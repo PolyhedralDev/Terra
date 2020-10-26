@@ -26,8 +26,8 @@ public enum FailType {
     },
     /**
      * Returns null, hard crashing the server, but not generating any corrupted terrain.<br>
-     *     This option is <br>NOT</br> stable, but it has the least risk of blank chunks being generated.
-     *     However, it has the highest risk of corruption!
+     * This option is <br>NOT</br> stable, but it has the least risk of blank chunks being generated.
+     * However, it has the highest risk of corruption!
      */
     CRASH {
         @Override
@@ -53,6 +53,7 @@ public enum FailType {
 
     /**
      * Performs the action specified by the enum type to occur on failure of terrain generation.
+     *
      * @return Failover biome, if specified, null if not.
      */
     public abstract Biome fail();

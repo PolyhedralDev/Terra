@@ -8,8 +8,9 @@ import org.polydev.gaea.math.FastNoiseLite;
 public class ErosionNoise {
     private final double thresh;
     private final FastNoiseLite noise;
+
     public ErosionNoise(float freq1, double thresh, int octaves, long seed) {
-        FastNoiseLite main = new FastNoiseLite((int) (seed+1));
+        FastNoiseLite main = new FastNoiseLite((int) (seed + 1));
         main.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         main.setFractalType(FastNoiseLite.FractalType.FBm);
         main.setFractalOctaves(octaves);
@@ -20,6 +21,7 @@ public class ErosionNoise {
 
     /**
      * Get whether a location is eroded
+     *
      * @param x X coordinate
      * @param z Z coordinate
      * @return Whether location is eroded

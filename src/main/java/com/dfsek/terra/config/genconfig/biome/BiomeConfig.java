@@ -43,7 +43,7 @@ public class BiomeConfig extends TerraConfig {
         super(file, config);
         load(file);
         this.config = config;
-        if(!contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
+        if(! contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
         AbstractBiomeConfig abstractBiome = null;
@@ -76,7 +76,8 @@ public class BiomeConfig extends TerraConfig {
         } else palette = new BiomePaletteConfig(this);
 
         // Palette must not be null
-        if(palette.getPaletteMap() == null) throw new ConfigException("No Palette specified in biome or super biome.", getID());
+        if(palette.getPaletteMap() == null)
+            throw new ConfigException("No Palette specified in biome or super biome.", getID());
 
         // Check if carving should be handled by super biome.
         if(extending && abstractBiome.getCarving() != null && ! contains("carving")) {
@@ -103,7 +104,7 @@ public class BiomeConfig extends TerraConfig {
         } else ore = new BiomeOreConfig(this);
 
         // Get slab stuff
-        if(extending && abstractBiome.getSlabs() != null && !contains("slabs")) {
+        if(extending && abstractBiome.getSlabs() != null && ! contains("slabs")) {
             slab = abstractBiome.getSlabs();
             Debug.info("Using super slabs");
         } else slab = new BiomeSlabConfig(this);
@@ -121,7 +122,8 @@ public class BiomeConfig extends TerraConfig {
         } else snow = new BiomeSnowConfig(this);
 
         //Make sure equation is non-null
-        if(eq == null || eq.equals("")) throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
+        if(eq == null || eq.equals(""))
+            throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.
         UserDefinedDecorator dec = new UserDefinedDecorator(flora.getFlora(), tree.getTrees(), flora.getFloraChance(), tree.getTreeDensity());
@@ -129,7 +131,7 @@ public class BiomeConfig extends TerraConfig {
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;
         try {
-            if(!contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
+            if(! contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
             vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
         } catch(IllegalArgumentException e) {
             throw new ConfigException("Invalid Vanilla biome: \"" + getString("vanilla") + "\"", getID());
@@ -138,7 +140,8 @@ public class BiomeConfig extends TerraConfig {
         // Structure stuff
         structures = new ArrayList<>();
         List<String> st = new ArrayList<>();
-        if(abstractBiome != null && abstractBiome.getStructureConfigs() != null) st = abstractBiome.getStructureConfigs();
+        if(abstractBiome != null && abstractBiome.getStructureConfigs() != null)
+            st = abstractBiome.getStructureConfigs();
         if(contains("structures")) st = getStringList("structures");
         for(String s : st) {
             try {
@@ -170,7 +173,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Range getFloraHeights(Flora f) {
-        return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(-1, -1));
+        return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(- 1, - 1));
     }
 
     @Override
@@ -199,7 +202,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Range getTreeRange(Tree t) {
-        return tree.getTreeHeights().getOrDefault(t, new Range(-1, -1));
+        return tree.getTreeHeights().getOrDefault(t, new Range(- 1, - 1));
     }
 
     public BiomeSnowConfig getSnow() {

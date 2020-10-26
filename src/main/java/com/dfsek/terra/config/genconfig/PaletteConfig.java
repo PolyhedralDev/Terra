@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
@@ -23,9 +23,10 @@ public class PaletteConfig extends TerraConfig {
     private final Palette<BlockData> palette;
     private final String paletteID;
     private boolean useNoise = false;
+
     public PaletteConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
+        if(! contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
         this.paletteID = getString("id");
         Palette<BlockData> pal;
         if(getBoolean("simplex", false)) {
@@ -63,7 +64,7 @@ public class PaletteConfig extends TerraConfig {
                 } else {
                     Debug.info("One-block palette layer!");
                     String data = "null";
-                    for(Map.Entry<?, ?> e: map.get(0).entrySet()) {
+                    for(Map.Entry<?, ?> e : map.get(0).entrySet()) {
                         data = (String) e.getKey();
                     }
                     p.add(Bukkit.createBlockData(data), (Integer) m.get("layers"));

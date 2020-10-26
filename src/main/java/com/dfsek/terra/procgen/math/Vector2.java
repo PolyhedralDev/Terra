@@ -1,7 +1,5 @@
 package com.dfsek.terra.procgen.math;
 
-import org.bukkit.util.Vector;
-
 /**
  * oh yeah
  */
@@ -11,6 +9,7 @@ public class Vector2 implements Cloneable {
 
     /**
      * Create a vector with a given X and Z component
+     *
      * @param x X component
      * @param z Z component
      */
@@ -21,6 +20,7 @@ public class Vector2 implements Cloneable {
 
     /**
      * Get X component
+     *
      * @return X component
      */
     public double getX() {
@@ -29,6 +29,7 @@ public class Vector2 implements Cloneable {
 
     /**
      * Get Z component
+     *
      * @return Z component
      */
     public double getZ() {
@@ -37,36 +38,40 @@ public class Vector2 implements Cloneable {
 
     /**
      * Multiply X and Z components by a value.
+     *
      * @param m Value to multiply
      * @return Mutated vector, for chaining.
      */
     public Vector2 multiply(double m) {
-        x*=m;
-        z*=m;
+        x *= m;
+        z *= m;
         return this;
     }
 
     /**
      * Divide X and Z components by a value.
+     *
      * @param d Divisor
      * @return Mutated vector, for chaining.
      */
     public Vector2 divide(double d) {
-        x/=d;
-        z/=d;
+        x /= d;
+        z /= d;
         return this;
     }
 
     /**
      * Get the squared length of this Vector
+     *
      * @return squared length
      */
     public double lengthSquared() {
-        return x*x+z*z;
+        return x * x + z * z;
     }
 
     /**
      * Get the length of this Vector
+     *
      * @return length
      */
     public double length() {
@@ -75,28 +80,31 @@ public class Vector2 implements Cloneable {
 
     /**
      * Add this vector to another.
+     *
      * @param other Vector to add
      * @return Mutated vector, for chaining.
      */
     public Vector2 add(Vector2 other) {
-        x+=other.x;
-        z+=other.z;
+        x += other.x;
+        z += other.z;
         return this;
     }
 
     /**
      * Subtract a vector from this vector,
+     *
      * @param other Vector to subtract
      * @return Mutated vector, for chaining.
      */
     public Vector2 subtract(Vector2 other) {
-        x-=other.x;
-        z-=other.z;
+        x -= other.x;
+        z -= other.z;
         return this;
     }
 
     /**
      * Normalize this vector to length 1
+     *
      * @return Mutated vector, for chaining.
      */
     public Vector2 normalize() {
@@ -106,6 +114,7 @@ public class Vector2 implements Cloneable {
 
     /**
      * Get the distance from this vector to another.
+     *
      * @param other Another vector
      * @return Distance between vectors
      */
@@ -115,6 +124,7 @@ public class Vector2 implements Cloneable {
 
     /**
      * Get the squared distance between 2 vectors.
+     *
      * @param other Another vector
      * @return Squared distance
      */
@@ -126,7 +136,7 @@ public class Vector2 implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Vector2)) {
+        if(! (obj instanceof Vector2)) {
             return false;
         }
         Vector2 other = (Vector2) obj;
@@ -150,7 +160,7 @@ public class Vector2 implements Cloneable {
     public Vector2 clone() {
         try {
             return (Vector2) super.clone();
-        } catch (CloneNotSupportedException e) {
+        } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
     }

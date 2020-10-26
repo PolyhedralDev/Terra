@@ -2,8 +2,8 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Bukkit;
@@ -46,7 +46,7 @@ public class CarverConfig extends TerraConfig {
     public CarverConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
+        if(! contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
         id = getString("id");
 
         inner = getBlocks("palette.inner.layers");
@@ -105,7 +105,7 @@ public class CarverConfig extends TerraConfig {
 
     @SuppressWarnings("unchecked")
     private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
-        if(!contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
+        if(! contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
         Map<Integer, ProbabilityCollection<BlockData>> result = new TreeMap<>();
         for(Map<?, ?> m : getMapList(key)) {
             try {
@@ -133,56 +133,56 @@ public class CarverConfig extends TerraConfig {
 
     public boolean isReplaceableInner(Material m) {
         if(replaceIsBlacklistInner) {
-            return !replaceableInner.contains(m);
+            return ! replaceableInner.contains(m);
         }
         return replaceableInner.contains(m);
     }
 
     public boolean isReplaceableOuter(Material m) {
         if(replaceIsBlacklistOuter) {
-            return !replaceableOuter.contains(m);
+            return ! replaceableOuter.contains(m);
         }
         return replaceableOuter.contains(m);
     }
 
     public boolean isReplaceableTop(Material m) {
         if(replaceIsBlacklistTop) {
-            return !replaceableTop.contains(m);
+            return ! replaceableTop.contains(m);
         }
         return replaceableTop.contains(m);
     }
 
     public boolean isReplaceableBottom(Material m) {
         if(replaceIsBlacklistBottom) {
-            return !replaceableBottom.contains(m);
+            return ! replaceableBottom.contains(m);
         }
         return replaceableBottom.contains(m);
     }
 
     public ProbabilityCollection<BlockData> getPaletteInner(int y) {
         for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : inner.entrySet()) {
-            if(e.getKey() >= y ) return e.getValue();
+            if(e.getKey() >= y) return e.getValue();
         }
         return null;
     }
 
     public ProbabilityCollection<BlockData> getPaletteOuter(int y) {
         for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : outer.entrySet()) {
-            if(e.getKey() >= y ) return e.getValue();
+            if(e.getKey() >= y) return e.getValue();
         }
         return null;
     }
 
     public ProbabilityCollection<BlockData> getPaletteBottom(int y) {
         for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : bottom.entrySet()) {
-            if(e.getKey() >= y ) return e.getValue();
+            if(e.getKey() >= y) return e.getValue();
         }
         return null;
     }
 
     public ProbabilityCollection<BlockData> getPaletteTop(int y) {
         for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : top.entrySet()) {
-            if(e.getKey() >= y ) return e.getValue();
+            if(e.getKey() >= y) return e.getValue();
         }
         return null;
     }

@@ -9,7 +9,6 @@ import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
-import org.polydev.gaea.world.Flora;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +18,7 @@ public class BiomeTreeConfig extends TerraConfigSection {
     private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
     private final Map<Tree, Range> treeHeights = new HashMap<>();
     private int treeDensity;
+
     public BiomeTreeConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         ConfigurationSection c = parent.getConfigurationSection("trees.items");

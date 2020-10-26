@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.genconfig;
 
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.Chunk;
@@ -27,17 +27,17 @@ public class FloraConfig extends TerraConfig implements Flora {
     private final String id;
     private final boolean physics;
     private final boolean ceiling;
-    
+
     Set<Material> spawnable;
     Set<Material> replaceable;
 
     public FloraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
+        if(! contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
         this.id = getString("id");
-        if(!contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
-        if(!contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
+        if(! contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
+        if(! contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
 
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
         replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
@@ -46,7 +46,7 @@ public class FloraConfig extends TerraConfig implements Flora {
 
         Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
 
-        floraPalette  = PaletteConfig.getPalette(getMapList("layers"), p);
+        floraPalette = PaletteConfig.getPalette(getMapList("layers"), p);
     }
 
     public String getID() {
@@ -59,14 +59,15 @@ public class FloraConfig extends TerraConfig implements Flora {
         if(ceiling) for(int y : range) {
             if(y > 255 || y < 1) continue;
             Block check = chunk.getBlock(x, y, z);
-            Block other = chunk.getBlock(x, y-1, z);
+            Block other = chunk.getBlock(x, y - 1, z);
             if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
                 blocks.add(check);
             }
-        } else for(int y : range) {
+        }
+        else for(int y : range) {
             if(y > 254 || y < 0) continue;
             Block check = chunk.getBlock(x, y, z);
-            Block other = chunk.getBlock(x, y+1, z);
+            Block other = chunk.getBlock(x, y + 1, z);
             if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
                 blocks.add(check);
             }
@@ -77,14 +78,14 @@ public class FloraConfig extends TerraConfig implements Flora {
     @Override
     public boolean plant(Location location) {
         int size = floraPalette.getSize();
-        int c = ceiling ? -1 : 1;
-        for(int i = 0; Math.abs(i) < size; i+= c) { // Down if ceiling, up if floor
-            if(i+1 > 255) return false;
-            if(!replaceable.contains(location.clone().add(0, i+c, 0).getBlock().getType())) return false;
+        int c = ceiling ? - 1 : 1;
+        for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
+            if(i + 1 > 255) return false;
+            if(! replaceable.contains(location.clone().add(0, i + c, 0).getBlock().getType())) return false;
         }
-        for(int i = 0; Math.abs(i) < size; i+=c) { // Down if ceiling, up if floor
+        for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (Math.abs(i));
-            location.clone().add(0, i+c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size-lvl-1), location.getBlockX(), location.getBlockZ()), physics);
+            location.clone().add(0, i + c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()), physics);
         }
         return true;
     }

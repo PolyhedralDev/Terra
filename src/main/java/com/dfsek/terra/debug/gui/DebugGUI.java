@@ -7,9 +7,11 @@ import java.awt.image.BufferedImage;
 public class DebugGUI extends Thread {
 
     private final BufferedImage img;
+
     public DebugGUI(BufferedImage img) {
         this.img = img;
     }
+
     @Override
     public void run() {
         DebugFrame frame = new DebugFrame(img, "Image2Map Debug GUI");

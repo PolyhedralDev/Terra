@@ -39,7 +39,8 @@ public class AsyncBiomeFinder implements Runnable {
         int z = centerZ;
         int run = 1;
         boolean toggle = true;
-        main: for(int i = startRadius; i < maxRadius; i++) {
+        main:
+        for(int i = startRadius; i < maxRadius; i++) {
             for(int j = 0; j < run; j++) {
                 if(checkBiome(x, z).equals(target)) break main;
                 if(toggle) x++;
@@ -51,7 +52,7 @@ public class AsyncBiomeFinder implements Runnable {
                 else z--;
             }
             run++;
-            toggle = !toggle;
+            toggle = ! toggle;
         }
         if(p.isOnline()) {
             if(checkBiome(x, z).equals(target)) {
@@ -67,6 +68,7 @@ public class AsyncBiomeFinder implements Runnable {
 
     /**
      * Helper method to get biome at location
+     *
      * @param x X coordinate
      * @param z Z coordinate
      * @return Biome at coordinates

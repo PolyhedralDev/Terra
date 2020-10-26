@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public abstract class TerraConfig extends YamlConfiguration {
     private final ConfigPack config;
+
     public TerraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         load(file);
         this.config = config;

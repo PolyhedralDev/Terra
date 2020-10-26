@@ -22,7 +22,7 @@ public class BiomeZone {
     private final ImageLoader.Channel channel;
 
     public BiomeZone(World w, WorldConfig wc, BiomeGrid[] grids) {
-        this.noise = new FastNoiseLite((int) w.getSeed()+2);
+        this.noise = new FastNoiseLite((int) w.getSeed() + 2);
         this.noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         this.noise.setFractalType(FastNoiseLite.FractalType.FBm);
         this.noise.setFractalOctaves(4);
@@ -35,6 +35,7 @@ public class BiomeZone {
 
     /**
      * Get BiomeGrid at location
+     *
      * @param x X coordinate
      * @param z Z coordinate
      * @return BiomeGrid at coordinates.
@@ -45,6 +46,7 @@ public class BiomeZone {
 
     /**
      * Get the number of BiomeGrids this BiomeZone holds.
+     *
      * @return Number of grids
      */
     public int getSize() {
@@ -53,6 +55,7 @@ public class BiomeZone {
 
     /**
      * Get the normalized grid noise at location
+     *
      * @param x X coordinate
      * @param z Z coordinate
      * @return Normalized noise at coordinates
@@ -63,6 +66,7 @@ public class BiomeZone {
 
     /**
      * Get raw grid noise at location
+     *
      * @param x X coordinate
      * @param z Z coordinate
      * @return Raw noise at coordinates

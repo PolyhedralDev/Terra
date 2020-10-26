@@ -5,9 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class InitializationException extends Exception {
     private final Location worldLoc;
+
     public InitializationException(String message, @Nullable Location worldLoc) {
         super(message);
-        this.worldLoc = worldLoc == null ? null :worldLoc.clone();
+        this.worldLoc = worldLoc == null ? null : worldLoc.clone();
     }
 
     @Override

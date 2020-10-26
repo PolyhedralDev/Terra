@@ -13,6 +13,7 @@ public class Debug {
     public static void info(String message) {
         if(ConfigUtil.debug) main.getLogger().info(message);
     }
+
     public static void warn(String message) {
         if(ConfigUtil.debug) main.getLogger().warning(message);
     }

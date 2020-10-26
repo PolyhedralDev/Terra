@@ -9,7 +9,6 @@ import com.dfsek.terra.structure.Structure;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
@@ -46,15 +45,16 @@ public class AsyncStructureFinder implements Runnable {
         int x = centerX;
         int z = centerZ;
 
-        final int wid = target.getSpawn().getWidth() + 2*target.getSpawn().getSeparation();
-        x/=wid;
-        z/=wid;
+        final int wid = target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation();
+        x /= wid;
+        z /= wid;
 
         int run = 1;
         boolean toggle = true;
         boolean found = false;
         Vector spawn = null;
-        main: for(int i = startRadius; i < maxRadius; i++) {
+        main:
+        for(int i = startRadius; i < maxRadius; i++) {
             for(int j = 0; j < run; j++) {
                 spawn = target.getSpawn().getChunkSpawn(x, z, seed);
                 if(isValidSpawn(spawn.getBlockX(), spawn.getBlockZ())) {
@@ -74,26 +74,28 @@ public class AsyncStructureFinder implements Runnable {
                 else z -= 1;
             }
             run++;
-            toggle = !toggle;
+            toggle = ! toggle;
         }
-        final Vector finalSpawn = found ? spawn: null;
+        final Vector finalSpawn = found ? spawn : null;
         Bukkit.getScheduler().runTask(Terra.getInstance(), () -> callback.accept(finalSpawn));
     }
 
     /**
      * Check if coordinate pair is a valid structure spawn
+     *
      * @param x X coordinate
      * @param z Z coordinate
      * @return Whether location is a valid spawn for StructureConfig
      */
     private boolean isValidSpawn(int x, int z) {
         Location spawn = target.getSpawn().getNearestSpawn(x, z, world.getSeed()).toLocation(world);
-        if(! TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(target)) return false;
+        if(! TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(target))
+            return false;
         Random r2 = new Random(spawn.hashCode());
         Structure struc = target.getStructure(r2);
         Structure.Rotation rotation = Structure.Rotation.fromDegrees(r2.nextInt(4) * 90);
         for(int y = target.getSearchStart().get(r2); y > 0; y--) {
-            if(!target.getBound().isInRange(y)) return false;
+            if(! target.getBound().isInRange(y)) return false;
             spawn.setY(y);
             if(! struc.checkSpawns(spawn, rotation)) continue;
             return true;

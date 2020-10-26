@@ -6,7 +6,6 @@ import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.world.palette.Palette;
@@ -19,6 +18,7 @@ import java.util.TreeMap;
 
 public class BiomePaletteConfig extends TerraConfigSection {
     private TreeMap<Integer, Palette<BlockData>> paletteMap;
+
     @SuppressWarnings("unchecked")
     public BiomePaletteConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
@@ -34,8 +34,7 @@ public class BiomePaletteConfig extends TerraConfigSection {
                         } catch(IllegalArgumentException ex) {
                             throw new ConfigException("BlockData " + entry.getKey() + " is invalid! (Palettes)", parent.getID());
                         }
-                    }
-                    else {
+                    } else {
                         try {
                             paletteMap.put((Integer) entry.getValue(), parent.getConfig().getPalette((String) entry.getKey()).getPalette());
                         } catch(NullPointerException ex) {

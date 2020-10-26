@@ -23,6 +23,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
     private final Map<Material, Palette<BlockData>> slabs;
     private final Map<Material, Palette<BlockData>> stairs;
     private double slabThreshold;
+
     public BiomeSlabConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         slabThreshold = parent.getDouble("slabs.threshold", 0.1D);
@@ -31,6 +32,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
             stairs = getSlabPalettes(parent.getMapList("slabs.stair-palettes"));
         } else stairs = new HashMap<>();
     }
+
     protected Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection) throws InvalidConfigurationException {
         Map<Material, Palette<BlockData>> paletteMap = new HashMap<>();
 
@@ -47,7 +49,8 @@ public class BiomeSlabConfig extends TerraConfigSection {
                     } else {
                         try {
                             Palette<BlockData> p = getParent().getConfig().getPalette((String) entry.getValue()).getPalette();
-                            if(p.getSize() != 1) throw new InvalidConfigurationException("Slab palette must hold only one layer. Palette " + entry.getValue() + " is too large/small");
+                            if(p.getSize() != 1)
+                                throw new InvalidConfigurationException("Slab palette must hold only one layer. Palette " + entry.getValue() + " is too large/small");
                             paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), p);
                         } catch(NullPointerException ex) {
                             throw new NotFoundException("Slab Palette", (String) entry.getValue(), getParent().getConfig().getID());

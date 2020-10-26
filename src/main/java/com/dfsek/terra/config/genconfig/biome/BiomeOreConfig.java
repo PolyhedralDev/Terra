@@ -16,6 +16,7 @@ import java.util.Map;
 public class BiomeOreConfig extends TerraConfigSection {
     private final Map<OreConfig, Range> ores = new HashMap<>();
     private final Map<OreConfig, Range> oreHeights = new HashMap<>();
+
     public BiomeOreConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         ConfigurationSection c = parent.getConfigurationSection("ores");
@@ -25,8 +26,8 @@ public class BiomeOreConfig extends TerraConfigSection {
             for(Map.Entry<String, Object> m : cfg.entrySet()) {
                 OreConfig ore = parent.getConfig().getOre(m.getKey());
                 if(ore == null) throw new NotFoundException("Ore", m.getKey(), parent.getID());
-                ores.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection)  m.getValue()).getInt("max")));
-                oreHeights.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection)  m.getValue()).getInt("max-height")));
+                ores.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min"), ((ConfigurationSection) m.getValue()).getInt("max")));
+                oreHeights.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection) m.getValue()).getInt("max-height")));
             }
         } catch(ClassCastException e) {
             if(ConfigUtil.debug) e.printStackTrace();

@@ -1,7 +1,6 @@
 package com.dfsek.terra.event;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.genconfig.TreeConfig;
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 import org.polydev.gaea.tree.Tree;

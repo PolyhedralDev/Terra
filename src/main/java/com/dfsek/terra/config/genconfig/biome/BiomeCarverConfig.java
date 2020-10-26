@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class BiomeCarverConfig extends TerraConfigSection {
     private final Map<CarverConfig, Integer> carvers = new HashMap<>();
+
     public BiomeCarverConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         ConfigurationSection configurationSection = parent.getConfigurationSection("carving");

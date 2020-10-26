@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.Debug;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -32,11 +32,12 @@ public class StructureConfig extends TerraConfig {
     private final Range bound;
     private final Map<Integer, LootTable> loot = new HashMap<>();
     StructurePopulator.SearchType type;
+
     public StructureConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
+        if(! contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");
-        if(!contains("files")) throw new ConfigException("No files specified!", getID());
+        if(! contains("files")) throw new ConfigException("No files specified!", getID());
         try {
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
                 try {

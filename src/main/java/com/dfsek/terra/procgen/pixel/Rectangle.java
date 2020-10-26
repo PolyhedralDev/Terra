@@ -8,10 +8,13 @@ import java.util.Set;
 public class Rectangle extends Polygon {
     private Vector2 min;
     private Vector2 max;
+
     public Rectangle(Vector2 min, Vector2 max) {
         this.max = new Vector2(Math.min(min.getX(), max.getX()), Math.min(min.getZ(), max.getZ()));
-        this.min = new Vector2(Math.max(min.getX(), max.getX()), Math.max(min.getZ(), max.getZ()));;
+        this.min = new Vector2(Math.max(min.getX(), max.getX()), Math.max(min.getZ(), max.getZ()));
+        ;
     }
+
     public Rectangle(Vector2 center, double xRadius, double zRadius) {
         Vector2 rad = new Vector2(xRadius, zRadius);
         this.min = center.clone().subtract(rad);

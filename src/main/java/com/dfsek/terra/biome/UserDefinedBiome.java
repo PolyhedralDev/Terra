@@ -3,8 +3,8 @@ package com.dfsek.terra.biome;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.biome.Decorator;
+import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.structures.features.Feature;
 
 import java.util.List;

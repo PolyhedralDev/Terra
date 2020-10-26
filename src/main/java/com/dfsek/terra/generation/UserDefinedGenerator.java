@@ -51,6 +51,7 @@ public class UserDefinedGenerator extends Generator {
         this.noiseExp = p.parse(equation, s);
         this.preventSmooth = preventSmooth;
     }
+
     /**
      * Gets the 2D noise at a pair of coordinates using the provided FastNoiseLite instance.
      *

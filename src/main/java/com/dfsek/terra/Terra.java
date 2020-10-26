@@ -8,10 +8,8 @@ import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.GaeaPlugin;
@@ -19,10 +17,8 @@ import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.lang.Language;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public class Terra extends GaeaPlugin {
     private static Terra instance;

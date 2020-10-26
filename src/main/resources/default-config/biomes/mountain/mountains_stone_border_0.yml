@@ -33,4 +33,4 @@ trees:
 flora:
   chance: 0
   attempts: 0
-  items: {}
+  items: { }

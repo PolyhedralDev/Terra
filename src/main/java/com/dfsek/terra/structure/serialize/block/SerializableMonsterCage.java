@@ -3,9 +3,6 @@ package com.dfsek.terra.structure.serialize.block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
-import org.polydev.gaea.math.Range;
-
-import java.util.Random;
 
 public class SerializableMonsterCage implements SerializableBlockState {
     public static final long serialVersionUID = 529892860847864007L;
@@ -16,6 +13,7 @@ public class SerializableMonsterCage implements SerializableBlockState {
     private final int playerRange;
     private final int delay;
     private final int count;
+
     public SerializableMonsterCage(CreatureSpawner orig) {
         this.type = orig.getSpawnedType();
         this.minDelay = orig.getMinSpawnDelay();
@@ -25,9 +23,11 @@ public class SerializableMonsterCage implements SerializableBlockState {
         this.delay = orig.getDelay();
         this.count = orig.getSpawnCount();
     }
+
     @Override
     public BlockState getState(BlockState orig) {
-        if(!(orig instanceof CreatureSpawner)) throw new IllegalArgumentException("BlockState is not a Monster Spawner!");
+        if(! (orig instanceof CreatureSpawner))
+            throw new IllegalArgumentException("BlockState is not a Monster Spawner!");
         CreatureSpawner spawner = (CreatureSpawner) orig;
         spawner.setSpawnedType(type);
         spawner.setMinSpawnDelay(minDelay);

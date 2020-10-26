@@ -2,8 +2,8 @@ package com.dfsek.terra.config.genconfig;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.UserDefinedGrid;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
@@ -25,9 +25,9 @@ public class BiomeGridConfig extends TerraConfig {
     public BiomeGridConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(!contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
+        if(! contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
         this.gridID = getString("id");
-        if(!contains("grid")) throw new ConfigException("Grid key not found!", getID());
+        if(! contains("grid")) throw new ConfigException("Grid key not found!", getID());
         this.sizeX = Objects.requireNonNull(getList("grid")).size();
         this.sizeZ = ((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(0).size();
         gridRaw = new UserDefinedBiome[sizeX][sizeZ];
@@ -37,11 +37,11 @@ public class BiomeGridConfig extends TerraConfig {
                     try {
                         gridRaw[x][z] = config.getBiome(((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z)).getBiome();
                     } catch(NullPointerException e) {
-                        throw new NotFoundException("Biome",((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z), getID());
+                        throw new NotFoundException("Biome", ((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z), getID());
                     }
                 }
             }
-        } catch(ClassCastException |NullPointerException e) {
+        } catch(ClassCastException | NullPointerException e) {
             throw new ConfigException("Malformed grid! Ensure all dimensions are correct.", getID());
         }
     }

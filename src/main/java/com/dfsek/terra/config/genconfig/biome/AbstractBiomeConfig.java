@@ -1,14 +1,13 @@
 package com.dfsek.terra.config.genconfig.biome;
 
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.TerraConfig;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class AbstractBiomeConfig extends TerraConfig {
     private final String biomeID;
@@ -27,7 +26,7 @@ public class AbstractBiomeConfig extends TerraConfig {
     public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
+        if(! contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
         equation = getString("noise-equation");

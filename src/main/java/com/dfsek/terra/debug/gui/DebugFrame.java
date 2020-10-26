@@ -1,8 +1,8 @@
 package com.dfsek.terra.debug.gui;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,6 +18,7 @@ public class DebugFrame extends JFrame implements ActionListener {
     private final int x;
     private final int z;
     private final BufferedImage img;
+
     public DebugFrame(BufferedImage image, String s) {
         super(s);
         this.x = image.getWidth();

@@ -14,7 +14,8 @@ public class SimplexCarver extends Carver {
     private final FastNoiseLite height;
     private final FastNoiseLite column;
     private final FastNoiseLite hasCaves;
-    private final double root2inverse = 1D/Math.sqrt(2);
+    private final double root2inverse = 1D / Math.sqrt(2);
+
     public SimplexCarver(int minY, int maxY) {
         super(minY, maxY);
         noise = new FastNoiseLite(2403);
@@ -53,19 +54,19 @@ public class SimplexCarver extends Carver {
         CarvingData c = new CarvingData(chunkX, chunkZ);
         int ox = chunkX << 4;
         int oz = chunkZ << 4;
-        for(int x = ox; x < ox+16; x++) {
-            for(int z = oz; z < oz+16; z++) {
+        for(int x = ox; x < ox + 16; x++) {
+            for(int z = oz; z < oz + 16; z++) {
                 double heightNoise = height.getNoise(x, z);
-                double mainNoise = noise.getNoise(x, z)*2;
-                double columnNoise = Math.pow(Math.max(column.getNoise(x, z), 0)*2, 3);
-                double hc = (acot(16*(hasCaves.getNoise(x, z)-0.2))/Math.PI)-0.1;
+                double mainNoise = noise.getNoise(x, z) * 2;
+                double columnNoise = Math.pow(Math.max(column.getNoise(x, z), 0) * 2, 3);
+                double hc = (acot(16 * (hasCaves.getNoise(x, z) - 0.2)) / Math.PI) - 0.1;
                 CarvingData.CarvingType type = CarvingData.CarvingType.BOTTOM;
-                double simplex = (Math.pow(mainNoise + root2inverse, 3)/2 + columnNoise) * hc;
+                double simplex = (Math.pow(mainNoise + root2inverse, 3) / 2 + columnNoise) * hc;
                 for(int y = 0; y < 64; y++) {
-                    double finalNoise = (-0.05*Math.abs(y-(heightNoise*16 + 24))+1 - simplex) * hc;
+                    double finalNoise = (- 0.05 * Math.abs(y - (heightNoise * 16 + 24)) + 1 - simplex) * hc;
                     if(finalNoise > 0.5) {
-                        c.carve(x-ox, y, z-oz, type);
-                        double finalNoiseUp = (-0.05*Math.abs((y+1)-(heightNoise*16 + 24))+1 - simplex) * hc;
+                        c.carve(x - ox, y, z - oz, type);
+                        double finalNoiseUp = (- 0.05 * Math.abs((y + 1) - (heightNoise * 16 + 24)) + 1 - simplex) * hc;
                         if(finalNoiseUp > 0.5) {
                             type = CarvingData.CarvingType.CENTER;
                         } else type = CarvingData.CarvingType.TOP;

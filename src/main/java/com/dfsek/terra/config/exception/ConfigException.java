@@ -8,6 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 public class ConfigException extends InvalidConfigurationException {
     private final String message;
     private final String id;
+
     public ConfigException(String message, String id) {
         this.message = message;
         this.id = id;
@@ -16,6 +17,6 @@ public class ConfigException extends InvalidConfigurationException {
     @Override
     public String getMessage() {
         String ex = getStackTrace()[0].getClassName();
-        return "Configuration error for " + ex.substring(ex.lastIndexOf(".")+1) + " with ID \"" + id + "\": \n\n" + message;
+        return "Configuration error for " + ex.substring(ex.lastIndexOf(".") + 1) + " with ID \"" + id + "\": \n\n" + message;
     }
 }

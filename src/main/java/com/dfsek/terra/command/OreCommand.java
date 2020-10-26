@@ -3,7 +3,6 @@ package com.dfsek.terra.command;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.lang.LangUtil;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;

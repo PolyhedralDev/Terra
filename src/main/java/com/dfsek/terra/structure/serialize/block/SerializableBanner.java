@@ -3,8 +3,6 @@ package com.dfsek.terra.structure.serialize.block;
 import org.bukkit.DyeColor;
 import org.bukkit.block.Banner;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
-import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 
 import java.io.Serializable;
@@ -24,7 +22,7 @@ public class SerializableBanner implements SerializableBlockState {
 
     @Override
     public BlockState getState(BlockState orig) {
-        if(!(orig instanceof Banner)) throw new IllegalArgumentException("Provided BlockState is not a banner.");
+        if(! (orig instanceof Banner)) throw new IllegalArgumentException("Provided BlockState is not a banner.");
         Banner banner = (Banner) orig;
         banner.setBaseColor(base);
         for(Pattern pattern : patterns) {
@@ -32,9 +30,11 @@ public class SerializableBanner implements SerializableBlockState {
         }
         return banner;
     }
+
     private static final class Pattern implements Serializable {
         private final DyeColor color;
         private final PatternType type;
+
         public Pattern(PatternType type, DyeColor color) {
             this.color = color;
             this.type = type;

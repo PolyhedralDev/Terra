@@ -68,7 +68,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
-        if(!tw.isSafe()) return chunk;
+        if(! tw.isSafe()) return chunk;
         ConfigPack config = tw.getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
@@ -77,22 +77,22 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int paletteLevel = 0;
                 int cx = xOrig + x;
                 int cz = zOrig + z;
-                Biome orig = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.BASE);
-                Biome b = getBiomeGrid(world).getBiome(xOrig+x, zOrig+z, GenerationPhase.PALETTE_APPLY);
+                Biome orig = getBiomeGrid(world).getBiome(xOrig + x, zOrig + z, GenerationPhase.BASE);
+                Biome b = getBiomeGrid(world).getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
                 BiomeConfig c = config.getBiome((UserDefinedBiome) b);
                 BiomeSlabConfig slab = c.getSlabs();
                 int sea = config.getBiome((UserDefinedBiome) orig).getOcean().getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOcean().getOcean();
-                for(int y = world.getMaxHeight()-1; y >= 0; y--) {
+                for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
                     if(super.getInterpolatedNoise(x, y, z) > 0) {
                         BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && c.getSlabs() != null && y < 255) {
-                            prepareBlockPart(data, chunk.getBlockData(x, y+1, z), chunk, new Vector(x, y+1, z), slab.getSlabs(), slab.getStairs(), slab.getSlabThreshold());
+                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(), slab.getStairs(), slab.getSlabThreshold());
                         }
                         paletteLevel++;
                     } else if(y <= sea) {
-                        chunk.setBlock(x, y, z, seaPalette.get(sea-y, x+xOrig, z+zOrig));
+                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
                     } else paletteLevel = 0;
                 }
@@ -159,7 +159,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
+        if(! (c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
@@ -167,6 +167,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     public int getNoiseOctaves(World world) {
         return octaves;
     }
+
     @Override
     public float getNoiseFrequency(World world) {
         return frequency;

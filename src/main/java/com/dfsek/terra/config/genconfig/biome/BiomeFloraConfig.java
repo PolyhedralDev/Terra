@@ -24,6 +24,7 @@ public class BiomeFloraConfig extends TerraConfigSection {
     private int floraChance;
     private boolean floraSimplex;
     private FastNoiseLite floraNoise;
+
     public BiomeFloraConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         ConfigurationSection cfg = parent.getConfigurationSection("flora.items");

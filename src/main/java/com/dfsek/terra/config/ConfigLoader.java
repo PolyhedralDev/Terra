@@ -19,18 +19,19 @@ import java.util.logging.Level;
 import java.util.stream.Stream;
 
 public class ConfigLoader {
-    public static  <T extends TerraConfig> Map<String, T> load(Path file, ConfigPack config, Class<T> clazz) {
+    public static <T extends TerraConfig> Map<String, T> load(Path file, ConfigPack config, Class<T> clazz) {
         long l = System.nanoTime();
         Map<String, T> configs = new HashMap<>();
         file.toFile().mkdirs();
         List<String> ids = new ArrayList<>();
-        try (Stream<Path> paths = Files.walk(file)) {
+        try(Stream<Path> paths = Files.walk(file)) {
             paths.filter(path -> FilenameUtils.wildcardMatch(path.toFile().getName(), "*.yml"))
                     .forEach(path -> {
                         try {
                             Constructor<T> c = clazz.getConstructor(File.class, ConfigPack.class);
                             T o = c.newInstance(path.toFile(), config);
-                            if(ids.contains(o.getID())) LangUtil.log("config.error.duplicate", Level.SEVERE, path.toString());
+                            if(ids.contains(o.getID()))
+                                LangUtil.log("config.error.duplicate", Level.SEVERE, path.toString());
                             ids.add(o.getID());
                             configs.put(o.getID(), o);
                             LangUtil.log("config.loaded", Level.INFO, o.toString(), path.toString());

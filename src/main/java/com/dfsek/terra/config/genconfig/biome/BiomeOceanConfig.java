@@ -19,6 +19,7 @@ public class BiomeOceanConfig extends TerraConfigSection {
     private final Palette<BlockData> ocean;
     private final int seaLevel;
     private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
+
     public BiomeOceanConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         seaLevel = parent.getInt("ocean.level", 62);

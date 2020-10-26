@@ -1,5 +1,6 @@
-import org.polydev.gaea.math.Range;
 import org.junit.jupiter.api.Test;
+import org.polydev.gaea.math.Range;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -14,6 +15,7 @@ public class RangeTest {
         }
         assertEquals(100, i);
     }
+
     @Test
     public void intersect() {
         Range one = new Range(10, 100);
@@ -26,6 +28,7 @@ public class RangeTest {
         one = new Range(25, 50);
         assertNull(one.intersects(two));
     }
+
     @Test
     public void reflect() {
         Range t = new Range(3, 10);

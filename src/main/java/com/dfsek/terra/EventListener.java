@@ -21,6 +21,7 @@ public class EventListener implements Listener {
     public EventListener(GaeaPlugin main) {
         this.main = main;
     }
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEnderEye(EntitySpawnEvent e) {
         Entity entity = e.getEntity();
@@ -29,21 +30,25 @@ public class EventListener implements Listener {
             TerraWorld tw = TerraWorld.getWorld(e.getEntity().getWorld());
             EnderSignal signal = (EnderSignal) entity;
             StructureConfig config = tw.getConfig().getLocatable().get(StructureTypeEnum.STRONGHOLD);
-            if(config!= null) {
+            if(config != null) {
                 Debug.info("Overriding Ender Signal...");
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getGrid(), config, e.getLocation(), 0, 500, location -> {
                     if(location != null) signal.setTargetLocation(location.toLocation(signal.getWorld()));
                     Debug.info("Location: " + location);
                 });
                 finder.run(); // Do this synchronously so eye doesn't change direction several ticks after spawning.
-            } else main.getLogger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
+            } else
+                main.getLogger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
         }
     }
+
     @EventHandler
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
-        if(!(e.getEntity() instanceof Villager)) return;
-        if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER))  e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
+        if(! (e.getEntity() instanceof Villager)) return;
+        if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER))
+            e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
     }
+
     @EventHandler
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {

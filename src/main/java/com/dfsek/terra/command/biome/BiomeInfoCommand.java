@@ -73,7 +73,7 @@ public class BiomeInfoCommand extends WorldCommand {
                 compHeight = i;
             }
         }
-        if(!changed) {
+        if(! changed) {
             snowMessage.append("Y=0")
                     .append("-255")
                     .append(": ")
@@ -104,9 +104,11 @@ public class BiomeInfoCommand extends WorldCommand {
 
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        if(!(sender instanceof  Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator)) return Collections.emptyList();
+        if(! (sender instanceof Player) || ! (((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
+            return Collections.emptyList();
         List<String> ids = TerraWorld.getWorld(((Player) sender).getWorld()).getConfig().getBiomeIDs();
-        if(args.length == 1) return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
+        if(args.length == 1)
+            return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         return Collections.emptyList();
     }
 }

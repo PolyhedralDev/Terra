@@ -13,6 +13,7 @@ import java.util.Random;
 public class GridSpawn {
     private final int separation;
     private final int width;
+
     public GridSpawn(int width, int separation) {
         this.separation = separation;
         this.width = width;
@@ -20,17 +21,18 @@ public class GridSpawn {
 
     /**
      * Get nearest spawn point
-     * @param x X coordinate
-     * @param z Z coordinate
+     *
+     * @param x    X coordinate
+     * @param z    Z coordinate
      * @param seed Seed for RNG
      * @return Vector representing nearest spawnpoint
      */
     public Vector getNearestSpawn(int x, int z, long seed) {
-        int structureChunkX = x / (width + 2*separation);
-        int structureChunkZ = z / (width + 2*separation);
+        int structureChunkX = x / (width + 2 * separation);
+        int structureChunkZ = z / (width + 2 * separation);
         List<Vector> zones = new ArrayList<>();
-        for(int xi = structureChunkX-1; xi <= structureChunkX+1; xi++) {
-            for(int zi = structureChunkZ-1; zi <= structureChunkZ+1; zi++) {
+        for(int xi = structureChunkX - 1; xi <= structureChunkX + 1; xi++) {
+            for(int zi = structureChunkZ - 1; zi <= structureChunkZ + 1; zi++) {
                 zones.add(getChunkSpawn(xi, zi, seed));
             }
         }
@@ -44,17 +46,18 @@ public class GridSpawn {
 
     /**
      * Get the X/Z coordinates of the spawn point in the nearest Chunk (not Minecraft chunk)
+     *
      * @param structureChunkX Chunk X coordinate
      * @param structureChunkZ Chunk Z coordinate
-     * @param seed Seed for RNG
+     * @param seed            Seed for RNG
      * @return Vector representing spawnpoint
      */
     public Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
         Random r = new Random(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
-        int sx = structureChunkX * (width + 2*separation) + offsetX;
-        int sz = structureChunkZ * (width + 2*separation) + offsetZ;
+        int sx = structureChunkX * (width + 2 * separation) + offsetX;
+        int sz = structureChunkZ * (width + 2 * separation) + offsetZ;
         return new Vector(sx, 0, sz);
     }
 

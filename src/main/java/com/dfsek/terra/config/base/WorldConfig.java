@@ -3,15 +3,12 @@ package com.dfsek.terra.config.base;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.debug.gui.DebugGUI;
 import com.dfsek.terra.image.ImageLoader;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.GaeaPlugin;
 
 import java.io.File;
@@ -51,7 +48,8 @@ public class WorldConfig {
         FileConfiguration config = new YamlConfiguration();
         Debug.info("Loading config " + configID + " for world " + worldID);
         try { // Load/create world config file
-            if(configID == null || configID.equals("")) throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
+            if(configID == null || configID.equals(""))
+                throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
             if(! configFile.exists()) {
                 configFile.getParentFile().mkdirs();
@@ -65,7 +63,8 @@ public class WorldConfig {
 
             tConfig = ConfigPack.fromID(configID);
 
-            if(tConfig == null) throw new ConfigException("No such config pack: \"" + configID + "\". This pack either does not exist, or failed to load due to configuration errors.", worldID);
+            if(tConfig == null)
+                throw new ConfigException("No such config pack: \"" + configID + "\". This pack either does not exist, or failed to load due to configuration errors.", worldID);
 
             // Load image stuff
             try {

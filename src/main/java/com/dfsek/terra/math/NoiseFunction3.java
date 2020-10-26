@@ -8,6 +8,7 @@ import java.util.List;
 
 public class NoiseFunction3 implements Function {
     private FastNoiseLite gen;
+
     @Override
     public int getNumberOfArguments() {
         return 3;

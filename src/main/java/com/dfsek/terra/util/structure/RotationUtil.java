@@ -8,21 +8,22 @@ import org.bukkit.block.data.Rail;
 public final class RotationUtil {
     /**
      * Rotate and mirror a coordinate pair.
+     *
      * @param orig Vector to rotate.
-     * @param r Rotation
+     * @param r    Rotation
      * @return Rotated coordinate pair
      */
     public static Vector2 getRotatedCoords(Vector2 orig, Structure.Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
             case CW_90:
-                copy.setX(orig.getZ()).setZ(-orig.getX());
+                copy.setX(orig.getZ()).setZ(- orig.getX());
                 break;
             case CCW_90:
-                copy.setX(-orig.getZ()).setZ(orig.getX());
+                copy.setX(- orig.getZ()).setZ(orig.getX());
                 break;
             case CW_180:
-                copy.multiply(-1);
+                copy.multiply(- 1);
                 break;
         }
         return copy;
@@ -30,16 +31,17 @@ public final class RotationUtil {
 
     /**
      * Get the BlockFace with rotation and mirrors applied to it
+     *
      * @param f BlockFace to apply rotation to
      * @param r Rotation
      * @return Rotated BlockFace
      */
     public static BlockFace getRotatedFace(BlockFace f, Structure.Rotation r) {
         BlockFace n = f;
-        int rotateNum = r.getDegrees()/90;
+        int rotateNum = r.getDegrees() / 90;
         int rn = faceRotation(f);
         if(rn >= 0) {
-            n = fromRotation(faceRotation(n) + 4*rotateNum);
+            n = fromRotation(faceRotation(n) + 4 * rotateNum);
         }
         return n;
     }
@@ -61,50 +63,81 @@ public final class RotationUtil {
 
     /**
      * Method to rotate the incredibly obnoxious Rail.Shape enum
+     *
      * @param orig Original shape
-     * @param r Rotate
+     * @param r    Rotate
      * @return Rotated/mirrored shape
      */
     public static Rail.Shape getRotatedRail(Rail.Shape orig, Structure.Rotation r) {
         switch(r) {
             case CCW_90:
                 switch(orig) {
-                    case NORTH_WEST: return Rail.Shape.SOUTH_WEST;
-                    case NORTH_SOUTH: return Rail.Shape.EAST_WEST;
-                    case SOUTH_WEST: return Rail.Shape.SOUTH_EAST;
-                    case SOUTH_EAST: return Rail.Shape.NORTH_EAST;
-                    case EAST_WEST: return Rail.Shape.NORTH_SOUTH;
-                    case NORTH_EAST: return Rail.Shape.NORTH_WEST;
-                    case ASCENDING_EAST: return Rail.Shape.ASCENDING_NORTH;
-                    case ASCENDING_WEST: return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_NORTH: return Rail.Shape.ASCENDING_WEST;
-                    case ASCENDING_SOUTH: return Rail.Shape.ASCENDING_EAST;
+                    case NORTH_WEST:
+                        return Rail.Shape.SOUTH_WEST;
+                    case NORTH_SOUTH:
+                        return Rail.Shape.EAST_WEST;
+                    case SOUTH_WEST:
+                        return Rail.Shape.SOUTH_EAST;
+                    case SOUTH_EAST:
+                        return Rail.Shape.NORTH_EAST;
+                    case EAST_WEST:
+                        return Rail.Shape.NORTH_SOUTH;
+                    case NORTH_EAST:
+                        return Rail.Shape.NORTH_WEST;
+                    case ASCENDING_EAST:
+                        return Rail.Shape.ASCENDING_NORTH;
+                    case ASCENDING_WEST:
+                        return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_NORTH:
+                        return Rail.Shape.ASCENDING_WEST;
+                    case ASCENDING_SOUTH:
+                        return Rail.Shape.ASCENDING_EAST;
                 }
             case CW_90:
                 switch(orig) {
-                    case NORTH_WEST: return Rail.Shape.NORTH_EAST;
-                    case NORTH_SOUTH: return Rail.Shape.EAST_WEST;
-                    case SOUTH_WEST: return Rail.Shape.NORTH_WEST;
-                    case SOUTH_EAST: return Rail.Shape.SOUTH_WEST;
-                    case EAST_WEST: return Rail.Shape.NORTH_SOUTH;
-                    case NORTH_EAST: return Rail.Shape.SOUTH_EAST;
-                    case ASCENDING_EAST: return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_WEST: return Rail.Shape.ASCENDING_NORTH;
-                    case ASCENDING_NORTH: return Rail.Shape.ASCENDING_EAST;
-                    case ASCENDING_SOUTH: return Rail.Shape.ASCENDING_WEST;
+                    case NORTH_WEST:
+                        return Rail.Shape.NORTH_EAST;
+                    case NORTH_SOUTH:
+                        return Rail.Shape.EAST_WEST;
+                    case SOUTH_WEST:
+                        return Rail.Shape.NORTH_WEST;
+                    case SOUTH_EAST:
+                        return Rail.Shape.SOUTH_WEST;
+                    case EAST_WEST:
+                        return Rail.Shape.NORTH_SOUTH;
+                    case NORTH_EAST:
+                        return Rail.Shape.SOUTH_EAST;
+                    case ASCENDING_EAST:
+                        return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_WEST:
+                        return Rail.Shape.ASCENDING_NORTH;
+                    case ASCENDING_NORTH:
+                        return Rail.Shape.ASCENDING_EAST;
+                    case ASCENDING_SOUTH:
+                        return Rail.Shape.ASCENDING_WEST;
                 }
             case CW_180:
                 switch(orig) {
-                    case NORTH_WEST: return Rail.Shape.SOUTH_EAST;
-                    case NORTH_SOUTH: return Rail.Shape.NORTH_SOUTH;
-                    case SOUTH_WEST: return Rail.Shape.NORTH_EAST;
-                    case SOUTH_EAST: return Rail.Shape.NORTH_WEST;
-                    case EAST_WEST: return Rail.Shape.EAST_WEST;
-                    case NORTH_EAST: return Rail.Shape.SOUTH_WEST;
-                    case ASCENDING_EAST: return Rail.Shape.ASCENDING_WEST;
-                    case ASCENDING_WEST: return Rail.Shape.ASCENDING_EAST;
-                    case ASCENDING_NORTH: return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_SOUTH: return Rail.Shape.ASCENDING_NORTH;
+                    case NORTH_WEST:
+                        return Rail.Shape.SOUTH_EAST;
+                    case NORTH_SOUTH:
+                        return Rail.Shape.NORTH_SOUTH;
+                    case SOUTH_WEST:
+                        return Rail.Shape.NORTH_EAST;
+                    case SOUTH_EAST:
+                        return Rail.Shape.NORTH_WEST;
+                    case EAST_WEST:
+                        return Rail.Shape.EAST_WEST;
+                    case NORTH_EAST:
+                        return Rail.Shape.SOUTH_WEST;
+                    case ASCENDING_EAST:
+                        return Rail.Shape.ASCENDING_WEST;
+                    case ASCENDING_WEST:
+                        return Rail.Shape.ASCENDING_EAST;
+                    case ASCENDING_NORTH:
+                        return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_SOUTH:
+                        return Rail.Shape.ASCENDING_NORTH;
                 }
         }
         return orig;
@@ -112,55 +145,91 @@ public final class RotationUtil {
 
     /**
      * Get an integer representation of a BlockFace, to perform math on.
+     *
      * @param f BlockFace to get integer for
      * @return integer representation of BlockFace
      */
     public static int faceRotation(BlockFace f) {
         switch(f) {
-            case NORTH: return 0;
-            case NORTH_NORTH_EAST: return 1;
-            case NORTH_EAST: return 2;
-            case EAST_NORTH_EAST: return 3;
-            case EAST: return 4;
-            case EAST_SOUTH_EAST: return 5;
-            case SOUTH_EAST: return 6;
-            case SOUTH_SOUTH_EAST: return 7;
-            case SOUTH: return 8;
-            case SOUTH_SOUTH_WEST: return 9;
-            case SOUTH_WEST: return 10;
-            case WEST_SOUTH_WEST: return 11;
-            case WEST: return 12;
-            case WEST_NORTH_WEST: return 13;
-            case NORTH_WEST: return 14;
-            case NORTH_NORTH_WEST: return 15;
-            default: return -1;
+            case NORTH:
+                return 0;
+            case NORTH_NORTH_EAST:
+                return 1;
+            case NORTH_EAST:
+                return 2;
+            case EAST_NORTH_EAST:
+                return 3;
+            case EAST:
+                return 4;
+            case EAST_SOUTH_EAST:
+                return 5;
+            case SOUTH_EAST:
+                return 6;
+            case SOUTH_SOUTH_EAST:
+                return 7;
+            case SOUTH:
+                return 8;
+            case SOUTH_SOUTH_WEST:
+                return 9;
+            case SOUTH_WEST:
+                return 10;
+            case WEST_SOUTH_WEST:
+                return 11;
+            case WEST:
+                return 12;
+            case WEST_NORTH_WEST:
+                return 13;
+            case NORTH_WEST:
+                return 14;
+            case NORTH_NORTH_WEST:
+                return 15;
+            default:
+                return - 1;
         }
     }
 
     /**
      * Convert integer to BlockFace representation
+     *
      * @param r integer to get BlockFace for
      * @return BlockFace represented by integer.
      */
     public static BlockFace fromRotation(int r) {
         switch(Math.floorMod(r, 16)) {
-            case 0: return BlockFace.NORTH;
-            case 1: return BlockFace.NORTH_NORTH_EAST;
-            case 2: return BlockFace.NORTH_EAST;
-            case 3: return BlockFace.EAST_NORTH_EAST;
-            case 4: return BlockFace.EAST;
-            case 5: return BlockFace.EAST_SOUTH_EAST;
-            case 6: return BlockFace.SOUTH_EAST;
-            case 7: return BlockFace.SOUTH_SOUTH_EAST;
-            case 8: return BlockFace.SOUTH;
-            case 9: return BlockFace.SOUTH_SOUTH_WEST;
-            case 10: return BlockFace.SOUTH_WEST;
-            case 11: return BlockFace.WEST_SOUTH_WEST;
-            case 12: return BlockFace.WEST;
-            case 13: return BlockFace.WEST_NORTH_WEST;
-            case 14: return BlockFace.NORTH_WEST;
-            case 15: return BlockFace.NORTH_NORTH_WEST;
-            default: throw new IllegalArgumentException();
+            case 0:
+                return BlockFace.NORTH;
+            case 1:
+                return BlockFace.NORTH_NORTH_EAST;
+            case 2:
+                return BlockFace.NORTH_EAST;
+            case 3:
+                return BlockFace.EAST_NORTH_EAST;
+            case 4:
+                return BlockFace.EAST;
+            case 5:
+                return BlockFace.EAST_SOUTH_EAST;
+            case 6:
+                return BlockFace.SOUTH_EAST;
+            case 7:
+                return BlockFace.SOUTH_SOUTH_EAST;
+            case 8:
+                return BlockFace.SOUTH;
+            case 9:
+                return BlockFace.SOUTH_SOUTH_WEST;
+            case 10:
+                return BlockFace.SOUTH_WEST;
+            case 11:
+                return BlockFace.WEST_SOUTH_WEST;
+            case 12:
+                return BlockFace.WEST;
+            case 13:
+                return BlockFace.WEST_NORTH_WEST;
+            case 14:
+                return BlockFace.NORTH_WEST;
+            case 15:
+                return BlockFace.NORTH_NORTH_WEST;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }
