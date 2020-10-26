@@ -47,8 +47,8 @@ import java.util.logging.Level;
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private boolean needsLoad = true;
-    private int octaves;
-    private float frequency;
+    private final int octaves;
+    private final float frequency;
 
 
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
@@ -65,7 +65,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, FastNoiseLite fastNoise) {
         if(needsLoad) load(world); // Load population data for world.
-        StructureSpawnRequirement.putNoise(world, fastNoise); // Assign noise to world to be used for structures.
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
         if(! tw.isSafe()) return chunk;

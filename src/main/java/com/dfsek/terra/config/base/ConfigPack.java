@@ -16,6 +16,8 @@ import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -33,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import java.util.zip.ZipFile;
 
 /**
  * Represents a Terra configuration pack.
@@ -77,6 +80,10 @@ public class ConfigPack extends YamlConfiguration {
     public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
+        if(file.isDirectory());
+        else if(FilenameUtils.getExtension(file.getAbsolutePath()).equals("zip")) {
+            ZipFile zipFile = new ZipFile(file);
+        }
         long l = System.nanoTime();
         load(new File(file, "pack.yml"));
         dataFolder = file;
