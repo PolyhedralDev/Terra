@@ -127,6 +127,7 @@ public class ConfigPack extends YamlConfiguration {
 
         for(String biome : biomeList) {
             if(getBiomeGrid(biome) == null) {
+                if(biome.startsWith("BIOME:") && biomes.containsKey(biome.substring(6))) continue;
                 throw new ConfigException("No such BiomeGrid: " + biome, getID());
             }
         }
