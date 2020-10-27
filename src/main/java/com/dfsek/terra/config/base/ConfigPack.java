@@ -80,10 +80,6 @@ public class ConfigPack extends YamlConfiguration {
     public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
-        if(file.isDirectory());
-        else if(FilenameUtils.getExtension(file.getAbsolutePath()).equals("zip")) {
-            ZipFile zipFile = new ZipFile(file);
-        }
         long l = System.nanoTime();
         load(new File(file, "pack.yml"));
         dataFolder = file;

@@ -4,16 +4,15 @@ grids:
   - OCEAN_DEEP
   - OCEAN_DEEP
   - OCEAN_DEEP
-  - OCEAN_DEEP
   - OCEAN_SHELF
   - OCEAN
   - OCEAN
   - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
-  - OCEAN
   - BEACH
+  - LAND
+  - LAND
+  - LAND
+  - LAND
   - LAND
   - LAND
   - LAND
@@ -38,14 +37,9 @@ grids:
   - MOUNTAIN
   - MOUNTAIN
   - MOUNTAIN
-  - MOUNTAIN
-  - MOUNTAIN
-  - MOUNTAIN
-  - MOUNTAIN
-  - MOUNTAIN
 frequencies:
-  grid-x: 5120
-  grid-z: 6144
+  grid-x: 3072
+  grid-z: 4096
   zone: 4096
 blend:
   enable: true
