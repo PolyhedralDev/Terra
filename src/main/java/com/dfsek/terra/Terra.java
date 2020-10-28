@@ -1,6 +1,7 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.command.TerraCommand;
+import com.dfsek.terra.command.structure.LocateCommand;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -45,6 +46,11 @@ public class Terra extends GaeaPlugin {
         TerraCommand command = new TerraCommand(this);
         c.setExecutor(command);
         c.setTabCompleter(command);
+
+        LocateCommand locate = new LocateCommand(command, false);
+        PluginCommand locatePl = Objects.requireNonNull(getCommand("locate"));
+        locatePl.setExecutor(locate);
+        locatePl.setTabCompleter(locate);
 
         saveDefaultConfig();
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);

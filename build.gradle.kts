@@ -9,7 +9,6 @@ plugins {
 }
 
 repositories {
-    mavenLocal() // For parsii
     flatDir {
         dirs("lib")
     }
