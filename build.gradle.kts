@@ -1,12 +1,15 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.io.ByteArrayOutputStream
 
+buildDir = file("target")
+
 plugins {
     java
-    id("com.github.johnrengelman.shadow").version("6.0.0")
+    id("com.github.johnrengelman.shadow").version("6.1.0")
 }
 
 repositories {
+    mavenLocal() // For parsii
     flatDir {
         dirs("lib")
     }
@@ -24,26 +27,29 @@ repositories {
     }
 }
 
+base {
+    libsDirName = "prod"
+}
+
 java {
+
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-group = "com.solostudios.omnivoxscraper"
-//version = "0.0.1-alpha.3"
 val versionObj = Version("0", "0", "1", "dev.1")
 version = versionObj
 
 dependencies {
     implementation("org.jetbrains:annotations:20.1.0") // more recent.
     implementation("commons-io:commons-io:2.4")
-    compile(name = "Gaea-1.12.2", group = "")
+    implementation(name = "Gaea-1.12.2", group = "")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
     implementation("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
-    compile("org.bstats:bstats-bukkit:1.7")
+    implementation("org.bstats:bstats-bukkit:1.7")
     implementation("com.googlecode.json-simple:json-simple:1.1")
     implementation(name = "parsii-1.2", group = "")
-    compile("io.papermc:paperlib:1.0.5")
+    implementation("io.papermc:paperlib:1.0.5")
     
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
@@ -52,19 +58,34 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-    
+
     maxHeapSize = "1G"
     ignoreFailures = false
     failFast = true
     maxParallelForks = 12
 }
 
-tasks.withType<ShadowJar> {
+tasks.named<ShadowJar>("shadowJar") {
     archiveClassifier.set("")
     archiveBaseName.set("Terra")
     setVersion(project.version)
+    dependencies {
+        include(dependency("commons-io:commons-io"))
+        include(dependency("org.apache.commons:commons-imaging"))
+        include(dependency("org.bstats:bstats-bukkit"))
+        include(dependency(":parsii-1.2"))
+        include(dependency("io.papermc:paperlib"))
+    }
+    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
+    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
+    relocate("parsii", "com.dfsek.terra.lib.parsii")
+    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
 }
 
+tasks.build {
+    dependsOn(tasks.test)
+    dependsOn("shadowJar")
+}
 
 
 /**

@@ -86,7 +86,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                     if(super.getInterpolatedNoise(x, y, z) > 0) {
                         BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
-                        if(paletteLevel == 0 && c.getSlabs() != null && y < 255) {
+                        if(paletteLevel == 0 && slab != null && y < 255) {
                             prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(), slab.getStairs(), slab.getSlabThreshold());
                         }
                         paletteLevel++;
@@ -101,8 +101,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs, Map<Material, Palette<BlockData>> stairs, double thresh) {
-        double _11 = getInterpolatedNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ());
-        if(_11 > thresh) {
+        if(getInterpolatedNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {
