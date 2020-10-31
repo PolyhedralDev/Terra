@@ -1,7 +1,7 @@
 name: "Terra"
 depend: [ "Gaea" ]
 main: "com.dfsek.terra.Terra"
-version: "1.0.4-BETA"
+version: "1.0.5-BETA"
 load: "STARTUP"
 api-version: "1.16"
 softdepend: [ "WorldEdit" ]

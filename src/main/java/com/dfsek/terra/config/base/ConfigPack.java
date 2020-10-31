@@ -60,11 +60,11 @@ public class ConfigPack extends YamlConfiguration {
 
     public final List<String> biomeList;
 
-    public final float zoneFreq;
-    public final float freq1;
-    public final float freq2;
+    public final double zoneFreq;
+    public final double freq1;
+    public final double freq2;
 
-    public final float erosionFreq;
+    public final double erosionFreq;
     public final double erosionThresh;
     public final boolean erosionEnable;
     public final int erosionOctaves;
@@ -72,10 +72,10 @@ public class ConfigPack extends YamlConfiguration {
 
     public final int blendAmp;
     public final boolean biomeBlend;
-    public final float blendFreq;
+    public final double blendFreq;
 
     public final int octaves;
-    public final float frequency;
+    public final double frequency;
 
     public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
 
@@ -111,15 +111,15 @@ public class ConfigPack extends YamlConfiguration {
 
         biomeBlend = getBoolean("blend.enable", false);
         blendAmp = getInt("blend.amplitude", 8);
-        blendFreq = (float) getDouble("blend.frequency", 0.01);
+        blendFreq = getDouble("blend.frequency", 0.01);
 
         erosionEnable = getBoolean("erode.enable", false);
-        erosionFreq = (float) getDouble("erode.frequency", 0.01);
+        erosionFreq = getDouble("erode.frequency", 0.01);
         erosionThresh = getDouble("erode.threshold", 0.04);
         erosionOctaves = getInt("erode.octaves", 3);
 
         octaves = getInt("noise.octaves", 4);
-        frequency = (float) getDouble("noise.frequency", 1f / 96);
+        frequency = getDouble("noise.frequency", 1f / 96);
 
         erosionName = getString("erode.grid");
 

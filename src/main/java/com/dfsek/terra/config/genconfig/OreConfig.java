@@ -68,7 +68,7 @@ public class OreConfig extends TerraConfig {
     public void doVein(Vector l, Chunk chunk, Random r) {
         FastNoiseLite ore = new FastNoiseLite(r.nextInt());
         ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        ore.setFrequency((float) deformFrequency);
+        ore.setFrequency(deformFrequency);
         int rad = randomInRange(r);
         Map<ChunkCoordinate, Chunk> chunks = new HashMap<>();  // Cache chunks to prevent re-loading chunks every time one is needed.
         chunks.put(new ChunkCoordinate(chunk), chunk);
@@ -94,7 +94,7 @@ public class OreConfig extends TerraConfig {
     public void doVeinSingle(Vector l, Chunk chunk, Random r) {
         FastNoiseLite ore = new FastNoiseLite(r.nextInt());
         ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        ore.setFrequency((float) deformFrequency);
+        ore.setFrequency(deformFrequency);
         int rad = randomInRange(r);
         for(int x = - rad; x <= rad; x++) {
             for(int y = - rad; y <= rad; y++) {

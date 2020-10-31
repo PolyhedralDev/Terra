@@ -18,7 +18,7 @@ public class CoordinatePerturb {
      * @param amplitude Offset amplitude
      * @param seed      Noise seed
      */
-    public CoordinatePerturb(float frequency, int amplitude, long seed) {
+    public CoordinatePerturb(double frequency, int amplitude, long seed) {
         perturbX = new FastNoiseLite((int) seed);
         perturbX.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         perturbX.setFrequency(frequency);

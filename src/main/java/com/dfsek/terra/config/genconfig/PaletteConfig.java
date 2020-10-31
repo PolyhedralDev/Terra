@@ -34,7 +34,7 @@ public class PaletteConfig extends TerraConfig {
             FastNoiseLite pNoise = new FastNoiseLite(getInt("seed", 2403));
             pNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
             pNoise.setFractalOctaves(4);
-            pNoise.setFrequency((float) getDouble("frequency", 0.02));
+            pNoise.setFrequency(getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
         } else pal = new RandomPalette<>(new Random(getInt("seed", 2403)));
         palette = getPalette(getMapList("layers"), pal);

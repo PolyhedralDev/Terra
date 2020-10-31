@@ -48,7 +48,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private boolean needsLoad = true;
     private final int octaves;
-    private final float frequency;
+    private final double frequency;
 
 
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
@@ -167,7 +167,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
-    public float getNoiseFrequency(World world) {
+    public double getNoiseFrequency(World world) {
         return frequency;
     }
 

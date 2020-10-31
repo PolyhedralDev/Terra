@@ -9,7 +9,7 @@ public class ErosionNoise {
     private final double thresh;
     private final FastNoiseLite noise;
 
-    public ErosionNoise(float freq1, double thresh, int octaves, long seed) {
+    public ErosionNoise(double freq1, double thresh, int octaves, long seed) {
         FastNoiseLite main = new FastNoiseLite((int) (seed + 1));
         main.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         main.setFractalType(FastNoiseLite.FractalType.FBm);

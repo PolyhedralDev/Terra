@@ -42,7 +42,7 @@ version = versionObj
 dependencies {
     implementation("org.jetbrains:annotations:20.1.0") // more recent.
     implementation("commons-io:commons-io:2.4")
-    implementation(name = "Gaea-1.12.2", group = "")
+    implementation(name = "Gaea-1.13.0", group = "")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
     implementation("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")

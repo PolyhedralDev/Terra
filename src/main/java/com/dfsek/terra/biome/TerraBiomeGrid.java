@@ -20,7 +20,7 @@ public class TerraBiomeGrid extends BiomeGrid {
 
     private final BiomeZone zone;
 
-    public TerraBiomeGrid(World w, float freq1, float freq2, BiomeZone zone, ConfigPack c, UserDefinedGrid erosion) {
+    public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, UserDefinedGrid erosion) {
         super(w, freq1, freq2, 0, 0);
         if(c.biomeBlend) {
             perturb = new CoordinatePerturb(c.blendFreq, c.blendAmp, w.getSeed());

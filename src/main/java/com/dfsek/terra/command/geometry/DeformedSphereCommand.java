@@ -36,7 +36,7 @@ public class DeformedSphereCommand extends PlayerCommand {
             return true;
         }
 
-        float freq;
+        double freq;
         try {
             freq = Float.parseFloat(args[2]);
         } catch(NumberFormatException e) {

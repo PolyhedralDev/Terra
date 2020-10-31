@@ -56,7 +56,7 @@ public class ImageLoader {
         BiomeZone z = TerraWorld.getWorld(w).getZone();
         for(int x = 0; x < newImg.getWidth(); x++) {
             for(int y = 0; y < newImg.getHeight(); y++) {
-                float[] noise;
+                double[] noise;
                 if(align.equals(Align.CENTER))
                     noise = tb.getGrid(x - original.getWidth() / 2, y - original.getHeight() / 2).getRawNoise(x - original.getWidth() / 2, y - original.getHeight() / 2);
                 else noise = tb.getGrid(x, y).getRawNoise(x, y);

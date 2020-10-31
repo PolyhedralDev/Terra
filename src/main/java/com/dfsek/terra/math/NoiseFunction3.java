@@ -16,7 +16,7 @@ public class NoiseFunction3 implements Function {
 
     @Override
     public double eval(List<Expression> list) {
-        return gen.getNoise((float) list.get(0).evaluate(), (float) list.get(1).evaluate(), (float) list.get(2).evaluate());
+        return gen.getNoise(list.get(0).evaluate(), list.get(1).evaluate(), list.get(2).evaluate());
     }
 
     public void setNoise(FastNoiseLite gen) {
