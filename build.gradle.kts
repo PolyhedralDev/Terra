@@ -126,9 +126,9 @@ tasks.named<ShadowJar>("shadowJar") {
 tasks.build {
     dependsOn(tasks.test)
     dependsOn(tasks.shadowJar)
-    dependsOn(testWithPaper)
+//    dependsOn(testWithPaper)
     tasks.shadowJar.get().mustRunAfter(tasks.test)
-    testWithPaper.mustRunAfter(tasks.shadowJar)
+//    testWithPaper.mustRunAfter(tasks.shadowJar)
 }
 
 
