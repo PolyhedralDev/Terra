@@ -1,7 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.io.ByteArrayOutputStream
-
-buildDir = file("target")
+import java.net.URL
+import java.nio.channels.Channels
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
 plugins {
     java
@@ -12,41 +15,29 @@ repositories {
     flatDir {
         dirs("lib")
     }
-    maven {
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    }
-    maven {
-        url = uri("http://maven.enginehub.org/repo/")
-    }
-    maven {
-        url = uri("https://repo.codemc.org/repository/maven-public")
-    }
-    maven {
-        url = uri("https://papermc.io/repo/repository/maven-public/")
-    }
-}
-
-base {
-    libsDirName = "prod"
+    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    maven { url = uri("http://maven.enginehub.org/repo/") }
+    maven { url = uri("https://repo.codemc.org/repository/maven-public") }
+    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
 }
 
 java {
-
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("0", "0", "1", "dev.1")
+val versionObj = Version("0", "0", "1", "dev.2")
 version = versionObj
 
 dependencies {
-    implementation("org.jetbrains:annotations:20.1.0") // more recent.
+    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:20.1.0") // more recent.
     implementation("commons-io:commons-io:2.4")
     implementation(name = "Gaea-1.13.0", group = "")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
-    implementation("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
-    implementation("com.googlecode.json-simple:json-simple:1.1")
+    compileOnly("com.googlecode.json-simple:json-simple:1.1")
     implementation(name = "parsii-1.2", group = "")
     implementation("io.papermc:paperlib:1.0.5")
     
@@ -57,33 +48,87 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-
+    
     maxHeapSize = "1G"
     ignoreFailures = false
     failFast = true
     maxParallelForks = 12
 }
 
+val testDir = "target/server/"
+
+val setupServer = tasks.create("setupServer") {
+    dependsOn(tasks.shadowJar)
+    doFirst {
+        // clean
+        file("${testDir}/").deleteRecursively()
+        file("${testDir}/plugins").mkdirs()
+        
+        // Downloading latest paper jar.
+        val paperUrl = URL("https://papermc.io/api/v1/paper/1.16.3/latest/download")
+        val paperReadableByteChannel = Channels.newChannel(paperUrl.openStream())
+        val paperFile = file("${testDir}/paper.jar")
+        val paperFileOutputStream = paperFile.outputStream()
+        val paperFileChannel = paperFileOutputStream.channel
+        paperFileChannel.transferFrom(paperReadableByteChannel, 0, Long.MAX_VALUE)
+        
+        // Cloning test setup.
+        gitClone("https://github.com/PolyhedralDev/WorldGenTestServer")
+        // Copying plugins
+        Files.move(Paths.get("WorldGenTestServer/plugins"),
+                   Paths.get("$testDir/plugins"),
+                   StandardCopyOption.REPLACE_EXISTING)
+        // Copying config
+        val serverText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/server.properties").readText()
+        file("${testDir}/server.properties").writeText(serverText)
+        val bukkitText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/bukkit.yml").readText()
+        file("${testDir}/bukkit.yml").writeText(bukkitText.replace("\${world}", "world").replace("\${gen}", "Terra:DEFAULT"))
+        
+        File("${testDir}/eula.txt").writeText("eula=true")
+        
+        // Copy Terra into dir
+        copy {
+            from("${buildDir}/libs/Terra-${versionObj}.jar")
+            into("${testDir}/plugins/")
+        }
+        
+        // clean up
+        file("WorldGenTestServer").deleteRecursively()
+    }
+}
+
+val testWithPaper = task<JavaExec>(name = "testWithPaper") {
+    dependsOn(setupServer)
+    main = "io.papermc.paperclip.Paperclip"
+    jvmArgs = listOf("-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
+                     "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",
+                     "-XX:G1NewSizePercent=30", "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M",
+                     "-XX:G1ReservePercent=20", "-XX:G1HeapWastePercent=5", "-XX:G1MixedGCCountTarget=4",
+                     "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
+                     "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
+                     "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
+                     "-Daikars.new.flags=true")
+    maxHeapSize = "2G"
+    workingDir = file("${testDir}/")
+    classpath = files("${testDir}/paper.jar")
+}
+
 tasks.named<ShadowJar>("shadowJar") {
     archiveClassifier.set("")
     archiveBaseName.set("Terra")
     setVersion(project.version)
-    dependencies {
-        include(dependency("commons-io:commons-io"))
-        include(dependency("org.apache.commons:commons-imaging"))
-        include(dependency("org.bstats:bstats-bukkit"))
-        include(dependency(":parsii-1.2"))
-        include(dependency("io.papermc:paperlib"))
-    }
-    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
-    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
-    relocate("parsii", "com.dfsek.terra.lib.parsii")
-    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+    relocate("org.apache.commons", "lib.commons")
+    relocate("org.bstats.bukkit", "lib.bstats")
+    relocate("parsii", "lib.parsii")
+    relocate("io.papermc.lib", "lib.paperlib")
 }
 
 tasks.build {
     dependsOn(tasks.test)
-    dependsOn("shadowJar")
+    dependsOn(tasks.shadowJar)
+//    dependsOn(testWithPaper)
+    tasks.shadowJar.get().mustRunAfter(tasks.test)
+//    testWithPaper.mustRunAfter(tasks.shadowJar)
 }
 
 
@@ -107,4 +152,12 @@ fun getGitHash(): String {
         standardOutput = stdout
     }
     return stdout.toString().trim()
+}
+
+fun gitClone(name: String) {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine = mutableListOf("git", "clone", name)
+        standardOutput = stdout
+    }
 }

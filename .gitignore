@@ -131,3 +131,6 @@ build
 /target/
 
 .idea/sonarlint/**
+.idea/codeStyles/**
+.idea/**.xml
+.idea/modules/**.iml
