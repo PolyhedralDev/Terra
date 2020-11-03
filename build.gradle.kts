@@ -65,7 +65,7 @@ val setupServer = tasks.create("setupServer") {
         file("${testDir}/plugins").mkdirs()
         
         // Downloading latest paper jar.
-        val paperUrl = URL("https://papermc.io/api/v1/paper/1.16.3/latest/download")
+        val paperUrl = URL("https://papermc.io/api/v1/paper/1.16.4/latest/download")
         val paperReadableByteChannel = Channels.newChannel(paperUrl.openStream())
         val paperFile = file("${testDir}/paper.jar")
         val paperFileOutputStream = paperFile.outputStream()
