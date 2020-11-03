@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
@@ -16,8 +17,6 @@ import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import java.util.zip.ZipFile;
 
 /**
  * Represents a Terra configuration pack.
@@ -76,6 +74,11 @@ public class ConfigPack extends YamlConfiguration {
 
     public final int octaves;
     public final double frequency;
+
+    public final boolean vanillaCaves;
+    public final boolean vanillaStructures;
+    public final boolean vanillaDecoration;
+    public final boolean vanillaMobs;
 
     public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
 
@@ -122,6 +125,15 @@ public class ConfigPack extends YamlConfiguration {
         frequency = getDouble("noise.frequency", 1f / 96);
 
         erosionName = getString("erode.grid");
+
+        vanillaCaves = getBoolean("vanilla.caves", false);
+        vanillaStructures = getBoolean("vanilla.structures", false);
+        vanillaDecoration = getBoolean("vanilla.decorations", false);
+        vanillaMobs = getBoolean("vanilla.mobs", false);
+
+        if(vanillaMobs || vanillaDecoration || vanillaStructures || vanillaCaves) {
+            Terra.getInstance().getLogger().warning("WARNING: Vanilla features have been enabled! These features may not work properly, and are not officially supported! Use at your own risk!");
+        }
 
         // Load BiomeGrids from BiomeZone
         biomeList = getStringList("grids");

@@ -47,16 +47,14 @@ import java.util.logging.Level;
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private boolean needsLoad = true;
-    private final int octaves;
-    private final double frequency;
+    private final ConfigPack configPack;
 
 
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
 
     public TerraChunkGenerator(ConfigPack c) {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
-        this.frequency = c.frequency;
-        this.octaves = c.octaves;
+        this.configPack = c;
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
         popMan.attach(new SnowPopulator());
@@ -163,12 +161,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public int getNoiseOctaves(World world) {
-        return octaves;
+        return configPack.octaves;
     }
 
     @Override
     public double getNoiseFrequency(World world) {
-        return frequency;
+        return configPack.frequency;
     }
 
     @Override
@@ -188,8 +186,23 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
+    public boolean shouldGenerateCaves() {
+        return configPack.vanillaCaves;
+    }
+
+    @Override
+    public boolean shouldGenerateDecorations() {
+        return configPack.vanillaDecoration;
+    }
+
+    @Override
+    public boolean shouldGenerateMobs() {
+        return configPack.vanillaMobs;
+    }
+
+    @Override
     public boolean shouldGenerateStructures() {
-        return false;
+        return configPack.vanillaStructures;
     }
 
 
