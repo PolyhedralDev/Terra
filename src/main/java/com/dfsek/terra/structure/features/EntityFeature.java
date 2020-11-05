@@ -67,7 +67,7 @@ public class EntityFeature implements Feature {
             }
             if(canSpawn) {
                 Debug.info("Spawning entity at  " + attempt);
-                chunk.getWorld().spawnEntity(attempt.add(0.5, 1, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
+                chunk.getWorld().spawnEntity(attempt.add(0.5, 2, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
             }
         }
     }
