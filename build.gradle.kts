@@ -33,7 +33,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0") // more recent.
     implementation("commons-io:commons-io:2.4")
-    implementation(name = "Gaea-1.13.0", group = "")
+    compileOnly(name = "Gaea-1.13.0", group = "")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
@@ -86,12 +86,6 @@ val setupServer = tasks.create("setupServer") {
         
         File("${testDir}/eula.txt").writeText("eula=true")
         
-        // Copy Terra into dir
-        copy {
-            from("${buildDir}/libs/Terra-${versionObj}.jar")
-            into("${testDir}/plugins/")
-        }
-        
         // clean up
         file("WorldGenTestServer").deleteRecursively()
     }
@@ -99,6 +93,15 @@ val setupServer = tasks.create("setupServer") {
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     dependsOn(setupServer)
+    //dependsOn(tasks.shadowJar)
+    // Copy Terra into dir
+    doFirst {
+        copy {
+            from("${buildDir}/libs/Terra-${versionObj}.jar")
+            into("${testDir}/plugins/")
+        }
+    }
+
     main = "io.papermc.paperclip.Paperclip"
     jvmArgs = listOf("-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
                      "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",

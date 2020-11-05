@@ -3,7 +3,7 @@ package com.dfsek.terra.command.structure;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncStructureFinder;
-import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
@@ -12,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.command.WorldCommand;
 

@@ -132,11 +132,9 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private void load(World w) {
         try {
             popMan.loadBlocks(w);
-        } catch(IOException e) {
-            if(e instanceof FileNotFoundException) {
-                LangUtil.log("warning.no-population", Level.WARNING);
-            } else e.printStackTrace();
-        } catch(ClassNotFoundException e) {
+        } catch(FileNotFoundException e) {
+            LangUtil.log("warning.no-population", Level.WARNING);
+        } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         popMap.put(w, popMan);

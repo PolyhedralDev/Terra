@@ -1,7 +1,7 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.async.AsyncStructureFinder;
-import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Entity;

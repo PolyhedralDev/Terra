@@ -6,10 +6,11 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedInventory;
+import com.dfsek.terra.structure.features.Feature;
 import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -67,6 +68,7 @@ public class StructurePopulator extends BlockPopulator {
                                     Debug.stack(e);
                                 }
                             }
+                            for(Feature f : conf.getFeatures()) f.apply(struc, spawn, chunk); // Apply features.
                             break;
                         }
                     }

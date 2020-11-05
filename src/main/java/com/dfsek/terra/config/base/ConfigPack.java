@@ -11,7 +11,7 @@ import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.config.genconfig.FloraConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
-import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;

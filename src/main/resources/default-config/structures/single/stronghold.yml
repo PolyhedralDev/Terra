@@ -14,3 +14,30 @@ loot:
   1: wood_house
   2: cobble_house
   3: cobble_house
+features:
+  - ENTITY_FEATURE:
+      entity: SILVERFISH
+      attempts: 20
+      in-height: 1
+      amount:
+        min: 10
+        max: 15
+      spawnable-on:
+        - "minecraft:stone"
+        - "minecraft:stone_bricks"
+        - "minecraft:mossy_stone_bricks"
+      spawnable-in:
+        - "minecraft:air"
+  - ENTITY_FEATURE:
+      entity: ZOMBIE
+      attempts: 20
+      in-height: 2
+      amount:
+        min: 10
+        max: 15
+      spawnable-on:
+        - "minecraft:stone"
+        - "minecraft:stone_bricks"
+        - "minecraft:mossy_stone_bricks"
+      spawnable-in:
+        - "minecraft:air"

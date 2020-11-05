@@ -3,7 +3,7 @@ package com.dfsek.terra.command.biome;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeSnowConfig;
 import com.dfsek.terra.config.lang.LangUtil;

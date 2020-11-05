@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.genconfig;
+package com.dfsek.terra.config.genconfig.structure;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
@@ -9,6 +9,7 @@ import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.Structure;
+import com.dfsek.terra.structure.features.Feature;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.json.simple.parser.ParseException;
@@ -19,7 +20,9 @@ import org.polydev.gaea.structures.loot.LootTable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -31,8 +34,11 @@ public class StructureConfig extends TerraConfig {
     private final Range searchStart;
     private final Range bound;
     private final Map<Integer, LootTable> loot = new HashMap<>();
+    private final List<Feature> features;
+
     StructurePopulator.SearchType type;
 
+    @SuppressWarnings("unchecked")
     public StructureConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         if(! contains("id")) throw new ConfigException("No ID specified!", "null");
@@ -76,6 +82,16 @@ public class StructureConfig extends TerraConfig {
             }
         }
 
+        features = new ArrayList<>();
+        if(contains("features")) {
+            for(Map<?, ?> map : getMapList("features")) {
+                for(Map.Entry<?, ?> entry : map.entrySet()) {
+                    if(entry.getKey().equals("ENTITY_FEATURE"))
+                        features.add(new EntityFeatureConfig((Map<String, Object>) entry.getValue()).getFeature());
+                }
+            }
+        }
+
         spawn = new GridSpawn(getInt("spawn.width", 500), getInt("spawn.padding", 100));
         searchStart = new Range(getInt("spawn.start.min", 72), getInt("spawn.start.max", 72));
         bound = new Range(getInt("spawn.bound.min", 48), getInt("spawn.bound.max", 72));
@@ -84,6 +100,10 @@ public class StructureConfig extends TerraConfig {
         } catch(IllegalArgumentException e) {
             throw new ConfigException("Invalid search type, " + getString("spawn.search"), getID());
         }
+    }
+
+    public List<Feature> getFeatures() {
+        return features;
     }
 
     @Override

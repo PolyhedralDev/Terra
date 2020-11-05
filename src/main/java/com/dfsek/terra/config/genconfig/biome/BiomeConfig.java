@@ -7,7 +7,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.config.genconfig.StructureConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.bukkit.configuration.InvalidConfigurationException;
