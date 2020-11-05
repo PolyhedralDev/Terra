@@ -32,6 +32,7 @@ import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.population.PopulationManager;
+import org.polydev.gaea.profiler.WorldProfiler;
 import org.polydev.gaea.world.palette.Palette;
 
 import java.io.FileNotFoundException;
@@ -150,6 +151,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 ioException.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void attachProfiler(WorldProfiler p) {
+        super.attachProfiler(p);
+        popMan.attachProfiler(p);
     }
 
     public static synchronized void fixChunk(Chunk c) {

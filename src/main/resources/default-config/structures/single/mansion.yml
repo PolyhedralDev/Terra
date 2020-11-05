@@ -8,8 +8,8 @@ spawn:
   bound:
     min: 48
     max: 96
-  width: 250
-  padding: 500
+  width: 125
+  padding: 100
 loot:
   1: arrows
 features:
@@ -18,8 +18,8 @@ features:
       attempts: 100
       in-height: 1
       amount:
-        min: 40
-        max: 60
+        min: 60
+        max: 80
       spawnable-on:
         - "minecraft:birch_planks"
       spawnable-in:
