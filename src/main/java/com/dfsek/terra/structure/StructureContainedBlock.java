@@ -17,7 +17,6 @@ import java.io.Serializable;
 public class StructureContainedBlock implements Serializable {
     public static final long serialVersionUID = 6143969483382710947L;
     private final SerializableBlockData bl;
-    private transient BlockData data;
     private final Pull pull;
     private final int pullOffset;
     private final int x;
@@ -25,6 +24,7 @@ public class StructureContainedBlock implements Serializable {
     private final int z;
     private final SerializableBlockState state;
     private final StructureSpawnRequirement requirement;
+    private transient BlockData data;
 
     public StructureContainedBlock(int x, int y, int z, BlockState state, BlockData d, StructureSpawnRequirement spawn, Pull pull, int pullOffset) {
         if(state instanceof Sign) {
@@ -93,6 +93,6 @@ public class StructureContainedBlock implements Serializable {
     }
 
     public enum Pull {
-        UP, NONE, DOWN;
+        UP, NONE, DOWN
     }
 }

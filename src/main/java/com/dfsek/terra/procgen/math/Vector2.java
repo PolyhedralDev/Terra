@@ -27,6 +27,11 @@ public class Vector2 implements Cloneable {
         return x;
     }
 
+    public Vector2 setX(double x) {
+        this.x = x;
+        return this;
+    }
+
     /**
      * Get Z component
      *
@@ -34,6 +39,11 @@ public class Vector2 implements Cloneable {
      */
     public double getZ() {
         return z;
+    }
+
+    public Vector2 setZ(double z) {
+        this.z = z;
+        return this;
     }
 
     /**
@@ -163,15 +173,5 @@ public class Vector2 implements Cloneable {
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
-    }
-
-    public Vector2 setX(double x) {
-        this.x = x;
-        return this;
-    }
-
-    public Vector2 setZ(double z) {
-        this.z = z;
-        return this;
     }
 }

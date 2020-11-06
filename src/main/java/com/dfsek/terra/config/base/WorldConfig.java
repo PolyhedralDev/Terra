@@ -19,20 +19,16 @@ import java.util.logging.Level;
 public class WorldConfig {
 
 
+    private final String worldID;
+    private final String configID;
+    private final GaeaPlugin main;
     public boolean fromImage;
     public ConfigPack config;
     public ImageLoader.Channel biomeXChannel;
     public ImageLoader.Channel biomeZChannel;
     public ImageLoader.Channel zoneChannel;
-
     public ImageLoader imageLoader;
-
-
     private ConfigPack tConfig;
-
-    private final String worldID;
-    private final String configID;
-    private final GaeaPlugin main;
 
 
     public WorldConfig(String w, String configID, GaeaPlugin main) {

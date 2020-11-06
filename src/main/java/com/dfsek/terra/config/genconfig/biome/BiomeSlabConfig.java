@@ -22,7 +22,7 @@ import java.util.Random;
 public class BiomeSlabConfig extends TerraConfigSection {
     private final Map<Material, Palette<BlockData>> slabs;
     private final Map<Material, Palette<BlockData>> stairs;
-    private double slabThreshold;
+    private final double slabThreshold;
 
     public BiomeSlabConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);

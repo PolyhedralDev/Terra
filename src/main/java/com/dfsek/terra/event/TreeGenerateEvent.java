@@ -14,12 +14,12 @@ public class TreeGenerateEvent extends TerraWorldEvent implements Cancellable {
         this.tree = tree;
     }
 
-    public void setTree(Tree tree) {
-        this.tree = tree;
-    }
-
     public Tree getTree() {
         return tree;
+    }
+
+    public void setTree(Tree tree) {
+        this.tree = tree;
     }
 
     @Override

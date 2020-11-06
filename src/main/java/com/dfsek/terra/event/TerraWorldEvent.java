@@ -16,14 +16,14 @@ public abstract class TerraWorldEvent extends Event {
         this.location = l.clone();
     }
 
-    @Override
     @NotNull
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
+    @Override
     @NotNull
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 

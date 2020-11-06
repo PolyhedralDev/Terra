@@ -40,14 +40,6 @@ public class PaletteConfig extends TerraConfig {
         palette = getPalette(getMapList("layers"), pal);
     }
 
-    public Palette<BlockData> getPalette() {
-        return palette;
-    }
-
-    public String getID() {
-        return paletteID;
-    }
-
     @SuppressWarnings("unchecked")
     protected static Palette<BlockData> getPalette(List<Map<?, ?>> maps, Palette<BlockData> p) throws InvalidConfigurationException {
         for(Map<?, ?> m : maps) {
@@ -74,6 +66,14 @@ public class PaletteConfig extends TerraConfig {
             }
         }
         return p;
+    }
+
+    public Palette<BlockData> getPalette() {
+        return palette;
+    }
+
+    public String getID() {
+        return paletteID;
     }
 
     @Override

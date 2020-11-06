@@ -12,8 +12,6 @@ import org.bukkit.entity.EntityType;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 
-
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -24,6 +22,7 @@ public class EntityFeature implements Feature {
     private final Set<Material> in;
     private final Set<Material> stand;
     private final int inSize;
+
     public EntityFeature(EntityType type, Range amount, int attempts, Set<Material> stand, Set<Material> in, int inSize) {
         this.type = type;
         this.amount = amount;
@@ -31,6 +30,10 @@ public class EntityFeature implements Feature {
         this.in = in;
         this.stand = stand;
         this.inSize = inSize;
+    }
+
+    private static boolean isInChunk(Chunk c, Location l) {
+        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
     }
 
     @Override
@@ -49,8 +52,8 @@ public class EntityFeature implements Feature {
 
         for(int i = 0; i < amountSpawn && i < attempts; i++) {
             int yv = y.get(random);
-            Location attempt = l.clone().add(x.get(random)-cx, yv, z.get(random)-cz);
-            if(!isInChunk(chunk, attempt)) continue; // Don't attempt spawn if not in current chunk.
+            Location attempt = l.clone().add(x.get(random) - cx, yv, z.get(random) - cz);
+            if(! isInChunk(chunk, attempt)) continue; // Don't attempt spawn if not in current chunk.
 
             boolean canSpawn = false;
             while(yv >= 0 && attempt.getBlockY() >= l.getBlockY()) { // Go down, see if valid spawns exist.
@@ -59,9 +62,10 @@ public class EntityFeature implements Feature {
                 attempt.subtract(0, 1, 0);
                 yv--;
 
-                if(!stand.contains(on.getType())) continue;
+                if(! stand.contains(on.getType())) continue;
 
-                for(int j = 1; j < inSize + 1; j++) if(! in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
+                for(int j = 1; j < inSize + 1; j++)
+                    if(! in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
 
                 if(canSpawn) break;
             }
@@ -70,10 +74,6 @@ public class EntityFeature implements Feature {
                 chunk.getWorld().spawnEntity(attempt.add(0.5, 2, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
             }
         }
-    }
-
-    private static boolean isInChunk(Chunk c, Location l) {
-        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class EntityFeature implements Feature {
 
         for(int i = 0; i < amountSpawn && i < attempts; i++) {
             int yv = y.get(random);
-            Location attempt = l.clone().add(x.get(random)-cx, yv, z.get(random)-cz);
+            Location attempt = l.clone().add(x.get(random) - cx, yv, z.get(random) - cz);
 
             boolean canSpawn = false;
             while(yv >= 0 && attempt.getBlockY() >= l.getBlockY()) { // Go down, see if valid spawns exist.
@@ -99,9 +99,10 @@ public class EntityFeature implements Feature {
                 attempt.subtract(0, 1, 0);
                 yv--;
 
-                if(!stand.contains(on.getType())) continue;
+                if(! stand.contains(on.getType())) continue;
 
-                for(int j = 1; j < inSize + 1; j++) if(! in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
+                for(int j = 1; j < inSize + 1; j++)
+                    if(! in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
 
                 if(canSpawn) break;
             }

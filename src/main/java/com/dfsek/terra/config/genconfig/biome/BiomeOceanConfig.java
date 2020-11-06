@@ -16,9 +16,9 @@ import org.polydev.gaea.world.palette.RandomPalette;
 import java.util.Random;
 
 public class BiomeOceanConfig extends TerraConfigSection {
+    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
     private final Palette<BlockData> ocean;
     private final int seaLevel;
-    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
 
     public BiomeOceanConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);

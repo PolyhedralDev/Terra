@@ -47,15 +47,6 @@ public class Structure implements Serializable {
     private final HashSet<StructureContainedBlock> spawns;
     private final HashSet<StructureContainedInventory> inventories;
 
-    @NotNull
-    public static Structure load(@NotNull File f) throws IOException {
-        try {
-            return fromFile(f);
-        } catch(ClassNotFoundException e) {
-            throw new IllegalArgumentException("Provided file does not contain a GaeaStructure.");
-        }
-    }
-
     public Structure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
         int centerX = - 1, centerZ = - 1;
         this.id = id;
@@ -124,6 +115,45 @@ public class Structure implements Serializable {
         }
         if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.", null);
         structureInfo = new StructureInfo(l2.getBlockX() - l1.getBlockX() + 1, l2.getBlockY() - l1.getBlockY() + 1, l2.getBlockZ() - l1.getBlockZ() + 1, new Vector2(centerX, centerZ));
+    }
+
+    @NotNull
+    public static Structure load(@NotNull File f) throws IOException {
+        try {
+            return fromFile(f);
+        } catch(ClassNotFoundException e) {
+            throw new IllegalArgumentException("Provided file does not contain a GaeaStructure.");
+        }
+    }
+
+    /**
+     * Load a structure from a file.
+     *
+     * @param f File to load from
+     * @return The structure loaded
+     * @throws IOException            If file access error occurs
+     * @throws ClassNotFoundException If structure data is invalid.
+     */
+    @NotNull
+    private static Structure fromFile(@NotNull File f) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+        Object o = ois.readObject();
+        ois.close();
+        return (Structure) o;
+    }
+
+    @NotNull
+    public static Structure fromStream(@NotNull InputStream f) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(f);
+        Object o = ois.readObject();
+        ois.close();
+        return (Structure) o;
+    }
+
+    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+        oos.writeObject(o);
+        oos.close();
     }
 
     /**
@@ -305,36 +335,6 @@ public class Structure implements Serializable {
         toFile(this, f);
     }
 
-    /**
-     * Load a structure from a file.
-     *
-     * @param f File to load from
-     * @return The structure loaded
-     * @throws IOException            If file access error occurs
-     * @throws ClassNotFoundException If structure data is invalid.
-     */
-    @NotNull
-    private static Structure fromFile(@NotNull File f) throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
-        Object o = ois.readObject();
-        ois.close();
-        return (Structure) o;
-    }
-
-    @NotNull
-    public static Structure fromStream(@NotNull InputStream f) throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(f);
-        Object o = ois.readObject();
-        ois.close();
-        return (Structure) o;
-    }
-
-    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
-        oos.writeObject(o);
-        oos.close();
-    }
-
     @NotNull
     public String getId() {
         return id;
@@ -386,10 +386,6 @@ public class Structure implements Serializable {
             this.degrees = degrees;
         }
 
-        public int getDegrees() {
-            return degrees;
-        }
-
         public static Rotation fromDegrees(int deg) {
             switch(Math.floorMod(deg, 360)) {
                 case 0:
@@ -403,6 +399,10 @@ public class Structure implements Serializable {
                 default:
                     throw new IllegalArgumentException();
             }
+        }
+
+        public int getDegrees() {
+            return degrees;
         }
 
         public Rotation inverse() {

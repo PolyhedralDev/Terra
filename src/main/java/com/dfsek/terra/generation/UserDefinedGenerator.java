@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class UserDefinedGenerator extends Generator {
+    private static final Object noiseLock = new Object();
     private final Expression noiseExp;
     private final Scope s = new Scope();
     private final Variable xVar = s.getVariable("x");
@@ -28,10 +29,7 @@ public class UserDefinedGenerator extends Generator {
     private final Palette<BlockData>[] palettes = new Palette[256];
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
-
     private final boolean preventSmooth;
-
-    private static final Object noiseLock = new Object();
 
 
     public UserDefinedGenerator(String equation, List<Variable> v, TreeMap<Integer, Palette<BlockData>> pa, boolean preventSmooth) throws ParseException {

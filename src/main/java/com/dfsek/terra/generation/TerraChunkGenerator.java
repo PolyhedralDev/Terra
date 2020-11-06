@@ -13,7 +13,6 @@ import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.structure.StructureSpawnRequirement;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -26,12 +25,10 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.biome.BiomeGrid;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
-import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.population.PopulationManager;
 import org.polydev.gaea.profiler.WorldProfiler;
 import org.polydev.gaea.world.palette.Palette;
@@ -47,12 +44,10 @@ import java.util.Random;
 import java.util.logging.Level;
 
 public class TerraChunkGenerator extends GaeaChunkGenerator {
-    private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
-    private boolean needsLoad = true;
-    private final ConfigPack configPack;
-
-
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
+    private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
+    private final ConfigPack configPack;
+    private boolean needsLoad = true;
 
     public TerraChunkGenerator(ConfigPack c) {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
@@ -60,6 +55,22 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
         popMan.attach(new SnowPopulator());
+    }
+
+    public static synchronized void saveAll() {
+        for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
+            try {
+                e.getValue().saveBlocks(e.getKey());
+                Debug.info("Saved data for world " + e.getKey().getName());
+            } catch(IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+    public static synchronized void fixChunk(Chunk c) {
+        if(! (c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
+        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
     @Override
@@ -143,26 +154,10 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         needsLoad = false;
     }
 
-    public static synchronized void saveAll() {
-        for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
-            try {
-                e.getValue().saveBlocks(e.getKey());
-                Debug.info("Saved data for world " + e.getKey().getName());
-            } catch(IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-    }
-
     @Override
     public void attachProfiler(WorldProfiler p) {
         super.attachProfiler(p);
         popMan.attachProfiler(p);
-    }
-
-    public static synchronized void fixChunk(Chunk c) {
-        if(! (c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
-        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
     @Override

@@ -8,5 +8,6 @@ import java.util.Random;
 
 public interface Feature {
     void apply(Structure structure, Location l, Chunk chunk);
+
     void apply(Structure structure, Location l, Random random);
 }

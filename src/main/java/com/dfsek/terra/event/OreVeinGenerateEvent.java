@@ -14,12 +14,12 @@ public class OreVeinGenerateEvent extends TerraWorldEvent implements Cancellable
         this.config = config;
     }
 
-    public void setConfig(OreConfig config) {
-        this.config = config;
-    }
-
     public OreConfig getConfig() {
         return config;
+    }
+
+    public void setConfig(OreConfig config) {
+        this.config = config;
     }
 
     @Override

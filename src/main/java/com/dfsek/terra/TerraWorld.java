@@ -86,6 +86,17 @@ public class TerraWorld {
         return map.computeIfAbsent(w, TerraWorld::new);
     }
 
+    public static synchronized void invalidate() {
+        map.clear();
+        for(WorldConfig config : loaded.values()) {
+            config.load(); // Reload all stored WorldConfigs
+        }
+    }
+
+    public static int numWorlds() {
+        return map.size();
+    }
+
     public TerraBiomeGrid getGrid() {
         return grid;
     }
@@ -100,17 +111,6 @@ public class TerraWorld {
 
     public BiomeZone getZone() {
         return zone;
-    }
-
-    public static synchronized void invalidate() {
-        map.clear();
-        for(WorldConfig config : loaded.values()) {
-            config.load(); // Reload all stored WorldConfigs
-        }
-    }
-
-    public static int numWorlds() {
-        return map.size();
     }
 
     public boolean isSafe() {

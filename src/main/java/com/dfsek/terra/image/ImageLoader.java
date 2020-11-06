@@ -24,24 +24,6 @@ public class ImageLoader {
         this.align = align;
     }
 
-
-    public int getChannel(int x, int y, Channel channel) {
-        int rgb;
-        rgb = align.getRGB(image, x, y);
-        switch(channel) {
-            case RED:
-                return rgb >> 16 & 0xff;
-            case GREEN:
-                return rgb >> 8 & 0xff;
-            case BLUE:
-                return rgb & 0xff;
-            case ALPHA:
-                return rgb >> 32 & 0xff;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
     public static void debugWorld(boolean genStep, World w) {
         if(! ConfigUtil.debug) return;
         BufferedImage newImg = new WorldImageGenerator(w, 1024, 1024).drawWorld(0, 0).getDraw();
@@ -69,6 +51,31 @@ public class ImageLoader {
         return newImg;
     }
 
+    private static BufferedImage copyImage(BufferedImage source) {
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+        Graphics g = b.getGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+        return b;
+    }
+
+    public int getChannel(int x, int y, Channel channel) {
+        int rgb;
+        rgb = align.getRGB(image, x, y);
+        switch(channel) {
+            case RED:
+                return rgb >> 16 & 0xff;
+            case GREEN:
+                return rgb >> 8 & 0xff;
+            case BLUE:
+                return rgb & 0xff;
+            case ALPHA:
+                return rgb >> 32 & 0xff;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
     public void debug(boolean genStep, World w) {
         if(! ConfigUtil.debug) return;
         BufferedImage newImg = copyImage(image);
@@ -81,14 +88,6 @@ public class ImageLoader {
 
     public double getNoiseVal(int x, int y, Channel channel) {
         return ((double) (getChannel(x, y, channel) - 128) / 128) * inverseRoot2;
-    }
-
-    private static BufferedImage copyImage(BufferedImage source) {
-        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
-        Graphics g = b.getGraphics();
-        g.drawImage(source, 0, 0, null);
-        g.dispose();
-        return b;
     }
 
     public Align getAlign() {
@@ -113,10 +112,10 @@ public class ImageLoader {
             }
         };
 
-        public abstract int getRGB(BufferedImage image, int x, int y);
-
         private static int getRGBNoAlign(BufferedImage image, int x, int y) {
             return image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(y, image.getHeight()));
         }
+
+        public abstract int getRGB(BufferedImage image, int x, int y);
     }
 }

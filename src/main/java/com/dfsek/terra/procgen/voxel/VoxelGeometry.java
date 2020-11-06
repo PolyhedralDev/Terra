@@ -8,6 +8,11 @@ import java.util.List;
 public abstract class VoxelGeometry {
     public List<Vector> geometry = new ArrayList<>();
 
+    public static VoxelGeometry getBlank() {
+        return new VoxelGeometry() {
+        };
+    }
+
     public List<Vector> getGeometry() {
         return geometry;
     }
@@ -18,10 +23,5 @@ public abstract class VoxelGeometry {
 
     public void merge(VoxelGeometry other) {
         geometry.addAll(other.geometry);
-    }
-
-    public static VoxelGeometry getBlank() {
-        return new VoxelGeometry() {
-        };
     }
 }

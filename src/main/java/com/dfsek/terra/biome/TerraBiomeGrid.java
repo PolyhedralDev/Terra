@@ -14,11 +14,10 @@ import java.util.logging.Level;
 
 public class TerraBiomeGrid extends BiomeGrid {
     private static int failNum = 0;
+    private final BiomeZone zone;
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
     private UserDefinedGrid erosionGrid;
-
-    private final BiomeZone zone;
 
     public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, UserDefinedGrid erosion) {
         super(w, freq1, freq2, 0, 0);

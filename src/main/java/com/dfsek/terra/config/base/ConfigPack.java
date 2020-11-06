@@ -11,10 +11,10 @@ import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.config.genconfig.FloraConfig;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.PaletteConfig;
-import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,6 +40,25 @@ import java.util.stream.Collectors;
  */
 public class ConfigPack extends YamlConfiguration {
     private static final Map<String, ConfigPack> configs = new HashMap<>();
+    public final List<String> biomeList;
+    public final double zoneFreq;
+    public final double freq1;
+    public final double freq2;
+    public final double erosionFreq;
+    public final double erosionThresh;
+    public final boolean erosionEnable;
+    public final int erosionOctaves;
+    public final String erosionName;
+    public final int blendAmp;
+    public final boolean biomeBlend;
+    public final double blendFreq;
+    public final int octaves;
+    public final double frequency;
+    public final boolean vanillaCaves;
+    public final boolean vanillaStructures;
+    public final boolean vanillaDecoration;
+    public final boolean vanillaMobs;
+    public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
     private final Map<String, CarverConfig> carvers;
@@ -50,37 +69,8 @@ public class ConfigPack extends YamlConfiguration {
     private final Map<String, BiomeGridConfig> grids;
     private final Map<String, TreeConfig> trees;
     private final Set<StructureConfig> allStructures = new HashSet<>();
-
-
     private final File dataFolder;
-
     private final String id;
-
-    public final List<String> biomeList;
-
-    public final double zoneFreq;
-    public final double freq1;
-    public final double freq2;
-
-    public final double erosionFreq;
-    public final double erosionThresh;
-    public final boolean erosionEnable;
-    public final int erosionOctaves;
-    public final String erosionName;
-
-    public final int blendAmp;
-    public final boolean biomeBlend;
-    public final double blendFreq;
-
-    public final int octaves;
-    public final double frequency;
-
-    public final boolean vanillaCaves;
-    public final boolean vanillaStructures;
-    public final boolean vanillaDecoration;
-    public final boolean vanillaMobs;
-
-    public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
@@ -168,26 +158,6 @@ public class ConfigPack extends YamlConfiguration {
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
-    public Map<StructureTypeEnum, StructureConfig> getLocatable() {
-        return locatable;
-    }
-
-    public Map<String, AbstractBiomeConfig> getAbstractBiomes() {
-        return abstractBiomes;
-    }
-
-    public Map<String, BiomeConfig> getBiomes() {
-        return biomes;
-    }
-
-    public Map<String, CarverConfig> getCarvers() {
-        return carvers;
-    }
-
-    public Set<StructureConfig> getAllStructures() {
-        return allStructures;
-    }
-
     public static synchronized void loadAll(JavaPlugin main) {
         configs.clear();
         File file = new File(main.getDataFolder(), "packs");
@@ -217,16 +187,36 @@ public class ConfigPack extends YamlConfiguration {
         }
     }
 
+    public static synchronized ConfigPack fromID(String id) {
+        return configs.get(id);
+    }
+
+    public Map<StructureTypeEnum, StructureConfig> getLocatable() {
+        return locatable;
+    }
+
+    public Map<String, AbstractBiomeConfig> getAbstractBiomes() {
+        return abstractBiomes;
+    }
+
+    public Map<String, BiomeConfig> getBiomes() {
+        return biomes;
+    }
+
+    public Map<String, CarverConfig> getCarvers() {
+        return carvers;
+    }
+
+    public Set<StructureConfig> getAllStructures() {
+        return allStructures;
+    }
+
     public File getDataFolder() {
         return dataFolder;
     }
 
     public String getID() {
         return id;
-    }
-
-    public static synchronized ConfigPack fromID(String id) {
-        return configs.get(id);
     }
 
     public BiomeConfig getBiome(UserDefinedBiome b) {

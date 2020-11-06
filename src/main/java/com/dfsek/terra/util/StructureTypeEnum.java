@@ -25,11 +25,11 @@ public enum StructureTypeEnum {
     RUINED_PORTAL(StructureType.RUINED_PORTAL),
     BASTION_REMNANT(StructureType.BASTION_REMNANT);
 
+    private final StructureType type;
+
     StructureTypeEnum(StructureType type) {
         this.type = type;
     }
-
-    private final StructureType type;
 
     public StructureType getType() {
         return type;

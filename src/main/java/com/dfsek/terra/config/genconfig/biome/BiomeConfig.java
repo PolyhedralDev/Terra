@@ -34,10 +34,9 @@ public class BiomeConfig extends TerraConfig {
     private final BiomeOceanConfig ocean;
     private final BiomeSlabConfig slab;
     private final BiomeSnowConfig snow;
-    private String eq;
-
     private final List<StructureConfig> structures;
     private final ConfigPack config;
+    private String eq;
 
     public BiomeConfig(File file, ConfigPack config) throws InvalidConfigurationException, IOException {
         super(file, config);

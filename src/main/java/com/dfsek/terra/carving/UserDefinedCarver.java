@@ -37,7 +37,7 @@ public class UserDefinedCarver extends Carver {
     @Override
     public Worm getWorm(long l, Vector vector) {
         Random r = new Random(l + hash);
-        return new UserDefinedWorm((int) (length.get(r) / 2), r, vector, radius.getMax(), topCut, bottomCut);
+        return new UserDefinedWorm(length.get(r) / 2, r, vector, radius.getMax(), topCut, bottomCut);
     }
 
     @Override

@@ -39,6 +39,10 @@ public class SimplexCarver extends Carver {
         hasCaves.setFrequency(0.005f);
     }
 
+    private static double acot(double x) {
+        return Math.PI / 2 - Math.atan(x);
+    }
+
     @Override
     public Worm getWorm(long l, Vector vector) {
         return null;
@@ -75,9 +79,5 @@ public class SimplexCarver extends Carver {
             }
         }
         return c;
-    }
-
-    private static double acot(double x) {
-        return Math.PI / 2 - Math.atan(x);
     }
 }

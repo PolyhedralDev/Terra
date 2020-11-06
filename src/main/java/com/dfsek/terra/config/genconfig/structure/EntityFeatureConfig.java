@@ -22,9 +22,12 @@ public class EntityFeatureConfig implements FeatureConfig {
         if(! items.containsKey("entity")) throw new ConfigException("No EntityType specified!", "EntityFeature");
         if(! items.containsKey("amount")) throw new ConfigException("No amount specified!", "EntityFeature");
         if(! items.containsKey("attempts")) throw new ConfigException("Attempts not specified!", "EntityFeature");
-        if(! items.containsKey("in-height")) throw new ConfigException("Spawn Checking Height not specified!", "EntityFeature");
-        if(! items.containsKey("spawnable-on")) throw new ConfigException("No Spawnable-on materials specified!", "EntityFeature");
-        if(! items.containsKey("spawnable-in")) throw new ConfigException("No Spawnable-in materials specified!", "EntityFeature");
+        if(! items.containsKey("in-height"))
+            throw new ConfigException("Spawn Checking Height not specified!", "EntityFeature");
+        if(! items.containsKey("spawnable-on"))
+            throw new ConfigException("No Spawnable-on materials specified!", "EntityFeature");
+        if(! items.containsKey("spawnable-in"))
+            throw new ConfigException("No Spawnable-in materials specified!", "EntityFeature");
 
         EntityType type;
         try {
@@ -52,6 +55,7 @@ public class EntityFeatureConfig implements FeatureConfig {
         this.feature = new EntityFeature(type, amount, attempts, on, in, height);
         Debug.info("Loaded EntityFeature with type: " + type);
     }
+
     @Override
     public Feature getFeature() {
         return feature;

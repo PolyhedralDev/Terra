@@ -12,8 +12,8 @@ import java.util.List;
 public class AbstractBiomeConfig extends TerraConfig {
     private final String biomeID;
     private final String equation;
-    private BiomeSlabConfig slabs;
     private final int seaLevel;
+    private BiomeSlabConfig slabs;
     private List<String> structureConfigs;
     private BiomePaletteConfig palette;
     private BiomeFloraConfig flora;

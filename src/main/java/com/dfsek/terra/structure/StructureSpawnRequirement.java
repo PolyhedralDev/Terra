@@ -3,7 +3,6 @@ package com.dfsek.terra.structure;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
@@ -50,8 +49,6 @@ public enum StructureSpawnRequirement implements Serializable {
     private static final long serialVersionUID = - 175639605885943679L;
     private static final transient Map<World, FastNoiseLite> noiseMap = new HashMap<>();
 
-    public abstract boolean matches(World w, int x, int y, int z);
-
     public static void putNoise(World w, FastNoiseLite noise) {
         noiseMap.putIfAbsent(w, noise);
     }
@@ -72,4 +69,6 @@ public enum StructureSpawnRequirement implements Serializable {
             putNoise(w, gen);
         }
     }
+
+    public abstract boolean matches(World w, int x, int y, int z);
 }
