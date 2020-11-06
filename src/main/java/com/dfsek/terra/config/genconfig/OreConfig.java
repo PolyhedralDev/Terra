@@ -36,11 +36,11 @@ public class OreConfig extends TerraConfig {
 
     public OreConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(! contains("id")) throw new ConfigException("Ore ID not found!", "null");
+        if(!contains("id")) throw new ConfigException("Ore ID not found!", "null");
         this.id = getString("id");
-        if(! contains("material")) throw new ConfigException("Ore material not found!", getID());
-        if(! contains("deform")) throw new ConfigException("Ore vein deformation not found!", getID());
-        if(! contains("replace")) throw new ConfigException("Ore replaceable materials not found!", getID());
+        if(!contains("material")) throw new ConfigException("Ore material not found!", getID());
+        if(!contains("deform")) throw new ConfigException("Ore vein deformation not found!", getID());
+        if(!contains("replace")) throw new ConfigException("Ore replaceable materials not found!", getID());
         min = getInt("radius.min", 1);
         max = getInt("radius.max", 1);
         deform = getDouble("deform", 0.75);
@@ -73,9 +73,9 @@ public class OreConfig extends TerraConfig {
         Map<ChunkCoordinate, Chunk> chunks = new HashMap<>();  // Cache chunks to prevent re-loading chunks every time one is needed.
         chunks.put(new ChunkCoordinate(chunk), chunk);
         Vector orig = new Vector(l.getBlockX() + (chunk.getX() << 4), l.getBlockY(), l.getBlockZ() + (chunk.getZ() << 4));
-        for(int x = - rad; x <= rad; x++) {
-            for(int y = - rad; y <= rad; y++) {
-                for(int z = - rad; z <= rad; z++) {
+        for(int x = -rad; x <= rad; x++) {
+            for(int y = -rad; y <= rad; y++) {
+                for(int z = -rad; z <= rad; z++) {
                     Vector oreLoc = orig.clone().add(new Vector(x, y, z));
                     Vector source = l.clone().add(new Vector(x, y, z));
                     if(oreLoc.getBlockY() > 255 || oreLoc.getBlockY() < 0) continue;
@@ -96,9 +96,9 @@ public class OreConfig extends TerraConfig {
         ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         ore.setFrequency(deformFrequency);
         int rad = randomInRange(r);
-        for(int x = - rad; x <= rad; x++) {
-            for(int y = - rad; y <= rad; y++) {
-                for(int z = - rad; z <= rad; z++) {
+        for(int x = -rad; x <= rad; x++) {
+            for(int y = -rad; y <= rad; y++) {
+                for(int z = -rad; z <= rad; z++) {
                     Vector oreLoc = l.clone().add(new Vector(x, y, z));
                     if(oreLoc.getBlockX() > 15 || oreLoc.getBlockZ() > 15 || oreLoc.getBlockY() > 255 || oreLoc.getBlockX() < 0 || oreLoc.getBlockZ() < 0 || oreLoc.getBlockY() < 0)
                         continue;

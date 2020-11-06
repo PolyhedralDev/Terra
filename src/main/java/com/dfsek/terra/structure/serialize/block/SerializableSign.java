@@ -15,7 +15,7 @@ public class SerializableSign implements SerializableBlockState {
 
     @Override
     public BlockState getState(BlockState orig) {
-        if(! (orig instanceof Sign)) throw new IllegalArgumentException("Provided BlockState is not a sign.");
+        if(!(orig instanceof Sign)) throw new IllegalArgumentException("Provided BlockState is not a sign.");
         Sign sign = (Sign) orig;
         for(int i = 0; i < text.length; i++) {
             sign.setLine(i, text[i]);

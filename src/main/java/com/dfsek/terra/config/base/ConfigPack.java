@@ -77,7 +77,7 @@ public class ConfigPack extends YamlConfiguration {
         load(new File(file, "pack.yml"));
         dataFolder = file;
 
-        if(! contains("id")) throw new ConfigException("No ID specified!", "null");
+        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         this.id = getString("id");
 
         ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);

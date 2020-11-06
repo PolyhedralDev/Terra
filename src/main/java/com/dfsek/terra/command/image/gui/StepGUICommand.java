@@ -21,7 +21,7 @@ public class StepGUICommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        if(! ConfigUtil.debug) {
+        if(!ConfigUtil.debug) {
             LangUtil.send("command.image.gui.debug", sender);
             return true;
         }

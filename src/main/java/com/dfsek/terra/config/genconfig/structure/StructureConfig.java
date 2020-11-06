@@ -41,9 +41,9 @@ public class StructureConfig extends TerraConfig {
     @SuppressWarnings("unchecked")
     public StructureConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(! contains("id")) throw new ConfigException("No ID specified!", "null");
+        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         id = getString("id");
-        if(! contains("files")) throw new ConfigException("No files specified!", getID());
+        if(!contains("files")) throw new ConfigException("No files specified!", getID());
         try {
             for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
                 try {

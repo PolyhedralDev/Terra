@@ -69,7 +69,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(! (c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
+        if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
@@ -78,7 +78,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         if(needsLoad) load(world); // Load population data for world.
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
-        if(! tw.isSafe()) return chunk;
+        if(!tw.isSafe()) return chunk;
         ConfigPack config = tw.getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);

@@ -25,7 +25,7 @@ public class ImageLoader {
     }
 
     public static void debugWorld(boolean genStep, World w) {
-        if(! ConfigUtil.debug) return;
+        if(!ConfigUtil.debug) return;
         BufferedImage newImg = new WorldImageGenerator(w, 1024, 1024).drawWorld(0, 0).getDraw();
         if(genStep) newImg = redrawStepped(newImg, w, Align.CENTER);
         DebugGUI debugGUI = new DebugGUI(newImg);
@@ -77,7 +77,7 @@ public class ImageLoader {
     }
 
     public void debug(boolean genStep, World w) {
-        if(! ConfigUtil.debug) return;
+        if(!ConfigUtil.debug) return;
         BufferedImage newImg = copyImage(image);
         if(genStep) {
             newImg = redrawStepped(image, w, align);

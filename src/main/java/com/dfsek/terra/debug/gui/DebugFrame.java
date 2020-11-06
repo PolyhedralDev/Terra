@@ -31,7 +31,7 @@ public class DebugFrame extends JFrame implements ActionListener {
     public void paint(Graphics g) {
         super.paintComponents(g);
         for(Player p : Bukkit.getOnlinePlayers()) {
-            if(! (p.getWorld().getGenerator() instanceof TerraChunkGenerator)) break;
+            if(!(p.getWorld().getGenerator() instanceof TerraChunkGenerator)) break;
             int xp = (int) (((double) Math.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
             int zp = (int) (((double) Math.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
             ImageLoader loader = TerraWorld.getWorld(p.getWorld()).getWorldConfig().imageLoader;

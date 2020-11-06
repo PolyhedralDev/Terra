@@ -34,12 +34,12 @@ public class FloraPopulator extends GaeaBlockPopulator {
         for(Block block : getValidTreeSpawnsAt(chunk, x, z, new Range(0, 254))) {
             Tree tree = biome.getDecorator().getTrees().get(random);
             Range range = world.getConfig().getBiome(biome).getTreeRange(tree);
-            if(! range.isInRange(block.getY())) continue;
+            if(!range.isInRange(block.getY())) continue;
             try {
                 Location l = block.getLocation();
                 TreeGenerateEvent event = new TreeGenerateEvent(world, l, tree);
                 Bukkit.getPluginManager().callEvent(event);
-                if(! event.isCancelled()) tree.plant(l, random, Terra.getInstance());
+                if(!event.isCancelled()) tree.plant(l, random, Terra.getInstance());
             } catch(NullPointerException ignore) {
             }
         }
@@ -64,7 +64,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
-            if(! tw.isSafe()) return;
+            if(!tw.isSafe()) return;
             int originX = chunk.getX() << 4;
             int originZ = chunk.getZ() << 4;
             TerraBiomeGrid grid = tw.getGrid();

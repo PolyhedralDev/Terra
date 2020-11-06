@@ -31,20 +31,20 @@ public class StructurePopulator extends BlockPopulator {
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             TerraWorld tw = TerraWorld.getWorld(world);
-            if(! tw.isSafe()) return;
+            if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
             structure:
             for(StructureConfig conf : config.getAllStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
-                if(! config.getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(conf)) continue;
+                if(!config.getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(conf)) continue;
                 Random r2 = new Random(spawn.hashCode());
                 Structure struc = conf.getStructure(r2);
                 Structure.Rotation rotation = Structure.Rotation.fromDegrees(r2.nextInt(4) * 90);
                 for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
-                    if(! conf.getBound().isInRange(y)) continue structure;
+                    if(!conf.getBound().isInRange(y)) continue structure;
                     spawn.setY(y);
-                    if(! struc.checkSpawns(spawn, rotation)) continue;
+                    if(!struc.checkSpawns(spawn, rotation)) continue;
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("StructurePasteTime")) {

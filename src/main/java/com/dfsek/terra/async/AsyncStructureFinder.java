@@ -74,7 +74,7 @@ public class AsyncStructureFinder implements Runnable {
                 else z -= 1;
             }
             run++;
-            toggle = ! toggle;
+            toggle = !toggle;
         }
         final Vector finalSpawn = found ? spawn : null;
         Bukkit.getScheduler().runTask(Terra.getInstance(), () -> callback.accept(finalSpawn));
@@ -89,15 +89,15 @@ public class AsyncStructureFinder implements Runnable {
      */
     private boolean isValidSpawn(int x, int z) {
         Location spawn = target.getSpawn().getNearestSpawn(x, z, world.getSeed()).toLocation(world);
-        if(! TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(target))
+        if(!TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(target))
             return false;
         Random r2 = new Random(spawn.hashCode());
         Structure struc = target.getStructure(r2);
         Structure.Rotation rotation = Structure.Rotation.fromDegrees(r2.nextInt(4) * 90);
         for(int y = target.getSearchStart().get(r2); y > 0; y--) {
-            if(! target.getBound().isInRange(y)) return false;
+            if(!target.getBound().isInRange(y)) return false;
             spawn.setY(y);
-            if(! struc.checkSpawns(spawn, rotation)) continue;
+            if(!struc.checkSpawns(spawn, rotation)) continue;
             return true;
         }
         return false;

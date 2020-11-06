@@ -39,7 +39,7 @@ import java.util.function.Consumer;
 import static com.dfsek.terra.util.structure.RotationUtil.*;
 
 public class Structure implements Serializable {
-    public static final long serialVersionUID = - 6664585217063842035L;
+    public static final long serialVersionUID = -6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
     private final StructureInfo structureInfo;
     private final String id;
@@ -48,7 +48,7 @@ public class Structure implements Serializable {
     private final HashSet<StructureContainedInventory> inventories;
 
     public Structure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
-        int centerX = - 1, centerZ = - 1;
+        int centerX = -1, centerZ = -1;
         this.id = id;
         this.uuid = UUID.randomUUID();
         this.spawns = new HashSet<>();
@@ -108,7 +108,7 @@ public class Structure implements Serializable {
                     if(state instanceof BlockInventoryHolder) {
                         inventories.add(new StructureContainedInventory(((BlockInventoryHolder) state).getInventory(), block));
                     }
-                    if(! requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
+                    if(!requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
                     structure[x][z][y] = block;
                 }
             }
@@ -181,7 +181,7 @@ public class Structure implements Serializable {
     public boolean checkSpawns(Location origin, Rotation r) {
         for(StructureContainedBlock b : spawns) {
             Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
-            if(! b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
+            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
                 return false;
         }
         return true;
@@ -217,7 +217,7 @@ public class Structure implements Serializable {
      */
     private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r) {
         BlockData data = block.getBlockData().clone();
-        if(! data.getMaterial().equals(Material.STRUCTURE_VOID)) {
+        if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
 
             Location loc = origin.clone().add(block.getX(), block.getY(), block.getZ());
             Block worldBlock = loc.getBlock();

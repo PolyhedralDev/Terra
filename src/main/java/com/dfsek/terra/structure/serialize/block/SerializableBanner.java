@@ -22,7 +22,7 @@ public class SerializableBanner implements SerializableBlockState {
 
     @Override
     public BlockState getState(BlockState orig) {
-        if(! (orig instanceof Banner)) throw new IllegalArgumentException("Provided BlockState is not a banner.");
+        if(!(orig instanceof Banner)) throw new IllegalArgumentException("Provided BlockState is not a banner.");
         Banner banner = (Banner) orig;
         banner.setBaseColor(base);
         for(Pattern pattern : patterns) {

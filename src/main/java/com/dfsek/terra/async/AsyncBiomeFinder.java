@@ -52,7 +52,7 @@ public class AsyncBiomeFinder implements Runnable {
                 else z--;
             }
             run++;
-            toggle = ! toggle;
+            toggle = !toggle;
         }
         if(p.isOnline()) {
             if(checkBiome(x, z).equals(target)) {

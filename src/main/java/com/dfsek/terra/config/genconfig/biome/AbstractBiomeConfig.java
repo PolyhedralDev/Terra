@@ -26,7 +26,7 @@ public class AbstractBiomeConfig extends TerraConfig {
     public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(! contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
+        if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
         equation = getString("noise-equation");

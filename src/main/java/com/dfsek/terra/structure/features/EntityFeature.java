@@ -53,7 +53,7 @@ public class EntityFeature implements Feature {
         for(int i = 0; i < amountSpawn && i < attempts; i++) {
             int yv = y.get(random);
             Location attempt = l.clone().add(x.get(random) - cx, yv, z.get(random) - cz);
-            if(! isInChunk(chunk, attempt)) continue; // Don't attempt spawn if not in current chunk.
+            if(!isInChunk(chunk, attempt)) continue; // Don't attempt spawn if not in current chunk.
 
             boolean canSpawn = false;
             while(yv >= 0 && attempt.getBlockY() >= l.getBlockY()) { // Go down, see if valid spawns exist.
@@ -62,10 +62,10 @@ public class EntityFeature implements Feature {
                 attempt.subtract(0, 1, 0);
                 yv--;
 
-                if(! stand.contains(on.getType())) continue;
+                if(!stand.contains(on.getType())) continue;
 
                 for(int j = 1; j < inSize + 1; j++)
-                    if(! in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
+                    if(!in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
 
                 if(canSpawn) break;
             }
@@ -99,10 +99,10 @@ public class EntityFeature implements Feature {
                 attempt.subtract(0, 1, 0);
                 yv--;
 
-                if(! stand.contains(on.getType())) continue;
+                if(!stand.contains(on.getType())) continue;
 
                 for(int j = 1; j < inSize + 1; j++)
-                    if(! in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
+                    if(!in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
 
                 if(canSpawn) break;
             }

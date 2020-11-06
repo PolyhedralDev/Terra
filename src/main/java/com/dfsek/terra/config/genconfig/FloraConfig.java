@@ -34,10 +34,10 @@ public class FloraConfig extends TerraConfig implements Flora {
     public FloraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(! contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
+        if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
         this.id = getString("id");
-        if(! contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
-        if(! contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
+        if(!contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
+        if(!contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
 
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
         replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
@@ -78,10 +78,10 @@ public class FloraConfig extends TerraConfig implements Flora {
     @Override
     public boolean plant(Location location) {
         int size = floraPalette.getSize();
-        int c = ceiling ? - 1 : 1;
+        int c = ceiling ? -1 : 1;
         for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
             if(i + 1 > 255) return false;
-            if(! replaceable.contains(location.clone().add(0, i + c, 0).getBlock().getType())) return false;
+            if(!replaceable.contains(location.clone().add(0, i + c, 0).getBlock().getType())) return false;
         }
         for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (Math.abs(i));

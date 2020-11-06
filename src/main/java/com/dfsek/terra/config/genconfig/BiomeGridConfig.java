@@ -25,9 +25,9 @@ public class BiomeGridConfig extends TerraConfig {
     public BiomeGridConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
         load(file);
-        if(! contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
+        if(!contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
         this.gridID = getString("id");
-        if(! contains("grid")) throw new ConfigException("Grid key not found!", getID());
+        if(!contains("grid")) throw new ConfigException("Grid key not found!", getID());
         this.sizeX = Objects.requireNonNull(getList("grid")).size();
         this.sizeZ = ((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(0).size();
         gridRaw = new UserDefinedBiome[sizeX][sizeZ];

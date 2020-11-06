@@ -26,7 +26,7 @@ public class SerializableMonsterCage implements SerializableBlockState {
 
     @Override
     public BlockState getState(BlockState orig) {
-        if(! (orig instanceof CreatureSpawner))
+        if(!(orig instanceof CreatureSpawner))
             throw new IllegalArgumentException("BlockState is not a Monster Spawner!");
         CreatureSpawner spawner = (CreatureSpawner) orig;
         spawner.setSpawnedType(type);

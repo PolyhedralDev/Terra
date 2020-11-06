@@ -10,7 +10,7 @@ import java.util.logging.Level;
 public final class PaperUtil {
     public static void checkPaper(JavaPlugin main) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
-            if(! PaperLib.isPaper()) {
+            if(!PaperLib.isPaper()) {
                 LangUtil.log("use-paper", Level.WARNING);
             }
         }, 100L);

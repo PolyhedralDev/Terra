@@ -42,7 +42,7 @@ public class BiomeConfig extends TerraConfig {
         super(file, config);
         load(file);
         this.config = config;
-        if(! contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
+        if(!contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
         this.biomeID = getString("id");
 
         AbstractBiomeConfig abstractBiome = null;
@@ -69,7 +69,7 @@ public class BiomeConfig extends TerraConfig {
 
         BiomePaletteConfig palette;
         // Check if biome is extending abstract biome, only use abstract biome's palette if palette is NOT defined for current biome.
-        if(extending && abstractBiome.getPaletteData() != null && ! contains("palette")) {
+        if(extending && abstractBiome.getPaletteData() != null && !contains("palette")) {
             palette = abstractBiome.getPaletteData();
             Debug.info("Using super palette");
         } else palette = new BiomePaletteConfig(this);
@@ -79,31 +79,31 @@ public class BiomeConfig extends TerraConfig {
             throw new ConfigException("No Palette specified in biome or super biome.", getID());
 
         // Check if carving should be handled by super biome.
-        if(extending && abstractBiome.getCarving() != null && ! contains("carving")) {
+        if(extending && abstractBiome.getCarving() != null && !contains("carving")) {
             carver = abstractBiome.getCarving();
             Debug.info("Using super carvers");
         } else carver = new BiomeCarverConfig(this);
 
         // Check if flora should be handled by super biome.
-        if(extending && abstractBiome.getFlora() != null && ! contains("flora")) {
+        if(extending && abstractBiome.getFlora() != null && !contains("flora")) {
             flora = abstractBiome.getFlora();
             Debug.info("Using super flora (" + flora.getFlora().size() + " entries, " + flora.getFloraChance() + " % chance)");
         } else flora = new BiomeFloraConfig(this);
 
         // Check if trees should be handled by super biome.
-        if(extending && abstractBiome.getTrees() != null && ! contains("trees")) {
+        if(extending && abstractBiome.getTrees() != null && !contains("trees")) {
             tree = abstractBiome.getTrees();
             Debug.info("Using super trees");
         } else tree = new BiomeTreeConfig(this);
 
         // Check if ores should be handled by super biome.
-        if(extending && abstractBiome.getOres() != null && ! contains("ores")) {
+        if(extending && abstractBiome.getOres() != null && !contains("ores")) {
             ore = abstractBiome.getOres();
             Debug.info("Using super ores");
         } else ore = new BiomeOreConfig(this);
 
         // Get slab stuff
-        if(extending && abstractBiome.getSlabs() != null && ! contains("slabs")) {
+        if(extending && abstractBiome.getSlabs() != null && !contains("slabs")) {
             slab = abstractBiome.getSlabs();
             Debug.info("Using super slabs");
         } else slab = new BiomeSlabConfig(this);
@@ -130,7 +130,7 @@ public class BiomeConfig extends TerraConfig {
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;
         try {
-            if(! contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
+            if(!contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
             vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
         } catch(IllegalArgumentException e) {
             throw new ConfigException("Invalid Vanilla biome: \"" + getString("vanilla") + "\"", getID());
@@ -172,7 +172,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Range getFloraHeights(Flora f) {
-        return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(- 1, - 1));
+        return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(-1, -1));
     }
 
     @Override
@@ -201,7 +201,7 @@ public class BiomeConfig extends TerraConfig {
     }
 
     public Range getTreeRange(Tree t) {
-        return tree.getTreeHeights().getOrDefault(t, new Range(- 1, - 1));
+        return tree.getTreeHeights().getOrDefault(t, new Range(-1, -1));
     }
 
     public BiomeSnowConfig getSnow() {

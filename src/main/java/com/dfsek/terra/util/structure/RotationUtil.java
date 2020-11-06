@@ -17,13 +17,13 @@ public final class RotationUtil {
         Vector2 copy = orig.clone();
         switch(r) {
             case CW_90:
-                copy.setX(orig.getZ()).setZ(- orig.getX());
+                copy.setX(orig.getZ()).setZ(-orig.getX());
                 break;
             case CCW_90:
-                copy.setX(- orig.getZ()).setZ(orig.getX());
+                copy.setX(-orig.getZ()).setZ(orig.getX());
                 break;
             case CW_180:
-                copy.multiply(- 1);
+                copy.multiply(-1);
                 break;
         }
         return copy;
@@ -184,7 +184,7 @@ public final class RotationUtil {
             case NORTH_NORTH_WEST:
                 return 15;
             default:
-                return - 1;
+                return -1;
         }
     }
 

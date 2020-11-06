@@ -46,7 +46,7 @@ public enum StructureSpawnRequirement implements Serializable {
             return true;
         }
     };
-    private static final long serialVersionUID = - 175639605885943679L;
+    private static final long serialVersionUID = -175639605885943679L;
     private static final transient Map<World, FastNoiseLite> noiseMap = new HashMap<>();
 
     public static void putNoise(World w, FastNoiseLite noise) {

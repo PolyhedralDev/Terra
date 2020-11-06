@@ -146,7 +146,7 @@ public class Vector2 implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        if(! (obj instanceof Vector2)) {
+        if(!(obj instanceof Vector2)) {
             return false;
         }
         Vector2 other = (Vector2) obj;

@@ -26,7 +26,7 @@ public class PaletteConfig extends TerraConfig {
 
     public PaletteConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(! contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
+        if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
         this.paletteID = getString("id");
         Palette<BlockData> pal;
         if(getBoolean("simplex", false)) {

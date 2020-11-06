@@ -47,7 +47,7 @@ public class WorldConfig {
             if(configID == null || configID.equals(""))
                 throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
-            if(! configFile.exists()) {
+            if(!configFile.exists()) {
                 configFile.getParentFile().mkdirs();
                 LangUtil.log("world-config.not-found", Level.WARNING, worldID);
                 FileUtils.copyInputStreamToFile(Objects.requireNonNull(main.getResource("world.yml")), configFile);

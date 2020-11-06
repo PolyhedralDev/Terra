@@ -26,7 +26,7 @@ public class OrePopulator extends GaeaBlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
-            if(! tw.isSafe()) return;
+            if(!tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
             Biome b = TerraWorld.getWorld(world).getGrid().getBiome((chunk.getX() << 4) + 8, (chunk.getZ() << 4) + 8, GenerationPhase.POPULATE);
             BiomeOreConfig ores = config.getBiome((UserDefinedBiome) b).getOres();
@@ -42,7 +42,7 @@ public class OrePopulator extends GaeaBlockPopulator {
                     Vector v = new Vector(x, y, z);
                     OreVeinGenerateEvent event = new OreVeinGenerateEvent(tw, v.toLocation(world), ore);
                     Bukkit.getPluginManager().callEvent(event);
-                    if(! event.isCancelled()) {
+                    if(!event.isCancelled()) {
                         if(ore.crossChunks()) ore.doVein(v, chunk, random);
                         else ore.doVeinSingle(new Vector(x, y, z), chunk, random);
                     }

@@ -64,7 +64,7 @@ public class BiomeLocateCommand extends WorldCommand {
 
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        if(! (sender instanceof Player) || ! (((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
+        if(!(sender instanceof Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
             return Collections.emptyList();
         List<String> ids = TerraWorld.getWorld(((Player) sender).getWorld()).getConfig().getBiomeIDs();
         if(args.length == 1)

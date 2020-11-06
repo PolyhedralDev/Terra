@@ -33,7 +33,7 @@ public class CavePopulator extends BlockPopulator {
         if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
-            if(! tw.isSafe()) return;
+            if(!tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
 
             for(CarverConfig c : config.getCarvers().values()) {
