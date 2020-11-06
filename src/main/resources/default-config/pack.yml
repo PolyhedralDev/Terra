@@ -40,7 +40,7 @@ grids:
 frequencies:
   grid-x: 3072
   grid-z: 4096
-  zone: 3072
+  zone: 2048
 blend:
   enable: true
   frequency: 0.125

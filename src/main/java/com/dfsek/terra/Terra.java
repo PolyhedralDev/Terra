@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class Terra extends GaeaPlugin {
     private static Terra instance;
-    private Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
 
     public static Terra getInstance() {
         return instance;
