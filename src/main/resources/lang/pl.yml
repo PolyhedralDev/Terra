@@ -5,88 +5,88 @@ enable:
 disable:
   - "Dziekuje za korzystanie z Terra!"
 command:
-    debug-only: "Ta komenda musi byc uzyta z trybem debugowym wlaczonym!"
-    player-only: "Ta komenda jest tylko dla graczy!"
-    invalid: "Niepoprawna komenda. (Oczekiwane %1$s argumenty, znalezione %2$s)."
-    players-only: "Komenda jest tylko dla graczy."
-    world: "Ta komenda musi byc wpisana w swiecie Terra!"
-    reload: "Przeladowano plik konfiguracyjny Terra."
-    version: "Ten serwer korzysta z wersji Terra \"%s\""
+  debug-only: "Ta komenda musi byc uzyta z trybem debugowym wlaczonym!"
+  player-only: "Ta komenda jest tylko dla graczy!"
+  invalid: "Niepoprawna komenda. (Oczekiwane %1$s argumenty, znalezione %2$s)."
+  players-only: "Komenda jest tylko dla graczy."
+  world: "Ta komenda musi byc wpisana w swiecie Terra!"
+  reload: "Przeladowano plik konfiguracyjny Terra."
+  version: "Ten serwer korzysta z wersji Terra \"%s\""
+  main-menu:
+    - "--------------------Terra--------------------"
+    - "reload    - Przeladuj dane konfiguracyjne"
+    - "biome     - Otrzymaj informacje o obecnym biomie"
+    - "ore       - Wygeneruj zloze rud w strone w ktora patrzysz (Do debugowania)"
+    - "save-data - Zapisz dane"
+    - "structure - Zaladuj i wyeksportuj dane struktur"
+    - "profile   - Opcje profilera"
+    - "image     - Opcje obrazu/GUI"
+  biome:
+    biome-found: "Zlokalizowano biom na (%1$s, %2$s)"
+    unable-to-locate: "Nie moglismy zlokalizowac biomu."
+    invalid-radius: "Niepoprawny zakres: \"%s\""
+    invalid: "Niepoprawne Biome ID: \"%s\""
+    in: "Jestes na \"%s\""
+  ore:
     main-menu:
-        - "--------------------Terra--------------------"
-        - "reload    - Przeladuj dane konfiguracyjne"
-        - "biome     - Otrzymaj informacje o obecnym biomie"
-        - "ore       - Wygeneruj zloze rud w strone w ktora patrzysz (Do debugowania)"
-        - "save-data - Zapisz dane"
-        - "structure - Zaladuj i wyeksportuj dane struktur"
-        - "profile   - Opcje profilera"
-        - "image     - Opcje obrazu/GUI"
-    biome:
-        biome-found: "Zlokalizowano biom na (%1$s, %2$s)"
-        unable-to-locate: "Nie moglismy zlokalizowac biomu."
-        invalid-radius: "Niepoprawny zakres: \"%s\""
-        invalid: "Niepoprawne Biome ID: \"%s\""
-        in: "Jestes na \"%s\""
-    ore:
-        main-menu:
-            - "---------------Terra/rudy---------------"
-            - "Generuje zloze rud w strone w ktora patrzysz."
-        out-of-range: "Blok spoza zakresu"
-            invalid-ore: "Niemoglismy znalezc Rudy \"%s\""
-    geometry:
-        main-menu:
-            - "---------------Terra/geometria----------------"
-            - "Zroznicowane komendy geometrii voxeli do debugowania"
-            - "sphere       - Generuje kule"
-            - "deformsphere - Generuje zdeformowana kul"
-            - "tube         - Generaje tube"
-        deform:
-            invalid-radius: "Niepoprawny zakres: \"%s\""
-            invalid-deform: "Niepoprawna deformacja: \"%s\""
-            invalid-frequency: "Niepoprawna czestotliwosc: \"%s\""
-        sphere:
-            invalid-radius: "Niepoprawny zakres: \"%s\""
-        tube:
-            invalid-radius: "Niepoprawny zakres: \"%s\""
-    image:
-        main-menu:
-            - "---------------Terra/obraz---------------"
-            - "render - Renderuje obraz o podanej szerokosci i wysokosci, moze byc potem zaimportowane jako swiat."
-            - "gui    - Otwiera GUI debugowania (Musi byc wlaczone w pliku konfiguracyjnym)"
-        gui:
-            main-menu:
-                - "-------------Terra/obraz/gui-------------"
-                - "raw  - Otwiera GUI z surowymi danymi Biomu"
-                - "step - Przerenderowuje dane aby pokazac granice bardziej przejrzyscie"
+      - "---------------Terra/rudy---------------"
+      - "Generuje zloze rud w strone w ktora patrzysz."
+    out-of-range: "Blok spoza zakresu"
+    invalid-ore: "Niemoglismy znalezc Rudy \"%s\""
+  geometry:
+    main-menu:
+      - "---------------Terra/geometria----------------"
+      - "Zroznicowane komendy geometrii voxeli do debugowania"
+      - "sphere       - Generuje kule"
+      - "deformsphere - Generuje zdeformowana kul"
+      - "tube         - Generaje tube"
+    deform:
+      invalid-radius: "Niepoprawny zakres: \"%s\""
+      invalid-deform: "Niepoprawna deformacja: \"%s\""
+      invalid-frequency: "Niepoprawna czestotliwosc: \"%s\""
+    sphere:
+      invalid-radius: "Niepoprawny zakres: \"%s\""
+    tube:
+      invalid-radius: "Niepoprawny zakres: \"%s\""
+  image:
+    main-menu:
+      - "---------------Terra/obraz---------------"
+      - "render - Renderuje obraz o podanej szerokosci i wysokosci, moze byc potem zaimportowane jako swiat."
+      - "gui    - Otwiera GUI debugowania (Musi byc wlaczone w pliku konfiguracyjnym)"
+    gui:
+      main-menu:
+        - "-------------Terra/obraz/gui-------------"
+        - "raw  - Otwiera GUI z surowymi danymi Biomu"
+        - "step - Przerenderowuje dane aby pokazac granice bardziej przejrzyscie"
       debug: "Tryb debugowania musi byc wlaczony aby debugowac za pomoca GUI! GUI debugowania NIE JEST STABILNE!"
     render:
       save: "Zapisano obraz jako \"%s\""
       error: "Wystapil error podczas generowania obrazu!"
   profile:
-      main-menu:
-          - "---------------Terra/profil---------------"
-          - "start - Rozpoczyna dzialanie profilera"
-          - "stop  - Zatrzymuje dzialanie profilera"
-          - "query - Wydobywa dane profilera"
-          - "reset - Resetuje dane profilera"
-      reset: "Profiler zostal zresetowany."
-      start: "Profiler zostal wlaczony."
-      stop: "Profiler zostal wylaczony."
-      structure:
-          main-menu:
-              - "---------------Terra/struktury---------------"
-              - "export - Wyeksportuj obecne zaznaczenie w WorldEdicie jako strukture Terra."
-              - "load   - Zaladuj strukture Terra"
-          invalid-radius: "Niepoprawny zakres: \"%s\""
-          invalid-rotation: "Niepoprawny zakres: \"%s\""
-          invalid: "Niepoprawne ID Struktury: \"%s\""
-          export: "Zapisano strukture jak \"%s\""
+    main-menu:
+      - "---------------Terra/profil---------------"
+      - "start - Rozpoczyna dzialanie profilera"
+      - "stop  - Zatrzymuje dzialanie profilera"
+      - "query - Wydobywa dane profilera"
+      - "reset - Resetuje dane profilera"
+    reset: "Profiler zostal zresetowany."
+    start: "Profiler zostal wlaczony."
+    stop: "Profiler zostal wylaczony."
+  structure:
+    main-menu:
+      - "---------------Terra/struktury---------------"
+      - "export - Wyeksportuj obecne zaznaczenie w WorldEdicie jako strukture Terra."
+      - "load   - Zaladuj strukture Terra"
+    invalid-radius: "Niepoprawny zakres: \"%s\""
+    invalid-rotation: "Niepoprawny zakres: \"%s\""
+    invalid: "Niepoprawne ID Struktury: \"%s\""
+    export: "Zapisano strukture jak \"%s\""
 world-config:
-    loading: "Ladowanie wartosci konfiguracji dla swiata %s..."
-    not-found: "Konfiguracja dla swiata \"%s\" nie zostala znaleziona. Kopiuje domyslny plik konfiguracyjny."
-    using-image: "Ladowania swiata z obrazu."
-    error: "Nie udalo sie zaladowac konfiguracji dla swiata %s"
-    done: "Ladowanie swiata gotowe. Wykonano to w: %sms"
+  loading: "Ladowanie wartosci konfiguracji dla swiata %s..."
+  not-found: "Konfiguracja dla swiata \"%s\" nie zostala znaleziona. Kopiuje domyslny plik konfiguracyjny."
+  using-image: "Ladowania swiata z obrazu."
+  error: "Nie udalo sie zaladowac konfiguracji dla swiata %s"
+  done: "Ladowanie swiata gotowe. Wykonano to w: %sms"
 config-pack:
   loaded: "Zaladowano plik konfiguracyjny %1$s w %2$sms."
 config:

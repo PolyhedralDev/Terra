@@ -3,16 +3,16 @@ extends: "BASIC_ORES"
 id: "BIRCH_FOREST"
 
 palette:
-    -   "BLOCK:minecraft:bedrock": 0
-    -   BEDROCK_MOST: 1
-    -   BEDROCK_HALF: 2
-    -   BEDROCK_LITTLE: 3
-    -   SANDY: 62
-    -   GRASSY: 255
+  - "BLOCK:minecraft:bedrock": 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - SANDY: 62
+  - GRASSY: 255
 vanilla: BIRCH_FOREST
 
 flora:
-    chance: 40
+  chance: 40
   attempts: 1
   items:
     TALL_GRASS:

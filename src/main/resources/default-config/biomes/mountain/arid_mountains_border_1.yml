@@ -5,22 +5,22 @@ extends: "BASIC_ORES"
 
 
 palette:
-    -   "BLOCK:minecraft:bedrock": 0
-    -   BEDROCK_MOST: 1
-    -   BEDROCK_HALF: 2
-    -   BEDROCK_LITTLE: 3
-    -   ARID: 255
+  - "BLOCK:minecraft:bedrock": 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - ARID: 255
 vanilla: SAVANNA
 
 erodible: false
 
 flora:
-    chance: 40
-    attempts: 1
-    items:
-        TALL_GRASS:
-            weight: 15
-            y:
+  chance: 40
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 15
+      y:
         min: 62
         max: 128
     GRASS:
@@ -38,10 +38,10 @@ trees:
         min: 58
         max: 128
 slabs:
-    enable: true
-    threshold: 0.015
-    palettes:
-        -   "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_slab"
-    use-stairs-if-available: true
-    stair-palettes:
-        -   "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_stairs"
+  enable: true
+  threshold: 0.015
+  palettes:
+    - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_slab"
+  use-stairs-if-available: true
+  stair-palettes:
+    - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_stairs"

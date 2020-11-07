@@ -82,7 +82,7 @@ flora:
   simplex:
     enable: true
     frequency: 0.1
-      seed: 4
+    seed: 4
   items:
     SMALL_ROCK:
       weight: 1

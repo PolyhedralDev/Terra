@@ -13,29 +13,29 @@ spawn:
 loot:
   1: arrows
 features:
-    -   ENTITY_FEATURE:
-            entity: VINDICATOR
-            attempts: 100
-            in-height: 1
-            amount:
-                min: 60
-                max: 80
-            spawnable-on:
-                - "minecraft:birch_planks"
-            spawnable-in:
-                - "minecraft:air"
-                - "minecraft:red_carpet"
-                - "minecraft:white_carpet"
-    -   ENTITY_FEATURE:
-            entity: EVOKER
-            attempts: 50
-            in-height: 2
-            amount:
-                min: 1
-                max: 3
-            spawnable-on:
-                - "minecraft:birch_planks"
-            spawnable-in:
-                - "minecraft:air"
-                - "minecraft:red_carpet"
-                - "minecraft:white_carpet"
+  - ENTITY_FEATURE:
+      entity: VINDICATOR
+      attempts: 100
+      in-height: 1
+      amount:
+        min: 60
+        max: 80
+      spawnable-on:
+        - "minecraft:birch_planks"
+      spawnable-in:
+        - "minecraft:air"
+        - "minecraft:red_carpet"
+        - "minecraft:white_carpet"
+  - ENTITY_FEATURE:
+      entity: EVOKER
+      attempts: 50
+      in-height: 2
+      amount:
+        min: 1
+        max: 3
+      spawnable-on:
+        - "minecraft:birch_planks"
+      spawnable-in:
+        - "minecraft:air"
+        - "minecraft:red_carpet"
+        - "minecraft:white_carpet"

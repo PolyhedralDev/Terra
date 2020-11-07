@@ -3,13 +3,13 @@ extends: "BASIC_ORES"
 id: "JUNGLE"
 
 palette:
-    -   "BLOCK:minecraft:bedrock": 0
-    -   BEDROCK_MOST: 1
-    -   BEDROCK_HALF: 2
-    -   BEDROCK_LITTLE: 3
-    -   RIVER_BOTTOM: 61
-    -   RIVER_SHORE: 62
-    -   GRASSY: 255
+  - "BLOCK:minecraft:bedrock": 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - RIVER_BOTTOM: 61
+  - RIVER_SHORE: 62
+  - GRASSY: 255
 vanilla: JUNGLE
 
 erodible: true
@@ -17,7 +17,7 @@ structures:
   - JUNGLE
   - STRONGHOLD
 flora:
-    chance: 80
+  chance: 80
   attempts: 2
   items:
     TALL_GRASS:

@@ -3,28 +3,28 @@ extends: "BASIC_ORES"
 id: "DARK_FOREST"
 
 structures:
-    - MANSION
-    - STRONGHOLD
+  - MANSION
+  - STRONGHOLD
 palette:
-    -   "BLOCK:minecraft:bedrock": 0
-    -   BEDROCK_MOST: 1
-    -   BEDROCK_HALF: 2
-    -   BEDROCK_LITTLE: 3
-    -   SANDY: 62
-    -   GRASSY: 255
+  - "BLOCK:minecraft:bedrock": 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - SANDY: 62
+  - GRASSY: 255
 vanilla: DARK_FOREST
 erodible: true
 flora-chance: 40
 flora:
-    chance: 40
-    attempts: 1
-    items:
-        TALL_GRASS:
-            weight: 15
-            y:
-                min: 62
-                max: 255
-        GRASS:
+  chance: 40
+  attempts: 1
+  items:
+    TALL_GRASS:
+      weight: 15
+      y:
+        min: 62
+        max: 255
+    GRASS:
       weight: 70
       y:
         min: 62

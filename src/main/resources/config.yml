@@ -5,4 +5,4 @@ fail-type: SHUTDOWN
 dump-default: true
 cache-size: 8
 master-disable:
-    caves: false
+  caves: false
