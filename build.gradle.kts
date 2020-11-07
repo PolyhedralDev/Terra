@@ -95,8 +95,7 @@ val setupServer = tasks.create("setupServer") {
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
-    dependsOn(setupServer)
-    //dependsOn(tasks.shadowJar)
+    dependsOn(tasks.shadowJar)
     // Copy Terra into dir
     doFirst {
         copy {
