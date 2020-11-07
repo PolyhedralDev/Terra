@@ -7,12 +7,14 @@ To build, simply run `./gradlew build` on Linux/MacOS, or `gradlew.bat build` on
 This will produce a jar in `build/libs` called `Terra-[CURRENT VERSION].jar`.
 You can put this right into your plugins dir, along with the correct Gaea version.
 
-If you would like to test it with a default server config, just run `./gradlew testWithPaper` or `gradlew.bat testWithPaper`.
+If you would like to test it with a default server config, just run `./gradlew setupServer` or
+`./gradlew.bat setupServer` to set up the server, then `./gradlew testWithPaper` or `gradlew.bat testWithPaper` to run
+the server. If you want a clean installation of the server, re-run the `setupServer` task.
 This will download a default server config from [here](https://github.com/PolyhedralDev/WorldGenTestServer)
 and install the server in the `target/server` directory, along with all the needed plugins.
    
-**Note: You will need to adjust the `NAME` variable in test.sh if you are not using the default Terra config (you may
-also change the value after server installation, in `bukkit.yml` of the test server)**
+**Note: You will need to adjust the `NAME` variable `bukkit.yml` of the test server if you are not using the default
+Terra config.**
 
 ## Contributing
 Contributions are welcome! If you want to see a feature in Terra, please, open an issue, or implement it yourself and
