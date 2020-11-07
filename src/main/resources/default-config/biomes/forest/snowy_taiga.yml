@@ -1,7 +1,7 @@
 noise-equation: "((-((y / 63)^2)) + 1) + ((noise2(x, z)+0.5) / 2)"
-extends: "BASIC_ORES"
-id: "SNOWY_TAIGA"
-erodible: true
+extends:        "BASIC_ORES"
+id:             "SNOWY_TAIGA"
+erodible:       true
 
 
 palette:
@@ -12,11 +12,11 @@ palette:
   - RIVER_BOTTOM: 61
   - RIVER_SHORE: 62
   - TAIGA: 255
-vanilla: TAIGA
+vanilla:        TAIGA
 
 snow:
-  - min: 0
-    max: 255
+  - min:    0
+    max:    255
     chance: 100
 
 

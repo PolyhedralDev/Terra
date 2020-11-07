@@ -14,7 +14,7 @@ flora:
   simplex:
     enable: true
     frequency: 0.05
-    seed: 4
+    seed:   4
   items:
     TALL_SEAGRASS:
       weight: 1

@@ -23,13 +23,13 @@ public class StructureCommand extends PlayerCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
-        return Arrays.asList(new ExportCommand(this), new LoadCommand(this), new LocateCommand(this, false), new LocateCommand(this, true), new SpawnCommand(this));
+    public String getName() {
+        return "structure";
     }
 
     @Override
-    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        return Collections.emptyList();
+    public List<org.polydev.gaea.command.Command> getSubCommands() {
+        return Arrays.asList(new ExportCommand(this), new LoadCommand(this), new LocateCommand(this, false), new LocateCommand(this, true), new SpawnCommand(this));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class StructureCommand extends PlayerCommand {
     }
 
     @Override
-    public String getName() {
-        return "structure";
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

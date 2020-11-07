@@ -5,6 +5,7 @@ import com.dfsek.terra.procgen.math.Vector2;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class Rectangle extends Polygon {
     private final Vector2 min;
     private final Vector2 max;

@@ -15,7 +15,7 @@ import org.bukkit.block.data.BlockData;
 import java.io.Serializable;
 
 public class StructureContainedBlock implements Serializable {
-    public static final long serialVersionUID = 6143969483382710947L;
+    private static final long serialVersionUID = 6143969483382710947L;
     private final SerializableBlockData bl;
     private final Pull pull;
     private final int pullOffset;

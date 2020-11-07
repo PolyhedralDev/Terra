@@ -46,20 +46,12 @@ public class BiomeGridConfig extends TerraConfig {
         }
     }
 
-    public int getSizeX() {
-        return sizeX;
-    }
-
-    public int getSizeZ() {
-        return sizeZ;
+    public String getID() {
+        return gridID;
     }
 
     public UserDefinedBiome[][] getBiomeGrid() {
         return gridRaw;
-    }
-
-    public String getID() {
-        return gridID;
     }
 
     public UserDefinedGrid getGrid(World w, WorldConfig wc) {
@@ -67,9 +59,16 @@ public class BiomeGridConfig extends TerraConfig {
         return new UserDefinedGrid(w, c.freq1, c.freq2, gridRaw, wc);
     }
 
-
     @Override
     public String toString() {
         return "BiomeGrid with ID " + getID() + ", dimensions " + getSizeX() + ":" + getSizeZ();
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeZ() {
+        return sizeZ;
     }
 }

@@ -6,7 +6,6 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.features.Feature;
@@ -35,8 +34,6 @@ public class StructureConfig extends TerraConfig {
     private final Range bound;
     private final Map<Integer, LootTable> loot = new HashMap<>();
     private final List<Feature> features;
-
-    StructurePopulator.SearchType type;
 
     @SuppressWarnings("unchecked")
     public StructureConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
@@ -95,20 +92,15 @@ public class StructureConfig extends TerraConfig {
         spawn = new GridSpawn(getInt("spawn.width", 500), getInt("spawn.padding", 100));
         searchStart = new Range(getInt("spawn.start.min", 72), getInt("spawn.start.max", 72));
         bound = new Range(getInt("spawn.bound.min", 48), getInt("spawn.bound.max", 72));
-        try {
-            type = StructurePopulator.SearchType.valueOf(getString("spawn.search", "DOWN"));
-        } catch(IllegalArgumentException e) {
-            throw new ConfigException("Invalid search type, " + getString("spawn.search"), getID());
-        }
-    }
-
-    public List<Feature> getFeatures() {
-        return features;
     }
 
     @Override
     public String getID() {
         return id;
+    }
+
+    public List<Feature> getFeatures() {
+        return features;
     }
 
     public Structure getStructure(Random r) {

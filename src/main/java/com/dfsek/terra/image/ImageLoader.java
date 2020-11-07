@@ -17,7 +17,7 @@ import java.io.IOException;
 public class ImageLoader {
     private final BufferedImage image;
     private final Align align;
-    double inverseRoot2 = 0.7071067811865475;
+    private static final double INVERSE_ROOT_2 = 0.7071067811865475;
 
     public ImageLoader(File file, Align align) throws IOException {
         image = ImageIO.read(file);
@@ -59,6 +59,20 @@ public class ImageLoader {
         return b;
     }
 
+    public void debug(boolean genStep, World w) {
+        if (!ConfigUtil.debug) return;
+        BufferedImage newImg = copyImage(image);
+        if (genStep) {
+            newImg = redrawStepped(image, w, align);
+        }
+        DebugGUI debugGUI = new DebugGUI(newImg);
+        debugGUI.start();
+    }
+
+    public double getNoiseVal(int x, int y, Channel channel) {
+        return ((double) (getChannel(x, y, channel) - 128) / 128) * INVERSE_ROOT_2;
+    }
+
     public int getChannel(int x, int y, Channel channel) {
         int rgb;
         rgb = align.getRGB(image, x, y);
@@ -70,7 +84,7 @@ public class ImageLoader {
             case BLUE:
                 return rgb & 0xff;
             case ALPHA:
-                return rgb >> 32 & 0xff;
+                return rgb >> 24 & 0xff;
             default:
                 throw new IllegalArgumentException();
         }

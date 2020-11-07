@@ -1,5 +1,5 @@
 extends: "PLAINS_ABSTRACT"
-id: "DESERT"
+id:      "DESERT"
 
 palette:
   - "BLOCK:minecraft:bedrock": 0
@@ -36,8 +36,8 @@ trees:
         max: 72
 
 slabs:
-  enable: true
-  threshold: 0.0075
+  enable:                  true
+  threshold:               0.0075
   palettes:
     - "minecraft:sand": "BLOCK:minecraft:sandstone_slab"
   use-stairs-if-available: true

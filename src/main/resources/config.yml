@@ -1,8 +1,8 @@
-debug: false
-data-save: PT6M
-language: "en_us"
-fail-type: SHUTDOWN
+debug:        false
+data-save:    PT6M
+language:     "en_us"
+fail-type:    SHUTDOWN
 dump-default: true
-cache-size: 8
+cache-size:   8
 master-disable:
   caves: false

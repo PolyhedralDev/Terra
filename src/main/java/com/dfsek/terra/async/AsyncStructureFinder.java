@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -28,7 +29,7 @@ public class AsyncStructureFinder implements Runnable {
     private final World world;
     private final Consumer<Vector> callback;
 
-    public AsyncStructureFinder(TerraBiomeGrid grid, StructureConfig target, Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
+    public AsyncStructureFinder(TerraBiomeGrid grid, StructureConfig target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
         this.grid = grid;
         this.target = target;
         this.startRadius = startRadius;
@@ -36,6 +37,7 @@ public class AsyncStructureFinder implements Runnable {
         this.centerX = origin.getBlockX();
         this.centerZ = origin.getBlockZ();
         this.world = origin.getWorld();
+        assert world != null;
         this.seed = world.getSeed();
         this.callback = callback;
     }

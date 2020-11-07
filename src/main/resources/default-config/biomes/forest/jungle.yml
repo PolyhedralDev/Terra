@@ -1,6 +1,6 @@
 noise-equation: "((-((y / 63)^2)) + 1) + ((noise2(x, z)+0.25) / 3)"
-extends: "BASIC_ORES"
-id: "JUNGLE"
+extends:        "BASIC_ORES"
+id:             "JUNGLE"
 
 palette:
   - "BLOCK:minecraft:bedrock": 0
@@ -10,14 +10,14 @@ palette:
   - RIVER_BOTTOM: 61
   - RIVER_SHORE: 62
   - GRASSY: 255
-vanilla: JUNGLE
+vanilla:        JUNGLE
 
-erodible: true
+erodible:       true
 structures:
   - JUNGLE
   - STRONGHOLD
 flora:
-  chance: 80
+  chance:   80
   attempts: 2
   items:
     TALL_GRASS:

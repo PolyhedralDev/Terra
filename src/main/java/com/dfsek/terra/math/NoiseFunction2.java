@@ -21,13 +21,13 @@ public class NoiseFunction2 implements Function {
         return cache.get(list.get(0).evaluate(), list.get(1).evaluate());
     }
 
-    public void setNoise(FastNoiseLite gen) {
-        this.gen = gen;
-    }
-
     @Override
     public boolean isNaturalFunction() {
         return true;
+    }
+
+    public void setNoise(FastNoiseLite gen) {
+        this.gen = gen;
     }
 
     private final class Cache {
@@ -37,7 +37,7 @@ public class NoiseFunction2 implements Function {
 
         public double get(double x, double z) {
             for(int i = 0; i < cacheX.length; i++) {
-                if(cacheX[i] == x && cacheZ[i] == z) return cacheValues[i];
+                if (cacheX[i] == x && cacheZ[i] == z) return cacheValues[i];
             }
             cacheX[0] = x;
             cacheZ[0] = z;

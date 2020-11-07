@@ -68,16 +68,16 @@ public class PaletteConfig extends TerraConfig {
         return p;
     }
 
+    @Override
+    public String toString() {
+        return "Palette with ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
+    }
+
     public Palette<BlockData> getPalette() {
         return palette;
     }
 
     public String getID() {
         return paletteID;
-    }
-
-    @Override
-    public String toString() {
-        return "Palette with ID " + getID() + " with " + getPalette().getSize() + " layers, using Simplex: " + useNoise;
     }
 }

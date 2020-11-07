@@ -16,7 +16,7 @@ import parsii.tokenizer.ParseException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+
 
 public class UserDefinedGenerator extends Generator {
     private static final Object noiseLock = new Object();
@@ -32,14 +32,15 @@ public class UserDefinedGenerator extends Generator {
     private final boolean preventSmooth;
 
 
-    public UserDefinedGenerator(String equation, List<Variable> v, TreeMap<Integer, Palette<BlockData>> pa, boolean preventSmooth) throws ParseException {
+    public UserDefinedGenerator(String equation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, boolean preventSmooth)
+            throws ParseException {
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
         p.registerFunction("noise3", n3);
         for(int y = 0; y < 256; y++) {
             Palette<BlockData> d = DataUtil.BLANK_PALETTE;
-            for(Map.Entry<Integer, Palette<BlockData>> e : pa.entrySet()) {
-                if(e.getKey() >= y) {
+            for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
+                if (e.getKey() >= y) {
                     d = e.getValue();
                     break;
                 }

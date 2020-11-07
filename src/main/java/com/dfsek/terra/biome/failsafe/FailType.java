@@ -7,6 +7,7 @@ import parsii.tokenizer.ParseException;
 /**
  * What happens if terrain generation is attempted with an unrecoverable config error.
  */
+@SuppressWarnings("unused")
 public enum FailType {
     /**
      * Return failover biome, then shut down server to minimize damage.

@@ -6,7 +6,7 @@ import org.bukkit.block.data.BlockData;
 import java.io.Serializable;
 
 public class SerializableBlockData implements Serializable {
-    public static final long serialVersionUID = 5298928608478640008L;
+    private static final long serialVersionUID = 5298928608478640008L;
     private final String data;
 
     public SerializableBlockData(BlockData d) {

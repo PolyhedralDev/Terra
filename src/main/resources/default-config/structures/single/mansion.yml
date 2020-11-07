@@ -14,8 +14,8 @@ loot:
   1: arrows
 features:
   - ENTITY_FEATURE:
-      entity: VINDICATOR
-      attempts: 100
+      entity:    VINDICATOR
+      attempts:  100
       in-height: 1
       amount:
         min: 60
@@ -27,8 +27,8 @@ features:
         - "minecraft:red_carpet"
         - "minecraft:white_carpet"
   - ENTITY_FEATURE:
-      entity: EVOKER
-      attempts: 50
+      entity:    EVOKER
+      attempts:  50
       in-height: 2
       amount:
         min: 1

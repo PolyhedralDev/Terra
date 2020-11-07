@@ -3,6 +3,7 @@ package com.dfsek.terra.structure;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 public class InitializationException extends Exception {
     private final Location worldLoc;
 

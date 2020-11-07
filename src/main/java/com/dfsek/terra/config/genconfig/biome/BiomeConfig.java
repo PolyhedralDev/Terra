@@ -159,12 +159,12 @@ public class BiomeConfig extends TerraConfig {
         }
     }
 
-    public UserDefinedBiome getBiome() {
-        return biome;
-    }
-
     public String getID() {
         return biomeID;
+    }
+
+    public UserDefinedBiome getBiome() {
+        return biome;
     }
 
     public BiomeOreConfig getOres() {

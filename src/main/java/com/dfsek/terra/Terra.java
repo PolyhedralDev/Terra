@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
 public class Terra extends GaeaPlugin {
     private static Terra instance;
     private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
@@ -53,6 +54,7 @@ public class Terra extends GaeaPlugin {
         locatePl.setTabCompleter(locate);
 
         saveDefaultConfig();
+        //noinspection deprecation
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
         PaperUtil.checkPaper(this);

@@ -1,6 +1,6 @@
 noise-equation: "((-((y / 63)^2)) + 1) + ((noise2(x, z)+0.5) / 2)"
-extends: "BASIC_ORES"
-id: "TAIGA"
+extends:        "BASIC_ORES"
+id:             "TAIGA"
 
 palette:
   - "BLOCK:minecraft:bedrock": 0
@@ -10,11 +10,11 @@ palette:
   - RIVER_BOTTOM: 61
   - RIVER_SHORE: 62
   - TAIGA: 255
-vanilla: TAIGA
-erodible: true
+vanilla:        TAIGA
+erodible:       true
 
 flora:
-  chance: 40
+  chance:   40
   attempts: 1
   items:
     TALL_GRASS:

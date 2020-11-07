@@ -1,7 +1,7 @@
 noise-equation: "((-((y / 64)^2)) + 1) + min(floor(((|noise2(x/2.5, z/2.5)|) + 0.1)*4), 3)/2.5 + |noise2(x/2.5, z/2.5)|"
 
-id: "ARID_MOUNTAINS"
-extends: "BASIC_ORES"
+id:             "ARID_MOUNTAINS"
+extends:        "BASIC_ORES"
 
 
 palette:
@@ -10,12 +10,12 @@ palette:
   - BEDROCK_HALF: 2
   - BEDROCK_LITTLE: 3
   - ARID: 255
-vanilla: SAVANNA
+vanilla:        SAVANNA
 
-erodible: false
+erodible:       false
 
 flora:
-  chance: 40
+  chance:   40
   attempts: 1
   items:
     TALL_GRASS:
@@ -38,8 +38,8 @@ trees:
         min: 58
         max: 128
 slabs:
-  enable: true
-  threshold: 0.015
+  enable:                  true
+  threshold:               0.015
   palettes:
     - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_slab"
   use-stairs-if-available: true

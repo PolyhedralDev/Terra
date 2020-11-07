@@ -12,13 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class WorldEditUtil {
-    public static WorldEditPlugin getWorldEdit() {
-        Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
-        Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
-        return null;
-    }
-
     public static Location[] getSelectionLocations(Player sender) {
         WorldEditPlugin we = WorldEditUtil.getWorldEdit();
         if(we == null) {
@@ -43,9 +36,16 @@ public final class WorldEditUtil {
         return new Location[] {l1, l2};
     }
 
+    public static WorldEditPlugin getWorldEdit() {
+        Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+        if (p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
+        Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
+        return null;
+    }
+
     public static Location[] getSelectionPositions(Player sender) {
         WorldEditPlugin we = WorldEditUtil.getWorldEdit();
-        if(we == null) {
+        if (we == null) {
             sender.sendMessage("WorldEdit is not installed! Please install WorldEdit before attempting to export structures.");
             return null;
         }

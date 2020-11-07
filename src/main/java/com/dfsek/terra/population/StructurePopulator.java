@@ -76,8 +76,4 @@ public class StructurePopulator extends BlockPopulator {
             }
         }
     }
-
-    public enum SearchType {
-        UP, DOWN
-    }
 }

@@ -23,10 +23,8 @@ public class SaveDataCommand extends WorldCommand {
     }
 
     @Override
-    public boolean execute(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        TerraChunkGenerator.saveAll();
-        LangUtil.send("debug.data-save", sender, w.getName());
-        return true;
+    public List<Command> getSubCommands() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -35,12 +33,14 @@ public class SaveDataCommand extends WorldCommand {
     }
 
     @Override
-    public List<Command> getSubCommands() {
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
         return Collections.emptyList();
     }
 
     @Override
-    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        return Collections.emptyList();
+    public boolean execute(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
+        TerraChunkGenerator.saveAll();
+        LangUtil.send("debug.data-save", sender, w.getName());
+        return true;
     }
 }

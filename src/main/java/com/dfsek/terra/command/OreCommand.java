@@ -43,6 +43,11 @@ public class OreCommand extends WorldCommand {
     }
 
     @Override
+    public String getName() {
+        return "ore";
+    }
+
+    @Override
     public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
@@ -50,11 +55,6 @@ public class OreCommand extends WorldCommand {
     @Override
     public int arguments() {
         return 1;
-    }
-
-    @Override
-    public String getName() {
-        return "ore";
     }
 
     @Override

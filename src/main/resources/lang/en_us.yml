@@ -5,13 +5,13 @@ enable:
 disable:
   - "Thank you for using Terra!"
 command:
-  debug-only: "This command must be used with debug mode enabled!"
-  player-only: "This command is for players only!"
-  invalid: "Invalid command. (Expected %1$s arguments, found %2$s)."
+  debug-only:   "This command must be used with debug mode enabled!"
+  player-only:  "This command is for players only!"
+  invalid:      "Invalid command. (Expected %1$s arguments, found %2$s)."
   players-only: "Command is for players only."
-  world: "This command must be executed in a Terra world!"
-  reload: "Reloaded Terra config."
-  version: "This server is running Terra version \"%s\""
+  world:        "This command must be executed in a Terra world!"
+  reload:       "Reloaded Terra config."
+  version:      "This server is running Terra version \"%s\""
   main-menu:
     - "--------------------Terra--------------------"
     - "reload    - Reload configuration data"
@@ -22,17 +22,17 @@ command:
     - "profile   - Profiler options"
     - "image     - Image/GUI options"
   biome:
-    biome-found: "Located biome at (%1$s, %2$s)"
+    biome-found:      "Located biome at (%1$s, %2$s)"
     unable-to-locate: "Unable to locate biome."
-    invalid-radius: "Invalid radius: \"%s\""
-    invalid: "Invalid Biome ID: \"%s\""
-    in: "You are in \"%s\""
+    invalid-radius:   "Invalid radius: \"%s\""
+    invalid:          "Invalid Biome ID: \"%s\""
+    in:               "You are in \"%s\""
   ore:
     main-menu:
       - "---------------Terra/ore---------------"
       - "Generates a vein of ore at the block you are looking at."
     out-of-range: "Block out of range"
-    invalid-ore: "Unable to find Ore \"%s\""
+    invalid-ore:  "Unable to find Ore \"%s\""
   geometry:
     main-menu:
       - "---------------Terra/geometry----------------"
@@ -41,8 +41,8 @@ command:
       - "deformsphere - Generate a deformed sphere"
       - "tube         - Generate a tube"
     deform:
-      invalid-radius: "Invalid radius: \"%s\""
-      invalid-deform: "Invalid deform: \"%s\""
+      invalid-radius:    "Invalid radius: \"%s\""
+      invalid-deform:    "Invalid deform: \"%s\""
       invalid-frequency: "Invalid frequency: \"%s\""
     sphere:
       invalid-radius: "Invalid radius: \"%s\""
@@ -77,16 +77,16 @@ command:
       - "---------------Terra/structure---------------"
       - "export - Export your current WorldEdit selection as a Terra structure."
       - "load   - Load a Terra structure"
-    invalid-radius: "Invalid radius: \"%s\""
+    invalid-radius:   "Invalid radius: \"%s\""
     invalid-rotation: "Invalid rotation: \"%s\""
-    invalid: "Invalid Structure ID: \"%s\""
-    export: "Saved structure to \"%s\""
+    invalid:          "Invalid Structure ID: \"%s\""
+    export:           "Saved structure to \"%s\""
 world-config:
-  loading: "Loading world configuration values for world %s..."
-  not-found: "Configuration for world \"%s\" not found. Copying default config."
+  loading:     "Loading world configuration values for world %s..."
+  not-found:   "Configuration for world \"%s\" not found. Copying default config."
   using-image: "Loading world from image."
-  error: "Unable to load configuration for world %s"
-  done: "World load complete. Time elapsed: %sms"
+  error:       "Unable to load configuration for world %s"
+  done:        "World load complete. Time elapsed: %sms"
 config-pack:
   loaded: "Loaded config %1$s in %2$sms."
 config:

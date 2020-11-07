@@ -5,12 +5,12 @@ enable:
 disable:
   - "Gracias por usar Terra!"
 command:
-  player-only: "Este comando solo puede ser usado por jugadores!"
-  terra-world: "Este comando solo puede ser usado en un mundo Terra!"
-  invalid: "Comando invalido. (Expected %1$s arguments, found %2$s)."
+  player-only:  "Este comando solo puede ser usado por jugadores!"
+  terra-world:  "Este comando solo puede ser usado en un mundo Terra!"
+  invalid:      "Comando invalido. (Expected %1$s arguments, found %2$s)."
   players-only: "Este comando solo puede ser usado por jugadores"
-  world: "Este comando puede ejecutarse solo en un mundo terra!"
-  reload: "La configuración Terra ha sido recargada."
+  world:        "Este comando puede ejecutarse solo en un mundo terra!"
+  reload:       "La configuración Terra ha sido recargada."
   main-menu:
     - "--------------------Terra--------------------"
     - "reload    - Recarga los datos de configuración del plugin."
@@ -21,17 +21,17 @@ command:
     - "profile   - Opciones de perfil."
     - "image     - Opciones de imagen/GUI."
   biome:
-    biome-found: "Bioma localizado en (%1$s, %2$s)"
+    biome-found:      "Bioma localizado en (%1$s, %2$s)"
     unable-to-locate: "No se pudo localizar el bioma."
-    invalid-radius: "Radio invalido: \"%s\""
-    invalid: "ID del bioma invalido: \"%s\""
-    in: "Te encuentras en \"%s\""
+    invalid-radius:   "Radio invalido: \"%s\""
+    invalid:          "ID del bioma invalido: \"%s\""
+    in:               "Te encuentras en \"%s\""
   ore:
     main-menu:
       - "---------------Terra/ore---------------"
       - "Generas una mena de ore en el bloque que te encuentres mirando."
     out-of-range: "Bloque fuera de rango."
-    invalid-ore: "No se pudo encontrar el Ore \"%s\""
+    invalid-ore:  "No se pudo encontrar el Ore \"%s\""
   geometry:
     main-menu:
       - "---------------Terra/geometry----------------"
@@ -40,8 +40,8 @@ command:
       - "deformsphere - Generas un sphere deformado"
       - "tube         - Generas un tube"
     deform:
-      invalid-radius: "Radio invalido: \"%s\""
-      invalid-deform: "Deform invalido: \"%s\""
+      invalid-radius:    "Radio invalido: \"%s\""
+      invalid-deform:    "Deform invalido: \"%s\""
       invalid-frequency: "Frequencia invalida: \"%s\""
     sphere:
       invalid-radius: "Radio invalido: \"%s\""
@@ -77,14 +77,14 @@ command:
       - "export - Exporta tus estructuras de Worldedit como estructuras Terra."
       - "load   - Carga una estructura Terra."
     invalid-radius: "Radio invalido: \"%s\""
-    invalid: "ID de la estructura es invalida: \"%s\""
-    export: "Estructura guardada como \"%s\""
+    invalid:        "ID de la estructura es invalida: \"%s\""
+    export:         "Estructura guardada como \"%s\""
 world-config:
-  loading: "Carga los parametros de configuración para el mundo %s..."
-  not-found: "La configuración para el mundo \"%s\" no se puede encontrar. Copiando la configuración por defecto."
+  loading:     "Carga los parametros de configuración para el mundo %s..."
+  not-found:   "La configuración para el mundo \"%s\" no se puede encontrar. Copiando la configuración por defecto."
   using-image: "Carga el mundo a partir de una imagen."
-  error: "No se pudo cargar la configuración para el mundo %s"
-  done: "el mundo se ha cargado completamente. Tiempo transcurrido: %sms"
+  error:       "No se pudo cargar la configuración para el mundo %s"
+  done:        "el mundo se ha cargado completamente. Tiempo transcurrido: %sms"
 config-pack:
   loaded: "Configuración %1$s fue cargada en %2$sms."
 config:

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SerializableBanner implements SerializableBlockState {
-    public static final long serialVersionUID = 5298928608478640004L;
+    private static final long serialVersionUID = 5298928608478640004L;
     private final DyeColor base;
     private final ArrayList<Pattern> patterns = new ArrayList<>();
 

@@ -19,12 +19,12 @@ public class NoiseFunction3 implements Function {
         return gen.getNoise(list.get(0).evaluate(), list.get(1).evaluate(), list.get(2).evaluate());
     }
 
-    public void setNoise(FastNoiseLite gen) {
-        this.gen = gen;
-    }
-
     @Override
     public boolean isNaturalFunction() {
         return true;
+    }
+
+    public void setNoise(FastNoiseLite gen) {
+        this.gen = gen;
     }
 }

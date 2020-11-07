@@ -21,21 +21,25 @@ public class TerraBiomeGrid extends BiomeGrid {
 
     public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, UserDefinedGrid erosion) {
         super(w, freq1, freq2, 0, 0);
-        if(c.biomeBlend) {
+        if (c.biomeBlend) {
             perturb = new CoordinatePerturb(c.blendFreq, c.blendAmp, w.getSeed());
         }
         this.zone = zone;
-        if(c.erosionEnable) {
+        if (c.erosionEnable) {
             erode = new ErosionNoise(c.erosionFreq, c.erosionThresh, c.erosionOctaves, w.getSeed());
             this.erosionGrid = erosion;
         }
+    }
+
+    public UserDefinedGrid getGrid(int x, int z) {
+        return (UserDefinedGrid) zone.getGrid(x, z);
     }
 
     @Override
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x;
         int zp = z;
-        if(perturb != null && phase.equals(GenerationPhase.PALETTE_APPLY)) {
+        if (perturb != null && phase.equals(GenerationPhase.PALETTE_APPLY)) {
             Vector2 perturbCoords = perturb.getShiftedCoords(x, z);
             xp = (int) perturbCoords.getX();
             zp = (int) perturbCoords.getZ();
@@ -62,7 +66,5 @@ public class TerraBiomeGrid extends BiomeGrid {
         return getBiome(l.getBlockX(), l.getBlockZ(), phase);
     }
 
-    public UserDefinedGrid getGrid(int x, int z) {
-        return (UserDefinedGrid) zone.getGrid(x, z);
-    }
+
 }

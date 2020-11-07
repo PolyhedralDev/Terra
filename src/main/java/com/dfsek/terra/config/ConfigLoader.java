@@ -22,6 +22,7 @@ public class ConfigLoader {
     public static <T extends TerraConfig> Map<String, T> load(Path file, ConfigPack config, Class<T> clazz) {
         long l = System.nanoTime();
         Map<String, T> configs = new HashMap<>();
+        //noinspection ResultOfMethodCallIgnored
         file.toFile().mkdirs();
         List<String> ids = new ArrayList<>();
         try(Stream<Path> paths = Files.walk(file)) {
@@ -40,7 +41,7 @@ public class ConfigLoader {
                             LangUtil.log("config.error.generic", Level.SEVERE, path.toString());
                         } catch(IllegalArgumentException | InvocationTargetException e) {
                             if(ConfigUtil.debug) e.printStackTrace();
-                            LangUtil.log("config.error.file", Level.SEVERE, path.toString(), ((e instanceof InvocationTargetException) ? "INVOCATION: " + e.getCause().getMessage() : e.getMessage()));
+                            LangUtil.log("config.error.file", Level.SEVERE, path.toString(), e.getMessage());
                         }
                     });
             LangUtil.log("config.loaded-all", Level.INFO, String.valueOf(configs.size()), clazz.getSimpleName(), String.valueOf((System.nanoTime() - l) / 1000000D));

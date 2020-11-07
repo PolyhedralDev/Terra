@@ -4,7 +4,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 
 public class SerializableSign implements SerializableBlockState {
-    public static final long serialVersionUID = 5298928608478640001L;
+    private static final long serialVersionUID = 5298928608478640001L;
     private final String[] text;
     private final boolean isEditable;
 

@@ -1,4 +1,4 @@
-extends: "BEACH_ABSTRACT"
-id: "BEACH"
-vanilla: BEACH
+extends:  "BEACH_ABSTRACT"
+id:       "BEACH"
+vanilla:  BEACH
 erodible: true

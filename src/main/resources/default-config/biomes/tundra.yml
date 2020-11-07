@@ -1,5 +1,5 @@
-extends: "PLAINS_ABSTRACT"
-id: "TUNDRA"
+extends:  "PLAINS_ABSTRACT"
+id:       "TUNDRA"
 
 palette:
   - "BLOCK:minecraft:bedrock": 0
@@ -7,15 +7,15 @@ palette:
   - BEDROCK_HALF: 2
   - BEDROCK_LITTLE: 3
   - TUNDRA: 255
-vanilla: SNOWY_TUNDRA
+vanilla:  SNOWY_TUNDRA
 carving:
   CAVE_TUNDRA: 35
-  RAVINE: 5
-  CAVERN: 5
+  RAVINE:      5
+  CAVERN:      5
 
 snow:
-  - min: 0
-    max: 255
+  - min:    0
+    max:    255
     chance: 30
 erodible: true
 
@@ -36,8 +36,8 @@ trees:
         min: 58
         max: 84
 slabs:
-  enable: true
-  threshold: 0.015
+  enable:                  true
+  threshold:               0.015
   palettes:
     - "minecraft:stone": "MOUNTAIN_SLABS"
     - "minecraft:snow_block": "SNOW_LAYERS"

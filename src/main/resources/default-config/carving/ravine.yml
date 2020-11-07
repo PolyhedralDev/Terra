@@ -20,9 +20,9 @@ cut:
   top: 1
   bottom: 2
 mutate:
-  x: 1
-  y: 4
-  z: 1
+  x:      1
+  y:      4
+  z:      1
   radius: 0.125
 palette:
   inner:

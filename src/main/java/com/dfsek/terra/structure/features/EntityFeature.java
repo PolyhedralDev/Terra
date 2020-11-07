@@ -32,10 +32,6 @@ public class EntityFeature implements Feature {
         this.inSize = inSize;
     }
 
-    private static boolean isInChunk(Chunk c, Location l) {
-        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
-    }
-
     @Override
     public void apply(Structure structure, Location l, Chunk chunk) {
         Random random = new Random(MathUtil.getCarverChunkSeed(chunk.getX(), chunk.getZ(), chunk.getWorld().getSeed()));
@@ -67,13 +63,17 @@ public class EntityFeature implements Feature {
                 for(int j = 1; j < inSize + 1; j++)
                     if(!in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
 
-                if(canSpawn) break;
+                if (canSpawn) break;
             }
-            if(canSpawn) {
+            if (canSpawn) {
                 Debug.info("Spawning entity at  " + attempt);
                 chunk.getWorld().spawnEntity(attempt.add(0.5, 2, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
             }
         }
+    }
+
+    private static boolean isInChunk(Chunk c, Location l) {
+        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
     }
 
     @Override
@@ -111,9 +111,5 @@ public class EntityFeature implements Feature {
                 l.getWorld().spawnEntity(attempt.add(0.5, 1, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
             }
         }
-    }
-
-    public static class SpawnRule {
-
     }
 }

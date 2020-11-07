@@ -16,8 +16,8 @@ loot:
   3: cobble_house
 features:
   - ENTITY_FEATURE:
-      entity: SILVERFISH
-      attempts: 40
+      entity:    SILVERFISH
+      attempts:  40
       in-height: 1
       amount:
         min: 20
@@ -29,8 +29,8 @@ features:
       spawnable-in:
         - "minecraft:air"
   - ENTITY_FEATURE:
-      entity: ZOMBIE
-      attempts: 20
+      entity:    ZOMBIE
+      attempts:  20
       in-height: 2
       amount:
         min: 10
