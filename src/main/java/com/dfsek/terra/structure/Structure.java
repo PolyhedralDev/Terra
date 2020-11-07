@@ -163,46 +163,6 @@ public class Structure implements Serializable {
         this.executeForBlocksInRange(xRange, getRange(Axis.Y, r), zRange, block -> pasteBlock(block, origin, r), r);
     }
 
-    public boolean checkSpawns(Location origin, Rotation r) {
-        for(StructureContainedBlock b : spawns) {
-            Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
-            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
-                return false;
-        }
-        return true;
-    }
-
-    public HashSet<StructureContainedInventory> getInventories() {
-        return inventories;
-    }
-
-    /**
-     * Get GaeaStructureInfo object
-     *
-     * @return Structure Info
-     */
-    @NotNull
-    public StructureInfo getStructureInfo() {
-        return structureInfo;
-    }
-
-    /**
-     * Paste structure at an origin location, confined to a single chunk.
-     *
-     * @param origin Origin location
-     * @param chunk  Chunk to confine pasting to
-     * @param r      Rotation
-     */
-    public void paste(Location origin, Chunk chunk, Rotation r) {
-        int xOr = (chunk.getX() << 4);
-        int zOr = (chunk.getZ() << 4);
-        Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
-        Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
-        if(intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
-        Debug.info(intersectX.toString() + " : " + intersectZ.toString());
-    }
-
     /**
      * Paste a single StructureDefinedBlock at an origin location, offset by its coordinates.
      *
@@ -299,6 +259,16 @@ public class Structure implements Serializable {
     }
 
     /**
+     * Get GaeaStructureInfo object
+     *
+     * @return Structure Info
+     */
+    @NotNull
+    public StructureInfo getStructureInfo() {
+        return structureInfo;
+    }
+
+    /**
      * Test whether a set of coordinates is within the current structure
      *
      * @param x X coordinate
@@ -337,6 +307,36 @@ public class Structure implements Serializable {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    public boolean checkSpawns(Location origin, Rotation r) {
+        for(StructureContainedBlock b : spawns) {
+            Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
+            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
+                return false;
+        }
+        return true;
+    }
+
+    public HashSet<StructureContainedInventory> getInventories() {
+        return inventories;
+    }
+
+    /**
+     * Paste structure at an origin location, confined to a single chunk.
+     *
+     * @param origin Origin location
+     * @param chunk  Chunk to confine pasting to
+     * @param r      Rotation
+     */
+    public void paste(Location origin, Chunk chunk, Rotation r) {
+        int xOr = (chunk.getX() << 4);
+        int zOr = (chunk.getZ() << 4);
+        Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
+        Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
+        if(intersectX == null || intersectZ == null) return;
+        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
+        Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 
     /**

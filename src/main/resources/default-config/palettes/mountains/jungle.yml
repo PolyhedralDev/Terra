@@ -1,19 +1,19 @@
 layers:
-    -   materials:
-            -   "minecraft:brown_terracotta": 2
-            -   "minecraft:grass_block": 10
-            -   "minecraft:cobblestone": 1
-            -   "minecraft:stone": 1
-        layers: 1
-    -   materials:
-            -   "minecraft:brown_terracotta": 2
-            -   "minecraft:dirt": 10
-            -   "minecraft:cobblestone": 1
-            -   "minecraft:stone": 1
-        layers: 2
-    -   materials:
-            -   "minecraft:stone": 1
-        layers: 1
+  - materials:
+      - "minecraft:brown_terracotta": 2
+      - "minecraft:grass_block": 10
+      - "minecraft:cobblestone": 1
+      - "minecraft:stone": 1
+    layers: 1
+  - materials:
+      - "minecraft:brown_terracotta": 2
+      - "minecraft:dirt": 10
+      - "minecraft:cobblestone": 1
+      - "minecraft:stone": 1
+    layers: 2
+  - materials:
+      - "minecraft:stone": 1
+    layers: 1
 id: "MOUNTAIN_JUNGLE"
 simplex: true
 frequency: 0.04

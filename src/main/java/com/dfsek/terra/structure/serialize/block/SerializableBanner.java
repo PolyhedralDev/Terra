@@ -32,6 +32,7 @@ public class SerializableBanner implements SerializableBlockState {
     }
 
     private static final class Pattern implements Serializable {
+        private static final long serialVersionUID = -7802163816361757171L;
         private final DyeColor color;
         private final PatternType type;
 

@@ -30,6 +30,7 @@ import java.util.Random;
  * Populates Flora and Trees
  */
 public class FloraPopulator extends GaeaBlockPopulator {
+    @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {

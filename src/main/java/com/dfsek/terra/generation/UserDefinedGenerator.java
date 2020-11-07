@@ -25,7 +25,7 @@ public class UserDefinedGenerator extends Generator {
     private final Variable xVar = s.getVariable("x");
     private final Variable yVar = s.getVariable("y");
     private final Variable zVar = s.getVariable("z");
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] palettes = new Palette[256];
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();

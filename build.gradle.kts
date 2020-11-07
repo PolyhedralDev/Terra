@@ -48,9 +48,17 @@ dependencies {
     testImplementation(name = "Gaea-1.14.0", group = "")
 }
 
+val compileJava: JavaCompile by tasks
+compileJava.apply {
+    options.encoding = "UTF-8"
+    doFirst {
+        options.compilerArgs = mutableListOf("-Xlint:all", "-Xlint:-processing")
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
-    
+
     maxHeapSize = "1G"
     ignoreFailures = false
     failFast = true

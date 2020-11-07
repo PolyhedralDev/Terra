@@ -6,6 +6,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
  * Thrown when a config item is not valid.
  */
 public class ConfigException extends InvalidConfigurationException {
+    private static final long serialVersionUID = -4342864317005935979L;
     private final String message;
     private final String id;
 

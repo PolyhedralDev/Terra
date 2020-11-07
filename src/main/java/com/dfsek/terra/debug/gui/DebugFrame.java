@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class DebugFrame extends JFrame implements ActionListener {
+    private static final long serialVersionUID = 9133084939622854303L;
     private final int x;
     private final int z;
     private final BufferedImage img;

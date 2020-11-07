@@ -1,8 +1,8 @@
 layers:
-    -   materials:
-            -   "minecraft:cobblestone_slab": 1
-            -   "minecraft:stone_slab": 3
-        layers: 1
+  - materials:
+      - "minecraft:cobblestone_slab": 1
+      - "minecraft:stone_slab": 3
+    layers: 1
 id: "MOUNTAIN_SLABS"
 simplex: true
 frequency: 0.1

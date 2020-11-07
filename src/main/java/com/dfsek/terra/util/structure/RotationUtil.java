@@ -157,6 +157,7 @@ public final class RotationUtil {
      * @param r    Rotate
      * @return Rotated/mirrored shape
      */
+    @SuppressWarnings("fallthrough")
     public static Rail.Shape getRotatedRail(Rail.Shape orig, Structure.Rotation r) {
         switch(r) {
             case CCW_90:

@@ -35,6 +35,7 @@ public class Terra extends GaeaPlugin {
         TerraChunkGenerator.saveAll();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
         instance = this;
@@ -54,7 +55,6 @@ public class Terra extends GaeaPlugin {
         locatePl.setTabCompleter(locate);
 
         saveDefaultConfig();
-        //noinspection deprecation
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
         PaperUtil.checkPaper(this);

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class OrePopulator extends GaeaBlockPopulator {
+    @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
@@ -44,7 +45,7 @@ public class OrePopulator extends GaeaBlockPopulator {
                     Bukkit.getPluginManager().callEvent(event);
                     if(!event.isCancelled()) {
                         if(ore.crossChunks()) ore.doVein(v, chunk, random);
-                        else ore.doVeinSingleChunk(new Vector(x, y, z), chunk, random);
+                        else ore.doVeinSingle(new Vector(x, y, z), chunk, random);
                     }
                 }
             }

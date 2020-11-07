@@ -61,8 +61,8 @@ public class OreConfig extends TerraConfig {
         }
     }
 
-    private int randomInRange(Random r) {
-        return r.nextInt(max - min + 1) + min;
+    public String getID() {
+        return id;
     }
 
     public void doVein(Vector l, Chunk chunk, Random r) {
@@ -91,6 +91,10 @@ public class OreConfig extends TerraConfig {
         }
     }
 
+    private int randomInRange(Random r) {
+        return r.nextInt(max - min + 1) + min;
+    }
+
     public void doVeinSingle(Vector l, Chunk chunk, Random r) {
         FastNoiseLite ore = new FastNoiseLite(r.nextInt());
         ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
@@ -115,10 +119,6 @@ public class OreConfig extends TerraConfig {
     @Override
     public String toString() {
         return "Ore with ID " + getID();
-    }
-
-    public String getID() {
-        return id;
     }
 
     public boolean crossChunks() {
