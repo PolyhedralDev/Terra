@@ -1,9 +1,9 @@
 layers:
-  - materials:
-      - "minecraft:cobblestone_stairs": 1
-      - "minecraft:stone_stairs": 3
-    layers: 1
-id:        "MOUNTAIN_STAIRS"
-simplex:   true
+    -   materials:
+            -   "minecraft:cobblestone_stairs": 1
+            -   "minecraft:stone_stairs": 3
+        layers: 1
+id: "MOUNTAIN_STAIRS"
+simplex: true
 frequency: 0.1
-seed:      4
+seed: 4

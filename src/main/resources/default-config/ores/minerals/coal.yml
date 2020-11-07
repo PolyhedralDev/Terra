@@ -2,8 +2,8 @@ material: "minecraft:coal_ore"
 radius:
   min: 1
   max: 2
-deform:   0.75
+deform: 0.75
 deform-frequency: 0.2
-id:       "COAL_ORE"
+id: "COAL_ORE"
 replace:
   - "minecraft:stone"

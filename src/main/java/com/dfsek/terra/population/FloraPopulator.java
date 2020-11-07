@@ -60,7 +60,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
                                 item = biome.getDecorator().getFlora().get(f.getFloraNoise(), originX + x, originZ + z);
                             else item = biome.getDecorator().getFlora().get(random);
                             for(Block highest : item.getValidSpawnsAt(chunk, x, z, c.getFloraHeights(item))) {
-                                if (random.nextInt(100) < biome.getDecorator().getFloraChance())
+                                if(random.nextInt(100) < biome.getDecorator().getFloraChance())
                                     item.plant(highest.getLocation());
                             }
                         }
@@ -75,12 +75,12 @@ public class FloraPopulator extends GaeaBlockPopulator {
         for(Block block : getValidTreeSpawnsAt(chunk, x, z, new Range(0, 254))) {
             Tree tree = biome.getDecorator().getTrees().get(random);
             Range range = world.getConfig().getBiome(biome).getTreeRange(tree);
-            if (!range.isInRange(block.getY())) continue;
+            if(!range.isInRange(block.getY())) continue;
             try {
                 Location l = block.getLocation();
                 TreeGenerateEvent event = new TreeGenerateEvent(world, l, tree);
                 Bukkit.getPluginManager().callEvent(event);
-                if (!event.isCancelled()) tree.plant(l, random, Terra.getInstance());
+                if(!event.isCancelled()) tree.plant(l, random, Terra.getInstance());
             } catch(NullPointerException ignore) {
             }
         }
@@ -90,7 +90,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
     public static List<Block> getValidTreeSpawnsAt(Chunk chunk, int x, int z, Range check) {
         List<Block> blocks = new ArrayList<>();
         for(int y : check) {
-            if (chunk.getBlock(x, y, z).getType().isSolid() && chunk.getBlock(x, y + 1, z).getType().isAir()) {
+            if(chunk.getBlock(x, y, z).getType().isSolid() && chunk.getBlock(x, y + 1, z).getType().isAir()) {
                 blocks.add(chunk.getBlock(x, y + 1, z));
             }
         }

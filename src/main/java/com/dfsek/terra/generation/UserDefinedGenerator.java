@@ -40,7 +40,7 @@ public class UserDefinedGenerator extends Generator {
         for(int y = 0; y < 256; y++) {
             Palette<BlockData> d = DataUtil.BLANK_PALETTE;
             for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
-                if (e.getKey() >= y) {
+                if(e.getKey() >= y) {
                     d = e.getValue();
                     break;
                 }

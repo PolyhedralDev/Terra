@@ -70,7 +70,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if (!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
+        if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
@@ -82,10 +82,10 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
-        if (needsLoad) load(world); // Load population data for world.
+        if(needsLoad) load(world); // Load population data for world.
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
-        if (!tw.isSafe()) return chunk;
+        if(!tw.isSafe()) return chunk;
         ConfigPack config = tw.getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
@@ -109,7 +109,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                                     slab.getStairs(), slab.getSlabThreshold(), interpolator);
                         }
                         paletteLevel++;
-                    } else if (y <= sea) {
+                    } else if(y <= sea) {
                         chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
                     } else paletteLevel = 0;
@@ -121,15 +121,15 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
                                   Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator) {
-        if (interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
-            if (stairs != null) {
+        if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
+            if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
-                if (stairPalette != null) {
+                if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
                     Stairs stairNew = (Stairs) stair.clone();
-                    if (interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ()) > thresh) {
+                    if(interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ()) > thresh) {
                         stairNew.setFacing(BlockFace.WEST);
-                    } else if (interpolator.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.5) > thresh) {
+                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.5) > thresh) {
                         stairNew.setFacing(BlockFace.NORTH);
                     } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.5) > thresh) {
                         stairNew.setFacing(BlockFace.SOUTH);

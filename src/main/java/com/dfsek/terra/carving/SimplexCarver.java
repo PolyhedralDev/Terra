@@ -58,7 +58,7 @@ public class SimplexCarver extends Carver {
                     if(finalNoise > 0.5) {
                         c.carve(x - ox, y, z - oz, type);
                         double finalNoiseUp = (-0.05 * Math.abs((y + 1) - (heightNoise * 16 + 24)) + 1 - simplex) * hc;
-                        if (finalNoiseUp > 0.5) {
+                        if(finalNoiseUp > 0.5) {
                             type = CarvingData.CarvingType.CENTER;
                         } else type = CarvingData.CarvingType.TOP;
                     }

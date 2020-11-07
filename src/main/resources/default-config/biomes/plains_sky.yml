@@ -1,5 +1,5 @@
-extends:        "PLAINS_ABSTRACT"
-id:             "SKY_ISLANDS"
+extends: "PLAINS_ABSTRACT"
+id: "SKY_ISLANDS"
 
 noise-equation: "if(max(y-96, 0), -(if(max(y-150, 0), |y-150|, |y-150|/16)) - 0.25 + (noise2(x*3, z*3)*3), ((-((y / 63)^2)) + 1) + |(noise2(x, z) / 3) + 0.1|)"
 
@@ -11,12 +11,12 @@ palette:
   - RIVER_BOTTOM: 61
   - RIVER_SHORE: 62
   - GRASSY: 255
-vanilla:        PLAINS
+vanilla: PLAINS
 
-erodible:       true
+erodible: true
 
 flora:
-  chance:   60
+  chance: 60
   attempts: 1
   items:
     TALL_GRASS:

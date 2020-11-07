@@ -54,7 +54,7 @@ public class Structure implements Serializable {
         this.uuid = UUID.randomUUID();
         this.spawns = new HashSet<>();
         this.inventories = new HashSet<>();
-        if (l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ())
+        if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ())
             throw new IllegalArgumentException("Invalid locations provided!");
         structure = new StructureContainedBlock[l2.getBlockX() - l1.getBlockX() + 1][l2.getBlockZ() - l1.getBlockZ() + 1][l2.getBlockY() - l1.getBlockY() + 1];
         for(int x = 0; x <= l2.getBlockX() - l1.getBlockX(); x++) {
@@ -68,16 +68,16 @@ public class Structure implements Serializable {
                     int pullOffset = 0;
                     StructureSpawnRequirement requirement = StructureSpawnRequirement.BLANK;
                     try {
-                        if (state instanceof Sign) { // Magic sign stuff
+                        if(state instanceof Sign) { // Magic sign stuff
                             Sign s = (Sign) b.getState();
-                            if (s.getLine(0).equals("[TERRA]")) {
+                            if(s.getLine(0).equals("[TERRA]")) {
                                 try {
                                     d = Bukkit.createBlockData(s.getLine(2) + s.getLine(3));
                                     useState = false;
-                                    if (s.getLine(1).equals("[CENTER]")) {
+                                    if(s.getLine(1).equals("[CENTER]")) {
                                         centerX = x;
                                         centerZ = z;
-                                    } else if (s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
+                                    } else if(s.getLine(1).startsWith("[SPAWN=") && s.getLine(1).endsWith("]")) {
                                         String og = s.getLine(1);
                                         String spawn = og.substring(og.indexOf("=") + 1, og.length() - 1);
                                         try {
@@ -85,7 +85,7 @@ public class Structure implements Serializable {
                                         } catch(IllegalArgumentException e) {
                                             throw new InitializationException("Invalid spawn type: " + spawn, b.getLocation());
                                         }
-                                    } else if (s.getLine(1).startsWith("[PULL=") && s.getLine(1).endsWith("]")) {
+                                    } else if(s.getLine(1).startsWith("[PULL=") && s.getLine(1).endsWith("]")) {
                                         String og = s.getLine(1);
                                         String spawn = og.substring(og.indexOf("=") + 1, og.indexOf("_"));
                                         pullOffset = Integer.parseInt(og.substring(og.indexOf("_") + 1, og.length() - 1));
@@ -106,15 +106,15 @@ public class Structure implements Serializable {
                         throw new InitializationException("Invalid sign.", b.getLocation());
                     }
                     StructureContainedBlock block = new StructureContainedBlock(x, y, z, useState ? state : null, d, requirement, pull, pullOffset);
-                    if (state instanceof BlockInventoryHolder) {
+                    if(state instanceof BlockInventoryHolder) {
                         inventories.add(new StructureContainedInventory(((BlockInventoryHolder) state).getInventory(), block));
                     }
-                    if (!requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
+                    if(!requirement.equals(StructureSpawnRequirement.BLANK)) spawns.add(block);
                     structure[x][z][y] = block;
                 }
             }
         }
-        if (centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.", null);
+        if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.", null);
         structureInfo = new StructureInfo(l2.getBlockX() - l1.getBlockX() + 1, l2.getBlockY() - l1.getBlockY() + 1, l2.getBlockZ() - l1.getBlockZ() + 1, new Vector2(centerX, centerZ));
     }
 
@@ -177,33 +177,13 @@ public class Structure implements Serializable {
     }
 
     /**
-     * Paste structure at an origin location, confined to a single chunk.
+     * Get GaeaStructureInfo object
      *
-     * @param origin Origin location
-     * @param chunk  Chunk to confine pasting to
-     * @param r      Rotation
+     * @return Structure Info
      */
-    public void paste(Location origin, Chunk chunk, Rotation r) {
-        int xOr = (chunk.getX() << 4);
-        int zOr = (chunk.getZ() << 4);
-        Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
-        Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
-        if (intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
-        Debug.info(intersectX.toString() + " : " + intersectZ.toString());
-    }
-
-    public boolean checkSpawns(Location origin, Rotation r) {
-        for(StructureContainedBlock b : spawns) {
-            Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
-            if (!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
-                return false;
-        }
-        return true;
-    }
-
-    public HashSet<StructureContainedInventory> getInventories() {
-        return inventories;
+    @NotNull
+    public StructureInfo getStructureInfo() {
+        return structureInfo;
     }
 
     /**
@@ -218,21 +198,9 @@ public class Structure implements Serializable {
         int zOr = (chunk.getZ() << 4);
         Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
         Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
-        if (intersectX == null || intersectZ == null) return;
+        if(intersectX == null || intersectZ == null) return;
         executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
         Debug.info(intersectX.toString() + " : " + intersectZ.toString());
-    }
-
-    /**
-     * Test whether a set of coordinates is within the current structure
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param z Z coordinate
-     * @return True if coordinate set is in structure, false if it is not.
-     */
-    private boolean isInStructure(int x, int y, int z) {
-        return x < structureInfo.getSizeX() && y < structureInfo.getSizeY() && z < structureInfo.getSizeZ() && x >= 0 && y >= 0 && z >= 0;
     }
 
     /**
@@ -250,8 +218,8 @@ public class Structure implements Serializable {
             Block worldBlock = loc.getBlock();
             main:
             while(worldBlock.isEmpty()) {
-                if (loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
-                if (block.getPull() == null) break;
+                if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
+                if(block.getPull() == null) break;
                 switch(block.getPull()) {
                     case UP:
                         worldBlock = worldBlock.getRelative(BlockFace.UP);
@@ -265,16 +233,16 @@ public class Structure implements Serializable {
 
             }
             int offset = block.getPullOffset();
-            if (offset != 0)
+            if(offset != 0)
                 worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
 
-            if (data instanceof Rotatable) {
+            if(data instanceof Rotatable) {
                 BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
                 ((Rotatable) data).setRotation(rt);
-            } else if (data instanceof Directional) {
+            } else if(data instanceof Directional) {
                 BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r);
                 ((Directional) data).setFacing(rt);
-            } else if (data instanceof MultipleFacing) {
+            } else if(data instanceof MultipleFacing) {
                 MultipleFacing mfData = (MultipleFacing) data;
                 Map<BlockFace, Boolean> faces = new HashMap<>();
                 for(BlockFace f : mfData.getAllowedFaces()) {
@@ -283,13 +251,13 @@ public class Structure implements Serializable {
                 for(Map.Entry<BlockFace, Boolean> face : faces.entrySet()) {
                     mfData.setFace(getRotatedFace(face.getKey(), r), face.getValue());
                 }
-            } else if (data instanceof Rail) {
+            } else if(data instanceof Rail) {
                 Rail.Shape newShape = getRotatedRail(((Rail) data).getShape(), r);
                 ((Rail) data).setShape(newShape);
-            } else if (data instanceof Orientable) {
+            } else if(data instanceof Orientable) {
                 org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
                 ((Orientable) data).setAxis(newAxis);
-            } else if (data instanceof RedstoneWire) {
+            } else if(data instanceof RedstoneWire) {
                 Map<BlockFace, RedstoneWire.Connection> connections = new HashMap<>();
                 RedstoneWire rData = (RedstoneWire) data;
                 for(BlockFace f : rData.getAllowedFaces()) {
@@ -300,23 +268,9 @@ public class Structure implements Serializable {
                 }
             }
             worldBlock.setBlockData(data, false);
-            if (block.getState() != null) {
+            if(block.getState() != null) {
                 block.getState().getState(worldBlock.getState()).update(true, false);
             }
-        }
-    }
-
-    @NotNull
-    private Range getRawRange(@NotNull Axis a) {
-        switch(a) {
-            case X:
-                return new Range(0, structureInfo.getSizeX());
-            case Y:
-                return new Range(0, structureInfo.getSizeY());
-            case Z:
-                return new Range(0, structureInfo.getSizeZ());
-            default:
-                throw new IllegalArgumentException();
         }
     }
 
@@ -335,7 +289,7 @@ public class Structure implements Serializable {
                 for(int z : zM) {
                     Vector2 c = getRotatedCoords(new Vector2(x - structureInfo.getCenterX(), z - structureInfo.getCenterZ()), r);
                     c.add(new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ()));
-                    if (isInStructure((int) c.getX(), y, (int) c.getZ())) {
+                    if(isInStructure((int) c.getX(), y, (int) c.getZ())) {
                         StructureContainedBlock b = structure[(int) c.getX()][(int) c.getZ()][y];
                         exec.accept(new StructureContainedBlock(x - getStructureInfo().getCenterX(), y, z - getStructureInfo().getCenterZ(), b.getState(), b.getBlockData(), b.getRequirement(), b.getPull(), b.getPullOffset()));
                     }
@@ -345,28 +299,44 @@ public class Structure implements Serializable {
     }
 
     /**
-     * Get GaeaStructureInfo object
+     * Test whether a set of coordinates is within the current structure
      *
-     * @return Structure Info
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     * @return True if coordinate set is in structure, false if it is not.
      */
-    @NotNull
-    public StructureInfo getStructureInfo() {
-        return structureInfo;
+    private boolean isInStructure(int x, int y, int z) {
+        return x < structureInfo.getSizeX() && y < structureInfo.getSizeY() && z < structureInfo.getSizeZ() && x >= 0 && y >= 0 && z >= 0;
     }
 
     @NotNull
     public Range getRange(@NotNull Axis a, @NotNull Rotation r) {
-        if (a.equals(Axis.Y)) return getRawRange(a);
+        if(a.equals(Axis.Y)) return getRawRange(a);
         Vector2 center = new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ());
         Range x = getRawRange(Axis.X);
         Range z = getRawRange(Axis.Z);
         Vector2 min = getRotatedCoords(new Vector2(x.getMin(), z.getMin()).subtract(center), r.inverse()).add(center);
         Vector2 max = getRotatedCoords(new Vector2(x.getMax(), z.getMax()).subtract(center), r.inverse()).add(center);
 
-        if (a.equals(Axis.X))
+        if(a.equals(Axis.X))
             return new Range((int) Math.floor(Math.min(min.getX(), max.getX())), (int) Math.ceil(Math.max(min.getX(), max.getX())) + 1);
         else
             return new Range((int) Math.floor(Math.min(min.getZ(), max.getZ())), (int) Math.ceil(Math.max(min.getZ(), max.getZ())) + 1);
+    }
+
+    @NotNull
+    private Range getRawRange(@NotNull Axis a) {
+        switch(a) {
+            case X:
+                return new Range(0, structureInfo.getSizeX());
+            case Y:
+                return new Range(0, structureInfo.getSizeY());
+            case Z:
+                return new Range(0, structureInfo.getSizeZ());
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     /**

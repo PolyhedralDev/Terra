@@ -1,29 +1,29 @@
 layers:
   - materials:
-      - "minecraft:grass_block": 1
-      - "minecraft:grass_block": 1
-      - "minecraft:grass_path": 1
-      - "minecraft:grass_block": 1
-      - "minecraft:grass_block": 1
-      - "minecraft:grass_block": 1
-      - "minecraft:grass_block": 1
+        -   "minecraft:grass_block": 1
       - "minecraft:grass_block": 1
       - "minecraft:grass_path": 1
       - "minecraft:grass_block": 1
       - "minecraft:grass_block": 1
       - "minecraft:grass_block": 1
-      - "minecraft:grass_block": 1
-      - "minecraft:grass_block": 1
-      - "minecraft:white_terracotta": 2
+            -   "minecraft:grass_block": 1
+            -   "minecraft:grass_block": 1
+            -   "minecraft:grass_path": 1
+            -   "minecraft:grass_block": 1
+            -   "minecraft:grass_block": 1
+            -   "minecraft:grass_block": 1
+            -   "minecraft:grass_block": 1
+                                             -   "minecraft:grass_block": 1
+                                             -   "minecraft:white_terracotta": 2
     layers: 1
-  - materials:
-      - "minecraft:dirt": 7
-      - "minecraft:white_terracotta": 1
-    layers: 2
-  - materials:
-      - "minecraft:stone": 1
-    layers: 1
-id:        "ARID"
-simplex:   true
+  -   materials:
+          -   "minecraft:dirt": 7
+          -   "minecraft:white_terracotta": 1
+      layers: 2
+  -   materials:
+          -   "minecraft:stone": 1
+      layers: 1
+id: "ARID"
+simplex: true
 frequency: 0.05
-seed:      3
+seed: 3

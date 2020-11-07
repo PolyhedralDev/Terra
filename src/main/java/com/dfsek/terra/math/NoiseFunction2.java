@@ -37,7 +37,7 @@ public class NoiseFunction2 implements Function {
 
         public double get(double x, double z) {
             for(int i = 0; i < cacheX.length; i++) {
-                if (cacheX[i] == x && cacheZ[i] == z) return cacheValues[i];
+                if(cacheX[i] == x && cacheZ[i] == z) return cacheValues[i];
             }
             cacheX[0] = x;
             cacheZ[0] = z;

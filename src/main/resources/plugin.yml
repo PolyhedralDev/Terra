@@ -1,17 +1,17 @@
-name:        "Terra"
+name: "Terra"
 depend: [ "Gaea" ]
-main:        "com.dfsek.terra.Terra"
-version:     "1.1.1-BETA"
-load:        "STARTUP"
+main: "com.dfsek.terra.Terra"
+version: "1.1.1-BETA"
+load: "STARTUP"
 api-version: "1.16"
 softdepend: [ "WorldEdit" ]
 commands:
-  terra:
-    description: "Terra base command"
-    usage:       "/terra "
-    aliases: [ "te" ]
-    permission:  "terra.command"
-  locate:
-    description: "Locate a Terra Structure"
-    usage:       "/locate <STRUCTURE_ID> <radius>"
-    permission:  "terra.locate"
+    terra:
+        description: "Terra base command"
+        usage: "/terra "
+        aliases: [ "te" ]
+        permission: "terra.command"
+    locate:
+        description: "Locate a Terra Structure"
+        usage: "/locate <STRUCTURE_ID> <radius>"
+        permission: "terra.locate"

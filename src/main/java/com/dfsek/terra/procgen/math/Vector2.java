@@ -146,15 +146,6 @@ public class Vector2 implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Vector2)) {
-            return false;
-        }
-        Vector2 other = (Vector2) obj;
-        return other.x == this.x && other.z == this.z;
-    }
-
-    @Override
     public int hashCode() {
         int hash = 17;
         hash = 31 * hash + Double.hashCode(x);
@@ -164,7 +155,7 @@ public class Vector2 implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Vector2)) {
+        if(!(obj instanceof Vector2)) {
             return false;
         }
         Vector2 other = (Vector2) obj;

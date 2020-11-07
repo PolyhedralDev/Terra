@@ -158,6 +158,22 @@ public class ConfigPack extends YamlConfiguration {
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
+    public String getID() {
+        return id;
+    }
+
+    public Map<String, BiomeConfig> getBiomes() {
+        return biomes;
+    }
+
+    public StructureConfig getStructure(String id) {
+        return structures.get(id);
+    }
+
+    public BiomeGridConfig getBiomeGrid(String id) {
+        return grids.get(id);
+    }
+
     public static synchronized void loadAll(JavaPlugin main) {
         configs.clear();
         File file = new File(main.getDataFolder(), "packs");
@@ -186,22 +202,6 @@ public class ConfigPack extends YamlConfiguration {
                 e.printStackTrace();
             }
         }
-    }
-
-    public String getID() {
-        return id;
-    }
-
-    public Map<String, BiomeConfig> getBiomes() {
-        return biomes;
-    }
-
-    public StructureConfig getStructure(String id) {
-        return structures.get(id);
-    }
-
-    public BiomeGridConfig getBiomeGrid(String id) {
-        return grids.get(id);
     }
 
     public static synchronized ConfigPack fromID(String id) {

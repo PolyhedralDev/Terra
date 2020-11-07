@@ -39,7 +39,7 @@ public class TerraWorld {
         for(int i = 0; i < config.biomeList.size(); i++) {
             String partName = config.biomeList.get(i);
             try {
-                if (partName.startsWith("BIOME:")) {
+                if(partName.startsWith("BIOME:")) {
                     UserDefinedBiome[][] temp = new UserDefinedBiome[1][1];
                     UserDefinedBiome b = config.getBiomes().get(partName.substring(6)).getBiome();
                     temp[0][0] = b;

@@ -1,22 +1,22 @@
 layers:
-  - materials:
-      - "minecraft:cyan_terracotta": 1
-      - "minecraft:stone": 2
-      - "minecraft:grass_block": 2
-      - "minecraft:snow_block": 4
-      - "minecraft:cobblestone": 1
+    -   materials:
+            -   "minecraft:cyan_terracotta": 1
+            -   "minecraft:stone": 2
+            -   "minecraft:grass_block": 2
+            -   "minecraft:snow_block": 4
+            -   "minecraft:cobblestone": 1
     layers: 1
-  - materials:
-      - "minecraft:cyan_terracotta": 1
-      - "minecraft:stone": 2
-      - "minecraft:dirt": 2
-      - "minecraft:snow_block": 4
-      - "minecraft:cobblestone": 1
-    layers: 2
-  - materials:
-      - "minecraft:stone": 1
-    layers: 1
-id:        "MOUNTAIN_STONE_GRASS"
-simplex:   true
+                -   materials:
+                -   "minecraft:cyan_terracotta": 1
+                -   "minecraft:stone": 2
+                -   "minecraft:dirt": 2
+                -   "minecraft:snow_block": 4
+                -   "minecraft:cobblestone": 1
+                layers: 2
+                -   materials:
+                        -   "minecraft:stone": 1
+                    layers: 1
+id: "MOUNTAIN_STONE_GRASS"
+simplex: true
 frequency: 0.075
-seed:      3
+seed: 3

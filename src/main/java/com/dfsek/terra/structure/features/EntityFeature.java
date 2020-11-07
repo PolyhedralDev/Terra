@@ -63,9 +63,9 @@ public class EntityFeature implements Feature {
                 for(int j = 1; j < inSize + 1; j++)
                     if(!in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
 
-                if (canSpawn) break;
+                if(canSpawn) break;
             }
-            if (canSpawn) {
+            if(canSpawn) {
                 Debug.info("Spawning entity at  " + attempt);
                 chunk.getWorld().spawnEntity(attempt.add(0.5, 2, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
             }

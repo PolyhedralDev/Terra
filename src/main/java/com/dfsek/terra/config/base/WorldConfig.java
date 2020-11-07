@@ -42,7 +42,7 @@ public class WorldConfig {
         FileConfiguration config = new YamlConfiguration();
         Debug.info("Loading config " + configID + " for world " + worldID);
         try { // Load/create world config file
-            if (configID == null || configID.equals(""))
+            if(configID == null || configID.equals(""))
                 throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
             if(!configFile.exists()) {
@@ -58,19 +58,19 @@ public class WorldConfig {
 
             tConfig = ConfigPack.fromID(configID);
 
-            if (tConfig == null)
+            if(tConfig == null)
                 throw new ConfigException("No such config pack: \"" + configID + "\". This pack either does not exist, or failed to load due to configuration errors.", worldID);
 
             // Load image stuff
             try {
                 biomeXChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-x", "red")).toUpperCase());
                 biomeZChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.biome-z", "green")).toUpperCase());
-                if (biomeZChannel.equals(biomeXChannel))
+                if(biomeZChannel.equals(biomeXChannel))
                     throw new InvalidConfigurationException("2 objects share the same image channels: biome-x and biome-z");
                 zoneChannel = ImageLoader.Channel.valueOf(Objects.requireNonNull(config.getString("image.channels.zone", "blue")).toUpperCase());
-                if (zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel))
+                if(zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel))
                     throw new InvalidConfigurationException("2 objects share the same image channels: zone and biome-x/z");
-                if (fromImage) {
+                if(fromImage) {
                     try {
                         //noinspection ConstantConditions
                         imageLoader = new ImageLoader(new File(config.getString("image.file")),

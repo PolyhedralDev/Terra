@@ -179,7 +179,7 @@ ij_java_space_before_for_left_brace = true
 ij_java_space_before_for_parentheses = false
 ij_java_space_before_for_semicolon = false
 ij_java_space_before_if_left_brace = true
-ij_java_space_before_if_parentheses = true
+ij_java_space_before_if_parentheses = false
 ij_java_space_before_method_call_parentheses = false
 ij_java_space_before_method_left_brace = true
 ij_java_space_before_method_parentheses = false
@@ -340,7 +340,7 @@ ij_json_wrap_long_lines = false
 
 [{*.yaml,*.yml}]
 indent_size = 2
-ij_yaml_keep_indents_on_empty_lines = false
+ij_yaml_keep_indents_on_empty_lines = true
 ij_yaml_keep_line_breaks = true
 ij_yaml_space_before_colon = true
 ij_yaml_spaces_within_braces = true

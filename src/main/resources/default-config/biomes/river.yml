@@ -1,6 +1,6 @@
 noise-equation: "((-((y / 58)^2)) + 1) + ((noise2(x, z)/4))"
-extends:        "BASIC_ORES"
-id:             "RIVER"
+extends: "BASIC_ORES"
+id: "RIVER"
 palette:
   - "BLOCK:minecraft:bedrock": 0
   - BEDROCK_MOST: 1
@@ -9,10 +9,10 @@ palette:
   - RIVER_BOTTOM: 61
   - RIVER_SHORE: 62
   - GRASSY: 255
-vanilla:        RIVER
+vanilla: RIVER
 
 flora:
-  chance:   60
+  chance: 60
   attempts: 1
   items:
     TALL_GRASS:

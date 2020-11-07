@@ -5,88 +5,88 @@ enable:
 disable:
   - "Danke, dass du Terra benutzt!!"
 command:
-  debug-only:   "Dieser Befehl kann nur im Debugmodus benutzt werden!"
-  player-only:  "Dieser Befehl kann nur von Spielern benutzt werden!"
-  invalid:      "Ungültiger Befehl. (Erwartet %1$s Argumente, fand %2$s)."
-  players-only: "Dieser Befehl kann nur von Spielern benutzt werden."
-  world:        "Dieser Befehl muss in einer von Terra generierten Welt ausgeführt werden!"
-  reload:       "Terra-Konfiguration wurde neu geladen."
-  version:      "Dieser Server verwendet Terra \"%s\""
-  main-menu:
-    - "--------------------Terra--------------------"
-    - "reload    - Lädt die Konfiguration neu"
-    - "biome     - Zeigt dir das derzeitige Biom"
-    - "ore       - Erzader an derzeitiger Position erzeugen (zum Debuggen)"
-    - "save-data - Bevölkerungsdaten speichern"
-    - "structure - Laden/Exportieren von Strukturen"
-    - "profile   - Profiler-Optionen"
-    - "image     - Bild-/GUI-Optionen"
-  biome:
-    biome-found:      "Biom gefunden bei: (%1$s, %2$s)"
-    unable-to-locate: "Biom konnte nicht gefunden werden!"
-    invalid-radius:   "Ungültiger Radius: \"%s\""
-    invalid:          "Ungültige Biom-ID: \"%s\""
-    in:               "Du bist in: \"%s\""
-  ore:
+    debug-only: "Dieser Befehl kann nur im Debugmodus benutzt werden!"
+    player-only: "Dieser Befehl kann nur von Spielern benutzt werden!"
+    invalid: "Ungültiger Befehl. (Erwartet %1$s Argumente, fand %2$s)."
+    players-only: "Dieser Befehl kann nur von Spielern benutzt werden."
+    world: "Dieser Befehl muss in einer von Terra generierten Welt ausgeführt werden!"
+    reload: "Terra-Konfiguration wurde neu geladen."
+    version: "Dieser Server verwendet Terra \"%s\""
     main-menu:
-      - "---------------Terra/Erz---------------"
-      - "Generiert eine Erzader an dem Block, den du anguckst"
-    out-of-range: "Block außer Reichweite"
-    invalid-ore:  "Kann Erz \"%s\" nicht finden"
-  geometry:
-    main-menu:
-      - "---------------Terra/Geometrie----------------"
-      - "Verschiedene Debugging-Befehle für die Voxelgeometrie"
-      - "sphere       - Generiert eine Kugel"
-      - "deformsphere - Generiert eine deformierte Kugel"
-      - "tube         - Generiert ein Rohr"
-    deform:
-      invalid-radius:    "Ungültiger Radius: \"%s\""
-      invalid-deform:    "Ungültiger Deformation: \"%s\""
-      invalid-frequency: "Ungültige Frequenz: \"%s\""
-    sphere:
-      invalid-radius: "Ungültiger Radius: \"%s\""
-    tube:
-      invalid-radius: "Ungültiger Radius: \"%s\""
-  image:
-    main-menu:
-      - "---------------Terra/Bilde---------------"
-      - "render - Rendert ein Bild mit einer bestimmten Breite und Höhe, das später als Welt importiert werden kann."
-      - "gui    - Debug-GUI öffnen (muss in der Konfiguration aktiviert sein)"
-    gui:
-      main-menu:
-        - "-------------Terra/image/gui-------------"
-        - "raw  - Öffnet eine GUI mit Biome-Rohdaten"
-        - "step - Daten erneut rendern, um Ränder deutlicher darzustellen"
+        - "--------------------Terra--------------------"
+        - "reload    - Lädt die Konfiguration neu"
+        - "biome     - Zeigt dir das derzeitige Biom"
+        - "ore       - Erzader an derzeitiger Position erzeugen (zum Debuggen)"
+        - "save-data - Bevölkerungsdaten speichern"
+        - "structure - Laden/Exportieren von Strukturen"
+        - "profile   - Profiler-Optionen"
+        - "image     - Bild-/GUI-Optionen"
+    biome:
+        biome-found: "Biom gefunden bei: (%1$s, %2$s)"
+        unable-to-locate: "Biom konnte nicht gefunden werden!"
+        invalid-radius: "Ungültiger Radius: \"%s\""
+        invalid: "Ungültige Biom-ID: \"%s\""
+        in: "Du bist in: \"%s\""
+    ore:
+        main-menu:
+            - "---------------Terra/Erz---------------"
+            - "Generiert eine Erzader an dem Block, den du anguckst"
+        out-of-range: "Block außer Reichweite"
+            invalid-ore: "Kann Erz \"%s\" nicht finden"
+    geometry:
+        main-menu:
+            - "---------------Terra/Geometrie----------------"
+            - "Verschiedene Debugging-Befehle für die Voxelgeometrie"
+            - "sphere       - Generiert eine Kugel"
+            - "deformsphere - Generiert eine deformierte Kugel"
+            - "tube         - Generiert ein Rohr"
+        deform:
+            invalid-radius: "Ungültiger Radius: \"%s\""
+            invalid-deform: "Ungültiger Deformation: \"%s\""
+            invalid-frequency: "Ungültige Frequenz: \"%s\""
+        sphere:
+            invalid-radius: "Ungültiger Radius: \"%s\""
+        tube:
+            invalid-radius: "Ungültiger Radius: \"%s\""
+    image:
+        main-menu:
+            - "---------------Terra/Bilde---------------"
+            - "render - Rendert ein Bild mit einer bestimmten Breite und Höhe, das später als Welt importiert werden kann."
+            - "gui    - Debug-GUI öffnen (muss in der Konfiguration aktiviert sein)"
+        gui:
+            main-menu:
+                - "-------------Terra/image/gui-------------"
+                - "raw  - Öffnet eine GUI mit Biome-Rohdaten"
+                - "step - Daten erneut rendern, um Ränder deutlicher darzustellen"
       debug: "Der Debug-Modus muss aktiviert sein, um die Debug-GUI verwenden zu können! Die Debug-GUI ist NICHT PRODUKTIONSSICHER!"
     render:
       save: "Bild gespeichert unter: \"%s\""
       error: "Beim speichern ist ein Fehler aufgetreten!"
   profile:
-    main-menu:
-      - "---------------Terra/Profiler---------------"
-      - "start - Startet den Profiler"
-      - "stop  - Stoppt den Profiler"
-      - "query - Profiler-Daten anzeigen"
-      - "reset - Profiler-Daten zurücksetzen"
-    reset: "Profiler-Daten wurden zurückgesetzt."
-    start: "Der Profiler wurde gestartet."
-    stop: "Der Profiler wurde gestoppt."
-  structure:
-    main-menu:
-      - "---------------Terra/Strukturen---------------"
-      - "export - Exportiert deine aktuelle WorldEdit-Auswahl als Terra-Struktur."
-      - "load   - Ladt eine Terra-Struktur."
-    invalid-radius:   "Ungültiger Radius: \"%s\""
-    invalid-rotation: "Ungültige Rotation: \"%s\""
-    invalid:          "Ungültige Strukturen-ID: \"%s\""
-    export:           "Struktur unter \"%s\" gespeichert."
+      main-menu:
+          - "---------------Terra/Profiler---------------"
+          - "start - Startet den Profiler"
+          - "stop  - Stoppt den Profiler"
+          - "query - Profiler-Daten anzeigen"
+          - "reset - Profiler-Daten zurücksetzen"
+      reset: "Profiler-Daten wurden zurückgesetzt."
+      start: "Der Profiler wurde gestartet."
+      stop: "Der Profiler wurde gestoppt."
+      structure:
+          main-menu:
+              - "---------------Terra/Strukturen---------------"
+              - "export - Exportiert deine aktuelle WorldEdit-Auswahl als Terra-Struktur."
+              - "load   - Ladt eine Terra-Struktur."
+          invalid-radius: "Ungültiger Radius: \"%s\""
+          invalid-rotation: "Ungültige Rotation: \"%s\""
+          invalid: "Ungültige Strukturen-ID: \"%s\""
+          export: "Struktur unter \"%s\" gespeichert."
 world-config:
-  loading:     "Lade Weltkonfigurationswerte für Welt %s..."
-  not-found:   "Weltkonfigurationswerte für Welt \"%s\" nicht gefunden. Lade Standardwerte."
-  using-image: "Lade Welt von Bild."
-  error:       "Konfiguration für Welt %s kann nicht geladen werden!"
-  done:        "Laden der Welt abgeschlossen. Ladedauer: %sms"
+    loading: "Lade Weltkonfigurationswerte für Welt %s..."
+    not-found: "Weltkonfigurationswerte für Welt \"%s\" nicht gefunden. Lade Standardwerte."
+    using-image: "Lade Welt von Bild."
+    error: "Konfiguration für Welt %s kann nicht geladen werden!"
+    done: "Laden der Welt abgeschlossen. Ladedauer: %sms"
 config-pack:
   loaded: "Konfiguration %1$s wurde in %2$sms geladen."
 config:

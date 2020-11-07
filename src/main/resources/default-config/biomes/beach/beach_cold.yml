@@ -1,5 +1,5 @@
-extends:  "BEACH_ABSTRACT"
-id:       "COLD_BEACH"
+extends: "BEACH_ABSTRACT"
+id: "COLD_BEACH"
 palette:
   - "BLOCK:minecraft:bedrock": 0
   - BEDROCK_MOST: 1
@@ -8,4 +8,4 @@ palette:
   - GRAVEL: 64
   - TUNDRA: 255
 erodible: true
-vanilla:  SNOWY_BEACH
+vanilla: SNOWY_BEACH

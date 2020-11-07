@@ -5,45 +5,45 @@ enable:
 disable:
   - "Dankie dat u Terra gebruik!"
 command:
-  debug-only:   "Hierdie opdrag moet gebruik word as die ontfoutmodus geaktiveer is!"
-  player-only:  "Hierdie opdrag is slegs vir spelers!"
-  invalid:      "Ongeldige opdrag.(verwag %1$s argumente, argumente gevind is %2$s)."
-  players-only: "Hierdie opdrag is slegs vir spelers."
-  world:        "This command must be executed in a Terra world!"
-  reload:       "Terra instel herlaai"
-  version:      "Hierdie bediener gebruik die Terra-weergawe \"%s\""
-  main-menu:
-    - "--------------------Terra--------------------"
-    - "Herlaai    - Herlaai konfigurasiedata"
-    - "bioom      - Kry huidige bioom"
-    - "erts       - Genereer 'n ertsader op die plek waar u te staan kom (vir foutopsporing)"
-    - "stoor-data - Stoor bevolkingsdata"
-    - "struktuur  - Laai en stoor strukture"
-    - "profiel    - Profielopsies"
-    - "beeld      - Beeld / GUI-opsies"
-  biome:
-    biome-found:      "Bioom geleë te (%1$s, %2$s)"
-    unable-to-locate: "Kan bioom nie opspoor nie."
-    invalid-radius:   "Ongeldige radius: \"%s\""
-    invalid:          "Ongeldige Biome-ID: \"%s\""
-    in:               "Jy is in \"%s\""
-  ore:
+    debug-only: "Hierdie opdrag moet gebruik word as die ontfoutmodus geaktiveer is!"
+    player-only: "Hierdie opdrag is slegs vir spelers!"
+    invalid: "Ongeldige opdrag.(verwag %1$s argumente, argumente gevind is %2$s)."
+    players-only: "Hierdie opdrag is slegs vir spelers."
+    world: "This command must be executed in a Terra world!"
+    reload: "Terra instel herlaai"
+    version: "Hierdie bediener gebruik die Terra-weergawe \"%s\""
     main-menu:
+        - "--------------------Terra--------------------"
+        - "Herlaai    - Herlaai konfigurasiedata"
+        - "bioom      - Kry huidige bioom"
+        - "erts       - Genereer 'n ertsader op die plek waar u te staan kom (vir foutopsporing)"
+        - "stoor-data - Stoor bevolkingsdata"
+        - "struktuur  - Laai en stoor strukture"
+        - "profiel    - Profielopsies"
+        - "beeld      - Beeld / GUI-opsies"
+    biome:
+        biome-found: "Bioom geleë te (%1$s, %2$s)"
+        unable-to-locate: "Kan bioom nie opspoor nie."
+        invalid-radius: "Ongeldige radius: \"%s\""
+        invalid: "Ongeldige Biome-ID: \"%s\""
+        in: "Jy is in \"%s\""
+  ore:
+      main-menu:
       - "---------------Terra/erts---------------"
       - "Genereer 'n ertsader by die blok waarna u kyk."
     out-of-range: "Blok buite bereik"
-    invalid-ore:  "Kan nie Erts vind nie \"%s\""
+      invalid-ore: "Kan nie Erts vind nie \"%s\""
   geometry:
-    main-menu:
+      main-menu:
       - "---------------Terra/meetkunde----------------"
       - "Verskeie opsporingsopdragte vir voxel-meetkunde"
       - "sfeer        - Genereer 'n sfeer"
       - "vervorming   - Genereer 'n misvormde sfeer"
       - "tube         - Genereer 'n tube"
-    deform:
-      invalid-radius:    "Ongeldige radius: \"%s\""
-      invalid-deform:    "Ongeldige vervorm: \"%s\""
-      invalid-frequency: "Ongeldige frekwensie: \"%s\""
+      deform:
+          invalid-radius: "Ongeldige radius: \"%s\""
+          invalid-deform: "Ongeldige vervorm: \"%s\""
+          invalid-frequency: "Ongeldige frekwensie: \"%s\""
     sphere:
       invalid-radius: "Ongeldige radius: \"%s\""
     tube:
@@ -73,20 +73,20 @@ command:
     start: "Profiler het begin."
     stop: "Profiler het opgehou."
   structure:
-    main-menu:
-      - "---------------Terra/struktuur---------------"
-      - "uitvoer - voer u huidige WorldEdit-keuse uit as 'n Terra-struktuur."
-      - "laai - Laai 'n Terra-struktuur"
-    invalid-radius:   "Ongeldig radius: \"%s\""
-    invalid-rotation: "Ongeldige rotasie: \"%s\""
-    invalid:          "Ongeldig Struktuur ID: \"%s\""
-    export:           "struktuur gestoor na \"%s\""
+      main-menu:
+          - "---------------Terra/struktuur---------------"
+          - "uitvoer - voer u huidige WorldEdit-keuse uit as 'n Terra-struktuur."
+          - "laai - Laai 'n Terra-struktuur"
+      invalid-radius: "Ongeldig radius: \"%s\""
+      invalid-rotation: "Ongeldige rotasie: \"%s\""
+      invalid: "Ongeldig Struktuur ID: \"%s\""
+      export: "struktuur gestoor na \"%s\""
 world-config:
-  loading:     "Laai wêreldkonfigurasiewaardes vir wêreld %s..."
-  not-found:   "Konfigurasie vir wêreld \"%s\" nie gevind nie. Kopieer standaardinstelling."
-  using-image: "Laai wêreld vanaf prent."
-  error:       "Kon nie konfigurasie vir wêreld laai nie %s"
-  done:        "Wêreldlading voltooi. Tyd verloop: %sms"
+    loading: "Laai wêreldkonfigurasiewaardes vir wêreld %s..."
+    not-found: "Konfigurasie vir wêreld \"%s\" nie gevind nie. Kopieer standaardinstelling."
+    using-image: "Laai wêreld vanaf prent."
+    error: "Kon nie konfigurasie vir wêreld laai nie %s"
+    done: "Wêreldlading voltooi. Tyd verloop: %sms"
 config-pack:
   loaded: "Laai konfigurasie %1$s in %2$sms."
 config:

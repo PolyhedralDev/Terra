@@ -1,6 +1,6 @@
 noise-equation: "((-((y / 64)^2)) + 1) + min(floor(((max(noise2(x/1.5, z/1.5)+0.1, 0)) + 0.1)*5), 3)/2.5 + |(noise2(x, z)+0.1)/3|"
-extends:        "BASIC_ORES"
-id:             "MESA"
+extends: "BASIC_ORES"
+id: "MESA"
 
 palette:
   - "BLOCK:minecraft:bedrock": 0
@@ -22,9 +22,9 @@ palette:
   - "BLOCK:minecraft:red_terracotta": 84
   - "BLOCK:minecraft:orange_terracotta": 80
   - RED_DESERT: 72
-vanilla:        BADLANDS
+vanilla: BADLANDS
 
-flora-chance:   2
+flora-chance: 2
 flora:
   chance: 2
   attempts: 1
@@ -40,8 +40,8 @@ flora:
         min: 62
         max: 84
 slabs:
-  enable:                  true
-  threshold:               0.0075
+  enable: true
+  threshold: 0.0075
   palettes:
     - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_slab"
   use-stairs-if-available: true
