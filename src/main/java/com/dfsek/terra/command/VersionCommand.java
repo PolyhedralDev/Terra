@@ -1,12 +1,15 @@
 package com.dfsek.terra.command;
 
 import com.dfsek.terra.config.lang.LangUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.command.Command;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class VersionCommand extends Command {
     public VersionCommand(Command parent) {
@@ -25,7 +28,12 @@ public class VersionCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        LangUtil.send("command.version", sender, getMain().getDescription().getVersion());
+        Plugin gaea = Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Gaea"));
+        String gaeaVersion = gaea.getDescription().getVersion();
+
+        String terraVersion = getMain().getDescription().getVersion();
+        LangUtil.send("command.version", sender, terraVersion, gaeaVersion);
+
         return true;
     }
 
