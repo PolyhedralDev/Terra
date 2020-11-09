@@ -8,6 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
@@ -28,8 +29,10 @@ public class FloraConfig extends TerraConfig implements Flora {
     private final boolean physics;
     private final boolean ceiling;
 
-    Set<Material> spawnable;
-    Set<Material> replaceable;
+    private final Set<Material> irrigable;
+
+    private final Set<Material> spawnable;
+    private final Set<Material> replaceable;
 
     public FloraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
@@ -41,6 +44,11 @@ public class FloraConfig extends TerraConfig implements Flora {
 
         spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
         replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
+
+        if(contains("irrigable")) {
+            irrigable = ConfigUtil.toBlockData(getStringList("irrigable"), "irrigable", getID());
+        } else irrigable = null;
+
         physics = getBoolean("physics", false);
         ceiling = getBoolean("ceiling", false);
 
@@ -59,7 +67,7 @@ public class FloraConfig extends TerraConfig implements Flora {
         if(ceiling) for(int y : range) {
             if(y > 255 || y < 1) continue;
             Block check = chunk.getBlock(x, y, z);
-            Block other = chunk.getBlock(x, y - 1, z);
+            Block other = check.getRelative(BlockFace.DOWN);
             if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
                 blocks.add(check);
             }
@@ -67,12 +75,20 @@ public class FloraConfig extends TerraConfig implements Flora {
         else for(int y : range) {
             if(y > 254 || y < 0) continue;
             Block check = chunk.getBlock(x, y, z);
-            Block other = chunk.getBlock(x, y + 1, z);
-            if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
+            Block other = check.getRelative(BlockFace.UP);
+            if(spawnable.contains(check.getType()) && replaceable.contains(other.getType()) && isIrrigated(check)) {
                 blocks.add(check);
             }
         }
         return blocks;
+    }
+
+    private boolean isIrrigated(Block b) {
+        if(irrigable == null) return true;
+        return irrigable.contains(b.getRelative(BlockFace.NORTH).getType())
+                || irrigable.contains(b.getRelative(BlockFace.SOUTH).getType())
+                || irrigable.contains(b.getRelative(BlockFace.EAST).getType())
+                || irrigable.contains(b.getRelative(BlockFace.WEST).getType());
     }
 
     @Override

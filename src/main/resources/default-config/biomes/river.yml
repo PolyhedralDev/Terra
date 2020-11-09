@@ -26,10 +26,15 @@ flora:
         min: 62
         max: 84
     GRASS:
-      weight: 700
+      weight: 675
       y:
         min: 62
         max: 84
+    SUGARCANE:
+      weight: 25
+      y:
+        min: 62
+        max: 68
 
 ocean:
   palette: "BLOCK:minecraft:water"
