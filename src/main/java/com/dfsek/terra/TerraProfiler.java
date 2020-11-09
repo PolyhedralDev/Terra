@@ -22,7 +22,6 @@ public class TerraProfiler extends WorldProfiler {
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "StructurePasteTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "SnowTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveBlockUpdate");
-        profilerMap.put(w, this);
     }
 
     public static TerraProfiler fromWorld(World w) {
