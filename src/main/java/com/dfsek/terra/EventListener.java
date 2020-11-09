@@ -79,8 +79,7 @@ public class EventListener implements Listener {
         block.setType(Material.AIR);
         TreeRegistry registry = c.getTreeRegistry();
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
-        if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) {
-            block.setBlockData(data);
-        }
+        Debug.info("Overriding tree type: " + e.getSpecies());
+        if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) block.setBlockData(data);
     }
 }
