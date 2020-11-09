@@ -2,6 +2,7 @@ package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
+import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -11,12 +12,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.block.data.Orientable;
-import org.bukkit.block.data.Rail;
-import org.bukkit.block.data.Rotatable;
-import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.math.Range;
@@ -29,14 +24,12 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.dfsek.terra.util.structure.RotationUtil.*;
+import static com.dfsek.terra.util.structure.RotationUtil.getRotatedCoords;
 
 @SuppressWarnings("unused")
 public class Structure implements Serializable {
@@ -158,9 +151,9 @@ public class Structure implements Serializable {
      * @param r      Rotation
      */
     public void paste(@NotNull Location origin, Rotation r) {
-        Range xRange = getRange(Axis.X, r);
-        Range zRange = getRange(Axis.Z, r);
-        this.executeForBlocksInRange(xRange, getRange(Axis.Y, r), zRange, block -> pasteBlock(block, origin, r), r);
+        Range xRange = getRange(Rotation.Axis.X, r);
+        Range zRange = getRange(Rotation.Axis.Z, r);
+        this.executeForBlocksInRange(xRange, getRange(Rotation.Axis.Y, r), zRange, block -> pasteBlock(block, origin, r), r);
     }
 
     /**
@@ -176,6 +169,7 @@ public class Structure implements Serializable {
 
             Location loc = origin.clone().add(block.getX(), block.getY(), block.getZ());
             Block worldBlock = loc.getBlock();
+
             main:
             while(worldBlock.isEmpty()) {
                 if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
@@ -196,37 +190,8 @@ public class Structure implements Serializable {
             if(offset != 0)
                 worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
 
-            if(data instanceof Rotatable) {
-                BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
-                ((Rotatable) data).setRotation(rt);
-            } else if(data instanceof Directional) {
-                BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r);
-                ((Directional) data).setFacing(rt);
-            } else if(data instanceof MultipleFacing) {
-                MultipleFacing mfData = (MultipleFacing) data;
-                Map<BlockFace, Boolean> faces = new HashMap<>();
-                for(BlockFace f : mfData.getAllowedFaces()) {
-                    faces.put(f, mfData.hasFace(f));
-                }
-                for(Map.Entry<BlockFace, Boolean> face : faces.entrySet()) {
-                    mfData.setFace(getRotatedFace(face.getKey(), r), face.getValue());
-                }
-            } else if(data instanceof Rail) {
-                Rail.Shape newShape = getRotatedRail(((Rail) data).getShape(), r);
-                ((Rail) data).setShape(newShape);
-            } else if(data instanceof Orientable) {
-                org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
-                ((Orientable) data).setAxis(newAxis);
-            } else if(data instanceof RedstoneWire) {
-                Map<BlockFace, RedstoneWire.Connection> connections = new HashMap<>();
-                RedstoneWire rData = (RedstoneWire) data;
-                for(BlockFace f : rData.getAllowedFaces()) {
-                    connections.put(f, rData.getFace(f));
-                }
-                for(Map.Entry<BlockFace, RedstoneWire.Connection> e : connections.entrySet()) {
-                    rData.setFace(getRotatedFace(e.getKey(), r), e.getValue());
-                }
-            }
+            RotationUtil.rotateBlockData(data, r);
+
             worldBlock.setBlockData(data, false);
             if(block.getState() != null) {
                 block.getState().getState(worldBlock.getState()).update(true, false);
@@ -281,22 +246,22 @@ public class Structure implements Serializable {
     }
 
     @NotNull
-    public Range getRange(@NotNull Axis a, @NotNull Rotation r) {
-        if(a.equals(Axis.Y)) return getRawRange(a);
+    public Range getRange(@NotNull Rotation.Axis a, @NotNull Rotation r) {
+        if(a.equals(Rotation.Axis.Y)) return getRawRange(a);
         Vector2 center = new Vector2(structureInfo.getCenterX(), structureInfo.getCenterZ());
-        Range x = getRawRange(Axis.X);
-        Range z = getRawRange(Axis.Z);
+        Range x = getRawRange(Rotation.Axis.X);
+        Range z = getRawRange(Rotation.Axis.Z);
         Vector2 min = getRotatedCoords(new Vector2(x.getMin(), z.getMin()).subtract(center), r.inverse()).add(center);
         Vector2 max = getRotatedCoords(new Vector2(x.getMax(), z.getMax()).subtract(center), r.inverse()).add(center);
 
-        if(a.equals(Axis.X))
+        if(a.equals(Rotation.Axis.X))
             return new Range((int) Math.floor(Math.min(min.getX(), max.getX())), (int) Math.ceil(Math.max(min.getX(), max.getX())) + 1);
         else
             return new Range((int) Math.floor(Math.min(min.getZ(), max.getZ())), (int) Math.ceil(Math.max(min.getZ(), max.getZ())) + 1);
     }
 
     @NotNull
-    private Range getRawRange(@NotNull Axis a) {
+    private Range getRawRange(@NotNull Rotation.Axis a) {
         switch(a) {
             case X:
                 return new Range(0, structureInfo.getSizeX());
@@ -335,7 +300,7 @@ public class Structure implements Serializable {
         Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
         Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
         if(intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
+        executeForBlocksInRange(intersectX, getRange(Rotation.Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
         Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 
@@ -375,50 +340,4 @@ public class Structure implements Serializable {
         return uuid;
     }
 
-    public enum Axis {
-        X, Y, Z
-    }
-
-    public enum Rotation {
-        CW_90(90), CW_180(180), CCW_90(270), NONE(0);
-        private final int degrees;
-
-        Rotation(int degrees) {
-            this.degrees = degrees;
-        }
-
-        public static Rotation fromDegrees(int deg) {
-            switch(Math.floorMod(deg, 360)) {
-                case 0:
-                    return Rotation.NONE;
-                case 90:
-                    return Rotation.CW_90;
-                case 180:
-                    return Rotation.CW_180;
-                case 270:
-                    return Rotation.CCW_90;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
-        public int getDegrees() {
-            return degrees;
-        }
-
-        public Rotation inverse() {
-            switch(this) {
-                case NONE:
-                    return NONE;
-                case CCW_90:
-                    return CW_90;
-                case CW_90:
-                    return CCW_90;
-                case CW_180:
-                    return CW_180;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-    }
 }

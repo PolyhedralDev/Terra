@@ -4,6 +4,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
+import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -36,7 +37,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<StructureConfig> {
             return false;
         Random r2 = new Random(spawn.hashCode());
         Structure struc = target.getStructure(r2);
-        Structure.Rotation rotation = Structure.Rotation.fromDegrees(r2.nextInt(4) * 90);
+        Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
         for(int y = target.getSearchStart().get(r2); y > 0; y--) {
             if(!target.getBound().isInRange(y)) return false;
             spawn.setY(y);

@@ -8,6 +8,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.procgen.math.Vector2;
+import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedInventory;
 import com.dfsek.terra.structure.features.Feature;
@@ -41,7 +42,7 @@ public class StructurePopulator extends BlockPopulator {
                 if(!config.getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(conf)) continue;
                 Random r2 = new Random(spawn.hashCode());
                 Structure struc = conf.getStructure(r2);
-                Structure.Rotation rotation = Structure.Rotation.fromDegrees(r2.nextInt(4) * 90);
+                Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
                 for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
                     if(!conf.getBound().isInRange(y)) continue structure;
                     spawn.setY(y);

@@ -2,6 +2,7 @@ package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,9 +24,9 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-            Structure.Rotation r;
+            Rotation r;
             try {
-                r = Structure.Rotation.fromDegrees(Integer.parseInt(args[1]));
+                r = Rotation.fromDegrees(Integer.parseInt(args[1]));
             } catch(NumberFormatException e) {
                 LangUtil.send("command.structure.invalid-rotation", sender, args[1]);
                 return true;

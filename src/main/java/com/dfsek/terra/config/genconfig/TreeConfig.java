@@ -6,6 +6,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
+import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -67,7 +68,7 @@ public class TreeConfig extends TerraConfig implements Tree {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
-        Structure.Rotation rotation = Structure.Rotation.fromDegrees(random.nextInt(4) * 90);
+        Rotation rotation = Rotation.fromDegrees(random.nextInt(4) * 90);
         if(!struc.checkSpawns(mut, rotation)) return false;
         struc.paste(mut, rotation);
         return true;

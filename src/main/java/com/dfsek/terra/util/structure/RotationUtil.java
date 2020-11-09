@@ -1,9 +1,18 @@
 package com.dfsek.terra.util.structure;
 
 import com.dfsek.terra.procgen.math.Vector2;
-import com.dfsek.terra.structure.Structure;
+import com.dfsek.terra.structure.Rotation;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.MultipleFacing;
+import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Rail;
+import org.bukkit.block.data.Rotatable;
+import org.bukkit.block.data.type.RedstoneWire;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class RotationUtil {
     /**
@@ -13,7 +22,7 @@ public final class RotationUtil {
      * @param r    Rotation
      * @return Rotated coordinate pair
      */
-    public static Vector2 getRotatedCoords(Vector2 orig, Structure.Rotation r) {
+    public static Vector2 getRotatedCoords(Vector2 orig, Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
             case CW_90:
@@ -36,7 +45,7 @@ public final class RotationUtil {
      * @param r Rotation
      * @return Rotated BlockFace
      */
-    public static BlockFace getRotatedFace(BlockFace f, Structure.Rotation r) {
+    public static BlockFace getRotatedFace(BlockFace f, Rotation r) {
         BlockFace n = f;
         int rotateNum = r.getDegrees() / 90;
         int rn = faceRotation(f);
@@ -136,9 +145,9 @@ public final class RotationUtil {
         }
     }
 
-    public static org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, Structure.Rotation r) {
+    public static org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, Rotation r) {
         org.bukkit.Axis other = orig;
-        final boolean shouldSwitch = r.equals(Structure.Rotation.CW_90) || r.equals(Structure.Rotation.CCW_90);
+        final boolean shouldSwitch = r.equals(Rotation.CW_90) || r.equals(Rotation.CCW_90);
         switch(orig) {
             case X:
                 if(shouldSwitch) other = org.bukkit.Axis.Z;
@@ -158,7 +167,7 @@ public final class RotationUtil {
      * @return Rotated/mirrored shape
      */
     @SuppressWarnings("fallthrough")
-    public static Rail.Shape getRotatedRail(Rail.Shape orig, Structure.Rotation r) {
+    public static Rail.Shape getRotatedRail(Rail.Shape orig, Rotation r) {
         switch(r) {
             case CCW_90:
                 switch(orig) {
@@ -231,5 +240,39 @@ public final class RotationUtil {
                 }
         }
         return orig;
+    }
+
+    public static void rotateBlockData(BlockData data, Rotation r) {
+        if(data instanceof Rotatable) {
+            BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
+            ((Rotatable) data).setRotation(rt);
+        } else if(data instanceof Directional) {
+            BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r);
+            ((Directional) data).setFacing(rt);
+        } else if(data instanceof MultipleFacing) {
+            MultipleFacing mfData = (MultipleFacing) data;
+            Map<BlockFace, Boolean> faces = new HashMap<>();
+            for(BlockFace f : mfData.getAllowedFaces()) {
+                faces.put(f, mfData.hasFace(f));
+            }
+            for(Map.Entry<BlockFace, Boolean> face : faces.entrySet()) {
+                mfData.setFace(getRotatedFace(face.getKey(), r), face.getValue());
+            }
+        } else if(data instanceof Rail) {
+            Rail.Shape newShape = getRotatedRail(((Rail) data).getShape(), r);
+            ((Rail) data).setShape(newShape);
+        } else if(data instanceof Orientable) {
+            org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
+            ((Orientable) data).setAxis(newAxis);
+        } else if(data instanceof RedstoneWire) {
+            Map<BlockFace, RedstoneWire.Connection> connections = new HashMap<>();
+            RedstoneWire rData = (RedstoneWire) data;
+            for(BlockFace f : rData.getAllowedFaces()) {
+                connections.put(f, rData.getFace(f));
+            }
+            for(Map.Entry<BlockFace, RedstoneWire.Connection> e : connections.entrySet()) {
+                rData.setFace(getRotatedFace(e.getKey(), r), e.getValue());
+            }
+        }
     }
 }
