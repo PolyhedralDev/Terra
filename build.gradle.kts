@@ -45,7 +45,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 
-    testImplementation(name = "Gaea-1.14.0", group = "")
+    testImplementation(name = "Gaea-1.14.1", group = "")
+    testImplementation("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
 }
 
 val compileJava: JavaCompile by tasks
@@ -120,7 +121,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
             "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
             "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
             "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
-            "-Daikars.new.flags=true")
+            "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear")
     maxHeapSize = "2G"
     args = listOf("nogui")
     workingDir = file("${testDir}/")
@@ -131,10 +132,10 @@ tasks.named<ShadowJar>("shadowJar") {
     archiveClassifier.set("")
     archiveBaseName.set("Terra")
     setVersion(project.version)
-    relocate("org.apache.commons", "lib.commons")
-    relocate("org.bstats.bukkit", "lib.bstats")
-    relocate("parsii", "lib.parsii")
-    relocate("io.papermc.lib", "lib.paperlib")
+    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
+    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
+    relocate("parsii", "com.dfsek.terra.lib.parsii")
+    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
 }
 
 tasks.build {
