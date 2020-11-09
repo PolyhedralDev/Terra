@@ -122,6 +122,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
             "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
             "-Daikars.new.flags=true")
     maxHeapSize = "2G"
+    args = listOf("nogui")
     workingDir = file("${testDir}/")
     classpath = files("${testDir}/paper.jar")
 }
