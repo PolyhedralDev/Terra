@@ -5,7 +5,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 
 public class SerializableMonsterCage implements SerializableBlockState {
-    public static final long serialVersionUID = 529892860847864007L;
+    private static final long serialVersionUID = 529892860847864007L;
     private final EntityType type;
     private final int minDelay;
     private final int maxDelay;

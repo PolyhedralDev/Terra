@@ -3,6 +3,7 @@ package com.dfsek.terra.procgen.math;
 /**
  * oh yeah
  */
+@SuppressWarnings("unused")
 public class Vector2 implements Cloneable {
     private double x;
     private double z;
@@ -59,36 +60,6 @@ public class Vector2 implements Cloneable {
     }
 
     /**
-     * Divide X and Z components by a value.
-     *
-     * @param d Divisor
-     * @return Mutated vector, for chaining.
-     */
-    public Vector2 divide(double d) {
-        x /= d;
-        z /= d;
-        return this;
-    }
-
-    /**
-     * Get the squared length of this Vector
-     *
-     * @return squared length
-     */
-    public double lengthSquared() {
-        return x * x + z * z;
-    }
-
-    /**
-     * Get the length of this Vector
-     *
-     * @return length
-     */
-    public double length() {
-        return Math.sqrt(lengthSquared());
-    }
-
-    /**
      * Add this vector to another.
      *
      * @param other Vector to add
@@ -123,6 +94,36 @@ public class Vector2 implements Cloneable {
     }
 
     /**
+     * Divide X and Z components by a value.
+     *
+     * @param d Divisor
+     * @return Mutated vector, for chaining.
+     */
+    public Vector2 divide(double d) {
+        x /= d;
+        z /= d;
+        return this;
+    }
+
+    /**
+     * Get the length of this Vector
+     *
+     * @return length
+     */
+    public double length() {
+        return Math.sqrt(lengthSquared());
+    }
+
+    /**
+     * Get the squared length of this Vector
+     *
+     * @return squared length
+     */
+    public double lengthSquared() {
+        return x * x + z * z;
+    }
+
+    /**
      * Get the distance from this vector to another.
      *
      * @param other Another vector
@@ -145,6 +146,14 @@ public class Vector2 implements Cloneable {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = 31 * hash + Double.hashCode(x);
+        hash = 31 * hash + Double.hashCode(z);
+        return hash;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Vector2)) {
             return false;
@@ -154,24 +163,16 @@ public class Vector2 implements Cloneable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 17;
-        hash = 31 * hash + Double.hashCode(x);
-        hash = 31 * hash + Double.hashCode(z);
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + x + ", " + z + ")";
-    }
-
-    @Override
     public Vector2 clone() {
         try {
             return (Vector2) super.clone();
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + z + ")";
     }
 }

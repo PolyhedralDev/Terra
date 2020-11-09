@@ -25,6 +25,7 @@ import java.util.Random;
 
 public class StructurePopulator extends BlockPopulator {
 
+    @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("StructureTime")) {
@@ -75,9 +76,5 @@ public class StructurePopulator extends BlockPopulator {
                 }
             }
         }
-    }
-
-    public enum SearchType {
-        UP, DOWN
     }
 }

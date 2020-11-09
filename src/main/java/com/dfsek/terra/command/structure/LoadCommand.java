@@ -47,11 +47,6 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     }
 
     @Override
-    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
@@ -59,5 +54,10 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     @Override
     public int arguments() {
         return 3;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

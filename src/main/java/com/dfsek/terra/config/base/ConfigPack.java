@@ -158,9 +158,26 @@ public class ConfigPack extends YamlConfiguration {
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
+    public String getID() {
+        return id;
+    }
+
+    public Map<String, BiomeConfig> getBiomes() {
+        return biomes;
+    }
+
+    public StructureConfig getStructure(String id) {
+        return structures.get(id);
+    }
+
+    public BiomeGridConfig getBiomeGrid(String id) {
+        return grids.get(id);
+    }
+
     public static synchronized void loadAll(JavaPlugin main) {
         configs.clear();
         File file = new File(main.getDataFolder(), "packs");
+        //noinspection ResultOfMethodCallIgnored
         file.mkdirs();
         List<Path> subfolder;
         try {
@@ -199,10 +216,6 @@ public class ConfigPack extends YamlConfiguration {
         return abstractBiomes;
     }
 
-    public Map<String, BiomeConfig> getBiomes() {
-        return biomes;
-    }
-
     public Map<String, CarverConfig> getCarvers() {
         return carvers;
     }
@@ -213,10 +226,6 @@ public class ConfigPack extends YamlConfiguration {
 
     public File getDataFolder() {
         return dataFolder;
-    }
-
-    public String getID() {
-        return id;
     }
 
     public BiomeConfig getBiome(UserDefinedBiome b) {
@@ -239,10 +248,6 @@ public class ConfigPack extends YamlConfiguration {
             if(co.getCarver().equals(c)) return co;
         }
         throw new IllegalArgumentException("Unable to find carver!");
-    }
-
-    public StructureConfig getStructure(String id) {
-        return structures.get(id);
     }
 
     public PaletteConfig getPalette(String id) {
@@ -271,10 +276,6 @@ public class ConfigPack extends YamlConfiguration {
 
     public FloraConfig getFlora(String id) {
         return flora.get(id);
-    }
-
-    public BiomeGridConfig getBiomeGrid(String id) {
-        return grids.get(id);
     }
 
     public TreeConfig getTree(String id) {

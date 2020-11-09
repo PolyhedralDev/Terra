@@ -25,6 +25,11 @@ public class ImageCommand extends WorldCommand {
     }
 
     @Override
+    public String getName() {
+        return "image";
+    }
+
+    @Override
     public List<org.polydev.gaea.command.Command> getSubCommands() {
         return Arrays.asList(new RenderCommand(this), new GUICommand(this));
     }
@@ -32,11 +37,6 @@ public class ImageCommand extends WorldCommand {
     @Override
     public int arguments() {
         return 1;
-    }
-
-    @Override
-    public String getName() {
-        return "image";
     }
 
     @Override

@@ -25,7 +25,9 @@ public class RenderCommand extends WorldCommand {
             WorldImageGenerator g = new WorldImageGenerator(world, Integer.parseInt(args[0]), Integer.parseInt(args[1]));
             g.drawWorld(sender.getLocation().getBlockX(), sender.getLocation().getBlockZ());
             File file = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "map" + File.separator + "map_" + System.currentTimeMillis() + ".png");
+            //noinspection ResultOfMethodCallIgnored
             file.mkdirs();
+            //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
             g.save(file);
             LangUtil.send("command.image.render.save", sender, file.getAbsolutePath());

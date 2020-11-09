@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class VoxelGeometry {
-    public List<Vector> geometry = new ArrayList<>();
+    private final List<Vector> geometry = new ArrayList<>();
 
     public static VoxelGeometry getBlank() {
         return new VoxelGeometry() {

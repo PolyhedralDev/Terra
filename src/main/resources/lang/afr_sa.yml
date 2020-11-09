@@ -16,7 +16,7 @@ command:
     - "--------------------Terra--------------------"
     - "Herlaai    - Herlaai konfigurasiedata"
     - "bioom      - Kry huidige bioom"
-    - "erts       - Genereer 'n ertsader op die plek waar u te staan ​​kom (vir foutopsporing)"
+    - "erts       - Genereer 'n ertsader op die plek waar u te staan kom (vir foutopsporing)"
     - "stoor-data - Stoor bevolkingsdata"
     - "struktuur  - Laai en stoor strukture"
     - "profiel    - Profielopsies"

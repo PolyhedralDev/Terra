@@ -23,6 +23,14 @@ public class TerraWorld {
     private final WorldConfig worldConfig;
     private boolean safe;
 
+    public static void loadWorld(WorldConfig w) {
+        loaded.put(w.getWorldID(), w);
+    }
+
+    public static synchronized TerraWorld getWorld(World w) {
+        return map.computeIfAbsent(w, TerraWorld::new);
+    }
+
     private TerraWorld(World w) {
         safe = true;
         worldConfig = loaded.get(w.getName());
@@ -76,14 +84,6 @@ public class TerraWorld {
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);
         grid = new TerraBiomeGrid(w, config.freq1, config.freq2, zone, config, erosion);
-    }
-
-    public static void loadWorld(WorldConfig w) {
-        loaded.put(w.getWorldID(), w);
-    }
-
-    public static synchronized TerraWorld getWorld(World w) {
-        return map.computeIfAbsent(w, TerraWorld::new);
     }
 
     public static synchronized void invalidate() {

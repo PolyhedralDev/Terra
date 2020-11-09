@@ -37,7 +37,9 @@ public class ExportCommand extends PlayerCommand {
         }
         try {
             File file = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure");
+            //noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
+            //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
             structure.save(file);
             LangUtil.send("command.structure.export", sender, file.getAbsolutePath());
@@ -45,11 +47,6 @@ public class ExportCommand extends PlayerCommand {
             e.printStackTrace();
         }
         return true;
-    }
-
-    @Override
-    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        return Collections.emptyList();
     }
 
     @Override
@@ -65,5 +62,10 @@ public class ExportCommand extends PlayerCommand {
     @Override
     public int arguments() {
         return 1;
+    }
+
+    @Override
+    public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return Collections.emptyList();
     }
 }

@@ -38,8 +38,9 @@ import java.util.function.Consumer;
 
 import static com.dfsek.terra.util.structure.RotationUtil.*;
 
+@SuppressWarnings("unused")
 public class Structure implements Serializable {
-    public static final long serialVersionUID = -6664585217063842035L;
+    private static final long serialVersionUID = -6664585217063842035L;
     private final StructureContainedBlock[][][] structure;
     private final StructureInfo structureInfo;
     private final String id;
@@ -150,22 +151,6 @@ public class Structure implements Serializable {
         return (Structure) o;
     }
 
-    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
-        oos.writeObject(o);
-        oos.close();
-    }
-
-    /**
-     * Get GaeaStructureInfo object
-     *
-     * @return Structure Info
-     */
-    @NotNull
-    public StructureInfo getStructureInfo() {
-        return structureInfo;
-    }
-
     /**
      * Paste the structure at a Location, ignoring chunk boundaries.
      *
@@ -176,36 +161,6 @@ public class Structure implements Serializable {
         Range xRange = getRange(Axis.X, r);
         Range zRange = getRange(Axis.Z, r);
         this.executeForBlocksInRange(xRange, getRange(Axis.Y, r), zRange, block -> pasteBlock(block, origin, r), r);
-    }
-
-    public boolean checkSpawns(Location origin, Rotation r) {
-        for(StructureContainedBlock b : spawns) {
-            Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
-            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
-                return false;
-        }
-        return true;
-    }
-
-    public HashSet<StructureContainedInventory> getInventories() {
-        return inventories;
-    }
-
-    /**
-     * Paste structure at an origin location, confined to a single chunk.
-     *
-     * @param origin Origin location
-     * @param chunk  Chunk to confine pasting to
-     * @param r      Rotation
-     */
-    public void paste(Location origin, Chunk chunk, Rotation r) {
-        int xOr = (chunk.getX() << 4);
-        int zOr = (chunk.getZ() << 4);
-        Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
-        Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
-        if(intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
-        Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 
     /**
@@ -304,6 +259,16 @@ public class Structure implements Serializable {
     }
 
     /**
+     * Get GaeaStructureInfo object
+     *
+     * @return Structure Info
+     */
+    @NotNull
+    public StructureInfo getStructureInfo() {
+        return structureInfo;
+    }
+
+    /**
      * Test whether a set of coordinates is within the current structure
      *
      * @param x X coordinate
@@ -313,36 +278,6 @@ public class Structure implements Serializable {
      */
     private boolean isInStructure(int x, int y, int z) {
         return x < structureInfo.getSizeX() && y < structureInfo.getSizeY() && z < structureInfo.getSizeZ() && x >= 0 && y >= 0 && z >= 0;
-    }
-
-    /**
-     * From an origin location (First bound) fetch the second bound.
-     *
-     * @param origin Origin location
-     * @return Other bound location
-     */
-    public Location getOtherBound(Location origin) {
-        return origin.clone().add(structureInfo.getSizeX(), structureInfo.getSizeY(), structureInfo.getSizeZ());
-    }
-
-    /**
-     * Save the structure to a file
-     *
-     * @param f File to save to
-     * @throws IOException If file access error occurs
-     */
-    public void save(@NotNull File f) throws IOException {
-        toFile(this, f);
-    }
-
-    @NotNull
-    public String getId() {
-        return id;
-    }
-
-    @NotNull
-    public UUID getUuid() {
-        return uuid;
     }
 
     @NotNull
@@ -372,6 +307,72 @@ public class Structure implements Serializable {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    public boolean checkSpawns(Location origin, Rotation r) {
+        for(StructureContainedBlock b : spawns) {
+            Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
+            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
+                return false;
+        }
+        return true;
+    }
+
+    public HashSet<StructureContainedInventory> getInventories() {
+        return inventories;
+    }
+
+    /**
+     * Paste structure at an origin location, confined to a single chunk.
+     *
+     * @param origin Origin location
+     * @param chunk  Chunk to confine pasting to
+     * @param r      Rotation
+     */
+    public void paste(Location origin, Chunk chunk, Rotation r) {
+        int xOr = (chunk.getX() << 4);
+        int zOr = (chunk.getZ() << 4);
+        Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
+        Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
+        if(intersectX == null || intersectZ == null) return;
+        executeForBlocksInRange(intersectX, getRange(Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
+        Debug.info(intersectX.toString() + " : " + intersectZ.toString());
+    }
+
+    /**
+     * From an origin location (First bound) fetch the second bound.
+     *
+     * @param origin Origin location
+     * @return Other bound location
+     */
+    public Location getOtherBound(Location origin) {
+        return origin.clone().add(structureInfo.getSizeX(), structureInfo.getSizeY(), structureInfo.getSizeZ());
+    }
+
+    /**
+     * Save the structure to a file
+     *
+     * @param f File to save to
+     * @throws IOException If file access error occurs
+     */
+    public void save(@NotNull File f) throws IOException {
+        toFile(this, f);
+    }
+
+    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+        oos.writeObject(o);
+        oos.close();
+    }
+
+    @NotNull
+    public String getId() {
+        return id;
+    }
+
+    @NotNull
+    public UUID getUuid() {
+        return uuid;
     }
 
     public enum Axis {

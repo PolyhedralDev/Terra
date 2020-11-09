@@ -1,13 +1,15 @@
+import org.junit.jupiter.api.Test;
 import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LookupGenerator {
+class LookupGenerator {
     private static double[] lookup;
 
-    public static void main(String[] args) throws InterruptedException {
+    @Test
+    static void main(String[] args) throws InterruptedException {
         int dist = 4096;
 
         List<Double> vals = new ArrayList<>();
@@ -63,7 +65,7 @@ public class LookupGenerator {
             int current = vals.size() / dist;
             System.out.println(i + ", max: " + vals.get(current * (i + 1) - 1));
             lookup[i] = vals.get(current * (i + 1) - 1);
-            s.append(vals.get(current * (i + 1) - 1) + "D, ");
+            s.append(vals.get(current * (i + 1) - 1)).append("D, ");
         }
         s.delete(s.length() - 2, s.length());
         s.append("}");
@@ -89,17 +91,17 @@ public class LookupGenerator {
 
     }
 
+    public static int normalizeNew(double d) {
+        for(int i = 0; i < lookup.length; i++) {
+            if (d < lookup[i]) return i;
+        }
+        return lookup.length - 1;
+    }
+
     public static int normalize(double i, int n) {
         i *= 1.42; // Magic simplex value (sqrt(2) plus a little)
         i = Math.min(Math.max(i, -1), 1);
         return Math.min((int) Math.floor((i + 1) * ((double) n / 2)), n - 1);
-    }
-
-    public static int normalizeNew(double d) {
-        for(int i = 0; i < lookup.length; i++) {
-            if(d < lookup[i]) return i;
-        }
-        return lookup.length - 1;
     }
 
     private static class Worker extends Thread {

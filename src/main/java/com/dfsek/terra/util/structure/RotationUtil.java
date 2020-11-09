@@ -46,103 +46,6 @@ public final class RotationUtil {
         return n;
     }
 
-    public static org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, Structure.Rotation r) {
-        org.bukkit.Axis other = orig;
-        final boolean shouldSwitch = r.equals(Structure.Rotation.CW_90) || r.equals(Structure.Rotation.CCW_90);
-        switch(orig) {
-            case X:
-                if(shouldSwitch) other = org.bukkit.Axis.Z;
-                break;
-            case Z:
-                if(shouldSwitch) other = org.bukkit.Axis.X;
-                break;
-        }
-        return other;
-    }
-
-
-    /**
-     * Method to rotate the incredibly obnoxious Rail.Shape enum
-     *
-     * @param orig Original shape
-     * @param r    Rotate
-     * @return Rotated/mirrored shape
-     */
-    public static Rail.Shape getRotatedRail(Rail.Shape orig, Structure.Rotation r) {
-        switch(r) {
-            case CCW_90:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return Rail.Shape.SOUTH_WEST;
-                    case NORTH_SOUTH:
-                        return Rail.Shape.EAST_WEST;
-                    case SOUTH_WEST:
-                        return Rail.Shape.SOUTH_EAST;
-                    case SOUTH_EAST:
-                        return Rail.Shape.NORTH_EAST;
-                    case EAST_WEST:
-                        return Rail.Shape.NORTH_SOUTH;
-                    case NORTH_EAST:
-                        return Rail.Shape.NORTH_WEST;
-                    case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_NORTH;
-                    case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_WEST;
-                    case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_EAST;
-                }
-            case CW_90:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return Rail.Shape.NORTH_EAST;
-                    case NORTH_SOUTH:
-                        return Rail.Shape.EAST_WEST;
-                    case SOUTH_WEST:
-                        return Rail.Shape.NORTH_WEST;
-                    case SOUTH_EAST:
-                        return Rail.Shape.SOUTH_WEST;
-                    case EAST_WEST:
-                        return Rail.Shape.NORTH_SOUTH;
-                    case NORTH_EAST:
-                        return Rail.Shape.SOUTH_EAST;
-                    case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_NORTH;
-                    case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_EAST;
-                    case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_WEST;
-                }
-            case CW_180:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return Rail.Shape.SOUTH_EAST;
-                    case NORTH_SOUTH:
-                        return Rail.Shape.NORTH_SOUTH;
-                    case SOUTH_WEST:
-                        return Rail.Shape.NORTH_EAST;
-                    case SOUTH_EAST:
-                        return Rail.Shape.NORTH_WEST;
-                    case EAST_WEST:
-                        return Rail.Shape.EAST_WEST;
-                    case NORTH_EAST:
-                        return Rail.Shape.SOUTH_WEST;
-                    case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_WEST;
-                    case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_EAST;
-                    case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_NORTH;
-                }
-        }
-        return orig;
-    }
-
     /**
      * Get an integer representation of a BlockFace, to perform math on.
      *
@@ -231,5 +134,102 @@ public final class RotationUtil {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    public static org.bukkit.Axis getRotatedAxis(org.bukkit.Axis orig, Structure.Rotation r) {
+        org.bukkit.Axis other = orig;
+        final boolean shouldSwitch = r.equals(Structure.Rotation.CW_90) || r.equals(Structure.Rotation.CCW_90);
+        switch(orig) {
+            case X:
+                if(shouldSwitch) other = org.bukkit.Axis.Z;
+                break;
+            case Z:
+                if(shouldSwitch) other = org.bukkit.Axis.X;
+                break;
+        }
+        return other;
+    }
+
+    /**
+     * Method to rotate the incredibly obnoxious Rail.Shape enum
+     *
+     * @param orig Original shape
+     * @param r    Rotate
+     * @return Rotated/mirrored shape
+     */
+    @SuppressWarnings("fallthrough")
+    public static Rail.Shape getRotatedRail(Rail.Shape orig, Structure.Rotation r) {
+        switch(r) {
+            case CCW_90:
+                switch(orig) {
+                    case NORTH_WEST:
+                        return Rail.Shape.SOUTH_WEST;
+                    case NORTH_SOUTH:
+                        return Rail.Shape.EAST_WEST;
+                    case SOUTH_WEST:
+                        return Rail.Shape.SOUTH_EAST;
+                    case SOUTH_EAST:
+                        return Rail.Shape.NORTH_EAST;
+                    case EAST_WEST:
+                        return Rail.Shape.NORTH_SOUTH;
+                    case NORTH_EAST:
+                        return Rail.Shape.NORTH_WEST;
+                    case ASCENDING_EAST:
+                        return Rail.Shape.ASCENDING_NORTH;
+                    case ASCENDING_WEST:
+                        return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_NORTH:
+                        return Rail.Shape.ASCENDING_WEST;
+                    case ASCENDING_SOUTH:
+                        return Rail.Shape.ASCENDING_EAST;
+                }
+            case CW_90:
+                switch(orig) {
+                    case NORTH_WEST:
+                        return Rail.Shape.NORTH_EAST;
+                    case NORTH_SOUTH:
+                        return Rail.Shape.EAST_WEST;
+                    case SOUTH_WEST:
+                        return Rail.Shape.NORTH_WEST;
+                    case SOUTH_EAST:
+                        return Rail.Shape.SOUTH_WEST;
+                    case EAST_WEST:
+                        return Rail.Shape.NORTH_SOUTH;
+                    case NORTH_EAST:
+                        return Rail.Shape.SOUTH_EAST;
+                    case ASCENDING_EAST:
+                        return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_WEST:
+                        return Rail.Shape.ASCENDING_NORTH;
+                    case ASCENDING_NORTH:
+                        return Rail.Shape.ASCENDING_EAST;
+                    case ASCENDING_SOUTH:
+                        return Rail.Shape.ASCENDING_WEST;
+                }
+            case CW_180:
+                switch(orig) {
+                    case NORTH_WEST:
+                        return Rail.Shape.SOUTH_EAST;
+                    case NORTH_SOUTH:
+                        return Rail.Shape.NORTH_SOUTH;
+                    case SOUTH_WEST:
+                        return Rail.Shape.NORTH_EAST;
+                    case SOUTH_EAST:
+                        return Rail.Shape.NORTH_WEST;
+                    case EAST_WEST:
+                        return Rail.Shape.EAST_WEST;
+                    case NORTH_EAST:
+                        return Rail.Shape.SOUTH_WEST;
+                    case ASCENDING_EAST:
+                        return Rail.Shape.ASCENDING_WEST;
+                    case ASCENDING_WEST:
+                        return Rail.Shape.ASCENDING_EAST;
+                    case ASCENDING_NORTH:
+                        return Rail.Shape.ASCENDING_SOUTH;
+                    case ASCENDING_SOUTH:
+                        return Rail.Shape.ASCENDING_NORTH;
+                }
+        }
+        return orig;
     }
 }

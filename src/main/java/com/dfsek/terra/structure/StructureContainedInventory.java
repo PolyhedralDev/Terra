@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.Serializable;
 
 public class StructureContainedInventory implements Serializable {
-    public static final long serialVersionUID = -175339605585943678L;
+    private static final long serialVersionUID = -175339605585943678L;
     private final int uid;
     private final int x, y, z;
 

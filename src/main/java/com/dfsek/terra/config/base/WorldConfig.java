@@ -17,8 +17,6 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 public class WorldConfig {
-
-
     private final String worldID;
     private final String configID;
     private final GaeaPlugin main;
@@ -48,6 +46,7 @@ public class WorldConfig {
                 throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
             if(!configFile.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 configFile.getParentFile().mkdirs();
                 LangUtil.log("world-config.not-found", Level.WARNING, worldID);
                 FileUtils.copyInputStreamToFile(Objects.requireNonNull(main.getResource("world.yml")), configFile);
@@ -73,7 +72,9 @@ public class WorldConfig {
                     throw new InvalidConfigurationException("2 objects share the same image channels: zone and biome-x/z");
                 if(fromImage) {
                     try {
-                        imageLoader = new ImageLoader(new File(Objects.requireNonNull(config.getString("image.file"))), ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
+                        //noinspection ConstantConditions
+                        imageLoader = new ImageLoader(new File(config.getString("image.file")),
+                                ImageLoader.Align.valueOf(config.getString("image.align", "center").toUpperCase()));
                         LangUtil.log("world-config.using-image", Level.INFO, worldID);
                     } catch(IOException | NullPointerException e) {
                         e.printStackTrace();
@@ -83,7 +84,7 @@ public class WorldConfig {
             } catch(IllegalArgumentException | NullPointerException e) {
                 throw new InvalidConfigurationException(e.getCause());
             }
-            Bukkit.getLogger().info("Loaded " + tConfig.biomeList.size() + " BiomeGrids from list.");
+            Bukkit.getLogger().log(Level.INFO, "Loaded {0} BiomeGrids from list.", tConfig.biomeList.size());
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
             LangUtil.log("world-config.error", Level.SEVERE, worldID);

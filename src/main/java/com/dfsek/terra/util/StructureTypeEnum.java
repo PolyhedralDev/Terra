@@ -5,10 +5,14 @@ import org.bukkit.StructureType;
 /**
  * Enum to represent StructureType, which is a class for some reason.
  */
+@SuppressWarnings("unused")
 public enum StructureTypeEnum {
     MINESHAFT(StructureType.MINESHAFT),
     VILLAGE(StructureType.VILLAGE),
     NETHER_FORTRESS(StructureType.NETHER_FORTRESS),
+    /**
+     * Currently the only one used.
+     */
     STRONGHOLD(StructureType.STRONGHOLD),
     JUNGLE_PYRAMID(StructureType.JUNGLE_PYRAMID),
     OCEAN_RUIN(StructureType.OCEAN_RUIN),

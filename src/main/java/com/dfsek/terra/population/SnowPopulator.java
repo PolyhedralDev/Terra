@@ -44,6 +44,7 @@ public class SnowPopulator extends GaeaBlockPopulator {
             Bukkit.getLogger().info("Added " + blacklistSpawn.size() + " materials to snow blacklist");
     }
 
+    @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("SnowTime")) {

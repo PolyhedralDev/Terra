@@ -47,7 +47,7 @@ public class CarverConfig extends TerraConfig {
         super(file, config);
         load(file);
         if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
-        id = getString("id");
+        id = Objects.requireNonNull(getString("id"));
 
         inner = getBlocks("palette.inner.layers");
 
@@ -95,14 +95,6 @@ public class CarverConfig extends TerraConfig {
         carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), getInt("cut.top", 0), getInt("cut.bottom", 0));
     }
 
-    public String getID() {
-        return id;
-    }
-
-    public UserDefinedCarver getCarver() {
-        return carver;
-    }
-
     @SuppressWarnings("unchecked")
     private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
         if(!contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
@@ -121,6 +113,14 @@ public class CarverConfig extends TerraConfig {
             }
         }
         return result;
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public UserDefinedCarver getCarver() {
+        return carver;
     }
 
     public Map<Material, Set<Material>> getShiftedBlocks() {

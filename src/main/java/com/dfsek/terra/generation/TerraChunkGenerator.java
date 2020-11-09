@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 
+
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
@@ -74,6 +75,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
+    public void attachProfiler(WorldProfiler p) {
+        super.attachProfiler(p);
+        popMan.attachProfiler(p);
+    }
+
+    @Override
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
         if(needsLoad) load(world); // Load population data for world.
         ChunkData chunk = createChunkData(world);
@@ -98,7 +105,8 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                         BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && slab != null && y < 255) {
-                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(), slab.getStairs(), slab.getSlabThreshold(), interpolator);
+                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
+                                    slab.getStairs(), slab.getSlabThreshold(), interpolator);
                         }
                         paletteLevel++;
                     } else if(y <= sea) {
@@ -111,7 +119,8 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         return chunk;
     }
 
-    private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs, Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator) {
+    private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
+                                  Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator) {
         if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
@@ -155,12 +164,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
-    public void attachProfiler(WorldProfiler p) {
-        super.attachProfiler(p);
-        popMan.attachProfiler(p);
-    }
-
-    @Override
     public int getNoiseOctaves(World world) {
         return configPack.octaves;
     }
@@ -187,6 +190,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
+    public boolean isParallelCapable() {
+        return true;
+    }
+
+    @Override
     public boolean shouldGenerateCaves() {
         return configPack.vanillaCaves;
     }
@@ -204,11 +212,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     @Override
     public boolean shouldGenerateStructures() {
         return configPack.vanillaStructures;
-    }
-
-    @Override
-    public boolean isParallelCapable() {
-        return true;
     }
 
 }

@@ -31,6 +31,10 @@ public class TerraBiomeGrid extends BiomeGrid {
         }
     }
 
+    public UserDefinedGrid getGrid(int x, int z) {
+        return (UserDefinedGrid) zone.getGrid(x, z);
+    }
+
     @Override
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x;
@@ -62,7 +66,5 @@ public class TerraBiomeGrid extends BiomeGrid {
         return getBiome(l.getBlockX(), l.getBlockZ(), phase);
     }
 
-    public UserDefinedGrid getGrid(int x, int z) {
-        return (UserDefinedGrid) zone.getGrid(x, z);
-    }
+
 }

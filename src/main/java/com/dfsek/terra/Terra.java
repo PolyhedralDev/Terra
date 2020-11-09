@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
 public class Terra extends GaeaPlugin {
     private static Terra instance;
     private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
@@ -34,6 +35,7 @@ public class Terra extends GaeaPlugin {
         TerraChunkGenerator.saveAll();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
         instance = this;

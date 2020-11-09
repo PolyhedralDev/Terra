@@ -49,14 +49,6 @@ public enum StructureSpawnRequirement implements Serializable {
     private static final long serialVersionUID = -175639605885943679L;
     private static final transient Map<World, FastNoiseLite> noiseMap = new HashMap<>();
 
-    public static void putNoise(World w, FastNoiseLite noise) {
-        noiseMap.putIfAbsent(w, noise);
-    }
-
-    private static FastNoiseLite getNoise(World w) {
-        return noiseMap.get(w);
-    }
-
     private static void setNoise(World w, int x, int y, int z) {
         TerraWorld tw = TerraWorld.getWorld(w);
         ConfigPack wc = tw.getConfig();
@@ -68,6 +60,14 @@ public enum StructureSpawnRequirement implements Serializable {
             gen.setFrequency(wc.frequency);
             putNoise(w, gen);
         }
+    }
+
+    public static void putNoise(World w, FastNoiseLite noise) {
+        noiseMap.putIfAbsent(w, noise);
+    }
+
+    private static FastNoiseLite getNoise(World w) {
+        return noiseMap.get(w);
     }
 
     public abstract boolean matches(World w, int x, int y, int z);

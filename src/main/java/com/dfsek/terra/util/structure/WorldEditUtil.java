@@ -12,13 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class WorldEditUtil {
-    public static WorldEditPlugin getWorldEdit() {
-        Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
-        Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
-        return null;
-    }
-
     public static Location[] getSelectionLocations(Player sender) {
         WorldEditPlugin we = WorldEditUtil.getWorldEdit();
         if(we == null) {
@@ -41,6 +34,13 @@ public final class WorldEditUtil {
         Location l1 = new Location(sender.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
         Location l2 = new Location(sender.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
         return new Location[] {l1, l2};
+    }
+
+    public static WorldEditPlugin getWorldEdit() {
+        Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+        if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
+        Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
+        return null;
     }
 
     public static Location[] getSelectionPositions(Player sender) {
