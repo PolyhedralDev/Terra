@@ -33,7 +33,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0") // more recent.
     implementation("commons-io:commons-io:2.4")
-    compileOnly(name = "Gaea-1.14.0", group = "")
+    compileOnly(name = "Gaea-1.14.1", group = "")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")

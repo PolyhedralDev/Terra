@@ -60,6 +60,8 @@ public class ConfigPack extends YamlConfiguration {
     public final boolean vanillaStructures;
     public final boolean vanillaDecoration;
     public final boolean vanillaMobs;
+    public final boolean preventSaplingOverride;
+
     public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
@@ -127,6 +129,8 @@ public class ConfigPack extends YamlConfiguration {
         vanillaStructures = getBoolean("vanilla.structures", false);
         vanillaDecoration = getBoolean("vanilla.decorations", false);
         vanillaMobs = getBoolean("vanilla.mobs", false);
+
+        preventSaplingOverride = getBoolean("prevent-sapling-override", false);
 
         if(vanillaMobs || vanillaDecoration || vanillaStructures || vanillaCaves) {
             Terra.getInstance().getLogger().warning("WARNING: Vanilla features have been enabled! These features may not work properly, and are not officially supported! Use at your own risk!");

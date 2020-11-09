@@ -7,6 +7,7 @@ import com.dfsek.terra.biome.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
+import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -115,5 +116,9 @@ public class TerraWorld {
 
     public boolean isSafe() {
         return safe;
+    }
+
+    public static boolean isTerraWorld(World w) {
+        return w.getGenerator() instanceof TerraChunkGenerator;
     }
 }

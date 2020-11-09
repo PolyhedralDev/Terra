@@ -1,8 +1,13 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.async.AsyncStructureFinder;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
+import com.dfsek.terra.tree.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -13,7 +18,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.polydev.gaea.GaeaPlugin;
+import org.polydev.gaea.tree.Tree;
+import org.polydev.gaea.tree.TreeType;
+
+import java.util.Random;
 
 public class EventListener implements Listener {
     private final GaeaPlugin main;
@@ -54,6 +64,23 @@ public class EventListener implements Listener {
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
             e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onSaplingGrow(StructureGrowEvent e) {
+        if(!TerraWorld.isTerraWorld(e.getWorld())) return;
+        TerraWorld tw = TerraWorld.getWorld(e.getWorld());
+        ConfigPack c = tw.getConfig();
+        if(c.preventSaplingOverride) return;
+        e.setCancelled(true);
+        Block block = e.getLocation().getBlock();
+        BlockData data = block.getBlockData();
+        block.setType(Material.AIR);
+        TreeRegistry registry = c.getTreeRegistry();
+        Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
+        if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) {
+            block.setBlockData(data);
         }
     }
 }
