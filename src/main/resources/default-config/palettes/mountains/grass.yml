@@ -2,7 +2,7 @@ layers:
   - materials:
       - "minecraft:cyan_terracotta": 1
       - "minecraft:grass_block": 2
-                                   -   "minecraft:snow_block": 3
+      - "minecraft:snow_block": 3
     layers: 1
   - materials:
       - "minecraft:cyan_terracotta": 1

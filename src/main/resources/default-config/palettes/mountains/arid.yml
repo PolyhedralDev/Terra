@@ -6,15 +6,15 @@ layers:
       - "minecraft:grass_block": 1
       - "minecraft:grass_block": 1
       - "minecraft:grass_block": 1
-                                   -   "minecraft:grass_block": 1
-                                   - "minecraft:grass_block": 1
-                                   - "minecraft:grass_path": 1
-                                   - "minecraft:grass_block": 1
-                                   - "minecraft:grass_block": 1
-                                   - "minecraft:grass_block": 1
-                                   - "minecraft:grass_block": 1
-                                                                -   "minecraft:grass_block": 1
-                                                                - "minecraft:white_terracotta": 2
+      - "minecraft:grass_block": 1
+      - "minecraft:grass_block": 1
+      - "minecraft:grass_path": 1
+      - "minecraft:grass_block": 1
+      - "minecraft:grass_block": 1
+      - "minecraft:grass_block": 1
+      - "minecraft:grass_block": 1
+      - "minecraft:grass_block": 1
+      - "minecraft:white_terracotta": 2
     layers: 1
   - materials:
       - "minecraft:dirt": 7

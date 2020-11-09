@@ -22,16 +22,16 @@ flora:
       y:
         min: 62
         max: 84
-  GRASS:
-    weight: 75
-    y:
-      min: 62
-      max: 84
-  POPPY:
-    weight: 5
-    y:
-      min: 62
-      max: 84
+    GRASS:
+      weight: 75
+      y:
+        min: 62
+        max: 84
+    POPPY:
+      weight: 5
+      y:
+        min: 62
+        max: 84
 
 trees:
   density: 75
