@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -16,6 +17,7 @@ import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.tree.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -67,7 +69,7 @@ public class ConfigPack extends YamlConfiguration {
     private final Map<String, AbstractBiomeConfig> abstractBiomes;
     private final Map<String, BiomeConfig> biomes;
     private final Map<String, BiomeGridConfig> grids;
-    private final Map<String, TreeConfig> trees;
+    private final TreeRegistry treeRegistry = new TreeRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
     private final File dataFolder;
     private final String id;
@@ -90,7 +92,12 @@ public class ConfigPack extends YamlConfiguration {
 
         structures = ConfigLoader.load(new File(file, "structures").toPath(), this, StructureConfig.class);
 
-        trees = ConfigLoader.load(new File(file, "trees").toPath(), this, TreeConfig.class);
+        Map<String, TreeConfig> trees = ConfigLoader.load(new File(file, "trees").toPath(), this, TreeConfig.class);
+
+        for(Map.Entry<String, TreeConfig> entry : trees.entrySet()) {
+            if(treeRegistry.add(entry.getKey(), entry.getValue()))
+                Debug.info("Overriding Vanilla tree: " + entry.getKey());
+        }
 
         abstractBiomes = ConfigLoader.load(new File(file, "abstract" + File.separator + "biomes").toPath(), this, AbstractBiomeConfig.class);
 
@@ -278,7 +285,7 @@ public class ConfigPack extends YamlConfiguration {
         return flora.get(id);
     }
 
-    public TreeConfig getTree(String id) {
-        return trees.get(id);
+    public TreeRegistry getTreeRegistry() {
+        return treeRegistry;
     }
 }

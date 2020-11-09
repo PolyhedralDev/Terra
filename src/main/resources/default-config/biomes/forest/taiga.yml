@@ -36,7 +36,7 @@ flora:
 trees:
   density: 75
   items:
-    SPRUCE_CUSTOM:
+    SPRUCE:
       weight: 1
       y:
         min: 58

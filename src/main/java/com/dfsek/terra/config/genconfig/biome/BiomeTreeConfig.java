@@ -8,7 +8,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,13 +31,9 @@ public class BiomeTreeConfig extends TerraConfigSection {
                 Map<?, ?> y = ((ConfigurationSection) val.get("y")).getValues(false);
                 Tree tree;
                 try {
-                    tree = TreeType.valueOf(e.getKey());
-                } catch(IllegalArgumentException ex) {
-                    try {
-                        tree = Objects.requireNonNull(parent.getConfig().getTree(e.getKey()));
-                    } catch(NullPointerException ex2) {
-                        throw new ConfigException("Invalid tree type: \"" + e.getKey() + "\"", parent.getID());
-                    }
+                    tree = Objects.requireNonNull(parent.getConfig().getTreeRegistry().get(e.getKey()));
+                } catch(NullPointerException ex2) {
+                    throw new ConfigException("Invalid tree type: \"" + e.getKey() + "\"", parent.getID());
                 }
                 trees.add(tree, (Integer) val.get("weight"));
                 treeHeights.put(tree, new Range((Integer) y.get("min"), (Integer) y.get("max")));

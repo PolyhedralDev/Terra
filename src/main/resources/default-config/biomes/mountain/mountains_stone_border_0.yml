@@ -22,7 +22,7 @@ snow:
     max: 255
     chance: 100
 trees:
-  density: 200
+  density: 60
   items:
     SPRUCE:
       weight: 1

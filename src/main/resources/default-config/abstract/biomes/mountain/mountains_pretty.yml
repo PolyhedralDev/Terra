@@ -66,16 +66,6 @@ ores:
     min-height: 0
     max-height: 16
 
-trees:
-  chance: 15
-  density: 1
-  items:
-    SPRUCE:
-      weight: 1
-      y:
-        min: 58
-        max: 72
-
 flora:
   chance: 60
   attempts: 2

@@ -6,7 +6,7 @@ files:
   spruce5: 1
   spruce6: 1
   spruce7: 1
-id: SPRUCE_CUSTOM
+id: SPRUCE
 y-offset: 0
 spawnable:
   - "minecraft:grass_block"
