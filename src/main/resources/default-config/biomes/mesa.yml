@@ -49,8 +49,7 @@ slabs:
     - "minecraft:red_sand": "BLOCK:minecraft:red_sandstone_stairs"
 
 trees:
-  chance: 100
-  density: 1
+  density: 7
   items:
     CACTUS:
       weight: 1
