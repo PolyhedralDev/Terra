@@ -9,7 +9,7 @@ start:
   radius:
     multiply:
       x: 1
-      y: 4
+      y: 6
       z: 1
     min: 3
     max: 4
@@ -17,11 +17,11 @@ start:
     min: 12
     max: 56
 cut:
-  top: 1
-  bottom: 2
+  top: 6
+  bottom: 4
 mutate:
   x: 1
-  y: 4
+  y: 2
   z: 1
   radius: 0.125
 palette:

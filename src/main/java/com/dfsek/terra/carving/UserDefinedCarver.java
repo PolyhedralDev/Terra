@@ -21,6 +21,9 @@ public class UserDefinedCarver extends Carver {
     private final int hash;
     private final int topCut;
     private final int bottomCut;
+    private double step = 2;
+    private Range recalc = new Range(8, 10);
+    private double recalcMagnitude = 3;
 
     public UserDefinedCarver(Range height, Range radius, Range length, double[] start, double[] mutate, double[] radiusMultiplier, int hash, int topCut, int bottomCut) {
         super(height.getMin(), height.getMax());
@@ -40,6 +43,18 @@ public class UserDefinedCarver extends Carver {
         return new UserDefinedWorm(length.get(r) / 2, r, vector, radius.getMax(), topCut, bottomCut);
     }
 
+    public void setStep(double step) {
+        this.step = step;
+    }
+
+    public void setRecalc(Range recalc) {
+        this.recalc = recalc;
+    }
+
+    public void setRecalcMagnitude(double recalcMagnitude) {
+        this.recalcMagnitude = recalcMagnitude;
+    }
+
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
         ConfigPack c = TerraWorld.getWorld(w).getConfig();
@@ -50,6 +65,9 @@ public class UserDefinedCarver extends Carver {
         private final Vector direction;
         private final int maxRad;
         private double runningRadius;
+        private int steps;
+        private int nextDirection = 0;
+        private double[] currentRotation = new double[3];
 
         public UserDefinedWorm(int length, Random r, Vector origin, int maxRad, int topCut, int bottomCut) {
             super(length, r, origin);
@@ -57,17 +75,27 @@ public class UserDefinedCarver extends Carver {
             super.setBottomCut(bottomCut);
             runningRadius = radius.get(r);
             this.maxRad = maxRad;
-            direction = new Vector((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(2);
+            direction = new Vector((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
         }
 
         @Override
         public void step() {
+            if(steps == nextDirection) {
+                direction.rotateAroundX(Math.toRadians((getRandom().nextGaussian()) * mutate[0] * recalcMagnitude));
+                direction.rotateAroundY(Math.toRadians((getRandom().nextGaussian()) * mutate[1] * recalcMagnitude));
+                direction.rotateAroundZ(Math.toRadians((getRandom().nextGaussian()) * mutate[2] * recalcMagnitude));
+                currentRotation = new double[] {(getRandom().nextGaussian()) * mutate[0],
+                        (getRandom().nextGaussian()) * mutate[1],
+                        (getRandom().nextGaussian()) * mutate[2]};
+                nextDirection += recalc.get(getRandom());
+            }
+            steps++;
             setRadius(new int[] {(int) (runningRadius * radiusMultiplier[0]), (int) (runningRadius * radiusMultiplier[1]), (int) (runningRadius * radiusMultiplier[2])});
             runningRadius += (getRandom().nextDouble() - 0.5) * mutate[3];
             runningRadius = Math.max(Math.min(runningRadius, maxRad), 1);
-            direction.rotateAroundX(Math.toRadians(getRandom().nextDouble() * mutate[0] * 2));
-            direction.rotateAroundY(Math.toRadians(getRandom().nextDouble() * mutate[1] * 2));
-            direction.rotateAroundZ(Math.toRadians(getRandom().nextDouble() * mutate[2] * 2));
+            direction.rotateAroundX(Math.toRadians(currentRotation[0] * mutate[0]));
+            direction.rotateAroundY(Math.toRadians(currentRotation[1] * mutate[1]));
+            direction.rotateAroundZ(Math.toRadians(currentRotation[2] * mutate[2]));
             getRunning().add(direction);
         }
     }

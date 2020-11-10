@@ -1,7 +1,7 @@
 id: "CAVE_SWAMP"
 length:
-  min: 20
-  max: 100
+  min: 40
+  max: 80
 start:
   x: 1
   y: 0.25
@@ -20,9 +20,9 @@ cut:
   top: 0
   bottom: 0
 mutate:
-  x: 2
-  y: 6
-  z: 2
+  x: 1
+  y: 3
+  z: 1
   radius: 0.125
 palette:
   inner:
