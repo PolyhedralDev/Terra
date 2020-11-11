@@ -19,7 +19,7 @@ start:
     max: 72
 cut:
   top: 0
-  bottom: 2
+  bottom: 1
 mutate:
   x: 1
   y: 3

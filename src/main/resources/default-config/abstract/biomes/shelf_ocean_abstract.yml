@@ -28,7 +28,7 @@ flora:
         max: 64
 
 carving:
-  CAVE_OCEAN: 35
+  CAVE_OCEAN: 45
 
 ores:
   DIRT:

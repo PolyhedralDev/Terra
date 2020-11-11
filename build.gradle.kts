@@ -33,7 +33,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0") // more recent.
     implementation("commons-io:commons-io:2.4")
-    compileOnly(name = "Gaea-1.14.1", group = "")
+    compileOnly(name = "Gaea-1.14.2", group = "")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
@@ -45,7 +45,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 
-    testImplementation(name = "Gaea-1.14.1", group = "")
+    testImplementation(name = "Gaea-1.14.2", group = "")
     testImplementation("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
 }
 

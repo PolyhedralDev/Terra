@@ -1,4 +1,5 @@
 id: "CAVE_OCEAN"
+step: 2
 length:
   min: 40
   max: 80
@@ -11,14 +12,14 @@ start:
       x: 1
       y: 1
       z: 1
-    min: 2
+    min: 3
     max: 4
   height:
     min: 4
     max: 72
 cut:
   top: 0
-  bottom: 0
+  bottom: 1
 mutate:
   x: 1
   y: 3
