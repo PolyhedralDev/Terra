@@ -80,19 +80,19 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attachProfiler(p);
     }
 
-    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator) {
+    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, int elevate) {
         Palette<BlockData> slant = c.getSlant();
         if(slant != null) {
             double xzOffset = c.getXZSlantOffset();
-            boolean north = interpolator.getNoise(x, y, z + xzOffset) > 0;
-            boolean south = interpolator.getNoise(x, y, z - xzOffset) > 0;
-            boolean east = interpolator.getNoise(x + xzOffset, y, z) > 0;
-            boolean west = interpolator.getNoise(x - xzOffset, y, z) > 0;
+            boolean north = interpolator.getNoise(x, y + elevate, z + xzOffset) > 0;
+            boolean south = interpolator.getNoise(x, y + elevate, z - xzOffset) > 0;
+            boolean east = interpolator.getNoise(x + xzOffset, y + elevate, z) > 0;
+            boolean west = interpolator.getNoise(x - xzOffset, y + elevate, z) > 0;
 
             double ySlantOffsetTop = c.getYSlantOffsetTop();
             double ySlantOffsetBottom = c.getYSlantOffsetBottom();
-            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop, z) > 0;
-            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom, z) > 0;
+            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop + elevate, z) > 0;
+            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom + elevate, z) > 0;
 
             if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
         }
@@ -141,19 +141,27 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
+
+        ElevationInterpolator elevationInterpolator = new ElevationInterpolator(world, chunkX, chunkZ, tw.getGrid(), getNoiseGenerator());
+
         for(byte x = 0; x < 16; x++) {
             for(byte z = 0; z < 16; z++) {
                 int paletteLevel = 0;
+
                 int cx = xOrig + x;
                 int cz = zOrig + z;
+
                 Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
                 BiomeConfig c = config.getBiome((UserDefinedBiome) b);
+
+                int elevate = (int) elevationInterpolator.getElevation(x, z);
+
                 BiomeSlabConfig slab = c.getSlabs();
                 int sea = c.getOcean().getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOcean().getOcean();
                 for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
-                    if(interpolator.getNoise(x, y, z) > 0) {
-                        BlockData data = getPalette(x, y, z, c, interpolator).get(paletteLevel, cx, cz);
+                    if(interpolator.getNoise(x, y - elevate, z) > 0) {
+                        BlockData data = getPalette(x, y, z, c, interpolator, elevate).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && slab != null && y < 255) {
                             prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),

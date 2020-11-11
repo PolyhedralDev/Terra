@@ -19,6 +19,6 @@ public final class FailoverGenerator extends UserDefinedGenerator {
     }
 
     public FailoverGenerator() throws ParseException {
-        super("0", Collections.emptyList(), palette, false);
+        super("0", null, Collections.emptyList(), palette, false);
     }
 }

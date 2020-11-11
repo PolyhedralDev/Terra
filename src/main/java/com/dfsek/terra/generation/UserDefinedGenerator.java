@@ -1,10 +1,12 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Interpolator;
@@ -30,10 +32,11 @@ public class UserDefinedGenerator extends Generator {
     private final Palette<BlockData>[] palettes = new Palette[256];
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
+    private final ElevationEquation elevationEquation;
     private final boolean preventSmooth;
 
 
-    public UserDefinedGenerator(String equation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, boolean preventSmooth)
+    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, boolean preventSmooth)
             throws ParseException {
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
@@ -48,6 +51,10 @@ public class UserDefinedGenerator extends Generator {
             }
             palettes[y] = d;
         }
+        if(elevateEquation != null) {
+            Debug.info("Using elevation equation");
+            this.elevationEquation = new ElevationEquation(elevateEquation);
+        } else this.elevationEquation = null;
         this.noiseExp = p.parse(equation, s);
         this.preventSmooth = preventSmooth;
     }
@@ -111,5 +118,9 @@ public class UserDefinedGenerator extends Generator {
     @Override
     public Interpolator.Type getInterpolationType() {
         return Interpolator.Type.LINEAR;
+    }
+
+    public ElevationEquation getElevationEquation() {
+        return elevationEquation;
     }
 }

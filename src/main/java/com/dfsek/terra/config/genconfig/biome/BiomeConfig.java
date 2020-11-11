@@ -168,9 +168,12 @@ public class BiomeConfig extends TerraConfig {
             }
         }
 
+        String elevation = getString("elevation-equation", null);
+
         try {
             // Get UserDefinedBiome instance representing this config.
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap(), getBoolean("prevent-smooth", false)), getBoolean("erodible", false), biomeID);
+            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, Collections.emptyList(), palette.getPaletteMap(), getBoolean("prevent-smooth", false));
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());
