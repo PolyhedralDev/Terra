@@ -41,7 +41,6 @@ public class BiomeConfig extends TerraConfig {
     private final Palette<BlockData> slant;
     private final double ySlantOffsetTop;
     private final double ySlantOffsetBottom;
-    private final double xzSlantOffset;
 
     private String eq;
 
@@ -136,7 +135,6 @@ public class BiomeConfig extends TerraConfig {
         } else slant = null;
         ySlantOffsetTop = getDouble("slant.y-offset.top", 0.25);
         ySlantOffsetBottom = getDouble("slant.y-offset.bottom", 0.25);
-        xzSlantOffset = getDouble("slant.x-z-offset", 1);
 
         //Make sure equation is non-null
         if(eq == null || eq.equals(""))
@@ -206,10 +204,6 @@ public class BiomeConfig extends TerraConfig {
 
     public double getYSlantOffsetBottom() {
         return ySlantOffsetBottom;
-    }
-
-    public double getXZSlantOffset() {
-        return xzSlantOffset;
     }
 
     @Override

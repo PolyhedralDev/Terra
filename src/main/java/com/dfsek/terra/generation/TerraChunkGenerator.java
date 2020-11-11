@@ -83,16 +83,15 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
         Palette<BlockData> slant = c.getSlant();
         if(slant != null) {
-            double xzOffset = c.getXZSlantOffset();
-            boolean north = interpolator.getNoise(x, y + elevationInterpolator.getElevation(x, (int) (z + xzOffset)), z + xzOffset) > 0;
-            boolean south = interpolator.getNoise(x, y + elevationInterpolator.getElevation(x, (int) (z - xzOffset)), z - xzOffset) > 0;
-            boolean east = interpolator.getNoise(x + xzOffset, y + elevationInterpolator.getElevation((int) (x + xzOffset), z), z) > 0;
-            boolean west = interpolator.getNoise(x - xzOffset, y + elevationInterpolator.getElevation((int) (x - xzOffset), z), z) > 0;
+            boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
+            boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
+            boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
+            boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
 
             double ySlantOffsetTop = c.getYSlantOffsetTop();
             double ySlantOffsetBottom = c.getYSlantOffsetBottom();
-            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop + elevationInterpolator.getElevation(x, z), z) > 0;
-            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom + elevationInterpolator.getElevation(x, z), z) > 0;
+            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop - elevationInterpolator.getElevation(x, z), z) > 0;
+            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom - elevationInterpolator.getElevation(x, z), z) > 0;
 
             if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
         }
