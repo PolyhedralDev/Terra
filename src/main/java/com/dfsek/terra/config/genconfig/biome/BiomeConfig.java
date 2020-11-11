@@ -39,6 +39,10 @@ public class BiomeConfig extends TerraConfig {
     private final List<StructureConfig> structures;
     private final ConfigPack config;
     private final Palette<BlockData> slant;
+    private final double ySlantOffsetTop;
+    private final double ySlantOffsetBottom;
+    private final double xzSlantOffset;
+
     private String eq;
 
     public BiomeConfig(File file, ConfigPack config) throws InvalidConfigurationException, IOException {
@@ -123,13 +127,16 @@ public class BiomeConfig extends TerraConfig {
             Debug.info("Using super snow");
         } else snow = new BiomeSnowConfig(this);
 
-        // Get slant palette
-        if(contains("slant-palette")) {
-            String slantS = getString("slant-palette");
+        // Get slant stuff
+        if(contains("slant")) {
+            String slantS = getString("slant.palette");
             slant = config.getPalette(slantS).getPalette();
             Debug.info("Using slant palette: " + slantS);
             if(slant == null) throw new NotFoundException("Slant Palette", slantS, getID());
         } else slant = null;
+        ySlantOffsetTop = getDouble("slant.y-offset.top", 0.25);
+        ySlantOffsetBottom = getDouble("slant.y-offset.bottom", 0.25);
+        xzSlantOffset = getDouble("slant.x-z-offset", 1);
 
         //Make sure equation is non-null
         if(eq == null || eq.equals(""))
@@ -188,6 +195,18 @@ public class BiomeConfig extends TerraConfig {
 
     public Palette<BlockData> getSlant() {
         return slant;
+    }
+
+    public double getYSlantOffsetTop() {
+        return ySlantOffsetTop;
+    }
+
+    public double getYSlantOffsetBottom() {
+        return ySlantOffsetBottom;
+    }
+
+    public double getXZSlantOffset() {
+        return xzSlantOffset;
     }
 
     @Override

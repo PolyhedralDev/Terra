@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.math.FastNoiseLite;
+import org.polydev.gaea.math.Interpolator;
 import org.polydev.gaea.world.palette.Palette;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
@@ -105,5 +106,10 @@ public class UserDefinedGenerator extends Generator {
     @Override
     public boolean useMinimalInterpolation() {
         return preventSmooth;
+    }
+
+    @Override
+    public Interpolator.Type getInterpolationType() {
+        return Interpolator.Type.LINEAR;
     }
 }

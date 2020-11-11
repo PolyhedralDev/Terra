@@ -14,7 +14,12 @@ vanilla: SAVANNA
 
 erodible: false
 prevent-smooth: true
-slant-palette: STONE
+slant:
+  palette: STONE
+  y-offset:
+    top: 1
+    bottom: 0.25
+  x-z-offset: 1
 
 flora:
   chance: 40

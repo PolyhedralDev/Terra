@@ -83,13 +83,16 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator) {
         Palette<BlockData> slant = c.getSlant();
         if(slant != null) {
-            boolean north = interpolator.getNoise(x, y, z + 1) > 0;
-            boolean south = interpolator.getNoise(x, y, z - 1) > 0;
-            boolean east = interpolator.getNoise(x + 1, y, z) > 0;
-            boolean west = interpolator.getNoise(x - 1, y, z) > 0;
+            double xzOffset = c.getXZSlantOffset();
+            boolean north = interpolator.getNoise(x, y, z + xzOffset) > 0;
+            boolean south = interpolator.getNoise(x, y, z - xzOffset) > 0;
+            boolean east = interpolator.getNoise(x + xzOffset, y, z) > 0;
+            boolean west = interpolator.getNoise(x - xzOffset, y, z) > 0;
 
-            boolean top = interpolator.getNoise(x, y + 0.25, z) > 0;
-            boolean bottom = interpolator.getNoise(x, y - 0.25, z) > 0;
+            double ySlantOffsetTop = c.getYSlantOffsetTop();
+            double ySlantOffsetBottom = c.getYSlantOffsetBottom();
+            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop, z) > 0;
+            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom, z) > 0;
 
             if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
         }
