@@ -8,7 +8,7 @@ import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Interpolator;
 
 public class ElevationInterpolator {
-    private final UserDefinedGenerator[][] gens = new UserDefinedGenerator[7][7];
+    private final UserDefinedGenerator[][] gens = new UserDefinedGenerator[8][8];
     private final double[][] values = new double[18][18];
     private final FastNoiseLite noise;
     private final int xOrigin;
@@ -19,8 +19,8 @@ public class ElevationInterpolator {
         this.zOrigin = chunkZ << 4;
         this.noise = noise;
 
-        for(int x = -1; x < 6; x++) {
-            for(int z = -1; z < 6; z++) {
+        for(int x = -1; x < 7; x++) {
+            for(int z = -1; z < 7; z++) {
                 gens[x + 1][z + 1] = (UserDefinedGenerator) grid.getBiome(xOrigin + x * 4, zOrigin + z * 4, GenerationPhase.BASE).getGenerator();
             }
         }
@@ -76,6 +76,6 @@ public class ElevationInterpolator {
     }
 
     public double getElevation(int x, int z) {
-        return values[x - 1][z - 1];
+        return values[x + 1][z + 1];
     }
 }
