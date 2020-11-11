@@ -9,7 +9,7 @@ import org.polydev.gaea.math.Interpolator;
 
 public class ElevationInterpolator {
     private final UserDefinedGenerator[][] gens = new UserDefinedGenerator[7][7];
-    private final double[][] values = new double[16][16];
+    private final double[][] values = new double[18][18];
     private final FastNoiseLite noise;
     private final int xOrigin;
     private final int zOrigin;
@@ -25,16 +25,16 @@ public class ElevationInterpolator {
             }
         }
 
-        for(byte x = 0; x < 16; x++) {
-            for(byte z = 0; z < 16; z++) {
+        for(byte x = -1; x <= 16; x++) {
+            for(byte z = -1; z <= 16; z++) {
                 if(compareGens((x / 4) + 1, (z / 4) + 1)) {
                     Interpolator interpolator = new Interpolator(biomeAvg(x / 4, z / 4),
                             biomeAvg((x / 4) + 1, z / 4),
                             biomeAvg(x / 4, (z / 4) + 1),
                             biomeAvg((x / 4) + 1, (z / 4) + 1),
                             Interpolator.Type.LINEAR);
-                    values[x][z] = interpolator.bilerp((double) (x % 4) / 4, (double) (z % 4) / 4);
-                } else values[x][z] = elevate(gens[x / 4][z / 4], xOrigin + x, zOrigin + z);
+                    values[x + 1][z + 1] = interpolator.bilerp((double) (x % 4) / 4, (double) (z % 4) / 4);
+                } else values[x + 1][z + 1] = elevate(gens[x / 4][z / 4], xOrigin + x, zOrigin + z);
             }
         }
     }
@@ -63,7 +63,11 @@ public class ElevationInterpolator {
                 + elevate(gens[x][z + 1], x * 4 - 4 + xOrigin, z * 4 + zOrigin)
                 + elevate(gens[x + 1][z + 2], x * 4 + xOrigin, z * 4 + 4 + zOrigin)
                 + elevate(gens[x + 1][z], x * 4 + xOrigin, z * 4 - 4 + zOrigin)
-                + elevate(gens[x + 1][z + 1], x * 4 + xOrigin, z * 4 + zOrigin)) / 5D;
+                + elevate(gens[x + 1][z + 1], x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(gens[x][z], x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(gens[x][z + 2], x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(gens[x + 2][z], x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(gens[x + 2][z + 2], x * 4 + xOrigin, z * 4 + zOrigin)) / 9D;
     }
 
     private double elevate(UserDefinedGenerator g, int x, int z) {
@@ -72,6 +76,6 @@ public class ElevationInterpolator {
     }
 
     public double getElevation(int x, int z) {
-        return values[x][z];
+        return values[x - 1][z - 1];
     }
 }

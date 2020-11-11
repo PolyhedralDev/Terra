@@ -80,19 +80,19 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attachProfiler(p);
     }
 
-    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, int elevate) {
+    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
         Palette<BlockData> slant = c.getSlant();
         if(slant != null) {
             double xzOffset = c.getXZSlantOffset();
-            boolean north = interpolator.getNoise(x, y + elevate, z + xzOffset) > 0;
-            boolean south = interpolator.getNoise(x, y + elevate, z - xzOffset) > 0;
-            boolean east = interpolator.getNoise(x + xzOffset, y + elevate, z) > 0;
-            boolean west = interpolator.getNoise(x - xzOffset, y + elevate, z) > 0;
+            boolean north = interpolator.getNoise(x, y + elevationInterpolator.getElevation(x, (int) (z + xzOffset)), z + xzOffset) > 0;
+            boolean south = interpolator.getNoise(x, y + elevationInterpolator.getElevation(x, (int) (z - xzOffset)), z - xzOffset) > 0;
+            boolean east = interpolator.getNoise(x + xzOffset, y + elevationInterpolator.getElevation((int) (x + xzOffset), z), z) > 0;
+            boolean west = interpolator.getNoise(x - xzOffset, y + elevationInterpolator.getElevation((int) (x - xzOffset), z), z) > 0;
 
             double ySlantOffsetTop = c.getYSlantOffsetTop();
             double ySlantOffsetBottom = c.getYSlantOffsetBottom();
-            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop + elevate, z) > 0;
-            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom + elevate, z) > 0;
+            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop + elevationInterpolator.getElevation(x, z), z) > 0;
+            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom + elevationInterpolator.getElevation(x, z), z) > 0;
 
             if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
         }
@@ -161,7 +161,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 Palette<BlockData> seaPalette = c.getOcean().getOcean();
                 for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
                     if(interpolator.getNoise(x, y - elevate, z) > 0) {
-                        BlockData data = getPalette(x, y, z, c, interpolator, elevate).get(paletteLevel, cx, cz);
+                        BlockData data = getPalette(x, y, z, c, interpolator, elevationInterpolator).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && slab != null && y < 255) {
                             prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
