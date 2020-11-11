@@ -13,6 +13,8 @@ palette:
 vanilla: SAVANNA
 
 erodible: false
+prevent-smooth: true
+slant-palette: STONE
 
 flora:
   chance: 40

@@ -80,47 +80,24 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attachProfiler(p);
     }
 
-    @Override
-    public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
-        if(needsLoad) load(world); // Load population data for world.
-        ChunkData chunk = createChunkData(world);
-        TerraWorld tw = TerraWorld.getWorld(world);
-        if(!tw.isSafe()) return chunk;
-        ConfigPack config = tw.getConfig();
-        int xOrig = (chunkX << 4);
-        int zOrig = (chunkZ << 4);
-        org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
-        for(byte x = 0; x < 16; x++) {
-            for(byte z = 0; z < 16; z++) {
-                int paletteLevel = 0;
-                int cx = xOrig + x;
-                int cz = zOrig + z;
-                Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
-                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
-                BiomeSlabConfig slab = c.getSlabs();
-                int sea = c.getOcean().getSeaLevel();
-                Palette<BlockData> seaPalette = c.getOcean().getOcean();
-                for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
-                    if(interpolator.getNoise(x, y, z) > 0) {
-                        BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
-                        chunk.setBlock(x, y, z, data);
-                        if(paletteLevel == 0 && slab != null && y < 255) {
-                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
-                                    slab.getStairs(), slab.getSlabThreshold(), interpolator);
-                        }
-                        paletteLevel++;
-                    } else if(y <= sea) {
-                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
-                        paletteLevel = 0;
-                    } else paletteLevel = 0;
-                }
-            }
+    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator) {
+        Palette<BlockData> slant = c.getSlant();
+        if(slant != null) {
+            boolean north = interpolator.getNoise(x, y, z + 1) > 0;
+            boolean south = interpolator.getNoise(x, y, z - 1) > 0;
+            boolean east = interpolator.getNoise(x + 1, y, z) > 0;
+            boolean west = interpolator.getNoise(x - 1, y, z) > 0;
+
+            boolean top = interpolator.getNoise(x, y + 0.25, z) > 0;
+            boolean bottom = interpolator.getNoise(x, y - 0.25, z) > 0;
+
+            if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
         }
-        return chunk;
+        return c.getBiome().getGenerator().getPalette(y);
     }
 
-    private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                  Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator) {
+    private static void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
+                                         Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator) {
         if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
@@ -149,6 +126,45 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             } else if(orig.matches(DataUtil.WATER)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
+    }
+
+    @Override
+    public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
+        if(needsLoad) load(world); // Load population data for world.
+        ChunkData chunk = createChunkData(world);
+        TerraWorld tw = TerraWorld.getWorld(world);
+        if(!tw.isSafe()) return chunk;
+        ConfigPack config = tw.getConfig();
+        int xOrig = (chunkX << 4);
+        int zOrig = (chunkZ << 4);
+        org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
+        for(byte x = 0; x < 16; x++) {
+            for(byte z = 0; z < 16; z++) {
+                int paletteLevel = 0;
+                int cx = xOrig + x;
+                int cz = zOrig + z;
+                Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
+                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
+                BiomeSlabConfig slab = c.getSlabs();
+                int sea = c.getOcean().getSeaLevel();
+                Palette<BlockData> seaPalette = c.getOcean().getOcean();
+                for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
+                    if(interpolator.getNoise(x, y, z) > 0) {
+                        BlockData data = getPalette(x, y, z, c, interpolator).get(paletteLevel, cx, cz);
+                        chunk.setBlock(x, y, z, data);
+                        if(paletteLevel == 0 && slab != null && y < 255) {
+                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
+                                    slab.getStairs(), slab.getSlabThreshold(), interpolator);
+                        }
+                        paletteLevel++;
+                    } else if(y <= sea) {
+                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                        paletteLevel = 0;
+                    } else paletteLevel = 0;
+                }
+            }
+        }
+        return chunk;
     }
 
     private void load(World w) {

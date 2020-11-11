@@ -10,10 +10,12 @@ import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
+import org.polydev.gaea.world.palette.Palette;
 import parsii.tokenizer.ParseException;
 
 import java.io.File;
@@ -36,6 +38,7 @@ public class BiomeConfig extends TerraConfig {
     private final BiomeSnowConfig snow;
     private final List<StructureConfig> structures;
     private final ConfigPack config;
+    private final Palette<BlockData> slant;
     private String eq;
 
     public BiomeConfig(File file, ConfigPack config) throws InvalidConfigurationException, IOException {
@@ -120,6 +123,14 @@ public class BiomeConfig extends TerraConfig {
             Debug.info("Using super snow");
         } else snow = new BiomeSnowConfig(this);
 
+        // Get slant palette
+        if(contains("slant-palette")) {
+            String slantS = getString("slant-palette");
+            slant = config.getPalette(slantS).getPalette();
+            Debug.info("Using slant palette: " + slantS);
+            if(slant == null) throw new NotFoundException("Slant Palette", slantS, getID());
+        } else slant = null;
+
         //Make sure equation is non-null
         if(eq == null || eq.equals(""))
             throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
@@ -173,6 +184,10 @@ public class BiomeConfig extends TerraConfig {
 
     public Range getFloraHeights(Flora f) {
         return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(-1, -1));
+    }
+
+    public Palette<BlockData> getSlant() {
+        return slant;
     }
 
     @Override

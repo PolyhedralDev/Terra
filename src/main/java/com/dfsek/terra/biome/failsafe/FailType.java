@@ -27,7 +27,7 @@ public enum FailType {
     },
     /**
      * Returns null, hard crashing the server, but not generating any corrupted terrain.<br>
-     * This option is <br>NOT</br> stable, but it has the least risk of blank chunks being generated.
+     * This option is <b>NOT</b> stable, but it has the least risk of blank chunks being generated.
      * However, it has the highest risk of corruption!
      */
     CRASH {
