@@ -59,6 +59,7 @@ palette:
         y: 255
 shift:
   "minecraft:grass_block": [ "minecraft:dirt" ]
+  "minecraft:mycelium": [ "minecraft:dirt" ]
   "minecraft:podzol": [ "minecraft:dirt" ]
   "minecraft:gravel": [ "minecraft:dirt" ]
   "minecraft:sand": [ "minecraft:dirt" ]

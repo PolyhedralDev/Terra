@@ -39,6 +39,11 @@ trees:
   density: 400
   items:
     DARK_OAK:
+      weight: 19
+      y:
+        min: 58
+        max: 84
+    RED_MUSHROOM:
       weight: 1
       y:
         min: 58

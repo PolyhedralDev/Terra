@@ -11,5 +11,6 @@ spawnable:
   - "minecraft:gravel"
   - "minecraft:dirt"
   - "minecraft:coarse_dirt"
+  - "minecraft:mycelium"
 replaceable:
   - "minecraft:air"
