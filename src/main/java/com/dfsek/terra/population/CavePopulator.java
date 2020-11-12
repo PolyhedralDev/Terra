@@ -46,20 +46,24 @@ public class CavePopulator extends BlockPopulator {
                     Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                     Material m = b.getType();
                     if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        if(c.getShiftedBlocks().containsKey(b.getType())) {
                             shiftCandidate.put(b.getLocation(), b.getType());
+                        }
                         b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        if(c.getShiftedBlocks().containsKey(b.getType())) {
                             shiftCandidate.put(b.getLocation(), b.getType());
+                        }
                         b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        if(c.getShiftedBlocks().containsKey(b.getType())) {
                             shiftCandidate.put(b.getLocation(), b.getType());
+                        }
                         b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        if(c.getShiftedBlocks().containsKey(b.getType())) {
                             shiftCandidate.put(b.getLocation(), b.getType());
+                        }
                         b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
                     }
                     if(c.getUpdateBlocks().contains(m)) {

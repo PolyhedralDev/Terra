@@ -93,15 +93,9 @@ class LookupGenerator {
 
     public static int normalizeNew(double d) {
         for(int i = 0; i < lookup.length; i++) {
-            if (d < lookup[i]) return i;
+            if(d < lookup[i]) return i;
         }
         return lookup.length - 1;
-    }
-
-    public static int normalize(double i, int n) {
-        i *= 1.42; // Magic simplex value (sqrt(2) plus a little)
-        i = Math.min(Math.max(i, -1), 1);
-        return Math.min((int) Math.floor((i + 1) * ((double) n / 2)), n - 1);
     }
 
     private static class Worker extends Thread {
@@ -125,10 +119,6 @@ class LookupGenerator {
 
         public List<Double> getResult() {
             return l;
-        }
-
-        public String getStatus() {
-            return "Generating values. " + l.size() + "/" + searches + " (" + ((long) l.size() * 100L) / searches + "%)";
         }
     }
 }

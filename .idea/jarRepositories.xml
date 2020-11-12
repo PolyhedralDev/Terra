@@ -81,5 +81,10 @@
       <option name="name" value="MavenLocal" />
       <option name="url" value="file:$MAVEN_REPOSITORY$/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="https://maven.pkg.github.com/solonovamax/Gaea" />
+    </remote-repository>
   </component>
 </project>
