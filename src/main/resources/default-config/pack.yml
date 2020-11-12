@@ -43,8 +43,8 @@ frequencies:
   zone: 2048
 blend:
   enable: true
-  frequency: 0.125
-  amplitude: 10
+  frequency: 0.12
+  amplitude: 5
 erode:
   enable: true
   frequency: 0.001

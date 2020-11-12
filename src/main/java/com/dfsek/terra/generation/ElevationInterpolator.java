@@ -7,7 +7,7 @@ import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Interpolator;
 
 public class ElevationInterpolator {
-    private final UserDefinedGenerator[][] gens = new UserDefinedGenerator[8][8];
+    private final UserDefinedGenerator[][] gens = new UserDefinedGenerator[10][10];
     private final double[][] values = new double[18][18];
     private final FastNoiseLite noise;
     private final int xOrigin;
@@ -20,16 +20,16 @@ public class ElevationInterpolator {
         this.noise = noise;
         this.grid = grid;
 
-        for(int x = -1; x < 7; x++) {
-            for(int z = -1; z < 7; z++) {
-                gens[x + 1][z + 1] = (UserDefinedGenerator) grid.getBiome(xOrigin + x * 4, zOrigin + z * 4, GenerationPhase.BASE).getGenerator();
+        for(int x = -2; x < 8; x++) {
+            for(int z = -2; z < 8; z++) {
+                gens[x + 2][z + 2] = (UserDefinedGenerator) grid.getBiome(xOrigin + x * 4, zOrigin + z * 4, GenerationPhase.BASE).getGenerator();
             }
         }
 
         for(byte x = -1; x <= 16; x++) {
             for(byte z = -1; z <= 16; z++) {
                 UserDefinedGenerator generator = getGenerator(x, z);
-                if(compareGens((x / 4) + 1, (z / 4) + 1) && generator.interpolateElevation()) {
+                if(compareGens((x / 4), (z / 4)) && generator.interpolateElevation()) {
                     Interpolator interpolator = new Interpolator(biomeAvg(x / 4, z / 4),
                             biomeAvg((x / 4) + 1, z / 4),
                             biomeAvg(x / 4, (z / 4) + 1),
@@ -45,36 +45,31 @@ public class ElevationInterpolator {
         return (UserDefinedGenerator) grid.getBiome(xOrigin + x, zOrigin + z, GenerationPhase.BASE).getGenerator();
     }
 
+    private UserDefinedGenerator getStoredGen(int x, int z) {
+        return gens[x + 2][z + 2];
+    }
+
     private boolean compareGens(int x, int z) {
-        UserDefinedGenerator comp = gens[x][z];
+        UserDefinedGenerator comp = getStoredGen(x, z);
 
-        if(!comp.equals(gens[x + 1][z])) return true;
-
-        if(!comp.equals(gens[x][z + 1])) return true;
-
-        if(!comp.equals(gens[x - 1][z])) return true;
-
-        if(!comp.equals(gens[x][z - 1])) return true;
-
-        if(!comp.equals(gens[x + 1][z + 1])) return true;
-
-        if(!comp.equals(gens[x - 1][z - 1])) return true;
-
-        if(!comp.equals(gens[x + 1][z - 1])) return true;
-
-        return !comp.equals(gens[x - 1][z + 1]);
+        for(int xi = x - 2; xi <= x + 2; xi++) {
+            for(int zi = z - 2; zi <= z + 2; zi++) {
+                if(!comp.equals(getStoredGen(xi, zi))) return true;
+            }
+        }
+        return false;
     }
 
     private double biomeAvg(int x, int z) {
-        return (elevate(gens[x + 2][z + 1], x * 4 + 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(gens[x][z + 1], x * 4 - 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(gens[x + 1][z + 2], x * 4 + xOrigin, z * 4 + 4 + zOrigin)
-                + elevate(gens[x + 1][z], x * 4 + xOrigin, z * 4 - 4 + zOrigin)
-                + elevate(gens[x + 1][z + 1], x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(gens[x][z], x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(gens[x][z + 2], x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(gens[x + 2][z], x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(gens[x + 2][z + 2], x * 4 + xOrigin, z * 4 + zOrigin)) / 9D;
+        return (elevate(getStoredGen(x + 1, z), x * 4 + 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(getStoredGen(x - 1, z), x * 4 - 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(getStoredGen(x, z + 1), x * 4 + xOrigin, z * 4 + 4 + zOrigin)
+                + elevate(getStoredGen(x, z - 1), x * 4 + xOrigin, z * 4 - 4 + zOrigin)
+                + elevate(getStoredGen(x, z), x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(getStoredGen(x - 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(getStoredGen(x - 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(getStoredGen(x + 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin)
+                + elevate(getStoredGen(x + 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin)) / 9D;
     }
 
     private double elevate(UserDefinedGenerator g, int x, int z) {

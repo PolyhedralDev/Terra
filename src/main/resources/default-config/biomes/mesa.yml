@@ -1,9 +1,9 @@
-noise-equation: "((-((y / 63)^2)) + 1) + (noise2(x/1.5, z/1.5)+0.1)/2.5"
+noise-equation: "((-((y / 63)^2)) + 1) + |(noise2(x/1.5, z/1.5)+0.25)|/2.5"
 elevation:
-  equation: "min(floor(((max(noise2(x/1.5, z/1.5)+0.1, 0)) + 0.1)*5), 3)*10"
+  equation: "min(floor(((max(noise2(x/1.5, z/1.5)+0.25, 0)))*5), 3)*9"
   interpolation: true
 extends: "BASIC_ORES"
-id: "MESA"
+id: "CRAG"
 
 slant:
   palette:
@@ -11,27 +11,42 @@ slant:
     - BEDROCK_MOST: 1
     - BEDROCK_HALF: 2
     - BEDROCK_LITTLE: 3
-    - RED_DESERT: 255
-    - "BLOCK:minecraft:red_terracotta": 128
-    - "BLOCK:minecraft:orange_terracotta": 124
-    - "BLOCK:minecraft:terracotta": 120
-    - "BLOCK:minecraft:yellow_terracotta": 116
-    - "BLOCK:minecraft:red_terracotta": 112
-    - "BLOCK:minecraft:orange_terracotta": 108
-    - "BLOCK:minecraft:terracotta": 104
-    - "BLOCK:minecraft:red_terracotta": 100
-    - "BLOCK:minecraft:orange_terracotta": 96
+    - "BLOCK:minecraft:terracotta": 255
+    - "BLOCK:minecraft:gray_terracotta": 124
+    - "BLOCK:minecraft:cyan_terracotta": 121
+    - "BLOCK:minecraft:white_terracotta": 120
+    - "BLOCK:minecraft:gray_terracotta": 119
+    - "BLOCK:minecraft:orange_terracotta": 117
+    - "BLOCK:minecraft:terracotta": 116
+    - "BLOCK:minecraft:orange_terracotta": 115
+    - "BLOCK:minecraft:terracotta": 111
+    - "BLOCK:minecraft:red_terracotta": 109
+    - "BLOCK:minecraft:terracotta": 108
+    - "BLOCK:minecraft:white_terracotta": 107
+    - "BLOCK:minecraft:red_terracotta": 106
+    - "BLOCK:minecraft:yellow_terracotta": 103
+    - "BLOCK:minecraft:terracotta": 102
+    - "BLOCK:minecraft:yellow_terracotta": 101
+    - "BLOCK:minecraft:terracotta": 98
+    - "BLOCK:minecraft:red_terracotta": 95
+    - "BLOCK:minecraft:yellow_terracotta": 94
+    - "BLOCK:minecraft:white_terracotta": 93
     - "BLOCK:minecraft:terracotta": 92
-    - "BLOCK:minecraft:yellow_terracotta": 88
-    - "BLOCK:minecraft:red_terracotta": 84
-    - "BLOCK:minecraft:orange_terracotta": 80
-    - "BLOCK:minecraft:terracotta": 76
-    - "BLOCK:minecraft:yellow_terracotta": 72
-    - "BLOCK:minecraft:red_terracotta": 68
-    - "BLOCK:minecraft:orange_terracotta": 64
-    - "BLOCK:minecraft:terracotta": 60
-    - "BLOCK:minecraft:yellow_terracotta": 56
-    - "BLOCK:minecraft:red_terracotta": 52
+    - "BLOCK:minecraft:orange_terracotta": 88
+    - "BLOCK:minecraft:terracotta": 87
+    - "BLOCK:minecraft:orange_terracotta": 86
+    - "BLOCK:minecraft:terracotta": 85
+    - "BLOCK:minecraft:red_terracotta": 82
+    - "BLOCK:minecraft:terracotta": 80
+    - "BLOCK:minecraft:orange_terracotta": 77
+    - "BLOCK:minecraft:yellow_terracotta": 76
+    - "BLOCK:minecraft:gray_terracotta": 75
+    - "BLOCK:minecraft:cyan_terracotta": 73
+    - "BLOCK:minecraft:white_terracotta": 72
+    - "BLOCK:minecraft:terracotta": 71
+    - "BLOCK:minecraft:terracotta": 70
+    - "BLOCK:minecraft:orange_terracotta": 66
+    - "BLOCK:minecraft:terracotta": 65
   y-offset:
     top: 0.3
     bottom: 0.25
