@@ -2,7 +2,7 @@ noise-equation: "((-((y / 63)^2)) + 1) + |(noise2(x, z) / 3) + 0.1|"
 id: "PLAINS_ABSTRACT"
 
 carving:
-  CAVE: 30
+  CAVE: 40
   RAVINE: 5
   CAVERN: 5
 

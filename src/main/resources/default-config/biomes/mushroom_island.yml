@@ -1,0 +1,49 @@
+noise-equation: "((-((y / 63)^2)) + 1) + ((noise2(x, z)+0.5) / 2)"
+extends: "BASIC_ORES"
+id: "MUSHROOM_ISLANDS"
+
+palette:
+  - "BLOCK:minecraft:bedrock": 0
+  - BEDROCK_MOST: 1
+  - BEDROCK_HALF: 2
+  - BEDROCK_LITTLE: 3
+  - RIVER_BOTTOM: 61
+  - RIVER_SHORE: 62
+  - MYCELIUM: 255
+vanilla: MUSHROOM_FIELDS
+
+flora:
+  chance: 15
+  attempts: 1
+  items:
+    RED_MUSHROOM:
+      weight: 100
+      y:
+        min: 62
+        max: 84
+    BROWN_MUSHROOM:
+      weight: 100
+      y:
+        min: 62
+        max: 84
+    SMALL_ROCK:
+      weight: 10
+      y:
+        min: 62
+        max: 84
+
+erodible: true
+
+trees:
+  density: 250
+  items:
+    BROWN_MUSHROOM:
+      weight: 8
+      y:
+        min: 58
+        max: 84
+    RED_MUSHROOM:
+      weight: 2
+      y:
+        min: 58
+        max: 84

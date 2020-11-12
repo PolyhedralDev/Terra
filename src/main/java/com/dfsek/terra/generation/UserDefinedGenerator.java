@@ -1,12 +1,15 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.math.FastNoiseLite;
+import org.polydev.gaea.math.Interpolator;
 import org.polydev.gaea.world.palette.Palette;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
@@ -27,12 +30,16 @@ public class UserDefinedGenerator extends Generator {
     private final Variable zVar = s.getVariable("z");
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] palettes = new Palette[256];
+    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
+    private final Palette<BlockData>[] slantPalettes = new Palette[256];
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
+    private final ElevationEquation elevationEquation;
     private final boolean preventSmooth;
+    private boolean elevationInterpolation;
 
 
-    public UserDefinedGenerator(String equation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, boolean preventSmooth)
+    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, boolean preventSmooth)
             throws ParseException {
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
@@ -46,7 +53,19 @@ public class UserDefinedGenerator extends Generator {
                 }
             }
             palettes[y] = d;
+            Palette<BlockData> slantPalette = null;
+            for(Map.Entry<Integer, Palette<BlockData>> e : slantPaletteMap.entrySet()) {
+                if(e.getKey() >= y) {
+                    slantPalette = e.getValue();
+                    break;
+                }
+            }
+            slantPalettes[y] = slantPalette;
         }
+        if(elevateEquation != null) {
+            Debug.info("Using elevation equation");
+            this.elevationEquation = new ElevationEquation(elevateEquation);
+        } else this.elevationEquation = null;
         this.noiseExp = p.parse(equation, s);
         this.preventSmooth = preventSmooth;
     }
@@ -102,8 +121,30 @@ public class UserDefinedGenerator extends Generator {
         return palettes[y];
     }
 
+    public Palette<BlockData> getSlantPalette(int y) {
+        return slantPalettes[y];
+    }
+
+
     @Override
     public boolean useMinimalInterpolation() {
         return preventSmooth;
+    }
+
+    @Override
+    public Interpolator.Type getInterpolationType() {
+        return Interpolator.Type.LINEAR;
+    }
+
+    public ElevationEquation getElevationEquation() {
+        return elevationEquation;
+    }
+
+    public boolean interpolateElevation() {
+        return elevationInterpolation;
+    }
+
+    public void setElevationInterpolation(boolean elevationInterpolation) {
+        this.elevationInterpolation = elevationInterpolation;
     }
 }

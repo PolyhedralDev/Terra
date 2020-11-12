@@ -1,4 +1,7 @@
-noise-equation: "((-((y / 64)^2)) + 1) + min(floor(((|noise2(x/2.5, z/2.5)|) + 0.1)*4), 3)/2.5 + |noise2(x/2.5, z/2.5)|"
+noise-equation: "((-((y / 64)^2)) + 1) + |noise2(x/2.5, z/2.5)|"
+elevation:
+  equation: "min(floor(((|noise2(x/2.5, z/2.5)|) + 0.1)*4)*4, 12)"
+  interpolation: true
 
 id: "ARID_MOUNTAINS"
 extends: "BASIC_ORES"
@@ -13,6 +16,14 @@ palette:
 vanilla: SAVANNA
 
 erodible: false
+prevent-smooth: true
+
+slant:
+  palette:
+    - ARID_SIDE: 255
+  y-offset:
+    top: 0.4
+    bottom: 0.25
 
 flora:
   chance: 40

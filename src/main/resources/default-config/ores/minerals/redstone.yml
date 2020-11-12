@@ -6,4 +6,4 @@ deform: 0.75
 deform-frequency: 0.2
 id: "REDSTONE_ORE"
 replace:
-  - "minecraft:stone"
+  - "#minecraft:base_stone_overworld"

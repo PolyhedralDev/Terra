@@ -6,6 +6,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.failsafe.FailType;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.util.TagUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -72,9 +73,20 @@ public final class ConfigUtil {
         Set<Material> bl = new HashSet<>();
         for(String s : list) {
             try {
-                if(bl.contains(Bukkit.createBlockData(s).getMaterial()))
-                    Bukkit.getLogger().warning("Duplicate material in " + phase + " list: " + s);
-                bl.add(Bukkit.createBlockData(s).getMaterial());
+                if(s.startsWith("#")) {
+                    Debug.info("Loading Tag " + s);
+                    Set<Material> tag = TagUtil.getTag(s.substring(1));
+                    for(Material m : tag) {
+                        if(bl.contains(m)) {
+                            Bukkit.getLogger().warning("Duplicate material in " + phase + " list: " + m); // Check for duplicates in this tag
+                        }
+                    }
+                    bl.addAll(tag);
+                } else {
+                    if(bl.contains(Bukkit.createBlockData(s).getMaterial()))
+                        Bukkit.getLogger().warning("Duplicate material in " + phase + " list: " + s);
+                    bl.add(Bukkit.createBlockData(s).getMaterial());
+                }
             } catch(NullPointerException | IllegalArgumentException e) {
                 throw new ConfigException("Could not load BlockData data for \"" + s + "\"", id);
             }

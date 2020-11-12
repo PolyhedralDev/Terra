@@ -10,10 +10,12 @@ import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import com.dfsek.terra.generation.UserDefinedGenerator;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
+import org.polydev.gaea.world.palette.Palette;
 import parsii.tokenizer.ParseException;
 
 import java.io.File;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeMap;
 
 public class BiomeConfig extends TerraConfig {
 
@@ -36,6 +39,9 @@ public class BiomeConfig extends TerraConfig {
     private final BiomeSnowConfig snow;
     private final List<StructureConfig> structures;
     private final ConfigPack config;
+    private final double ySlantOffsetTop;
+    private final double ySlantOffsetBottom;
+
     private String eq;
 
     public BiomeConfig(File file, ConfigPack config) throws InvalidConfigurationException, IOException {
@@ -72,7 +78,7 @@ public class BiomeConfig extends TerraConfig {
         if(extending && abstractBiome.getPaletteData() != null && !contains("palette")) {
             palette = abstractBiome.getPaletteData();
             Debug.info("Using super palette");
-        } else palette = new BiomePaletteConfig(this);
+        } else palette = new BiomePaletteConfig(this, "palette");
 
         // Palette must not be null
         if(palette.getPaletteMap() == null)
@@ -120,6 +126,17 @@ public class BiomeConfig extends TerraConfig {
             Debug.info("Using super snow");
         } else snow = new BiomeSnowConfig(this);
 
+        // Get slant stuff
+        TreeMap<Integer, Palette<BlockData>> slant = new TreeMap<>();
+        if(contains("slant")) {
+            String slantS = getString("slant.palette");
+            slant = new BiomePaletteConfig(this, "slant.palette").getPaletteMap();
+            Debug.info("Using slant palette: " + slantS);
+            if(slant == null) throw new NotFoundException("Slant Palette", slantS, getID());
+        }
+        ySlantOffsetTop = getDouble("slant.y-offset.top", 0.25);
+        ySlantOffsetBottom = getDouble("slant.y-offset.bottom", 0.25);
+
         //Make sure equation is non-null
         if(eq == null || eq.equals(""))
             throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
@@ -150,9 +167,14 @@ public class BiomeConfig extends TerraConfig {
             }
         }
 
+        String elevation = getString("elevation.equation", null);
+        boolean doElevationInterpolation = getBoolean("elevation.interpolation", true);
+
         try {
             // Get UserDefinedBiome instance representing this config.
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, new UserDefinedGenerator(eq, Collections.emptyList(), palette.getPaletteMap(), getBoolean("prevent-smooth", false)), getBoolean("erodible", false), biomeID);
+            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, Collections.emptyList(), palette.getPaletteMap(), slant, getBoolean("prevent-smooth", false));
+            gen.setElevationInterpolation(doElevationInterpolation);
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());
@@ -173,6 +195,14 @@ public class BiomeConfig extends TerraConfig {
 
     public Range getFloraHeights(Flora f) {
         return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(-1, -1));
+    }
+
+    public double getYSlantOffsetTop() {
+        return ySlantOffsetTop;
+    }
+
+    public double getYSlantOffsetBottom() {
+        return ySlantOffsetBottom;
     }
 
     @Override

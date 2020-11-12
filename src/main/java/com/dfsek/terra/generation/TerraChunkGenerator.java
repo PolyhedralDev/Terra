@@ -2,6 +2,7 @@ package com.dfsek.terra.generation;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -30,6 +31,7 @@ import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
 import org.polydev.gaea.population.PopulationManager;
+import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.profiler.WorldProfiler;
 import org.polydev.gaea.world.palette.Palette;
 
@@ -80,60 +82,44 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attachProfiler(p);
     }
 
-    @Override
-    public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
-        if(needsLoad) load(world); // Load population data for world.
-        ChunkData chunk = createChunkData(world);
-        TerraWorld tw = TerraWorld.getWorld(world);
-        if(!tw.isSafe()) return chunk;
-        ConfigPack config = tw.getConfig();
-        int xOrig = (chunkX << 4);
-        int zOrig = (chunkZ << 4);
-        org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
-        for(byte x = 0; x < 16; x++) {
-            for(byte z = 0; z < 16; z++) {
-                int paletteLevel = 0;
-                int cx = xOrig + x;
-                int cz = zOrig + z;
-                Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
-                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
-                BiomeSlabConfig slab = c.getSlabs();
-                int sea = c.getOcean().getSeaLevel();
-                Palette<BlockData> seaPalette = c.getOcean().getOcean();
-                for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
-                    if(interpolator.getNoise(x, y, z) > 0) {
-                        BlockData data = b.getGenerator().getPalette(y).get(paletteLevel, cx, cz);
-                        chunk.setBlock(x, y, z, data);
-                        if(paletteLevel == 0 && slab != null && y < 255) {
-                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
-                                    slab.getStairs(), slab.getSlabThreshold(), interpolator);
-                        }
-                        paletteLevel++;
-                    } else if(y <= sea) {
-                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
-                        paletteLevel = 0;
-                    } else paletteLevel = 0;
-                }
-            }
+    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
+        Palette<BlockData> slant = ((UserDefinedGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
+        if(slant != null) {
+            boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
+            boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
+            boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
+            boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
+
+            double ySlantOffsetTop = c.getYSlantOffsetTop();
+            double ySlantOffsetBottom = c.getYSlantOffsetBottom();
+            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop - elevationInterpolator.getElevation(x, z), z) > 0;
+            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom - elevationInterpolator.getElevation(x, z), z) > 0;
+
+            if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
         }
-        return chunk;
+        return c.getBiome().getGenerator().getPalette(y);
     }
 
-    private void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                  Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator) {
-        if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
+    private static void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
+                                         Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
+        double elevation = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ());
+        if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4 - elevation, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
                     Stairs stairNew = (Stairs) stair.clone();
-                    if(interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY(), block.getBlockZ()) > thresh) {
+                    double elevationN = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() - 1); // Northern elevation
+                    double elevationS = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() + 1); // Southern elevation
+                    double elevationE = elevationInterpolator.getElevation(block.getBlockX() + 1, block.getBlockZ()); // Eastern elevation
+                    double elevationW = elevationInterpolator.getElevation(block.getBlockX() - 1, block.getBlockZ()); // Western elevation
+                    if(interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY() - elevationW, block.getBlockZ()) > thresh) {
                         stairNew.setFacing(BlockFace.WEST);
-                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.5) > thresh) {
+                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - elevationN, block.getBlockZ() - 0.5) > thresh) {
                         stairNew.setFacing(BlockFace.NORTH);
-                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.5) > thresh) {
+                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - elevationS, block.getBlockZ() + 0.5) > thresh) {
                         stairNew.setFacing(BlockFace.SOUTH);
-                    } else if(interpolator.getNoise(block.getBlockX() + 0.5, block.getBlockY(), block.getBlockZ()) > thresh) {
+                    } else if(interpolator.getNoise(block.getBlockX() + 0.5, block.getBlockY() - elevationE, block.getBlockZ()) > thresh) {
                         stairNew.setFacing(BlockFace.EAST);
                     } else stairNew = null;
                     if(stairNew != null) {
@@ -150,6 +136,58 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
     }
+
+    @Override
+    @SuppressWarnings("try")
+    public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
+        if(needsLoad) load(world); // Load population data for world.
+        ChunkData chunk = createChunkData(world);
+        TerraWorld tw = TerraWorld.getWorld(world);
+        if(!tw.isSafe()) return chunk;
+        ConfigPack config = tw.getConfig();
+        int xOrig = (chunkX << 4);
+        int zOrig = (chunkZ << 4);
+        org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
+
+        ElevationInterpolator elevationInterpolator;
+        try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("ElevationTime")) {
+            elevationInterpolator = new ElevationInterpolator(world, chunkX, chunkZ, tw.getGrid(), getNoiseGenerator());
+        }
+
+        for(byte x = 0; x < 16; x++) {
+            for(byte z = 0; z < 16; z++) {
+                int paletteLevel = 0;
+
+                int cx = xOrig + x;
+                int cz = zOrig + z;
+
+                Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
+                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
+
+                double elevate = elevationInterpolator.getElevation(x, z);
+
+                BiomeSlabConfig slab = c.getSlabs();
+                int sea = c.getOcean().getSeaLevel();
+                Palette<BlockData> seaPalette = c.getOcean().getOcean();
+                for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
+                    if(interpolator.getNoise(x, y - elevate, z) > 0) {
+                        BlockData data = getPalette(x, y, z, c, interpolator, elevationInterpolator).get(paletteLevel, cx, cz);
+                        chunk.setBlock(x, y, z, data);
+                        if(paletteLevel == 0 && slab != null && y < 255) {
+                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
+                                    slab.getStairs(), slab.getSlabThreshold(), interpolator, elevationInterpolator);
+                        }
+                        paletteLevel++;
+                    } else if(y <= sea) {
+                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                        paletteLevel = 0;
+                    } else paletteLevel = 0;
+                }
+            }
+        }
+        return chunk;
+    }
+
 
     private void load(World w) {
         try {

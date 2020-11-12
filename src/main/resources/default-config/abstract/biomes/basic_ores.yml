@@ -4,7 +4,7 @@ structures:
   - STRONGHOLD
 
 carving:
-  CAVE: 30
+  CAVE: 40
   RAVINE: 5
   CAVERN: 5
 ores:
