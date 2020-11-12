@@ -2,7 +2,6 @@ package com.dfsek.terra.generation;
 
 import com.dfsek.terra.biome.TerraBiomeGrid;
 import org.bukkit.World;
-import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Interpolator;
@@ -13,11 +12,13 @@ public class ElevationInterpolator {
     private final FastNoiseLite noise;
     private final int xOrigin;
     private final int zOrigin;
+    private final TerraBiomeGrid grid;
 
     public ElevationInterpolator(World w, int chunkX, int chunkZ, TerraBiomeGrid grid, FastNoiseLite noise) {
         this.xOrigin = chunkX << 4;
         this.zOrigin = chunkZ << 4;
         this.noise = noise;
+        this.grid = grid;
 
         for(int x = -1; x < 7; x++) {
             for(int z = -1; z < 7; z++) {
@@ -27,20 +28,26 @@ public class ElevationInterpolator {
 
         for(byte x = -1; x <= 16; x++) {
             for(byte z = -1; z <= 16; z++) {
-                if(compareGens((x / 4) + 1, (z / 4) + 1)) {
+                UserDefinedGenerator generator = getGenerator(x, z);
+                if(compareGens((x / 4) + 1, (z / 4) + 1) && generator.interpolateElevation()) {
                     Interpolator interpolator = new Interpolator(biomeAvg(x / 4, z / 4),
                             biomeAvg((x / 4) + 1, z / 4),
                             biomeAvg(x / 4, (z / 4) + 1),
                             biomeAvg((x / 4) + 1, (z / 4) + 1),
                             Interpolator.Type.LINEAR);
                     values[x + 1][z + 1] = interpolator.bilerp((double) (x % 4) / 4, (double) (z % 4) / 4);
-                } else values[x + 1][z + 1] = elevate(gens[x / 4][z / 4], xOrigin + x, zOrigin + z);
+                } else values[x + 1][z + 1] = elevate(generator, xOrigin + x, zOrigin + z);
             }
         }
     }
 
+    private UserDefinedGenerator getGenerator(int x, int z) {
+        return (UserDefinedGenerator) grid.getBiome(xOrigin + x, zOrigin + z, GenerationPhase.BASE).getGenerator();
+    }
+
     private boolean compareGens(int x, int z) {
-        Generator comp = gens[x][z];
+        UserDefinedGenerator comp = gens[x][z];
+
         if(!comp.equals(gens[x + 1][z])) return true;
 
         if(!comp.equals(gens[x][z + 1])) return true;

@@ -34,7 +34,7 @@ public class AbstractBiomeConfig extends TerraConfig {
 
         if(contains("carving")) carving = new BiomeCarverConfig(this);
 
-        if(contains("palette")) palette = new BiomePaletteConfig(this);
+        if(contains("palette")) palette = new BiomePaletteConfig(this, "palette");
 
         if(contains("flora")) flora = new BiomeFloraConfig(this);
 

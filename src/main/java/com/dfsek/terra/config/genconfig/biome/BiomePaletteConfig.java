@@ -19,10 +19,9 @@ import java.util.TreeMap;
 public class BiomePaletteConfig extends TerraConfigSection {
     private TreeMap<Integer, Palette<BlockData>> paletteMap;
 
-    @SuppressWarnings("unchecked")
-    public BiomePaletteConfig(TerraConfig parent) throws InvalidConfigurationException {
+    public BiomePaletteConfig(TerraConfig parent, String key) throws InvalidConfigurationException {
         super(parent);
-        List<Map<?, ?>> cfg = parent.getMapList("palette");
+        List<Map<?, ?>> cfg = parent.getMapList(key);
         if(cfg.size() == 0) return;
         paletteMap = new TreeMap<>();
         for(Map<?, ?> e : cfg) {

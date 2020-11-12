@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeMap;
 
 public class BiomeConfig extends TerraConfig {
 
@@ -38,7 +39,6 @@ public class BiomeConfig extends TerraConfig {
     private final BiomeSnowConfig snow;
     private final List<StructureConfig> structures;
     private final ConfigPack config;
-    private final Palette<BlockData> slant;
     private final double ySlantOffsetTop;
     private final double ySlantOffsetBottom;
 
@@ -78,7 +78,7 @@ public class BiomeConfig extends TerraConfig {
         if(extending && abstractBiome.getPaletteData() != null && !contains("palette")) {
             palette = abstractBiome.getPaletteData();
             Debug.info("Using super palette");
-        } else palette = new BiomePaletteConfig(this);
+        } else palette = new BiomePaletteConfig(this, "palette");
 
         // Palette must not be null
         if(palette.getPaletteMap() == null)
@@ -127,12 +127,13 @@ public class BiomeConfig extends TerraConfig {
         } else snow = new BiomeSnowConfig(this);
 
         // Get slant stuff
+        TreeMap<Integer, Palette<BlockData>> slant = new TreeMap<>();
         if(contains("slant")) {
             String slantS = getString("slant.palette");
-            slant = config.getPalette(slantS).getPalette();
+            slant = new BiomePaletteConfig(this, "slant.palette").getPaletteMap();
             Debug.info("Using slant palette: " + slantS);
             if(slant == null) throw new NotFoundException("Slant Palette", slantS, getID());
-        } else slant = null;
+        }
         ySlantOffsetTop = getDouble("slant.y-offset.top", 0.25);
         ySlantOffsetBottom = getDouble("slant.y-offset.bottom", 0.25);
 
@@ -166,11 +167,13 @@ public class BiomeConfig extends TerraConfig {
             }
         }
 
-        String elevation = getString("elevation-equation", null);
+        String elevation = getString("elevation.equation", null);
+        boolean doElevationInterpolation = getBoolean("elevation.interpolation", true);
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, Collections.emptyList(), palette.getPaletteMap(), getBoolean("prevent-smooth", false));
+            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, Collections.emptyList(), palette.getPaletteMap(), slant, getBoolean("prevent-smooth", false));
+            gen.setElevationInterpolation(doElevationInterpolation);
             this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();
@@ -192,10 +195,6 @@ public class BiomeConfig extends TerraConfig {
 
     public Range getFloraHeights(Flora f) {
         return flora.getFloraHeights().computeIfAbsent(f, input -> new Range(-1, -1));
-    }
-
-    public Palette<BlockData> getSlant() {
-        return slant;
     }
 
     public double getYSlantOffsetTop() {

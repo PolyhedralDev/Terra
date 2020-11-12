@@ -30,13 +30,16 @@ public class UserDefinedGenerator extends Generator {
     private final Variable zVar = s.getVariable("z");
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] palettes = new Palette[256];
+    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
+    private final Palette<BlockData>[] slantPalettes = new Palette[256];
     private final NoiseFunction2 n2 = new NoiseFunction2();
     private final NoiseFunction3 n3 = new NoiseFunction3();
     private final ElevationEquation elevationEquation;
     private final boolean preventSmooth;
+    private boolean elevationInterpolation;
 
 
-    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, boolean preventSmooth)
+    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, boolean preventSmooth)
             throws ParseException {
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
@@ -50,6 +53,14 @@ public class UserDefinedGenerator extends Generator {
                 }
             }
             palettes[y] = d;
+            Palette<BlockData> slantPalette = null;
+            for(Map.Entry<Integer, Palette<BlockData>> e : slantPaletteMap.entrySet()) {
+                if(e.getKey() >= y) {
+                    slantPalette = e.getValue();
+                    break;
+                }
+            }
+            slantPalettes[y] = slantPalette;
         }
         if(elevateEquation != null) {
             Debug.info("Using elevation equation");
@@ -110,6 +121,11 @@ public class UserDefinedGenerator extends Generator {
         return palettes[y];
     }
 
+    public Palette<BlockData> getSlantPalette(int y) {
+        return slantPalettes[y];
+    }
+
+
     @Override
     public boolean useMinimalInterpolation() {
         return preventSmooth;
@@ -122,5 +138,13 @@ public class UserDefinedGenerator extends Generator {
 
     public ElevationEquation getElevationEquation() {
         return elevationEquation;
+    }
+
+    public boolean interpolateElevation() {
+        return elevationInterpolation;
+    }
+
+    public void setElevationInterpolation(boolean elevationInterpolation) {
+        this.elevationInterpolation = elevationInterpolation;
     }
 }

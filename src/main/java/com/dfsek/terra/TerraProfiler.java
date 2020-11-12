@@ -19,7 +19,7 @@ public class TerraProfiler extends WorldProfiler {
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "OreTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "StructureTime")
-                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "StructurePasteTime")
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "ElevationTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "SnowTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveBlockUpdate");
     }
