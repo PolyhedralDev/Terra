@@ -26,7 +26,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("0", "0", "1", "dev.2")
+val versionObj = Version("1", "3", "0", "BETA")
 version = versionObj
 
 dependencies {
