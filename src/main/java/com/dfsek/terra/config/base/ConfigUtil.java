@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.polydev.gaea.util.JarUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,8 +25,6 @@ import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static org.polydev.gaea.util.JarUtil.copyResourcesToDirectory;
 
 public final class ConfigUtil {
     public static boolean debug;
@@ -47,7 +46,7 @@ public final class ConfigUtil {
 
         if(config.getBoolean("dump-default", true)) {
             try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
-                copyResourcesToDirectory(jar, "default-config", new File(main.getDataFolder(), "packs" + File.separator + "default").toString());
+                JarUtil.copyResourcesToDirectory(jar, "packs", new File(main.getDataFolder(), "packs").toString());
             } catch(IOException | URISyntaxException e) {
                 Debug.error("Failed to dump default config files!");
                 e.printStackTrace();
