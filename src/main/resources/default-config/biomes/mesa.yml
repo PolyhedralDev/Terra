@@ -1,9 +1,9 @@
 noise-equation: "((-((y / 63)^2)) + 1) + |(noise2(x/1.5, z/1.5)+0.25)|/2.5"
 elevation:
-  equation: "min(floor(((max(noise2(x/1.5, z/1.5)+0.25, 0)))*5), 3)*9"
+  equation: "min(floor(((max(noise2(x/1.5, z/1.5)+0.25, 0)))*5), 3)*9 + if(max(noise2(x/1.5, z/1.5)+0.05, 0), (noise2(x*2,z*2))*10, 0)"
   interpolation: true
 extends: "BASIC_ORES"
-id: "CRAG"
+id: "MESA"
 
 slant:
   palette:
@@ -28,8 +28,8 @@ slant:
     - "BLOCK:minecraft:terracotta": 102
     - "BLOCK:minecraft:yellow_terracotta": 101
     - "BLOCK:minecraft:terracotta": 98
-    - "BLOCK:minecraft:red_terracotta": 95
-    - "BLOCK:minecraft:yellow_terracotta": 94
+    - "BLOCK:minecraft:gray_terracotta": 95
+    - "BLOCK:minecraft:cyan_terracotta": 94
     - "BLOCK:minecraft:white_terracotta": 93
     - "BLOCK:minecraft:terracotta": 92
     - "BLOCK:minecraft:orange_terracotta": 88
@@ -40,15 +40,15 @@ slant:
     - "BLOCK:minecraft:terracotta": 80
     - "BLOCK:minecraft:orange_terracotta": 77
     - "BLOCK:minecraft:yellow_terracotta": 76
-    - "BLOCK:minecraft:gray_terracotta": 75
-    - "BLOCK:minecraft:cyan_terracotta": 73
+    - "BLOCK:minecraft:red_terracotta": 75
+    - "BLOCK:minecraft:terracotta": 73
     - "BLOCK:minecraft:white_terracotta": 72
     - "BLOCK:minecraft:terracotta": 71
     - "BLOCK:minecraft:terracotta": 70
     - "BLOCK:minecraft:orange_terracotta": 66
     - "BLOCK:minecraft:terracotta": 65
   y-offset:
-    top: 0.3
+    top: 0.5
     bottom: 0.25
 
 palette:
