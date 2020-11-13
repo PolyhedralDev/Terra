@@ -35,8 +35,9 @@ val versionObj = Version("1", "3", "1", true)
 version = versionObj
 
 dependencies {
-//    compileOnly("org.polydev.gaea:gaea:1.14.2-github-actions+9d59b49")
-    compileOnly(name = "Gaea-1.14.2", group = "")
+    val geaVersion = "1.14.2"
+    compileOnly(name = "Gaea-${geaVersion}", group = "")
+    testImplementation(name = "Gaea-${geaVersion}", group = "")
 
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0")
@@ -51,12 +52,26 @@ dependencies {
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-
-    testImplementation(name = "Gaea-1.14.2", group = "")
 }
 
 val compileJava: JavaCompile by tasks
+val mainSourceSet: SourceSet = sourceSets["main"]
+
+val tokenizeJavaSources = task<Copy>(name = "tokenizeJavaSources") {
+    from(mainSourceSet.allSource) {
+        include("**/plugin.yml")
+        val tokens = mapOf("VERSION" to versionObj.toString())
+
+        filter(org.apache.tools.ant.filters.ReplaceTokens::class, "tokens" to tokens)
+    }
+    into("build/tokenizedSources")
+    includeEmptyDirs = false
+}
+
+
 compileJava.apply {
+    dependsOn(tokenizeJavaSources)
+
     options.encoding = "UTF-8"
     doFirst {
         options.compilerArgs = mutableListOf("-Xlint:all")
@@ -70,6 +85,24 @@ tasks.test {
     ignoreFailures = false
     failFast = true
     maxParallelForks = 12
+}
+
+tasks.named<ShadowJar>("shadowJar") {
+    from(tokenizeJavaSources.destinationDir)
+
+    archiveClassifier.set("")
+    archiveBaseName.set("Terra")
+    setVersion(project.version)
+    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
+    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
+    relocate("parsii", "com.dfsek.terra.lib.parsii")
+    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+//    dependsOn(testWithPaper)
+//    testWithPaper.mustRunAfter(tasks.shadowJar)
 }
 
 val testDir = "target/server/"
@@ -148,24 +181,6 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     args = listOf("nogui")
     workingDir = file("${testDir}/")
     classpath = files("${testDir}/paper.jar")
-}
-
-tasks.named<ShadowJar>("shadowJar") {
-    archiveClassifier.set("")
-    archiveBaseName.set("Terra")
-    setVersion(project.version)
-    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
-    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
-    relocate("parsii", "com.dfsek.terra.lib.parsii")
-    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-}
-
-tasks.build {
-    dependsOn(tasks.test)
-    dependsOn(tasks.shadowJar)
-//    dependsOn(testWithPaper)
-    tasks.shadowJar.get().mustRunAfter(tasks.test)
-//    testWithPaper.mustRunAfter(tasks.shadowJar)
 }
 
 
