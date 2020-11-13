@@ -30,7 +30,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("1", "3", "0", true)
+val versionObj = Version("1", "3", "1", true)
 version = versionObj
 
 dependencies {
@@ -142,7 +142,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
             "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
             "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
             "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
-            "-Daikars.new.flags=true")
+            "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear")
     maxHeapSize = "2G"
     args = listOf("nogui")
     workingDir = file("${testDir}/")
@@ -153,10 +153,10 @@ tasks.named<ShadowJar>("shadowJar") {
     archiveClassifier.set("")
     archiveBaseName.set("Terra")
     setVersion(project.version)
-    relocate("org.apache.commons", "lib.commons")
-    relocate("org.bstats.bukkit", "lib.bstats")
-    relocate("parsii", "lib.parsii")
-    relocate("io.papermc.lib", "lib.paperlib")
+    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
+    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
+    relocate("parsii", "com.dfsek.terra.lib.parsii")
+    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
 }
 
 tasks.build {
