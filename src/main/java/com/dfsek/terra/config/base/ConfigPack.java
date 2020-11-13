@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -63,7 +64,7 @@ public class ConfigPack extends YamlConfiguration {
     public final boolean vanillaMobs;
     public final boolean preventSaplingOverride;
 
-    public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
+    private final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
     private final Map<String, CarverConfig> carvers;
@@ -74,6 +75,7 @@ public class ConfigPack extends YamlConfiguration {
     private final TreeRegistry treeRegistry = new TreeRegistry();
     private final FloraRegistry floraRegistry = new FloraRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
+    private final Map<String, Double> definedVariables = new HashMap<>();
     private final File dataFolder;
     private final String id;
 
@@ -105,6 +107,20 @@ public class ConfigPack extends YamlConfiguration {
             if(treeRegistry.add(entry.getKey(), entry.getValue()))
                 Debug.info("Overriding Vanilla tree: " + entry.getKey());
         }
+
+        if(contains("variables")) {
+            Map<String, Object> vars = Objects.requireNonNull(getConfigurationSection("variables")).getValues(false);
+            for(Map.Entry<String, Object> entry : vars.entrySet()) {
+                try {
+                    definedVariables.put(entry.getKey(), Double.valueOf(entry.getValue().toString()));
+                    Debug.info("Registered variable " + entry.getKey() + " with value " + entry.getValue());
+                } catch(ClassCastException | NumberFormatException e) {
+                    Debug.stack(e);
+                    throw new ConfigException("Variable value " + entry.getValue().toString() + " could not be parsed to a double.", getID());
+                }
+            }
+        }
+
 
         abstractBiomes = ConfigLoader.load(new File(file, "abstract" + File.separator + "biomes").toPath(), this, AbstractBiomeConfig.class);
 
@@ -176,6 +192,10 @@ public class ConfigPack extends YamlConfiguration {
 
     public String getID() {
         return id;
+    }
+
+    public Map<String, Double> getDefinedVariables() {
+        return definedVariables;
     }
 
     public Map<String, BiomeConfig> getBiomes() {
