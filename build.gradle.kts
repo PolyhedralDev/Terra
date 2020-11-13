@@ -5,9 +5,12 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+//import java.util.zip.ZipFile
+import java.util.zip.ZipInputStream
 
 plugins {
     java
+    maven
     id("com.github.johnrengelman.shadow").version("6.1.0")
 }
 
@@ -19,6 +22,7 @@ repositories {
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+//    maven { url = uri("https://maven.pkg.github.com/solonovamax/Gaea") }
 }
 
 java {
@@ -26,14 +30,17 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("1", "3", "0", "BETA")
+val versionObj = Version("1", "3", "1", true)
+
 version = versionObj
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:20.1.0") // more recent.
-    implementation("commons-io:commons-io:2.4")
+//    compileOnly("org.polydev.gaea:gaea:1.14.2-github-actions+9d59b49")
     compileOnly(name = "Gaea-1.14.2", group = "")
+
+    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:20.1.0")
+    implementation("commons-io:commons-io:2.4")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
@@ -46,21 +53,20 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 
     testImplementation(name = "Gaea-1.14.2", group = "")
-    testImplementation("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
 }
 
 val compileJava: JavaCompile by tasks
 compileJava.apply {
     options.encoding = "UTF-8"
     doFirst {
-        options.compilerArgs = mutableListOf("-Xlint:all", "-Xlint:-processing")
+        options.compilerArgs = mutableListOf("-Xlint:all")
     }
 }
 
 tasks.test {
     useJUnitPlatform()
 
-    maxHeapSize = "1G"
+    maxHeapSize = "4G"
     ignoreFailures = false
     failFast = true
     maxParallelForks = 12
@@ -74,7 +80,7 @@ val setupServer = tasks.create("setupServer") {
         // clean
         file("${testDir}/").deleteRecursively()
         file("${testDir}/plugins").mkdirs()
-        
+
         // Downloading latest paper jar.
         val paperUrl = URL("https://papermc.io/api/v1/paper/1.16.4/latest/download")
         val paperReadableByteChannel = Channels.newChannel(paperUrl.openStream())
@@ -82,25 +88,41 @@ val setupServer = tasks.create("setupServer") {
         val paperFileOutputStream = paperFile.outputStream()
         val paperFileChannel = paperFileOutputStream.channel
         paperFileChannel.transferFrom(paperReadableByteChannel, 0, Long.MAX_VALUE)
-        
+
         // Cloning test setup.
         gitClone("https://github.com/PolyhedralDev/WorldGenTestServer")
         // Copying plugins
         Files.move(Paths.get("WorldGenTestServer/plugins"),
-                   Paths.get("$testDir/plugins"),
-                   StandardCopyOption.REPLACE_EXISTING)
+                Paths.get("$testDir/plugins"),
+                StandardCopyOption.REPLACE_EXISTING)
         // Copying config
         val serverText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/server.properties").readText()
         file("${testDir}/server.properties").writeText(serverText)
         val bukkitText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/bukkit.yml").readText()
         file("${testDir}/bukkit.yml").writeText(bukkitText.replace("\${world}", "world").replace("\${gen}", "Terra:DEFAULT"))
-        
+
         File("${testDir}/eula.txt").writeText("eula=true")
-        
+
         // clean up
         file("WorldGenTestServer").deleteRecursively()
     }
 }
+
+val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
+    doFirst {
+        // Downloading latest paper jar.
+//        if (file("${buildDir}/resources/main/packs/default").exists() && file("${buildDir}/resources/main/packs/nether").exists())
+//            return@doFirst
+//        else
+        file("${buildDir}/resources/main/packs/").deleteRecursively()
+
+        val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+        downloadAndUnzipPack(defaultPackUrl)
+        val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
+        downloadAndUnzipPack(netherPackUrl)
+    }
+}
+tasks.processResources.get().dependsOn(downloadDefaultPacks)
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
@@ -151,13 +173,13 @@ tasks.build {
  * Version class that does version stuff.
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class Version(val major: String, val minor: String, val revision: String, val preReleaseData: String? = null) {
-    
+class Version(val major: String, val minor: String, val revision: String, val preRelease: Boolean = false) {
+
     override fun toString(): String {
-        return if (preReleaseData.isNullOrBlank())
+        return if (!preRelease)
             "$major.$minor.$revision"
         else //Only use git hash if it's a prerelease.
-            "$major.$minor.$revision-$preReleaseData+${getGitHash()}"
+            "$major.$minor.$revision-BETA+${getGitHash()}"
     }
 }
 
@@ -175,5 +197,19 @@ fun gitClone(name: String) {
     exec {
         commandLine = mutableListOf("git", "clone", name)
         standardOutput = stdout
+    }
+}
+
+fun downloadAndUnzipPack(packUrl: URL) {
+    ZipInputStream(packUrl.openStream()).use { zip ->
+        while (true) {
+            val entry = zip.nextEntry ?: break
+            if (entry.isDirectory)
+                file("${buildDir}/resources/main/packs/${entry.name}").mkdirs()
+            else
+                file("${buildDir}/resources/main/packs/${entry.name}").outputStream().use { output ->
+                    output.write(zip.readBytes())
+                }
+        }
     }
 }
