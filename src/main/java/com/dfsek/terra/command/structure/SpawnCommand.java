@@ -24,9 +24,9 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         int x = p.getBlockX();
         int y = p.getBlockY();
         int z = p.getBlockZ();
-        boolean air = StructureSpawnRequirement.AIR.matches(world, x, y, z);
-        boolean ground = StructureSpawnRequirement.LAND.matches(world, x, y, z);
-        boolean sea = StructureSpawnRequirement.OCEAN.matches(world, x, y, z);
+        boolean air = StructureSpawnRequirement.AIR.getInstance(world).matches(x, y, z);
+        boolean ground = StructureSpawnRequirement.LAND.getInstance(world).matches(x, y, z);
+        boolean sea = StructureSpawnRequirement.OCEAN.getInstance(world).matches(x, y, z);
 
         sender.sendMessage("AIR: " + air + "\nLAND: " + ground + "\nOCEAN: " + sea);
         return true;
