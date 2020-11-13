@@ -41,7 +41,6 @@ public class CarverConfig extends TerraConfig {
     private final boolean replaceIsBlacklistTop;
     private final boolean replaceIsBlacklistBottom;
     private final boolean updateOcean;
-    private final Range recalc;
 
     @SuppressWarnings("unchecked")
     public CarverConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
@@ -71,7 +70,7 @@ public class CarverConfig extends TerraConfig {
         updateOcean = getBoolean("update-liquids", false);
 
         double step = getDouble("step", 2);
-        recalc = new Range(getInt("recalculate-direction.min", 8), getInt("recalculate-direction.max", 12));
+        Range recalc = new Range(getInt("recalculate-direction.min", 8), getInt("recalculate-direction.max", 12));
         double rm = getDouble("recalculate-magnitude", 4);
         shift = new HashMap<>();
         for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("shift")).getValues(false).entrySet()) {

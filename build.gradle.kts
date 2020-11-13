@@ -31,6 +31,7 @@ java {
 }
 
 val versionObj = Version("1", "3", "1", true)
+
 version = versionObj
 
 dependencies {

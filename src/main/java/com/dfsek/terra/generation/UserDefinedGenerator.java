@@ -17,7 +17,6 @@ import parsii.eval.Scope;
 import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -39,8 +38,11 @@ public class UserDefinedGenerator extends Generator {
     private boolean elevationInterpolation;
 
 
-    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, List<Variable> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, boolean preventSmooth)
+    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, Map<String, Double> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, boolean preventSmooth)
             throws ParseException {
+        for(Map.Entry<String, Double> entry : userVariables.entrySet()) {
+            s.getVariable(entry.getKey()).setValue(entry.getValue()); // Define all user variables.
+        }
         Parser p = new Parser();
         p.registerFunction("noise2", n2);
         p.registerFunction("noise3", n3);

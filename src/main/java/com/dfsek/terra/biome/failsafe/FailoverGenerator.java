@@ -7,7 +7,7 @@ import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 import parsii.tokenizer.ParseException;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -19,6 +19,6 @@ public final class FailoverGenerator extends UserDefinedGenerator {
     }
 
     public FailoverGenerator() throws ParseException {
-        super("0", null, Collections.emptyList(), palette, new TreeMap<>(), false);
+        super("0", null, new HashMap<>(), palette, new TreeMap<>(), false);
     }
 }

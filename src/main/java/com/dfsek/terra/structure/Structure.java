@@ -277,7 +277,7 @@ public class Structure implements Serializable {
     public boolean checkSpawns(Location origin, Rotation r) {
         for(StructureContainedBlock b : spawns) {
             Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
-            if(!b.getRequirement().matches(origin.getWorld(), (int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
+            if(!b.getRequirement().getInstance(origin.getWorld()).matches((int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
                 return false;
         }
         return true;

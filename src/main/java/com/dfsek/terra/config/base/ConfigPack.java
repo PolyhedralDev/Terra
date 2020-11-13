@@ -17,7 +17,8 @@ import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.tree.TreeRegistry;
+import com.dfsek.terra.registry.FloraRegistry;
+import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -62,17 +64,18 @@ public class ConfigPack extends YamlConfiguration {
     public final boolean vanillaMobs;
     public final boolean preventSaplingOverride;
 
-    public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
+    private final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
     private final Map<String, CarverConfig> carvers;
-    private final Map<String, FloraConfig> flora;
     private final Map<String, StructureConfig> structures;
     private final Map<String, AbstractBiomeConfig> abstractBiomes;
     private final Map<String, BiomeConfig> biomes;
     private final Map<String, BiomeGridConfig> grids;
     private final TreeRegistry treeRegistry = new TreeRegistry();
+    private final FloraRegistry floraRegistry = new FloraRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
+    private final Map<String, Double> definedVariables = new HashMap<>();
     private final File dataFolder;
     private final String id;
 
@@ -90,7 +93,11 @@ public class ConfigPack extends YamlConfiguration {
 
         carvers = ConfigLoader.load(new File(file, "carving").toPath(), this, CarverConfig.class);
 
-        flora = ConfigLoader.load(new File(file, "flora").toPath(), this, FloraConfig.class);
+        Map<String, FloraConfig> flora = ConfigLoader.load(new File(file, "flora").toPath(), this, FloraConfig.class);
+        for(Map.Entry<String, FloraConfig> entry : flora.entrySet()) {
+            if(floraRegistry.add(entry.getKey(), entry.getValue()))
+                Debug.info("Overriding Gaea flora: " + entry.getKey());
+        }
 
         structures = ConfigLoader.load(new File(file, "structures").toPath(), this, StructureConfig.class);
 
@@ -100,6 +107,20 @@ public class ConfigPack extends YamlConfiguration {
             if(treeRegistry.add(entry.getKey(), entry.getValue()))
                 Debug.info("Overriding Vanilla tree: " + entry.getKey());
         }
+
+        if(contains("variables")) {
+            Map<String, Object> vars = Objects.requireNonNull(getConfigurationSection("variables")).getValues(false);
+            for(Map.Entry<String, Object> entry : vars.entrySet()) {
+                try {
+                    definedVariables.put(entry.getKey(), Double.valueOf(entry.getValue().toString()));
+                    Debug.info("Registered variable " + entry.getKey() + " with value " + entry.getValue());
+                } catch(ClassCastException | NumberFormatException e) {
+                    Debug.stack(e);
+                    throw new ConfigException("Variable value " + entry.getValue().toString() + " could not be parsed to a double.", getID());
+                }
+            }
+        }
+
 
         abstractBiomes = ConfigLoader.load(new File(file, "abstract" + File.separator + "biomes").toPath(), this, AbstractBiomeConfig.class);
 
@@ -171,6 +192,10 @@ public class ConfigPack extends YamlConfiguration {
 
     public String getID() {
         return id;
+    }
+
+    public Map<String, Double> getDefinedVariables() {
+        return definedVariables;
     }
 
     public Map<String, BiomeConfig> getBiomes() {
@@ -285,8 +310,8 @@ public class ConfigPack extends YamlConfiguration {
         return fill;
     }
 
-    public FloraConfig getFlora(String id) {
-        return flora.get(id);
+    public FloraRegistry getFloraRegistry() {
+        return floraRegistry;
     }
 
     public TreeRegistry getTreeRegistry() {
