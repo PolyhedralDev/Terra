@@ -1,7 +1,7 @@
 name: "Terra"
 depend: [ "Gaea" ]
 main: "com.dfsek.terra.Terra"
-version: "1.2.1-BETA"
+version: "1.3.0-BETA"
 load: "STARTUP"
 api-version: "1.16"
 description: "An insanely powerful free & open-source data-driven world generator."

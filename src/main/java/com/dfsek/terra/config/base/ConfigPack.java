@@ -17,7 +17,8 @@ import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.tree.TreeRegistry;
+import com.dfsek.terra.registry.FloraRegistry;
+import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -66,12 +67,12 @@ public class ConfigPack extends YamlConfiguration {
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
     private final Map<String, CarverConfig> carvers;
-    private final Map<String, FloraConfig> flora;
     private final Map<String, StructureConfig> structures;
     private final Map<String, AbstractBiomeConfig> abstractBiomes;
     private final Map<String, BiomeConfig> biomes;
     private final Map<String, BiomeGridConfig> grids;
     private final TreeRegistry treeRegistry = new TreeRegistry();
+    private final FloraRegistry floraRegistry = new FloraRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
     private final File dataFolder;
     private final String id;
@@ -90,7 +91,11 @@ public class ConfigPack extends YamlConfiguration {
 
         carvers = ConfigLoader.load(new File(file, "carving").toPath(), this, CarverConfig.class);
 
-        flora = ConfigLoader.load(new File(file, "flora").toPath(), this, FloraConfig.class);
+        Map<String, FloraConfig> flora = ConfigLoader.load(new File(file, "flora").toPath(), this, FloraConfig.class);
+        for(Map.Entry<String, FloraConfig> entry : flora.entrySet()) {
+            if(floraRegistry.add(entry.getKey(), entry.getValue()))
+                Debug.info("Overriding Gaea flora: " + entry.getKey());
+        }
 
         structures = ConfigLoader.load(new File(file, "structures").toPath(), this, StructureConfig.class);
 
@@ -285,8 +290,8 @@ public class ConfigPack extends YamlConfiguration {
         return fill;
     }
 
-    public FloraConfig getFlora(String id) {
-        return flora.get(id);
+    public FloraRegistry getFloraRegistry() {
+        return floraRegistry;
     }
 
     public TreeRegistry getTreeRegistry() {

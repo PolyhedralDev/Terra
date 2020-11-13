@@ -3,7 +3,7 @@ package com.dfsek.terra;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
-import com.dfsek.terra.tree.TreeRegistry;
+import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

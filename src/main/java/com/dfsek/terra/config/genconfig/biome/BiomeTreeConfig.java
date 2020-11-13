@@ -3,6 +3,7 @@ package com.dfsek.terra.config.genconfig.biome;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
+import com.dfsek.terra.config.exception.NotFoundException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
@@ -25,6 +26,7 @@ public class BiomeTreeConfig extends TerraConfigSection {
         Map<String, Object> cfg = c.getValues(false);
         if(cfg.size() == 0) return;
         treeDensity = parent.getInt("trees.density", 0);
+
         for(Map.Entry<String, Object> e : cfg.entrySet()) {
             try {
                 Map<?, ?> val = ((ConfigurationSection) e.getValue()).getValues(false);
@@ -33,7 +35,7 @@ public class BiomeTreeConfig extends TerraConfigSection {
                 try {
                     tree = Objects.requireNonNull(parent.getConfig().getTreeRegistry().get(e.getKey()));
                 } catch(NullPointerException ex2) {
-                    throw new ConfigException("Invalid tree type: \"" + e.getKey() + "\"", parent.getID());
+                    throw new NotFoundException("Tree", e.getKey(), parent.getID());
                 }
                 trees.add(tree, (Integer) val.get("weight"));
                 treeHeights.put(tree, new Range((Integer) y.get("min"), (Integer) y.get("max")));

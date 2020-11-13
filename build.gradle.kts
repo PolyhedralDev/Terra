@@ -31,6 +31,7 @@ java {
 }
 
 val versionObj = Version("1", "3", "1", true)
+
 version = versionObj
 
 dependencies {
@@ -51,7 +52,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 
-    testImplementation(name = "Gaea-1.14.0", group = "")
+    testImplementation(name = "Gaea-1.14.2", group = "")
 }
 
 val compileJava: JavaCompile by tasks
