@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 /**
  * Represents a Terra configuration pack.
  */
-public class ConfigPack extends YamlConfiguration {
+public class ConfigPack {
     private static final Map<String, ConfigPack> configs = new HashMap<>();
     public final List<String> biomeList;
     public final double zoneFreq;
@@ -61,8 +61,8 @@ public class ConfigPack extends YamlConfiguration {
     public final boolean vanillaDecoration;
     public final boolean vanillaMobs;
     public final boolean preventSaplingOverride;
-
     public final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
+    private final YamlConfiguration yaml;
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
     private final Map<String, CarverConfig> carvers;
@@ -77,12 +77,14 @@ public class ConfigPack extends YamlConfiguration {
     private final String id;
 
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
+        yaml = new YamlConfiguration();
+        yaml.load(new File(file, "pack.yml"));
+
         long l = System.nanoTime();
-        load(new File(file, "pack.yml"));
         dataFolder = file;
 
-        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
-        this.id = getString("id");
+        if(!yaml.contains("id")) throw new ConfigException("No ID specified!", "null");
+        this.id = yaml.getString("id");
 
         ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);
 
@@ -107,37 +109,37 @@ public class ConfigPack extends YamlConfiguration {
 
         grids = ConfigLoader.load(new File(file, "grids").toPath(), this, BiomeGridConfig.class);
 
-        zoneFreq = 1f / getInt("frequencies.zone", 1536);
-        freq1 = 1f / getInt("frequencies.grid-x", 256);
-        freq2 = 1f / getInt("frequencies.grid-z", 512);
+        zoneFreq = 1f / yaml.getInt("frequencies.zone", 1536);
+        freq1 = 1f / yaml.getInt("frequencies.grid-x", 256);
+        freq2 = 1f / yaml.getInt("frequencies.grid-z", 512);
 
-        biomeBlend = getBoolean("blend.enable", false);
-        blendAmp = getInt("blend.amplitude", 8);
-        blendFreq = getDouble("blend.frequency", 0.01);
+        biomeBlend = yaml.getBoolean("blend.enable", false);
+        blendAmp = yaml.getInt("blend.amplitude", 8);
+        blendFreq = yaml.getDouble("blend.frequency", 0.01);
 
-        erosionEnable = getBoolean("erode.enable", false);
-        erosionFreq = getDouble("erode.frequency", 0.01);
-        erosionThresh = getDouble("erode.threshold", 0.04);
-        erosionOctaves = getInt("erode.octaves", 3);
+        erosionEnable = yaml.getBoolean("erode.enable", false);
+        erosionFreq = yaml.getDouble("erode.frequency", 0.01);
+        erosionThresh = yaml.getDouble("erode.threshold", 0.04);
+        erosionOctaves = yaml.getInt("erode.octaves", 3);
 
-        octaves = getInt("noise.octaves", 4);
-        frequency = getDouble("noise.frequency", 1f / 96);
+        octaves = yaml.getInt("noise.octaves", 4);
+        frequency = yaml.getDouble("noise.frequency", 1f / 96);
 
-        erosionName = getString("erode.grid");
+        erosionName = yaml.getString("erode.grid");
 
-        vanillaCaves = getBoolean("vanilla.caves", false);
-        vanillaStructures = getBoolean("vanilla.structures", false);
-        vanillaDecoration = getBoolean("vanilla.decorations", false);
-        vanillaMobs = getBoolean("vanilla.mobs", false);
+        vanillaCaves = yaml.getBoolean("vanilla.caves", false);
+        vanillaStructures = yaml.getBoolean("vanilla.structures", false);
+        vanillaDecoration = yaml.getBoolean("vanilla.decorations", false);
+        vanillaMobs = yaml.getBoolean("vanilla.mobs", false);
 
-        preventSaplingOverride = getBoolean("prevent-sapling-override", false);
+        preventSaplingOverride = yaml.getBoolean("prevent-sapling-override", false);
 
         if(vanillaMobs || vanillaDecoration || vanillaStructures || vanillaCaves) {
             Terra.getInstance().getLogger().warning("WARNING: Vanilla features have been enabled! These features may not work properly, and are not officially supported! Use at your own risk!");
         }
 
         // Load BiomeGrids from BiomeZone
-        biomeList = getStringList("grids");
+        biomeList = yaml.getStringList("grids");
 
         for(String biome : biomeList) {
             if(getBiomeGrid(biome) == null) {
@@ -152,7 +154,7 @@ public class ConfigPack extends YamlConfiguration {
             allStructures.addAll(b.getStructures());
         }
 
-        ConfigurationSection st = getConfigurationSection("locatable");
+        ConfigurationSection st = yaml.getConfigurationSection("locatable");
         if(st != null) {
             Map<String, Object> strucLocatable = st.getValues(false);
             for(Map.Entry<String, Object> e : strucLocatable.entrySet()) {
@@ -169,6 +171,10 @@ public class ConfigPack extends YamlConfiguration {
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
+    public BiomeGridConfig getBiomeGrid(String id) {
+        return grids.get(id);
+    }
+
     public String getID() {
         return id;
     }
@@ -179,10 +185,6 @@ public class ConfigPack extends YamlConfiguration {
 
     public StructureConfig getStructure(String id) {
         return structures.get(id);
-    }
-
-    public BiomeGridConfig getBiomeGrid(String id) {
-        return grids.get(id);
     }
 
     public static synchronized void loadAll(JavaPlugin main) {

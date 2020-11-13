@@ -24,7 +24,6 @@ public class BiomeGridConfig extends TerraConfig {
     @SuppressWarnings("unchecked")
     public BiomeGridConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        load(file);
         if(!contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
         this.gridID = getString("id");
         if(!contains("grid")) throw new ConfigException("Grid key not found!", getID());
