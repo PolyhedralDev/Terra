@@ -40,7 +40,7 @@ public class BiomeZone {
      * @param z Z coordinate
      * @return BiomeGrid at coordinates.
      */
-    protected BiomeGrid getGrid(int x, int z) {
+    public BiomeGrid getGrid(int x, int z) {
         return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length, 4)];
     }
 

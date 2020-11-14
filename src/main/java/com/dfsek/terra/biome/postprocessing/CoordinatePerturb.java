@@ -1,4 +1,4 @@
-package com.dfsek.terra.biome;
+package com.dfsek.terra.biome.postprocessing;
 
 import com.dfsek.terra.procgen.math.Vector2;
 import org.polydev.gaea.math.FastNoiseLite;

@@ -2,8 +2,8 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.util.DataUtil;

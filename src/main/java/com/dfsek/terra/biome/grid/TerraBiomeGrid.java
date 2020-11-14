@@ -1,5 +1,9 @@
-package com.dfsek.terra.biome;
+package com.dfsek.terra.biome.grid;
 
+import com.dfsek.terra.biome.BiomeZone;
+import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.postprocessing.CoordinatePerturb;
+import com.dfsek.terra.biome.postprocessing.ErosionNoise;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;

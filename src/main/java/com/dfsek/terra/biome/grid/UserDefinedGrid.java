@@ -1,5 +1,6 @@
-package com.dfsek.terra.biome;
+package com.dfsek.terra.biome.grid;
 
+import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Location;

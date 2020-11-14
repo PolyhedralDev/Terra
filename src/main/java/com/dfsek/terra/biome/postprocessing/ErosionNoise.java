@@ -1,4 +1,4 @@
-package com.dfsek.terra.biome;
+package com.dfsek.terra.biome.postprocessing;
 
 import org.polydev.gaea.math.FastNoiseLite;
 
@@ -26,7 +26,7 @@ public class ErosionNoise {
      * @param z Z coordinate
      * @return Whether location is eroded
      */
-    boolean isEroded(int x, int z) {
+    public boolean isEroded(int x, int z) {
         double abs = Math.pow(noise.getNoise(x, z), 2);
         return abs < thresh;
     }

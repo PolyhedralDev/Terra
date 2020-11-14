@@ -1,9 +1,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.biome.BiomeZone;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.UserDefinedGrid;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
