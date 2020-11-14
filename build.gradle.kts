@@ -35,9 +35,9 @@ val versionObj = Version("1", "3", "1", true)
 version = versionObj
 
 dependencies {
-    val geaVersion = "1.14.2"
-    compileOnly(name = "Gaea-${geaVersion}", group = "")
-    testImplementation(name = "Gaea-${geaVersion}", group = "")
+    val gaeaVersion = "1.14.2"
+    compileOnly(name = "Gaea-${gaeaVersion}", group = "")
+    testImplementation(name = "Gaea-${gaeaVersion}", group = "")
 
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0")
