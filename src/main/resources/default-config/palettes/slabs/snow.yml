@@ -1,7 +1,0 @@
-layers:
-  - materials:
-      - "minecraft:snow[layers=3]": 1
-      - "minecraft:snow[layers=4]": 1
-      - "minecraft:snow[layers=5]": 1
-    layers: 1
-id: "SNOW_LAYERS"

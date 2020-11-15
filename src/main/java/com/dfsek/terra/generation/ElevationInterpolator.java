@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.FastNoiseLite;

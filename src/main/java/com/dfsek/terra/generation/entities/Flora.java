@@ -1,5 +1,6 @@
 package com.dfsek.terra.generation.entities;
 
+import com.dfsek.terra.generation.deserelized.GenerationEntity;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -1,8 +1,8 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.TerraBiomeGrid;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;

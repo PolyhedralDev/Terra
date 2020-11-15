@@ -21,7 +21,6 @@ import parsii.tokenizer.ParseException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -172,7 +171,7 @@ public class BiomeConfig extends TerraConfig {
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, Collections.emptyList(), palette.getPaletteMap(), slant, getBoolean("prevent-smooth", false));
+            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, config.getDefinedVariables(), palette.getPaletteMap(), slant, getBoolean("prevent-smooth", false));
             gen.setElevationInterpolation(doElevationInterpolation);
             this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {

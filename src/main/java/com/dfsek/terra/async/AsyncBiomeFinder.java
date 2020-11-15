@@ -1,6 +1,6 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;

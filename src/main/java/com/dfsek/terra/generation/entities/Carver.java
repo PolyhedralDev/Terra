@@ -1,6 +1,7 @@
 package com.dfsek.terra.generation.entities;
 
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.generation.deserelized.GenerationEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;

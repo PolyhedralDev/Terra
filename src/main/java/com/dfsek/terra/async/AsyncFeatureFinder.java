@@ -1,7 +1,7 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.biome.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

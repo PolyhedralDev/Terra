@@ -1,9 +1,0 @@
-material: "minecraft:redstone_ore"
-radius:
-  min: 1
-  max: 1
-deform: 0.75
-deform-frequency: 0.2
-id: "REDSTONE_ORE"
-replace:
-  - "#minecraft:base_stone_overworld"
