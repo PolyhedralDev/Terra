@@ -144,6 +144,10 @@ public class Structure implements Serializable {
         return (Structure) o;
     }
 
+    public StructureContainedBlock[][][] getRawStructure() {
+        return structure;
+    }
+
     /**
      * Paste the structure at a Location, ignoring chunk boundaries.
      *

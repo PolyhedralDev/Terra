@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.structure;
 
+import com.dfsek.terra.command.structure.load.LoadCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
