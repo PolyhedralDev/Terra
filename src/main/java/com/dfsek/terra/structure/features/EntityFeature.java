@@ -58,7 +58,10 @@ public class EntityFeature implements Feature {
                 attempt.subtract(0, 1, 0);
                 yv--;
 
-                if(!stand.contains(on.getType())) continue;
+                if(!stand.contains(on.getType())) {
+                    canSpawn = false;
+                    continue;
+                }
 
                 for(int j = 1; j < inSize + 1; j++)
                     if(!in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
@@ -99,7 +102,10 @@ public class EntityFeature implements Feature {
                 attempt.subtract(0, 1, 0);
                 yv--;
 
-                if(!stand.contains(on.getType())) continue;
+                if(!stand.contains(on.getType())) {
+                    canSpawn = false;
+                    continue;
+                }
 
                 for(int j = 1; j < inSize + 1; j++)
                     if(!in.contains(on.getRelative(BlockFace.UP, j).getType())) canSpawn = false;
