@@ -9,11 +9,10 @@ public class NoiseConfig {
     private final NoiseBuilder builder;
     private final int dimensions;
 
-    @SuppressWarnings("unchecked")
     public NoiseConfig(ConfigurationSection section) throws ConfigException {
         NoiseBuilder builder = new NoiseBuilder();
         try {
-            builder.setType(FastNoiseLite.NoiseType.valueOf((String) section.get("type")));
+            builder.setType(FastNoiseLite.NoiseType.valueOf(section.getString("type", "OpenSimplex2")));
             builder.setFrequency(section.getDouble("frequency", 0.02D));
 
             dimensions = section.getInt("dimensions", 3);

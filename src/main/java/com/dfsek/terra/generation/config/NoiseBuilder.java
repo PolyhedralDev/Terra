@@ -37,6 +37,8 @@ public class NoiseBuilder {
             noise.setCellularJitter(cellularJitter);
         }
 
+        noise.setNoiseType(type);
+
         noise.setDomainWarpType(domainWarpType);
         noise.setDomainWarpAmp(domainWarpAmp);
 
@@ -104,6 +106,58 @@ public class NoiseBuilder {
 
     public void setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
         this.rotationType3D = rotationType3D;
+    }
+
+    public FastNoiseLite.CellularDistanceFunction getCellularDistanceFunction() {
+        return cellularDistanceFunction;
+    }
+
+    public FastNoiseLite.CellularReturnType getCellularReturnType() {
+        return cellularReturnType;
+    }
+
+    public FastNoiseLite.DomainWarpType getDomainWarpType() {
+        return domainWarpType;
+    }
+
+    public double getCellularJitter() {
+        return cellularJitter;
+    }
+
+    public double getDomainWarpAmp() {
+        return domainWarpAmp;
+    }
+
+    public double getFractalGain() {
+        return fractalGain;
+    }
+
+    public double getFractalLacunarity() {
+        return fractalLacunarity;
+    }
+
+    public double getFrequency() {
+        return frequency;
+    }
+
+    public double getPingPong() {
+        return pingPong;
+    }
+
+    public double getWeightedStrength() {
+        return weightedStrength;
+    }
+
+    public int getOctaves() {
+        return octaves;
+    }
+
+    public FastNoiseLite.FractalType getFractalType() {
+        return fractalType;
+    }
+
+    public FastNoiseLite.RotationType3D getRotationType3D() {
+        return rotationType3D;
     }
 }
 

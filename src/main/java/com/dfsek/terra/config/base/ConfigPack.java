@@ -79,7 +79,6 @@ public class ConfigPack extends YamlConfiguration {
     private final File dataFolder;
     private final String id;
 
-    @SuppressWarnings("unchecked")
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
         load(new File(file, "pack.yml"));
@@ -90,8 +89,9 @@ public class ConfigPack extends YamlConfiguration {
 
         Map<String, Object> noise = Objects.requireNonNull(getConfigurationSection("noise")).getValues(false);
         for(Map.Entry<String, Object> entry : noise.entrySet()) {
-            noiseBuilders.put(entry.getKey(), new NoiseConfig((ConfigurationSection) entry.getValue()));
-            Debug.info("Loaded noise function " + entry.getKey());
+            NoiseConfig noiseConfig = new NoiseConfig((ConfigurationSection) entry.getValue());
+            noiseBuilders.put(entry.getKey(), noiseConfig);
+            Debug.info("Loaded noise function " + entry.getKey() + " with type " + noiseConfig.getBuilder().getType());
         }
 
         ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);
