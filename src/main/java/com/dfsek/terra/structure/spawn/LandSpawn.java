@@ -2,6 +2,8 @@ package com.dfsek.terra.structure.spawn;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.generation.ElevationEquation;
+import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
 
@@ -14,6 +16,7 @@ public class LandSpawn extends Requirement {
     public boolean matches(int x, int y, int z) {
         TerraWorld tw = TerraWorld.getWorld(getWorld());
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
-        return b.getGenerator().getNoise(getNoise(), getWorld(), x, y, z) > 0;
+        ElevationEquation elevationEquation = ((UserDefinedGenerator) b.getGenerator()).getElevationEquation();
+        return b.getGenerator().getNoise(getNoise(), getWorld(), x, (int) (y - elevationEquation.getNoise(x, z, getWorld())), z) > 0;
     }
 }

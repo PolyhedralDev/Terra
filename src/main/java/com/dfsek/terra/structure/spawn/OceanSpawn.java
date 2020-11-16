@@ -3,6 +3,8 @@ package com.dfsek.terra.structure.spawn;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.generation.ElevationEquation;
+import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
 
@@ -17,6 +19,7 @@ public class OceanSpawn extends Requirement {
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
         BiomeConfig c = tw.getConfig().getBiome(b);
         if(y > c.getOcean().getSeaLevel()) return false;
-        return b.getGenerator().getNoise(getNoise(), getWorld(), x, y, z) <= 0;
+        ElevationEquation elevationEquation = ((UserDefinedGenerator) b.getGenerator()).getElevationEquation();
+        return b.getGenerator().getNoise(getNoise(), getWorld(), x, (int) (y - elevationEquation.getNoise(x, z, getWorld())), z) <= 0;
     }
 }
