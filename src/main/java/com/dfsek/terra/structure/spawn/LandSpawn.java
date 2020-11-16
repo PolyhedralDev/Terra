@@ -17,6 +17,7 @@ public class LandSpawn extends Requirement {
         TerraWorld tw = TerraWorld.getWorld(getWorld());
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
         ElevationEquation elevationEquation = ((UserDefinedGenerator) b.getGenerator()).getElevationEquation();
-        return b.getGenerator().getNoise(getNoise(), getWorld(), x, (int) (y - elevationEquation.getNoise(x, z, getWorld())), z) > 0;
+        int yf = y - ((elevationEquation == null) ? 0 : (int) elevationEquation.getNoise(x, z, getWorld()));
+        return b.getGenerator().getNoise(getNoise(), getWorld(), x, yf, z) > 0;
     }
 }
