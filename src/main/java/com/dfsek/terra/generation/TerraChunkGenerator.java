@@ -151,7 +151,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
         ElevationInterpolator elevationInterpolator;
         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("ElevationTime")) {
-            elevationInterpolator = new ElevationInterpolator(world, chunkX, chunkZ, tw.getGrid(), getNoiseGenerator());
+            elevationInterpolator = new ElevationInterpolator(world, chunkX, chunkZ, tw.getGrid());
         }
 
         for(byte x = 0; x < 16; x++) {
@@ -203,12 +203,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public int getNoiseOctaves(World world) {
-        return configPack.octaves;
+        return 1;
     }
 
     @Override
     public double getNoiseFrequency(World world) {
-        return configPack.frequency;
+        return 0.02;
     }
 
     @Override

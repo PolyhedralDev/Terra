@@ -19,6 +19,6 @@ public final class FailoverGenerator extends UserDefinedGenerator {
     }
 
     public FailoverGenerator() throws ParseException {
-        super("0", null, new HashMap<>(), palette, new TreeMap<>(), false);
+        super("0", null, new HashMap<>(), palette, new TreeMap<>(), new HashMap<>(), false);
     }
 }

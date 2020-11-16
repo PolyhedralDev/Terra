@@ -3,21 +3,18 @@ package com.dfsek.terra.generation;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Interpolator;
 
 public class ElevationInterpolator {
     private final UserDefinedGenerator[][] gens = new UserDefinedGenerator[10][10];
     private final double[][] values = new double[18][18];
-    private final FastNoiseLite noise;
     private final int xOrigin;
     private final int zOrigin;
     private final TerraBiomeGrid grid;
 
-    public ElevationInterpolator(World w, int chunkX, int chunkZ, TerraBiomeGrid grid, FastNoiseLite noise) {
+    public ElevationInterpolator(World w, int chunkX, int chunkZ, TerraBiomeGrid grid) {
         this.xOrigin = chunkX << 4;
         this.zOrigin = chunkZ << 4;
-        this.noise = noise;
         this.grid = grid;
 
         for(int x = -2; x < 8; x++) {
@@ -30,13 +27,13 @@ public class ElevationInterpolator {
             for(byte z = -1; z <= 16; z++) {
                 UserDefinedGenerator generator = getGenerator(x, z);
                 if(compareGens((x / 4), (z / 4)) && generator.interpolateElevation()) {
-                    Interpolator interpolator = new Interpolator(biomeAvg(x / 4, z / 4),
-                            biomeAvg((x / 4) + 1, z / 4),
-                            biomeAvg(x / 4, (z / 4) + 1),
-                            biomeAvg((x / 4) + 1, (z / 4) + 1),
+                    Interpolator interpolator = new Interpolator(biomeAvg(x / 4, z / 4, w),
+                            biomeAvg((x / 4) + 1, z / 4, w),
+                            biomeAvg(x / 4, (z / 4) + 1, w),
+                            biomeAvg((x / 4) + 1, (z / 4) + 1, w),
                             Interpolator.Type.LINEAR);
                     values[x + 1][z + 1] = interpolator.bilerp((double) (x % 4) / 4, (double) (z % 4) / 4);
-                } else values[x + 1][z + 1] = elevate(generator, xOrigin + x, zOrigin + z);
+                } else values[x + 1][z + 1] = elevate(generator, xOrigin + x, zOrigin + z, w);
             }
         }
     }
@@ -60,20 +57,20 @@ public class ElevationInterpolator {
         return false;
     }
 
-    private double biomeAvg(int x, int z) {
-        return (elevate(getStoredGen(x + 1, z), x * 4 + 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x - 1, z), x * 4 - 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x, z + 1), x * 4 + xOrigin, z * 4 + 4 + zOrigin)
-                + elevate(getStoredGen(x, z - 1), x * 4 + xOrigin, z * 4 - 4 + zOrigin)
-                + elevate(getStoredGen(x, z), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x - 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x - 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x + 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x + 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin)) / 9D;
+    private double biomeAvg(int x, int z, World w) {
+        return (elevate(getStoredGen(x + 1, z), x * 4 + 4 + xOrigin, z * 4 + zOrigin, w)
+                + elevate(getStoredGen(x - 1, z), x * 4 - 4 + xOrigin, z * 4 + zOrigin, w)
+                + elevate(getStoredGen(x, z + 1), x * 4 + xOrigin, z * 4 + 4 + zOrigin, w)
+                + elevate(getStoredGen(x, z - 1), x * 4 + xOrigin, z * 4 - 4 + zOrigin, w)
+                + elevate(getStoredGen(x, z), x * 4 + xOrigin, z * 4 + zOrigin, w)
+                + elevate(getStoredGen(x - 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin, w)
+                + elevate(getStoredGen(x - 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin, w)
+                + elevate(getStoredGen(x + 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin, w)
+                + elevate(getStoredGen(x + 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin, w)) / 9D;
     }
 
-    private double elevate(UserDefinedGenerator g, int x, int z) {
-        if(g.getElevationEquation() != null) return g.getElevationEquation().getNoise(x, z, noise);
+    private double elevate(UserDefinedGenerator g, int x, int z, World w) {
+        if(g.getElevationEquation() != null) return g.getElevationEquation().getNoise(x, z, w);
         return 0;
     }
 

@@ -1,6 +1,8 @@
 package com.dfsek.terra.generation;
 
 import com.dfsek.terra.Debug;
+import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
+import com.dfsek.terra.math.NoiseFunction;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.util.DataUtil;
@@ -17,6 +19,8 @@ import parsii.eval.Scope;
 import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -31,21 +35,35 @@ public class UserDefinedGenerator extends Generator {
     private final Palette<BlockData>[] palettes = new Palette[256];
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] slantPalettes = new Palette[256];
-    private final NoiseFunction2 n2 = new NoiseFunction2();
-    private final NoiseFunction3 n3 = new NoiseFunction3();
     private final ElevationEquation elevationEquation;
     private final boolean preventSmooth;
     private boolean elevationInterpolation;
+    private final List<NoiseFunction> noiseFunctions = new ArrayList<>();
+    private boolean set = true;
 
 
-    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, Map<String, Double> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, boolean preventSmooth)
+    public UserDefinedGenerator(String equation, @Nullable String elevateEquation, Map<String, Double> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, Map<String, NoiseConfig> noiseBuilders, boolean preventSmooth)
             throws ParseException {
         for(Map.Entry<String, Double> entry : userVariables.entrySet()) {
             s.getVariable(entry.getKey()).setValue(entry.getValue()); // Define all user variables.
         }
         Parser p = new Parser();
-        p.registerFunction("noise2", n2);
-        p.registerFunction("noise3", n3);
+
+        for(Map.Entry<String, NoiseConfig> e : noiseBuilders.entrySet()) {
+            switch(e.getValue().getDimensions()) {
+                case 2:
+                    NoiseFunction2 function2 = new NoiseFunction2(e.getValue().getBuilder());
+                    noiseFunctions.add(function2);
+                    p.registerFunction(e.getKey(), function2);
+                    break;
+                case 3:
+                    NoiseFunction3 function3 = new NoiseFunction3(e.getValue().getBuilder());
+                    noiseFunctions.add(function3);
+                    p.registerFunction(e.getKey(), function3);
+                    break;
+            }
+        }
+
         for(int y = 0; y < 256; y++) {
             Palette<BlockData> d = DataUtil.BLANK_PALETTE;
             for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
@@ -66,10 +84,19 @@ public class UserDefinedGenerator extends Generator {
         }
         if(elevateEquation != null) {
             Debug.info("Using elevation equation");
-            this.elevationEquation = new ElevationEquation(elevateEquation);
+            this.elevationEquation = new ElevationEquation(elevateEquation, noiseBuilders);
         } else this.elevationEquation = null;
         this.noiseExp = p.parse(equation, s);
         this.preventSmooth = preventSmooth;
+    }
+
+    private void setNoise(long seed) {
+        if(set) {
+            set = false;
+            for(NoiseFunction n : noiseFunctions) {
+                n.setNoise(seed);
+            }
+        }
     }
 
     /**
@@ -86,8 +113,7 @@ public class UserDefinedGenerator extends Generator {
             xVar.setValue(x);
             yVar.setValue(0);
             zVar.setValue(z);
-            n2.setNoise(gen);
-            n3.setNoise(gen);
+            setNoise(w.getSeed());
             return noiseExp.evaluate();
         }
     }
@@ -107,8 +133,7 @@ public class UserDefinedGenerator extends Generator {
             xVar.setValue(x);
             yVar.setValue(y);
             zVar.setValue(z);
-            n2.setNoise(gen);
-            n3.setNoise(gen);
+            setNoise(w.getSeed());
             return noiseExp.evaluate();
         }
     }

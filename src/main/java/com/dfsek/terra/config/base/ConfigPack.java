@@ -15,6 +15,7 @@ import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.registry.FloraRegistry;
@@ -56,8 +57,6 @@ public class ConfigPack extends YamlConfiguration {
     public final int blendAmp;
     public final boolean biomeBlend;
     public final double blendFreq;
-    public final int octaves;
-    public final double frequency;
     public final boolean vanillaCaves;
     public final boolean vanillaStructures;
     public final boolean vanillaDecoration;
@@ -76,9 +75,11 @@ public class ConfigPack extends YamlConfiguration {
     private final FloraRegistry floraRegistry = new FloraRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
     private final Map<String, Double> definedVariables = new HashMap<>();
+    private final Map<String, NoiseConfig> noiseBuilders = new HashMap<>();
     private final File dataFolder;
     private final String id;
 
+    @SuppressWarnings("unchecked")
     public ConfigPack(File file) throws IOException, InvalidConfigurationException {
         long l = System.nanoTime();
         load(new File(file, "pack.yml"));
@@ -86,6 +87,12 @@ public class ConfigPack extends YamlConfiguration {
 
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         this.id = getString("id");
+
+        Map<String, Object> noise = Objects.requireNonNull(getConfigurationSection("noise")).getValues(false);
+        for(Map.Entry<String, Object> entry : noise.entrySet()) {
+            noiseBuilders.put(entry.getKey(), new NoiseConfig((ConfigurationSection) entry.getValue()));
+            Debug.info("Loaded noise function " + entry.getKey());
+        }
 
         ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);
 
@@ -140,9 +147,6 @@ public class ConfigPack extends YamlConfiguration {
         erosionFreq = getDouble("erode.frequency", 0.01);
         erosionThresh = getDouble("erode.threshold", 0.04);
         erosionOctaves = getInt("erode.octaves", 3);
-
-        octaves = getInt("noise.octaves", 4);
-        frequency = getDouble("noise.frequency", 1f / 96);
 
         erosionName = getString("erode.grid");
 
@@ -208,6 +212,10 @@ public class ConfigPack extends YamlConfiguration {
 
     public BiomeGridConfig getBiomeGrid(String id) {
         return grids.get(id);
+    }
+
+    public Map<String, NoiseConfig> getNoiseBuilders() {
+        return noiseBuilders;
     }
 
     public static synchronized void loadAll(JavaPlugin main) {
