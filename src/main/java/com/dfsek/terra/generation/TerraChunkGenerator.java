@@ -152,7 +152,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
         ElevationInterpolator elevationInterpolator;
         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("ElevationTime")) {
-            elevationInterpolator = new ElevationInterpolator(world, chunkX, chunkZ, tw.getGrid());
+            elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid());
         }
 
         for(byte x = 0; x < 16; x++) {

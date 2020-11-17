@@ -117,10 +117,6 @@ public class WorldGenerator extends Generator {
         return Interpolator.Type.LINEAR;
     }
 
-    public ElevationEquation getElevationEquation(World w) {
-        return elevationEquation;
-    }
-
     public boolean interpolateElevation() {
         return elevationInterpolation;
     }
