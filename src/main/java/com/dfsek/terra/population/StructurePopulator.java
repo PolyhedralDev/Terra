@@ -69,7 +69,7 @@ public class StructurePopulator extends BlockPopulator {
                                 Debug.stack(e);
                             }
                         }
-                        for(Feature f : conf.getFeatures()) f.apply(struc, spawn, chunk); // Apply features.
+                        for(Feature f : conf.getFeatures()) f.apply(struc, rotation, spawn, chunk); // Apply features.
                         break;
                     }
                 }
