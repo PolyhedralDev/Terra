@@ -2,7 +2,6 @@ package com.dfsek.terra.math;
 
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import org.bukkit.World;
 import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
 
@@ -12,8 +11,8 @@ public class NoiseFunction2 implements NoiseFunction {
     private final Cache cache = new Cache();
     private final FastNoiseLite gen;
 
-    public NoiseFunction2(World world, NoiseBuilder builder) {
-        this.gen = builder.build((int) world.getSeed());
+    public NoiseFunction2(long seed, NoiseBuilder builder) {
+        this.gen = builder.build((int) seed);
     }
 
     @Override

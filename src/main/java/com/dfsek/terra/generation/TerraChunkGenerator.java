@@ -9,6 +9,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeSlabConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.generation.config.WorldGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -83,7 +84,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
-        Palette<BlockData> slant = ((UserDefinedGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
+        Palette<BlockData> slant = ((WorldGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
         if(slant != null) {
             boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
             boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;

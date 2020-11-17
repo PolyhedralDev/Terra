@@ -57,7 +57,7 @@ public class TerraBiomeGrid extends BiomeGrid {
             if(failNum % 256 == 0)
                 LangUtil.log("error.severe-config", Level.SEVERE, String.valueOf(x), String.valueOf(z));
             failNum++;
-            return ConfigUtil.failType.fail();
+            return null;
         }
         if(erode != null && b.isErodible() && erode.isEroded(xp, zp)) {
             return erosionGrid.getBiome(xp, zp, phase);

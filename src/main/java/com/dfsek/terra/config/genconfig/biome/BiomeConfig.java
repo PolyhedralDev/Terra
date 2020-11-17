@@ -9,7 +9,6 @@ import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
-import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
@@ -171,8 +170,7 @@ public class BiomeConfig extends TerraConfig {
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, config.getDefinedVariables(), palette.getPaletteMap(), slant, config.getNoiseBuilders(), getBoolean("prevent-smooth", false));
-            gen.setElevationInterpolation(doElevationInterpolation);
+            GeneratorOptions gen = new GeneratorOptions(eq, elevation, config.getDefinedVariables(), palette.getPaletteMap(), slant, config.getNoiseBuilders(), getBoolean("prevent-smooth", false), doElevationInterpolation);
             this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();

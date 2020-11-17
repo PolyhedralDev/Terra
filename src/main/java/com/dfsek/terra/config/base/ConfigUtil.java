@@ -3,7 +3,6 @@ package com.dfsek.terra.config.base;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.failsafe.FailType;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.util.TagUtil;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class ConfigUtil {
@@ -31,7 +29,6 @@ public final class ConfigUtil {
     public static long dataSave; // Period of population data saving, in ticks.
     public static boolean masterDisableCaves;
     public static int cacheSize;
-    public static FailType failType;
 
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
@@ -52,14 +49,6 @@ public final class ConfigUtil {
                 e.printStackTrace();
                 Debug.error("Report this to Terra!");
             }
-        }
-
-
-        String fail = config.getString("fail-type", "SHUTDOWN");
-        try {
-            failType = FailType.valueOf(fail);
-        } catch(IllegalArgumentException e) {
-            LangUtil.log("config.invalid-failover", Level.SEVERE, fail);
         }
 
         Logger logger = main.getLogger();
