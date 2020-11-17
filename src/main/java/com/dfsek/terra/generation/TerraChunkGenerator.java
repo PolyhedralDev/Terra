@@ -80,17 +80,19 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
         Palette<BlockData> slant = ((WorldGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
         if(slant != null) {
-            boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
-            boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
-            boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
-            boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
-
             double ySlantOffsetTop = c.getYSlantOffsetTop();
             double ySlantOffsetBottom = c.getYSlantOffsetBottom();
             boolean top = interpolator.getNoise(x, y + ySlantOffsetTop - elevationInterpolator.getElevation(x, z), z) > 0;
             boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom - elevationInterpolator.getElevation(x, z), z) > 0;
 
-            if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
+            if(top && bottom) {
+                boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
+                boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
+                boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
+                boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
+
+                if((north || south || east || west) && (!(north && south && east && west))) return slant;
+            }
         }
         return c.getBiome().getGenerator().getPalette(y);
     }
@@ -104,10 +106,10 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
                     Stairs stairNew = (Stairs) stair.clone();
-                    double elevationN = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() - 1); // Northern elevation
-                    double elevationS = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() + 1); // Southern elevation
-                    double elevationE = elevationInterpolator.getElevation(block.getBlockX() + 1, block.getBlockZ()); // Eastern elevation
-                    double elevationW = elevationInterpolator.getElevation(block.getBlockX() - 1, block.getBlockZ()); // Western elevation
+                    int elevationN = (int) elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() - 1); // Northern elevation
+                    int elevationS = (int) elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() + 1); // Southern elevation
+                    int elevationE = (int) elevationInterpolator.getElevation(block.getBlockX() + 1, block.getBlockZ()); // Eastern elevation
+                    int elevationW = (int) elevationInterpolator.getElevation(block.getBlockX() - 1, block.getBlockZ()); // Western elevation
                     if(interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY() - elevationW, block.getBlockZ()) > thresh) {
                         stairNew.setFacing(BlockFace.WEST);
                     } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - elevationN, block.getBlockZ() - 0.5) > thresh) {
@@ -163,7 +165,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int cz = zOrig + z;
 
                 Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
-                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
+                BiomeConfig c = ((UserDefinedBiome) b).getConfig();
 
                 double elevate = elevationInterpolator.getElevation(x, z);
 
