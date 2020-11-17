@@ -48,64 +48,78 @@ public class NoiseBuilder {
         return noise;
     }
 
-    public void setFrequency(double frequency) {
+    public NoiseBuilder setFrequency(double frequency) {
         this.frequency = frequency;
+        return this;
     }
 
-    public void setFractalGain(double fractalGain) {
+    public NoiseBuilder setFractalGain(double fractalGain) {
         this.fractalGain = fractalGain;
+        return this;
     }
 
-    public void setFractalLacunarity(double fractalLacunarity) {
+    public NoiseBuilder setFractalLacunarity(double fractalLacunarity) {
         this.fractalLacunarity = fractalLacunarity;
+        return this;
     }
 
-    public void setFractalType(FastNoiseLite.FractalType fractalType) {
+    public NoiseBuilder setFractalType(FastNoiseLite.FractalType fractalType) {
         this.fractalType = fractalType;
+        return this;
     }
 
-    public void setOctaves(int octaves) {
+    public NoiseBuilder setOctaves(int octaves) {
         this.octaves = octaves;
+        return this;
     }
 
-    public void setPingPong(double pingPong) {
+    public NoiseBuilder setPingPong(double pingPong) {
         this.pingPong = pingPong;
+        return this;
     }
 
-    public void setWeightedStrength(double weightedStrength) {
+    public NoiseBuilder setWeightedStrength(double weightedStrength) {
         this.weightedStrength = weightedStrength;
+        return this;
     }
 
     public FastNoiseLite.NoiseType getType() {
         return type;
     }
 
-    public void setType(FastNoiseLite.NoiseType type) {
+    public NoiseBuilder setType(FastNoiseLite.NoiseType type) {
         this.type = type;
+        return this;
     }
 
-    public void setCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction cellularDistanceFunction) {
+    public NoiseBuilder setCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction cellularDistanceFunction) {
         this.cellularDistanceFunction = cellularDistanceFunction;
+        return this;
     }
 
-    public void setCellularReturnType(FastNoiseLite.CellularReturnType cellularReturnType) {
+    public NoiseBuilder setCellularReturnType(FastNoiseLite.CellularReturnType cellularReturnType) {
         this.cellularReturnType = cellularReturnType;
+        return this;
     }
 
-    public void setCellularJitter(double cellularJitter) {
+    public NoiseBuilder setCellularJitter(double cellularJitter) {
         this.cellularJitter = cellularJitter;
+        return this;
     }
 
-    public void setDomainWarpAmp(double domainWarpAmp) {
+    public NoiseBuilder setDomainWarpAmp(double domainWarpAmp) {
         this.domainWarpAmp = domainWarpAmp;
+        return this;
     }
 
-    public void setDomainWarpType(FastNoiseLite.DomainWarpType domainWarpType) {
+    public NoiseBuilder setDomainWarpType(FastNoiseLite.DomainWarpType domainWarpType) {
         this.domainWarpType = domainWarpType;
+        return this;
     }
 
-    public void setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
+    public NoiseBuilder setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
         this.rotationType3D = rotationType3D;
+        return this;
     }
 
     public FastNoiseLite.CellularDistanceFunction getCellularDistanceFunction() {
