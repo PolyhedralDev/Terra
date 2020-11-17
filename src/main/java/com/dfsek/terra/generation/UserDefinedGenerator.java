@@ -1,10 +1,8 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
-import com.dfsek.terra.math.NoiseFunction;
-import com.dfsek.terra.math.NoiseFunction2;
-import com.dfsek.terra.math.NoiseFunction3;
+import com.dfsek.terra.generation.config.WorldGenerator;
+import com.dfsek.terra.math.BlankFunction;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
@@ -13,56 +11,53 @@ import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Interpolator;
 import org.polydev.gaea.world.palette.Palette;
-import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;
-import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class UserDefinedGenerator extends Generator {
-    private static final Object noiseLock = new Object();
-    private final Expression noiseExp;
-    private final Scope s = new Scope();
-    private final Variable xVar = s.getVariable("x");
-    private final Variable yVar = s.getVariable("y");
-    private final Variable zVar = s.getVariable("z");
+
+    private final boolean preventSmooth;
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] palettes = new Palette[256];
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] slantPalettes = new Palette[256];
-    private final ElevationEquation elevationEquation;
-    private final boolean preventSmooth;
+
+
+    private final String equation;
+    private final String elevationEquation;
+    private final Map<String, Double> userVariables;
+    private final Map<String, NoiseConfig> noiseBuilders;
+
+    private final Map<UUID, WorldGenerator> gens = new HashMap<>();
     private boolean elevationInterpolation;
-    private final List<NoiseFunction> noiseFunctions = new ArrayList<>();
-    private boolean set = true;
 
 
     public UserDefinedGenerator(String equation, @Nullable String elevateEquation, Map<String, Double> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, Map<String, NoiseConfig> noiseBuilders, boolean preventSmooth)
             throws ParseException {
+        this.equation = equation;
+        this.elevationEquation = elevateEquation;
+        this.userVariables = userVariables;
+        this.noiseBuilders = noiseBuilders;
+        this.preventSmooth = preventSmooth;
+
+        Scope s = new Scope();
+        Parser p = new Parser();
         for(Map.Entry<String, Double> entry : userVariables.entrySet()) {
             s.getVariable(entry.getKey()).setValue(entry.getValue()); // Define all user variables.
         }
-        Parser p = new Parser();
-
         for(Map.Entry<String, NoiseConfig> e : noiseBuilders.entrySet()) {
-            switch(e.getValue().getDimensions()) {
-                case 2:
-                    NoiseFunction2 function2 = new NoiseFunction2(e.getValue().getBuilder());
-                    noiseFunctions.add(function2);
-                    p.registerFunction(e.getKey(), function2);
-                    break;
-                case 3:
-                    NoiseFunction3 function3 = new NoiseFunction3(e.getValue().getBuilder());
-                    noiseFunctions.add(function3);
-                    p.registerFunction(e.getKey(), function3);
-                    break;
-            }
+            int dimensions = e.getValue().getDimensions();
+            if(dimensions == 2 || dimensions == 3) p.registerFunction(e.getKey(), new BlankFunction(dimensions));
         }
+        p.parse(equation, s); // Validate equation at config load time to prevent error during world load.
+        if(elevateEquation != null) p.parse(elevateEquation, s);
+
 
         for(int y = 0; y < 256; y++) {
             Palette<BlockData> d = DataUtil.BLANK_PALETTE;
@@ -82,21 +77,7 @@ public class UserDefinedGenerator extends Generator {
             }
             slantPalettes[y] = slantPalette;
         }
-        if(elevateEquation != null) {
-            Debug.info("Using elevation equation");
-            this.elevationEquation = new ElevationEquation(elevateEquation, noiseBuilders);
-        } else this.elevationEquation = null;
-        this.noiseExp = p.parse(equation, s);
-        this.preventSmooth = preventSmooth;
-    }
 
-    private void setNoise(long seed) {
-        if(set) {
-            set = false;
-            for(NoiseFunction n : noiseFunctions) {
-                n.setNoise(seed);
-            }
-        }
     }
 
     /**
@@ -109,13 +90,7 @@ public class UserDefinedGenerator extends Generator {
      */
     @Override
     public double getNoise(FastNoiseLite gen, World w, int x, int z) {
-        synchronized(noiseLock) {
-            xVar.setValue(x);
-            yVar.setValue(0);
-            zVar.setValue(z);
-            setNoise(w.getSeed());
-            return noiseExp.evaluate();
-        }
+        return compute(w).getNoise(x, 0, z);
     }
 
     /**
@@ -129,13 +104,11 @@ public class UserDefinedGenerator extends Generator {
      */
     @Override
     public double getNoise(FastNoiseLite gen, World w, int x, int y, int z) {
-        synchronized(noiseLock) {
-            xVar.setValue(x);
-            yVar.setValue(y);
-            zVar.setValue(z);
-            setNoise(w.getSeed());
-            return noiseExp.evaluate();
-        }
+        return compute(w).getNoise(x, y, z);
+    }
+
+    private WorldGenerator compute(World world) {
+        return gens.computeIfAbsent(world.getUID(), w -> new WorldGenerator(world, equation, elevationEquation, userVariables, noiseBuilders));
     }
 
     /**
@@ -163,8 +136,8 @@ public class UserDefinedGenerator extends Generator {
         return Interpolator.Type.LINEAR;
     }
 
-    public ElevationEquation getElevationEquation() {
-        return elevationEquation;
+    public ElevationEquation getElevationEquation(World w) {
+        return compute(w).getElevationEquation();
     }
 
     public boolean interpolateElevation() {

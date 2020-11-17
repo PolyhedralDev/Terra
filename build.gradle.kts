@@ -60,6 +60,7 @@ val mainSourceSet: SourceSet = sourceSets["main"]
 val tokenizeJavaSources = task<Copy>(name = "tokenizeJavaSources") {
     from(mainSourceSet.allSource) {
         include("**/plugin.yml")
+        println("version: $versionObj")
         val tokens = mapOf("VERSION" to versionObj.toString())
 
         filter(org.apache.tools.ant.filters.ReplaceTokens::class, "tokens" to tokens)

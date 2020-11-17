@@ -1,6 +1,8 @@
-package com.dfsek.terra.generation;
+package com.dfsek.terra.generation.config;
 
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
+import com.dfsek.terra.generation.ElevationEquation;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import org.bukkit.World;
@@ -12,14 +14,16 @@ import parsii.tokenizer.ParseException;
 
 import java.util.Map;
 
-public class ElevationEquation {
-    private final Expression delegate;
-    private final Scope s = new Scope();
+public class WorldGenerator {
+    private final ElevationEquation elevationEquation;
 
+    private final Expression noiseExp;
+    private final Scope s = new Scope();
     private final Variable xVar = s.getVariable("x");
+    private final Variable yVar = s.getVariable("y");
     private final Variable zVar = s.getVariable("z");
 
-    public ElevationEquation(World w, String elevateEquation, Map<String, Double> userVariables, Map<String, NoiseConfig> noiseBuilders) {
+    public WorldGenerator(World w, String equation, String elevateEquation, Map<String, Double> userVariables, Map<String, NoiseConfig> noiseBuilders) {
         for(Map.Entry<String, Double> entry : userVariables.entrySet()) {
             s.getVariable(entry.getKey()).setValue(entry.getValue()); // Define all user variables.
         }
@@ -38,15 +42,24 @@ public class ElevationEquation {
             }
         }
         try {
-            this.delegate = p.parse(elevateEquation, s);
+            this.noiseExp = p.parse(equation, s);
+            if(elevateEquation != null) {
+                Debug.info("Using elevation equation");
+                this.elevationEquation = new ElevationEquation(w, elevateEquation, userVariables, noiseBuilders);
+            } else this.elevationEquation = null;
         } catch(ParseException e) {
             throw new IllegalArgumentException();
         }
     }
 
-    public double getNoise(double x, double z) {
+    public double getNoise(int x, int y, int z) {
         xVar.setValue(x);
+        yVar.setValue(y);
         zVar.setValue(z);
-        return delegate.evaluate();
+        return noiseExp.evaluate();
+    }
+
+    public ElevationEquation getElevationEquation() {
+        return elevationEquation;
     }
 }

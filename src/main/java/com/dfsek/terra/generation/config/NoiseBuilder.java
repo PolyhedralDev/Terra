@@ -11,6 +11,7 @@ public class NoiseBuilder {
     private double fractalLacunarity = 2.0D;
     private double pingPong = 2.0D;
     private double weightedStrength = 0.0D;
+    private int seedOffset = 0;
 
     private FastNoiseLite.CellularDistanceFunction cellularDistanceFunction = FastNoiseLite.CellularDistanceFunction.EuclideanSq;
     private FastNoiseLite.CellularReturnType cellularReturnType = FastNoiseLite.CellularReturnType.Distance;
@@ -22,7 +23,7 @@ public class NoiseBuilder {
     private FastNoiseLite.RotationType3D rotationType3D = FastNoiseLite.RotationType3D.None;
 
     public FastNoiseLite build(int seed) {
-        FastNoiseLite noise = new FastNoiseLite(seed);
+        FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
             noise.setFractalType(fractalType);
             noise.setFractalOctaves(octaves);
@@ -105,6 +106,14 @@ public class NoiseBuilder {
     public NoiseBuilder setCellularJitter(double cellularJitter) {
         this.cellularJitter = cellularJitter;
         return this;
+    }
+
+    public int getSeedOffset() {
+        return seedOffset;
+    }
+
+    public void setSeedOffset(int seedOffset) {
+        this.seedOffset = seedOffset;
     }
 
     public NoiseBuilder setDomainWarpAmp(double domainWarpAmp) {

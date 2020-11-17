@@ -14,7 +14,8 @@ public class NoiseConfig {
         try {
             builder.setType(FastNoiseLite.NoiseType.valueOf(section.getString("type", "OpenSimplex2")))
                     .setFrequency(section.getDouble("frequency", 0.02D))
-                    .setRotationType3D(FastNoiseLite.RotationType3D.valueOf(section.getString("rotation", "None")));
+                    .setRotationType3D(FastNoiseLite.RotationType3D.valueOf(section.getString("rotation", "None")))
+                    .setSeedOffset(section.getInt("offset", 0));
 
             dimensions = section.getInt("dimensions", 3);
             if(dimensions != 2 && dimensions != 3)

@@ -1,17 +1,17 @@
 package com.dfsek.terra.math;
 
 import com.dfsek.terra.generation.config.NoiseBuilder;
+import org.bukkit.World;
 import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
 
 import java.util.List;
 
 public class NoiseFunction3 implements NoiseFunction {
-    private FastNoiseLite gen;
-    private final NoiseBuilder builder;
+    private final FastNoiseLite gen;
 
-    public NoiseFunction3(NoiseBuilder builder) {
-        this.builder = builder;
+    public NoiseFunction3(World world, NoiseBuilder builder) {
+        this.gen = builder.build((int) world.getSeed());
     }
 
     @Override
@@ -27,10 +27,5 @@ public class NoiseFunction3 implements NoiseFunction {
     @Override
     public boolean isNaturalFunction() {
         return true;
-    }
-
-    @Override
-    public void setNoise(long seed) {
-        this.gen = builder.build((int) seed);
     }
 }
