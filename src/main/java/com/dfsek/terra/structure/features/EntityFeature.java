@@ -22,15 +22,13 @@ import java.util.Set;
 public class EntityFeature implements Feature {
     private final EntityType type;
     private final Range amount;
-    private final int attempts;
     private final Set<Material> in;
     private final Set<Material> stand;
     private final int inSize;
 
-    public EntityFeature(EntityType type, Range amount, int attempts, Set<Material> stand, Set<Material> in, int inSize) {
+    public EntityFeature(EntityType type, Range amount, Set<Material> stand, Set<Material> in, int inSize) {
         this.type = type;
         this.amount = amount;
-        this.attempts = attempts;
         this.in = in;
         this.stand = stand;
         this.inSize = inSize;
