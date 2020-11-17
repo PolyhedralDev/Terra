@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -30,6 +31,10 @@ public class EntityFeature implements Feature {
         this.in = in;
         this.stand = stand;
         this.inSize = inSize;
+    }
+
+    private static boolean isInChunk(Chunk c, Location l) {
+        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
     }
 
     @Override
@@ -75,10 +80,6 @@ public class EntityFeature implements Feature {
         }
     }
 
-    private static boolean isInChunk(Chunk c, Location l) {
-        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
-    }
-
     @Override
     public void apply(Structure structure, Location l, Random random) {
         int amountSpawn = amount.get(random);
@@ -114,7 +115,7 @@ public class EntityFeature implements Feature {
             }
             if(canSpawn) {
                 Debug.info("Spawning entity at  " + attempt);
-                l.getWorld().spawnEntity(attempt.add(0.5, 1, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
+                Objects.requireNonNull(l.getWorld()).spawnEntity(attempt.add(0.5, 1, 0.5), type); // Add 0.5 to X & Z so entity spawns in center of block.
             }
         }
     }

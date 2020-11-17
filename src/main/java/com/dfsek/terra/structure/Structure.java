@@ -144,6 +144,12 @@ public class Structure implements Serializable {
         return (Structure) o;
     }
 
+    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+        oos.writeObject(o);
+        oos.close();
+    }
+
     public StructureContainedBlock[][][] getRawStructure() {
         return structure;
     }
@@ -326,12 +332,6 @@ public class Structure implements Serializable {
      */
     public void save(@NotNull File f) throws IOException {
         toFile(this, f);
-    }
-
-    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
-        oos.writeObject(o);
-        oos.close();
     }
 
     @NotNull

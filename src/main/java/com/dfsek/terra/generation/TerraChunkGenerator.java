@@ -77,12 +77,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    @Override
-    public void attachProfiler(WorldProfiler p) {
-        super.attachProfiler(p);
-        popMan.attachProfiler(p);
-    }
-
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
         Palette<BlockData> slant = ((WorldGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
         if(slant != null) {
@@ -136,6 +130,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             } else if(orig.matches(DataUtil.WATER)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
+    }
+
+    @Override
+    public void attachProfiler(WorldProfiler p) {
+        super.attachProfiler(p);
+        popMan.attachProfiler(p);
     }
 
     @Override

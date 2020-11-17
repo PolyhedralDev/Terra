@@ -40,6 +40,10 @@ public class SimplexCarver extends Carver {
         hasCaves.setFrequency(0.005f);
     }
 
+    private static double acot(double x) {
+        return Math.PI / 2 - Math.atan(x);
+    }
+
     @Override
     public CarvingData carve(int chunkX, int chunkZ, World w) {
         CarvingData c = new CarvingData(chunkX, chunkZ);
@@ -66,10 +70,6 @@ public class SimplexCarver extends Carver {
             }
         }
         return c;
-    }
-
-    private static double acot(double x) {
-        return Math.PI / 2 - Math.atan(x);
     }
 
     @Override

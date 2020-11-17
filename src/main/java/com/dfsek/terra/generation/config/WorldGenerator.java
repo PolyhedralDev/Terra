@@ -28,14 +28,12 @@ public class WorldGenerator extends Generator {
     private final Palette<BlockData>[] slantPalettes;
 
     private final boolean preventSmooth;
-
-    private boolean elevationInterpolation = true;
-
     private final Expression noiseExp;
     private final Scope s = new Scope();
     private final Variable xVar = s.getVariable("x");
     private final Variable yVar = s.getVariable("y");
     private final Variable zVar = s.getVariable("z");
+    private boolean elevationInterpolation = true;
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public WorldGenerator(long seed, String equation, String elevateEquation, Map<String, Double> userVariables, Map<String, NoiseConfig> noiseBuilders, Palette[] palettes, Palette[] slantPalettes, boolean preventSmooth) {

@@ -21,16 +21,6 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
         super(parent);
     }
 
-    @Override
-    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return true;
-    }
-
-    @Override
-    public String getName() {
-        return "load";
-    }
-
     public static List<String> getStructureNames() {
         List<String> names = new ArrayList<>();
         File structureDir = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures");
@@ -43,6 +33,16 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
             names.add(path.substring(0, path.length() - 11));
         }
         return names;
+    }
+
+    @Override
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        return true;
+    }
+
+    @Override
+    public String getName() {
+        return "load";
     }
 
     @Override

@@ -49,62 +49,12 @@ public class NoiseBuilder {
         return noise;
     }
 
-    public NoiseBuilder setFrequency(double frequency) {
-        this.frequency = frequency;
-        return this;
-    }
-
-    public NoiseBuilder setFractalGain(double fractalGain) {
-        this.fractalGain = fractalGain;
-        return this;
-    }
-
-    public NoiseBuilder setFractalLacunarity(double fractalLacunarity) {
-        this.fractalLacunarity = fractalLacunarity;
-        return this;
-    }
-
-    public NoiseBuilder setFractalType(FastNoiseLite.FractalType fractalType) {
-        this.fractalType = fractalType;
-        return this;
-    }
-
-    public NoiseBuilder setOctaves(int octaves) {
-        this.octaves = octaves;
-        return this;
-    }
-
-    public NoiseBuilder setPingPong(double pingPong) {
-        this.pingPong = pingPong;
-        return this;
-    }
-
-    public NoiseBuilder setWeightedStrength(double weightedStrength) {
-        this.weightedStrength = weightedStrength;
-        return this;
-    }
-
     public FastNoiseLite.NoiseType getType() {
         return type;
     }
 
     public NoiseBuilder setType(FastNoiseLite.NoiseType type) {
         this.type = type;
-        return this;
-    }
-
-    public NoiseBuilder setCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction cellularDistanceFunction) {
-        this.cellularDistanceFunction = cellularDistanceFunction;
-        return this;
-    }
-
-    public NoiseBuilder setCellularReturnType(FastNoiseLite.CellularReturnType cellularReturnType) {
-        this.cellularReturnType = cellularReturnType;
-        return this;
-    }
-
-    public NoiseBuilder setCellularJitter(double cellularJitter) {
-        this.cellularJitter = cellularJitter;
         return this;
     }
 
@@ -116,9 +66,26 @@ public class NoiseBuilder {
         this.seedOffset = seedOffset;
     }
 
-    public NoiseBuilder setDomainWarpAmp(double domainWarpAmp) {
-        this.domainWarpAmp = domainWarpAmp;
+    public FastNoiseLite.CellularDistanceFunction getCellularDistanceFunction() {
+        return cellularDistanceFunction;
+    }
+
+    public NoiseBuilder setCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction cellularDistanceFunction) {
+        this.cellularDistanceFunction = cellularDistanceFunction;
         return this;
+    }
+
+    public FastNoiseLite.CellularReturnType getCellularReturnType() {
+        return cellularReturnType;
+    }
+
+    public NoiseBuilder setCellularReturnType(FastNoiseLite.CellularReturnType cellularReturnType) {
+        this.cellularReturnType = cellularReturnType;
+        return this;
+    }
+
+    public FastNoiseLite.DomainWarpType getDomainWarpType() {
+        return domainWarpType;
     }
 
     public NoiseBuilder setDomainWarpType(FastNoiseLite.DomainWarpType domainWarpType) {
@@ -126,61 +93,94 @@ public class NoiseBuilder {
         return this;
     }
 
-    public NoiseBuilder setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
-        this.rotationType3D = rotationType3D;
-        return this;
-    }
-
-    public FastNoiseLite.CellularDistanceFunction getCellularDistanceFunction() {
-        return cellularDistanceFunction;
-    }
-
-    public FastNoiseLite.CellularReturnType getCellularReturnType() {
-        return cellularReturnType;
-    }
-
-    public FastNoiseLite.DomainWarpType getDomainWarpType() {
-        return domainWarpType;
-    }
-
     public double getCellularJitter() {
         return cellularJitter;
+    }
+
+    public NoiseBuilder setCellularJitter(double cellularJitter) {
+        this.cellularJitter = cellularJitter;
+        return this;
     }
 
     public double getDomainWarpAmp() {
         return domainWarpAmp;
     }
 
+    public NoiseBuilder setDomainWarpAmp(double domainWarpAmp) {
+        this.domainWarpAmp = domainWarpAmp;
+        return this;
+    }
+
     public double getFractalGain() {
         return fractalGain;
+    }
+
+    public NoiseBuilder setFractalGain(double fractalGain) {
+        this.fractalGain = fractalGain;
+        return this;
     }
 
     public double getFractalLacunarity() {
         return fractalLacunarity;
     }
 
+    public NoiseBuilder setFractalLacunarity(double fractalLacunarity) {
+        this.fractalLacunarity = fractalLacunarity;
+        return this;
+    }
+
     public double getFrequency() {
         return frequency;
+    }
+
+    public NoiseBuilder setFrequency(double frequency) {
+        this.frequency = frequency;
+        return this;
     }
 
     public double getPingPong() {
         return pingPong;
     }
 
+    public NoiseBuilder setPingPong(double pingPong) {
+        this.pingPong = pingPong;
+        return this;
+    }
+
     public double getWeightedStrength() {
         return weightedStrength;
+    }
+
+    public NoiseBuilder setWeightedStrength(double weightedStrength) {
+        this.weightedStrength = weightedStrength;
+        return this;
     }
 
     public int getOctaves() {
         return octaves;
     }
 
+    public NoiseBuilder setOctaves(int octaves) {
+        this.octaves = octaves;
+        return this;
+    }
+
     public FastNoiseLite.FractalType getFractalType() {
         return fractalType;
     }
 
+    public NoiseBuilder setFractalType(FastNoiseLite.FractalType fractalType) {
+        this.fractalType = fractalType;
+        return this;
+    }
+
     public FastNoiseLite.RotationType3D getRotationType3D() {
         return rotationType3D;
+    }
+
+    public NoiseBuilder setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
+        this.rotationType3D = rotationType3D;
+        return this;
     }
 }
 
