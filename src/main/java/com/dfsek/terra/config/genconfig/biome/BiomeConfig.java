@@ -170,7 +170,7 @@ public class BiomeConfig extends TerraConfig {
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            GeneratorOptions gen = new GeneratorOptions(eq, elevation, config.getDefinedVariables(), palette.getPaletteMap(), slant, config.getNoiseBuilders(), getBoolean("prevent-smooth", false), doElevationInterpolation);
+            GeneratorOptions gen = new GeneratorOptions(eq, elevation, config.getVariableScope(), palette.getPaletteMap(), slant, config.getNoiseBuilders(), getBoolean("prevent-smooth", false), doElevationInterpolation);
             this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), biomeID);
         } catch(ParseException e) {
             e.printStackTrace();

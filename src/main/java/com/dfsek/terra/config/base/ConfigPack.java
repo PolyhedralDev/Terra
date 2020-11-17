@@ -25,6 +25,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import parsii.eval.Scope;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,8 +75,8 @@ public class ConfigPack extends YamlConfiguration {
     private final TreeRegistry treeRegistry = new TreeRegistry();
     private final FloraRegistry floraRegistry = new FloraRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
-    private final Map<String, Double> definedVariables = new HashMap<>();
     private final Map<String, NoiseConfig> noiseBuilders = new HashMap<>();
+    private final Scope vScope;
     private final File dataFolder;
     private final String id;
 
@@ -115,11 +116,12 @@ public class ConfigPack extends YamlConfiguration {
                 Debug.info("Overriding Vanilla tree: " + entry.getKey());
         }
 
+        vScope = new Scope();
         if(contains("variables")) {
             Map<String, Object> vars = Objects.requireNonNull(getConfigurationSection("variables")).getValues(false);
             for(Map.Entry<String, Object> entry : vars.entrySet()) {
                 try {
-                    definedVariables.put(entry.getKey(), Double.valueOf(entry.getValue().toString()));
+                    vScope.getVariable(entry.getKey()).setValue(Double.parseDouble(entry.getValue().toString()));
                     Debug.info("Registered variable " + entry.getKey() + " with value " + entry.getValue());
                 } catch(ClassCastException | NumberFormatException e) {
                     Debug.stack(e);
@@ -232,8 +234,8 @@ public class ConfigPack extends YamlConfiguration {
         return id;
     }
 
-    public Map<String, Double> getDefinedVariables() {
-        return definedVariables;
+    public Scope getVariableScope() {
+        return vScope;
     }
 
     public Map<String, BiomeConfig> getBiomes() {

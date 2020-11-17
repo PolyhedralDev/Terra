@@ -27,12 +27,12 @@ public class GeneratorOptions {
 
     private final String equation;
     private final String elevationEquation;
-    private final Map<String, Double> userVariables;
+    private final Scope userVariables;
     private final Map<String, NoiseConfig> noiseBuilders;
 
     private final boolean elevationInterpolation;
 
-    public GeneratorOptions(String equation, @Nullable String elevateEquation, Map<String, Double> userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, Map<String, NoiseConfig> noiseBuilders, boolean preventSmooth, boolean elevationInterpolation)
+    public GeneratorOptions(String equation, @Nullable String elevateEquation, Scope userVariables, Map<Integer, Palette<BlockData>> paletteMap, Map<Integer, Palette<BlockData>> slantPaletteMap, Map<String, NoiseConfig> noiseBuilders, boolean preventSmooth, boolean elevationInterpolation)
             throws ParseException {
         this.equation = equation;
         this.elevationEquation = elevateEquation;
@@ -40,11 +40,8 @@ public class GeneratorOptions {
         this.noiseBuilders = noiseBuilders;
         this.preventSmooth = preventSmooth;
 
-        Scope s = new Scope();
+        Scope s = new Scope().withParent(userVariables);
         Parser p = new Parser();
-        for(Map.Entry<String, Double> entry : userVariables.entrySet()) {
-            s.getVariable(entry.getKey()).setValue(entry.getValue()); // Define all user variables.
-        }
         for(Map.Entry<String, NoiseConfig> e : noiseBuilders.entrySet()) {
             int dimensions = e.getValue().getDimensions();
             if(dimensions == 2 || dimensions == 3) p.registerFunction(e.getKey(), new BlankFunction(dimensions));

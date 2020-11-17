@@ -29,18 +29,19 @@ public class WorldGenerator extends Generator {
 
     private final boolean preventSmooth;
     private final Expression noiseExp;
-    private final Scope s = new Scope();
-    private final Variable xVar = s.getVariable("x");
-    private final Variable yVar = s.getVariable("y");
-    private final Variable zVar = s.getVariable("z");
+    private final Variable xVar;
+    private final Variable yVar;
+    private final Variable zVar;
     private boolean elevationInterpolation = true;
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public WorldGenerator(long seed, String equation, String elevateEquation, Map<String, Double> userVariables, Map<String, NoiseConfig> noiseBuilders, Palette[] palettes, Palette[] slantPalettes, boolean preventSmooth) {
-        for(Map.Entry<String, Double> entry : userVariables.entrySet()) {
-            s.getVariable(entry.getKey()).setValue(entry.getValue()); // Define all user variables.
-        }
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseConfig> noiseBuilders, Palette[] palettes, Palette[] slantPalettes, boolean preventSmooth) {
         Parser p = new Parser();
+
+        Scope s = new Scope().withParent(vScope);
+        xVar = s.create("x");
+        yVar = s.create("y");
+        zVar = s.create("z");
 
         this.preventSmooth = preventSmooth;
 
@@ -63,7 +64,7 @@ public class WorldGenerator extends Generator {
             this.noiseExp = p.parse(equation, s);
             if(elevateEquation != null) {
                 Debug.info("Using elevation equation");
-                this.elevationEquation = new ElevationEquation(seed, elevateEquation, userVariables, noiseBuilders);
+                this.elevationEquation = new ElevationEquation(elevateEquation, vScope, p);
             } else this.elevationEquation = null;
         } catch(ParseException e) {
             throw new IllegalArgumentException();
@@ -75,7 +76,7 @@ public class WorldGenerator extends Generator {
     }
 
     @Override
-    public double getNoise(FastNoiseLite fastNoiseLite, World world, int x, int z) {
+    public synchronized double getNoise(FastNoiseLite fastNoiseLite, World world, int x, int z) {
         xVar.setValue(x);
         yVar.setValue(0);
         zVar.setValue(z);
@@ -83,7 +84,7 @@ public class WorldGenerator extends Generator {
     }
 
     @Override
-    public double getNoise(FastNoiseLite fastNoiseLite, World world, int x, int y, int z) {
+    public synchronized double getNoise(FastNoiseLite fastNoiseLite, World world, int x, int y, int z) {
         xVar.setValue(x);
         yVar.setValue(y);
         zVar.setValue(z);
@@ -91,9 +92,9 @@ public class WorldGenerator extends Generator {
     }
 
     /**
-     * Gets the BlocPalette to generate the biome with.
+     * Gets the BlockPalette to generate the biome with.
      *
-     * @return BlocPalette - The biome's palette.
+     * @return BlockPalette - The biome's palette.
      */
     @Override
     public Palette<BlockData> getPalette(int y) {
