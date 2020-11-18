@@ -293,6 +293,10 @@ public class Structure implements Serializable {
         return true;
     }
 
+    public HashSet<StructureContainedBlock> getSpawns() {
+        return spawns;
+    }
+
     public HashSet<StructureContainedInventory> getInventories() {
         return inventories;
     }

@@ -2,6 +2,7 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
@@ -80,6 +81,10 @@ public class EventListener implements Listener {
         TreeRegistry registry = c.getTreeRegistry();
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
-        if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) block.setBlockData(data);
+        if(tree instanceof TreeConfig) {
+            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new Random())) {
+                block.setBlockData(data);
+            }
+        } else if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) block.setBlockData(data);
     }
 }
