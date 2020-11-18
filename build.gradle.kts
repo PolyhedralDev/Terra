@@ -48,6 +48,7 @@ dependencies {
     compileOnly("com.googlecode.json-simple:json-simple:1.1")
     implementation(name = "parsii-1.2", group = "")
     implementation("io.papermc:paperlib:1.0.5")
+    implementation("org.apache.commons:commons-math3:3.6.1")
 
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")

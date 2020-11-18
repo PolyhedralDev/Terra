@@ -4,6 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureInfo;
+import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +36,7 @@ public class EntityFeature implements Feature {
     }
 
     private static boolean isInChunk(Chunk c, Location l) {
-        return Math.floorDiv(l.getBlockX(), 16) == c.getX() && Math.floorDiv(l.getBlockZ(), 16) == c.getZ();
+        return FastMath.floorDiv(l.getBlockX(), 16) == c.getX() && FastMath.floorDiv(l.getBlockZ(), 16) == c.getZ();
     }
 
     private static List<Location> getLocations(Structure structure, Rotation r, Location origin, Random random, int number) {

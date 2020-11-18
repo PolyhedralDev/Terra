@@ -4,6 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
+import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -80,9 +81,9 @@ public class OreConfig extends TerraConfig {
                     Vector source = l.clone().add(new Vector(x, y, z));
                     if(oreLoc.getBlockY() > 255 || oreLoc.getBlockY() < 0) continue;
                     if(source.distance(l) < (rad + 0.5) * ((ore.getNoise(x, y, z) + 1) * deform)) {
-                        ChunkCoordinate coord = new ChunkCoordinate(Math.floorDiv(oreLoc.getBlockX(), 16), Math.floorDiv(oreLoc.getBlockZ(), 16), chunk.getWorld().getUID());
+                        ChunkCoordinate coord = new ChunkCoordinate(FastMath.floorDiv(oreLoc.getBlockX(), 16), FastMath.floorDiv(oreLoc.getBlockZ(), 16), chunk.getWorld().getUID());
                         Block b = chunks.computeIfAbsent(coord, k -> chunk.getWorld().getChunkAt(oreLoc.toLocation(chunk.getWorld())))
-                                .getBlock(Math.floorMod(source.getBlockX(), 16), source.getBlockY(), Math.floorMod(source.getBlockZ(), 16)); // Chunk caching conditional computation
+                                .getBlock(FastMath.floorMod(source.getBlockX(), 16), source.getBlockY(), FastMath.floorMod(source.getBlockZ(), 16)); // Chunk caching conditional computation
                         if(replaceable.contains(b.getType()) && b.getLocation().getY() >= 0)
                             b.setBlockData(oreData, update);
                     }

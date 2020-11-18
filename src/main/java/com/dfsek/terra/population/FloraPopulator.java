@@ -9,6 +9,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
 import com.dfsek.terra.event.TreeGenerateEvent;
+import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -57,7 +58,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
     }
 
     private static int offset(Random r, int i) {
-        return Math.min(Math.max(i + r.nextInt(3) - 1, 0), 15);
+        return FastMath.min(FastMath.max(i + r.nextInt(3) - 1, 0), 15);
     }
 
     @SuppressWarnings("try")

@@ -1,5 +1,7 @@
 package com.dfsek.terra.structure;
 
+import org.apache.commons.math3.util.FastMath;
+
 public enum Rotation {
     CW_90(90), CW_180(180), CCW_90(270), NONE(0);
     private final int degrees;
@@ -9,7 +11,7 @@ public enum Rotation {
     }
 
     public static Rotation fromDegrees(int deg) {
-        switch(Math.floorMod(deg, 360)) {
+        switch(FastMath.floorMod(deg, 360)) {
             case 0:
                 return Rotation.NONE;
             case 90:
