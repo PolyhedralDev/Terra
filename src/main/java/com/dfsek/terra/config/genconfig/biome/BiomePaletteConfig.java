@@ -4,6 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -29,7 +30,7 @@ public class BiomePaletteConfig extends TerraConfigSection {
                 try {
                     if(((String) entry.getKey()).startsWith("BLOCK:")) {
                         try {
-                            paletteMap.put((Integer) entry.getValue(), new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
+                            paletteMap.put((Integer) entry.getValue(), new RandomPalette<BlockData>(new XoRoShiRo128PlusRandom(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getKey()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
                             throw new ConfigException("BlockData " + entry.getKey() + " is invalid! (Palettes)", parent.getID());
                         }

@@ -4,6 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -36,7 +37,7 @@ public class PaletteConfig extends TerraConfig {
             pNoise.setFractalOctaves(4);
             pNoise.setFrequency(getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
-        } else pal = new RandomPalette<>(new Random(getInt("seed", 2403)));
+        } else pal = new RandomPalette<>(new XoRoShiRo128PlusRandom(getInt("seed", 2403)));
         palette = getPalette(getMapList("layers"), pal);
     }
 

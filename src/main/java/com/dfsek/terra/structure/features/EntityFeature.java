@@ -4,6 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureInfo;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -55,7 +56,7 @@ public class EntityFeature implements Feature {
 
     @Override
     public void apply(Structure structure, Rotation r, Location l, Chunk chunk) {
-        Random random = new Random(MathUtil.getCarverChunkSeed(chunk.getX(), chunk.getZ(), chunk.getWorld().getSeed()));
+        Random random = new XoRoShiRo128PlusRandom(MathUtil.getCarverChunkSeed(chunk.getX(), chunk.getZ(), chunk.getWorld().getSeed()));
         for(Location attempt : getLocations(structure, r, l, random, amount.get(random))) {
             if(!isInChunk(chunk, attempt)) continue; // Don't attempt spawn if not in current chunk.
             attemptSpawn(attempt, l);

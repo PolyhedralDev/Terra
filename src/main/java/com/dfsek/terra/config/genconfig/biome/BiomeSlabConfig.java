@@ -5,6 +5,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -42,7 +43,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
                     if(((String) entry.getValue()).startsWith("BLOCK:")) {
                         try {
                             Debug.info("Adding slab palette with single material " + entry.getKey());
-                            paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getValue()).substring(6)), 1), 1));
+                            paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), new RandomPalette<BlockData>(new XoRoShiRo128PlusRandom(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getValue()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
                             throw new ConfigException("Invalid BlockData in slab configuration: " + ex.getMessage(), getParent().getConfig().getID());
                         }

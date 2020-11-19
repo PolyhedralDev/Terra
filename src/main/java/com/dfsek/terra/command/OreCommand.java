@@ -3,6 +3,7 @@ package com.dfsek.terra.command;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -36,7 +37,7 @@ public class OreCommand extends WorldCommand {
                 return true;
             }
             Vector source = new Vector(FastMath.floorMod(bl.getX(), 16), bl.getY(), FastMath.floorMod(bl.getZ(), 16));
-            ore.doVein(source, bl.getChunk(), new Random());
+            ore.doVein(source, bl.getChunk(), new XoRoShiRo128PlusRandom());
         } else {
             LangUtil.send("command.ore.main-menu", sender);
         }

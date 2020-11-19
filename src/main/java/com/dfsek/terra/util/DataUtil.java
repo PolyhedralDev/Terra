@@ -1,5 +1,6 @@
 package com.dfsek.terra.util;
 
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.world.palette.Palette;
@@ -12,5 +13,5 @@ public final class DataUtil {
     public static final BlockData SNOW = Material.SNOW.createBlockData();
     public static final BlockData WATER = Material.WATER.createBlockData();
     public static final BlockData AIR = Material.AIR.createBlockData();
-    public static final Palette<BlockData> BLANK_PALETTE = new RandomPalette<BlockData>(new Random(2403)).add(AIR, 1);
+    public static final Palette<BlockData> BLANK_PALETTE = new RandomPalette<BlockData>(new XoRoShiRo128PlusRandom(2403)).add(AIR, 1);
 }

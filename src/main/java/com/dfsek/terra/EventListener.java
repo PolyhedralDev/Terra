@@ -23,6 +23,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 
 import java.util.Random;
 
@@ -82,9 +83,9 @@ public class EventListener implements Listener {
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
         if(tree instanceof TreeConfig) {
-            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new Random())) {
+            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new XoRoShiRo128PlusRandom())) {
                 block.setBlockData(data);
             }
-        } else if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) block.setBlockData(data);
+        } else if(!tree.plant(e.getLocation(), new XoRoShiRo128PlusRandom(), Terra.getInstance())) block.setBlockData(data);
     }
 }

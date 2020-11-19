@@ -4,6 +4,7 @@ import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.procgen.voxel.DeformedSphere;
 import com.dfsek.terra.procgen.voxel.Tube;
 import com.dfsek.terra.procgen.voxel.VoxelGeometry;
+import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -23,7 +24,7 @@ public class Cavern {
 
     public VoxelGeometry carveChunk(int chunkX, int chunkZ) {
         long seedC = MathUtil.getCarverChunkSeed(chunkX, chunkZ, seed);
-        Random chunk = new Random(seedC);
+        Random chunk = new XoRoShiRo128PlusRandom(seedC);
         Vector org = node.getNodeLocation((chunkX << 4) + 8, (chunkZ << 4) + 8).clone().setY(chunk.nextInt(128));
         VoxelGeometry carve = VoxelGeometry.getBlank();
 
@@ -33,7 +34,7 @@ public class Cavern {
         Bukkit.getLogger().info("Cavern: " + org.toString());
         carve.merge(new DeformedSphere(org.clone(), chunk.nextInt(4) + 3, 0.75, smpl));
 
-        Vector _00 = new Vector(org.getX() + 16, new Random(MathUtil.getCarverChunkSeed(chunkX + 1, chunkZ, seed)).nextInt(128), org.getZ());
+        Vector _00 = new Vector(org.getX() + 16, new XoRoShiRo128PlusRandom(MathUtil.getCarverChunkSeed(chunkX + 1, chunkZ, seed)).nextInt(128), org.getZ());
 
         carve.merge(new Tube(org, _00, 4));
         return carve;
