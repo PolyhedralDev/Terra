@@ -4,7 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
-import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
+import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -14,10 +14,8 @@ import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
-import java.util.Random;
-
 public class BiomeOceanConfig extends TerraConfigSection {
-    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new XoRoShiRo128PlusRandom(0)).add(Material.WATER.createBlockData(), 1);
+    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new XoRoShiRo128PlusPlusRandom(0)).add(Material.WATER.createBlockData(), 1);
     private final Palette<BlockData> ocean;
     private final int seaLevel;
 
@@ -28,7 +26,7 @@ public class BiomeOceanConfig extends TerraConfigSection {
         if(oceanN != null) {
             if(oceanN.startsWith("BLOCK:")) {
                 try {
-                    ocean = new RandomPalette<BlockData>(new XoRoShiRo128PlusRandom(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanN.substring(6)), 1), 1);
+                    ocean = new RandomPalette<BlockData>(new XoRoShiRo128PlusPlusRandom(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanN.substring(6)), 1), 1);
                 } catch(IllegalArgumentException ex) {
                     throw new ConfigException("BlockData \"" + oceanN + "\" is invalid! (Ocean Palette)", parent.getID());
                 }

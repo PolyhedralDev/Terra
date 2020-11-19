@@ -6,7 +6,7 @@ import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
-import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
+import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -36,7 +36,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<StructureConfig> {
         Location spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
         if(!TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) getGrid().getBiome(spawn)).getStructures().contains(target))
             return false;
-        Random r2 = new XoRoShiRo128PlusRandom(spawn.hashCode());
+        Random r2 = new XoRoShiRo128PlusPlusRandom(spawn.hashCode());
         Structure struc = target.getStructure(r2);
         Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
         for(int y = target.getSearchStart().get(r2); y > 0; y--) {

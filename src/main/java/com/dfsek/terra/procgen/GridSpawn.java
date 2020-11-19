@@ -1,6 +1,6 @@
 package com.dfsek.terra.procgen;
 
-import it.unimi.dsi.util.XoRoShiRo128PlusRandom;
+import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.MathUtil;
 
@@ -54,7 +54,7 @@ public class GridSpawn {
      * @return Vector representing spawnpoint
      */
     public Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
-        Random r = new XoRoShiRo128PlusRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
+        Random r = new XoRoShiRo128PlusPlusRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;
