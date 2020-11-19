@@ -1,6 +1,7 @@
 package com.dfsek.terra.procgen.pixel;
 
 import com.dfsek.terra.procgen.math.Vector2;
+import org.apache.commons.math3.util.FastMath;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +12,8 @@ public class Rectangle extends Polygon {
     private final Vector2 max;
 
     public Rectangle(Vector2 min, Vector2 max) {
-        this.max = new Vector2(Math.min(min.getX(), max.getX()), Math.min(min.getZ(), max.getZ()));
-        this.min = new Vector2(Math.max(min.getX(), max.getX()), Math.max(min.getZ(), max.getZ()));
+        this.max = new Vector2(FastMath.min(min.getX(), max.getX()), FastMath.min(min.getZ(), max.getZ()));
+        this.min = new Vector2(FastMath.max(min.getX(), max.getX()), FastMath.max(min.getZ(), max.getZ()));
     }
 
     public Rectangle(Vector2 center, double xRadius, double zRadius) {

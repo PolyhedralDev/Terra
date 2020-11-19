@@ -1,6 +1,7 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.procgen.math.Vector2;
+import org.apache.commons.math3.util.FastMath;
 
 import java.io.Serializable;
 
@@ -41,6 +42,6 @@ public class StructureInfo implements Serializable {
     }
 
     public double getMaxHorizontal() {
-        return Math.sqrt(Math.pow(sizeX, 2) + Math.pow(sizeZ, 2));
+        return FastMath.sqrt(FastMath.pow(sizeX, 2) + FastMath.pow(sizeZ, 2));
     }
 }

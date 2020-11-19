@@ -1,5 +1,6 @@
 package com.dfsek.terra.biome.postprocessing;
 
+import org.apache.commons.math3.util.FastMath;
 import org.polydev.gaea.math.FastNoiseLite;
 
 /**
@@ -27,7 +28,7 @@ public class ErosionNoise {
      * @return Whether location is eroded
      */
     public boolean isEroded(int x, int z) {
-        double abs = Math.pow(noise.getNoise(x, z), 2);
+        double abs = FastMath.pow(noise.getNoise(x, z), 2);
         return abs < thresh;
     }
 }

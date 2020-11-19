@@ -100,8 +100,8 @@ class LookupGenerator {
 
     public static int normalize(double i, int n) {
         i *= 1.42; // Magic simplex value (sqrt(2) plus a little)
-        i = Math.min(Math.max(i, -1), 1);
-        return Math.min((int) Math.floor((i + 1) * ((double) n / 2)), n - 1);
+        i = FastMath.min(FastMath.max(i, -1), 1);
+        return FastMath.min((int) FastMath.floor((i + 1) * ((double) n / 2)), n - 1);
     }
 
     private static class Worker extends Thread {

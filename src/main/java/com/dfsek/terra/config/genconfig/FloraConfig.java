@@ -4,6 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
+import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -95,12 +96,12 @@ public class FloraConfig extends TerraConfig implements Flora {
     public boolean plant(Location location) {
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;
-        for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
+        for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             if(i + 1 > 255) return false;
             if(!replaceable.contains(location.clone().add(0, i + c, 0).getBlock().getType())) return false;
         }
-        for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
-            int lvl = (Math.abs(i));
+        for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
+            int lvl = (FastMath.abs(i));
             location.clone().add(0, i + c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()), physics);
         }
         return true;

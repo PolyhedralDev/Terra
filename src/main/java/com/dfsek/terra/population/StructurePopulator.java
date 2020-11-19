@@ -13,6 +13,7 @@ import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedInventory;
 import com.dfsek.terra.structure.features.Feature;
 import com.dfsek.terra.util.structure.RotationUtil;
+import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -48,15 +49,15 @@ public class StructurePopulator extends BlockPopulator {
                     spawn.setY(y);
                     if(!struc.checkSpawns(spawn, rotation)) continue;
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
-                    if(Math.abs((cx + 8) - spawn.getBlockX()) <= horizontal && Math.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
+                    if(FastMath.abs((cx + 8) - spawn.getBlockX()) <= horizontal && FastMath.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         struc.paste(spawn, chunk, rotation);
                         for(StructureContainedInventory i : struc.getInventories()) {
                             try {
                                 Debug.info("Attempting to populate loot: " + i.getUid());
                                 Vector2 lootCoords = RotationUtil.getRotatedCoords(new Vector2(i.getX() - struc.getStructureInfo().getCenterX(), i.getZ() - struc.getStructureInfo().getCenterZ()), rotation.inverse());
                                 Location inv = spawn.clone().add(lootCoords.getX(), i.getY(), lootCoords.getZ());
-                                Debug.info(Math.floorDiv(inv.getBlockX(), 16) + ":" + chunk.getX() + ", " + Math.floorDiv(inv.getBlockZ(), 16) + ":" + chunk.getZ());
-                                if(Math.floorDiv(inv.getBlockX(), 16) != chunk.getX() || Math.floorDiv(inv.getBlockZ(), 16) != chunk.getZ())
+                                Debug.info(FastMath.floorDiv(inv.getBlockX(), 16) + ":" + chunk.getX() + ", " + FastMath.floorDiv(inv.getBlockZ(), 16) + ":" + chunk.getZ());
+                                if(FastMath.floorDiv(inv.getBlockX(), 16) != chunk.getX() || FastMath.floorDiv(inv.getBlockZ(), 16) != chunk.getZ())
                                     continue;
                                 Debug.info("Target is in chunk.");
                                 Debug.info(spawn.toString() + " became: " + inv.toString() + " (" + rotation + ", " + inv.getBlock().getType() + ")");

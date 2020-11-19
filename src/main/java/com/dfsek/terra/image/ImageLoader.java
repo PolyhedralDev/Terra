@@ -5,6 +5,7 @@ import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.debug.gui.DebugGUI;
+import org.apache.commons.math3.util.FastMath;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 
@@ -108,12 +109,12 @@ public class ImageLoader {
         NONE {
             @Override
             public int getRGB(BufferedImage image, int x, int y) {
-                return image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(y, image.getHeight()));
+                return image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(y, image.getHeight()));
             }
         };
 
         private static int getRGBNoAlign(BufferedImage image, int x, int y) {
-            return image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(y, image.getHeight()));
+            return image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(y, image.getHeight()));
         }
 
         public abstract int getRGB(BufferedImage image, int x, int y);

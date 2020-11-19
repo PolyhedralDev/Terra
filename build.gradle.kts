@@ -39,15 +39,22 @@ dependencies {
     compileOnly(name = "Gaea-${gaeaVersion}", group = "")
     testImplementation(name = "Gaea-${gaeaVersion}", group = "")
 
-    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:20.1.0")
+
     implementation("commons-io:commons-io:2.4")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
+    implementation("org.apache.commons:commons-math3:3.6.1")
+
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
+
     compileOnly("com.googlecode.json-simple:json-simple:1.1")
-    implementation(name = "parsii-1.2", group = "")
+
+    implementation(name = "parsii-1.2.1", group = "")
+
+    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
+
 
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
