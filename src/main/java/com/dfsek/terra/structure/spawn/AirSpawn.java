@@ -4,7 +4,6 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.generation.ElevationEquation;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import org.bukkit.World;
 import org.polydev.gaea.generation.GenerationPhase;
@@ -21,8 +20,7 @@ public class AirSpawn extends Requirement {
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
         BiomeConfig c = wc.getBiome(b);
         if(y <= c.getOcean().getSeaLevel()) return false;
-        ElevationEquation elevationEquation = ((WorldGenerator) b.getGenerator()).getElevationEquation();
-        int yf = y - ((elevationEquation == null) ? 0 : (int) elevationEquation.getNoise(x, z));
+        int yf = (int) (y - ((WorldGenerator) b.getGenerator()).getElevation(x, z));
         return b.getGenerator().getNoise(getNoise(), getWorld(), x, yf, z) <= 0;
     }
 }

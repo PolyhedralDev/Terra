@@ -147,7 +147,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
         if(!tw.isSafe()) return chunk;
-        ConfigPack config = tw.getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);

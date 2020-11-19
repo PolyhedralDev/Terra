@@ -1,8 +1,6 @@
 package com.dfsek.terra.generation.config;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
-import com.dfsek.terra.generation.ElevationEquation;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import org.bukkit.World;
@@ -20,8 +18,6 @@ import parsii.tokenizer.ParseException;
 import java.util.Map;
 
 public class WorldGenerator extends Generator {
-    private final ElevationEquation elevationEquation;
-
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final Palette<BlockData>[] palettes;
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
@@ -29,14 +25,18 @@ public class WorldGenerator extends Generator {
 
     private final boolean preventSmooth;
     private final Expression noiseExp;
+    private final Expression elevationExp;
     private final Variable xVar;
     private final Variable yVar;
     private final Variable zVar;
+    private final Variable elevationXVar;
+    private final Variable elevationZVar;
     private boolean elevationInterpolation = true;
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseConfig> noiseBuilders, Palette[] palettes, Palette[] slantPalettes, boolean preventSmooth) {
         Parser p = new Parser();
+        Parser ep = new Parser();
 
         Scope s = new Scope().withParent(vScope);
         xVar = s.create("x");
@@ -51,28 +51,36 @@ public class WorldGenerator extends Generator {
         for(Map.Entry<String, NoiseConfig> e : noiseBuilders.entrySet()) {
             switch(e.getValue().getDimensions()) {
                 case 2:
-                    NoiseFunction2 function2 = new NoiseFunction2(seed, e.getValue().getBuilder());
-                    p.registerFunction(e.getKey(), function2);
+                    p.registerFunction(e.getKey(), new NoiseFunction2(seed, e.getValue().getBuilder()));
+                    ep.registerFunction(e.getKey(), new NoiseFunction2(seed, e.getValue().getBuilder()));
                     break;
                 case 3:
-                    NoiseFunction3 function3 = new NoiseFunction3(seed, e.getValue().getBuilder());
-                    p.registerFunction(e.getKey(), function3);
+                    p.registerFunction(e.getKey(), new NoiseFunction3(seed, e.getValue().getBuilder()));
                     break;
             }
         }
         try {
-            this.noiseExp = p.parse(equation, s);
+            this.noiseExp = p.parse(equation, s).simplify();
             if(elevateEquation != null) {
-                Debug.info("Using elevation equation");
-                this.elevationEquation = new ElevationEquation(elevateEquation, vScope, p);
-            } else this.elevationEquation = null;
+                Scope es = new Scope().withParent(vScope);
+                this.elevationXVar = es.create("x");
+                this.elevationZVar = es.create("z");
+                this.elevationExp = ep.parse(elevateEquation, es).simplify();
+            } else {
+                this.elevationExp = null;
+                this.elevationXVar = null;
+                this.elevationZVar = null;
+            }
         } catch(ParseException e) {
             throw new IllegalArgumentException();
         }
     }
 
-    public ElevationEquation getElevationEquation() {
-        return elevationEquation;
+    public synchronized double getElevation(int x, int z) {
+        if(elevationExp == null) return 0;
+        elevationXVar.setValue(x);
+        elevationZVar.setValue(z);
+        return elevationExp.evaluate();
     }
 
     @Override

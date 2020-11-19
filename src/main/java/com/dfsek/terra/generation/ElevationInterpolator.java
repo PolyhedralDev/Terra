@@ -70,8 +70,7 @@ public class ElevationInterpolator {
     }
 
     private double elevate(WorldGenerator g, int x, int z) {
-        if(g.getElevationEquation() != null) return g.getElevationEquation().getNoise(x, z);
-        return 0;
+        return g.getElevation(x, z);
     }
 
     public double getElevation(int x, int z) {
