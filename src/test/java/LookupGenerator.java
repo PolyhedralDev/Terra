@@ -1,3 +1,4 @@
+import org.apache.commons.math3.util.FastMath;
 import org.junit.jupiter.api.Test;
 import org.polydev.gaea.math.FastNoiseLite;
 
