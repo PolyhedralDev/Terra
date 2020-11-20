@@ -1,3 +1,4 @@
+import com.dfsek.terra.util.GlueList;
 import org.apache.commons.math3.util.FastMath;
 import org.junit.jupiter.api.Test;
 import org.polydev.gaea.math.FastNoiseLite;
@@ -13,7 +14,7 @@ class LookupGenerator {
     static void main(String[] args) throws InterruptedException {
         int dist = 4096;
 
-        List<Double> vals = new ArrayList<>();
+        List<Double> vals = new GlueList<>();
         FastNoiseLite noise = new FastNoiseLite();
         noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noise.setFrequency(0.02f);
@@ -26,10 +27,10 @@ class LookupGenerator {
 
         int workerAmount = 16;
 
-        List<Worker> workers = new ArrayList<>();
+        List<Worker> workers = new GlueList<>();
 
         for(int i = 0; i < workerAmount; i++) {
-            workers.add(new Worker(new ArrayList<>(), 5000000, noise));
+            workers.add(new Worker(new GlueList<>(), 5000000, noise));
         }
 
         for(Worker w : workers) {

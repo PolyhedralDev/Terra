@@ -9,6 +9,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
 import com.dfsek.terra.event.TreeGenerateEvent;
+import com.dfsek.terra.util.GlueList;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -48,7 +49,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
     }
 
     public static List<Block> getValidTreeSpawnsAt(Chunk chunk, int x, int z, Range check) {
-        List<Block> blocks = new ArrayList<>();
+        List<Block> blocks = new GlueList<>();
         for(int y : check) {
             if(chunk.getBlock(x, y, z).getType().isSolid() && chunk.getBlock(x, y + 1, z).getType().isAir()) {
                 blocks.add(chunk.getBlock(x, y + 1, z));
