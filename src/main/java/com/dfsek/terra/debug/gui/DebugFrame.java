@@ -4,7 +4,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.ImageLoader;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.polydev.gaea.generation.GenerationPhase;

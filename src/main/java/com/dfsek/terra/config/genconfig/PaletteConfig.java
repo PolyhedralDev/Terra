@@ -4,12 +4,12 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.exception.ConfigException;
-import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 import org.polydev.gaea.world.palette.SimplexPalette;
@@ -36,7 +36,7 @@ public class PaletteConfig extends TerraConfig {
             pNoise.setFractalOctaves(4);
             pNoise.setFrequency(getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
-        } else pal = new RandomPalette<>(new XoRoShiRo128PlusPlusRandom(getInt("seed", 2403)));
+        } else pal = new RandomPalette<>(new FastRandom(getInt("seed", 2403)));
         palette = getPalette(getMapList("layers"), pal);
     }
 

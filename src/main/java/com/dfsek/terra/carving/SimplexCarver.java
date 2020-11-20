@@ -1,6 +1,6 @@
 package com.dfsek.terra.carving;
 
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.FastNoiseLite;

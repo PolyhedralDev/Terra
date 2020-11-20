@@ -2,7 +2,7 @@ package com.dfsek.terra.util.structure;
 
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Rotation;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;

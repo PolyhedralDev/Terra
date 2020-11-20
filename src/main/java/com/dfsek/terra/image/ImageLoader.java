@@ -5,7 +5,7 @@ import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.debug.gui.DebugGUI;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 

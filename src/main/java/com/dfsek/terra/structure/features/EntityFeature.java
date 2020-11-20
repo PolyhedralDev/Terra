@@ -4,9 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureInfo;
-import com.dfsek.terra.util.GlueList;
-import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,8 +13,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.util.FastRandom;
+import org.polydev.gaea.util.GlueList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -57,7 +56,7 @@ public class EntityFeature implements Feature {
 
     @Override
     public void apply(Structure structure, Rotation r, Location l, Chunk chunk) {
-        Random random = new XoRoShiRo128PlusPlusRandom(MathUtil.getCarverChunkSeed(chunk.getX(), chunk.getZ(), chunk.getWorld().getSeed()));
+        Random random = new FastRandom(MathUtil.getCarverChunkSeed(chunk.getX(), chunk.getZ(), chunk.getWorld().getSeed()));
         for(Location attempt : getLocations(structure, r, l, random, amount.get(random))) {
             if(!isInChunk(chunk, attempt)) continue; // Don't attempt spawn if not in current chunk.
             attemptSpawn(attempt, l);

@@ -1,11 +1,10 @@
 package com.dfsek.terra.procgen;
 
-import com.dfsek.terra.util.GlueList;
-import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.MathUtil;
+import org.polydev.gaea.util.FastRandom;
+import org.polydev.gaea.util.GlueList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -55,7 +54,7 @@ public class GridSpawn {
      * @return Vector representing spawnpoint
      */
     public Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
-        Random r = new XoRoShiRo128PlusPlusRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
+        Random r = new FastRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;
