@@ -4,8 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
-import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
@@ -53,7 +53,7 @@ public class FloraConfig extends TerraConfig implements Flora {
         physics = getBoolean("physics", false);
         ceiling = getBoolean("ceiling", false);
 
-        Palette<BlockData> p = new RandomPalette<>(new XoRoShiRo128PlusPlusRandom(getInt("seed", 4)));
+        Palette<BlockData> p = new RandomPalette<>(new FastRandom(getInt("seed", 4)));
 
         floraPalette = PaletteConfig.getPalette(getMapList("layers"), p);
     }

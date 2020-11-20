@@ -1,7 +1,7 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.procgen.math.Vector2;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 
 import java.io.Serializable;
 

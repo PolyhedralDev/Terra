@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure;
 
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 
 public enum Rotation {
     CW_90(90), CW_180(180), CCW_90(270), NONE(0);

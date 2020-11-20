@@ -6,7 +6,6 @@ import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
-import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -24,6 +23,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
+import org.polydev.gaea.util.FastRandom;
 
 public class EventListener implements Listener {
     private final GaeaPlugin main;
@@ -81,9 +81,9 @@ public class EventListener implements Listener {
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
         if(tree instanceof TreeConfig) {
-            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new XoRoShiRo128PlusPlusRandom())) {
+            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new FastRandom())) {
                 block.setBlockData(data);
             }
-        } else if(!tree.plant(e.getLocation(), new XoRoShiRo128PlusPlusRandom(), Terra.getInstance())) block.setBlockData(data);
+        } else if(!tree.plant(e.getLocation(), new FastRandom(), Terra.getInstance())) block.setBlockData(data);
     }
 }

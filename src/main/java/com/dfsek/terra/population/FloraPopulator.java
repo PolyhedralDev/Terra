@@ -9,8 +9,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
 import com.dfsek.terra.event.TreeGenerateEvent;
-import com.dfsek.terra.util.GlueList;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -22,9 +21,9 @@ import org.polydev.gaea.math.Range;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.tree.Tree;
+import org.polydev.gaea.util.GlueList;
 import org.polydev.gaea.world.Flora;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

@@ -43,7 +43,6 @@ dependencies {
 
     implementation("commons-io:commons-io:2.4")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
-    implementation("org.apache.commons:commons-math3:3.6.1")
 
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
@@ -55,7 +54,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
 
-    implementation("it.unimi.dsi:dsiutils:2.6.14")
+    implementation("net.jafama:jafama:2.3.2")
 
 
     // JUnit.
@@ -107,7 +106,8 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-    relocate("it.unimi.dsi", "com.dfsek.terra.lib.unimi")
+    relocate("net.jafama", "com.dfsek.terra.lib.jafama")
+    minimize()
 }
 
 tasks.build {

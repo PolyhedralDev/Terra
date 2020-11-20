@@ -1,6 +1,6 @@
 package com.dfsek.terra.procgen.math;
 
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 
 /**
  * oh yeah

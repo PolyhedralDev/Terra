@@ -3,12 +3,12 @@ package com.dfsek.terra.carving;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 
@@ -41,7 +41,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public Worm getWorm(long l, Vector vector) {
-        Random r = new XoRoShiRo128PlusPlusRandom(l + hash);
+        Random r = new FastRandom(l + hash);
         return new UserDefinedWorm(length.get(r) / 2, r, vector, radius.getMax(), topCut, bottomCut);
     }
 
@@ -60,7 +60,7 @@ public class UserDefinedCarver extends Carver {
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
         ConfigPack c = TerraWorld.getWorld(w).getConfig();
-        return new XoRoShiRo128PlusPlusRandom(random.nextLong() + hash).nextInt(100) < c.getBiome((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
+        return new FastRandom(random.nextLong() + hash).nextInt(100) < c.getBiome((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
     }
 
     private class UserDefinedWorm extends Worm {

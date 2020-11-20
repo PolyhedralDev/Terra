@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.postprocessing;
 
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.polydev.gaea.math.FastNoiseLite;
 
 /**

@@ -3,7 +3,7 @@ package com.dfsek.terra.structure;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.util.structure.RotationUtil;
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
