@@ -112,8 +112,8 @@ tasks.named<ShadowJar>("shadowJar") {
 
 tasks.build {
     dependsOn(tasks.shadowJar)
-    dependsOn(testWithPaper)
-    testWithPaper.mustRunAfter(tasks.shadowJar)
+//    dependsOn(testWithPaper)
+//    testWithPaper.mustRunAfter(tasks.shadowJar)
 }
 
 val testDir = "target/server/"
