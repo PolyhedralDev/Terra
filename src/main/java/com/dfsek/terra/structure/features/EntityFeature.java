@@ -4,6 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureInfo;
+import com.dfsek.terra.util.GlueList;
 import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
@@ -48,7 +49,7 @@ public class EntityFeature implements Feature {
 
         int cx = info.getCenterX();
         int cz = info.getCenterZ();
-        List<Location> locations = new ArrayList<>();
+        List<Location> locations = new GlueList<>();
         for(int i = 0; i < number; i++)
             locations.add(origin.clone().add(x.get(random) - cx, y.get(random), z.get(random) - cz));
         return locations;

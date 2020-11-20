@@ -1,5 +1,6 @@
 package com.dfsek.terra.procgen;
 
+import com.dfsek.terra.util.GlueList;
 import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.MathUtil;
@@ -31,7 +32,7 @@ public class GridSpawn {
     public Vector getNearestSpawn(int x, int z, long seed) {
         int structureChunkX = x / (width + 2 * separation);
         int structureChunkZ = z / (width + 2 * separation);
-        List<Vector> zones = new ArrayList<>();
+        List<Vector> zones = new GlueList<>();
         for(int xi = structureChunkX - 1; xi <= structureChunkX + 1; xi++) {
             for(int zi = structureChunkZ - 1; zi <= structureChunkZ + 1; zi++) {
                 zones.add(getChunkSpawn(xi, zi, seed));
