@@ -55,6 +55,8 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
 
+    implementation("it.unimi.dsi:dsiutils:2.6.14")
+
 
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
@@ -105,6 +107,7 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+    relocate("it.unimi.dsi", "com.dfsek.terra.lib.unimi")
 }
 
 tasks.build {

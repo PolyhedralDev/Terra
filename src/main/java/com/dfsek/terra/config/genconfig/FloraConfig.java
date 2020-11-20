@@ -4,6 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
+import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -21,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class FloraConfig extends TerraConfig implements Flora {
@@ -53,7 +53,7 @@ public class FloraConfig extends TerraConfig implements Flora {
         physics = getBoolean("physics", false);
         ceiling = getBoolean("ceiling", false);
 
-        Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
+        Palette<BlockData> p = new RandomPalette<>(new XoRoShiRo128PlusPlusRandom(getInt("seed", 4)));
 
         floraPalette = PaletteConfig.getPalette(getMapList("layers"), p);
     }

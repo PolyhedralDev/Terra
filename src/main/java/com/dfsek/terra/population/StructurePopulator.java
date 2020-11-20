@@ -13,6 +13,7 @@ import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedInventory;
 import com.dfsek.terra.structure.features.Feature;
 import com.dfsek.terra.util.structure.RotationUtil;
+import it.unimi.dsi.util.XoRoShiRo128PlusPlusRandom;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -41,7 +42,7 @@ public class StructurePopulator extends BlockPopulator {
             for(StructureConfig conf : config.getAllStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
                 if(!config.getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(conf)) continue;
-                Random r2 = new Random(spawn.hashCode());
+                Random r2 = new XoRoShiRo128PlusPlusRandom(spawn.hashCode());
                 Structure struc = conf.getStructure(r2);
                 Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
                 for(int y = conf.getSearchStart().get(r2); y > 0; y--) {
