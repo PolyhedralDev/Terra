@@ -43,7 +43,6 @@ dependencies {
 
     implementation("commons-io:commons-io:2.4")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
-    implementation("org.apache.commons:commons-rng-core:1.3")
 
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:1.7")
