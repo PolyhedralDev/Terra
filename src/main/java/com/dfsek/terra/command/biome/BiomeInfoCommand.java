@@ -40,7 +40,7 @@ public class BiomeInfoCommand extends WorldCommand {
         sender.sendMessage("Erodible: " + b.isErodible());
 
 
-        BiomeConfig bio = cfg.getBiome(b);
+        BiomeConfig bio = b.getConfig();
         List<StructureConfig> structureConfigs = bio.getStructures();
 
         if(structureConfigs.size() == 0) sender.sendMessage("No Structures");

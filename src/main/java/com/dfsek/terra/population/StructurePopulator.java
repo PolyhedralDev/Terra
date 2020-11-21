@@ -41,7 +41,7 @@ public class StructurePopulator extends BlockPopulator {
             structure:
             for(StructureConfig conf : config.getAllStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
-                if(!config.getBiome((UserDefinedBiome) grid.getBiome(spawn)).getStructures().contains(conf)) continue;
+                if(!((UserDefinedBiome) grid.getBiome(spawn)).getConfig().getStructures().contains(conf)) continue;
                 Random r2 = new FastRandom(spawn.hashCode());
                 Structure struc = conf.getStructure(r2);
                 Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);

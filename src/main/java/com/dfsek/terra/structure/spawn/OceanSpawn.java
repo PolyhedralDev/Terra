@@ -16,7 +16,7 @@ public class OceanSpawn extends Requirement {
     public boolean matches(int x, int y, int z) {
         TerraWorld tw = TerraWorld.getWorld(getWorld());
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
-        BiomeConfig c = tw.getConfig().getBiome(b);
+        BiomeConfig c = b.getConfig();
         if(y > c.getOcean().getSeaLevel()) return false;
         int yf = (int) (y - ((WorldGenerator) b.getGenerator()).getElevation(x, z));
         return b.getGenerator().getNoise(getNoise(), getWorld(), x, yf, z) <= 0;

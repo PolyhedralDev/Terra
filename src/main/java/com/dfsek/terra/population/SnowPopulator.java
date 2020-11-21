@@ -55,7 +55,7 @@ public class SnowPopulator extends GaeaBlockPopulator {
             TerraBiomeGrid g = w.getGrid();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    BiomeConfig biome = w.getConfig().getBiome((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY));
+                    BiomeConfig biome = ((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY)).getConfig();
                     if(!biome.getSnow().doSnow()) continue;
                     int y;
                     Block b = null;
@@ -66,7 +66,7 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     if(random.nextInt(100) >= biome.getSnow().getSnowChance(y))
                         continue;
                     if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
-                    chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW);
+                    chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW, biome.getSnow().doPhysics());
                 }
             }
         }

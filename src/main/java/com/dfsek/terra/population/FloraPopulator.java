@@ -5,7 +5,6 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
 import com.dfsek.terra.event.TreeGenerateEvent;
@@ -34,7 +33,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
     private static boolean doTrees(@NotNull UserDefinedBiome biome, TerraWorld world, @NotNull Random random, @NotNull Chunk chunk, int x, int z) {
         for(Block block : getValidTreeSpawnsAt(chunk, x, z, new Range(0, 254))) {
             Tree tree = biome.getDecorator().getTrees().get(random);
-            Range range = world.getConfig().getBiome(biome).getTreeRange(tree);
+            Range range = biome.getConfig().getTreeRange(tree);
             if(!range.isInRange(block.getY())) continue;
             try {
                 Location l = block.getLocation();
@@ -70,7 +69,6 @@ public class FloraPopulator extends GaeaBlockPopulator {
             int originX = chunk.getX() << 4;
             int originZ = chunk.getZ() << 4;
             TerraBiomeGrid grid = tw.getGrid();
-            ConfigPack config = tw.getConfig();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
@@ -84,7 +82,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
                     }
                     if(biome.getDecorator().getFloraChance() <= 0) continue;
                     try {
-                        BiomeConfig c = config.getBiome(biome);
+                        BiomeConfig c = biome.getConfig();
                         BiomeFloraConfig f = c.getFlora();
                         for(int i = 0; i < f.getFloraAttempts(); i++) {
                             Flora item;
