@@ -27,11 +27,11 @@ public class AsyncBiomeFinder extends AsyncFeatureFinder<Biome> {
      */
     @Override
     public boolean isValid(int x, int z, Biome target) {
-        return getGrid().getBiome(x, z, GenerationPhase.POST_GEN).equals(target);
+        return getGrid().getBiome(x << 2, z << 2, GenerationPhase.POST_GEN).equals(target);
     }
 
     @Override
     public Vector finalizeVector(Vector orig) {
-        return orig;
+        return orig.multiply(4);
     }
 }
