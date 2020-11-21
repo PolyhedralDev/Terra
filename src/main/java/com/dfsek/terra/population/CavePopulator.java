@@ -66,14 +66,15 @@ public class CavePopulator extends BlockPopulator {
                         updateNeeded.add(b);
                     }
                 }
-                for(Location l : shiftCandidate.keySet()) {
+                for(Map.Entry<Location, Material> entry : shiftCandidate.entrySet()) {
+                    Location l = entry.getKey();
                     Location mut = l.clone();
                     Material orig = l.getBlock().getType();
                     do mut.subtract(0, 1, 0);
                     while(mut.getBlock().getType().equals(orig));
                     try {
-                        if(c.getShiftedBlocks().get(shiftCandidate.get(l)).contains(mut.getBlock().getType())) {
-                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(shiftCandidate.get(l), Material::createBlockData), false);
+                        if(c.getShiftedBlocks().get(entry.getValue()).contains(mut.getBlock().getType())) {
+                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue(), Material::createBlockData), false);
                         }
                     } catch(NullPointerException ignore) {
                     }

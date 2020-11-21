@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public final class ConfigUtil {
     }
 
     public static Set<Material> toBlockData(List<String> list, String phase, String id) throws InvalidConfigurationException {
-        Set<Material> bl = new HashSet<>();
+        Set<Material> bl = EnumSet.noneOf(Material.class);
         for(String s : list) {
             try {
                 if(s.startsWith("#")) {

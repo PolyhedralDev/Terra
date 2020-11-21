@@ -12,6 +12,7 @@ import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.RedstoneWire;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -252,7 +253,7 @@ public final class RotationUtil {
             ((Directional) data).setFacing(rt);
         } else if(data instanceof MultipleFacing) {
             MultipleFacing mfData = (MultipleFacing) data;
-            Map<BlockFace, Boolean> faces = new HashMap<>();
+            Map<BlockFace, Boolean> faces = new EnumMap<>(BlockFace.class);
             for(BlockFace f : mfData.getAllowedFaces()) {
                 faces.put(f, mfData.hasFace(f));
             }
@@ -266,7 +267,7 @@ public final class RotationUtil {
             org.bukkit.Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
             ((Orientable) data).setAxis(newAxis);
         } else if(data instanceof RedstoneWire) {
-            Map<BlockFace, RedstoneWire.Connection> connections = new HashMap<>();
+            Map<BlockFace, RedstoneWire.Connection> connections = new EnumMap<>(BlockFace.class);
             RedstoneWire rData = (RedstoneWire) data;
             for(BlockFace f : rData.getAllowedFaces()) {
                 connections.put(f, rData.getFace(f));
