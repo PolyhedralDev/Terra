@@ -1,6 +1,7 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.config.base.ConfigUtil;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -27,11 +28,11 @@ public class AsyncBiomeFinder extends AsyncFeatureFinder<Biome> {
      */
     @Override
     public boolean isValid(int x, int z, Biome target) {
-        return getGrid().getBiome(x << 2, z << 2, GenerationPhase.POST_GEN).equals(target);
+        return getGrid().getBiome(x * ConfigUtil.biomeSearchRes, z * ConfigUtil.biomeSearchRes, GenerationPhase.POST_GEN).equals(target);
     }
 
     @Override
     public Vector finalizeVector(Vector orig) {
-        return orig.multiply(4);
+        return orig.multiply(ConfigUtil.biomeSearchRes);
     }
 }
