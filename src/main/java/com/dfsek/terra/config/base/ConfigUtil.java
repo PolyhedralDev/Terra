@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -29,7 +28,6 @@ public final class ConfigUtil {
     public static boolean debug;
     public static long dataSave; // Period of population data saving, in ticks.
     public static boolean masterDisableCaves;
-    public static int cacheSize;
 
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
@@ -38,7 +36,6 @@ public final class ConfigUtil {
         LangUtil.load(config.getString("language", "en_us"), main);
 
         debug = config.getBoolean("debug", false);
-        cacheSize = config.getInt("cache-size", 3);
         dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis() / 20L;
         masterDisableCaves = config.getBoolean("master-disable.caves", false);
 
