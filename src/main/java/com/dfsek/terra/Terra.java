@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.papermc.lib.PaperLib.suggestPaper;
-
 
 public class Terra extends GaeaPlugin {
     private static Terra instance;
@@ -59,7 +57,7 @@ public class Terra extends GaeaPlugin {
         saveDefaultConfig();
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
-        suggestPaper(this);
+        PaperUtil.checkPaper(this);
     }
 
     @Override
