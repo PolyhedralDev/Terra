@@ -1,7 +1,5 @@
 package com.dfsek.terra;
 
-import co.aikar.timings.lib.MCTiming;
-import co.aikar.timings.lib.TimingManager;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
 import com.dfsek.terra.config.base.ConfigUtil;
@@ -29,8 +27,6 @@ import static io.papermc.lib.PaperLib.suggestPaper;
 public class Terra extends GaeaPlugin {
     private static Terra instance;
     private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
-
-    private static TimingManager timingManager;
 
     public static Terra getInstance() {
         return instance;
@@ -64,7 +60,6 @@ public class Terra extends GaeaPlugin {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
         suggestPaper(this);
-        timingManager = TimingManager.of(this);
     }
 
     @Override
@@ -89,9 +84,5 @@ public class Terra extends GaeaPlugin {
     @Override
     public Language getLanguage() {
         return LangUtil.getLanguage();
-    }
-
-    public static MCTiming timing(String name) {
-        return timingManager.of(name);
     }
 }

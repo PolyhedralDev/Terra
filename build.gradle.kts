@@ -22,7 +22,6 @@ repositories {
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-    maven { url = uri("http://repo.aikar.co/nexus/content/groups/aikar/") }
 //    maven { url = uri("https://maven.pkg.github.com/solonovamax/Gaea") }
 }
 
@@ -54,7 +53,6 @@ dependencies {
 
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
-    implementation("co.aikar:minecraft-timings:1.0.4")
 
     implementation("net.jafama:jafama:2.3.2")
 
@@ -109,7 +107,6 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-    relocate("co.aikar", "com.dfsek.terra.lib.aikar")
     minimize()
 }
 
