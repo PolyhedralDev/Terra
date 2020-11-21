@@ -1,6 +1,5 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
@@ -34,7 +33,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<StructureConfig> {
     public boolean isValid(int x, int z, StructureConfig target) {
         World world = getWorld();
         Location spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
-        if(!TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) getGrid().getBiome(spawn)).getStructures().contains(target))
+        if(!((UserDefinedBiome) getGrid().getBiome(spawn)).getConfig().getStructures().contains(target))
             return false;
         Random r2 = new FastRandom(spawn.hashCode());
         Structure struc = target.getStructure(r2);

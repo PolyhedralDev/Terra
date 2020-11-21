@@ -13,11 +13,13 @@ import java.util.Map;
 public class BiomeSnowConfig extends TerraConfigSection {
     private final int[] snowHeights;
     private boolean doSnow = false;
+    private final boolean physics;
 
     public BiomeSnowConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         snowHeights = new int[256];
         List<Map<?, ?>> maps = parent.getMapList("snow");
+        this.physics = getParent().getBoolean("snow-physics", false);
         if(maps.size() == 0) return;
         try {
             for(Map<?, ?> e : maps) {
@@ -40,5 +42,9 @@ public class BiomeSnowConfig extends TerraConfigSection {
 
     public boolean doSnow() {
         return doSnow;
+    }
+
+    public boolean doPhysics() {
+        return physics;
     }
 }

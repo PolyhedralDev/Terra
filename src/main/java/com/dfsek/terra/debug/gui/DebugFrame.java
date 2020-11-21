@@ -41,7 +41,7 @@ public class DebugFrame extends JFrame implements ActionListener {
                 xp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockX(), x) / x) * getWidth());
                 zp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockZ(), z) / z) * getHeight());
             }
-            String str = TerraWorld.getWorld(p.getWorld()).getConfig().getBiome((UserDefinedBiome) TerraWorld.getWorld(p.getWorld()).getGrid().getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
+            String str = ((UserDefinedBiome) TerraWorld.getWorld(p.getWorld()).getGrid().getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
             g.setColor(new Color(255, 255, 255, 128));
             g.fillRect(xp + 13, zp - 13, (int) (8 + 8.25 * str.length()), 33);
             g.setColor(Color.BLACK);

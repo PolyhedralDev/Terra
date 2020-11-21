@@ -2,7 +2,6 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -272,13 +271,6 @@ public class ConfigPack extends YamlConfiguration {
 
     public File getDataFolder() {
         return dataFolder;
-    }
-
-    public BiomeConfig getBiome(UserDefinedBiome b) {
-        for(BiomeConfig biome : biomes.values()) {
-            if(biome.getBiome().equals(b)) return biome;
-        }
-        throw new IllegalArgumentException("No BiomeConfig for provided biome.");
     }
 
     public BiomeConfig getBiome(String id) {
