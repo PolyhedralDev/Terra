@@ -21,7 +21,7 @@ public class BiomePaletteConfig extends TerraConfigSection {
 
     public BiomePaletteConfig(TerraConfig parent, String key) throws InvalidConfigurationException {
         super(parent);
-        List<Map<?, ?>> cfg = parent.getMapList(key);
+        List<Map<?, ?>> cfg = parent.getYaml().getMapList(key);
         if(cfg.size() == 0) return;
         paletteMap = new TreeMap<>();
         for(Map<?, ?> e : cfg) {

@@ -17,7 +17,7 @@ public class BiomeSnowConfig extends TerraConfigSection {
     public BiomeSnowConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
         snowHeights = new int[256];
-        List<Map<?, ?>> maps = parent.getMapList("snow");
+        List<Map<?, ?>> maps = parent.getYaml().getMapList("snow");
         if(maps.size() == 0) return;
         try {
             for(Map<?, ?> e : maps) {

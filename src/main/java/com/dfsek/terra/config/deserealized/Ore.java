@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation.deserelized;
+package com.dfsek.terra.config.deserealized;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -27,7 +27,7 @@ import java.util.Set;
         @JsonSubTypes.Type(value = SingleChunkOre.class, name = "single"),
         @JsonSubTypes.Type(value = VanillaOre.class, name = "vanilla")
 })
-public abstract class Ore implements GenerationEntity {
+public abstract class Ore implements Generateable {
     protected BlockData material;
     protected double deform = 0.75;
     @JsonProperty("deform-frequency")

@@ -38,11 +38,11 @@ public class StructureConfig extends TerraConfig {
     @SuppressWarnings("unchecked")
     public StructureConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
-        id = getString("id");
-        if(!contains("files")) throw new ConfigException("No files specified!", getID());
+        if(!yaml.contains("id")) throw new ConfigException("No ID specified!", "null");
+        id = yaml.getString("id");
+        if(!yaml.contains("files")) throw new ConfigException("No files specified!", getID());
         try {
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
+            for(Map.Entry<String, Object> e : Objects.requireNonNull(yaml.getConfigurationSection("files")).getValues(false).entrySet()) {
                 try {
                     File structureFile = new File(config.getDataFolder() + File.separator + "structures" + File.separator + "data", e.getKey() + ".tstructure");
                     structure.add(Structure.load(structureFile), (Integer) e.getValue());
@@ -58,10 +58,10 @@ public class StructureConfig extends TerraConfig {
             if(ConfigUtil.debug) {
                 e.printStackTrace();
             }
-            throw new NotFoundException("Structure", getString("file"), getID());
+            throw new NotFoundException("Structure", yaml.getString("file"), getID());
         }
-        if(contains("loot")) {
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("loot")).getValues(false).entrySet()) {
+        if(yaml.contains("loot")) {
+            for(Map.Entry<String, Object> e : Objects.requireNonNull(yaml.getConfigurationSection("loot")).getValues(false).entrySet()) {
                 File lootFile = new File(config.getDataFolder() + File.separator + "structures" + File.separator + "loot", e.getValue().toString() + ".json");
                 try {
                     loot.put(Integer.valueOf(e.getKey()), new LootTable(FileUtils.readFileToString(lootFile)));
@@ -80,8 +80,8 @@ public class StructureConfig extends TerraConfig {
         }
 
         features = new ArrayList<>();
-        if(contains("features")) {
-            for(Map<?, ?> map : getMapList("features")) {
+        if(yaml.contains("features")) {
+            for(Map<?, ?> map : yaml.getMapList("features")) {
                 for(Map.Entry<?, ?> entry : map.entrySet()) {
                     if(entry.getKey().equals("ENTITY_FEATURE"))
                         features.add(new EntityFeatureConfig((Map<String, Object>) entry.getValue()).getFeature());
@@ -89,9 +89,9 @@ public class StructureConfig extends TerraConfig {
             }
         }
 
-        spawn = new GridSpawn(getInt("spawn.width", 500), getInt("spawn.padding", 100));
-        searchStart = new Range(getInt("spawn.start.min", 72), getInt("spawn.start.max", 72));
-        bound = new Range(getInt("spawn.bound.min", 48), getInt("spawn.bound.max", 72));
+        spawn = new GridSpawn(yaml.getInt("spawn.width", 500), yaml.getInt("spawn.padding", 100));
+        searchStart = new Range(yaml.getInt("spawn.start.min", 72), yaml.getInt("spawn.start.max", 72));
+        bound = new Range(yaml.getInt("spawn.bound.min", 48), yaml.getInt("spawn.bound.max", 72));
     }
 
     @Override

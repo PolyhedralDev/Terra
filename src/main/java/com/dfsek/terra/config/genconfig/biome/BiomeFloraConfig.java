@@ -26,13 +26,13 @@ public class BiomeFloraConfig extends TerraConfigSection {
 
     public BiomeFloraConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        ConfigurationSection cfg = parent.getConfigurationSection("flora.items");
+        ConfigurationSection cfg = parent.getYaml().getConfigurationSection("flora.items");
         if(cfg == null) return;
-        floraSimplex = parent.getBoolean("flora.simplex.enable", false);
-        floraAttempts = parent.getInt("flora.attempts", 1);
-        floraChance = parent.getInt("flora.chance", 0);
-        double floraFreq = parent.getDouble("flora.simplex.frequency", 0.1);
-        int floraSeed = parent.getInt("flora.simplex.seed", 2403);
+        floraSimplex = parent.getYaml().getBoolean("flora.simplex.enable", false);
+        floraAttempts = parent.getYaml().getInt("flora.attempts", 1);
+        floraChance = parent.getYaml().getInt("flora.chance", 0);
+        double floraFreq = parent.getYaml().getDouble("flora.simplex.frequency", 0.1);
+        int floraSeed = parent.getYaml().getInt("flora.simplex.seed", 2403);
         if(floraSimplex) {
             floraNoise = new FastNoiseLite(floraSeed);
             floraNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);

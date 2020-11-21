@@ -24,19 +24,19 @@ public class BiomeGridConfig extends TerraConfig {
     @SuppressWarnings("unchecked")
     public BiomeGridConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
-        this.gridID = getString("id");
-        if(!contains("grid")) throw new ConfigException("Grid key not found!", getID());
-        this.sizeX = Objects.requireNonNull(getList("grid")).size();
-        this.sizeZ = ((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(0).size();
+        if(!yaml.contains("id")) throw new ConfigException("Grid ID unspecified!", "null");
+        this.gridID = yaml.getString("id");
+        if(!yaml.contains("grid")) throw new ConfigException("Grid key not found!", getID());
+        this.sizeX = Objects.requireNonNull(yaml.getList("grid")).size();
+        this.sizeZ = ((List<List<String>>) Objects.requireNonNull(yaml.getList("grid"))).get(0).size();
         gridRaw = new UserDefinedBiome[sizeX][sizeZ];
         try {
             for(int x = 0; x < sizeX; x++) {
                 for(int z = 0; z < sizeZ; z++) {
                     try {
-                        gridRaw[x][z] = config.getBiome(((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z)).getBiome();
+                        gridRaw[x][z] = config.getBiome(((List<List<String>>) Objects.requireNonNull(yaml.getList("grid"))).get(x).get(z)).getBiome();
                     } catch(NullPointerException e) {
-                        throw new NotFoundException("Biome", ((List<List<String>>) Objects.requireNonNull(getList("grid"))).get(x).get(z), getID());
+                        throw new NotFoundException("Biome", ((List<List<String>>) Objects.requireNonNull(yaml.getList("grid"))).get(x).get(z), getID());
                     }
                 }
             }

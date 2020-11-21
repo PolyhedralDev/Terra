@@ -1,10 +1,11 @@
-package com.dfsek.terra.generation.deserelized;
+package com.dfsek.terra.config.deserealized;
 
 import net.royawesome.jlibnoise.MathHelper;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.polydev.gaea.world.Ore;
 
 import java.util.Random;
 

@@ -19,7 +19,7 @@ public class BiomeOreConfig extends TerraConfigSection {
 
     public BiomeOreConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        ConfigurationSection c = parent.getConfigurationSection("ores");
+        ConfigurationSection c = parent.getYaml().getConfigurationSection("ores");
         if(c == null) return;
         Map<String, Object> cfg = c.getValues(false);
         try {

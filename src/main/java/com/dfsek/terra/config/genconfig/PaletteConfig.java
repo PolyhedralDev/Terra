@@ -26,18 +26,18 @@ public class PaletteConfig extends TerraConfig {
 
     public PaletteConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
-        this.paletteID = getString("id");
+        if(!yaml.contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
+        this.paletteID = yaml.getString("id");
         Palette<BlockData> pal;
-        if(getBoolean("simplex", false)) {
+        if(yaml.getBoolean("simplex", false)) {
             useNoise = true;
-            FastNoiseLite pNoise = new FastNoiseLite(getInt("seed", 2403));
+            FastNoiseLite pNoise = new FastNoiseLite(yaml.getInt("seed", 2403));
             pNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
             pNoise.setFractalOctaves(4);
-            pNoise.setFrequency(getDouble("frequency", 0.02));
+            pNoise.setFrequency(yaml.getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
-        } else pal = new RandomPalette<>(new Random(getInt("seed", 2403)));
-        palette = getPalette(getMapList("layers"), pal);
+        } else pal = new RandomPalette<>(new Random(yaml.getInt("seed", 2403)));
+        palette = getPalette(yaml.getMapList("layers"), pal);
     }
 
     @SuppressWarnings("unchecked")

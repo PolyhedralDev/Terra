@@ -12,9 +12,9 @@ import java.io.InputStreamReader;
 
 @SuppressWarnings("unused")
 public abstract class TerraConfig {
-    protected final String id;
+    protected final YamlConfiguration yaml;
     private final ConfigPack config;
-    private final YamlConfiguration yaml;
+    protected String id;
 
     /**
      * Constructs a new Terra config with a file, config pack and Id.
@@ -27,8 +27,8 @@ public abstract class TerraConfig {
      * @deprecated Deprecated because you should use {@link #TerraConfig(InputStream, ConfigPack, String)}
      */
     @Deprecated
-    public TerraConfig(File file, ConfigPack config, String id) throws IOException, InvalidConfigurationException {
-        this(new FileInputStream(file), config, id);
+    public TerraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
+        this(new FileInputStream(file), config);
     }
 
     /**
@@ -40,11 +40,14 @@ public abstract class TerraConfig {
      * @throws IOException
      * @throws InvalidConfigurationException
      */
-    public TerraConfig(InputStream stream, ConfigPack config, String id) throws IOException, InvalidConfigurationException {
+    public TerraConfig(InputStream stream, ConfigPack config) throws IOException, InvalidConfigurationException {
         yaml = new YamlConfiguration();
         yaml.load(new InputStreamReader(stream));
         this.config = config;
-        this.id = id;
+    }
+
+    public YamlConfiguration getYaml() {
+        return yaml;
     }
 
     public ConfigPack getConfig() {

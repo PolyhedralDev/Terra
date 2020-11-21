@@ -25,30 +25,29 @@ public class AbstractBiomeConfig extends TerraConfig {
 
     public AbstractBiomeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        load(file);
-        if(!contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
-        this.biomeID = getString("id");
+        if(!yaml.contains("id")) throw new ConfigException("Abstract Biome ID unspecified!", "null");
+        this.biomeID = yaml.getString("id");
 
-        equation = getString("noise-equation");
-        seaLevel = getInt("ocean.level", 62);
+        equation = yaml.getString("noise-equation");
+        seaLevel = yaml.getInt("ocean.level", 62);
 
-        if(contains("carving")) carving = new BiomeCarverConfig(this);
+        if(yaml.contains("carving")) carving = new BiomeCarverConfig(this);
 
-        if(contains("palette")) palette = new BiomePaletteConfig(this, "palette");
+        if(yaml.contains("palette")) palette = new BiomePaletteConfig(this, "palette");
 
-        if(contains("flora")) flora = new BiomeFloraConfig(this);
+        if(yaml.contains("flora")) flora = new BiomeFloraConfig(this);
 
-        if(contains("trees")) trees = new BiomeTreeConfig(this);
+        if(yaml.contains("trees")) trees = new BiomeTreeConfig(this);
 
-        if(contains("ores")) ores = new BiomeOreConfig(this);
+        if(yaml.contains("ores")) ores = new BiomeOreConfig(this);
 
-        if(contains("ocean")) ocean = new BiomeOceanConfig(this);
+        if(yaml.contains("ocean")) ocean = new BiomeOceanConfig(this);
 
-        if(contains("slabs") && getBoolean("slabs.enable", false)) slabs = new BiomeSlabConfig(this);
+        if(yaml.contains("slabs") && yaml.getBoolean("slabs.enable", false)) slabs = new BiomeSlabConfig(this);
 
-        if(contains("structures")) structureConfigs = getStringList("structures");
+        if(yaml.contains("structures")) structureConfigs = yaml.getStringList("structures");
 
-        if(contains("snow")) snow = new BiomeSnowConfig(this);
+        if(yaml.contains("snow")) snow = new BiomeSnowConfig(this);
     }
 
     @Override

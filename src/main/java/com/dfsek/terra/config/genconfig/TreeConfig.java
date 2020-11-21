@@ -31,13 +31,13 @@ public class TreeConfig extends TerraConfig implements Tree {
 
     public TreeConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
-        if(!contains("id")) throw new ConfigException("No ID specified!", "null");
-        id = getString("id");
-        if(!contains("files")) throw new ConfigException("No files specified!", getID());
-        yOffset = getInt("y-offset", 0);
+        spawnable = ConfigUtil.toBlockData(yaml.getStringList("spawnable"), "spawnable", getID());
+        if(!yaml.contains("id")) throw new ConfigException("No ID specified!", "null");
+        id = yaml.getString("id");
+        if(!yaml.contains("files")) throw new ConfigException("No files specified!", getID());
+        yOffset = yaml.getInt("y-offset", 0);
         try {
-            for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("files")).getValues(false).entrySet()) {
+            for(Map.Entry<String, Object> e : Objects.requireNonNull(yaml.getConfigurationSection("files")).getValues(false).entrySet()) {
                 try {
                     File structureFile = new File(config.getDataFolder() + File.separator + "trees" + File.separator + "data", e.getKey() + ".tstructure");
                     structure.add(Structure.load(structureFile), (Integer) e.getValue());
@@ -53,7 +53,7 @@ public class TreeConfig extends TerraConfig implements Tree {
             if(ConfigUtil.debug) {
                 e.printStackTrace();
             }
-            throw new NotFoundException("Tree Structure", getString("file"), getID());
+            throw new NotFoundException("Tree Structure", yaml.getString("file"), getID());
         }
     }
 

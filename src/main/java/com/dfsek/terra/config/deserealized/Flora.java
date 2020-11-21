@@ -1,6 +1,5 @@
-package com.dfsek.terra.generation.entities;
+package com.dfsek.terra.config.deserealized;
 
-import com.dfsek.terra.generation.deserelized.GenerationEntity;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,14 +15,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class Flora implements GenerationEntity, org.polydev.gaea.world.Flora {
+public class Flora implements Generateable, org.polydev.gaea.world.Flora {
     private final Palette<BlockData> floraPalette;
     private final String id;
     private final boolean physics;
     private final boolean ceiling;
-
     private final Set<Material> irrigable;
-
     private final Set<Material> spawnable;
     private final Set<Material> replaceable;
 

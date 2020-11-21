@@ -36,28 +36,28 @@ public class OreConfig extends TerraConfig {
 
     public OreConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("Ore ID not found!", "null");
-        this.id = getString("id");
-        if(!contains("material")) throw new ConfigException("Ore material not found!", getID());
-        if(!contains("deform")) throw new ConfigException("Ore vein deformation not found!", getID());
-        if(!contains("replace")) throw new ConfigException("Ore replaceable materials not found!", getID());
-        min = getInt("radius.min", 1);
-        max = getInt("radius.max", 1);
-        deform = getDouble("deform", 0.75);
-        deformFrequency = getDouble("deform-frequency", 0.1);
-        update = getBoolean("update", false);
-        crossChunks = getBoolean("cross-chunks", true);
-        chunkEdgeOffset = getInt("edge-offset", 1);
+        if(!yaml.contains("id")) throw new ConfigException("Ore ID not found!", "null");
+        this.id = yaml.getString("id");
+        if(!yaml.contains("material")) throw new ConfigException("Ore material not found!", getID());
+        if(!yaml.contains("deform")) throw new ConfigException("Ore vein deformation not found!", getID());
+        if(!yaml.contains("replace")) throw new ConfigException("Ore replaceable materials not found!", getID());
+        min = yaml.getInt("radius.min", 1);
+        max = yaml.getInt("radius.max", 1);
+        deform = yaml.getDouble("deform", 0.75);
+        deformFrequency = yaml.getDouble("deform-frequency", 0.1);
+        update = yaml.getBoolean("update", false);
+        crossChunks = yaml.getBoolean("cross-chunks", true);
+        chunkEdgeOffset = yaml.getInt("edge-offset", 1);
 
         if(chunkEdgeOffset > 7 || chunkEdgeOffset < 0)
             throw new ConfigException("Edge offset is too high/low!", getID());
 
-        replaceable = ConfigUtil.toBlockData(getStringList("replace"), "replaceable", getID());
+        replaceable = ConfigUtil.toBlockData(yaml.getStringList("replace"), "replaceable", getID());
 
         try {
-            oreData = Bukkit.createBlockData(Objects.requireNonNull(getString("material")));
+            oreData = Bukkit.createBlockData(Objects.requireNonNull(yaml.getString("material")));
         } catch(NullPointerException | IllegalArgumentException e) {
-            throw new ConfigException("Invalid ore material: " + getString("material"), getID());
+            throw new ConfigException("Invalid ore material: " + yaml.getString("material"), getID());
         }
     }
 

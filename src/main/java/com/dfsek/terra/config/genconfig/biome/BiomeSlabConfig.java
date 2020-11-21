@@ -26,10 +26,10 @@ public class BiomeSlabConfig extends TerraConfigSection {
 
     public BiomeSlabConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        slabThreshold = parent.getDouble("slabs.threshold", 0.1D);
-        slabs = getSlabPalettes(parent.getMapList("slabs.palettes"));
-        if(parent.contains("slabs.stair-palettes") && parent.getBoolean("slabs.use-stairs-if-available", false)) {
-            stairs = getSlabPalettes(parent.getMapList("slabs.stair-palettes"));
+        slabThreshold = parent.getYaml().getDouble("slabs.threshold", 0.1D);
+        slabs = getSlabPalettes(parent.getYaml().getMapList("slabs.palettes"));
+        if(parent.getYaml().contains("slabs.stair-palettes") && parent.getYaml().getBoolean("slabs.use-stairs-if-available", false)) {
+            stairs = getSlabPalettes(parent.getYaml().getMapList("slabs.stair-palettes"));
         } else stairs = new HashMap<>();
     }
 

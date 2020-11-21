@@ -21,11 +21,11 @@ public class BiomeTreeConfig extends TerraConfigSection {
 
     public BiomeTreeConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        ConfigurationSection c = parent.getConfigurationSection("trees.items");
+        ConfigurationSection c = parent.getYaml().getConfigurationSection("trees.items");
         if(c == null) return;
         Map<String, Object> cfg = c.getValues(false);
         if(cfg.size() == 0) return;
-        treeDensity = parent.getInt("trees.density", 0);
+        treeDensity = parent.getYaml().getInt("trees.density", 0);
 
         for(Map.Entry<String, Object> e : cfg.entrySet()) {
             try {

@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation.deserelized;
+package com.dfsek.terra.config.deserealized;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;

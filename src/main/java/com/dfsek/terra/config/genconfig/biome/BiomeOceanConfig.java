@@ -22,8 +22,8 @@ public class BiomeOceanConfig extends TerraConfigSection {
 
     public BiomeOceanConfig(@NotNull TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        seaLevel = parent.getInt("ocean.level", 62);
-        String oceanN = parent.getString("ocean.palette");
+        seaLevel = parent.getYaml().getInt("ocean.level", 62);
+        String oceanN = parent.getYaml().getString("ocean.palette");
         if(oceanN != null) {
             if(oceanN.startsWith("BLOCK:")) {
                 try {

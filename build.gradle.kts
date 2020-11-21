@@ -48,10 +48,10 @@ dependencies {
     implementation("io.papermc:paperlib:1.0.5")
 
     // Jackson
-    implementation("com.fasterxml.jackson.core:jackson-core:2.12+")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.12+")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.12+")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12+")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.11+")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.11+")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.11+")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11+")
 
     // Spigot mc API. Provided by spigot.
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")

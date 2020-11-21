@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation.deserelized;
+package com.dfsek.terra.config.deserealized;
 
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.Set;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection", "MismatchedQueryAndUpdateOfCollection"})
-public class Tree implements GenerationEntity {
+public class Tree implements Generateable {
     private Set<Material> spawnable;
     private String id;
     @JsonProperty("y-offset")

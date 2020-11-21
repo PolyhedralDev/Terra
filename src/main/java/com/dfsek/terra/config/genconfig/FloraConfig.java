@@ -36,25 +36,24 @@ public class FloraConfig extends TerraConfig implements Flora {
 
     public FloraConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        load(file);
-        if(!contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
-        this.id = getString("id");
-        if(!contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
-        if(!contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
+        if(!yaml.contains("id")) throw new ConfigException("Flora ID unspecified!", "null");
+        this.id = yaml.getString("id");
+        if(!yaml.contains("layers")) throw new ConfigException("No blocks defined in custom flora!", getID());
+        if(!yaml.contains("spawnable")) throw new ConfigException("Flora spawnable blocks unspecified!", getID());
 
-        spawnable = ConfigUtil.toBlockData(getStringList("spawnable"), "spawnable", getID());
-        replaceable = ConfigUtil.toBlockData(getStringList("replaceable"), "replaceable", getID());
+        spawnable = ConfigUtil.toBlockData(yaml.getStringList("spawnable"), "spawnable", getID());
+        replaceable = ConfigUtil.toBlockData(yaml.getStringList("replaceable"), "replaceable", getID());
 
-        if(contains("irrigable")) {
-            irrigable = ConfigUtil.toBlockData(getStringList("irrigable"), "irrigable", getID());
+        if(yaml.contains("irrigable")) {
+            irrigable = ConfigUtil.toBlockData(yaml.getStringList("irrigable"), "irrigable", getID());
         } else irrigable = null;
 
-        physics = getBoolean("physics", false);
-        ceiling = getBoolean("ceiling", false);
+        physics = yaml.getBoolean("physics", false);
+        ceiling = yaml.getBoolean("ceiling", false);
 
-        Palette<BlockData> p = new RandomPalette<>(new Random(getInt("seed", 4)));
+        Palette<BlockData> p = new RandomPalette<>(new Random(yaml.getInt("seed", 4)));
 
-        floraPalette = PaletteConfig.getPalette(getMapList("layers"), p);
+        floraPalette = PaletteConfig.getPalette(yaml.getMapList("layers"), p);
     }
 
     public String getID() {

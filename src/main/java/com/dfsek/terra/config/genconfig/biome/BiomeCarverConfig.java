@@ -17,7 +17,7 @@ public class BiomeCarverConfig extends TerraConfigSection {
 
     public BiomeCarverConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);
-        ConfigurationSection configurationSection = parent.getConfigurationSection("carving");
+        ConfigurationSection configurationSection = parent.getYaml().getConfigurationSection("carving");
 
         Map<String, Object> cfg;
         if(configurationSection != null) {

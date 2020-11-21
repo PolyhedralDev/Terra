@@ -45,8 +45,8 @@ public class CarverConfig extends TerraConfig {
     @SuppressWarnings("unchecked")
     public CarverConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
-        id = Objects.requireNonNull(getString("id"));
+        if(!yaml.contains("id")) throw new ConfigException("No ID specified for Carver!", "null");
+        id = Objects.requireNonNull(yaml.getString("id"));
 
         inner = getBlocks("palette.inner.layers");
 
@@ -56,23 +56,23 @@ public class CarverConfig extends TerraConfig {
 
         bottom = getBlocks("palette.bottom.layers");
 
-        replaceableInner = ConfigUtil.toBlockData(getStringList("palette.inner.replace"), "replaceable inner", getID());
+        replaceableInner = ConfigUtil.toBlockData(yaml.getStringList("palette.inner.replace"), "replaceable inner", getID());
 
-        replaceableOuter = ConfigUtil.toBlockData(getStringList("palette.outer.replace"), "replaceable outer", getID());
+        replaceableOuter = ConfigUtil.toBlockData(yaml.getStringList("palette.outer.replace"), "replaceable outer", getID());
 
-        replaceableTop = ConfigUtil.toBlockData(getStringList("palette.top.replace"), "replaceable top", getID());
+        replaceableTop = ConfigUtil.toBlockData(yaml.getStringList("palette.top.replace"), "replaceable top", getID());
 
-        replaceableBottom = ConfigUtil.toBlockData(getStringList("palette.bottom.replace"), "replaceable bottom", getID());
+        replaceableBottom = ConfigUtil.toBlockData(yaml.getStringList("palette.bottom.replace"), "replaceable bottom", getID());
 
-        update = ConfigUtil.toBlockData(getStringList("update"), "update", getID());
+        update = ConfigUtil.toBlockData(yaml.getStringList("update"), "update", getID());
 
-        updateOcean = getBoolean("update-liquids", false);
+        updateOcean = yaml.getBoolean("update-liquids", false);
 
-        double step = getDouble("step", 2);
-        Range recalc = new Range(getInt("recalculate-direction.min", 8), getInt("recalculate-direction.max", 12));
-        double rm = getDouble("recalculate-magnitude", 4);
+        double step = yaml.getDouble("step", 2);
+        Range recalc = new Range(yaml.getInt("recalculate-direction.min", 8), yaml.getInt("recalculate-direction.max", 12));
+        double rm = yaml.getDouble("recalculate-magnitude", 4);
         shift = new HashMap<>();
-        for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("shift")).getValues(false).entrySet()) {
+        for(Map.Entry<String, Object> e : Objects.requireNonNull(yaml.getConfigurationSection("shift")).getValues(false).entrySet()) {
             Set<Material> l = new HashSet<>();
             for(String s : (List<String>) e.getValue()) {
                 l.add(Bukkit.createBlockData(s).getMaterial());
@@ -82,19 +82,19 @@ public class CarverConfig extends TerraConfig {
             Debug.info("Added " + e.getKey() + " as master block");
         }
 
-        replaceIsBlacklistInner = getBoolean("palette.inner.replace-blacklist", false);
-        replaceIsBlacklistOuter = getBoolean("palette.outer.replace-blacklist", false);
-        replaceIsBlacklistTop = getBoolean("palette.top.replace-blacklist", false);
-        replaceIsBlacklistBottom = getBoolean("palette.bottom.replace-blacklist", false);
+        replaceIsBlacklistInner = yaml.getBoolean("palette.inner.replace-blacklist", false);
+        replaceIsBlacklistOuter = yaml.getBoolean("palette.outer.replace-blacklist", false);
+        replaceIsBlacklistTop = yaml.getBoolean("palette.top.replace-blacklist", false);
+        replaceIsBlacklistBottom = yaml.getBoolean("palette.bottom.replace-blacklist", false);
 
-        double[] start = new double[] {getDouble("start.x"), getDouble("start.y"), getDouble("start.z")};
-        double[] mutate = new double[] {getDouble("mutate.x"), getDouble("mutate.y"), getDouble("mutate.z"), getDouble("mutate.radius")};
-        double[] radiusMultiplier = new double[] {getDouble("start.radius.multiply.x"), getDouble("start.radius.multiply.y"), getDouble("start.radius.multiply.z")};
-        Range length = new Range(getInt("length.min"), getInt("length.max"));
-        Range radius = new Range(getInt("start.radius.min"), getInt("start.radius.max"));
-        Range height = new Range(getInt("start.height.min"), getInt("start.height.max"));
+        double[] start = new double[] {yaml.getDouble("start.x"), yaml.getDouble("start.y"), yaml.getDouble("start.z")};
+        double[] mutate = new double[] {yaml.getDouble("mutate.x"), yaml.getDouble("mutate.y"), yaml.getDouble("mutate.z"), yaml.getDouble("mutate.radius")};
+        double[] radiusMultiplier = new double[] {yaml.getDouble("start.radius.multiply.x"), yaml.getDouble("start.radius.multiply.y"), yaml.getDouble("start.radius.multiply.z")};
+        Range length = new Range(yaml.getInt("length.min"), yaml.getInt("length.max"));
+        Range radius = new Range(yaml.getInt("start.radius.min"), yaml.getInt("start.radius.max"));
+        Range height = new Range(yaml.getInt("start.height.min"), yaml.getInt("start.height.max"));
 
-        carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), getInt("cut.top", 0), getInt("cut.bottom", 0));
+        carver = new UserDefinedCarver(height, radius, length, start, mutate, radiusMultiplier, id.hashCode(), yaml.getInt("cut.top", 0), yaml.getInt("cut.bottom", 0));
         carver.setStep(step);
         carver.setRecalc(recalc);
         carver.setRecalcMagnitude(rm);
@@ -102,9 +102,9 @@ public class CarverConfig extends TerraConfig {
 
     @SuppressWarnings("unchecked")
     private Map<Integer, ProbabilityCollection<BlockData>> getBlocks(String key) throws InvalidConfigurationException {
-        if(!contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
+        if(!yaml.contains(key)) throw new ConfigException("Missing Carver Palette!", getID());
         Map<Integer, ProbabilityCollection<BlockData>> result = new TreeMap<>();
-        for(Map<?, ?> m : getMapList(key)) {
+        for(Map<?, ?> m : yaml.getMapList(key)) {
             try {
                 ProbabilityCollection<BlockData> layer = new ProbabilityCollection<>();
                 for(Map.Entry<String, Integer> type : ((Map<String, Integer>) m.get("materials")).entrySet()) {

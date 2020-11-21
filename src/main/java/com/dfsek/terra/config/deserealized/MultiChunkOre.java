@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation.deserelized;
+package com.dfsek.terra.config.deserealized;
 
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
