@@ -1,5 +1,6 @@
 package com.dfsek.terra.generation;
 
+import co.aikar.timings.lib.MCTiming;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
@@ -142,6 +143,8 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     @Override
     @SuppressWarnings("try")
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
+        MCTiming timing = Terra.timing("Generate Base");
+        timing.startTiming();
         if(needsLoad) load(world); // Load population data for world.
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
@@ -186,6 +189,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 }
             }
         }
+        timing.stopTiming();
         return chunk;
     }
 
