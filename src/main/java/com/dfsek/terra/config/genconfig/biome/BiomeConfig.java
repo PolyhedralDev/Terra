@@ -136,7 +136,7 @@ public class BiomeConfig extends TerraConfig {
         ySlantOffsetBottom = getDouble("slant.y-offset.bottom", 0.25);
 
         //Make sure equation is non-null
-        if(eq == null || eq.equals(""))
+        if(eq == null || eq.isEmpty())
             throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.

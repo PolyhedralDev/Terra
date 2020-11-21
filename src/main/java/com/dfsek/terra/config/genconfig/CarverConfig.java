@@ -15,13 +15,7 @@ import org.polydev.gaea.math.Range;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class CarverConfig extends TerraConfig {
     private final UserDefinedCarver carver;
@@ -74,7 +68,7 @@ public class CarverConfig extends TerraConfig {
         double rm = getDouble("recalculate-magnitude", 4);
         shift = new HashMap<>();
         for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("shift")).getValues(false).entrySet()) {
-            Set<Material> l = new HashSet<>();
+            Set<Material> l = EnumSet.noneOf(Material.class);
             for(String s : (List<String>) e.getValue()) {
                 l.add(Bukkit.createBlockData(s).getMaterial());
                 Debug.info("Added " + s + " to shift-able blocks");

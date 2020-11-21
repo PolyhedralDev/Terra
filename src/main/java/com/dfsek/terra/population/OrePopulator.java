@@ -36,8 +36,8 @@ public class OrePopulator extends GaeaBlockPopulator {
                 OreConfig ore = e.getKey();
                 int edgeOffset = ore.getChunkEdgeOffset();
                 for(int i = 0; i < num; i++) {
-                    int x = random.nextInt(16 - edgeOffset * 2) + edgeOffset;
-                    int z = random.nextInt(16 - edgeOffset * 2) + edgeOffset;
+                    int x = random.nextInt(16 - (edgeOffset << 1)) + edgeOffset;
+                    int z = random.nextInt(16 - (edgeOffset << 1)) + edgeOffset;
                     int y = ores.getOreHeights().get(ore).get(random);
 
                     Vector v = new Vector(x, y, z);

@@ -15,6 +15,7 @@ import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
     }
 
     protected Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection) throws InvalidConfigurationException {
-        Map<Material, Palette<BlockData>> paletteMap = new HashMap<>();
+        Map<Material, Palette<BlockData>> paletteMap = new EnumMap<>(Material.class);
 
         for(Map<?, ?> e : paletteConfigSection) {
             for(Map.Entry<?, ?> entry : e.entrySet()) {

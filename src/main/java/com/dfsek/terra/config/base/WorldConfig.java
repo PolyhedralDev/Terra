@@ -42,7 +42,7 @@ public class WorldConfig {
         FileConfiguration config = new YamlConfiguration();
         Debug.info("Loading config " + configID + " for world " + worldID);
         try { // Load/create world config file
-            if(configID == null || configID.equals(""))
+            if(configID == null || configID.isEmpty())
                 throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
             if(!configFile.exists()) {

@@ -19,7 +19,7 @@ public class ElevationInterpolator {
 
         for(int x = -2; x < 8; x++) {
             for(int z = -2; z < 8; z++) {
-                gens[x + 2][z + 2] = (WorldGenerator) grid.getBiome(xOrigin + x * 4, zOrigin + z * 4, GenerationPhase.BASE).getGenerator();
+                gens[x + 2][z + 2] = (WorldGenerator) grid.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), GenerationPhase.BASE).getGenerator();
             }
         }
 
@@ -58,15 +58,15 @@ public class ElevationInterpolator {
     }
 
     private double biomeAvg(int x, int z) {
-        return (elevate(getStoredGen(x + 1, z), x * 4 + 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x - 1, z), x * 4 - 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x, z + 1), x * 4 + xOrigin, z * 4 + 4 + zOrigin)
-                + elevate(getStoredGen(x, z - 1), x * 4 + xOrigin, z * 4 - 4 + zOrigin)
-                + elevate(getStoredGen(x, z), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x - 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x - 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x + 1, z - 1), x * 4 + xOrigin, z * 4 + zOrigin)
-                + elevate(getStoredGen(x + 1, z + 1), x * 4 + xOrigin, z * 4 + zOrigin)) / 9D;
+        return (elevate(getStoredGen(x + 1, z), (x << 2) + 4 + xOrigin, (z << 2) + zOrigin)
+                + elevate(getStoredGen(x - 1, z), (x << 2) - 4 + xOrigin, (z << 2) + zOrigin)
+                + elevate(getStoredGen(x, z + 1), (x << 2) + xOrigin, (z << 2) + 4 + zOrigin)
+                + elevate(getStoredGen(x, z - 1), (x << 2) + xOrigin, (z << 2) - 4 + zOrigin)
+                + elevate(getStoredGen(x, z), (x << 2) + xOrigin, (z << 2) + zOrigin)
+                + elevate(getStoredGen(x - 1, z - 1), (x << 2) + xOrigin, (z << 2) + zOrigin)
+                + elevate(getStoredGen(x - 1, z + 1), (x << 2) + xOrigin, (z << 2) + zOrigin)
+                + elevate(getStoredGen(x + 1, z - 1), (x << 2) + xOrigin, (z << 2) + zOrigin)
+                + elevate(getStoredGen(x + 1, z + 1), (x << 2) + xOrigin, (z << 2) + zOrigin)) / 9D;
     }
 
     private double elevate(WorldGenerator g, int x, int z) {
