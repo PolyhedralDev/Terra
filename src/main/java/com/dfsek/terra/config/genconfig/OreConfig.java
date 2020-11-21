@@ -31,8 +31,6 @@ public class OreConfig extends TerraConfig {
     private final double deformFrequency;
     private final String id;
     private final boolean update;
-    private final boolean crossChunks;
-    private final int chunkEdgeOffset;
     Set<Material> replaceable;
 
     public OreConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
@@ -47,11 +45,6 @@ public class OreConfig extends TerraConfig {
         deform = getDouble("deform", 0.75);
         deformFrequency = getDouble("deform-frequency", 0.1);
         update = getBoolean("update", false);
-        crossChunks = getBoolean("cross-chunks", true);
-        chunkEdgeOffset = getInt("edge-offset", 1);
-
-        if(chunkEdgeOffset > 7 || chunkEdgeOffset < 0)
-            throw new ConfigException("Edge offset is too high/low!", getID());
 
         replaceable = ConfigUtil.toBlockData(getStringList("replace"), "replaceable", getID());
 
@@ -120,13 +113,5 @@ public class OreConfig extends TerraConfig {
     @Override
     public String toString() {
         return "Ore with ID " + getID();
-    }
-
-    public boolean crossChunks() {
-        return crossChunks;
-    }
-
-    public int getChunkEdgeOffset() {
-        return chunkEdgeOffset;
     }
 }
