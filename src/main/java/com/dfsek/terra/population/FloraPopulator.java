@@ -25,6 +25,7 @@ import org.polydev.gaea.world.Flora;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Populates Flora and Trees
@@ -62,22 +63,22 @@ public class FloraPopulator extends GaeaBlockPopulator {
 
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random random, @NotNull CompletableFuture<Chunk> futureChunk, int chunkX, int chunkZ) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
-            int originX = chunk.getX() << 4;
-            int originZ = chunk.getZ() << 4;
             TerraBiomeGrid grid = tw.getGrid();
+            int originX = chunkX << 4;
+            int originZ = chunkZ << 4;
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
+                    UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunkX << 4) + x, (chunkZ << 4) + z, GenerationPhase.POPULATE);
                     if((x & 1) == 0 && (z & 1) == 0) {
                         int treeChance = biome.getDecorator().getTreeDensity();
                         if(random.nextInt(1000) < treeChance) {
                             int xt = offset(random, x);
                             int zt = offset(random, z);
-                            if(doTrees(biome, tw, random, chunk, xt, zt)) continue;
+                            if(doTrees(biome, tw, random, futureChunk.join(), xt, zt)) continue;
                         }
                     }
                     if(biome.getDecorator().getFloraChance() <= 0) continue;
@@ -89,7 +90,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
                             if(f.isFloraSimplex())
                                 item = biome.getDecorator().getFlora().get(f.getFloraNoise(), originX + x, originZ + z);
                             else item = biome.getDecorator().getFlora().get(random);
-                            for(Block highest : item.getValidSpawnsAt(chunk, x, z, c.getFloraHeights(item))) {
+                            for(Block highest : item.getValidSpawnsAt(futureChunk.join(), x, z, c.getFloraHeights(item))) {
                                 if(random.nextInt(100) < biome.getDecorator().getFloraChance())
                                     item.plant(highest.getLocation());
                             }

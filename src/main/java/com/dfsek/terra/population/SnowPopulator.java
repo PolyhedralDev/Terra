@@ -20,6 +20,7 @@ import org.polydev.gaea.profiler.ProfileFuture;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class SnowPopulator extends GaeaBlockPopulator {
     private static final Set<Material> blacklistSpawn = new HashSet<>();
@@ -46,10 +47,10 @@ public class SnowPopulator extends GaeaBlockPopulator {
 
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random random, @NotNull CompletableFuture<Chunk> futureChunk, int chunkX, int chunkZ) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("SnowTime")) {
-            int origX = chunk.getX() << 4;
-            int origZ = chunk.getZ() << 4;
+            int origX = chunkX << 4;
+            int origZ = chunkZ << 4;
             TerraWorld w = TerraWorld.getWorld(world);
             if(!w.isSafe()) return;
             TerraBiomeGrid g = w.getGrid();
@@ -60,13 +61,13 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     int y;
                     Block b = null;
                     for(y = 254; y > 0; y--) {
-                        b = chunk.getBlock(x, y, z);
+                        b = futureChunk.join().getBlock(x, y, z);
                         if(!b.getType().isAir()) break;
                     }
                     if(random.nextInt(100) >= biome.getSnow().getSnowChance(y))
                         continue;
                     if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
-                    chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW, biome.getSnow().doPhysics());
+                    futureChunk.join().getBlock(x, ++y, z).setBlockData(DataUtil.SNOW, biome.getSnow().doPhysics());
                 }
             }
         }
