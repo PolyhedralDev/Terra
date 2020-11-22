@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 
@@ -73,7 +74,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     public static synchronized void fixChunk(Chunk c) {
         if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
-        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
+        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld(), CompletableFuture.completedFuture(c));
     }
 
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
