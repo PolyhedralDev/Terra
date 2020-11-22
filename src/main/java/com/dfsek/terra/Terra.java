@@ -6,6 +6,7 @@ import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.lang.Language;
-import org.polydev.gaea.util.PaperUtil;
 
 import java.util.HashMap;
 import java.util.Map;
