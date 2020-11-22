@@ -4,8 +4,9 @@ import com.dfsek.terra.generation.config.NoiseBuilder;
 import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NoiseFunction2 implements NoiseFunction {
     private final FastNoiseLite gen;
@@ -40,16 +41,20 @@ public class NoiseFunction2 implements NoiseFunction {
         return true;
     }
 
-    private static class Cache {
-        private final HashMap<Long, Double> map = new HashMap<>();
+    private static class Cache extends LinkedHashMap<Long, Double> {
+        private static final long serialVersionUID = 8915092734723467010L;
 
         public double get(FastNoiseLite noise, int x, int z) {
-            long key = (((long) x) << 32) + z;
+            long key = (long) x << 32 | z & 0xFFFFFFFFL;
 
-            return map.computeIfAbsent(key, k -> {
-                if(map.size() > 512) map.clear();
-                return noise.getNoise(x, z);
-            });
+            return computeIfAbsent(key, k -> noise.getNoise(x, z));
+        }
+
+
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) {
+            int maxSize = 512;
+            return size() > maxSize;
         }
     }
 }
