@@ -1,6 +1,7 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.population.GaeaBlockPopulator;
+import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.util.GlueList;
 
@@ -52,18 +54,21 @@ public class TreePopulator extends GaeaBlockPopulator {
     }
 
     @Override
+    @SuppressWarnings("try")
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        TerraWorld tw = TerraWorld.getWorld(world);
-        if(!tw.isSafe()) return;
-        TerraBiomeGrid grid = tw.getGrid();
-        for(int x = 0; x < 16; x += 2) {
-            for(int z = 0; z < 16; z += 2) {
-                UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
-                int treeChance = biome.getDecorator().getTreeDensity();
-                if(random.nextInt(1000) < treeChance) {
-                    int xt = offset(random, x);
-                    int zt = offset(random, z);
-                    doTrees(biome, tw, random, chunk, xt, zt);
+        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("TreeTime")) {
+            TerraWorld tw = TerraWorld.getWorld(world);
+            if(!tw.isSafe()) return;
+            TerraBiomeGrid grid = tw.getGrid();
+            for(int x = 0; x < 16; x += 2) {
+                for(int z = 0; z < 16; z += 2) {
+                    UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
+                    int treeChance = biome.getDecorator().getTreeDensity();
+                    if(random.nextInt(1000) < treeChance) {
+                        int xt = offset(random, x);
+                        int zt = offset(random, z);
+                        doTrees(biome, tw, random, chunk, xt, zt);
+                    }
                 }
             }
         }
