@@ -74,7 +74,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     public static synchronized void fixChunk(Chunk c) {
         if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
-        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld(), CompletableFuture.completedFuture(c));
+        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
