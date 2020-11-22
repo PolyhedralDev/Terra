@@ -29,6 +29,7 @@ public final class ConfigUtil {
     public static long dataSave; // Period of population data saving, in ticks.
     public static boolean masterDisableCaves;
     public static int biomeSearchRes;
+    public static int cacheSize;
 
     public static void loadConfig(JavaPlugin main) {
         main.saveDefaultConfig();
@@ -40,6 +41,7 @@ public final class ConfigUtil {
         dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis() / 20L;
         masterDisableCaves = config.getBoolean("master-disable.caves", false);
         biomeSearchRes = config.getInt("biome-search-resolution", 4);
+        cacheSize = config.getInt("cache-size", 512);
 
         if(config.getBoolean("dump-default", true)) {
             try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {

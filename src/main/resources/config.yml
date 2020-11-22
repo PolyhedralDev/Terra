@@ -4,5 +4,6 @@ language: "en_us"
 fail-type: SHUTDOWN
 dump-default: true
 biome-search-resolution: 4
+cache-size: 512
 master-disable:
   caves: false
