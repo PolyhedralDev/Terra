@@ -6,6 +6,8 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.util.PopulationUtil;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,14 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.world.carving.CarvingData;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
-    private static final Map<Material, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
+    private static final Map<Material, BlockData> shiftStorage = new Object2ObjectOpenHashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private static final BlockData AIR = Material.AIR.createBlockData();
 
     @SuppressWarnings("try")
@@ -40,8 +40,8 @@ public class CavePopulator extends BlockPopulator {
             ConfigPack config = tw.getConfig();
 
             for(CarverConfig c : config.getCarvers().values()) {
-                Map<Location, Material> shiftCandidate = new HashMap<>();
-                Set<Block> updateNeeded = new HashSet<>();
+                Map<Location, Material> shiftCandidate = new Object2ObjectOpenHashMap<>();
+                Set<Block> updateNeeded = new ObjectOpenHashSet<>();
                 Map<Vector, CarvingData.CarvingType> blocks = c.getCarver().carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks();
                 for(Map.Entry<Vector, CarvingData.CarvingType> e : blocks.entrySet()) {
                     Vector v = e.getKey();

@@ -8,16 +8,16 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.genconfig.BiomeGridConfig;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class TerraWorld {
-    private static final Map<World, TerraWorld> map = new HashMap<>();
-    private static final Map<String, WorldConfig> loaded = new HashMap<>();
+    private static final Map<World, TerraWorld> map = new Object2ObjectOpenHashMap<>();
+    private static final Map<String, WorldConfig> loaded = new Object2ObjectOpenHashMap<>();
     private final TerraBiomeGrid grid;
     private final BiomeZone zone;
     private final ConfigPack config;

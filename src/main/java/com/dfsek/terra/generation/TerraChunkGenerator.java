@@ -17,6 +17,7 @@ import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.util.DataUtil;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -41,7 +42,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -49,7 +49,7 @@ import java.util.logging.Level;
 
 
 public class TerraChunkGenerator extends GaeaChunkGenerator {
-    private static final Map<World, PopulationManager> popMap = new HashMap<>();
+    private static final Map<World, PopulationManager> popMap = new Object2ObjectOpenHashMap<>();
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private final ConfigPack configPack;
     private boolean needsLoad = true;

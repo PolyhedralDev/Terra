@@ -1,10 +1,11 @@
 package com.dfsek.terra.registry;
 
-import java.util.HashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
 import java.util.Map;
 
 public abstract class TerraRegistry<T> {
-    private final Map<String, T> objects = new HashMap<>();
+    private final Map<String, T> objects = new Object2ObjectOpenHashMap<>();
 
     /**
      * Add an object to the registry with a name.

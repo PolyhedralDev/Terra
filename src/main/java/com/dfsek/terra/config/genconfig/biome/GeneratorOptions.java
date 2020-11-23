@@ -4,6 +4,7 @@ import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import com.dfsek.terra.math.BlankFunction;
 import com.dfsek.terra.util.DataUtil;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.Nullable;
 import org.polydev.gaea.world.palette.Palette;
@@ -11,12 +12,11 @@ import parsii.eval.Parser;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GeneratorOptions {
 
-    private final Map<Long, WorldGenerator> generators = new HashMap<>();
+    private final Map<Long, WorldGenerator> generators = new Object2ObjectOpenHashMap<>();
 
     private final boolean preventSmooth;
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})

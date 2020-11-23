@@ -4,19 +4,19 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.tree.Tree;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class BiomeTreeConfig extends TerraConfigSection {
     private final ProbabilityCollection<Tree> trees = new ProbabilityCollection<>();
-    private final Map<Tree, Range> treeHeights = new HashMap<>();
+    private final Map<Tree, Range> treeHeights = new Object2ObjectOpenHashMap<>();
     private int treeDensity;
 
     public BiomeTreeConfig(TerraConfig parent) throws InvalidConfigurationException {

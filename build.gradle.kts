@@ -56,6 +56,8 @@ dependencies {
 
     implementation("net.jafama:jafama:2.3.2")
 
+    implementation("it.unimi.dsi:fastutil:8.4.3")
+
 
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
@@ -107,6 +109,7 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
+    relocate("it.unimi.dsi", "com.dfsek.terra.lib.unimi")
     minimize()
 }
 

@@ -6,16 +6,16 @@ import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.OreConfig;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class BiomeOreConfig extends TerraConfigSection {
-    private final Map<OreConfig, Range> ores = new HashMap<>();
-    private final Map<OreConfig, Range> oreHeights = new HashMap<>();
+    private final Map<OreConfig, Range> ores = new Object2ObjectOpenHashMap<>();
+    private final Map<OreConfig, Range> oreHeights = new Object2ObjectOpenHashMap<>();
 
     public BiomeOreConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);

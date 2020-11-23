@@ -1,16 +1,16 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.World;
 import org.polydev.gaea.profiler.DataType;
 import org.polydev.gaea.profiler.Measurement;
 import org.polydev.gaea.profiler.WorldProfiler;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class TerraProfiler extends WorldProfiler {
-    private static final Map<World, TerraProfiler> profilerMap = new HashMap<>();
+    private static final Map<World, TerraProfiler> profilerMap = new Object2ObjectOpenHashMap<>();
 
     public TerraProfiler(World w) {
         super(w);

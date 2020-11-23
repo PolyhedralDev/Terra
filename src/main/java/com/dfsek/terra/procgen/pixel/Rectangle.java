@@ -1,9 +1,9 @@
 package com.dfsek.terra.procgen.pixel;
 
 import com.dfsek.terra.procgen.math.Vector2;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.jafama.FastMath;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -24,7 +24,7 @@ public class Rectangle extends Polygon {
 
     @Override
     public Set<Vector2> getContainedPixels() {
-        Set<Vector2> pixels = new HashSet<>();
+        Set<Vector2> pixels = new ObjectOpenHashSet<>();
         for(int x = (int) min.getX(); x <= max.getX(); x++) {
             for(int z = (int) min.getZ(); z <= max.getZ(); z++) {
                 pixels.add(new Vector2(x, z));

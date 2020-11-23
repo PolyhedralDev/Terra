@@ -3,6 +3,7 @@ package com.dfsek.terra.config;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.lang.LangUtil;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -12,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 public class ConfigLoader {
     public static <T extends TerraConfig> Map<String, T> load(Path file, ConfigPack config, Class<T> clazz) {
         long l = System.nanoTime();
-        Map<String, T> configs = new HashMap<>();
+        Map<String, T> configs = new Object2ObjectOpenHashMap<>();
         //noinspection ResultOfMethodCallIgnored
         file.toFile().mkdirs();
         List<String> ids = new ArrayList<>();

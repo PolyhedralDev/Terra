@@ -7,6 +7,7 @@ import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.util.DataUtil;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -17,12 +18,11 @@ import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class SnowPopulator extends GaeaBlockPopulator {
-    private static final Set<Material> blacklistSpawn = new HashSet<>();
+    private static final Set<Material> blacklistSpawn = new ObjectOpenHashSet<>();
 
     static {
         for(Material m : Material.values()) {

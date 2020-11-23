@@ -6,6 +6,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -16,7 +17,6 @@ import org.polydev.gaea.math.Range;
 import java.io.File;
 import java.io.IOException;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,7 +72,7 @@ public class CarverConfig extends TerraConfig {
         double step = getDouble("step", 2);
         Range recalc = new Range(getInt("recalculate-direction.min", 8), getInt("recalculate-direction.max", 12));
         double rm = getDouble("recalculate-magnitude", 4);
-        shift = new HashMap<>();
+        shift = new Object2ObjectOpenHashMap<>();
         for(Map.Entry<String, Object> e : Objects.requireNonNull(getConfigurationSection("shift")).getValues(false).entrySet()) {
             Set<Material> l = EnumSet.noneOf(Material.class);
             for(String s : (List<String>) e.getValue()) {

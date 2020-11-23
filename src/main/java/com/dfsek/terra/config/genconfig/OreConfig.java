@@ -4,6 +4,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.exception.ConfigException;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.jafama.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -17,7 +18,6 @@ import org.polydev.gaea.population.ChunkCoordinate;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -64,7 +64,7 @@ public class OreConfig extends TerraConfig {
         ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         ore.setFrequency(deformFrequency);
         int rad = randomInRange(r);
-        Map<ChunkCoordinate, Chunk> chunks = new HashMap<>();  // Cache chunks to prevent re-loading chunks every time one is needed.
+        Map<ChunkCoordinate, Chunk> chunks = new Object2ObjectOpenHashMap<>();  // Cache chunks to prevent re-loading chunks every time one is needed.
         chunks.put(new ChunkCoordinate(chunk), chunk);
         Vector orig = new Vector(l.getBlockX() + (chunk.getX() << 4), l.getBlockY(), l.getBlockZ() + (chunk.getZ() << 4));
         for(int x = -rad; x <= rad; x++) {

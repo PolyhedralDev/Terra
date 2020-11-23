@@ -20,6 +20,8 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.registry.FloraRegistry;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,8 +33,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  * Represents a Terra configuration pack.
  */
 public class ConfigPack extends YamlConfiguration {
-    private static final Map<String, ConfigPack> configs = new HashMap<>();
+    private static final Map<String, ConfigPack> configs = new Object2ObjectOpenHashMap<>();
     public final List<String> biomeList;
     public final double zoneFreq;
     public final double freq1;
@@ -63,7 +63,7 @@ public class ConfigPack extends YamlConfiguration {
     public final boolean vanillaMobs;
     public final boolean preventSaplingOverride;
 
-    private final Map<StructureTypeEnum, StructureConfig> locatable = new HashMap<>();
+    private final Map<StructureTypeEnum, StructureConfig> locatable = new Object2ObjectOpenHashMap<>();
     private final Map<String, OreConfig> ores;
     private final Map<String, PaletteConfig> palettes;
     private final Map<String, CarverConfig> carvers;
@@ -73,8 +73,8 @@ public class ConfigPack extends YamlConfiguration {
     private final Map<String, BiomeGridConfig> grids;
     private final TreeRegistry treeRegistry = new TreeRegistry();
     private final FloraRegistry floraRegistry = new FloraRegistry();
-    private final Set<StructureConfig> allStructures = new HashSet<>();
-    private final Map<String, NoiseConfig> noiseBuilders = new HashMap<>();
+    private final Set<StructureConfig> allStructures = new ObjectOpenHashSet<>();
+    private final Map<String, NoiseConfig> noiseBuilders = new Object2ObjectOpenHashMap<>();
     private final Scope vScope;
     private final File dataFolder;
     private final String id;

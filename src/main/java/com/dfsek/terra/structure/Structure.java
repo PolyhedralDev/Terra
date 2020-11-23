@@ -3,6 +3,7 @@ package com.dfsek.terra.structure;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.util.structure.RotationUtil;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.jafama.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -25,7 +26,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -39,15 +39,15 @@ public class Structure implements Serializable {
     private final StructureInfo structureInfo;
     private final String id;
     private final UUID uuid;
-    private final HashSet<StructureContainedBlock> spawns;
-    private final HashSet<StructureContainedInventory> inventories;
+    private final ObjectOpenHashSet<StructureContainedBlock> spawns;
+    private final ObjectOpenHashSet<StructureContainedInventory> inventories;
 
     public Structure(@NotNull Location l1, @NotNull Location l2, @NotNull String id) throws InitializationException {
         int centerX = -1, centerZ = -1;
         this.id = id;
         this.uuid = UUID.randomUUID();
-        this.spawns = new HashSet<>();
-        this.inventories = new HashSet<>();
+        this.spawns = new ObjectOpenHashSet<StructureContainedBlock>();
+        this.inventories = new ObjectOpenHashSet<StructureContainedInventory>();
         if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ())
             throw new IllegalArgumentException("Invalid locations provided!");
         structure = new StructureContainedBlock[l2.getBlockX() - l1.getBlockX() + 1][l2.getBlockZ() - l1.getBlockZ() + 1][l2.getBlockY() - l1.getBlockY() + 1];
@@ -294,11 +294,11 @@ public class Structure implements Serializable {
         return true;
     }
 
-    public HashSet<StructureContainedBlock> getSpawns() {
+    public ObjectOpenHashSet<StructureContainedBlock> getSpawns() {
         return spawns;
     }
 
-    public HashSet<StructureContainedInventory> getInventories() {
+    public ObjectOpenHashSet<StructureContainedInventory> getInventories() {
         return inventories;
     }
 

@@ -5,6 +5,7 @@ import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -16,7 +17,6 @@ import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
         slabs = getSlabPalettes(parent.getMapList("slabs.palettes"));
         if(parent.contains("slabs.stair-palettes") && parent.getBoolean("slabs.use-stairs-if-available", false)) {
             stairs = getSlabPalettes(parent.getMapList("slabs.stair-palettes"));
-        } else stairs = new HashMap<>();
+        } else stairs = new Object2ObjectOpenHashMap<>();
     }
 
     protected Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection) throws InvalidConfigurationException {

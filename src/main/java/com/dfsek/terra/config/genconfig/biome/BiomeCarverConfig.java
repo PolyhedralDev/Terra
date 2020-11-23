@@ -6,14 +6,14 @@ import com.dfsek.terra.config.TerraConfigSection;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.CarverConfig;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class BiomeCarverConfig extends TerraConfigSection {
-    private final Map<CarverConfig, Integer> carvers = new HashMap<>();
+    private final Map<CarverConfig, Integer> carvers = new Object2ObjectOpenHashMap<>();
 
     public BiomeCarverConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);

@@ -1,13 +1,13 @@
 package com.dfsek.terra.util;
 
 import com.dfsek.terra.Debug;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -20,7 +20,7 @@ public final class TagUtil {
 
     static {
         Debug.info("Loading tags...");
-        tagMap = new HashMap<>();
+        tagMap = new Object2ObjectOpenHashMap<>();
 
         Field[] tags = Tag.class.getFields(); // Add Bukkit tags
         for(Field field : tags) {

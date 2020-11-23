@@ -9,6 +9,7 @@ import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.features.Feature;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.json.simple.parser.ParseException;
@@ -20,7 +21,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,7 +32,7 @@ public class StructureConfig extends TerraConfig {
     private final String id;
     private final Range searchStart;
     private final Range bound;
-    private final Map<Integer, LootTable> loot = new HashMap<>();
+    private final Map<Integer, LootTable> loot = new Object2ObjectOpenHashMap<>();
     private final List<Feature> features;
 
     @SuppressWarnings("unchecked")

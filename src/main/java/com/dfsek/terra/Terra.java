@@ -7,6 +7,7 @@ import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.util.PaperUtil;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -17,14 +18,13 @@ import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.lang.Language;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 
 public class Terra extends GaeaPlugin {
     private static Terra instance;
-    private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<String, TerraChunkGenerator> generatorMap = new Object2ObjectOpenHashMap<>();
 
     public static Terra getInstance() {
         return instance;
@@ -38,7 +38,6 @@ public class Terra extends GaeaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        instance = this;
         Metrics metrics = new Metrics(this, 9017);
         metrics.addCustomChart(new Metrics.SingleLineChart("worlds", TerraWorld::numWorlds));
         Debug.setMain(this);

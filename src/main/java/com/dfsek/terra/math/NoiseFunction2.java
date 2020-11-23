@@ -2,7 +2,7 @@ package com.dfsek.terra.math;
 
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.util.hash.HashMapDoubleDouble;
+import it.unimi.dsi.fastutil.doubles.Double2DoubleOpenHashMap;
 import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
 
@@ -41,7 +41,7 @@ public class NoiseFunction2 implements NoiseFunction {
         return true;
     }
 
-    private static class Cache extends HashMapDoubleDouble {
+    private static class Cache extends Double2DoubleOpenHashMap {
         private static final long serialVersionUID = 8915092734723467010L;
         private static final int cacheSize = ConfigUtil.cacheSize;
 
