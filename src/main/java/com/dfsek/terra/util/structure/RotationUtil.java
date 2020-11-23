@@ -13,7 +13,6 @@ import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.RedstoneWire;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 public final class RotationUtil {
