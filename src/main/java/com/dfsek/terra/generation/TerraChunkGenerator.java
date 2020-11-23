@@ -58,7 +58,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
         this.configPack = c;
         popMan.attach(new TreePopulator());
-        popMan.attach(new FloraPopulator());
         popMan.attach(new SnowPopulator());
     }
 
@@ -227,7 +226,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Arrays.asList(new CavePopulator(), new StructurePopulator(), new OrePopulator(), popMan);
+        return Arrays.asList(new CavePopulator(), new StructurePopulator(), new OrePopulator(), new FloraPopulator(), popMan);
     }
 
     @Override

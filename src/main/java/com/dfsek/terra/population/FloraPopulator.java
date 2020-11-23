@@ -6,12 +6,13 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
+import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.world.Flora;
 
@@ -20,13 +21,12 @@ import java.util.Random;
 /**
  * Populates Flora and Trees
  */
-public class FloraPopulator extends GaeaBlockPopulator {
-
-
+public class FloraPopulator extends BlockPopulator {
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
+            Random random = PopulationUtil.getRandom(chunk);
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
             int originX = chunk.getX() << 4;

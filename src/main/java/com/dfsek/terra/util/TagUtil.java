@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
-public class TagUtil {
+public final class TagUtil {
     private static final Map<String, Set<Material>> tagMap;
 
     static {
