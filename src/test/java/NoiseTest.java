@@ -13,7 +13,7 @@ public class NoiseTest {
         int a = 0;
         for(int i = 0; i < 200; i++) {
             long l = System.nanoTime();
-            for(int j = 0; j < 5000; j++) {
+            for(int j = 0; j < 1000; j++) {
                 for(int x = 0; x < 4; x++) {
                     for(int y = 0; y < 64; y++) {
                         for(int z = 0; z < 4; z++) {
@@ -26,10 +26,12 @@ public class NoiseTest {
             System.out.print((long) n / 1000000 + "ms" + ((a % 10 == 0) ? "\n" : " "));
             a++;
         }
+        System.out.println();
+        System.out.println();
         System.out.println("No Cache:");
         for(int i = 0; i < 200; i++) {
             long l = System.nanoTime();
-            for(int j = 0; j < 5000; j++) {
+            for(int j = 0; j < 1000; j++) {
                 for(int x = 0; x < 4; x++) {
                     for(int y = 0; y < 64; y++) {
                         for(int z = 0; z < 4; z++) {

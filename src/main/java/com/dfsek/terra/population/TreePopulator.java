@@ -14,14 +14,17 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.tree.Tree;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.util.GlueList;
 
 import java.util.List;
 import java.util.Random;
+
 
 public class TreePopulator extends GaeaBlockPopulator {
     private static void doTrees(@NotNull UserDefinedBiome biome, TerraWorld world, @NotNull Random random, @NotNull Chunk chunk, int x, int z) {
@@ -55,11 +58,12 @@ public class TreePopulator extends GaeaBlockPopulator {
 
     @Override
     @SuppressWarnings("try")
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("TreeTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
+            FastRandom random = new FastRandom(MathUtil.getCarverChunkSeed(chunk.getX(), chunk.getZ(), world.getSeed()));
             for(int x = 0; x < 16; x += 2) {
                 for(int z = 0; z < 16; z += 2) {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);

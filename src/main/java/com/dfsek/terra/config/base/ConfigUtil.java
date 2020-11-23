@@ -41,7 +41,7 @@ public final class ConfigUtil {
         dataSave = Duration.parse(Objects.requireNonNull(config.getString("data-save", "PT6M"))).toMillis() / 20L;
         masterDisableCaves = config.getBoolean("master-disable.caves", false);
         biomeSearchRes = config.getInt("biome-search-resolution", 4);
-        cacheSize = config.getInt("cache-size", 512);
+        cacheSize = config.getInt("cache-size", 256);
 
         if(config.getBoolean("dump-default", true)) {
             try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {

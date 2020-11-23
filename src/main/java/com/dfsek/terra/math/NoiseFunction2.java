@@ -33,7 +33,7 @@ public class NoiseFunction2 implements NoiseFunction {
      * @return Result.
      */
     public double evalNoCache(List<Expression> list) {
-        return gen.getNoise((int) list.get(0).evaluate(), (int) list.get(1).evaluate());
+        return gen.getNoise(list.get(0).evaluate(), list.get(1).evaluate());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class NoiseFunction2 implements NoiseFunction {
 
     private static class Cache extends HashMapDoubleDouble {
         private static final long serialVersionUID = 8915092734723467010L;
-        private final int cacheSize = ConfigUtil.cacheSize;
+        private static final int cacheSize = ConfigUtil.cacheSize;
 
         public double get(FastNoiseLite noise, double x, double z) {
             double xx = x >= 0 ? x * 2 : x * -2 - 1;

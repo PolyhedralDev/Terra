@@ -79,12 +79,10 @@ public class CavePopulator extends BlockPopulator {
                     } catch(NullPointerException ignore) {
                     }
                 }
-                try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("CaveBlockUpdate")) {
-                    for(Block b : updateNeeded) {
-                        BlockData orig = b.getBlockData();
-                        b.setBlockData(AIR, false);
-                        b.setBlockData(orig, true);
-                    }
+                for(Block b : updateNeeded) {
+                    BlockData orig = b.getBlockData();
+                    b.setBlockData(AIR, false);
+                    b.setBlockData(orig, true);
                 }
                 /*for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
                     Vector v = e.getKey();
