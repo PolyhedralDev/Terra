@@ -15,7 +15,13 @@ import org.polydev.gaea.math.Range;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class CarverConfig extends TerraConfig {
     private final UserDefinedCarver carver;

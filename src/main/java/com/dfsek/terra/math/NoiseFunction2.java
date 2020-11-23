@@ -3,15 +3,10 @@ package com.dfsek.terra.math;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.util.hash.HashMapDoubleDouble;
-import net.jafama.FastMath;
 import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.util.GlueList;
 import parsii.eval.Expression;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NoiseFunction2 implements NoiseFunction {
     private final FastNoiseLite gen;
