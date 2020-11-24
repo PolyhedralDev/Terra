@@ -12,6 +12,9 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Snowable;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
@@ -66,7 +69,14 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     if(random.nextInt(100) >= biome.getSnow().getSnowChance(y))
                         continue;
                     if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
-                    chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW, biome.getSnow().doPhysics());
+                    boolean phys = biome.getSnow().doPhysics();
+                    b.getRelative(BlockFace.UP).setBlockData(DataUtil.SNOW, phys);
+                    if(!phys) {
+                        BlockData data = b.getBlockData();
+                        if(data instanceof Snowable) {
+                            ((Snowable) data).setSnowy(true);
+                        }
+                    }
                 }
             }
         }
