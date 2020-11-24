@@ -9,20 +9,20 @@ import com.dfsek.terra.event.OreVeinGenerateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.util.FastRandom;
 
 import java.util.Map;
 import java.util.Random;
 
-public class OrePopulator extends BlockPopulator {
+public class OrePopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {

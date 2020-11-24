@@ -70,13 +70,12 @@ public class SnowPopulator extends GaeaBlockPopulator {
                         continue;
                     if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
                     boolean phys = biome.getSnow().doPhysics();
-                    b.getRelative(BlockFace.UP).setBlockData(DataUtil.SNOW, phys);
                     if(!phys) {
                         BlockData data = b.getBlockData();
-                        if(data instanceof Snowable) {
-                            ((Snowable) data).setSnowy(true);
-                        }
+                        if(data instanceof Snowable) phys = true;
                     }
+                    b.getRelative(BlockFace.UP).setBlockData(DataUtil.SNOW, phys);
+
                 }
             }
         }
