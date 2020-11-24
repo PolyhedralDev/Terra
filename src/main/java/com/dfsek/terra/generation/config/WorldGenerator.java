@@ -3,6 +3,7 @@ package com.dfsek.terra.generation.config;
 import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
+import com.dfsek.terra.math.RandomFunction;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.biome.Generator;
@@ -36,12 +37,15 @@ public class WorldGenerator extends Generator {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseConfig> noiseBuilders, Palette[] palettes, Palette[] slantPalettes, boolean preventSmooth) {
         Parser p = new Parser();
+        p.registerFunction("rand", new RandomFunction());
         Parser ep = new Parser();
+        ep.registerFunction("rand", new RandomFunction());
 
         Scope s = new Scope().withParent(vScope);
         xVar = s.create("x");
         yVar = s.create("y");
         zVar = s.create("z");
+        s.create("seed").setValue(seed);
 
         this.preventSmooth = preventSmooth;
 
@@ -63,6 +67,7 @@ public class WorldGenerator extends Generator {
             this.noiseExp = p.parse(equation, s).simplify();
             if(elevateEquation != null) {
                 Scope es = new Scope().withParent(vScope);
+                es.create("seed").setValue(seed);
                 this.elevationXVar = es.create("x");
                 this.elevationZVar = es.create("z");
                 this.elevationExp = ep.parse(elevateEquation, es).simplify();
