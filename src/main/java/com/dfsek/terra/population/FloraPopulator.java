@@ -10,9 +10,9 @@ import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.world.Flora;
 
@@ -21,7 +21,7 @@ import java.util.Random;
 /**
  * Populates Flora and Trees
  */
-public class FloraPopulator extends BlockPopulator {
+public class FloraPopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {

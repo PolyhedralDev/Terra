@@ -64,24 +64,26 @@ public class FloraConfig extends TerraConfig implements Flora {
 
     @Override
     public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
+        int size = floraPalette.getSize();
+        Block current = chunk.getBlock(x, range.getMin(), z);
         List<Block> blocks = new ArrayList<>();
-        if(ceiling) for(int y : range) {
-            if(y > 255 || y < 1) continue;
-            Block check = chunk.getBlock(x, y, z);
-            Block other = check.getRelative(BlockFace.DOWN);
-            if(spawnable.contains(check.getType()) && replaceable.contains(other.getType())) {
-                blocks.add(check);
-            }
-        }
-        else for(int y : range) {
-            if(y > 254 || y < 0) continue;
-            Block check = chunk.getBlock(x, y, z);
-            Block other = check.getRelative(BlockFace.UP);
-            if(spawnable.contains(check.getType()) && replaceable.contains(other.getType()) && isIrrigated(check)) {
-                blocks.add(check);
+        for(int y : range) {
+            if(y > 255 || y < 0) continue;
+            current = current.getRelative(BlockFace.UP);
+            if(spawnable.contains(current.getType()) && isIrrigated(current) && valid(size, current)) {
+                blocks.add(current);
             }
         }
         return blocks;
+    }
+
+    private boolean valid(int size, Block block) {
+        for(int i = 0; i < size; i++) { // Down if ceiling, up if floor
+            if(block.getY() + 1 > 255 || block.getY() < 0) return false;
+            block = block.getRelative(ceiling ? BlockFace.DOWN : BlockFace.UP);
+            if(!replaceable.contains(block.getType())) return false;
+        }
+        return true;
     }
 
     private boolean isIrrigated(Block b) {
@@ -96,10 +98,6 @@ public class FloraConfig extends TerraConfig implements Flora {
     public boolean plant(Location location) {
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;
-        for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
-            if(i + 1 > 255) return false;
-            if(!replaceable.contains(location.clone().add(0, i + c, 0).getBlock().getType())) return false;
-        }
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
             location.clone().add(0, i + c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()), physics);
