@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class BiomeSnowConfig extends TerraConfigSection {
     private final int[] snowHeights;
-    private boolean doSnow = false;
     private final boolean physics;
+    private boolean doSnow = false;
 
     public BiomeSnowConfig(TerraConfig parent) throws InvalidConfigurationException {
         super(parent);

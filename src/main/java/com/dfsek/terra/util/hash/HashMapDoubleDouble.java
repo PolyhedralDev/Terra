@@ -57,7 +57,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
         int i = tableIndex(hashCodeDouble(key), this.capMinus1);
 
         for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
-            if (e.key == key) {
+            if(e.key == key) {
                 return true;
             }
         }
@@ -68,7 +68,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     public boolean containsValue(double value) {
         for(int i = 0; i < this.table.length; ++i) {
             for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
-                if (value == e.value) {
+                if(value == e.value) {
                     return true;
                 }
             }
@@ -81,7 +81,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
         int i = tableIndex(hashCodeDouble(key), this.capMinus1);
 
         for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
-            if (key == e.key) {
+            if(key == e.key) {
                 return e.value;
             }
         }
@@ -93,7 +93,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
         int i = tableIndex(hashCodeDouble(key), this.capMinus1);
 
         for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
-            if (key == e.key) {
+            if(key == e.key) {
                 return e;
             }
         }
@@ -105,7 +105,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
         int i = tableIndex(hashCodeDouble(key), this.capMinus1);
 
         for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
-            if (key == e.key) {
+            if(key == e.key) {
                 double oldValue = e.value;
                 e.value = value;
                 return oldValue;
@@ -119,7 +119,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     private void addEntry(double key, double value, int index) {
         HashMapDoubleDouble.Entry e = this.table[index];
         this.table[index] = new HashMapDoubleDouble.Entry(key, value, e);
-        if (this.size++ >= this.threshold) {
+        if(this.size++ >= this.threshold) {
             this.resize(2 * this.table.length);
         }
 
@@ -127,21 +127,21 @@ public class HashMapDoubleDouble extends HashIntrinsic {
 
     public void resize(int newCapacity) {
         int oldCapacity = this.table.length;
-        if (oldCapacity == 1073741824) {
+        if(oldCapacity == 1073741824) {
             this.threshold = 2147483647;
         } else {
             HashMapDoubleDouble.Entry[] newTable = this.createTable(newCapacity);
             this.capMinus1 = newCapacity - 1;
             this.transfer(newTable);
             this.table = newTable;
-            this.threshold = (int)((float)newCapacity * this.loadFactor);
+            this.threshold = (int) ((float) newCapacity * this.loadFactor);
         }
     }
 
     private void transfer(HashMapDoubleDouble.Entry[] newTable) {
         for(int j = 0; j < this.table.length; ++j) {
             HashMapDoubleDouble.Entry e = this.table[j];
-            if (e != null) {
+            if(e != null) {
                 this.table[j] = null;
 
                 HashMapDoubleDouble.Entry next;
@@ -165,9 +165,9 @@ public class HashMapDoubleDouble extends HashIntrinsic {
         HashMapDoubleDouble.Entry next;
         for(e = prev; e != null; e = next) {
             next = e.next;
-            if (key == e.key) {
+            if(key == e.key) {
                 --this.size;
-                if (prev == e) {
+                if(prev == e) {
                     this.table[i] = next;
                 } else {
                     prev.next = next;
@@ -195,65 +195,18 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     }
 
     public long memoryEstimate(int ptrsize) {
-        return (long)ptrsize * (long)(this.capMinus1 + this.size + 1) + (long)(this.size * 64 / 4);
+        return (long) ptrsize * (long) (this.capMinus1 + this.size + 1) + (long) (this.size * 64 / 4);
     }
 
     public HashMapDoubleDouble.Iterator iterator() {
         return new HashMapDoubleDouble.Iterator();
     }
 
-    public class Iterator {
-        HashMapDoubleDouble.Entry next;
-        int index;
-        HashMapDoubleDouble.Entry current;
-
-        Iterator() {
-            if (HashMapDoubleDouble.this.size > 0) {
-                while(this.index < HashMapDoubleDouble.this.table.length && (this.next = HashMapDoubleDouble.this.table[this.index++]) == null) {
-                }
-            }
-
-        }
-
-        public final boolean hasNext() {
-            return this.next != null;
-        }
-
-        public HashMapDoubleDouble.Entry nextEntry() {
-            HashMapDoubleDouble.Entry e = this.next;
-            if (e == null) {
-                throw new NoSuchElementException();
-            } else {
-                if ((this.next = e.next) == null) {
-                    while(this.index < HashMapDoubleDouble.this.table.length && (this.next = HashMapDoubleDouble.this.table[this.index++]) == null) {
-                    }
-                }
-
-                this.current = e;
-                return e;
-            }
-        }
-
-        public double next() {
-            return this.nextEntry().value;
-        }
-
-        public void remove() {
-            if (this.current == null) {
-                throw new IllegalStateException();
-            } else {
-                double k = this.current.key;
-                this.current = null;
-                HashMapDoubleDouble.this.remove(k);
-            }
-        }
-    }
-
     public static class Entry implements Serializable {
+        private static final long serialVersionUID = 7972173983741231238L;
         private final double key;
         private double value;
         private HashMapDoubleDouble.Entry next;
-        private static final long serialVersionUID = 7972173983741231238L;
 
         public Entry(double key, double val, HashMapDoubleDouble.Entry n) {
             this.key = key;
@@ -276,8 +229,8 @@ public class HashMapDoubleDouble extends HashIntrinsic {
         }
 
         public final boolean equals(Object o) {
-                HashMapDoubleDouble.Entry e = (HashMapDoubleDouble.Entry)o;
-                return this.key == e.key && this.value == e.value;
+            HashMapDoubleDouble.Entry e = (HashMapDoubleDouble.Entry) o;
+            return this.key == e.key && this.value == e.value;
         }
 
         public final String toString() {
@@ -286,6 +239,53 @@ public class HashMapDoubleDouble extends HashIntrinsic {
 
         public final int hashCode() {
             return hashCodeDouble(key) + hashCodeDouble(value);
+        }
+    }
+
+    public class Iterator {
+        HashMapDoubleDouble.Entry next;
+        int index;
+        HashMapDoubleDouble.Entry current;
+
+        Iterator() {
+            if(HashMapDoubleDouble.this.size > 0) {
+                while(this.index < HashMapDoubleDouble.this.table.length && (this.next = HashMapDoubleDouble.this.table[this.index++]) == null) {
+                }
+            }
+
+        }
+
+        public final boolean hasNext() {
+            return this.next != null;
+        }
+
+        public HashMapDoubleDouble.Entry nextEntry() {
+            HashMapDoubleDouble.Entry e = this.next;
+            if(e == null) {
+                throw new NoSuchElementException();
+            } else {
+                if((this.next = e.next) == null) {
+                    while(this.index < HashMapDoubleDouble.this.table.length && (this.next = HashMapDoubleDouble.this.table[this.index++]) == null) {
+                    }
+                }
+
+                this.current = e;
+                return e;
+            }
+        }
+
+        public double next() {
+            return this.nextEntry().value;
+        }
+
+        public void remove() {
+            if(this.current == null) {
+                throw new IllegalStateException();
+            } else {
+                double k = this.current.key;
+                this.current = null;
+                HashMapDoubleDouble.this.remove(k);
+            }
         }
     }
 }

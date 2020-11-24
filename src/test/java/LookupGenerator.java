@@ -95,7 +95,7 @@ class LookupGenerator {
 
     public static int normalizeNew(double d) {
         for(int i = 0; i < lookup.length; i++) {
-            if (d < lookup[i]) return i;
+            if(d < lookup[i]) return i;
         }
         return lookup.length - 1;
     }

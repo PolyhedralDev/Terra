@@ -50,7 +50,9 @@ public class NoiseFunction2 implements NoiseFunction {
             double zz = z >= 0 ? z * 2 : z * -2 - 1;
             double key = (xx >= zz) ? (xx * xx + xx + zz) : (zz * zz + xx);
             double value = this.get(key);
-            if (this.size() > cacheSize) { this.clear(); }
+            if(this.size() > cacheSize) {
+                this.clear();
+            }
             return (value == 4.9E-324D ? addAndReturn(noise.getNoise(x, z), key) : value);
         }
 

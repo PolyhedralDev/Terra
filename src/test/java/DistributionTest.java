@@ -62,7 +62,7 @@ class DistributionTest {
         int end = normalMap.length - 1;
         while(start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (normalMap[mid] <= d) {
+            if(normalMap[mid] <= d) {
                 start = mid;
             } else {
                 end = mid;
@@ -70,7 +70,7 @@ class DistributionTest {
         }
         double left = FastMath.abs(normalMap[start] - d);
         double right = FastMath.abs(normalMap[end] - d);
-        if (left <= right) {
+        if(left <= right) {
             return start * (num) / (normalMap.length);
         }
         return end * (num) / (normalMap.length);
