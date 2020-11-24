@@ -6,7 +6,6 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
-import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -24,9 +23,8 @@ import java.util.Random;
 public class FloraPopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
-            Random random = PopulationUtil.getRandom(chunk);
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
             int originX = chunk.getX() << 4;
