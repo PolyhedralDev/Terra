@@ -10,13 +10,12 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
-import java.util.Random;
-
 public class BiomeOceanConfig extends TerraConfigSection {
-    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new Random(0)).add(Material.WATER.createBlockData(), 1);
+    private static final Palette<BlockData> oceanDefault = new RandomPalette<BlockData>(new FastRandom(0)).add(Material.WATER.createBlockData(), 1);
     private final Palette<BlockData> ocean;
     private final int seaLevel;
 
@@ -27,7 +26,7 @@ public class BiomeOceanConfig extends TerraConfigSection {
         if(oceanN != null) {
             if(oceanN.startsWith("BLOCK:")) {
                 try {
-                    ocean = new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanN.substring(6)), 1), 1);
+                    ocean = new RandomPalette<BlockData>(new FastRandom(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(oceanN.substring(6)), 1), 1);
                 } catch(IllegalArgumentException ex) {
                     throw new ConfigException("BlockData \"" + oceanN + "\" is invalid! (Ocean Palette)", parent.getID());
                 }

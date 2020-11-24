@@ -3,6 +3,7 @@ package com.dfsek.terra.structure;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.util.structure.RotationUtil;
+import net.jafama.FastMath;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -144,6 +145,16 @@ public class Structure implements Serializable {
         return (Structure) o;
     }
 
+    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+        oos.writeObject(o);
+        oos.close();
+    }
+
+    public StructureContainedBlock[][][] getRawStructure() {
+        return structure;
+    }
+
     /**
      * Paste the structure at a Location, ignoring chunk boundaries.
      *
@@ -188,7 +199,7 @@ public class Structure implements Serializable {
             }
             int offset = block.getPullOffset();
             if(offset != 0)
-                worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, Math.abs(offset));
+                worldBlock = worldBlock.getRelative((offset > 0) ? BlockFace.UP : BlockFace.DOWN, FastMath.abs(offset));
 
             RotationUtil.rotateBlockData(data, r);
 
@@ -255,9 +266,9 @@ public class Structure implements Serializable {
         Vector2 max = getRotatedCoords(new Vector2(x.getMax(), z.getMax()).subtract(center), r.inverse()).add(center);
 
         if(a.equals(Rotation.Axis.X))
-            return new Range((int) Math.floor(Math.min(min.getX(), max.getX())), (int) Math.ceil(Math.max(min.getX(), max.getX())) + 1);
+            return new Range((int) FastMath.floor(FastMath.min(min.getX(), max.getX())), (int) FastMath.ceil(FastMath.max(min.getX(), max.getX())) + 1);
         else
-            return new Range((int) Math.floor(Math.min(min.getZ(), max.getZ())), (int) Math.ceil(Math.max(min.getZ(), max.getZ())) + 1);
+            return new Range((int) FastMath.floor(FastMath.min(min.getZ(), max.getZ())), (int) FastMath.ceil(FastMath.max(min.getZ(), max.getZ())) + 1);
     }
 
     @NotNull
@@ -281,6 +292,10 @@ public class Structure implements Serializable {
                 return false;
         }
         return true;
+    }
+
+    public HashSet<StructureContainedBlock> getSpawns() {
+        return spawns;
     }
 
     public HashSet<StructureContainedInventory> getInventories() {
@@ -322,12 +337,6 @@ public class Structure implements Serializable {
      */
     public void save(@NotNull File f) throws IOException {
         toFile(this, f);
-    }
-
-    private static void toFile(@NotNull Serializable o, @NotNull File f) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
-        oos.writeObject(o);
-        oos.close();
     }
 
     @NotNull

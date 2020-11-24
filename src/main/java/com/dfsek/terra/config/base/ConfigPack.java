@@ -2,7 +2,6 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.ConfigLoader;
 import com.dfsek.terra.config.exception.ConfigException;
@@ -15,6 +14,7 @@ import com.dfsek.terra.config.genconfig.PaletteConfig;
 import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.biome.AbstractBiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
+import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.registry.FloraRegistry;
@@ -24,6 +24,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import parsii.eval.Scope;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,8 +57,6 @@ public class ConfigPack extends YamlConfiguration {
     public final int blendAmp;
     public final boolean biomeBlend;
     public final double blendFreq;
-    public final int octaves;
-    public final double frequency;
     public final boolean vanillaCaves;
     public final boolean vanillaStructures;
     public final boolean vanillaDecoration;
@@ -75,7 +74,8 @@ public class ConfigPack extends YamlConfiguration {
     private final TreeRegistry treeRegistry = new TreeRegistry();
     private final FloraRegistry floraRegistry = new FloraRegistry();
     private final Set<StructureConfig> allStructures = new HashSet<>();
-    private final Map<String, Double> definedVariables = new HashMap<>();
+    private final Map<String, NoiseConfig> noiseBuilders = new HashMap<>();
+    private final Scope vScope;
     private final File dataFolder;
     private final String id;
 
@@ -86,6 +86,13 @@ public class ConfigPack extends YamlConfiguration {
 
         if(!contains("id")) throw new ConfigException("No ID specified!", "null");
         this.id = getString("id");
+
+        Map<String, Object> noise = Objects.requireNonNull(getConfigurationSection("noise")).getValues(false);
+        for(Map.Entry<String, Object> entry : noise.entrySet()) {
+            NoiseConfig noiseConfig = new NoiseConfig((ConfigurationSection) entry.getValue());
+            noiseBuilders.put(entry.getKey(), noiseConfig);
+            Debug.info("Loaded noise function " + entry.getKey() + " with type " + noiseConfig.getBuilder().getType());
+        }
 
         ores = ConfigLoader.load(new File(file, "ores").toPath(), this, OreConfig.class);
 
@@ -108,11 +115,12 @@ public class ConfigPack extends YamlConfiguration {
                 Debug.info("Overriding Vanilla tree: " + entry.getKey());
         }
 
+        vScope = new Scope();
         if(contains("variables")) {
             Map<String, Object> vars = Objects.requireNonNull(getConfigurationSection("variables")).getValues(false);
             for(Map.Entry<String, Object> entry : vars.entrySet()) {
                 try {
-                    definedVariables.put(entry.getKey(), Double.valueOf(entry.getValue().toString()));
+                    vScope.getVariable(entry.getKey()).setValue(Double.parseDouble(entry.getValue().toString()));
                     Debug.info("Registered variable " + entry.getKey() + " with value " + entry.getValue());
                 } catch(ClassCastException | NumberFormatException e) {
                     Debug.stack(e);
@@ -140,9 +148,6 @@ public class ConfigPack extends YamlConfiguration {
         erosionFreq = getDouble("erode.frequency", 0.01);
         erosionThresh = getDouble("erode.threshold", 0.04);
         erosionOctaves = getInt("erode.octaves", 3);
-
-        octaves = getInt("noise.octaves", 4);
-        frequency = getDouble("noise.frequency", 1f / 96);
 
         erosionName = getString("erode.grid");
 
@@ -190,26 +195,6 @@ public class ConfigPack extends YamlConfiguration {
         LangUtil.log("config-pack.loaded", Level.INFO, getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
-    public String getID() {
-        return id;
-    }
-
-    public Map<String, Double> getDefinedVariables() {
-        return definedVariables;
-    }
-
-    public Map<String, BiomeConfig> getBiomes() {
-        return biomes;
-    }
-
-    public StructureConfig getStructure(String id) {
-        return structures.get(id);
-    }
-
-    public BiomeGridConfig getBiomeGrid(String id) {
-        return grids.get(id);
-    }
-
     public static synchronized void loadAll(JavaPlugin main) {
         configs.clear();
         File file = new File(main.getDataFolder(), "packs");
@@ -244,6 +229,30 @@ public class ConfigPack extends YamlConfiguration {
         return configs.get(id);
     }
 
+    public String getID() {
+        return id;
+    }
+
+    public Scope getVariableScope() {
+        return vScope;
+    }
+
+    public Map<String, BiomeConfig> getBiomes() {
+        return biomes;
+    }
+
+    public StructureConfig getStructure(String id) {
+        return structures.get(id);
+    }
+
+    public BiomeGridConfig getBiomeGrid(String id) {
+        return grids.get(id);
+    }
+
+    public Map<String, NoiseConfig> getNoiseBuilders() {
+        return noiseBuilders;
+    }
+
     public Map<StructureTypeEnum, StructureConfig> getLocatable() {
         return locatable;
     }
@@ -262,13 +271,6 @@ public class ConfigPack extends YamlConfiguration {
 
     public File getDataFolder() {
         return dataFolder;
-    }
-
-    public BiomeConfig getBiome(UserDefinedBiome b) {
-        for(BiomeConfig biome : biomes.values()) {
-            if(biome.getBiome().equals(b)) return biome;
-        }
-        throw new IllegalArgumentException("No BiomeConfig for provided biome.");
     }
 
     public BiomeConfig getBiome(String id) {

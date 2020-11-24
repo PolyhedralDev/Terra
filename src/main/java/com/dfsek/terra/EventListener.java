@@ -2,6 +2,7 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.genconfig.TreeConfig;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
@@ -22,8 +23,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
-
-import java.util.Random;
+import org.polydev.gaea.util.FastRandom;
 
 public class EventListener implements Listener {
     private final GaeaPlugin main;
@@ -80,6 +80,10 @@ public class EventListener implements Listener {
         TreeRegistry registry = c.getTreeRegistry();
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
-        if(!tree.plant(e.getLocation(), new Random(), Terra.getInstance())) block.setBlockData(data);
+        if(tree instanceof TreeConfig) {
+            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new FastRandom())) {
+                block.setBlockData(data);
+            }
+        } else if(!tree.plant(e.getLocation(), new FastRandom(), Terra.getInstance())) block.setBlockData(data);
     }
 }

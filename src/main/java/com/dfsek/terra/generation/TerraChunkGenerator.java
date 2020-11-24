@@ -9,11 +9,13 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeSlabConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.generation.config.WorldGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
+import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -55,8 +57,9 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     public TerraChunkGenerator(ConfigPack c) {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
         this.configPack = c;
-        popMan.attach(new FloraPopulator());
         popMan.attach(new OrePopulator());
+        popMan.attach(new TreePopulator());
+        popMan.attach(new FloraPopulator());
         popMan.attach(new SnowPopulator());
     }
 
@@ -76,26 +79,22 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    @Override
-    public void attachProfiler(WorldProfiler p) {
-        super.attachProfiler(p);
-        popMan.attachProfiler(p);
-    }
-
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
-        Palette<BlockData> slant = ((UserDefinedGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
+        Palette<BlockData> slant = ((WorldGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
         if(slant != null) {
-            boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
-            boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
-            boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
-            boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
-
             double ySlantOffsetTop = c.getYSlantOffsetTop();
             double ySlantOffsetBottom = c.getYSlantOffsetBottom();
             boolean top = interpolator.getNoise(x, y + ySlantOffsetTop - elevationInterpolator.getElevation(x, z), z) > 0;
             boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom - elevationInterpolator.getElevation(x, z), z) > 0;
 
-            if((top && bottom) && (north || south || east || west) && (!(north && south && east && west))) return slant;
+            if(top && bottom) {
+                boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
+                boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
+                boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
+                boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
+
+                if((north || south || east || west) && (!(north && south && east && west))) return slant;
+            }
         }
         return c.getBiome().getGenerator().getPalette(y);
     }
@@ -109,10 +108,10 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
                     Stairs stairNew = (Stairs) stair.clone();
-                    double elevationN = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() - 1); // Northern elevation
-                    double elevationS = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() + 1); // Southern elevation
-                    double elevationE = elevationInterpolator.getElevation(block.getBlockX() + 1, block.getBlockZ()); // Eastern elevation
-                    double elevationW = elevationInterpolator.getElevation(block.getBlockX() - 1, block.getBlockZ()); // Western elevation
+                    int elevationN = (int) elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() - 1); // Northern elevation
+                    int elevationS = (int) elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() + 1); // Southern elevation
+                    int elevationE = (int) elevationInterpolator.getElevation(block.getBlockX() + 1, block.getBlockZ()); // Eastern elevation
+                    int elevationW = (int) elevationInterpolator.getElevation(block.getBlockX() - 1, block.getBlockZ()); // Western elevation
                     if(interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY() - elevationW, block.getBlockZ()) > thresh) {
                         stairNew.setFacing(BlockFace.WEST);
                     } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - elevationN, block.getBlockZ() - 0.5) > thresh) {
@@ -138,20 +137,25 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
+    public void attachProfiler(WorldProfiler p) {
+        super.attachProfiler(p);
+        popMan.attachProfiler(p);
+    }
+
+    @Override
     @SuppressWarnings("try")
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
         if(needsLoad) load(world); // Load population data for world.
         ChunkData chunk = createChunkData(world);
         TerraWorld tw = TerraWorld.getWorld(world);
         if(!tw.isSafe()) return chunk;
-        ConfigPack config = tw.getConfig();
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
 
         ElevationInterpolator elevationInterpolator;
         try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("ElevationTime")) {
-            elevationInterpolator = new ElevationInterpolator(world, chunkX, chunkZ, tw.getGrid(), getNoiseGenerator());
+            elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid());
         }
 
         for(byte x = 0; x < 16; x++) {
@@ -162,7 +166,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int cz = zOrig + z;
 
                 Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
-                BiomeConfig c = config.getBiome((UserDefinedBiome) b);
+                BiomeConfig c = ((UserDefinedBiome) b).getConfig();
 
                 double elevate = elevationInterpolator.getElevation(x, z);
 
@@ -203,12 +207,12 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public int getNoiseOctaves(World world) {
-        return configPack.octaves;
+        return 1;
     }
 
     @Override
     public double getNoiseFrequency(World world) {
-        return configPack.frequency;
+        return 0.02;
     }
 
     @Override

@@ -1,3 +1,4 @@
+import net.jafama.FastMath;
 import org.junit.jupiter.api.Test;
 import org.polydev.gaea.math.FastNoiseLite;
 
@@ -26,8 +27,8 @@ class DistributionTest {
         long l = System.nanoTime();
         for(int i = 0; i < 1000000; i++) {
             double n = noise.getNoise(0, i);
-            max = Math.max(max, n);
-            min = Math.min(min, n);
+            max = FastMath.max(max, n);
+            min = FastMath.min(min, n);
             numbers[normalize(n, attempts)]++;
         }
         long l2 = System.nanoTime() - l;
@@ -36,8 +37,8 @@ class DistributionTest {
         l = System.nanoTime();
         for(int i = 0; i < 1000000; i++) {
             double n = noise.getNoise(0, i);
-            max = Math.max(max, n);
-            min = Math.min(min, n);
+            max = FastMath.max(max, n);
+            min = FastMath.min(min, n);
         }
         l2 = System.nanoTime() - l;
         System.out.println("Took " + (double) l2 / 1000000 + "ms (" + ((double) l2 / 1000000) + "ns per.");
@@ -61,22 +62,22 @@ class DistributionTest {
         int end = normalMap.length - 1;
         while(start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (normalMap[mid] <= d) {
+            if(normalMap[mid] <= d) {
                 start = mid;
             } else {
                 end = mid;
             }
         }
-        double left = Math.abs(normalMap[start] - d);
-        double right = Math.abs(normalMap[end] - d);
-        if (left <= right) {
+        double left = FastMath.abs(normalMap[start] - d);
+        double right = FastMath.abs(normalMap[end] - d);
+        if(left <= right) {
             return start * (num) / (normalMap.length);
         }
         return end * (num) / (normalMap.length);
     }
 
     public static int normal(double d, int max) {
-        double ranged = Math.max(0, Math.min((d + 1) / 2D, 1));
+        double ranged = FastMath.max(0, FastMath.min((d + 1) / 2D, 1));
         return (int) (ranged * max);
     }
 }

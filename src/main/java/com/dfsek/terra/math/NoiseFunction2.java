@@ -1,15 +1,20 @@
 package com.dfsek.terra.math;
 
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.util.hash.HashMapDoubleDouble;
 import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
-import parsii.eval.Function;
 
 import java.util.List;
 
-public class NoiseFunction2 implements Function {
+public class NoiseFunction2 implements NoiseFunction {
+    private final FastNoiseLite gen;
     private final Cache cache = new Cache();
-    private FastNoiseLite gen;
+
+    public NoiseFunction2(long seed, NoiseBuilder builder) {
+        this.gen = builder.build((int) seed);
+    }
 
     @Override
     public int getNumberOfArguments() {
@@ -18,7 +23,17 @@ public class NoiseFunction2 implements Function {
 
     @Override
     public double eval(List<Expression> list) {
-        return cache.get(list.get(0).evaluate(), list.get(1).evaluate());
+        return cache.get(gen, list.get(0).evaluate(), list.get(1).evaluate());
+    }
+
+    /**
+     * Evaluate without cache. For testing.
+     *
+     * @param list Parameters.
+     * @return Result.
+     */
+    public double evalNoCache(List<Expression> list) {
+        return gen.getNoise(list.get(0).evaluate(), list.get(1).evaluate());
     }
 
     @Override
@@ -26,28 +41,24 @@ public class NoiseFunction2 implements Function {
         return true;
     }
 
-    public void setNoise(FastNoiseLite gen) {
-        this.gen = gen;
-    }
+    private static class Cache extends HashMapDoubleDouble {
+        private static final long serialVersionUID = 8915092734723467010L;
+        private static final int cacheSize = ConfigUtil.cacheSize;
 
-    private final class Cache {
-        private final double[] cacheX = new double[ConfigUtil.cacheSize];
-        private final double[] cacheZ = new double[ConfigUtil.cacheSize];
-        private final double[] cacheValues = new double[ConfigUtil.cacheSize];
+        public double get(FastNoiseLite noise, double x, double z) {
+            double xx = x >= 0 ? x * 2 : x * -2 - 1;
+            double zz = z >= 0 ? z * 2 : z * -2 - 1;
+            double key = (xx >= zz) ? (xx * xx + xx + zz) : (zz * zz + xx);
+            double value = this.get(key);
+            if(this.size() > cacheSize) {
+                this.clear();
+            }
+            return (value == 4.9E-324D ? addAndReturn(noise.getNoise(x, z), key) : value);
+        }
 
-        public double get(double x, double z) {
-            for(int i = 0; i < cacheX.length; i++) {
-                if(cacheX[i] == x && cacheZ[i] == z) return cacheValues[i];
-            }
-            cacheX[0] = x;
-            cacheZ[0] = z;
-            cacheValues[0] = gen.getNoise(x, z);
-            for(int i = 0; i < cacheX.length - 1; i++) {
-                cacheX[i + 1] = cacheX[i];
-                cacheZ[i + 1] = cacheZ[i];
-                cacheValues[i + 1] = cacheValues[i];
-            }
-            return cacheValues[0];
+        private double addAndReturn(double value, double key) {
+            this.put(key, value);
+            return value;
         }
     }
 }

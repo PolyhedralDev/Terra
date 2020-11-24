@@ -1,12 +1,12 @@
 package com.dfsek.terra.procgen.voxel;
 
 import org.bukkit.util.Vector;
+import org.polydev.gaea.util.GlueList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class VoxelGeometry {
-    private final List<Vector> geometry = new ArrayList<>();
+    private final List<Vector> geometry = new GlueList<>();
 
     public static VoxelGeometry getBlank() {
         return new VoxelGeometry() {

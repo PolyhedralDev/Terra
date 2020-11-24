@@ -3,7 +3,6 @@ package com.dfsek.terra.population;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeOreConfig;
 import com.dfsek.terra.event.OreVeinGenerateEvent;
@@ -24,28 +23,29 @@ import java.util.Random;
 public class OrePopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
-            ConfigPack config = tw.getConfig();
-            Biome b = TerraWorld.getWorld(world).getGrid().getBiome((chunk.getX() << 4) + 8, (chunk.getZ() << 4) + 8, GenerationPhase.POPULATE);
-            BiomeOreConfig ores = config.getBiome((UserDefinedBiome) b).getOres();
-            for(Map.Entry<OreConfig, Range> e : ores.getOres().entrySet()) {
-                int num = e.getValue().get(random);
-                OreConfig ore = e.getKey();
-                int edgeOffset = ore.getChunkEdgeOffset();
-                for(int i = 0; i < num; i++) {
-                    int x = random.nextInt(16 - edgeOffset * 2) + edgeOffset;
-                    int z = random.nextInt(16 - edgeOffset * 2) + edgeOffset;
-                    int y = ores.getOreHeights().get(ore).get(random);
+            for(int cx = -1; cx <= 1; cx++) {
+                for(int cz = -1; cz <= 1; cz++) {
+                    Biome b = TerraWorld.getWorld(world).getGrid().getBiome(((chunk.getX() + cx) << 4) + 8, ((chunk.getZ() + cz) << 4) + 8, GenerationPhase.POPULATE);
+                    BiomeOreConfig ores = ((UserDefinedBiome) b).getConfig().getOres();
+                    for(Map.Entry<OreConfig, Range> e : ores.getOres().entrySet()) {
+                        int num = e.getValue().get(r);
+                        OreConfig ore = e.getKey();
+                        for(int i = 0; i < num; i++) {
+                            int x = r.nextInt(16) + cx * 16;
+                            int z = r.nextInt(16) + cz * 16;
+                            int y = ores.getOreHeights().get(ore).get(r);
 
-                    Vector v = new Vector(x, y, z);
-                    OreVeinGenerateEvent event = new OreVeinGenerateEvent(tw, v.toLocation(world), ore);
-                    Bukkit.getPluginManager().callEvent(event);
-                    if(!event.isCancelled()) {
-                        if(ore.crossChunks()) ore.doVein(v, chunk, random);
-                        else ore.doVeinSingle(new Vector(x, y, z), chunk, random);
+                            Vector v = new Vector(x, y, z);
+                            OreVeinGenerateEvent event = new OreVeinGenerateEvent(tw, v.toLocation(world), ore);
+                            Bukkit.getPluginManager().callEvent(event);
+                            if(!event.isCancelled()) {
+                                ore.doVeinSingle(new Vector(x, y, z), chunk, r);
+                            }
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.dfsek.terra.command;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.genconfig.OreConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -11,10 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.command.WorldCommand;
+import org.polydev.gaea.util.FastRandom;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class OreCommand extends WorldCommand {
     public OreCommand(org.polydev.gaea.command.Command parent) {
@@ -34,8 +35,8 @@ public class OreCommand extends WorldCommand {
                 LangUtil.send("command.ore.out-of-range", sender);
                 return true;
             }
-            Vector source = new Vector(Math.floorMod(bl.getX(), 16), bl.getY(), Math.floorMod(bl.getZ(), 16));
-            ore.doVein(source, bl.getChunk(), new Random());
+            Vector source = new Vector(FastMath.floorMod(bl.getX(), 16), bl.getY(), FastMath.floorMod(bl.getZ(), 16));
+            ore.doVein(source, bl.getChunk(), new FastRandom());
         } else {
             LangUtil.send("command.ore.main-menu", sender);
         }

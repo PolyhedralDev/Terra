@@ -5,6 +5,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
+import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,9 +31,10 @@ public class CavePopulator extends BlockPopulator {
 
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
         if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
+            Random random = PopulationUtil.getRandom(chunk);
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
@@ -70,24 +72,23 @@ public class CavePopulator extends BlockPopulator {
                         updateNeeded.add(b);
                     }
                 }
-                for(Location l : shiftCandidate.keySet()) {
+                for(Map.Entry<Location, Material> entry : shiftCandidate.entrySet()) {
+                    Location l = entry.getKey();
                     Location mut = l.clone();
                     Material orig = l.getBlock().getType();
                     do mut.subtract(0, 1, 0);
                     while(mut.getBlock().getType().equals(orig));
                     try {
-                        if(c.getShiftedBlocks().get(shiftCandidate.get(l)).contains(mut.getBlock().getType())) {
-                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(shiftCandidate.get(l), Material::createBlockData), false);
+                        if(c.getShiftedBlocks().get(entry.getValue()).contains(mut.getBlock().getType())) {
+                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue(), Material::createBlockData), false);
                         }
                     } catch(NullPointerException ignore) {
                     }
                 }
-                try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("CaveBlockUpdate")) {
-                    for(Block b : updateNeeded) {
-                        BlockData orig = b.getBlockData();
-                        b.setBlockData(AIR, false);
-                        b.setBlockData(orig, true);
-                    }
+                for(Block b : updateNeeded) {
+                    BlockData orig = b.getBlockData();
+                    b.setBlockData(AIR, false);
+                    b.setBlockData(orig, true);
                 }
                 /*for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
                     Vector v = e.getKey();

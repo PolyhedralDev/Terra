@@ -2,8 +2,9 @@ package com.dfsek.terra.procgen;
 
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.MathUtil;
+import org.polydev.gaea.util.FastRandom;
+import org.polydev.gaea.util.GlueList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class GridSpawn {
     public Vector getNearestSpawn(int x, int z, long seed) {
         int structureChunkX = x / (width + 2 * separation);
         int structureChunkZ = z / (width + 2 * separation);
-        List<Vector> zones = new ArrayList<>();
+        List<Vector> zones = new GlueList<>();
         for(int xi = structureChunkX - 1; xi <= structureChunkX + 1; xi++) {
             for(int zi = structureChunkZ - 1; zi <= structureChunkZ + 1; zi++) {
                 zones.add(getChunkSpawn(xi, zi, seed));
@@ -53,7 +54,7 @@ public class GridSpawn {
      * @return Vector representing spawnpoint
      */
     public Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
-        Random r = new Random(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
+        Random r = new FastRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;

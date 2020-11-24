@@ -3,10 +3,12 @@ package com.dfsek.terra.carving;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
+import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 
@@ -39,7 +41,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public Worm getWorm(long l, Vector vector) {
-        Random r = new Random(l + hash);
+        Random r = new FastRandom(l + hash);
         return new UserDefinedWorm(length.get(r) / 2, r, vector, radius.getMax(), topCut, bottomCut);
     }
 
@@ -58,7 +60,7 @@ public class UserDefinedCarver extends Carver {
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
         ConfigPack c = TerraWorld.getWorld(w).getConfig();
-        return new Random(random.nextLong() + hash).nextInt(100) < c.getBiome((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getCarverChance(this);
+        return new FastRandom(random.nextLong() + hash).nextInt(100) < ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getConfig().getCarverChance(this);
     }
 
     private class UserDefinedWorm extends Worm {
@@ -81,9 +83,9 @@ public class UserDefinedCarver extends Carver {
         @Override
         public void step() {
             if(steps == nextDirection) {
-                direction.rotateAroundX(Math.toRadians((getRandom().nextGaussian()) * mutate[0] * recalcMagnitude));
-                direction.rotateAroundY(Math.toRadians((getRandom().nextGaussian()) * mutate[1] * recalcMagnitude));
-                direction.rotateAroundZ(Math.toRadians((getRandom().nextGaussian()) * mutate[2] * recalcMagnitude));
+                direction.rotateAroundX(FastMath.toRadians((getRandom().nextGaussian()) * mutate[0] * recalcMagnitude));
+                direction.rotateAroundY(FastMath.toRadians((getRandom().nextGaussian()) * mutate[1] * recalcMagnitude));
+                direction.rotateAroundZ(FastMath.toRadians((getRandom().nextGaussian()) * mutate[2] * recalcMagnitude));
                 currentRotation = new double[] {(getRandom().nextGaussian()) * mutate[0],
                         (getRandom().nextGaussian()) * mutate[1],
                         (getRandom().nextGaussian()) * mutate[2]};
@@ -92,10 +94,10 @@ public class UserDefinedCarver extends Carver {
             steps++;
             setRadius(new int[] {(int) (runningRadius * radiusMultiplier[0]), (int) (runningRadius * radiusMultiplier[1]), (int) (runningRadius * radiusMultiplier[2])});
             runningRadius += (getRandom().nextDouble() - 0.5) * mutate[3];
-            runningRadius = Math.max(Math.min(runningRadius, maxRad), 1);
-            direction.rotateAroundX(Math.toRadians(currentRotation[0] * mutate[0]));
-            direction.rotateAroundY(Math.toRadians(currentRotation[1] * mutate[1]));
-            direction.rotateAroundZ(Math.toRadians(currentRotation[2] * mutate[2]));
+            runningRadius = FastMath.max(FastMath.min(runningRadius, maxRad), 1);
+            direction.rotateAroundX(FastMath.toRadians(currentRotation[0] * mutate[0]));
+            direction.rotateAroundY(FastMath.toRadians(currentRotation[1] * mutate[1]));
+            direction.rotateAroundZ(FastMath.toRadians(currentRotation[2] * mutate[2]));
             getRunning().add(direction);
         }
     }

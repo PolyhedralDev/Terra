@@ -9,7 +9,6 @@ import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.generation.UserDefinedDecorator;
-import com.dfsek.terra.generation.UserDefinedGenerator;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
@@ -45,36 +44,36 @@ public class BiomeConfig extends TerraConfig {
 
     public BiomeConfig(File file, ConfigPack config) throws InvalidConfigurationException, IOException {
         super(file, config);
+        load(file);
         this.config = config;
-        if(!yaml.contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
-        this.biomeID = yaml.getString("id");
+        if(!contains("id")) throw new ConfigException("Biome ID unspecified!", "null");
+        this.biomeID = getString("id");
 
         AbstractBiomeConfig abstractBiome = null;
         // Whether an abstract biome is to be extended. Default to false.
         boolean extending = false;
         // Check if biome extends an abstract biome, load abstract biome if so.
-        if(yaml.contains("extends")) {
+        if(contains("extends")) {
             try {
-                abstractBiome = config.getAbstractBiomes().get(yaml.getString("extends"));
-                if(abstractBiome == null)
-                    throw new NotFoundException("Abstract Biome", yaml.getString("extends"), getID());
+                abstractBiome = config.getAbstractBiomes().get(getString("extends"));
+                if(abstractBiome == null) throw new NotFoundException("Abstract Biome", getString("extends"), getID());
                 extending = true;
-                Debug.info("Extending biome " + yaml.getString("extends"));
+                Debug.info("Extending biome " + getString("extends"));
             } catch(NullPointerException e) {
-                throw new NotFoundException("Abstract Biome", yaml.getString("extends"), getID());
+                throw new NotFoundException("Abstract Biome", getString("extends"), getID());
             }
         }
 
         // Get various simple values using getOrDefault config methods.
         try {
-            eq = yaml.getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
+            eq = getString("noise-equation", Objects.requireNonNull(abstractBiome).getEquation());
         } catch(NullPointerException e) {
-            eq = yaml.getString("noise-equation", null);
+            eq = getString("noise-equation", null);
         }
 
         BiomePaletteConfig palette;
         // Check if biome is extending abstract biome, only use abstract biome's palette if palette is NOT defined for current biome.
-        if(extending && abstractBiome.getPaletteData() != null && !yaml.contains("palette")) {
+        if(extending && abstractBiome.getPaletteData() != null && !contains("palette")) {
             palette = abstractBiome.getPaletteData();
             Debug.info("Using super palette");
         } else palette = new BiomePaletteConfig(this, "palette");
@@ -84,31 +83,31 @@ public class BiomeConfig extends TerraConfig {
             throw new ConfigException("No Palette specified in biome or super biome.", getID());
 
         // Check if carving should be handled by super biome.
-        if(extending && abstractBiome.getCarving() != null && !yaml.contains("carving")) {
+        if(extending && abstractBiome.getCarving() != null && !contains("carving")) {
             carver = abstractBiome.getCarving();
             Debug.info("Using super carvers");
         } else carver = new BiomeCarverConfig(this);
 
         // Check if flora should be handled by super biome.
-        if(extending && abstractBiome.getFlora() != null && !yaml.contains("flora")) {
+        if(extending && abstractBiome.getFlora() != null && !contains("flora")) {
             flora = abstractBiome.getFlora();
             Debug.info("Using super flora (" + flora.getFlora().size() + " entries, " + flora.getFloraChance() + " % chance)");
         } else flora = new BiomeFloraConfig(this);
 
         // Check if trees should be handled by super biome.
-        if(extending && abstractBiome.getTrees() != null && !yaml.contains("trees")) {
+        if(extending && abstractBiome.getTrees() != null && !contains("trees")) {
             tree = abstractBiome.getTrees();
             Debug.info("Using super trees");
         } else tree = new BiomeTreeConfig(this);
 
         // Check if ores should be handled by super biome.
-        if(extending && abstractBiome.getOres() != null && !yaml.contains("ores")) {
+        if(extending && abstractBiome.getOres() != null && !contains("ores")) {
             ore = abstractBiome.getOres();
             Debug.info("Using super ores");
         } else ore = new BiomeOreConfig(this);
 
         // Get slab stuff
-        if(extending && abstractBiome.getSlabs() != null && !yaml.contains("slabs")) {
+        if(extending && abstractBiome.getSlabs() != null && !contains("slabs")) {
             slab = abstractBiome.getSlabs();
             Debug.info("Using super slabs");
         } else slab = new BiomeSlabConfig(this);
@@ -127,17 +126,17 @@ public class BiomeConfig extends TerraConfig {
 
         // Get slant stuff
         TreeMap<Integer, Palette<BlockData>> slant = new TreeMap<>();
-        if(yaml.contains("slant")) {
-            String slantS = yaml.getString("slant.palette");
+        if(contains("slant")) {
+            String slantS = getString("slant.palette");
             slant = new BiomePaletteConfig(this, "slant.palette").getPaletteMap();
             Debug.info("Using slant palette: " + slantS);
             if(slant == null) throw new NotFoundException("Slant Palette", slantS, getID());
         }
-        ySlantOffsetTop = yaml.getDouble("slant.y-offset.top", 0.25);
-        ySlantOffsetBottom = yaml.getDouble("slant.y-offset.bottom", 0.25);
+        ySlantOffsetTop = getDouble("slant.y-offset.top", 0.25);
+        ySlantOffsetBottom = getDouble("slant.y-offset.bottom", 0.25);
 
         //Make sure equation is non-null
-        if(eq == null || eq.equals(""))
+        if(eq == null || eq.isEmpty())
             throw new ConfigException("Could not find noise equation! Biomes must include a noise equation, or extend an abstract biome with one.", getID());
 
         // Create decorator for this config.
@@ -146,10 +145,10 @@ public class BiomeConfig extends TerraConfig {
         // Get Vanilla biome, throw exception if it is invalid/unspecified.
         org.bukkit.block.Biome vanillaBiome;
         try {
-            if(!yaml.contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
-            vanillaBiome = org.bukkit.block.Biome.valueOf(yaml.getString("vanilla"));
+            if(!contains("vanilla")) throw new ConfigException("Vanilla Biome unspecified!", getID());
+            vanillaBiome = org.bukkit.block.Biome.valueOf(getString("vanilla"));
         } catch(IllegalArgumentException e) {
-            throw new ConfigException("Invalid Vanilla biome: \"" + yaml.getString("vanilla") + "\"", getID());
+            throw new ConfigException("Invalid Vanilla biome: \"" + getString("vanilla") + "\"", getID());
         }
 
         // Structure stuff
@@ -157,7 +156,7 @@ public class BiomeConfig extends TerraConfig {
         List<String> st = new ArrayList<>();
         if(abstractBiome != null && abstractBiome.getStructureConfigs() != null)
             st = abstractBiome.getStructureConfigs();
-        if(yaml.contains("structures")) st = yaml.getStringList("structures");
+        if(contains("structures")) st = getStringList("structures");
         for(String s : st) {
             try {
                 structures.add(Objects.requireNonNull(config.getStructure(s)));
@@ -166,14 +165,13 @@ public class BiomeConfig extends TerraConfig {
             }
         }
 
-        String elevation = yaml.getString("elevation.equation", null);
-        boolean doElevationInterpolation = yaml.getBoolean("elevation.interpolation", true);
+        String elevation = getString("elevation.equation", null);
+        boolean doElevationInterpolation = getBoolean("elevation.interpolation", true);
 
         try {
             // Get UserDefinedBiome instance representing this config.
-            UserDefinedGenerator gen = new UserDefinedGenerator(eq, elevation, config.getDefinedVariables(), palette.getPaletteMap(), slant, yaml.getBoolean("prevent-smooth", false));
-            gen.setElevationInterpolation(doElevationInterpolation);
-            this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, yaml.getBoolean("erodible", false), biomeID);
+            GeneratorOptions gen = new GeneratorOptions(eq, elevation, config.getVariableScope(), palette.getPaletteMap(), slant, config.getNoiseBuilders(), getBoolean("prevent-smooth", false), doElevationInterpolation);
+            this.biome = new UserDefinedBiome(vanillaBiome, dec, gen, getBoolean("erodible", false), this);
         } catch(ParseException e) {
             e.printStackTrace();
             throw new ConfigException("Unable to parse noise equation!", getID());

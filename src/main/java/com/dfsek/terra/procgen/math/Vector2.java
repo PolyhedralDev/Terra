@@ -1,5 +1,7 @@
 package com.dfsek.terra.procgen.math;
 
+import net.jafama.FastMath;
+
 /**
  * oh yeah
  */
@@ -111,7 +113,7 @@ public class Vector2 implements Cloneable {
      * @return length
      */
     public double length() {
-        return Math.sqrt(lengthSquared());
+        return FastMath.sqrt(lengthSquared());
     }
 
     /**
@@ -130,7 +132,7 @@ public class Vector2 implements Cloneable {
      * @return Distance between vectors
      */
     public double distance(Vector2 other) {
-        return Math.sqrt(distanceSquared(other));
+        return FastMath.sqrt(distanceSquared(other));
     }
 
     /**

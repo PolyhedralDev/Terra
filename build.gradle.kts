@@ -15,7 +15,6 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
     flatDir {
         dirs("lib")
     }
@@ -23,6 +22,7 @@ repositories {
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+//    maven { url = uri("https://maven.pkg.github.com/solonovamax/Gaea") }
 }
 
 java {
@@ -30,49 +30,36 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("1", "3", "1", true)
+val versionObj = Version("1", "5", "0", true)
 
 version = versionObj
 
 dependencies {
-
-    // Commons. Used for stuff.
-    implementation("commons-io:commons-io:2.4")
-    // Commons-imagine. Used for loading images from disk for the biome images.
-    implementation("org.apache.commons:commons-imaging:1.0-alpha2")
-    // Bstats. For tracking stats.
-    implementation("org.bstats:bstats-bukkit:1.7")
-    // Parsii. Does parsing of the equations.
-    implementation(name = "parsii-1.2", group = "")
-    // Papermc API. for Paper spigot
-    implementation("io.papermc:paperlib:1.0.5")
-
-    // Jackson
-    implementation("com.fasterxml.jackson.core:jackson-core:2.11+")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.11+")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.11+")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11+")
-
-    // Spigot mc API. Provided by spigot.
-    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
-    // Annotations. Provided by mc.
-    compileOnly("org.jetbrains:annotations:20.1.0")
-    // Gaea. Provided as a plugin.
-    val gaeaVersion = "1.14.2"
+    val gaeaVersion = "1.14.3"
     compileOnly(name = "Gaea-${gaeaVersion}", group = "")
     testImplementation(name = "Gaea-${gaeaVersion}", group = "")
-    // Worldedit. For saving structures. Provided as a plugin.
+
+    compileOnly("org.jetbrains:annotations:20.1.0")
+
+    implementation("commons-io:commons-io:2.4")
+    implementation("org.apache.commons:commons-imaging:1.0-alpha2")
+
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
-    // GSON. idk how it's used.
+    implementation("org.bstats:bstats-bukkit:1.7")
+
     compileOnly("com.googlecode.json-simple:json-simple:1.1")
 
-    // JUnit. Used for testing.
+    implementation(name = "parsii-1.2.1", group = "")
+
+    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
+    implementation("io.papermc:paperlib:1.0.5")
+
+    implementation("net.jafama:jafama:2.3.2")
+
+
+    // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-
-    // Included here becaues tests rely on it.
-    testImplementation(name = "Gaea-1.14.2", group = "")
-    testImplementation("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
 }
 
 val compileJava: JavaCompile by tasks
@@ -81,6 +68,7 @@ val mainSourceSet: SourceSet = sourceSets["main"]
 val tokenizeJavaSources = task<Copy>(name = "tokenizeJavaSources") {
     from(mainSourceSet.allSource) {
         include("**/plugin.yml")
+        println("version: $versionObj")
         val tokens = mapOf("VERSION" to versionObj.toString())
 
         filter(org.apache.tools.ant.filters.ReplaceTokens::class, "tokens" to tokens)
@@ -118,6 +106,8 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+    relocate("net.jafama", "com.dfsek.terra.lib.jafama")
+    minimize()
 }
 
 tasks.build {
@@ -204,31 +194,13 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     classpath = files("${testDir}/paper.jar")
 }
 
-tasks.named<ShadowJar>("shadowJar") {
-    archiveClassifier.set("")
-    archiveBaseName.set("Terra")
-    setVersion(project.version)
-    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
-    relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
-    relocate("parsii", "com.dfsek.terra.lib.parsii")
-    relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-    relocate("com.fasterxml.jackson", "com.dfsek.terra.lib.jackson")
-}
-
-tasks.build {
-    dependsOn(tasks.test)
-    dependsOn(tasks.shadowJar)
-//    dependsOn(testWithPaper)
-    tasks.shadowJar.get().mustRunAfter(tasks.test)
-//    testWithPaper.mustRunAfter(tasks.shadowJar)
-}
-
 
 /**
  * Version class that does version stuff.
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class Version(val major: String, val minor: String, val revision: String, val preRelease: Boolean = false) {
+
     override fun toString(): String {
         return if (!preRelease)
             "$major.$minor.$revision"
@@ -239,25 +211,19 @@ class Version(val major: String, val minor: String, val revision: String, val pr
 
 fun getGitHash(): String {
     val stdout = ByteArrayOutputStream()
-    val exitCode = exec {
+    exec {
         commandLine = mutableListOf("git", "rev-parse", "--short", "HEAD")
         standardOutput = stdout
-    }.exitValue
-    if (exitCode == 128) // https://canary.discord.com/channels/715448651786485780/765260067812540416/777236094768381954
-        System.err.println("You can only use this in a git repo. Please run \"git clone https://github.com/PolyhedralDev/Terra.git\", then cd into there.")
-    if (exitCode == 127 || exitCode == 9009) // https://canary.discord.com/channels/715448651786485780/715448652411437099/777304618853335082
-        System.err.println("You must install git for this to work. https://git-scm.com/downloads")
+    }
     return stdout.toString().trim()
 }
 
 fun gitClone(name: String) {
     val stdout = ByteArrayOutputStream()
-    val result = exec {
+    exec {
         commandLine = mutableListOf("git", "clone", name)
         standardOutput = stdout
-    }.exitValue
-    if (result == 127 || result == 9009) // https://canary.discord.com/channels/715448651786485780/715448652411437099/777304618853335082
-        System.err.println("You must install git for this to work.")
+    }
 }
 
 fun downloadAndUnzipPack(packUrl: URL) {

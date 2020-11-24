@@ -1,13 +1,17 @@
 package com.dfsek.terra.math;
 
+import com.dfsek.terra.generation.config.NoiseBuilder;
 import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
-import parsii.eval.Function;
 
 import java.util.List;
 
-public class NoiseFunction3 implements Function {
-    private FastNoiseLite gen;
+public class NoiseFunction3 implements NoiseFunction {
+    private final FastNoiseLite gen;
+
+    public NoiseFunction3(long seed, NoiseBuilder builder) {
+        this.gen = builder.build((int) seed);
+    }
 
     @Override
     public int getNumberOfArguments() {
@@ -22,9 +26,5 @@ public class NoiseFunction3 implements Function {
     @Override
     public boolean isNaturalFunction() {
         return true;
-    }
-
-    public void setNoise(FastNoiseLite gen) {
-        this.gen = gen;
     }
 }

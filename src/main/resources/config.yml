@@ -3,6 +3,7 @@ data-save: PT6M
 language: "en_us"
 fail-type: SHUTDOWN
 dump-default: true
-cache-size: 8
+biome-search-resolution: 4
+cache-size: 384
 master-disable:
   caves: false

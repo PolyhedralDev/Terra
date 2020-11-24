@@ -25,7 +25,7 @@ public class BiomeCommand extends WorldCommand {
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
         TerraBiomeGrid grid = TerraWorld.getWorld(sender.getWorld()).getGrid();
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(sender.getLocation(), GenerationPhase.POPULATE);
-        LangUtil.send("command.biome.in", sender, TerraWorld.getWorld(w).getConfig().getBiome(biome).getID());
+        LangUtil.send("command.biome.in", sender, biome.getID());
         return true;
     }
 

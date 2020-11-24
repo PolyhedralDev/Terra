@@ -1,6 +1,5 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.genconfig.structure.StructureConfig;
@@ -10,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -33,9 +33,9 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<StructureConfig> {
     public boolean isValid(int x, int z, StructureConfig target) {
         World world = getWorld();
         Location spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
-        if(!TerraWorld.getWorld(world).getConfig().getBiome((UserDefinedBiome) getGrid().getBiome(spawn)).getStructures().contains(target))
+        if(!((UserDefinedBiome) getGrid().getBiome(spawn)).getConfig().getStructures().contains(target))
             return false;
-        Random r2 = new Random(spawn.hashCode());
+        Random r2 = new FastRandom(spawn.hashCode());
         Structure struc = target.getStructure(r2);
         Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
         for(int y = target.getSearchStart().get(r2); y > 0; y--) {

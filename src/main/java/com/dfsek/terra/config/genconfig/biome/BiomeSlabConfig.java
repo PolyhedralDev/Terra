@@ -11,13 +11,14 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class BiomeSlabConfig extends TerraConfigSection {
     private final Map<Material, Palette<BlockData>> slabs;
@@ -34,7 +35,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
     }
 
     protected Map<Material, Palette<BlockData>> getSlabPalettes(List<Map<?, ?>> paletteConfigSection) throws InvalidConfigurationException {
-        Map<Material, Palette<BlockData>> paletteMap = new HashMap<>();
+        Map<Material, Palette<BlockData>> paletteMap = new EnumMap<>(Material.class);
 
         for(Map<?, ?> e : paletteConfigSection) {
             for(Map.Entry<?, ?> entry : e.entrySet()) {
@@ -42,7 +43,7 @@ public class BiomeSlabConfig extends TerraConfigSection {
                     if(((String) entry.getValue()).startsWith("BLOCK:")) {
                         try {
                             Debug.info("Adding slab palette with single material " + entry.getKey());
-                            paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), new RandomPalette<BlockData>(new Random(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getValue()).substring(6)), 1), 1));
+                            paletteMap.put(Bukkit.createBlockData((String) entry.getKey()).getMaterial(), new RandomPalette<BlockData>(new FastRandom(0)).add(new ProbabilityCollection<BlockData>().add(Bukkit.createBlockData(((String) entry.getValue()).substring(6)), 1), 1));
                         } catch(IllegalArgumentException ex) {
                             throw new ConfigException("Invalid BlockData in slab configuration: " + ex.getMessage(), getParent().getConfig().getID());
                         }

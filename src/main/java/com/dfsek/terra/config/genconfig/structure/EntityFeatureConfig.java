@@ -38,7 +38,6 @@ public class EntityFeatureConfig implements FeatureConfig {
             throw new InvalidConfigurationException("Error in Entity Configuration!");
         }
 
-        int attempts = (Integer) items.get("attempts");
         int height = (Integer) items.get("in-height");
 
         Range amount;
@@ -52,7 +51,7 @@ public class EntityFeatureConfig implements FeatureConfig {
         Set<Material> on = ConfigUtil.toBlockData((List<String>) items.get("spawnable-on"), "SpawnableOn", "");
         Set<Material> in = ConfigUtil.toBlockData((List<String>) items.get("spawnable-in"), "SpawnableIn", "");
 
-        this.feature = new EntityFeature(type, amount, attempts, on, in, height);
+        this.feature = new EntityFeature(type, amount, on, in, height);
         Debug.info("Loaded EntityFeature with type: " + type);
     }
 

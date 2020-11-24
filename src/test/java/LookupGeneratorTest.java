@@ -1,5 +1,7 @@
+import net.jafama.FastMath;
 import org.junit.jupiter.api.Test;
 import org.polydev.gaea.math.FastNoiseLite;
+import org.polydev.gaea.util.GlueList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +14,7 @@ class LookupGenerator {
     static void main(String[] args) throws InterruptedException {
         int dist = 4096;
 
-        List<Double> vals = new ArrayList<>();
+        List<Double> vals = new GlueList<>();
         FastNoiseLite noise = new FastNoiseLite();
         noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noise.setFrequency(0.02f);
@@ -25,10 +27,10 @@ class LookupGenerator {
 
         int workerAmount = 16;
 
-        List<Worker> workers = new ArrayList<>();
+        List<Worker> workers = new GlueList<>();
 
         for(int i = 0; i < workerAmount; i++) {
-            workers.add(new Worker(new ArrayList<>(), 5000000, noise));
+            workers.add(new Worker(new GlueList<>(), 5000000, noise));
         }
 
         for(Worker w : workers) {
@@ -98,6 +100,12 @@ class LookupGenerator {
         return lookup.length - 1;
     }
 
+    public static int normalize(double i, int n) {
+        i *= 1.42; // Magic simplex value (sqrt(2) plus a little)
+        i = FastMath.min(FastMath.max(i, -1), 1);
+        return FastMath.min((int) FastMath.floor((i + 1) * ((double) n / 2)), n - 1);
+    }
+
     private static class Worker extends Thread {
         private final List<Double> l;
         private final int searches;
@@ -119,6 +127,10 @@ class LookupGenerator {
 
         public List<Double> getResult() {
             return l;
+        }
+
+        public String getStatus() {
+            return "Generating values. " + l.size() + "/" + searches + " (" + ((long) l.size() * 100L) / searches + "%)";
         }
     }
 }

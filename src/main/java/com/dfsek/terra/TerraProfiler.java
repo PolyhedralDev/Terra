@@ -16,12 +16,12 @@ public class TerraProfiler extends WorldProfiler {
         super(w);
         this
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "FloraTime")
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "TreeTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "OreTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "StructureTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "ElevationTime")
-                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "SnowTime")
-                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "CaveBlockUpdate");
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "SnowTime");
     }
 
     public static TerraProfiler fromWorld(World w) {

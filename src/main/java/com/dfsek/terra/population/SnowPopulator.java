@@ -12,6 +12,9 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Snowable;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
@@ -55,7 +58,7 @@ public class SnowPopulator extends GaeaBlockPopulator {
             TerraBiomeGrid g = w.getGrid();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    BiomeConfig biome = w.getConfig().getBiome((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY));
+                    BiomeConfig biome = ((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY)).getConfig();
                     if(!biome.getSnow().doSnow()) continue;
                     int y;
                     Block b = null;
@@ -66,7 +69,13 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     if(random.nextInt(100) >= biome.getSnow().getSnowChance(y))
                         continue;
                     if(blacklistSpawn.contains(b.getType()) || b.isPassable()) continue;
-                    chunk.getBlock(x, ++y, z).setBlockData(DataUtil.SNOW);
+                    boolean phys = biome.getSnow().doPhysics();
+                    if(!phys) {
+                        BlockData data = b.getBlockData();
+                        if(data instanceof Snowable) phys = true;
+                    }
+                    b.getRelative(BlockFace.UP).setBlockData(DataUtil.SNOW, phys);
+
                 }
             }
         }

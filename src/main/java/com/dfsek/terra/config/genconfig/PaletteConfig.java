@@ -9,6 +9,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 import org.polydev.gaea.world.palette.SimplexPalette;
@@ -17,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class PaletteConfig extends TerraConfig {
     private final Palette<BlockData> palette;
@@ -26,18 +26,18 @@ public class PaletteConfig extends TerraConfig {
 
     public PaletteConfig(File file, ConfigPack config) throws IOException, InvalidConfigurationException {
         super(file, config);
-        if(!yaml.contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
-        this.paletteID = yaml.getString("id");
+        if(!contains("id")) throw new ConfigException("Palette ID unspecified!", "null");
+        this.paletteID = getString("id");
         Palette<BlockData> pal;
-        if(yaml.getBoolean("simplex", false)) {
+        if(getBoolean("simplex", false)) {
             useNoise = true;
-            FastNoiseLite pNoise = new FastNoiseLite(yaml.getInt("seed", 2403));
+            FastNoiseLite pNoise = new FastNoiseLite(getInt("seed", 2403));
             pNoise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
             pNoise.setFractalOctaves(4);
-            pNoise.setFrequency(yaml.getDouble("frequency", 0.02));
+            pNoise.setFrequency(getDouble("frequency", 0.02));
             pal = new SimplexPalette<>(pNoise);
-        } else pal = new RandomPalette<>(new Random(yaml.getInt("seed", 2403)));
-        palette = getPalette(yaml.getMapList("layers"), pal);
+        } else pal = new RandomPalette<>(new FastRandom(getInt("seed", 2403)));
+        palette = getPalette(getMapList("layers"), pal);
     }
 
     @SuppressWarnings("unchecked")
