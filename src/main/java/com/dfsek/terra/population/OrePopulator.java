@@ -13,11 +13,9 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
-import org.polydev.gaea.util.FastRandom;
 
 import java.util.Map;
 import java.util.Random;
@@ -25,13 +23,12 @@ import java.util.Random;
 public class OrePopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
             TerraWorld tw = TerraWorld.getWorld(world);
             if(!tw.isSafe()) return;
             for(int cx = -1; cx <= 1; cx++) {
                 for(int cz = -1; cz <= 1; cz++) {
-                    FastRandom r = new FastRandom(MathUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
                     Biome b = TerraWorld.getWorld(world).getGrid().getBiome(((chunk.getX() + cx) << 4) + 8, ((chunk.getZ() + cz) << 4) + 8, GenerationPhase.POPULATE);
                     BiomeOreConfig ores = ((UserDefinedBiome) b).getConfig().getOres();
                     for(Map.Entry<OreConfig, Range> e : ores.getOres().entrySet()) {
