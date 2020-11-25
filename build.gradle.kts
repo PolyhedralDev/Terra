@@ -113,12 +113,6 @@ tasks.named<ShadowJar>("shadowJar") {
     }
 }
 
-tasks.build {
-    dependsOn(tasks.shadowJar)
-//    dependsOn(testWithPaper)
-//    testWithPaper.mustRunAfter(tasks.shadowJar)
-}
-
 val testDir = "target/server/"
 
 val setupServer = tasks.create("setupServer") {
@@ -172,6 +166,15 @@ val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
 tasks.compileJava {
     dependsOn(downloadDefaultPacks)
 }
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+    dependsOn(downloadDefaultPacks)
+    tasks.shadowJar.get().mustRunAfter(downloadDefaultPacks)
+//    dependsOn(testWithPaper)
+//    testWithPaper.mustRunAfter(tasks.shadowJar)
+}
+
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
