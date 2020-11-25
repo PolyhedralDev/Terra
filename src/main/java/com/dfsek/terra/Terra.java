@@ -2,7 +2,8 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
-import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
@@ -39,10 +40,17 @@ public class Terra extends GaeaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        saveDefaultConfig();
+
         Metrics metrics = new Metrics(this, 9017);
         metrics.addCustomChart(new Metrics.SingleLineChart("worlds", TerraWorld::numWorlds));
+
         Debug.setMain(this);
-        ConfigUtil.loadConfig(this);
+        PluginConfig.load(this);
+        LangUtil.load(PluginConfig.getLanguage(), this); // Load language.
+        ConfigPack.loadAll(this);
+        TerraWorld.invalidate();
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
         TerraCommand command = new TerraCommand(this);
@@ -54,8 +62,9 @@ public class Terra extends GaeaPlugin {
         locatePl.setExecutor(locate);
         locatePl.setTabCompleter(locate);
 
-        saveDefaultConfig();
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, ConfigUtil.dataSave, ConfigUtil.dataSave);
+
+        long save = PluginConfig.getDataSaveInterval();
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, save, save);
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
         PaperUtil.checkPaper(this);
     }
@@ -71,7 +80,7 @@ public class Terra extends GaeaPlugin {
 
     @Override
     public boolean isDebug() {
-        return ConfigUtil.debug;
+        return PluginConfig.isDebug();
     }
 
     @Override

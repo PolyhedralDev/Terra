@@ -4,7 +4,7 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
-import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
@@ -43,7 +43,7 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     || name.equals("pane")) blacklistSpawn.add(m);
         }
         blacklistSpawn.add(Material.END_STONE);
-        if(ConfigUtil.debug)
+        if(PluginConfig.isDebug())
             Bukkit.getLogger().info("Added " + blacklistSpawn.size() + " materials to snow blacklist");
     }
 

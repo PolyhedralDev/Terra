@@ -2,7 +2,7 @@ package com.dfsek.terra.config.genconfig.biome;
 
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
-import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.polydev.gaea.math.Range;
@@ -31,7 +31,7 @@ public class BiomeSnowConfig extends TerraConfigSection {
                 }
             }
         } catch(ClassCastException e) {
-            if(ConfigUtil.debug) e.printStackTrace();
+            if(PluginConfig.isDebug()) e.printStackTrace();
             throw new ConfigException("Unable to parse Snow configuration! Check YAML syntax.", parent.getID());
         }
     }

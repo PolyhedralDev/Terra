@@ -4,6 +4,7 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.procgen.math.Vector2;
@@ -54,7 +55,7 @@ public class TreeConfig extends TerraConfig implements Tree {
                 }
             }
         } catch(IOException | NullPointerException e) {
-            if(ConfigUtil.debug) {
+            if(PluginConfig.isDebug()) {
                 e.printStackTrace();
             }
             throw new NotFoundException("Tree Structure", getString("file"), getID());

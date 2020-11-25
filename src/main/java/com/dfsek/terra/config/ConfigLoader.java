@@ -1,7 +1,7 @@
 package com.dfsek.terra.config;
 
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.apache.commons.io.FilenameUtils;
 
@@ -40,7 +40,7 @@ public class ConfigLoader {
                             e.printStackTrace();
                             LangUtil.log("config.error.generic", Level.SEVERE, path.toString());
                         } catch(IllegalArgumentException | InvocationTargetException e) {
-                            if(ConfigUtil.debug) e.printStackTrace();
+                            if(PluginConfig.isDebug()) e.printStackTrace();
                             LangUtil.log("config.error.file", Level.SEVERE, path.toString(), e.getMessage());
                         }
                     });

@@ -2,7 +2,7 @@ package com.dfsek.terra.config.genconfig.biome;
 
 import com.dfsek.terra.config.TerraConfig;
 import com.dfsek.terra.config.TerraConfigSection;
-import com.dfsek.terra.config.base.ConfigUtil;
+import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.exception.NotFoundException;
 import com.dfsek.terra.config.genconfig.OreConfig;
@@ -30,7 +30,7 @@ public class BiomeOreConfig extends TerraConfigSection {
                 oreHeights.put(ore, new Range(((ConfigurationSection) m.getValue()).getInt("min-height"), ((ConfigurationSection) m.getValue()).getInt("max-height")));
             }
         } catch(ClassCastException e) {
-            if(ConfigUtil.debug) e.printStackTrace();
+            if(PluginConfig.isDebug()) e.printStackTrace();
             throw new ConfigException("Unable to parse Flora configuration! Check YAML syntax.", parent.getID());
         }
     }

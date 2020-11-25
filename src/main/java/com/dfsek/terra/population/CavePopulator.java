@@ -3,7 +3,6 @@ package com.dfsek.terra.population;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.base.ConfigUtil;
 import com.dfsek.terra.config.genconfig.CarverConfig;
 import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.Chunk;
@@ -32,7 +31,7 @@ public class CavePopulator extends BlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
-        if(ConfigUtil.masterDisableCaves) return;
+        //if(ConfigUtil.masterDisableCaves) return;
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
             Random random = PopulationUtil.getRandom(chunk);
             TerraWorld tw = TerraWorld.getWorld(world);
