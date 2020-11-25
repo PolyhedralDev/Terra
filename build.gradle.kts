@@ -151,10 +151,6 @@ val setupServer = tasks.create("setupServer") {
 
 val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
     doFirst {
-        // Downloading latest paper jar.
-//        if (file("${buildDir}/resources/main/packs/default").exists() && file("${buildDir}/resources/main/packs/nether").exists())
-//            return@doFirst
-//        else
         file("${buildDir}/resources/main/packs/").deleteRecursively()
 
         val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
@@ -162,6 +158,13 @@ val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
         downloadAndUnzipPack(netherPackUrl)
     }
+
+    file("${buildDir}/resources/main/packs/").deleteRecursively()
+
+    val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+    downloadAndUnzipPack(defaultPackUrl)
+    val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
+    downloadAndUnzipPack(netherPackUrl)
 }
 tasks.compileJava {
     dependsOn(downloadDefaultPacks)
