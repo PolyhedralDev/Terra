@@ -10,6 +10,7 @@ import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
 import com.dfsek.terra.config.genconfig.biome.BiomeSlabConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.config.WorldGenerator;
+import com.dfsek.terra.population.BeePopulator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -32,6 +33,7 @@ import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.generation.GenerationPopulator;
 import org.polydev.gaea.math.ChunkInterpolator;
+import org.polydev.gaea.population.AsyncPopulationManager;
 import org.polydev.gaea.population.PopulationManager;
 import org.polydev.gaea.profiler.ProfileFuture;
 import org.polydev.gaea.profiler.WorldProfiler;
@@ -50,6 +52,7 @@ import java.util.logging.Level;
 
 public class TerraChunkGenerator extends GaeaChunkGenerator {
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
+    private static final AsyncPopulationManager popManAsyc = new AsyncPopulationManager();
     private final PopulationManager popMan = new PopulationManager(Terra.getInstance());
     private final ConfigPack configPack;
     private boolean needsLoad = true;
@@ -61,6 +64,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attach(new TreePopulator());
         popMan.attach(new FloraPopulator());
         popMan.attach(new SnowPopulator());
+        popManAsyc.attach(new BeePopulator());
     }
 
     public static synchronized void saveAll() {
