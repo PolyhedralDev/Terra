@@ -169,7 +169,7 @@ val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         downloadAndUnzipPack(netherPackUrl)
     }
 }
-tasks.processResources {
+tasks.compileJava {
     dependsOn(downloadDefaultPacks)
 }
 
