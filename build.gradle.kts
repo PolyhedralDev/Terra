@@ -99,7 +99,7 @@ tasks.test {
 tasks.named<ShadowJar>("shadowJar") {
     from(tokenizeJavaSources.destinationDir)
 
-    archiveClassifier.set("")
+    archiveClassifier.set("shaded")
     archiveBaseName.set("Terra")
     setVersion(project.version)
     relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
@@ -107,7 +107,9 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-    minimize()
+    minimize {
+        exclude(project(":"))
+    }
 }
 
 tasks.build {

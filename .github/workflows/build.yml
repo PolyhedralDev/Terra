@@ -34,7 +34,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
-          files:      |
-                      build/libs/Terra-*.jar
-                      LICENSE
+          files: |
+                      build/libs/Terra-*-shaded.jar
                       
