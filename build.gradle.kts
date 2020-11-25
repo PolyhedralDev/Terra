@@ -98,6 +98,7 @@ tasks.test {
 
 tasks.named<ShadowJar>("shadowJar") {
     from(tokenizeJavaSources.destinationDir)
+    dependsOn(downloadDefaultPacks)
 
     archiveClassifier.set("shaded")
     archiveBaseName.set("Terra")
@@ -168,7 +169,9 @@ val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         downloadAndUnzipPack(netherPackUrl)
     }
 }
-tasks.processResources.get().dependsOn(downloadDefaultPacks)
+tasks.processResources {
+    dependsOn(downloadDefaultPacks)
+}
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
