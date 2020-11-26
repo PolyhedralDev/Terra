@@ -29,7 +29,6 @@ public class BeePopulator extends AsyncGaeaBlockPopulator {
 
     @Override
     public CompletableFuture<AsyncPopulationReturn> populate(@NotNull World world, @NotNull Random random, Chunk chunk, int i) {
-        ChunkSnapshot snapshot = chunk.getChunkSnapshot(true, true, false);
         CompletableFuture completableFuture = new CompletableFuture<>();
         completableFuture.runAsync(() -> {doBees(world.getUID(), random, snapshot, i);});
         return completableFuture;
