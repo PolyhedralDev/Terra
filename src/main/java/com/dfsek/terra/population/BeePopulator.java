@@ -25,10 +25,10 @@ public class BeePopulator extends AsyncGaeaBlockPopulator {
 
     Material material = Material.BEE_NEST;
     private final BlockData beeHive = material.createBlockData();
-    private static final BlockFace[] possibleFaces = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
+    private final BlockFace[] possibleFaces = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
 
     @Override
-    public CompletableFuture<AsyncPopulationReturn> populate(@NotNull World world, @NotNull Random random, Chunk chunk, int i) {
+    public CompletableFuture<AsyncPopulationReturn> populate(@NotNull World world, @NotNull Random random, ChunkSnapshot snapshot, int i) {
         CompletableFuture completableFuture = new CompletableFuture<>();
         completableFuture.runAsync(() -> {doBees(world.getUID(), random, snapshot, i);});
         return completableFuture;
