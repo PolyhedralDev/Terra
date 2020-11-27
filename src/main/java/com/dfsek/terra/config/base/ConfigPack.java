@@ -6,7 +6,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.builder.BiomeGridBuilder;
+import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.config.exception.FileMissingException;
 import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.BiomeGridFactory;
@@ -44,7 +44,7 @@ import java.util.logging.Level;
 public class ConfigPack {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
     private final BiomeRegistry biomeRegistry = new BiomeRegistry();
-    private final BiomeGridRegistry biomeGridRegistry = new BiomeGridRegistry();
+    private final BiomeGridRegistry biomeGridRegistry = new BiomeGridRegistry(biomeRegistry);
     private final StructureRegistry structureRegistry = new StructureRegistry();
     private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry = new PaletteRegistry();

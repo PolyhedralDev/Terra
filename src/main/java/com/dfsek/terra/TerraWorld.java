@@ -1,13 +1,11 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.biome.BiomeZone;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.SingleBiomeGrid;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.base.WorldConfig;
-import com.dfsek.terra.config.builder.BiomeGridBuilder;
+import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -39,14 +37,8 @@ public class TerraWorld {
         for(int i = 0; i < zoneSize; i++) {
             String partName = template.getGrids().get(i);
             try {
-                if(partName.startsWith("BIOME:")) {
-                    UserDefinedBiome b = config.getBiome(partName.substring(6));
-                    definedGrids[i] = new SingleBiomeGrid(w, b);
-                    Debug.info("Loaded single-biome grid " + partName);
-                } else {
-                    BiomeGridBuilder g = config.getBiomeGrid(partName);
-                    definedGrids[i] = g.build(w, worldConfig);
-                }
+                BiomeGridBuilder g = config.getBiomeGrid(partName);
+                definedGrids[i] = g.build(w, worldConfig);
             } catch(NullPointerException e) {
                 safe = false;
                 Debug.stack(e);
@@ -60,14 +52,8 @@ public class TerraWorld {
         String erosionName = template.getErodeGrid();
         if(template.isErode()) {
             try {
-                if(erosionName.startsWith("BIOME:")) {
-                    UserDefinedBiome b = Objects.requireNonNull(config.getBiome(erosionName.substring(6)));
-                    erosion = new SingleBiomeGrid(w, b);
-                    Debug.info("Loaded single-biome erosion grid " + erosionName);
-                } else {
-                    BiomeGridBuilder g = Objects.requireNonNull(config.getBiomeGrid(erosionName));
-                    erosion = g.build(w, worldConfig);
-                }
+                BiomeGridBuilder g = Objects.requireNonNull(config.getBiomeGrid(erosionName));
+                erosion = g.build(w, worldConfig);
             } catch(NullPointerException e) {
                 safe = false;
                 Debug.stack(e);
