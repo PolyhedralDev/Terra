@@ -181,7 +181,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                         }*/
                         paletteLevel++;
                     } else if(y <= sea) {
-                        //chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
                     } else paletteLevel = 0;
                 }

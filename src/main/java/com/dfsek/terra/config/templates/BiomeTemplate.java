@@ -5,10 +5,12 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.biome.palette.PaletteHolder;
+import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.structure.TerraStructure;
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.util.GlueList;
@@ -60,7 +62,7 @@ public class BiomeTemplate implements ConfigTemplate {
     @Value("ocean.palette")
     @Abstractable
     @Default
-    private Palette<BlockData> oceanPalette; // TODO: default palette
+    private Palette<BlockData> oceanPalette = new SinglePalette<>(Material.WATER.createBlockData());
     @Value("slant.y-offset.top")
     @Abstractable
     @Default
