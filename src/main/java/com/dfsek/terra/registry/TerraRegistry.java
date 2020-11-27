@@ -1,7 +1,10 @@
 package com.dfsek.terra.registry;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class TerraRegistry<T> {
     private final Map<String, T> objects = new HashMap<>();
@@ -37,5 +40,13 @@ public abstract class TerraRegistry<T> {
      */
     public T get(String id) {
         return objects.get(id);
+    }
+
+    public void forEach(Consumer<T> consumer) {
+        objects.forEach((id, obj) -> consumer.accept(obj));
+    }
+
+    public Set<T> entries() {
+        return new HashSet<>(objects.values());
     }
 }

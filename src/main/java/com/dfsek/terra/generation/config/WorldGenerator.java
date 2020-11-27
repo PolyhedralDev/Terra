@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.config;
 
-import com.dfsek.terra.biome.PaletteHolder;
+import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.math.RandomFunction;

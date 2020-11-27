@@ -5,6 +5,7 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeGridBuilder;
@@ -15,6 +16,7 @@ import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.loaders.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.NoiseBuilderLoader;
+import com.dfsek.terra.config.loaders.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
 import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
@@ -24,6 +26,10 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.procgen.GridSpawn;
+import com.dfsek.terra.registry.BiomeGridRegistry;
+import com.dfsek.terra.registry.BiomeRegistry;
+import com.dfsek.terra.registry.CarverRegistry;
+import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.util.ConfigUtil;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
@@ -33,10 +39,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -45,10 +48,10 @@ import java.util.logging.Level;
  */
 public class ConfigPack {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
-    private final Map<String, UserDefinedBiome> biomes = new HashMap<>();
-    private final Map<String, BiomeGridBuilder> biomeGrids = new HashMap<>();
-    private final Map<String, StructureTemplate> structures = new HashMap<>();
-    private final Map<String, UserDefinedCarver> carvers = new HashMap<>();
+    private final BiomeRegistry biomeRegistry = new BiomeRegistry();
+    private final BiomeGridRegistry biomeGridRegistry = new BiomeGridRegistry();
+    private final StructureRegistry structureRegistry = new StructureRegistry();
+    private final CarverRegistry carverRegistry = new CarverRegistry();
 
 
     public ConfigPack(File folder) throws ConfigException {
@@ -69,32 +72,33 @@ public class ConfigPack {
         abstractConfigLoader.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(Range.class, new RangeLoader())
                 .registerLoader(CarverPalette.class, new CarverPaletteLoader())
-                .registerLoader(GridSpawn.class, new GridSpawnLoader());
+                .registerLoader(GridSpawn.class, new GridSpawnLoader())
+                .registerLoader(PaletteHolder.class, new PaletteHolderLoader());
 
         List<StructureTemplate> structureTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "structures/single").toPath()), StructureTemplate::new);
         structureTemplates.forEach(structure -> {
-            structures.put(structure.getID(), structure);
+            structureRegistry.add(structure.getID(), structure);
             Debug.info("Loaded structure " + structure.getID());
         });
 
         List<CarverTemplate> carverTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "carving").toPath()), CarverTemplate::new);
         CarverFactory carverFactory = new CarverFactory();
         carverTemplates.forEach(carver -> {
-            carvers.put(carver.getID(), carverFactory.build(carver));
+            carverRegistry.add(carver.getID(), carverFactory.build(carver));
             Debug.info("Loaded carver " + carver.getID());
         });
 
         List<BiomeTemplate> biomeTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "biomes").toPath()), () -> new BiomeTemplate(this));
         BiomeFactory biomeFactory = new BiomeFactory();
         biomeTemplates.forEach(biome -> {
-            biomes.put(biome.getID(), biomeFactory.build(biome));
+            biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
             Debug.info("Loaded biome " + biome.getID());
         });
 
         List<BiomeGridTemplate> biomeGridTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "grids").toPath()), BiomeGridTemplate::new);
         BiomeGridFactory biomeGridFactory = new BiomeGridFactory();
         biomeGridTemplates.forEach(grid -> {
-            biomeGrids.put(grid.getID(), biomeGridFactory.build(grid));
+            biomeGridRegistry.add(grid.getID(), biomeGridFactory.build(grid));
             Debug.info("Loaded BiomeGrid " + grid.getID());
         });
 
@@ -102,38 +106,38 @@ public class ConfigPack {
     }
 
     public UserDefinedBiome getBiome(String id) {
-        return biomes.get(id);
+        return biomeRegistry.get(id);
     }
 
     public BiomeGridBuilder getBiomeGrid(String id) {
-        return biomeGrids.get(id);
+        return biomeGridRegistry.get(id);
     }
 
     public List<String> getBiomeIDs() {
         List<String> biomeIDs = new ArrayList<>();
-        biomes.forEach((id, biome) -> biomeIDs.add(id));
+        biomeRegistry.forEach(biome -> biomeIDs.add(biome.getID()));
         return biomeIDs;
     }
 
     public StructureTemplate getStructure(String id) {
-        return structures.get(id);
+        return structureRegistry.get(id);
     }
 
     public Set<StructureTemplate> getStructures() {
-        return new HashSet<>(structures.values());
+        return structureRegistry.entries();
     }
 
     public Collection<UserDefinedCarver> getCarvers() {
-        return carvers.values();
+        return carverRegistry.entries();
     }
 
     public UserDefinedCarver getCarver(String id) {
-        return carvers.get(id);
+        return carverRegistry.get(id);
     }
 
     public List<String> getStructureIDs() {
         List<String> ids = new ArrayList<>();
-        structures.forEach((id, structure) -> ids.add(id));
+        structureRegistry.forEach(structure -> ids.add(structure.getID()));
         return ids;
     }
 

@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.builder;
 
-import com.dfsek.terra.biome.PaletteHolder;
+import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import parsii.eval.Scope;
