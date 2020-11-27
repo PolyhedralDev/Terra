@@ -5,9 +5,12 @@ import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import parsii.eval.Scope;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GeneratorBuilder {
+    private final Map<Long, WorldGenerator> gens = new HashMap<>();
+
     private String noiseEquation;
 
     private String elevationEquation;
@@ -23,7 +26,7 @@ public class GeneratorBuilder {
     private boolean preventInterpolation;
 
     public WorldGenerator build(long seed) {
-        return new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, preventInterpolation);
+        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, preventInterpolation));
     }
 
     public String getNoiseEquation() {
