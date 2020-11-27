@@ -3,6 +3,7 @@ package com.dfsek.terra.config.base;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeGridBuilder;
@@ -35,7 +36,6 @@ import java.util.logging.Level;
  * Represents a Terra configuration pack.
  */
 public class ConfigPack {
-    private static final Map<String, ConfigPack> configs = new HashMap<>();
     private final ConfigPackTemplate template = new ConfigPackTemplate();
     private final Map<String, UserDefinedBiome> biomes = new HashMap<>();
     private final Map<String, BiomeGridBuilder> biomeGrids = new HashMap<>();
@@ -60,29 +60,33 @@ public class ConfigPack {
         AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
 
         List<StructureTemplate> structureTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "structures/single").toPath()), StructureTemplate::new);
-        structureTemplates.forEach(structure -> structures.put(structure.getId(), structure));
+        structureTemplates.forEach(structure -> {
+            structures.put(structure.getID(), structure);
+            Debug.info("Loaded structure " + structure.getID());
+        });
 
         List<CarverTemplate> carverTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "carving").toPath()), CarverTemplate::new);
         CarverFactory carverFactory = new CarverFactory();
-        carverTemplates.forEach(carver -> carvers.put(carver.getId(), carverFactory.build(carver)));
+        carverTemplates.forEach(carver -> {
+            carvers.put(carver.getID(), carverFactory.build(carver));
+            Debug.info("Loaded carver " + carver.getID());
+        });
 
         List<BiomeTemplate> biomeTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "biomes").toPath()), () -> new BiomeTemplate(this));
         BiomeFactory biomeFactory = new BiomeFactory();
-        biomeTemplates.forEach(biome -> biomes.put(biome.getID(), biomeFactory.build(biome)));
+        biomeTemplates.forEach(biome -> {
+            biomes.put(biome.getID(), biomeFactory.build(biome));
+            Debug.info("Loaded biome " + biome.getID());
+        });
 
         List<BiomeGridTemplate> biomeGridTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "grids").toPath()), BiomeGridTemplate::new);
         BiomeGridFactory biomeGridFactory = new BiomeGridFactory();
-        biomeGridTemplates.forEach(grid -> biomeGrids.put(grid.getID(), biomeGridFactory.build(grid)));
-
-
-        configs.put(template.getID(), this);
-
+        biomeGridTemplates.forEach(grid -> {
+            biomeGrids.put(grid.getID(), biomeGridFactory.build(grid));
+            Debug.info("Loaded BiomeGrid " + grid.getID());
+        });
 
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
-    }
-
-    public static ConfigPack fromID(String id) {
-        return configs.get(id);
     }
 
     public UserDefinedBiome getBiome(String id) {

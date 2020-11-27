@@ -48,7 +48,7 @@ public class StructureTemplate implements ConfigTemplate {
         return loot;
     }
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 

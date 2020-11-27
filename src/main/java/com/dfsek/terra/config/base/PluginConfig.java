@@ -69,6 +69,7 @@ public class PluginConfig implements ConfigTemplate {
         } catch(ConfigException | IOException e) {
             e.printStackTrace();
         }
+        logger.info("Debug: " + isDebug());
     }
 
     public static String getLanguage() {

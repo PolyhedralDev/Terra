@@ -6,6 +6,7 @@ import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ public class Terra extends GaeaPlugin {
         PluginConfig.load(this);
         LangUtil.load(PluginConfig.getLanguage(), this); // Load language.
         TerraWorld.invalidate();
+        ConfigRegistry.loadAll(this);
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
         TerraCommand command = new TerraCommand(this);

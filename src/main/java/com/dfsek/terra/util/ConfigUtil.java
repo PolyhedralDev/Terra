@@ -13,8 +13,9 @@ import java.util.stream.Stream;
 public final class ConfigUtil {
     public static List<InputStream> loadFromPath(Path folder) {
         List<InputStream> streams = new ArrayList<>();
+        folder.toFile().mkdirs();
         try(Stream<Path> paths = Files.walk(folder)) {
-            paths.filter(Files::isRegularFile).filter(file -> file.endsWith(".yml")).forEach(file -> {
+            paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(".yml")).forEach(file -> {
                 try {
                     streams.add(new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {

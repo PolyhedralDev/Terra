@@ -4,6 +4,7 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
+import com.dfsek.terra.registry.ConfigRegistry;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -54,7 +55,7 @@ public class WorldConfig implements ConfigTemplate {
             // Get values from config.
             fromImage = config.getBoolean("image.enable", false);
 
-            tConfig = ConfigPack.fromID(configID);
+            tConfig = ConfigRegistry.getRegistry().get(configID);
 
             // Load image stuff
             try {

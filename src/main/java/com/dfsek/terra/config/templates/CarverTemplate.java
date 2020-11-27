@@ -111,7 +111,7 @@ public class CarverTemplate implements ConfigTemplate {
     @Default
     private Set<Material> update = new HashSet<>();
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 
