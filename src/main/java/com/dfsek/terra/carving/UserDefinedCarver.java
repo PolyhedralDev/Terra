@@ -1,11 +1,13 @@
 package com.dfsek.terra.carving;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.carving.Carver;
@@ -60,9 +62,11 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        ConfigPack c = TerraWorld.getWorld(w).getConfig();
+        BiomeTemplate conf = ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getConfig();
+        if(conf.getCarvers().get(this) != null) {
+            return new FastRandom(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
+        }
         return false;
-        //return new FastRandom(random.nextLong() + hash).nextInt(100) < ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getConfig().getCarvers().get(this);
     }
 
     public CarverTemplate getConfig() {

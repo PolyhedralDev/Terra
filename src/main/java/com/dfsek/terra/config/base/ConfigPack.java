@@ -76,7 +76,8 @@ public class ConfigPack {
         AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
         abstractConfigLoader
                 .registerLoader(Palette.class, paletteRegistry)
-                .registerLoader(Biome.class, biomeRegistry);
+                .registerLoader(Biome.class, biomeRegistry)
+                .registerLoader(UserDefinedCarver.class, carverRegistry);
         ConfigUtil.registerAllLoaders(abstractConfigLoader);
 
         List<PaletteTemplate> paletteTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "palettes").toPath()), PaletteTemplate::new);

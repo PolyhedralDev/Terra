@@ -25,9 +25,10 @@ public class CarverPaletteLoader implements TypeLoader<CarverPalette> {
         CarverPalette palette = new CarverPalette((Set<Material>) configLoader.loadType(Types.MATERIAL_SET_TYPE, configuration.get("replace")), (Boolean) configuration.get("replace-blacklist"));
 
         for(Map<String, Object> map : (List<Map<String, Object>>) configuration.get("layers")) {
-            ProbabilityCollection<BlockData> layer = (ProbabilityCollection<BlockData>) configLoader.loadType(Types.MATERIAL_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
+            ProbabilityCollection<BlockData> layer = (ProbabilityCollection<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
             palette.add(layer, (Integer) map.get("y"));
         }
+        palette.build();
         return palette;
     }
 }
