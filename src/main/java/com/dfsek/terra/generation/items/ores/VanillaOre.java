@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.ores;
 
-import net.royawesome.jlibnoise.MathHelper;
+import net.jafama.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,28 +34,28 @@ public class VanillaOre extends Ore {
 
         float f = random.nextFloat() * (float) Math.PI;
 
-        double d1 = centerX + 8 + MathHelper.sin(f) * size / 8.0F;
-        double d2 = centerX + 8 - MathHelper.sin(f) * size / 8.0F;
-        double d3 = centerZ + 8 + MathHelper.cos(f) * size / 8.0F;
-        double d4 = centerZ + 8 - MathHelper.cos(f) * size / 8.0F;
+        double d1 = centerX + 8 + FastMath.sin(f) * size / 8.0F;
+        double d2 = centerX + 8 - FastMath.sin(f) * size / 8.0F;
+        double d3 = centerZ + 8 + FastMath.cos(f) * size / 8.0F;
+        double d4 = centerZ + 8 - FastMath.cos(f) * size / 8.0F;
 
-        double d5 = centerY + random.nextInt(3) - 2;
-        double d6 = centerY + random.nextInt(3) - 2;
+        double d5 = centerY + random.nextInt(3) - 2D;
+        double d6 = centerY + random.nextInt(3) - 2D;
 
         for(int i = 0; i < size; i++) {
             float iFactor = (float) i / (float) size;
 
             double d10 = random.nextDouble() * size / 16.0D;
-            double d11 = (MathHelper.sin((float) Math.PI * iFactor) + 1.0) * d10 + 1.0;
-            double d12 = (MathHelper.sin((float) Math.PI * iFactor) + 1.0) * d10 + 1.0;
+            double d11 = (FastMath.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
+            double d12 = (FastMath.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
 
-            int xStart = MathHelper.floor(d1 + (d2 - d1) * iFactor - d11 / 2.0D);
-            int yStart = MathHelper.floor(d5 + (d6 - d5) * iFactor - d12 / 2.0D);
-            int zStart = MathHelper.floor(d3 + (d4 - d3) * iFactor - d11 / 2.0D);
+            int xStart = FastMath.roundToInt(FastMath.floor(d1 + (d2 - d1) * iFactor - d11 / 2.0D));
+            int yStart = FastMath.roundToInt(FastMath.floor(d5 + (d6 - d5) * iFactor - d12 / 2.0D));
+            int zStart = FastMath.roundToInt(FastMath.floor(d3 + (d4 - d3) * iFactor - d11 / 2.0D));
 
-            int xEnd = MathHelper.floor(d1 + (d2 - d1) * iFactor + d11 / 2.0D);
-            int yEnd = MathHelper.floor(d5 + (d6 - d5) * iFactor + d12 / 2.0D);
-            int zEnd = MathHelper.floor(d3 + (d4 - d3) * iFactor + d11 / 2.0D);
+            int xEnd = FastMath.roundToInt(FastMath.floor(d1 + (d2 - d1) * iFactor + d11 / 2.0D));
+            int yEnd = FastMath.roundToInt(FastMath.floor(d5 + (d6 - d5) * iFactor + d12 / 2.0D));
+            int zEnd = FastMath.roundToInt(FastMath.floor(d3 + (d4 - d3) * iFactor + d11 / 2.0D));
 
             for(int x = xStart; x <= xEnd; x++) {
                 double d13 = (x + 0.5D - (d1 + (d2 - d1) * iFactor)) / (d11 / 2.0D);
