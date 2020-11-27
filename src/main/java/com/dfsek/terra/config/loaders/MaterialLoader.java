@@ -10,6 +10,6 @@ import java.lang.reflect.Type;
 public class MaterialLoader implements TypeLoader<Material> {
     @Override
     public Material load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
-        return Material.getMaterial((String) o);
+        return Material.matchMaterial((String) o);
     }
 }

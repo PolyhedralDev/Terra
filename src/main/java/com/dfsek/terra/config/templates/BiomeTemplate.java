@@ -76,6 +76,42 @@ public class BiomeTemplate implements ConfigTemplate {
     @Abstractable
     private String elevationEquation = null;
 
+    @Value("slabs.enable")
+    @Abstractable
+    @Default
+    private boolean doSlabs = false;
+
+    @Value("slabs.threshold")
+    @Abstractable
+    @Default
+    private double slabThreshold = 0.0075D;
+
+    @Value("slabs.palettes")
+    @Abstractable
+    @Default
+    private Map<Material, Palette<BlockData>> slabPalettes;
+
+    @Value("stair-palettes")
+    @Abstractable
+    @Default
+    private Map<Material, Palette<BlockData>> stairPalettes;
+
+    public double getSlabThreshold() {
+        return slabThreshold;
+    }
+
+    public boolean doSlabs() {
+        return doSlabs;
+    }
+
+    public Map<Material, Palette<BlockData>> getSlabPalettes() {
+        return slabPalettes;
+    }
+
+    public Map<Material, Palette<BlockData>> getStairPalettes() {
+        return stairPalettes;
+    }
+
     public BiomeTemplate(ConfigPack pack) {
         this.pack = pack;
     }

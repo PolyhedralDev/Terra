@@ -6,6 +6,7 @@ import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.BlockDataLoader;
 import com.dfsek.terra.config.loaders.GridSpawnLoader;
+import com.dfsek.terra.config.loaders.MaterialLoader;
 import com.dfsek.terra.config.loaders.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.PaletteLayerLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
@@ -13,6 +14,7 @@ import com.dfsek.terra.config.loaders.RangeLoader;
 import com.dfsek.terra.config.loaders.VanillaBiomeLoader;
 import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
 import com.dfsek.terra.procgen.GridSpawn;
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.math.ProbabilityCollection;
@@ -60,6 +62,7 @@ public final class ConfigUtil {
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayer.class, new PaletteLayerLoader())
                 .registerLoader(Biome.class, new VanillaBiomeLoader())
-                .registerLoader(BlockData.class, new BlockDataLoader());
+                .registerLoader(BlockData.class, new BlockDataLoader())
+                .registerLoader(Material.class, new MaterialLoader());
     }
 }
