@@ -1,15 +1,11 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
-import com.dfsek.terra.event.TreeGenerateEvent;
 import net.jafama.FastMath;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +13,6 @@ import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
-import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.util.GlueList;
 
 import java.util.List;
@@ -25,6 +20,7 @@ import java.util.Random;
 
 
 public class TreePopulator extends GaeaBlockPopulator {
+    /*
     private static void doTrees(@NotNull UserDefinedBiome biome, TerraWorld world, @NotNull Random random, @NotNull Chunk chunk, int x, int z) {
         for(Block block : getValidTreeSpawnsAt(chunk, x, z, new Range(0, 254))) {
             Tree tree = biome.getDecorator().getTrees().get(random);
@@ -40,6 +36,8 @@ public class TreePopulator extends GaeaBlockPopulator {
         }
     }
 
+     */
+    // TODO: implementation
     public static List<Block> getValidTreeSpawnsAt(Chunk chunk, int x, int z, Range check) {
         List<Block> blocks = new GlueList<>();
         for(int y : check) {
@@ -68,7 +66,7 @@ public class TreePopulator extends GaeaBlockPopulator {
                     if(random.nextInt(1000) < treeChance) {
                         int xt = offset(random, x);
                         int zt = offset(random, z);
-                        doTrees(biome, tw, random, chunk, xt, zt);
+                        //doTrees(biome, tw, random, chunk, xt, zt); TODO: implementation
                     }
                 }
             }

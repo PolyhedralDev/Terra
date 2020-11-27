@@ -26,7 +26,7 @@ public class BiomeZone {
         this.noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         this.noise.setFractalType(FastNoiseLite.FractalType.FBm);
         this.noise.setFractalOctaves(4);
-        this.noise.setFrequency(wc.getConfig().zoneFreq);
+        this.noise.setFrequency(wc.getConfig().getTemplate().getZoneFreq());
         this.grids = grids;
         imageLoader = wc.imageLoader;
         useImage = wc.fromImage;

@@ -3,6 +3,7 @@ package com.dfsek.terra.carving;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -26,8 +27,9 @@ public class UserDefinedCarver extends Carver {
     private double step = 2;
     private Range recalc = new Range(8, 10);
     private double recalcMagnitude = 3;
+    private final CarverTemplate config;
 
-    public UserDefinedCarver(Range height, Range radius, Range length, double[] start, double[] mutate, double[] radiusMultiplier, int hash, int topCut, int bottomCut) {
+    public UserDefinedCarver(Range height, Range radius, Range length, double[] start, double[] mutate, double[] radiusMultiplier, int hash, int topCut, int bottomCut, CarverTemplate config) {
         super(height.getMin(), height.getMax());
         this.radius = radius;
         this.length = length;
@@ -37,6 +39,7 @@ public class UserDefinedCarver extends Carver {
         this.hash = hash;
         this.topCut = topCut;
         this.bottomCut = bottomCut;
+        this.config = config;
     }
 
     @Override
@@ -60,7 +63,11 @@ public class UserDefinedCarver extends Carver {
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
         ConfigPack c = TerraWorld.getWorld(w).getConfig();
-        return new FastRandom(random.nextLong() + hash).nextInt(100) < ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getConfig().getCarverChance(this);
+        return new FastRandom(random.nextLong() + hash).nextInt(100) < ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getConfig().getCarvers().get(this);
+    }
+
+    public CarverTemplate getConfig() {
+        return config;
     }
 
     private class UserDefinedWorm extends Worm {

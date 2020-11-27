@@ -1,25 +1,25 @@
 package com.dfsek.terra.event;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.genconfig.OreConfig;
+import com.dfsek.terra.generation.items.ores.Ore;
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 
 public class OreVeinGenerateEvent extends TerraWorldEvent implements Cancellable {
     private boolean cancelled;
-    private OreConfig config;
+    private Ore ore;
 
-    public OreVeinGenerateEvent(TerraWorld tw, Location l, OreConfig config) {
+    public OreVeinGenerateEvent(TerraWorld tw, Location l, Ore ore) {
         super(tw, l);
-        this.config = config;
+        this.ore = ore;
     }
 
-    public OreConfig getConfig() {
-        return config;
+    public Ore getConfig() {
+        return ore;
     }
 
-    public void setConfig(OreConfig config) {
-        this.config = config;
+    public void setOre(Ore ore) {
+        this.ore = ore;
     }
 
     @Override

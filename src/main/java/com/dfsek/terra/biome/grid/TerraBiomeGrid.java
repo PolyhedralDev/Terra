@@ -5,6 +5,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.postprocessing.CoordinatePerturb;
 import com.dfsek.terra.biome.postprocessing.ErosionNoise;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.math.Vector2;
@@ -21,16 +22,17 @@ public class TerraBiomeGrid extends BiomeGrid {
     private final BiomeZone zone;
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
-    private UserDefinedGrid erosionGrid;
+    private BiomeGrid erosionGrid;
 
-    public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, UserDefinedGrid erosion) {
+    public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, BiomeGrid erosion) {
         super(w, freq1, freq2, 0, 0);
-        if(c.biomeBlend) {
-            perturb = new CoordinatePerturb(c.blendFreq, c.blendAmp, w.getSeed());
+        ConfigPackTemplate t = c.getTemplate();
+        if(c.getTemplate().isBlend()) {
+            perturb = new CoordinatePerturb(t.getBlendFreq(), t.getBlendAmp(), w.getSeed());
         }
         this.zone = zone;
-        if(c.erosionEnable) {
-            erode = new ErosionNoise(c.erosionFreq, c.erosionThresh, c.erosionOctaves, w.getSeed());
+        if(c.getTemplate().isErode()) {
+            erode = new ErosionNoise(t.getErodeFreq(), t.getErodeThresh(), t.getErodeOctaves(), w.getSeed());
             this.erosionGrid = erosion;
         }
     }

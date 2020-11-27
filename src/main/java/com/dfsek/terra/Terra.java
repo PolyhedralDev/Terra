@@ -2,7 +2,6 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -49,7 +48,6 @@ public class Terra extends GaeaPlugin {
         Debug.setMain(this);
         PluginConfig.load(this);
         LangUtil.load(PluginConfig.getLanguage(), this); // Load language.
-        ConfigPack.loadAll(this);
         TerraWorld.invalidate();
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));

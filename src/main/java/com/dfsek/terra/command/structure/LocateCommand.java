@@ -3,8 +3,8 @@ package com.dfsek.terra.command.structure;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncStructureFinder;
-import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,7 +38,7 @@ public class LocateCommand extends WorldCommand {
             LangUtil.send("command.structure.invalid-radius", sender, args[1]);
             return true;
         }
-        StructureConfig s;
+        StructureTemplate s;
         try {
             s = Objects.requireNonNull(TerraWorld.getWorld(world).getConfig().getStructure(id));
         } catch(IllegalArgumentException | NullPointerException e) {

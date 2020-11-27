@@ -2,21 +2,13 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.PluginConfig;
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.util.DataUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Snowable;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
 
@@ -58,8 +50,9 @@ public class SnowPopulator extends GaeaBlockPopulator {
             TerraBiomeGrid g = w.getGrid();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    BiomeConfig biome = ((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY)).getConfig();
-                    if(!biome.getSnow().doSnow()) continue;
+                    /*
+                    BiomeTemplate biome = ((UserDefinedBiome) g.getBiome(origX + x, origZ + z, GenerationPhase.PALETTE_APPLY)).getConfig();
+                    if(!biome) continue;
                     int y;
                     Block b = null;
                     for(y = 254; y > 0; y--) {
@@ -76,6 +69,9 @@ public class SnowPopulator extends GaeaBlockPopulator {
                     }
                     b.getRelative(BlockFace.UP).setBlockData(DataUtil.SNOW, phys);
 
+
+                     */
+                    // TODO: implementation
                 }
             }
         }

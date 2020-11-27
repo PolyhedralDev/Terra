@@ -1,7 +1,8 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.config.genconfig.biome.GeneratorOptions;
+import com.dfsek.terra.WorldObject;
+import com.dfsek.terra.config.builder.GeneratorBuilder;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
@@ -14,16 +15,16 @@ import java.util.List;
 /**
  * Class representing a config-defined biome
  */
-public class UserDefinedBiome implements Biome {
-    private final GeneratorOptions gen;
+public class UserDefinedBiome implements Biome, WorldObject {
+    private final GeneratorBuilder gen;
     private final UserDefinedDecorator decorator;
     private final org.bukkit.block.Biome vanilla;
     private final String id;
-    private final BiomeConfig config;
+    private final BiomeTemplate config;
     private final boolean erode;
 
 
-    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorOptions gen, boolean erode, BiomeConfig config) {
+    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, boolean erode, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
@@ -49,7 +50,7 @@ public class UserDefinedBiome implements Biome {
      */
     @Override
     public Generator getGenerator() {
-        return gen.getGenerator(0);
+        return gen.build(0);
     }
 
     /**
@@ -80,12 +81,12 @@ public class UserDefinedBiome implements Biome {
         return erode;
     }
 
-    public BiomeConfig getConfig() {
+    public BiomeTemplate getConfig() {
         return config;
     }
 
     @Override
     public Generator getGenerator(World w) {
-        return gen.getGenerator(w.getSeed());
+        return gen.build(w.getSeed());
     }
 }

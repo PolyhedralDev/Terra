@@ -6,10 +6,8 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.config.genconfig.biome.BiomeSlabConfig;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.generation.config.WorldGenerator;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -79,11 +77,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeConfig c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
-        Palette<BlockData> slant = ((WorldGenerator) c.getBiome().getGenerator()).getSlantPalette(y);
+    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeTemplate c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
+        Palette<BlockData> slant = c.getSlantPalette().getPalette(y);
         if(slant != null) {
-            double ySlantOffsetTop = c.getYSlantOffsetTop();
-            double ySlantOffsetBottom = c.getYSlantOffsetBottom();
+            double ySlantOffsetTop = c.getSlantOffsetTop();
+            double ySlantOffsetBottom = c.getSlantOffsetBottom();
             boolean top = interpolator.getNoise(x, y + ySlantOffsetTop - elevationInterpolator.getElevation(x, z), z) > 0;
             boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom - elevationInterpolator.getElevation(x, z), z) > 0;
 
@@ -96,7 +94,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 if((north || south || east || west) && (!(north && south && east && west))) return slant;
             }
         }
-        return c.getBiome().getGenerator().getPalette(y);
+        return c.getPalette().getPalette(y);
     }
 
     private static void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
@@ -166,21 +164,20 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 int cz = zOrig + z;
 
                 Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
-                BiomeConfig c = ((UserDefinedBiome) b).getConfig();
+                BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
                 double elevate = elevationInterpolator.getElevation(x, z);
 
-                BiomeSlabConfig slab = c.getSlabs();
-                int sea = c.getOcean().getSeaLevel();
-                Palette<BlockData> seaPalette = c.getOcean().getOcean();
+                int sea = c.getSeaLevel();
+                Palette<BlockData> seaPalette = c.getOceanPalette();
                 for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
                     if(interpolator.getNoise(x, y - elevate, z) > 0) {
                         BlockData data = getPalette(x, y, z, c, interpolator, elevationInterpolator).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
-                        if(paletteLevel == 0 && slab != null && y < 255) {
+                        /*if(paletteLevel == 0 && slab != null && y < 255) {
                             prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), slab.getSlabs(),
                                     slab.getStairs(), slab.getSlabThreshold(), interpolator, elevationInterpolator);
-                        }
+                        }*/
                         paletteLevel++;
                     } else if(y <= sea) {
                         chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
@@ -238,22 +235,22 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
     @Override
     public boolean shouldGenerateCaves() {
-        return configPack.vanillaCaves;
+        return configPack.getTemplate().vanillaCaves();
     }
 
     @Override
     public boolean shouldGenerateDecorations() {
-        return configPack.vanillaDecoration;
+        return configPack.getTemplate().vanillaDecorations();
     }
 
     @Override
     public boolean shouldGenerateMobs() {
-        return configPack.vanillaMobs;
+        return configPack.getTemplate().vanillaMobs();
     }
 
     @Override
     public boolean shouldGenerateStructures() {
-        return configPack.vanillaStructures;
+        return configPack.getTemplate().vanillaStructures();
     }
 
 }

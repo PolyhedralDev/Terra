@@ -2,8 +2,9 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.genconfig.CarverConfig;
+import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -38,32 +39,34 @@ public class CavePopulator extends BlockPopulator {
             if(!tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
 
-            for(CarverConfig c : config.getCarvers().values()) {
+            for(UserDefinedCarver c : config.getCarvers()) {
+                CarverTemplate template = c.getConfig();
                 Map<Location, Material> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
-                Map<Vector, CarvingData.CarvingType> blocks = c.getCarver().carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks();
+                Map<Vector, CarvingData.CarvingType> blocks = c.carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks();
                 for(Map.Entry<Vector, CarvingData.CarvingType> e : blocks.entrySet()) {
+
                     Vector v = e.getKey();
                     Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                     Material m = b.getType();
-                    if(e.getValue().equals(CarvingData.CarvingType.CENTER) && c.isReplaceableInner(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                    if(e.getValue().equals(CarvingData.CarvingType.CENTER) && template.getInner().canReplace(m)) {
+                        if(template.getShift().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteInner(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
-                    } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && c.isReplaceableOuter(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
+                    } else if(e.getValue().equals(CarvingData.CarvingType.WALL) && template.getOuter().canReplace(m)) {
+                        if(template.getShift().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteOuter(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
-                    } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && c.isReplaceableTop(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
+                    } else if(e.getValue().equals(CarvingData.CarvingType.TOP) && template.getTop().canReplace(m)) {
+                        if(template.getShift().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteTop(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
-                    } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && c.isReplaceableBottom(m)) {
-                        if(c.getShiftedBlocks().containsKey(b.getType()))
+                        b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
+                    } else if(e.getValue().equals(CarvingData.CarvingType.BOTTOM) && template.getBottom().canReplace(m)) {
+                        if(template.getShift().containsKey(b.getType()))
                             shiftCandidate.put(b.getLocation(), b.getType());
-                        b.setBlockData(c.getPaletteBottom(v.getBlockY()).get(random), c.shouldUpdateOcean() && borderingOcean(b));
+                        b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
                     }
-                    if(c.getUpdateBlocks().contains(m)) {
+                    if(template.getUpdate().contains(m)) {
                         updateNeeded.add(b);
                     }
                 }
@@ -74,7 +77,7 @@ public class CavePopulator extends BlockPopulator {
                     do mut.subtract(0, 1, 0);
                     while(mut.getBlock().getType().equals(orig));
                     try {
-                        if(c.getShiftedBlocks().get(entry.getValue()).contains(mut.getBlock().getType())) {
+                        if(template.getShift().get(entry.getValue()).contains(mut.getBlock().getType())) {
                             mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue(), Material::createBlockData), false);
                         }
                     } catch(NullPointerException ignore) {
@@ -85,18 +88,6 @@ public class CavePopulator extends BlockPopulator {
                     b.setBlockData(AIR, false);
                     b.setBlockData(orig, true);
                 }
-                /*for(Map.Entry<Vector, CarvingData.CarvingType> e : new SimplexCarver(chunk.getX(), chunk.getZ()).carve(chunk.getX(), chunk.getZ(), world).getCarvedBlocks().entrySet()) {
-                    Vector v = e.getKey();
-                    switch(e.getValue()) {
-                        case TOP:
-                        case CENTER:
-                            chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(AIR, false);
-                            break;
-                        case BOTTOM:
-                            chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ()).setBlockData(Material.MYCELIUM.createBlockData(), false);
-                    }
-
-                }*/
             }
 
         }

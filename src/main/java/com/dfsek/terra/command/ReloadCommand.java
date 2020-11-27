@@ -1,7 +1,6 @@
 package com.dfsek.terra.command;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
@@ -31,7 +30,6 @@ public class ReloadCommand extends Command implements DebugCommand {
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         PluginConfig.load(getMain());
         LangUtil.load(PluginConfig.getLanguage(), getMain()); // Load language.
-        ConfigPack.loadAll(getMain());
         TerraWorld.invalidate();
         LangUtil.send("command.reload", sender);
         return true;

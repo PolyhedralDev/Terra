@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.base;
 
+import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.Debug;
-import com.dfsek.terra.config.exception.ConfigException;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
 import org.apache.commons.io.FileUtils;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public class WorldConfig {
+public class WorldConfig implements ConfigTemplate {
     private final String worldID;
     private final String configID;
     private final GaeaPlugin main;
@@ -42,8 +42,6 @@ public class WorldConfig {
         FileConfiguration config = new YamlConfiguration();
         Debug.info("Loading config " + configID + " for world " + worldID);
         try { // Load/create world config file
-            if(configID == null || configID.isEmpty())
-                throw new ConfigException("Config pack unspecified in bukkit.yml!", worldID);
             File configFile = new File(main.getDataFolder() + File.separator + "worlds", worldID + ".yml");
             if(!configFile.exists()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -57,9 +55,6 @@ public class WorldConfig {
             fromImage = config.getBoolean("image.enable", false);
 
             tConfig = ConfigPack.fromID(configID);
-
-            if(tConfig == null)
-                throw new ConfigException("No such config pack: \"" + configID + "\". This pack either does not exist, or failed to load due to configuration errors.", worldID);
 
             // Load image stuff
             try {
@@ -84,7 +79,7 @@ public class WorldConfig {
             } catch(IllegalArgumentException | NullPointerException e) {
                 throw new InvalidConfigurationException(e.getCause());
             }
-            Bukkit.getLogger().log(Level.INFO, "Loaded {0} BiomeGrids from list.", tConfig.biomeList.size());
+            Bukkit.getLogger().log(Level.INFO, "Loaded {0} BiomeGrids from list.", tConfig.getTemplate().getGrids().size());
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
             LangUtil.log("world-config.error", Level.SEVERE, worldID);

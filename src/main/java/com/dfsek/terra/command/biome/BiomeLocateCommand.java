@@ -39,7 +39,7 @@ public class BiomeLocateCommand extends WorldCommand {
         }
         UserDefinedBiome b;
         try {
-            b = TerraWorld.getWorld(world).getConfig().getBiome(id).getBiome();
+            b = TerraWorld.getWorld(world).getConfig().getBiome(id);
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.biome.invalid", sender, id);
             return true;

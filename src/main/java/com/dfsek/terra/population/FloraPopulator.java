@@ -4,16 +4,13 @@ import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.config.genconfig.biome.BiomeFloraConfig;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.population.GaeaBlockPopulator;
 import org.polydev.gaea.profiler.ProfileFuture;
-import org.polydev.gaea.world.Flora;
 
 import java.util.Random;
 
@@ -35,9 +32,9 @@ public class FloraPopulator extends GaeaBlockPopulator {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
                     if(biome.getDecorator().getFloraChance() <= 0) continue;
                     try {
-                        BiomeConfig c = biome.getConfig();
-                        BiomeFloraConfig f = c.getFlora();
-                        for(int i = 0; i < f.getFloraAttempts(); i++) {
+                        BiomeTemplate c = biome.getConfig();
+                        /*
+                        for(int i = 0; i < 0; i++) {
                             Flora item;
                             if(f.isFloraSimplex())
                                 item = biome.getDecorator().getFlora().get(f.getFloraNoise(), originX + x, originZ + z);
@@ -47,6 +44,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
                                     item.plant(highest.getLocation());
                             }
                         }
+                        */
                     } catch(NullPointerException ignore) {
                     }
                 }
