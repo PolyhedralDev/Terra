@@ -29,7 +29,8 @@ public class BiomeTemplate implements ConfigTemplate {
     private PaletteHolder palette;
     @Value("slant.palette")
     @Abstractable
-    private PaletteHolder slantPalette;
+    @Default
+    private PaletteHolder slantPalette = null;
     @Value("vanilla")
     @Abstractable
     private Biome vanilla;
@@ -53,15 +54,19 @@ public class BiomeTemplate implements ConfigTemplate {
     @Default
     private List<Ore> ores = new GlueList<>();
     @Value("ocean.level")
+    @Abstractable
     @Default
     private int seaLevel = 62;
     @Value("ocean.palette")
+    @Abstractable
     @Default
     private Palette<BlockData> oceanPalette; // TODO: default palette
     @Value("slant.y-offset.top")
+    @Abstractable
     @Default
     private double slantOffsetTop = 0.5D;
     @Value("slant.y-offset-bottom")
+    @Abstractable
     @Default
     private double slantOffsetBottom = 0.25;
     @Value("elevation.equation")
