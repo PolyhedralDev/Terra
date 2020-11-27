@@ -62,4 +62,11 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
     public Set<T> entries() {
         return new HashSet<>(objects.values());
     }
+
+    /**
+     * Clears all entries from the registry.
+     */
+    public void clear() {
+        objects.clear();
+    }
 }

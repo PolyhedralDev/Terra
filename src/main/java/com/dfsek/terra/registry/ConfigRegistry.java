@@ -1,8 +1,8 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.base.ConfigPack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
         add(pack.getTemplate().getID(), pack);
     }
 
-    public static void loadAll(Terra main) {
+    public static void loadAll(JavaPlugin main) {
         File packsFolder = new File(main.getDataFolder(), "packs");
         for(File dir : packsFolder.listFiles(File::isDirectory)) {
             try {
