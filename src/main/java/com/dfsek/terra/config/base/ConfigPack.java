@@ -5,6 +5,7 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeGridBuilder;
 import com.dfsek.terra.config.exception.FileMissingException;
@@ -12,13 +13,20 @@ import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.BiomeGridFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.loaders.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.NoiseBuilderLoader;
+import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
+import com.dfsek.terra.config.loaders.RangeLoader;
+import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.util.ConfigUtil;
+import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.math.Range;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +66,10 @@ public class ConfigPack {
 
 
         AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
+        abstractConfigLoader.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
+                .registerLoader(Range.class, new RangeLoader())
+                .registerLoader(CarverPalette.class, new CarverPaletteLoader())
+                .registerLoader(GridSpawn.class, new GridSpawnLoader());
 
         List<StructureTemplate> structureTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "structures/single").toPath()), StructureTemplate::new);
         structureTemplates.forEach(structure -> {

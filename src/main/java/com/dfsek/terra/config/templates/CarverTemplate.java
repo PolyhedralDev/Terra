@@ -39,15 +39,15 @@ public class CarverTemplate implements ConfigTemplate {
     @Abstractable
     private double startZ;
 
-    @Value("start.radius.x")
+    @Value("start.radius.multiply.x")
     @Abstractable
     private double radMX;
 
-    @Value("start.radius.y")
+    @Value("start.radius.multiply.y")
     @Abstractable
     private double radMY;
 
-    @Value("start.radius.z")
+    @Value("start.radius.multiply.z")
     @Abstractable
     private double radMZ;
 
