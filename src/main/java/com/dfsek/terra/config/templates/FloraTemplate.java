@@ -4,10 +4,10 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.google.common.collect.Sets;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.world.palette.Palette;
 
 import java.util.Set;
 
@@ -27,7 +27,7 @@ public class FloraTemplate implements ConfigTemplate {
 
     @Value("layers")
     @Abstractable
-    private Palette<BlockData> floraPalette;
+    private PaletteHolder floraPalette;
 
     @Value("physics")
     @Abstractable
@@ -51,7 +51,7 @@ public class FloraTemplate implements ConfigTemplate {
         return id;
     }
 
-    public Palette<BlockData> getFloraPalette() {
+    public PaletteHolder getFloraPalette() {
         return floraPalette;
     }
 

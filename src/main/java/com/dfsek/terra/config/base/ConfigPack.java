@@ -28,6 +28,7 @@ import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.util.ConfigUtil;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.world.palette.Palette;
+import parsii.eval.Scope;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -48,6 +50,8 @@ public class ConfigPack {
     private final StructureRegistry structureRegistry = new StructureRegistry();
     private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry = new PaletteRegistry();
+
+    private final Scope varScope;
 
 
     public ConfigPack(File folder) throws ConfigException {
@@ -63,6 +67,11 @@ public class ConfigPack {
             throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
         }
 
+        varScope = new Scope();
+
+        for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
+            varScope.create(var.getKey()).setValue(var.getValue());
+        }
 
         AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
         abstractConfigLoader
@@ -91,7 +100,7 @@ public class ConfigPack {
         });
 
         List<BiomeTemplate> biomeTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "biomes").toPath()), () -> new BiomeTemplate(this));
-        BiomeFactory biomeFactory = new BiomeFactory();
+        BiomeFactory biomeFactory = new BiomeFactory(this);
         biomeTemplates.forEach(biome -> {
             biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
             Debug.info("Loaded biome " + biome.getID());
@@ -145,5 +154,9 @@ public class ConfigPack {
 
     public ConfigPackTemplate getTemplate() {
         return template;
+    }
+
+    public Scope getVarScope() {
+        return varScope;
     }
 }

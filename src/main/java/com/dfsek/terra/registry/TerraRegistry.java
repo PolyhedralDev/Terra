@@ -1,5 +1,6 @@
 package com.dfsek.terra.registry;
 
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 
@@ -14,8 +15,11 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
     private final Map<String, T> objects = new HashMap<>();
 
     @Override
-    public T load(Type type, Object o, ConfigLoader configLoader) {
-        return get((String) o);
+    public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+        T obj = get((String) o);
+        if(obj == null)
+            throw new LoadException("No such " + type + " matching \"" + o + "\" was found in this registry.");
+        return obj;
     }
 
     /**
