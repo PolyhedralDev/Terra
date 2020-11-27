@@ -10,7 +10,7 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private FastNoiseLite.NoiseType type = FastNoiseLite.NoiseType.OpenSimplex2;
 
-    @Value("octaves")
+    @Value("fractal.octaves")
     @Default
     private int octaves = 1;
 

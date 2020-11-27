@@ -38,7 +38,8 @@ public class TerraWorld {
             String partName = template.getGrids().get(i);
             try {
                 BiomeGridBuilder g = config.getBiomeGrid(partName);
-                definedGrids[i] = g.build(w, worldConfig);
+                BiomeGrid b = g.build(w, worldConfig);
+                definedGrids[i] = b;
             } catch(NullPointerException e) {
                 safe = false;
                 Debug.stack(e);
@@ -53,7 +54,8 @@ public class TerraWorld {
         if(template.isErode()) {
             try {
                 BiomeGridBuilder g = Objects.requireNonNull(config.getBiomeGrid(erosionName));
-                erosion = g.build(w, worldConfig);
+                BiomeGrid b = g.build(w, worldConfig);
+                erosion = b;
             } catch(NullPointerException e) {
                 safe = false;
                 Debug.stack(e);

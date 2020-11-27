@@ -5,6 +5,7 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import org.polydev.gaea.math.FastNoiseLite;
 
@@ -28,10 +29,14 @@ public class NoiseBuilderLoader implements TypeLoader<NoiseBuilder> {
     public NoiseBuilder load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         NoiseBuilder builder = new NoiseBuilder();
         try {
+            Debug.info(o + "");
             LOADER.load(builder, new Configuration((Map<String, Object>) o));
         } catch(ConfigException e) {
             throw new LoadException("Could not load noise", e);
         }
+        Debug.info("FREQ: " + builder.getFrequency());
+        Debug.info("FRAC: " + builder.getFractalType());
+        Debug.info("OCT:" + builder.getOctaves());
         return builder;
     }
 }
