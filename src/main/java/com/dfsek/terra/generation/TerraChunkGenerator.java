@@ -5,6 +5,7 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -78,7 +79,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     private static Palette<BlockData> getPalette(int x, int y, int z, BiomeTemplate c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
-        Palette<BlockData> slant = c.getSlantPalette().getPalette(y);
+        PaletteHolder slant = c.getSlantPalette();
         if(slant != null) {
             double ySlantOffsetTop = c.getSlantOffsetTop();
             double ySlantOffsetBottom = c.getSlantOffsetBottom();
@@ -91,7 +92,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
                 boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
 
-                if((north || south || east || west) && (!(north && south && east && west))) return slant;
+                if((north || south || east || west) && (!(north && south && east && west))) return slant.getPalette(y);
             }
         }
         return c.getPalette().getPalette(y);
@@ -180,7 +181,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                         }*/
                         paletteLevel++;
                     } else if(y <= sea) {
-                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                        //chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
                     } else paletteLevel = 0;
                 }

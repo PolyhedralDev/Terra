@@ -26,6 +26,7 @@ import com.dfsek.terra.registry.CarverRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.util.ConfigUtil;
+import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.world.palette.Palette;
 
 import java.io.File;
@@ -65,7 +66,8 @@ public class ConfigPack {
 
         AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
         abstractConfigLoader
-                .registerLoader(Palette.class, paletteRegistry);
+                .registerLoader(Palette.class, paletteRegistry)
+                .registerLoader(Biome.class, biomeRegistry);
         ConfigUtil.registerAllLoaders(abstractConfigLoader);
 
         List<PaletteTemplate> paletteTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "palettes").toPath()), PaletteTemplate::new);

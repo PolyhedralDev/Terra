@@ -16,6 +16,7 @@ public class PaletteLayerLoader implements TypeLoader<PaletteLayer> {
     public PaletteLayer load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
         ProbabilityCollection<BlockData> collection = (ProbabilityCollection<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
+        if(collection == null) throw new LoadException("Collection is null: " + map.get("materials"));
         return new PaletteLayer(collection, (Integer) map.get("layers"));
     }
 }

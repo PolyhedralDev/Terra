@@ -4,6 +4,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
+import com.dfsek.terra.config.loaders.BlockDataLoader;
 import com.dfsek.terra.config.loaders.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.PaletteLayerLoader;
@@ -13,6 +14,7 @@ import com.dfsek.terra.config.loaders.VanillaBiomeLoader;
 import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
 import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.block.Biome;
+import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 
@@ -57,6 +59,7 @@ public final class ConfigUtil {
                 .registerLoader(GridSpawn.class, new GridSpawnLoader())
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayer.class, new PaletteLayerLoader())
-                .registerLoader(Biome.class, new VanillaBiomeLoader());
+                .registerLoader(Biome.class, new VanillaBiomeLoader())
+                .registerLoader(BlockData.class, new BlockDataLoader());
     }
 }

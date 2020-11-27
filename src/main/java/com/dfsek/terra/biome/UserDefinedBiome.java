@@ -4,13 +4,16 @@ import com.dfsek.terra.WorldObject;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.UserDefinedDecorator;
+import com.dfsek.terra.generation.config.WorldGenerator;
 import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.biome.Decorator;
 import org.polydev.gaea.biome.Generator;
 import org.polydev.gaea.structures.features.Feature;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class representing a config-defined biome
@@ -22,6 +25,7 @@ public class UserDefinedBiome implements Biome, WorldObject {
     private final String id;
     private final BiomeTemplate config;
     private final boolean erode;
+    private final Map<World, WorldGenerator> gens = new HashMap<>();
 
 
     public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, boolean erode, BiomeTemplate config) {
@@ -87,6 +91,6 @@ public class UserDefinedBiome implements Biome, WorldObject {
 
     @Override
     public Generator getGenerator(World w) {
-        return gen.build(w.getSeed());
+        return gens.computeIfAbsent(w, world -> gen.build(world.getSeed()));
     }
 }

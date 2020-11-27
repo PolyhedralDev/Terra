@@ -37,6 +37,6 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
         } else throw new LoadException("Unable to load config! Could not retrieve parameterized type: " + type);
 
 
-        return null;
+        return collection;
     }
 }

@@ -45,7 +45,7 @@ public class TerraWorld {
                     Debug.info("Loaded single-biome grid " + partName);
                 } else {
                     BiomeGridBuilder g = config.getBiomeGrid(partName);
-                    definedGrids[i] = g.build(w);
+                    definedGrids[i] = g.build(w, worldConfig);
                 }
             } catch(NullPointerException e) {
                 safe = false;
@@ -66,7 +66,7 @@ public class TerraWorld {
                     Debug.info("Loaded single-biome erosion grid " + erosionName);
                 } else {
                     BiomeGridBuilder g = Objects.requireNonNull(config.getBiomeGrid(erosionName));
-                    erosion = g.build(w);
+                    erosion = g.build(w, worldConfig);
                 }
             } catch(NullPointerException e) {
                 safe = false;
