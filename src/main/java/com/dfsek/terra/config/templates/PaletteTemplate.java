@@ -4,17 +4,18 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.world.palette.Palette;
+import com.dfsek.terra.biome.palette.PaletteLayer;
+
+import java.util.List;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class PaletteTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
 
-    @Value("palette")
+    @Value("layers")
     @Abstractable
-    private Palette<BlockData> palette;
+    private List<PaletteLayer> palette;
 
     @Value("simplex")
     @Abstractable
@@ -31,7 +32,7 @@ public class PaletteTemplate implements ConfigTemplate {
     @Default
     private long seed = 0;
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 
@@ -43,7 +44,11 @@ public class PaletteTemplate implements ConfigTemplate {
         return seed;
     }
 
-    public Palette<BlockData> getPalette() {
+    public List<PaletteLayer> getPalette() {
         return palette;
+    }
+
+    public boolean isSimplex() {
+        return simplex;
     }
 }

@@ -15,17 +15,20 @@ import java.util.Set;
 public final class Types {
     public static final Type MATERIAL_SET_TYPE;
     public static final Type MATERIAL_PROBABILITY_COLLECTION_TYPE;
-    public static final Type BLOCK_DATA_PALETTE;
+    public static final Type BLOCK_DATA_PALETTE_TYPE;
+    public static final Type BLOCK_DATA_PROBABILITY_COLLECTION_TYPE;
 
     static {
         MATERIAL_SET_TYPE = getType("materialSet");
         MATERIAL_PROBABILITY_COLLECTION_TYPE = getType("materialProbabilityCollection");
-        BLOCK_DATA_PALETTE = getType("blockDataPalette");
+        BLOCK_DATA_PALETTE_TYPE = getType("blockDataPalette");
+        BLOCK_DATA_PROBABILITY_COLLECTION_TYPE = getType("blockDataProbabilityCollection");
     }
 
     private Set<Material> materialSet;
     private Palette<BlockData> blockDataPalette;
     private ProbabilityCollection<Material> materialProbabilityCollection;
+    private ProbabilityCollection<BlockData> blockDataProbabilityCollection;
 
     private static Type getType(String dummyFieldName) {
         try {

@@ -1,13 +1,22 @@
 package com.dfsek.terra.registry;
 
+import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.loading.TypeLoader;
+
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public abstract class TerraRegistry<T> {
+public abstract class TerraRegistry<T> implements TypeLoader<T> {
     private final Map<String, T> objects = new HashMap<>();
+
+    @Override
+    public T load(Type type, Object o, ConfigLoader configLoader) {
+        return get((String) o);
+    }
 
     /**
      * Add an object to the registry with a name.

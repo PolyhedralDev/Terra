@@ -20,7 +20,7 @@ public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {
         PaletteHolderBuilder builder = new PaletteHolderBuilder();
         for(Map<String, Integer> layer : palette) {
             for(Map.Entry<String, Integer> entry : layer.entrySet()) {
-                builder.add(entry.getValue(), (Palette<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PALETTE, entry.getKey()));
+                builder.add(entry.getValue(), (Palette<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PALETTE_TYPE, entry.getKey()));
             }
         }
         return builder.build();
