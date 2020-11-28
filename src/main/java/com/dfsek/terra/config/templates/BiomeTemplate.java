@@ -8,6 +8,7 @@ import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.structure.TerraStructure;
 import org.bukkit.Material;
@@ -51,9 +52,9 @@ public class BiomeTemplate implements ConfigTemplate {
     @Value("noise-equation")
     @Abstractable
     private String noiseEquation;
-    @Value("ores")
-    @Abstractable
-    @Default
+    //@Value("ores")
+    //@Abstractable
+    //@Default
     private List<Ore> ores = new GlueList<>();
     @Value("ocean.level")
     @Abstractable
@@ -75,6 +76,11 @@ public class BiomeTemplate implements ConfigTemplate {
     @Default
     @Abstractable
     private String elevationEquation = null;
+
+    @Value("flora")
+    @Abstractable
+    @Default
+    private List<FloraLayer> flora = new GlueList<>();
 
     @Value("slabs.enable")
     @Abstractable
@@ -98,6 +104,10 @@ public class BiomeTemplate implements ConfigTemplate {
 
     public double getSlabThreshold() {
         return slabThreshold;
+    }
+
+    public List<FloraLayer> getFlora() {
+        return flora;
     }
 
     public boolean doSlabs() {

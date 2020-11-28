@@ -4,11 +4,11 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.biome.palette.PaletteHolder;
+import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.google.common.collect.Sets;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
@@ -18,16 +18,21 @@ public class FloraTemplate implements ConfigTemplate {
 
     @Value("spawnable")
     @Abstractable
-    private Set<BlockData> spawnable;
+    private Set<Material> spawnable;
 
     @Value("replaceable")
     @Abstractable
     @Default
-    private Set<BlockData> replaceable = Sets.newHashSet(Material.AIR.createBlockData());
+    private Set<Material> replaceable = Sets.newHashSet(Material.AIR);
+
+    @Value("irrigable")
+    @Abstractable
+    @Default
+    private Set<Material> irrigable = null;
 
     @Value("layers")
     @Abstractable
-    private PaletteHolder floraPalette;
+    private List<PaletteLayer> palette;
 
     @Value("physics")
     @Abstractable
@@ -39,20 +44,24 @@ public class FloraTemplate implements ConfigTemplate {
     @Default
     private boolean ceiling = false;
 
-    public Set<BlockData> getReplaceable() {
+    public Set<Material> getReplaceable() {
         return replaceable;
     }
 
-    public Set<BlockData> getSpawnable() {
+    public Set<Material> getSpawnable() {
         return spawnable;
+    }
+
+    public Set<Material> getIrrigable() {
+        return irrigable;
     }
 
     public String getID() {
         return id;
     }
 
-    public PaletteHolder getFloraPalette() {
-        return floraPalette;
+    public List<PaletteLayer> getFloraPalette() {
+        return palette;
     }
 
     public boolean doPhysics() {

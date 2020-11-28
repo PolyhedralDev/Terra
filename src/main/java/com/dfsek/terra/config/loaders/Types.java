@@ -3,6 +3,7 @@ package com.dfsek.terra.config.loaders;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.math.ProbabilityCollection;
+import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 
 import java.lang.reflect.Type;
@@ -17,18 +18,21 @@ public final class Types {
     public static final Type MATERIAL_PROBABILITY_COLLECTION_TYPE;
     public static final Type BLOCK_DATA_PALETTE_TYPE;
     public static final Type BLOCK_DATA_PROBABILITY_COLLECTION_TYPE;
+    public static final Type FLORA_PROBABILITY_COLLECTION_TYPE;
 
     static {
         MATERIAL_SET_TYPE = getType("materialSet");
         MATERIAL_PROBABILITY_COLLECTION_TYPE = getType("materialProbabilityCollection");
         BLOCK_DATA_PALETTE_TYPE = getType("blockDataPalette");
         BLOCK_DATA_PROBABILITY_COLLECTION_TYPE = getType("blockDataProbabilityCollection");
+        FLORA_PROBABILITY_COLLECTION_TYPE = getType("floraProbabilityCollection");
     }
 
     private Set<Material> materialSet;
     private Palette<BlockData> blockDataPalette;
     private ProbabilityCollection<Material> materialProbabilityCollection;
     private ProbabilityCollection<BlockData> blockDataProbabilityCollection;
+    private ProbabilityCollection<Flora> floraProbabilityCollection;
 
     private static Type getType(String dummyFieldName) {
         try {

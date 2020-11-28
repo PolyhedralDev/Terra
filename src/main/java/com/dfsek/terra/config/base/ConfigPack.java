@@ -11,22 +11,26 @@ import com.dfsek.terra.config.exception.FileMissingException;
 import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.BiomeGridFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
+import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.loaders.NoiseBuilderLoader;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
+import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.CarverRegistry;
+import com.dfsek.terra.registry.FloraRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.util.ConfigUtil;
 import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 import parsii.eval.Scope;
 
@@ -50,6 +54,7 @@ public class ConfigPack {
     private final StructureRegistry structureRegistry = new StructureRegistry();
     private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry = new PaletteRegistry();
+    private final FloraRegistry floraRegistry = new FloraRegistry();
 
     private final Scope varScope;
 
@@ -77,7 +82,8 @@ public class ConfigPack {
         abstractConfigLoader
                 .registerLoader(Palette.class, paletteRegistry)
                 .registerLoader(Biome.class, biomeRegistry)
-                .registerLoader(UserDefinedCarver.class, carverRegistry);
+                .registerLoader(UserDefinedCarver.class, carverRegistry)
+                .registerLoader(Flora.class, floraRegistry);
         ConfigUtil.registerAllLoaders(abstractConfigLoader);
 
         List<PaletteTemplate> paletteTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "palettes").toPath()), PaletteTemplate::new);
@@ -85,6 +91,13 @@ public class ConfigPack {
         paletteTemplates.forEach(palette -> {
             paletteRegistry.add(palette.getID(), paletteFactory.build(palette));
             Debug.info("Loaded palette " + palette.getID());
+        });
+
+        List<FloraTemplate> floraTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "flora").toPath()), FloraTemplate::new);
+        FloraFactory floraFactory = new FloraFactory();
+        floraTemplates.forEach(flora -> {
+            floraRegistry.add(flora.getID(), floraFactory.build(flora));
+            Debug.info("Loaded flora " + flora.getID());
         });
 
         List<StructureTemplate> structureTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "structures/single").toPath()), StructureTemplate::new);
@@ -105,6 +118,8 @@ public class ConfigPack {
         biomeTemplates.forEach(biome -> {
             biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
             Debug.info("Loaded biome " + biome.getID());
+            Debug.info("Flora: " + biome.getFlora());
+            Debug.info("Carvers: " + biome.getCarvers());
         });
 
         List<BiomeGridTemplate> biomeGridTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "grids").toPath()), BiomeGridTemplate::new);

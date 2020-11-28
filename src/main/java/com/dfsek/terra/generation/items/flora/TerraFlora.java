@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation.items;
+package com.dfsek.terra.generation.items.flora;
 
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
