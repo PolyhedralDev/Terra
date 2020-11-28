@@ -53,9 +53,9 @@ public class BiomeTemplate implements ConfigTemplate {
     @Value("noise-equation")
     @Abstractable
     private String noiseEquation;
-    @Value("ores")
-    @Abstractable
-    @Default
+    //@Value("ores")
+    //@Abstractable
+    //@Default
     private Map<Ore, OreConfig> ores = new HashMap<>();
     @Value("ocean.level")
     @Abstractable

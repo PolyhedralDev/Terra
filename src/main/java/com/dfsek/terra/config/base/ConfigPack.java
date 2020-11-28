@@ -13,6 +13,7 @@ import com.dfsek.terra.config.factories.BiomeGridFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
+import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.loaders.NoiseBuilderLoader;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
@@ -26,6 +27,7 @@ import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.CarverRegistry;
 import com.dfsek.terra.registry.FloraRegistry;
+import com.dfsek.terra.registry.OreRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.util.ConfigUtil;
@@ -55,6 +57,19 @@ public class ConfigPack {
     private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry = new PaletteRegistry();
     private final FloraRegistry floraRegistry = new FloraRegistry();
+    private final OreRegistry oreRegistry = new OreRegistry();
+
+    private final AbstractConfigLoader abstractConfigLoader;
+
+    {
+        abstractConfigLoader = new AbstractConfigLoader();
+        abstractConfigLoader
+                .registerLoader(Palette.class, paletteRegistry)
+                .registerLoader(Biome.class, biomeRegistry)
+                .registerLoader(UserDefinedCarver.class, carverRegistry)
+                .registerLoader(Flora.class, floraRegistry);
+        ConfigUtil.registerAllLoaders(abstractConfigLoader);
+    }
 
     private final Scope varScope;
 
@@ -78,51 +93,65 @@ public class ConfigPack {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
 
-        AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
-        abstractConfigLoader
-                .registerLoader(Palette.class, paletteRegistry)
-                .registerLoader(Biome.class, biomeRegistry)
-                .registerLoader(UserDefinedCarver.class, carverRegistry)
-                .registerLoader(Flora.class, floraRegistry);
-        ConfigUtil.registerAllLoaders(abstractConfigLoader);
+        List<PaletteTemplate> paletteTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "palettes").toPath())
+                .then(streams -> paletteTemplates.addAll(abstractConfigLoader.load(streams, PaletteTemplate::new)))
+                .close();
 
-        List<PaletteTemplate> paletteTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "palettes").toPath()), PaletteTemplate::new);
         PaletteFactory paletteFactory = new PaletteFactory();
         paletteTemplates.forEach(palette -> {
             paletteRegistry.add(palette.getID(), paletteFactory.build(palette));
             Debug.info("Loaded palette " + palette.getID());
         });
 
-        List<FloraTemplate> floraTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "flora").toPath()), FloraTemplate::new);
+        List<FloraTemplate> floraTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "flora").toPath())
+                .then(streams -> floraTemplates.addAll(abstractConfigLoader.load(streams, FloraTemplate::new)))
+                .close();
+
         FloraFactory floraFactory = new FloraFactory();
         floraTemplates.forEach(flora -> {
             floraRegistry.add(flora.getID(), floraFactory.build(flora));
             Debug.info("Loaded flora " + flora.getID());
         });
 
-        List<StructureTemplate> structureTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "structures/single").toPath()), StructureTemplate::new);
+        List<StructureTemplate> structureTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "structures/single").toPath())
+                .then(streams -> structureTemplates.addAll(abstractConfigLoader.load(streams, StructureTemplate::new)))
+                .close();
+
         structureTemplates.forEach(structure -> {
             structureRegistry.add(structure.getID(), structure);
             Debug.info("Loaded structure " + structure.getID());
         });
 
-        List<CarverTemplate> carverTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "carving").toPath()), CarverTemplate::new);
+        List<CarverTemplate> carverTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "carving").toPath())
+                .then(streams -> carverTemplates.addAll(abstractConfigLoader.load(streams, CarverTemplate::new)))
+                .close();
+
         CarverFactory carverFactory = new CarverFactory();
         carverTemplates.forEach(carver -> {
             carverRegistry.add(carver.getID(), carverFactory.build(carver));
             Debug.info("Loaded carver " + carver.getID());
         });
 
-        List<BiomeTemplate> biomeTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "biomes").toPath()), () -> new BiomeTemplate(this));
+        List<BiomeTemplate> biomeTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "biomes").toPath())
+                .then(streams -> biomeTemplates.addAll(abstractConfigLoader.load(streams, () -> new BiomeTemplate(this))))
+                .close();
+
         BiomeFactory biomeFactory = new BiomeFactory(this);
         biomeTemplates.forEach(biome -> {
             biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
             Debug.info("Loaded biome " + biome.getID());
-            Debug.info("Flora: " + biome.getFlora());
-            Debug.info("Carvers: " + biome.getCarvers());
         });
 
-        List<BiomeGridTemplate> biomeGridTemplates = abstractConfigLoader.load(ConfigUtil.loadFromPath(new File(folder, "grids").toPath()), BiomeGridTemplate::new);
+        List<BiomeGridTemplate> biomeGridTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "grids").toPath())
+                .then(streams -> biomeGridTemplates.addAll(abstractConfigLoader.load(streams, BiomeGridTemplate::new)))
+                .close();
+
         BiomeGridFactory biomeGridFactory = new BiomeGridFactory();
         biomeGridTemplates.forEach(grid -> {
             biomeGridRegistry.add(grid.getID(), biomeGridFactory.build(grid));
