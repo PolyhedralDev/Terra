@@ -10,6 +10,7 @@ import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.ores.Ore;
+import com.dfsek.terra.generation.items.ores.OreConfig;
 import com.dfsek.terra.structure.TerraStructure;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -52,10 +53,10 @@ public class BiomeTemplate implements ConfigTemplate {
     @Value("noise-equation")
     @Abstractable
     private String noiseEquation;
-    //@Value("ores")
-    //@Abstractable
-    //@Default
-    private List<Ore> ores = new GlueList<>();
+    @Value("ores")
+    @Abstractable
+    @Default
+    private Map<Ore, OreConfig> ores = new HashMap<>();
     @Value("ocean.level")
     @Abstractable
     @Default
@@ -174,7 +175,7 @@ public class BiomeTemplate implements ConfigTemplate {
         return noiseEquation;
     }
 
-    public List<Ore> getOres() {
+    public Map<Ore, OreConfig> getOres() {
         return ores;
     }
 

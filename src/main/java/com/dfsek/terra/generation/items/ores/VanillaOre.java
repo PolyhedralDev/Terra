@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.math.Range;
 
 import java.util.Random;
 import java.util.Set;
@@ -15,8 +14,8 @@ import java.util.Set;
 public class VanillaOre extends Ore {
     private final double size;
 
-    public VanillaOre(Range height, Range amount, BlockData material, Set<Material> replaceable, boolean applyGravity, double size) {
-        super(height, amount, material, replaceable, applyGravity);
+    public VanillaOre(BlockData material, Set<Material> replaceable, boolean applyGravity, double size) {
+        super(material, replaceable, applyGravity);
         this.size = size;
     }
 

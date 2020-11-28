@@ -8,6 +8,8 @@ import com.dfsek.terra.config.loaders.BlockDataLoader;
 import com.dfsek.terra.config.loaders.FloraLayerLoader;
 import com.dfsek.terra.config.loaders.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.MaterialLoader;
+import com.dfsek.terra.config.loaders.OreConfigLoader;
+import com.dfsek.terra.config.loaders.OreTypeLoader;
 import com.dfsek.terra.config.loaders.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.PaletteLayerLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
@@ -15,6 +17,8 @@ import com.dfsek.terra.config.loaders.RangeLoader;
 import com.dfsek.terra.config.loaders.VanillaBiomeLoader;
 import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
+import com.dfsek.terra.generation.items.ores.Ore;
+import com.dfsek.terra.generation.items.ores.OreConfig;
 import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -66,6 +70,8 @@ public final class ConfigUtil {
                 .registerLoader(Biome.class, new VanillaBiomeLoader())
                 .registerLoader(BlockData.class, new BlockDataLoader())
                 .registerLoader(Material.class, new MaterialLoader())
-                .registerLoader(FloraLayer.class, new FloraLayerLoader());
+                .registerLoader(FloraLayer.class, new FloraLayerLoader())
+                .registerLoader(Ore.Type.class, new OreTypeLoader())
+                .registerLoader(OreConfig.class, new OreConfigLoader());
     }
 }

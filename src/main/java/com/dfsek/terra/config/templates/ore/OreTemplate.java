@@ -1,9 +1,10 @@
-package com.dfsek.terra.config.templates;
+package com.dfsek.terra.config.templates.ore;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.terra.generation.items.ores.Ore;
 import org.bukkit.block.data.BlockData;
 
 import java.util.List;
@@ -17,23 +18,10 @@ public class OreTemplate implements ConfigTemplate {
     @Abstractable
     private BlockData material;
 
-    @Value("radius.min")
-    @Abstractable
-    private double minRadius;
-
-    @Value("radius.max")
-    @Abstractable
-    private double maxRadius;
-
-    @Value("deform")
+    @Value("type")
     @Abstractable
     @Default
-    private double deform = 0.75D;
-
-    @Value("deform-frequency")
-    @Abstractable
-    @Default
-    private double deformFrequency = 0.1D;
+    private Ore.Type oreType = Ore.Type.VANILLA;
 
     @Value("replace")
     @Abstractable
@@ -46,22 +34,6 @@ public class OreTemplate implements ConfigTemplate {
 
     public BlockData getMaterial() {
         return material;
-    }
-
-    public double getDeform() {
-        return deform;
-    }
-
-    public double getDeformFrequency() {
-        return deformFrequency;
-    }
-
-    public double getMaxRadius() {
-        return maxRadius;
-    }
-
-    public double getMinRadius() {
-        return minRadius;
     }
 
     public List<BlockData> getReplaceable() {
