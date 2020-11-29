@@ -4,7 +4,6 @@ import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
@@ -15,10 +14,12 @@ import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
+import com.dfsek.terra.config.factories.TerraFactory;
 import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -34,6 +35,7 @@ import com.dfsek.terra.registry.FloraRegistry;
 import com.dfsek.terra.registry.OreRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
+import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.util.ConfigUtil;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.world.Flora;
@@ -127,71 +129,17 @@ public class ConfigPack {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
+        loader
+                .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new))).close()
+                .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new))).close()
+                .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new))).close()
+                .open("carving").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new))).close()
+                .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)))).close()
+                .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new))).close();
+    }
 
-        loader.open("palettes")
-                .then(streams -> {
-                    PaletteFactory paletteFactory = new PaletteFactory();
-                    abstractConfigLoader.load(streams, PaletteTemplate::new).forEach(palette -> {
-                        paletteRegistry.add(palette.getID(), paletteFactory.build(palette));
-                        Debug.info("Loaded palette " + palette.getID());
-                    });
-                })
-                .close()
-                .open("ores")
-                .then(streams -> {
-                    OreFactory oreFactory = new OreFactory();
-                    abstractConfigLoader.load(streams, OreTemplate::new).forEach(ore -> {
-                        oreRegistry.add(ore.getID(), oreFactory.build(ore));
-                        Debug.info("Loaded ore " + ore.getID());
-                    });
-                })
-                .close()
-                .open("flora")
-                .then(streams -> {
-                    FloraFactory floraFactory = new FloraFactory();
-                    abstractConfigLoader.load(streams, FloraTemplate::new).forEach(flora -> {
-                        floraRegistry.add(flora.getID(), floraFactory.build(flora));
-                        Debug.info("Loaded flora " + flora.getID());
-                    });
-                })
-                .close()
-                .open("structures/single")
-                .then(streams -> abstractConfigLoader.load(streams, StructureTemplate::new).forEach(structure -> {
-                    structureRegistry.add(structure.getID(), structure);
-                    Debug.info("Loaded structure " + structure.getID());
-                }))
-                .close()
-                .open("carving")
-                .then(streams -> {
-                    CarverFactory carverFactory = new CarverFactory(this);
-                    abstractConfigLoader.load(streams, CarverTemplate::new).forEach(carver -> {
-                        try {
-                            carverRegistry.add(carver.getID(), carverFactory.build(carver));
-                        } catch(LoadException e) {
-                            throw new RuntimeException(e);
-                        }
-                        Debug.info("Loaded carver " + carver.getID());
-                    });
-                })
-                .close()
-                .open("biomes")
-                .then(streams -> {
-                    BiomeFactory biomeFactory = new BiomeFactory(this);
-                    abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)).forEach(biome -> {
-                        biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
-                        Debug.info("Loaded biome " + biome.getID());
-                    });
-                })
-                .close()
-                .open("grids")
-                .then(streams -> {
-                    BiomeGridFactory biomeGridFactory = new BiomeGridFactory();
-                    abstractConfigLoader.load(streams, BiomeGridTemplate::new).forEach(grid -> {
-                        biomeGridRegistry.add(grid.getID(), biomeGridFactory.build(grid));
-                        Debug.info("Loaded BiomeGrid " + grid.getID());
-                    });
-                })
-                .close();
+    private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates) throws LoadException {
+        for(C template : configTemplates) registry.add(template.getID(), factory.build(template));
     }
 
     public UserDefinedBiome getBiome(String id) {

@@ -3,7 +3,6 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.google.common.collect.Sets;
 import org.bukkit.Material;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
-public class FloraTemplate implements ConfigTemplate {
+public class FloraTemplate extends AbstractableTemplate {
     @Value("id")
     private String id;
 

@@ -2,13 +2,12 @@ package com.dfsek.terra.config.templates;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import org.polydev.gaea.biome.Biome;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class BiomeGridTemplate implements ConfigTemplate {
+public class BiomeGridTemplate extends AbstractableTemplate {
 
     @Value("grid")
     @Abstractable

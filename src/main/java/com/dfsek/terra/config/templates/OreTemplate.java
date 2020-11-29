@@ -3,7 +3,6 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.generation.items.ores.Ore;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class OreTemplate implements ConfigTemplate {
+public class OreTemplate extends AbstractableTemplate {
     @Value("id")
     private String id;
 

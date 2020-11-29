@@ -3,7 +3,6 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
-public class BiomeTemplate implements ConfigTemplate {
+public class BiomeTemplate extends AbstractableTemplate {
 
     private final ConfigPack pack;
     @Value("id")

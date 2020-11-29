@@ -3,7 +3,6 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.carving.CarverPalette;
 import org.bukkit.Material;
 import org.polydev.gaea.math.Range;
@@ -14,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class CarverTemplate implements ConfigTemplate {
+public class CarverTemplate extends AbstractableTemplate {
     @Value("id")
     private String id;
 

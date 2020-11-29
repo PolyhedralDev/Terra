@@ -5,10 +5,11 @@ import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.generation.items.flora.TerraFlora;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.util.FastRandom;
+import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 import org.polydev.gaea.world.palette.RandomPalette;
 
-public class FloraFactory implements TerraFactory<FloraTemplate, TerraFlora> {
+public class FloraFactory implements TerraFactory<FloraTemplate, Flora> {
     @Override
     public TerraFlora build(FloraTemplate config) {
         Palette<BlockData> palette = new RandomPalette<>(new FastRandom(2403));

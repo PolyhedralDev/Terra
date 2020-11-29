@@ -3,7 +3,6 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.Material;
 import org.polydev.gaea.math.ProbabilityCollection;
@@ -11,7 +10,7 @@ import org.polydev.gaea.math.ProbabilityCollection;
 import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class TreeTemplate implements ConfigTemplate {
+public class TreeTemplate extends AbstractableTemplate {
     @Value("files")
     @Abstractable
     private ProbabilityCollection<Structure> structures;
@@ -32,7 +31,7 @@ public class TreeTemplate implements ConfigTemplate {
         return structures;
     }
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 

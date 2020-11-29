@@ -2,7 +2,6 @@ package com.dfsek.terra.config.templates;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.Structure;
 import org.polydev.gaea.math.ProbabilityCollection;
@@ -12,7 +11,7 @@ import org.polydev.gaea.structures.loot.LootTable;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class StructureTemplate implements ConfigTemplate {
+public class StructureTemplate extends AbstractableTemplate {
     @Value("id")
     private String id;
 

@@ -1,13 +1,14 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.config.builder.biomegrid.UserDefinedGridBuilder;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import org.polydev.gaea.biome.Biome;
 
 import java.util.List;
 
-public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, UserDefinedGridBuilder> {
+public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, BiomeGridBuilder> {
 
     @Override
     public UserDefinedGridBuilder build(BiomeGridTemplate config) {
