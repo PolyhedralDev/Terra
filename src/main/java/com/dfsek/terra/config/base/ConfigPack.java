@@ -165,6 +165,7 @@ public class ConfigPack {
         biomeTemplates.forEach(biome -> {
             biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
             Debug.info("Loaded biome " + biome.getID());
+            Debug.info("Threshold: " + biome.getSlantThreshold());
         });
 
         List<BiomeGridTemplate> biomeGridTemplates = new ArrayList<>();

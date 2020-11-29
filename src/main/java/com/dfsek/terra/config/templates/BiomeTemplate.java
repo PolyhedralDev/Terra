@@ -65,14 +65,7 @@ public class BiomeTemplate implements ConfigTemplate {
     @Abstractable
     @Default
     private Palette<BlockData> oceanPalette = new SinglePalette<>(Material.WATER.createBlockData());
-    @Value("slant.y-offset.top")
-    @Abstractable
-    @Default
-    private double slantOffsetTop = 0.5D;
-    @Value("slant.y-offset-bottom")
-    @Abstractable
-    @Default
-    private double slantOffsetBottom = 0.25;
+
     @Value("elevation.equation")
     @Default
     @Abstractable
@@ -102,6 +95,15 @@ public class BiomeTemplate implements ConfigTemplate {
     @Abstractable
     @Default
     private Map<Material, Palette<BlockData>> stairPalettes;
+
+    @Value("slant.threshold")
+    @Abstractable
+    @Default
+    private double slantThreshold = 0.1;
+
+    public double getSlantThreshold() {
+        return slantThreshold;
+    }
 
     public double getSlabThreshold() {
         return slabThreshold;
@@ -177,13 +179,5 @@ public class BiomeTemplate implements ConfigTemplate {
 
     public Map<Ore, OreConfig> getOres() {
         return ores;
-    }
-
-    public double getSlantOffsetTop() {
-        return slantOffsetTop;
-    }
-
-    public double getSlantOffsetBottom() {
-        return slantOffsetBottom;
     }
 }

@@ -9,6 +9,7 @@ import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.math.MathUtil;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -78,22 +79,10 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeTemplate c, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
+    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeTemplate c, Sampler sampler) {
         PaletteHolder slant = c.getSlantPalette();
-        if(slant != null) {
-            double ySlantOffsetTop = c.getSlantOffsetTop();
-            double ySlantOffsetBottom = c.getSlantOffsetBottom();
-            boolean top = interpolator.getNoise(x, y + ySlantOffsetTop - elevationInterpolator.getElevation(x, z), z) > 0;
-            boolean bottom = interpolator.getNoise(x, y - ySlantOffsetBottom - elevationInterpolator.getElevation(x, z), z) > 0;
-
-            if(top && bottom) {
-                boolean north = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z + 1), z + 1) > 0;
-                boolean south = interpolator.getNoise(x, y - elevationInterpolator.getElevation(x, z - 1), z - 1) > 0;
-                boolean east = interpolator.getNoise(x + 1, y - elevationInterpolator.getElevation(x + 1, z), z) > 0;
-                boolean west = interpolator.getNoise(x - 1, y - elevationInterpolator.getElevation(x - 1, z), z) > 0;
-
-                if((north || south || east || west) && (!(north && south && east && west))) return slant.getPalette(y);
-            }
+        if(slant != null && MathUtil.derivative(sampler, x, y, z) > c.getSlantThreshold()) {
+            return slant.getPalette(y);
         }
         return c.getPalette().getPalette(y);
     }
@@ -157,6 +146,8 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid());
         }
 
+        Sampler sampler = new Sampler(interpolator, elevationInterpolator);
+
         for(byte x = 0; x < 16; x++) {
             for(byte z = 0; z < 16; z++) {
                 int paletteLevel = 0;
@@ -167,13 +158,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
                 BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
-                double elevate = elevationInterpolator.getElevation(x, z);
-
                 int sea = c.getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOceanPalette();
                 for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
-                    if(interpolator.getNoise(x, y - elevate, z) > 0) {
-                        BlockData data = getPalette(x, y, z, c, interpolator, elevationInterpolator).get(paletteLevel, cx, cz);
+                    if(sampler.sample(x, y, z) > 0) {
+                        BlockData data = getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && c.doSlabs() && y < 255) {
                             prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), c.getSlabPalettes(),
