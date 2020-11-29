@@ -12,6 +12,7 @@ import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.BiomeGridFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
+import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -20,9 +21,11 @@ import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.FloraTemplate;
+import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.CarverRegistry;
@@ -59,15 +62,15 @@ public class ConfigPack {
     private final FloraRegistry floraRegistry = new FloraRegistry();
     private final OreRegistry oreRegistry = new OreRegistry();
 
-    private final AbstractConfigLoader abstractConfigLoader;
+    private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
 
     {
-        abstractConfigLoader = new AbstractConfigLoader();
         abstractConfigLoader
                 .registerLoader(Palette.class, paletteRegistry)
                 .registerLoader(Biome.class, biomeRegistry)
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
-                .registerLoader(Flora.class, floraRegistry);
+                .registerLoader(Flora.class, floraRegistry)
+                .registerLoader(Ore.class, oreRegistry);
         ConfigUtil.registerAllLoaders(abstractConfigLoader);
     }
 
@@ -103,6 +106,18 @@ public class ConfigPack {
             paletteRegistry.add(palette.getID(), paletteFactory.build(palette));
             Debug.info("Loaded palette " + palette.getID());
         });
+
+        List<OreTemplate> oreTemplates = new ArrayList<>();
+        new FolderLoader(new File(folder, "ores").toPath())
+                .then(streams -> oreTemplates.addAll(abstractConfigLoader.load(streams, OreTemplate::new)))
+                .close();
+
+        OreFactory oreFactory = new OreFactory();
+        oreTemplates.forEach(ore -> {
+            oreRegistry.add(ore.getID(), oreFactory.build(ore));
+            Debug.info("Loaded ore " + ore.getID());
+        });
+
 
         List<FloraTemplate> floraTemplates = new ArrayList<>();
         new FolderLoader(new File(folder, "flora").toPath())

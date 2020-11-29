@@ -1,9 +1,9 @@
 package com.dfsek.terra.generation.items.ores;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.util.Vector;
 
 import java.util.Random;
 import java.util.Set;
@@ -21,7 +21,7 @@ public abstract class Ore {
         this.applyGravity = applyGravity;
     }
 
-    public abstract void generate(Location origin, Chunk c, Random r);
+    public abstract void generate(Vector origin, Chunk c, Random r);
 
     public BlockData getMaterial() {
         return material;

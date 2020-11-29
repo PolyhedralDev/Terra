@@ -2,29 +2,27 @@ package com.dfsek.terra.generation.items.ores;
 
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.util.Vector;
+import org.polydev.gaea.math.Range;
 
 import java.util.Random;
 import java.util.Set;
 
 
 public class VanillaOre extends Ore {
-    private final double size;
+    private final Range sizeRange;
 
-    public VanillaOre(BlockData material, Set<Material> replaceable, boolean applyGravity, double size) {
+    public VanillaOre(BlockData material, Set<Material> replaceable, boolean applyGravity, Range size) {
         super(material, replaceable, applyGravity);
-        this.size = size;
+        this.sizeRange = size;
     }
 
-
-    public void generate(Location location, Chunk chunk, Random random) {
-        int chunkBoundx1 = chunk.getX() << 4;
-        int chunkBoundx2 = chunk.getX() << 4 + 15;
-        int chunkBoundz1 = chunk.getZ() << 4;
-        int chunkBoundz2 = chunk.getZ() << 4 + 15;
+    @Override
+    public void generate(Vector location, Chunk chunk, Random random) {
+        double size = sizeRange.get(random);
 
         int centerX = location.getBlockX();
         int centerZ = location.getBlockZ();
@@ -65,11 +63,8 @@ public class VanillaOre extends Ore {
                         if(d13 * d13 + d14 * d14 < 1.0D) {
                             for(int z = zStart; z <= zEnd; z++) {
                                 double d15 = (z + 0.5D - (d3 + (d4 - d3) * iFactor)) / (d11 / 2.0D);
+                                if(x > 15 || z > 15 || y > 255 || x < 0 || z < 0 || y < 0) continue;
                                 Block block = chunk.getBlock(x, y, z);
-                                if((block.getX() <= chunkBoundx1 || block.getX() >= chunkBoundx2) &&
-                                        (block.getZ() <= chunkBoundz1 || block.getZ() >= chunkBoundz2) &&
-                                        block.getY() <= 255)
-                                    continue;
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block.getType())) {
                                     block.setBlockData(getMaterial(), isApplyGravity());
                                 }

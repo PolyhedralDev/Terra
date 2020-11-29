@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
 public class CarverPalette {
     private final boolean blacklist;
     private final Set<Material> replace;

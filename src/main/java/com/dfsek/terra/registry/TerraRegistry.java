@@ -18,7 +18,7 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
     public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
         if(obj == null)
-            throw new LoadException("No such " + type + " matching \"" + o + "\" was found in this registry.");
+            throw new LoadException("No such " + type.getTypeName() + " matching \"" + o + "\" was found in this registry.");
         return obj;
     }
 
