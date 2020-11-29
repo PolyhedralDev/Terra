@@ -16,8 +16,9 @@ import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.files.FolderLoader;
+import com.dfsek.terra.config.files.Loader;
+import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.loaders.NoiseBuilderLoader;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -25,7 +26,6 @@ import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
-import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
@@ -43,12 +43,17 @@ import parsii.eval.Scope;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Represents a Terra configuration pack.
@@ -64,6 +69,8 @@ public class ConfigPack {
     private final OreRegistry oreRegistry = new OreRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
+    private final ConfigLoader loader = new ConfigLoader();
+    private final Scope varScope = new Scope();
 
     {
         abstractConfigLoader
@@ -73,113 +80,118 @@ public class ConfigPack {
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry);
         ConfigUtil.registerAllLoaders(abstractConfigLoader);
+        ConfigUtil.registerAllLoaders(loader);
     }
-
-    private final Scope varScope;
-
 
     public ConfigPack(File folder) throws ConfigException {
         long l = System.nanoTime();
 
         File pack = new File(folder, "pack.yml");
 
-        ConfigLoader loader = new ConfigLoader();
-        loader.registerLoader(NoiseBuilder.class, new NoiseBuilderLoader());
         try {
             loader.load(template, new FileInputStream(pack));
         } catch(FileNotFoundException e) {
             throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
         }
 
-        varScope = new Scope();
+        load(new FolderLoader(folder.toPath()));
 
+        LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
+    }
+
+    public ConfigPack(ZipFile file) throws ConfigException {
+        long l = System.nanoTime();
+
+        InputStream stream = null;
+        Enumeration<? extends ZipEntry> entries = file.entries();
+
+        while(entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if(entry.getName().equals("pack.yml")) {
+                try {
+                    stream = file.getInputStream(entry);
+                } catch(IOException e) {
+                    throw new LoadException("Unable to load pack.yml from ZIP file", e);
+                }
+            }
+        }
+        if(stream == null) throw new FileMissingException("No pack.yml file found in " + file.getName());
+
+        loader.load(template, stream);
+
+        load(new ZIPLoader(file));
+        LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
+    }
+
+    private void load(Loader loader) throws ConfigException {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
 
-        List<PaletteTemplate> paletteTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "palettes").toPath())
-                .then(streams -> paletteTemplates.addAll(abstractConfigLoader.load(streams, PaletteTemplate::new)))
+        loader.open("palettes")
+                .then(streams -> {
+                    PaletteFactory paletteFactory = new PaletteFactory();
+                    abstractConfigLoader.load(streams, PaletteTemplate::new).forEach(palette -> {
+                        paletteRegistry.add(palette.getID(), paletteFactory.build(palette));
+                        Debug.info("Loaded palette " + palette.getID());
+                    });
+                })
+                .close()
+                .open("ores")
+                .then(streams -> {
+                    OreFactory oreFactory = new OreFactory();
+                    abstractConfigLoader.load(streams, OreTemplate::new).forEach(ore -> {
+                        oreRegistry.add(ore.getID(), oreFactory.build(ore));
+                        Debug.info("Loaded ore " + ore.getID());
+                    });
+                })
+                .close()
+                .open("flora")
+                .then(streams -> {
+                    FloraFactory floraFactory = new FloraFactory();
+                    abstractConfigLoader.load(streams, FloraTemplate::new).forEach(flora -> {
+                        floraRegistry.add(flora.getID(), floraFactory.build(flora));
+                        Debug.info("Loaded flora " + flora.getID());
+                    });
+                })
+                .close()
+                .open("structures/single")
+                .then(streams -> abstractConfigLoader.load(streams, StructureTemplate::new).forEach(structure -> {
+                    structureRegistry.add(structure.getID(), structure);
+                    Debug.info("Loaded structure " + structure.getID());
+                }))
+                .close()
+                .open("carving")
+                .then(streams -> {
+                    CarverFactory carverFactory = new CarverFactory(this);
+                    abstractConfigLoader.load(streams, CarverTemplate::new).forEach(carver -> {
+                        try {
+                            carverRegistry.add(carver.getID(), carverFactory.build(carver));
+                        } catch(LoadException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Debug.info("Loaded carver " + carver.getID());
+                    });
+                })
+                .close()
+                .open("biomes")
+                .then(streams -> {
+                    BiomeFactory biomeFactory = new BiomeFactory(this);
+                    abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)).forEach(biome -> {
+                        biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
+                        Debug.info("Loaded biome " + biome.getID());
+                    });
+                })
+                .close()
+                .open("grids")
+                .then(streams -> {
+                    BiomeGridFactory biomeGridFactory = new BiomeGridFactory();
+                    abstractConfigLoader.load(streams, BiomeGridTemplate::new).forEach(grid -> {
+                        biomeGridRegistry.add(grid.getID(), biomeGridFactory.build(grid));
+                        Debug.info("Loaded BiomeGrid " + grid.getID());
+                    });
+                })
                 .close();
-
-        PaletteFactory paletteFactory = new PaletteFactory();
-        paletteTemplates.forEach(palette -> {
-            paletteRegistry.add(palette.getID(), paletteFactory.build(palette));
-            Debug.info("Loaded palette " + palette.getID());
-        });
-
-        List<OreTemplate> oreTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "ores").toPath())
-                .then(streams -> oreTemplates.addAll(abstractConfigLoader.load(streams, OreTemplate::new)))
-                .close();
-
-        OreFactory oreFactory = new OreFactory();
-        oreTemplates.forEach(ore -> {
-            oreRegistry.add(ore.getID(), oreFactory.build(ore));
-            Debug.info("Loaded ore " + ore.getID());
-        });
-
-
-        List<FloraTemplate> floraTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "flora").toPath())
-                .then(streams -> floraTemplates.addAll(abstractConfigLoader.load(streams, FloraTemplate::new)))
-                .close();
-
-        FloraFactory floraFactory = new FloraFactory();
-        floraTemplates.forEach(flora -> {
-            floraRegistry.add(flora.getID(), floraFactory.build(flora));
-            Debug.info("Loaded flora " + flora.getID());
-        });
-
-        List<StructureTemplate> structureTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "structures/single").toPath())
-                .then(streams -> structureTemplates.addAll(abstractConfigLoader.load(streams, StructureTemplate::new)))
-                .close();
-
-        structureTemplates.forEach(structure -> {
-            structureRegistry.add(structure.getID(), structure);
-            Debug.info("Loaded structure " + structure.getID());
-        });
-
-        List<CarverTemplate> carverTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "carving").toPath())
-                .then(streams -> carverTemplates.addAll(abstractConfigLoader.load(streams, CarverTemplate::new)))
-                .close();
-
-        CarverFactory carverFactory = new CarverFactory(this);
-        carverTemplates.forEach(carver -> {
-            try {
-                carverRegistry.add(carver.getID(), carverFactory.build(carver));
-            } catch(LoadException e) {
-                throw new RuntimeException(e);
-            }
-            Debug.info("Loaded carver " + carver.getID());
-        });
-
-        List<BiomeTemplate> biomeTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "biomes").toPath())
-                .then(streams -> biomeTemplates.addAll(abstractConfigLoader.load(streams, () -> new BiomeTemplate(this))))
-                .close();
-
-        BiomeFactory biomeFactory = new BiomeFactory(this);
-        biomeTemplates.forEach(biome -> {
-            biomeRegistry.add(biome.getID(), biomeFactory.build(biome));
-            Debug.info("Loaded biome " + biome.getID());
-            Debug.info("Threshold: " + biome.getSlantThreshold());
-        });
-
-        List<BiomeGridTemplate> biomeGridTemplates = new ArrayList<>();
-        new FolderLoader(new File(folder, "grids").toPath())
-                .then(streams -> biomeGridTemplates.addAll(abstractConfigLoader.load(streams, BiomeGridTemplate::new)))
-                .close();
-
-        BiomeGridFactory biomeGridFactory = new BiomeGridFactory();
-        biomeGridTemplates.forEach(grid -> {
-            biomeGridRegistry.add(grid.getID(), biomeGridFactory.build(grid));
-            Debug.info("Loaded BiomeGrid " + grid.getID());
-        });
-
-        LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
     }
 
     public UserDefinedBiome getBiome(String id) {
