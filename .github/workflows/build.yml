@@ -21,7 +21,7 @@ jobs:
           java-version: 1.8
       
       - name: Build Terra
-        run:  gradle shadowJar
+        run: ./gradlew build -x test && ./gradlew build -x test
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -34,7 +34,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
-          files:      |
-                      build/libs/Terra-*.jar
-                      LICENSE
+          files: |
+                      build/libs/Terra-*-shaded.jar
                       

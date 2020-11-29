@@ -96,10 +96,32 @@ tasks.test {
     maxParallelForks = 12
 }
 
+val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
+    doFirst {
+        file("${buildDir}/resources/main/packs/").deleteRecursively()
+
+        val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+        downloadAndUnzipPack(defaultPackUrl)
+        val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
+        downloadAndUnzipPack(netherPackUrl)
+    }
+
+    file("${buildDir}/resources/main/packs/").deleteRecursively()
+
+    val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+    downloadAndUnzipPack(defaultPackUrl)
+    val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
+    downloadAndUnzipPack(netherPackUrl)
+}
+tasks.compileJava {
+    dependsOn(downloadDefaultPacks)
+}
+
 tasks.named<ShadowJar>("shadowJar") {
     from(tokenizeJavaSources.destinationDir)
+    dependsOn(downloadDefaultPacks)
 
-    archiveClassifier.set("")
+    archiveClassifier.set("shaded")
     archiveBaseName.set("Terra")
     setVersion(project.version)
     relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
@@ -107,13 +129,9 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-    minimize()
-}
-
-tasks.build {
-    dependsOn(tasks.shadowJar)
-//    dependsOn(testWithPaper)
-//    testWithPaper.mustRunAfter(tasks.shadowJar)
+    minimize {
+        exclude(project(":"))
+    }
 }
 
 val testDir = "target/server/"
@@ -152,21 +170,14 @@ val setupServer = tasks.create("setupServer") {
     }
 }
 
-val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
-    doFirst {
-        // Downloading latest paper jar.
-//        if (file("${buildDir}/resources/main/packs/default").exists() && file("${buildDir}/resources/main/packs/nether").exists())
-//            return@doFirst
-//        else
-        file("${buildDir}/resources/main/packs/").deleteRecursively()
-
-        val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
-        downloadAndUnzipPack(defaultPackUrl)
-        val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
-        downloadAndUnzipPack(netherPackUrl)
-    }
+tasks.build {
+    dependsOn(tasks.shadowJar)
+    dependsOn(downloadDefaultPacks)
+    tasks.shadowJar.get().mustRunAfter(downloadDefaultPacks)
+//    dependsOn(testWithPaper)
+//    testWithPaper.mustRunAfter(tasks.shadowJar)
 }
-tasks.processResources.get().dependsOn(downloadDefaultPacks)
+
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
