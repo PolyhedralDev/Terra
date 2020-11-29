@@ -65,27 +65,6 @@ dependencies {
 val compileJava: JavaCompile by tasks
 val mainSourceSet: SourceSet = sourceSets["main"]
 
-val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
-    doFirst {
-        file("${buildDir}/resources/main/packs/").deleteRecursively()
-
-        val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
-        downloadAndUnzipPack(defaultPackUrl)
-        val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
-        downloadAndUnzipPack(netherPackUrl)
-    }
-
-    file("${buildDir}/resources/main/packs/").deleteRecursively()
-
-    val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
-    downloadAndUnzipPack(defaultPackUrl)
-    val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
-    downloadAndUnzipPack(netherPackUrl)
-}
-tasks.compileJava {
-    dependsOn(downloadDefaultPacks)
-}
-
 val tokenizeJavaSources = task<Copy>(name = "tokenizeJavaSources") {
     from(mainSourceSet.allSource) {
         include("**/plugin.yml")
@@ -115,6 +94,27 @@ tasks.test {
     ignoreFailures = false
     failFast = true
     maxParallelForks = 12
+}
+
+val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
+    doFirst {
+        file("${buildDir}/resources/main/packs/").deleteRecursively()
+
+        val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+        downloadAndUnzipPack(defaultPackUrl)
+        val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
+        downloadAndUnzipPack(netherPackUrl)
+    }
+
+    file("${buildDir}/resources/main/packs/").deleteRecursively()
+
+    val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+    downloadAndUnzipPack(defaultPackUrl)
+    val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
+    downloadAndUnzipPack(netherPackUrl)
+}
+tasks.compileJava {
+    dependsOn(downloadDefaultPacks)
 }
 
 tasks.named<ShadowJar>("shadowJar") {
