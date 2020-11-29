@@ -23,6 +23,16 @@ public class CarverTemplate implements ConfigTemplate {
     @Default
     private int step = 2;
 
+    @Value("recalculate-magnitude")
+    @Default
+    @Abstractable
+    private double recaclulateMagnitude = 4;
+
+    @Value("recalculate-direction")
+    @Abstractable
+    @Default
+    private Range recalc = new Range(8, 10);
+
     @Value("length")
     @Abstractable
     private Range length;
@@ -39,21 +49,17 @@ public class CarverTemplate implements ConfigTemplate {
     @Abstractable
     private double startZ;
 
-    @Value("start.radius.multiply.x")
+    @Value("start.radius.x")
     @Abstractable
-    private double radMX;
+    private String radMX;
 
-    @Value("start.radius.multiply.y")
+    @Value("start.radius.y")
     @Abstractable
-    private double radMY;
+    private String radMY;
 
-    @Value("start.radius.multiply.z")
+    @Value("start.radius.z")
     @Abstractable
-    private double radMZ;
-
-    @Value("start.radius")
-    @Abstractable
-    private Range radius;
+    private String radMZ;
 
     @Value("start.height")
     @Abstractable
@@ -80,10 +86,6 @@ public class CarverTemplate implements ConfigTemplate {
     @Value("mutate.z")
     @Abstractable
     private double mutateZ;
-
-    @Value("mutate.radius")
-    @Abstractable
-    private double mutateRadius;
 
     @Value("palette.top")
     @Abstractable
@@ -135,20 +137,16 @@ public class CarverTemplate implements ConfigTemplate {
         return startZ;
     }
 
-    public double getRadMX() {
+    public String getRadMX() {
         return radMX;
     }
 
-    public double getRadMY() {
+    public String getRadMY() {
         return radMY;
     }
 
-    public double getRadMZ() {
+    public String getRadMZ() {
         return radMZ;
-    }
-
-    public Range getRadius() {
-        return radius;
     }
 
     public Range getHeight() {
@@ -175,10 +173,6 @@ public class CarverTemplate implements ConfigTemplate {
         return mutateZ;
     }
 
-    public double getMutateRadius() {
-        return mutateRadius;
-    }
-
     public CarverPalette getTop() {
         return top;
     }
@@ -201,5 +195,13 @@ public class CarverTemplate implements ConfigTemplate {
 
     public Set<Material> getUpdate() {
         return update;
+    }
+
+    public Range getRecalc() {
+        return recalc;
+    }
+
+    public double getRecaclulateMagnitude() {
+        return recaclulateMagnitude;
     }
 }

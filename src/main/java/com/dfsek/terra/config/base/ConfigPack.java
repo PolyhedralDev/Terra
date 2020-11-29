@@ -2,6 +2,7 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.Debug;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -145,9 +146,13 @@ public class ConfigPack {
                 .then(streams -> carverTemplates.addAll(abstractConfigLoader.load(streams, CarverTemplate::new)))
                 .close();
 
-        CarverFactory carverFactory = new CarverFactory();
+        CarverFactory carverFactory = new CarverFactory(this);
         carverTemplates.forEach(carver -> {
-            carverRegistry.add(carver.getID(), carverFactory.build(carver));
+            try {
+                carverRegistry.add(carver.getID(), carverFactory.build(carver));
+            } catch(LoadException e) {
+                throw new RuntimeException(e);
+            }
             Debug.info("Loaded carver " + carver.getID());
         });
 
