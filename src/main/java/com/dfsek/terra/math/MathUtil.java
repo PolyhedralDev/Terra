@@ -3,7 +3,7 @@ package com.dfsek.terra.math;
 import com.dfsek.terra.generation.Sampler;
 
 public final class MathUtil {
-    private static final double CONST = 1;
+    private static final double CONST = 0.55;
 
     public static double derivative(Sampler sampler, double x, double y, double z) {
         double baseSample = sampler.sample(x, y, z);
