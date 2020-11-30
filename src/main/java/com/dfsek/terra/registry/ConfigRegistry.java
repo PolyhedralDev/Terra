@@ -1,10 +1,13 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.base.ConfigPack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.zip.ZipFile;
 
 /**
  * Class to hold config packs
@@ -35,5 +38,18 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
                 e.printStackTrace();
             }
         }
+        for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".jar") || file.getName().endsWith(".terra"))) {
+            try {
+                Debug.info("Loading ZIP archive: " + zip.getName());
+                getRegistry().load(new ZipFile(zip));
+            } catch(IOException | ConfigException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void load(ZipFile file) throws ConfigException {
+        ConfigPack pack = new ConfigPack(file);
+        add(pack.getTemplate().getID(), pack);
     }
 }

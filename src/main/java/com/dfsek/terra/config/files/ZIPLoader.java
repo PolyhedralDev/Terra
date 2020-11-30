@@ -13,10 +13,8 @@ public class ZIPLoader extends Loader {
     }
 
     @Override
-    public Loader open(String directory) {
-        if(streams.size() != 0) throw new IllegalStateException("Attempted to load folder before closing InputStreams");
+    protected void load(String directory) {
         Enumeration<? extends ZipEntry> entries = file.entries();
-
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             if(!entry.isDirectory() && entry.getName().startsWith(directory) && entry.getName().endsWith(".yml")) {
@@ -27,6 +25,5 @@ public class ZIPLoader extends Loader {
                 }
             }
         }
-        return this;
     }
 }

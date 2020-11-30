@@ -19,8 +19,7 @@ public class FolderLoader extends Loader {
     }
 
     @Override
-    public Loader open(String directory) {
-        if(streams.size() != 0) throw new IllegalStateException("Attempted to load folder before closing InputStreams");
+    protected void load(String directory) {
         File newPath = new File(path.toFile(), directory);
         newPath.mkdirs();
         try(Stream<Path> paths = Files.walk(newPath.toPath())) {
@@ -34,6 +33,5 @@ public class FolderLoader extends Loader {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        return this;
     }
 }

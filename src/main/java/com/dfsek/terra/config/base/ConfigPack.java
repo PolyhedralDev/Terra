@@ -105,17 +105,15 @@ public class ConfigPack {
         long l = System.nanoTime();
 
         InputStream stream = null;
-        Enumeration<? extends ZipEntry> entries = file.entries();
 
-        while(entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            if(entry.getName().equals("pack.yml")) {
-                try {
-                    stream = file.getInputStream(entry);
-                } catch(IOException e) {
-                    throw new LoadException("Unable to load pack.yml from ZIP file", e);
-                }
+        try {
+            Enumeration<? extends ZipEntry> entries = file.entries();
+            while(entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if(entry.getName().equals("pack.yml")) stream = file.getInputStream(entry);
             }
+        } catch(IOException e) {
+            throw new LoadException("Unable to load pack.yml from ZIP file", e);
         }
         if(stream == null) throw new FileMissingException("No pack.yml file found in " + file.getName());
 

@@ -23,10 +23,15 @@ public abstract class Loader {
     /**
      * Open a subdirectory.
      *
-     * @param directory
-     * @return
+     * @param directory Directory to open
      */
-    public abstract Loader open(String directory);
+    public Loader open(String directory) {
+        if(streams.size() != 0) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
+        load(directory);
+        return this;
+    }
+
+    protected abstract void load(String directory);
 
     /**
      * Close all InputStreams opened.
