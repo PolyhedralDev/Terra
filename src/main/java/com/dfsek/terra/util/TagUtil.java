@@ -1,6 +1,7 @@
 package com.dfsek.terra.util;
 
 import com.dfsek.terra.Debug;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -37,6 +39,24 @@ public final class TagUtil {
         }
         putCustomSet("minecraft:base_stone_nether", Material.NETHERRACK, Material.BASALT, Material.BLACKSTONE);
         putCustomSet("minecraft:base_stone_overworld", Material.STONE, Material.GRANITE, Material.DIORITE, Material.ANDESITE);
+
+        Set<Material> snow = new HashSet<>();
+        for(Material m : Material.values()) {
+            String name = m.toString().toLowerCase();
+            if(name.contains("slab")
+                    || name.contains("stair")
+                    || name.contains("wall")
+                    || name.contains("fence")
+                    || name.contains("lantern")
+                    || name.contains("chest")
+                    || name.contains("door")
+                    || name.contains("repeater")
+                    || name.equals("lily_pad")
+                    || name.equals("snow")
+                    || name.equals("pane")) snow.add(m);
+        }
+        tagMap.put("terra:snow_blacklist", snow);
+        Bukkit.getLogger().info("Added " + snow.size() + " materials to snow blacklist");
     }
 
     private static Set<Material> getSet(Material... materials) {

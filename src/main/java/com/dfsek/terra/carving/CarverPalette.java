@@ -1,21 +1,21 @@
 package com.dfsek.terra.carving;
 
+import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.math.ProbabilityCollection;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
 public class CarverPalette {
     private final boolean blacklist;
-    private final Set<Material> replace;
+    private final MaterialSet replace;
     private final TreeMap<Integer, ProbabilityCollection<BlockData>> map = new TreeMap<>();
     private ProbabilityCollection<BlockData>[] layers;
 
-    public CarverPalette(Set<Material> replaceable, boolean blacklist) {
+    public CarverPalette(MaterialSet replaceable, boolean blacklist) {
         this.blacklist = blacklist;
         this.replace = replaceable;
     }

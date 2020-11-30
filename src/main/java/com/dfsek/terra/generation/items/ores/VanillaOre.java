@@ -1,21 +1,20 @@
 package com.dfsek.terra.generation.items.ores;
 
+import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.math.Range;
 
 import java.util.Random;
-import java.util.Set;
 
 
 public class VanillaOre extends Ore {
     private final Range sizeRange;
 
-    public VanillaOre(BlockData material, Set<Material> replaceable, boolean applyGravity, Range size) {
+    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size) {
         super(material, replaceable, applyGravity);
         this.sizeRange = size;
     }

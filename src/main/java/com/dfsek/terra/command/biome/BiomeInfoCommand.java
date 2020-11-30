@@ -50,42 +50,6 @@ public class BiomeInfoCommand extends WorldCommand {
             }
         }
 
-        // Get snow info
-        /*
-        BiomeSnowConfig snowConfig = bio.getSnow();
-        StringBuilder snowMessage = new StringBuilder("----------Snow----------\n");
-        int comp = snowConfig.getSnowChance(0);
-        int compHeight = 0;
-        boolean changed = false;
-        // Rebuild original snow data (rather than simply getting it, since it may have changed during initial assembly, if any overlaps occurred)
-        for(int i = 0; i <= 255; i++) {
-            int snow = snowConfig.getSnowChance(i);
-            if(snow != comp) {
-                changed = true;
-                snowMessage.append("Y=")
-                        .append(compHeight)
-                        .append("-")
-                        .append(i)
-                        .append(": ")
-                        .append(comp)
-                        .append("% snow\n");
-                comp = snow;
-                compHeight = i;
-            }
-        }
-        if(!changed) {
-            snowMessage.append("Y=0")
-                    .append("-255")
-                    .append(": ")
-                    .append(comp)
-                    .append("% snow\n");
-        }
-        sender.sendMessage(snowMessage.toString());
-
-        sender.sendMessage("Do snow: " + snowConfig.doSnow());
-
-         */
-        // TODO: implementation
         return true;
     }
 

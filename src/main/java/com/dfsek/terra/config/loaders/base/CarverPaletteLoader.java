@@ -6,14 +6,13 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.Types;
-import org.bukkit.Material;
+import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.math.ProbabilityCollection;
 
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class CarverPaletteLoader implements TypeLoader<CarverPalette> {
@@ -22,7 +21,7 @@ public class CarverPaletteLoader implements TypeLoader<CarverPalette> {
     @Override
     public CarverPalette load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Configuration configuration = new Configuration((Map<String, Object>) o);
-        CarverPalette palette = new CarverPalette((Set<Material>) configLoader.loadType(Types.MATERIAL_SET_TYPE, configuration.get("replace")), (Boolean) configuration.get("replace-blacklist"));
+        CarverPalette palette = new CarverPalette((MaterialSet) configLoader.loadType(MaterialSet.class, configuration.get("replace")), (Boolean) configuration.get("replace-blacklist"));
 
         for(Map<String, Object> map : (List<Map<String, Object>>) configuration.get("layers")) {
             ProbabilityCollection<BlockData> layer = (ProbabilityCollection<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));

@@ -6,8 +6,10 @@ import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.BlockDataLoader;
 import com.dfsek.terra.config.loaders.FloraLayerLoader;
+import com.dfsek.terra.config.loaders.FloraSearchLoader;
 import com.dfsek.terra.config.loaders.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.MaterialLoader;
+import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.NoiseBuilderLoader;
 import com.dfsek.terra.config.loaders.OreConfigLoader;
 import com.dfsek.terra.config.loaders.OreTypeLoader;
@@ -20,6 +22,7 @@ import com.dfsek.terra.config.loaders.VanillaBiomeLoader;
 import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
+import com.dfsek.terra.generation.items.flora.TerraFlora;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.generation.items.ores.OreConfig;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
@@ -50,6 +53,8 @@ public final class ConfigUtil {
                 .registerLoader(Ore.Type.class, new OreTypeLoader())
                 .registerLoader(OreConfig.class, new OreConfigLoader())
                 .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
-                .registerLoader(TreeLayer.class, new TreeLayerLoader());
+                .registerLoader(TreeLayer.class, new TreeLayerLoader())
+                .registerLoader(MaterialSet.class, new MaterialSetLoader())
+                .registerLoader(TerraFlora.Search.class, new FloraSearchLoader());
     }
 }

@@ -5,22 +5,21 @@ import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedBlock;
 import com.dfsek.terra.structure.StructureInfo;
+import com.dfsek.terra.util.MaterialSet;
 import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.tree.Tree;
 
 import java.util.Random;
-import java.util.Set;
 
 public class TerraTree implements Tree {
-    private final Set<Material> spawnable;
+    private final MaterialSet spawnable;
     private final int yOffset;
     private final ProbabilityCollection<Structure> structure;
 
-    public TerraTree(Set<Material> spawnable, int yOffset, ProbabilityCollection<Structure> structure) {
+    public TerraTree(MaterialSet spawnable, int yOffset, ProbabilityCollection<Structure> structure) {
         this.spawnable = spawnable;
         this.yOffset = yOffset;
         this.structure = structure;
@@ -38,7 +37,7 @@ public class TerraTree implements Tree {
     }
 
     @Override
-    public Set<Material> getSpawnable() {
+    public MaterialSet getSpawnable() {
         return spawnable;
     }
 

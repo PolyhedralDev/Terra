@@ -4,10 +4,10 @@ import com.dfsek.terra.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureInfo;
+import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -19,16 +19,15 @@ import org.polydev.gaea.util.GlueList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
 
 public class EntityFeature implements Feature {
     private final EntityType type;
     private final Range amount;
-    private final Set<Material> in;
-    private final Set<Material> stand;
+    private final MaterialSet in;
+    private final MaterialSet stand;
     private final int inSize;
 
-    public EntityFeature(EntityType type, Range amount, Set<Material> stand, Set<Material> in, int inSize) {
+    public EntityFeature(EntityType type, Range amount, MaterialSet stand, MaterialSet in, int inSize) {
         this.type = type;
         this.amount = amount;
         this.in = in;

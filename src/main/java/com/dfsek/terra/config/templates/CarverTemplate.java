@@ -4,13 +4,12 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.carving.CarverPalette;
+import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.Material;
 import org.polydev.gaea.math.Range;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class CarverTemplate extends AbstractableTemplate {
@@ -105,12 +104,12 @@ public class CarverTemplate extends AbstractableTemplate {
     @Value("shift")
     @Abstractable
     @Default
-    private Map<Material, Set<Material>> shift = new HashMap<>();
+    private Map<Material, MaterialSet> shift = new HashMap<>();
 
     @Value("update")
     @Abstractable
     @Default
-    private Set<Material> update = new HashSet<>();
+    private MaterialSet update = new MaterialSet();
 
     public String getID() {
         return id;
@@ -188,11 +187,11 @@ public class CarverTemplate extends AbstractableTemplate {
         return inner;
     }
 
-    public Map<Material, Set<Material>> getShift() {
+    public Map<Material, MaterialSet> getShift() {
         return shift;
     }
 
-    public Set<Material> getUpdate() {
+    public MaterialSet getUpdate() {
         return update;
     }
 

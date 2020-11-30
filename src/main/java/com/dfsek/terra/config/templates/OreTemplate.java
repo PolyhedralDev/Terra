@@ -4,13 +4,9 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.generation.items.ores.Ore;
-import org.bukkit.Material;
+import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.math.Range;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class OreTemplate extends AbstractableTemplate {
@@ -28,7 +24,7 @@ public class OreTemplate extends AbstractableTemplate {
 
     @Value("replace")
     @Abstractable
-    private List<Material> replaceable;
+    private MaterialSet replaceable;
 
     @Value("physics")
     @Abstractable
@@ -65,8 +61,8 @@ public class OreTemplate extends AbstractableTemplate {
         return material;
     }
 
-    public Set<Material> getReplaceable() {
-        return new HashSet<>(replaceable);
+    public MaterialSet getReplaceable() {
+        return replaceable;
     }
 
     public boolean doPhysics() {

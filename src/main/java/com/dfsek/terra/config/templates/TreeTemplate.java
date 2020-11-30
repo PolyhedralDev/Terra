@@ -4,10 +4,8 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.structure.Structure;
-import org.bukkit.Material;
+import com.dfsek.terra.util.MaterialSet;
 import org.polydev.gaea.math.ProbabilityCollection;
-
-import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class TreeTemplate extends AbstractableTemplate {
@@ -25,7 +23,7 @@ public class TreeTemplate extends AbstractableTemplate {
 
     @Value("spawnable")
     @Abstractable
-    private Set<Material> spawnable;
+    private MaterialSet spawnable;
 
     public ProbabilityCollection<Structure> getStructures() {
         return structures;
@@ -39,7 +37,7 @@ public class TreeTemplate extends AbstractableTemplate {
         return yOffset;
     }
 
-    public Set<Material> getSpawnable() {
+    public MaterialSet getSpawnable() {
         return spawnable;
     }
 }

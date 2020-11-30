@@ -1,9 +1,9 @@
 package com.dfsek.terra.generation.items.flora;
 
+import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -13,37 +13,46 @@ import org.polydev.gaea.world.palette.Palette;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class TerraFlora implements Flora {
     private final Palette<BlockData> floraPalette;
     private final boolean physics;
     private final boolean ceiling;
 
-    private final Set<Material> irrigable;
+    private final MaterialSet irrigable;
 
-    private final Set<Material> spawnable;
-    private final Set<Material> replaceable;
+    private final MaterialSet spawnable;
+    private final MaterialSet replaceable;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, Set<Material> irrigable, Set<Material> spawnable, Set<Material> replaceable) {
+    private final int maxPlacements;
+
+    private final Search search;
+
+    private final boolean spawnBlacklist;
+
+    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, int maxPlacements, Search search, boolean spawnBlacklist) {
         this.floraPalette = floraPalette;
         this.physics = physics;
+        this.spawnBlacklist = spawnBlacklist;
         this.ceiling = ceiling;
         this.irrigable = irrigable;
         this.spawnable = spawnable;
         this.replaceable = replaceable;
+        this.maxPlacements = maxPlacements;
+        this.search = search;
     }
 
     @Override
     public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
         int size = floraPalette.getSize();
-        Block current = chunk.getBlock(x, range.getMin(), z);
+        Block current = chunk.getBlock(x, search.equals(Search.UP) ? range.getMin() : range.getMax(), z);
         List<Block> blocks = new ArrayList<>();
         for(int y : range) {
             if(y > 255 || y < 0) continue;
-            current = current.getRelative(BlockFace.UP);
-            if(spawnable.contains(current.getType()) && isIrrigated(current) && valid(size, current)) {
+            current = current.getRelative(search.equals(Search.UP) ? BlockFace.UP : BlockFace.DOWN);
+            if((spawnBlacklist != spawnable.contains(current.getType())) && isIrrigated(current) && valid(size, current)) {
                 blocks.add(current);
+                if(maxPlacements > 0 && blocks.size() > maxPlacements) break;
             }
         }
         return blocks;
@@ -76,5 +85,10 @@ public class TerraFlora implements Flora {
             location.clone().add(0, i + c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()), physics);
         }
         return true;
+    }
+
+    public enum Search {
+        UP,
+        DOWN
     }
 }

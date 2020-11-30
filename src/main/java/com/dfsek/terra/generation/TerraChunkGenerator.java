@@ -13,7 +13,6 @@ import com.dfsek.terra.math.MathUtil;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
-import com.dfsek.terra.population.SnowPopulator;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.util.DataUtil;
@@ -60,7 +59,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMan.attach(new OrePopulator());
         popMan.attach(new TreePopulator());
         popMan.attach(new FloraPopulator());
-        popMan.attach(new SnowPopulator());
     }
 
     public static synchronized void saveAll() {

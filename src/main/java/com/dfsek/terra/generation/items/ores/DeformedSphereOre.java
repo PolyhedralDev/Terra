@@ -1,7 +1,7 @@
 package com.dfsek.terra.generation.items.ores;
 
+import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
@@ -9,14 +9,13 @@ import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.Range;
 
 import java.util.Random;
-import java.util.Set;
 
 public class DeformedSphereOre extends Ore {
     private final double deform;
     private final double deformFrequency;
     private final Range size;
 
-    public DeformedSphereOre(BlockData material, Set<Material> replaceable, boolean applyGravity, double deform, double deformFrequency, Range size) {
+    public DeformedSphereOre(BlockData material, MaterialSet replaceable, boolean applyGravity, double deform, double deformFrequency, Range size) {
         super(material, replaceable, applyGravity);
         this.deform = deform;
         this.deformFrequency = deformFrequency;

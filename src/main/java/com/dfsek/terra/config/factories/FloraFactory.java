@@ -16,6 +16,6 @@ public class FloraFactory implements TerraFactory<FloraTemplate, Flora> {
         for(PaletteLayer layer : config.getFloraPalette()) {
             palette.add(layer.getLayer(), layer.getSize());
         }
-        return new TerraFlora(palette, config.doPhysics(), config.isCeiling(), config.getIrrigable(), config.getSpawnable(), config.getReplaceable());
+        return new TerraFlora(palette, config.doPhysics(), config.isCeiling(), config.getIrrigable(), config.getSpawnable(), config.getReplaceable(), config.getMaxPlacements(), config.getSearch(), config.isSpawnBlacklist());
     }
 }
