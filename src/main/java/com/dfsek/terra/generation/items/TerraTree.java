@@ -28,7 +28,6 @@ public class TerraTree implements Tree {
 
     @Override
     public boolean plant(Location location, Random random, JavaPlugin javaPlugin) {
-        location.subtract(0, 1, 0);
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
@@ -44,7 +43,6 @@ public class TerraTree implements Tree {
     }
 
     public boolean plantBlockCheck(Location location, Random random) {
-        location.subtract(0, 1, 0);
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
