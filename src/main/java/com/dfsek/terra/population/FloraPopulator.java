@@ -30,7 +30,7 @@ public class FloraPopulator extends GaeaBlockPopulator {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
                     Vector2 l = new Vector2(x, z);
                     biome.getConfig().getFlora().forEach(layer -> {
-                        if(layer.getDensity() >= random.nextDouble() * 100D) layer.plant(chunk, l, random);
+                        if(layer.getDensity() >= random.nextDouble() * 100D) layer.place(chunk, l, random);
                     });
                 }
             }

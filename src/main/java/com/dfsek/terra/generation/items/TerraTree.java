@@ -17,13 +17,11 @@ import java.util.Set;
 
 public class TerraTree implements Tree {
     private final Set<Material> spawnable;
-    private final String id;
     private final int yOffset;
     private final ProbabilityCollection<Structure> structure;
 
-    public TerraTree(Set<Material> spawnable, String id, int yOffset, ProbabilityCollection<Structure> structure) {
+    public TerraTree(Set<Material> spawnable, int yOffset, ProbabilityCollection<Structure> structure) {
         this.spawnable = spawnable;
-        this.id = id;
         this.yOffset = yOffset;
         this.structure = structure;
     }
@@ -38,6 +36,11 @@ public class TerraTree implements Tree {
         if(!struc.checkSpawns(mut, rotation)) return false;
         struc.paste(mut, rotation);
         return true;
+    }
+
+    @Override
+    public Set<Material> getSpawnable() {
+        return spawnable;
     }
 
     public boolean plantBlockCheck(Location location, Random random) {

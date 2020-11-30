@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -16,6 +17,11 @@ public class FolderLoader extends Loader {
 
     public FolderLoader(Path path) {
         this.path = path;
+    }
+
+    @Override
+    public InputStream get(String singleFile) throws IOException {
+        return new FileInputStream(new File(path.toFile(), singleFile));
     }
 
     @Override

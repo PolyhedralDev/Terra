@@ -12,6 +12,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.generation.items.ores.OreConfig;
+import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.math.BlankFunction;
 import com.dfsek.terra.structure.TerraStructure;
 import org.bukkit.Material;
@@ -80,6 +81,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     @Default
     private List<FloraLayer> flora = new GlueList<>();
+
+    @Value("trees")
+    @Abstractable
+    @Default
+    private List<TreeLayer> trees = new GlueList<>();
 
     @Value("slabs.enable")
     @Abstractable
@@ -156,6 +162,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public PaletteHolder getPalette() {
         return palette;
+    }
+
+    public List<TreeLayer> getTrees() {
+        return trees;
     }
 
     public PaletteHolder getSlantPalette() {

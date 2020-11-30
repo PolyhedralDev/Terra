@@ -15,10 +15,12 @@ import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.factories.TerraFactory;
+import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.loaders.StructureLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -27,6 +29,7 @@ import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
+import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
@@ -36,8 +39,11 @@ import com.dfsek.terra.registry.OreRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.TreeRegistry;
+import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.util.ConfigUtil;
 import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 import parsii.eval.Scope;
@@ -69,9 +75,10 @@ public class ConfigPack {
     private final PaletteRegistry paletteRegistry = new PaletteRegistry();
     private final FloraRegistry floraRegistry = new FloraRegistry();
     private final OreRegistry oreRegistry = new OreRegistry();
+    private final TreeRegistry treeRegistry = new TreeRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
-    private final ConfigLoader loader = new ConfigLoader();
+    private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
 
     {
@@ -80,9 +87,10 @@ public class ConfigPack {
                 .registerLoader(Biome.class, biomeRegistry)
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(Flora.class, floraRegistry)
-                .registerLoader(Ore.class, oreRegistry);
+                .registerLoader(Ore.class, oreRegistry)
+                .registerLoader(Tree.class, treeRegistry);
         ConfigUtil.registerAllLoaders(abstractConfigLoader);
-        ConfigUtil.registerAllLoaders(loader);
+        ConfigUtil.registerAllLoaders(selfLoader);
     }
 
     public ConfigPack(File folder) throws ConfigException {
@@ -91,7 +99,7 @@ public class ConfigPack {
         File pack = new File(folder, "pack.yml");
 
         try {
-            loader.load(template, new FileInputStream(pack));
+            selfLoader.load(template, new FileInputStream(pack));
         } catch(FileNotFoundException e) {
             throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
         }
@@ -117,7 +125,7 @@ public class ConfigPack {
         }
         if(stream == null) throw new FileMissingException("No pack.yml file found in " + file.getName());
 
-        loader.load(template, stream);
+        selfLoader.load(template, stream);
 
         load(new ZIPLoader(file));
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
@@ -127,11 +135,13 @@ public class ConfigPack {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
+        abstractConfigLoader.registerLoader(Structure.class, new StructureLoader(loader));
         loader
                 .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new))).close()
                 .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new))).close()
                 .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new))).close()
                 .open("carving").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new))).close()
+                .open("structures/trees").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new))).close()
                 .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)))).close()
                 .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new))).close();
     }

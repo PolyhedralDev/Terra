@@ -15,12 +15,14 @@ import com.dfsek.terra.config.loaders.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.PaletteLayerLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
+import com.dfsek.terra.config.loaders.TreeLayerLoader;
 import com.dfsek.terra.config.loaders.VanillaBiomeLoader;
 import com.dfsek.terra.config.loaders.base.CarverPaletteLoader;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.generation.items.ores.OreConfig;
+import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -47,6 +49,7 @@ public final class ConfigUtil {
                 .registerLoader(FloraLayer.class, new FloraLayerLoader())
                 .registerLoader(Ore.Type.class, new OreTypeLoader())
                 .registerLoader(OreConfig.class, new OreConfigLoader())
-                .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader());
+                .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
+                .registerLoader(TreeLayer.class, new TreeLayerLoader());
     }
 }

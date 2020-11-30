@@ -21,6 +21,14 @@ public abstract class Loader {
     }
 
     /**
+     * Get a single file from this Loader.
+     *
+     * @param singleFile File to get
+     * @return InputStream from file.
+     */
+    public abstract InputStream get(String singleFile) throws IOException;
+
+    /**
      * Open a subdirectory.
      *
      * @param directory Directory to open

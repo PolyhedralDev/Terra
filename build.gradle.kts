@@ -35,7 +35,7 @@ val versionObj = Version("2", "0", "0", true)
 version = versionObj
 
 dependencies {
-    val gaeaVersion = "1.14.3"
+    val gaeaVersion = "1.14.4"
     compileOnly(name = "Gaea-${gaeaVersion}", group = "")
     testImplementation(name = "Gaea-${gaeaVersion}", group = "")
 
