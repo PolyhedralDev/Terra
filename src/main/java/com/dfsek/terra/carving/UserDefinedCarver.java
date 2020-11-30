@@ -2,15 +2,20 @@ package com.dfsek.terra.carving;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.util.FastRandom;
+import org.polydev.gaea.util.GlueList;
 import org.polydev.gaea.world.carving.Carver;
+import org.polydev.gaea.world.carving.CarvingData;
 import org.polydev.gaea.world.carving.Worm;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
@@ -37,10 +42,13 @@ public class UserDefinedCarver extends Carver {
     private final Expression zRad;
     private final Variable lengthVar;
     private final Variable position;
+    private final Range height;
+    private final double sixtyFourSq = FastMath.pow(64, 2);
 
     public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, int hash, int topCut, int bottomCut, CarverTemplate config) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
+        this.height = height;
         this.start = start;
         this.mutate = mutate;
         this.hash = hash;
@@ -74,6 +82,39 @@ public class UserDefinedCarver extends Carver {
         this.recalc = recalc;
     }
 
+    @Override
+    public CarvingData carve(int chunkX, int chunkZ, World w) {
+        CarvingData data = new CarvingData(chunkX, chunkZ);
+        int carvingRadius = getCarvingRadius();
+        TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
+        for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
+            for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
+                if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
+                    long seed = MathUtil.getCarverChunkSeed(x, z, w.getSeed());
+                    Random r = new FastRandom(seed);
+                    Worm carving = getWorm(seed, new Vector((x << 4) + r.nextInt(16), height.get(r), (z << 4) + r.nextInt(16)));
+                    Vector origin = carving.getOrigin();
+                    Biome comp = grid.getBiome(origin.toLocation(w), GenerationPhase.POPULATE);
+                    List<Worm.WormPoint> points = new GlueList<>();
+                    boolean v = true;
+                    for(int i = 0; i < carving.getLength(); i++) {
+                        carving.step();
+                        if(!grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE).equals(comp)) {
+                            v = false;
+                            break;
+                        }
+                        if(carving.getRunning().clone().setY(0).distanceSquared(origin.clone().setY(0)) > sixtyFourSq) break;
+                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
+                            continue;
+                        points.add(carving.getPoint());
+                    }
+                    if(v) points.forEach(point -> point.carve(data, chunkX, chunkZ));
+                }
+            }
+        }
+        return data;
+    }
+
     public void setRecalcMagnitude(double recalcMagnitude) {
         this.recalcMagnitude = recalcMagnitude;
     }
@@ -105,6 +146,11 @@ public class UserDefinedCarver extends Carver {
             position.setValue(0);
             lengthVar.setValue(length);
             setRadius(new int[] {(int) (xRad.evaluate()), (int) (yRad.evaluate()), (int) (zRad.evaluate())});
+        }
+
+        @Override
+        public WormPoint getPoint() {
+            return new WormPoint(getRunning().clone(), getRadius(), config.getCutTop(), config.getCutBottom());
         }
 
         @Override
