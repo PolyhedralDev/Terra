@@ -3,6 +3,8 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.config.ValidatedConfigTemplate;
+import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -10,19 +12,23 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.generation.items.ores.OreConfig;
+import com.dfsek.terra.math.BlankFunction;
 import com.dfsek.terra.structure.TerraStructure;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.util.GlueList;
 import org.polydev.gaea.world.palette.Palette;
+import parsii.eval.Parser;
+import parsii.eval.Scope;
+import parsii.tokenizer.ParseException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
-public class BiomeTemplate extends AbstractableTemplate {
+public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
 
     private final ConfigPack pack;
     @Value("id")
@@ -178,5 +184,31 @@ public class BiomeTemplate extends AbstractableTemplate {
 
     public Map<Ore, OreConfig> getOres() {
         return ores;
+    }
+
+    @Override
+    public boolean validate() throws ValidationException {
+        Parser tester = new Parser();
+        Scope testScope = new Scope().withParent(pack.getVarScope());
+        testScope.create("x");
+        testScope.create("y");
+        testScope.create("z");
+        testScope.create("seed");
+
+        pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
+
+        try {
+            tester.parse(noiseEquation, testScope);
+        } catch(ParseException e) {
+            throw new ValidationException("Invalid noise equation: ", e);
+        }
+
+        try {
+            if(elevationEquation != null) tester.parse(elevationEquation, testScope);
+        } catch(ParseException e) {
+            throw new ValidationException("Invalid elevation equation: ", e);
+        }
+
+        return true;
     }
 }
