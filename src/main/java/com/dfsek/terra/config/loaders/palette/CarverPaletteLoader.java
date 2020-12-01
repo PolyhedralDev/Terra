@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.base;
+package com.dfsek.terra.config.loaders.palette;
 
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.LoadException;
