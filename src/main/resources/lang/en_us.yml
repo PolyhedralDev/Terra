@@ -88,7 +88,7 @@ world-config:
   error: "Unable to load configuration for world %s"
   done: "World load complete. Time elapsed: %sms"
 config-pack:
-  loaded: "Loaded config %1$s in %2$sms."
+  loaded: "config %1$s by %3$s loaded in %2$sms."
 config:
   loaded: "Loaded %1$s from file %2$s"
   loaded-all: "Loaded %1$s %2$s(s) in %3$sms."

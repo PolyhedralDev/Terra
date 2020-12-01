@@ -107,7 +107,7 @@ public class ConfigPack {
 
         load(new FolderLoader(folder.toPath()));
 
-        LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D));
+        LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - l) / 1000000D), template.getAuthor());
     }
 
     public ConfigPack(ZipFile file) throws ConfigException {

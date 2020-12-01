@@ -85,8 +85,16 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private boolean vanillaStructures = false;
 
+    @Value("author")
+    @Default
+    private String author = "Anon Y. Mous";
+
     public String getID() {
         return id;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public boolean vanillaMobs() {
