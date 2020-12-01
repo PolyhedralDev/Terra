@@ -11,6 +11,7 @@ import com.dfsek.terra.config.loaders.config.FloraLayerLoader;
 import com.dfsek.terra.config.loaders.config.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.config.loaders.config.OreConfigLoader;
+import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
@@ -20,6 +21,7 @@ import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.flora.TerraFlora;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.generation.items.ores.OreConfig;
+import com.dfsek.terra.generation.items.ores.OreHolder;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.procgen.GridSpawn;
 import org.bukkit.Bukkit;
@@ -51,6 +53,7 @@ public final class ConfigUtil {
                 .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
+                .registerLoader(OreHolder.class, new OreHolderLoader())
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf((String) o));
     }
 }

@@ -11,8 +11,7 @@ import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.TerraStructure;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
-import com.dfsek.terra.generation.items.ores.Ore;
-import com.dfsek.terra.generation.items.ores.OreConfig;
+import com.dfsek.terra.generation.items.ores.OreHolder;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.math.BlankFunction;
 import org.bukkit.Material;
@@ -62,7 +61,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("ores")
     @Abstractable
     @Default
-    private Map<Ore, OreConfig> ores = new HashMap<>();
+    private OreHolder oreHolder = new OreHolder();
     @Value("ocean.level")
     @Abstractable
     @Default
@@ -192,8 +191,8 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return noiseEquation;
     }
 
-    public Map<Ore, OreConfig> getOres() {
-        return ores;
+    public OreHolder getOreHolder() {
+        return oreHolder;
     }
 
     @Override
