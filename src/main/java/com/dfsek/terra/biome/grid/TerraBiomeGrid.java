@@ -22,9 +22,8 @@ public class TerraBiomeGrid extends BiomeGrid {
     private final BiomeZone zone;
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
-    private BiomeGrid erosionGrid;
 
-    public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, BiomeGrid erosion) {
+    public TerraBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c) {
         super(w, freq1, freq2, 0, 0);
         ConfigPackTemplate t = c.getTemplate();
         if(c.getTemplate().isBlend()) {
@@ -33,7 +32,6 @@ public class TerraBiomeGrid extends BiomeGrid {
         this.zone = zone;
         if(c.getTemplate().isErode()) {
             erode = new ErosionNoise(t.getErodeFreq(), t.getErodeThresh(), t.getErodeOctaves(), w.getSeed());
-            this.erosionGrid = erosion;
         }
     }
 
@@ -45,7 +43,7 @@ public class TerraBiomeGrid extends BiomeGrid {
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x;
         int zp = z;
-        if(perturb != null && phase.equals(GenerationPhase.PALETTE_APPLY)) {
+        if(perturb != null && (phase.equals(GenerationPhase.PALETTE_APPLY) || phase.equals(GenerationPhase.POPULATE))) {
             Vector2 perturbCoords = perturb.getShiftedCoords(x, z);
             xp = (int) perturbCoords.getX();
             zp = (int) perturbCoords.getZ();
@@ -61,9 +59,7 @@ public class TerraBiomeGrid extends BiomeGrid {
             failNum++;
             return null;
         }
-        if(erode != null && b.isErodible() && erode.isEroded(xp, zp)) {
-            return erosionGrid.getBiome(xp, zp, phase);
-        }
+        if(erode.isEroded(xp, zp)) return b.getErode();
         return b;
     }
 

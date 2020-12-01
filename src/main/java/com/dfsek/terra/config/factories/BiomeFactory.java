@@ -26,6 +26,6 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, UserDefinedBiom
         generatorBuilder.setVarScope(pack.getVarScope());
 
 
-        return new UserDefinedBiome(template.getVanilla(), decorator, generatorBuilder, template.isErodible(), template);
+        return new UserDefinedBiome(template.getVanilla(), decorator, generatorBuilder, template, pack);
     }
 }

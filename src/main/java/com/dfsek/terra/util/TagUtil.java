@@ -53,7 +53,8 @@ public final class TagUtil {
                     || name.contains("repeater")
                     || name.equals("lily_pad")
                     || name.equals("snow")
-                    || name.equals("pane")) snow.add(m);
+                    || name.equals("pane")
+                    || !m.isSolid()) snow.add(m);
         }
         tagMap.put("terra:snow_blacklist", snow);
         Bukkit.getLogger().info("Added " + snow.size() + " materials to snow blacklist");

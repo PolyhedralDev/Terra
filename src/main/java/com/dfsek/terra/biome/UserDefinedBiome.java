@@ -1,6 +1,7 @@
 package com.dfsek.terra.biome;
 
 import com.dfsek.terra.WorldObject;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.UserDefinedDecorator;
@@ -21,16 +22,17 @@ public class UserDefinedBiome implements Biome, WorldObject {
     private final org.bukkit.block.Biome vanilla;
     private final String id;
     private final BiomeTemplate config;
-    private final boolean erode;
+    private final ConfigPack pack;
+    private UserDefinedBiome erode;
 
 
-    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, boolean erode, BiomeTemplate config) {
+    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
         this.id = config.getID();
-        this.erode = erode;
         this.config = config;
+        this.pack = pack;
     }
 
     /**
@@ -77,9 +79,13 @@ public class UserDefinedBiome implements Biome, WorldObject {
         return id;
     }
 
-    public boolean isErodible() {
+    public UserDefinedBiome getErode() {
+        if(erode == null) {
+            erode = (config.getErode() == null) ? this : pack.getBiome(config.getErode());
+        }
         return erode;
     }
+
 
     public BiomeTemplate getConfig() {
         return config;

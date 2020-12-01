@@ -1,4 +1,4 @@
-package com.dfsek.terra.generation.items;
+package com.dfsek.terra.generation.items.tree;
 
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Rotation;

@@ -10,6 +10,7 @@ import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.tree.Tree;
+import org.polydev.gaea.tree.TreeType;
 
 import java.util.Random;
 
@@ -25,7 +26,11 @@ public class TreeLayer extends PlaceableLayer<Tree> {
         Block current = chunk.getBlock((int) coords.getX(), level.getMax(), (int) coords.getZ());
         for(int ignored : level) {
             current = current.getRelative(BlockFace.DOWN);
-            if(item.getSpawnable().contains(current.getType())) item.plant(current.getLocation(), random, Terra.getInstance());
+            if(item.getSpawnable().contains(current.getType())) {
+                if(item instanceof TreeType && current.getRelative(BlockFace.UP).isEmpty())
+                    item.plant(current.getLocation().add(0, 1, 0), random, Terra.getInstance());
+                else if(!(item instanceof TreeType)) item.plant(current.getLocation(), random, Terra.getInstance());
+            }
         }
     }
 }

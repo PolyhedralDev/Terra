@@ -58,6 +58,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
@@ -144,6 +145,13 @@ public class ConfigPack {
                 .open("structures/trees").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new))).close()
                 .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)))).close()
                 .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new))).close();
+        for(UserDefinedBiome b : biomeRegistry.entries()) {
+            try {
+                Objects.requireNonNull(b.getErode()); // Throws NPE if it cannot load erosion biomes.
+            } catch(NullPointerException e) {
+                throw new LoadException("Invalid erosion biome defined in biome \"" + b.getID() + "\"", e);
+            }
+        }
     }
 
     private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates) throws LoadException {

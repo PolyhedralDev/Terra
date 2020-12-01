@@ -44,10 +44,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("vanilla")
     @Abstractable
     private Biome vanilla;
-    @Value("erodible")
+    @Value("erode")
     @Abstractable
     @Default
-    private boolean erodible = false;
+    private String erode = null;
     @Value("structures")
     @Abstractable
     @Default
@@ -176,8 +176,8 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return vanilla;
     }
 
-    public boolean isErodible() {
-        return erodible;
+    public String getErode() {
+        return erode;
     }
 
     public List<TerraStructure> getStructures() {

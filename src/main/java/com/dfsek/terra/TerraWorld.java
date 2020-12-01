@@ -13,7 +13,6 @@ import org.polydev.gaea.biome.BiomeGrid;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class TerraWorld {
     private static final Map<World, TerraWorld> map = new HashMap<>();
@@ -49,24 +48,8 @@ public class TerraWorld {
                 Bukkit.getLogger().severe("Terrain will NOT generate properly at this point. Correct your config before using your server!");
             }
         }
-        BiomeGrid erosion = null;
-        String erosionName = template.getErodeGrid();
-        if(template.isErode()) {
-            try {
-                BiomeGridBuilder g = Objects.requireNonNull(config.getBiomeGrid(erosionName));
-                BiomeGrid b = g.build(w, worldConfig);
-                erosion = b;
-            } catch(NullPointerException e) {
-                safe = false;
-                Debug.stack(e);
-                Bukkit.getLogger().severe("No such BiomeGrid (erosion): " + erosionName);
-                Bukkit.getLogger().severe("Please check configuration files for errors. Configuration errors will have been reported during initialization.");
-                Bukkit.getLogger().severe("ONLY report this to Terra if you are SURE your config is error-free.");
-                Bukkit.getLogger().severe("Terrain will NOT generate properly at this point. Correct your config before using your server!");
-            }
-        }
         zone = new BiomeZone(w, worldConfig, definedGrids);
-        grid = new TerraBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config, erosion);
+        grid = new TerraBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config);
     }
 
     public static void loadWorld(WorldConfig w) {

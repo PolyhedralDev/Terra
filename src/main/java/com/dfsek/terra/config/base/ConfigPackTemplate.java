@@ -69,10 +69,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private int erodeOctaves = 5;
 
-    @Value("erode.grid")
-    @Default
-    private String erodeGrid = null;
-
     @Value("vanilla.mobs")
     @Default
     private boolean vanillaMobs = false;
@@ -163,9 +159,5 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public int getErodeOctaves() {
         return erodeOctaves;
-    }
-
-    public String getErodeGrid() {
-        return erodeGrid;
     }
 }
