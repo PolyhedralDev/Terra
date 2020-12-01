@@ -27,13 +27,6 @@ public class StructureTemplate extends AbstractableTemplate {
     @Abstractable
     private Range bound;
 
-    @Value("spawn.width")
-    @Abstractable
-    private int width;
-
-    @Value("spawn.padding")
-    @Abstractable
-    private int padding;
 
     @Value("spawn")
     @Abstractable
@@ -63,13 +56,6 @@ public class StructureTemplate extends AbstractableTemplate {
         return bound;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getPadding() {
-        return padding;
-    }
 
     public GridSpawn getSpawn() {
         return spawn;

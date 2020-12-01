@@ -6,7 +6,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.templates.StructureTemplate;
+import com.dfsek.terra.generation.items.TerraStructure;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -40,13 +40,13 @@ public class StructurePopulator extends BlockPopulator {
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
             structure:
-            for(StructureTemplate conf : config.getStructures()) {
+            for(TerraStructure conf : config.getStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
                 if(!((UserDefinedBiome) grid.getBiome(spawn)).getConfig().getStructures().contains(conf)) continue;
                 Random r2 = new FastRandom(spawn.hashCode());
                 Structure struc = conf.getStructures().get(r2);
                 Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
-                for(int y = conf.getY().get(r2); y > 0; y--) {
+                for(int y = conf.getSpawnStart().get(r2); y > 0; y--) {
                     if(!conf.getBound().isInRange(y)) continue structure;
                     spawn.setY(y);
                     if(!struc.checkSpawns(spawn, rotation)) continue;

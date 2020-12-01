@@ -6,7 +6,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.TerraChunkGenerator;
-import com.dfsek.terra.structure.TerraStructure;
+import com.dfsek.terra.generation.items.TerraStructure;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -46,7 +46,7 @@ public class BiomeInfoCommand extends WorldCommand {
         else {
             sender.sendMessage("-------Structures-------");
             for(TerraStructure c : structureConfigs) {
-                sender.sendMessage(" - " + c.getID());
+                sender.sendMessage(" - " + c.getTemplate().getID());
             }
         }
 

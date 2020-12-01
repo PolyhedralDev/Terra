@@ -1,6 +1,6 @@
 package com.dfsek.terra.registry;
 
-import com.dfsek.terra.config.templates.StructureTemplate;
+import com.dfsek.terra.generation.items.TerraStructure;
 
-public class StructureRegistry extends TerraRegistry<StructureTemplate> {
+public class StructureRegistry extends TerraRegistry<TerraStructure> {
 }

@@ -2,7 +2,7 @@ package com.dfsek.terra.async;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
-import com.dfsek.terra.config.templates.StructureTemplate;
+import com.dfsek.terra.generation.items.TerraStructure;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.Location;
@@ -17,8 +17,8 @@ import java.util.function.Consumer;
 /**
  * Runnable to locate structures asynchronously
  */
-public class AsyncStructureFinder extends AsyncFeatureFinder<StructureTemplate> {
-    public AsyncStructureFinder(TerraBiomeGrid grid, StructureTemplate target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
+public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
+    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
         super(grid, target, origin, startRadius, maxRadius, callback);
         setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
     }
@@ -30,7 +30,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<StructureTemplate> 
      * @param z Z coordinate
      * @return Whether location is a valid spawn for StructureConfig
      */
-    public boolean isValid(int x, int z, StructureTemplate target) {
+    public boolean isValid(int x, int z, TerraStructure target) {
         World world = getWorld();
         Location spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
         if(!((UserDefinedBiome) getGrid().getBiome(spawn)).getConfig().getStructures().contains(target))
@@ -38,7 +38,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<StructureTemplate> 
         Random r2 = new FastRandom(spawn.hashCode());
         Structure struc = target.getStructures().get(r2);
         Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
-        for(int y = target.getY().get(r2); y > 0; y--) {
+        for(int y = target.getSpawnStart().get(r2); y > 0; y--) {
             if(!target.getBound().isInRange(y)) return false;
             spawn.setY(y);
             if(!struc.checkSpawns(spawn, rotation)) continue;

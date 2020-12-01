@@ -16,7 +16,7 @@ public class PaletteHolderBuilder {
         return this;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     public PaletteHolder build() {
         Palette<BlockData>[] palettes = new Palette[paletteMap.lastKey() + 1];
         for(int y = 0; y <= FastMath.max(paletteMap.lastKey(), 255); y++) {
