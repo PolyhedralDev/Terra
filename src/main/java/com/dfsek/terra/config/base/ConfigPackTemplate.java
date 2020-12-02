@@ -71,7 +71,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("vanilla.mobs")
     @Default
-    private boolean vanillaMobs = false;
+    private boolean vanillaMobs = true;
 
     @Value("vanilla.caves")
     @Default
@@ -88,6 +88,14 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("author")
     @Default
     private String author = "Anon Y. Mous";
+
+    @Value("disable.sapling")
+    @Default
+    private boolean disableSaplings = false;
+
+    public boolean isDisableSaplings() {
+        return disableSaplings;
+    }
 
     public String getID() {
         return id;

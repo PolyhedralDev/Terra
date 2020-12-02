@@ -44,6 +44,7 @@ import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.util.ConfigUtil;
+import com.dfsek.terra.util.StructureTypeEnum;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
@@ -58,6 +59,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -83,6 +85,8 @@ public class ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
+
+    private final Map<StructureTypeEnum, TerraStructure> structureMap = new HashMap<>();
 
     {
         abstractConfigLoader
@@ -156,6 +160,7 @@ public class ConfigPack {
                 throw new LoadException("Invalid erosion biome defined in biome \"" + b.getID() + "\"", e);
             }
         }
+        template.getStructureLocatables().forEach((type, name) -> structureMap.put(Objects.requireNonNull(type), Objects.requireNonNull(structureRegistry.get(name))));
     }
 
     private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates) throws LoadException {
@@ -198,11 +203,19 @@ public class ConfigPack {
         return ids;
     }
 
+    public TreeRegistry getTreeRegistry() {
+        return treeRegistry;
+    }
+
     public ConfigPackTemplate getTemplate() {
         return template;
     }
 
     public Scope getVarScope() {
         return varScope;
+    }
+
+    public TerraStructure getStructureLocatable(StructureTypeEnum type) {
+        return structureMap.get(type);
     }
 }

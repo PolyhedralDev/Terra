@@ -1,5 +1,17 @@
 package com.dfsek.terra;
 
+import com.dfsek.terra.async.AsyncStructureFinder;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.generation.items.tree.TerraTree;
+import com.dfsek.terra.registry.TreeRegistry;
+import com.dfsek.terra.util.StructureTypeEnum;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.EnderSignal;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,6 +21,9 @@ import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.polydev.gaea.GaeaPlugin;
+import org.polydev.gaea.tree.Tree;
+import org.polydev.gaea.tree.TreeType;
+import org.polydev.gaea.util.FastRandom;
 
 public class EventListener implements Listener {
     private final GaeaPlugin main;
@@ -19,13 +34,12 @@ public class EventListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEnderEye(EntitySpawnEvent e) {
-        /*
         Entity entity = e.getEntity();
         if(e.getEntityType().equals(EntityType.ENDER_SIGNAL)) {
             Debug.info("Detected Ender Signal...");
             TerraWorld tw = TerraWorld.getWorld(e.getEntity().getWorld());
             EnderSignal signal = (EnderSignal) entity;
-            StructureTemplate config = tw.getConfig().getTemplate().getStructureLocatables().get(StructureTypeEnum.STRONGHOLD);
+            TerraStructure config = tw.getConfig().getStructureLocatable(StructureTypeEnum.STRONGHOLD);
             if(config != null) {
                 Debug.info("Overriding Ender Signal...");
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getGrid(), config, e.getLocation(), 0, 500, location -> {
@@ -36,8 +50,6 @@ public class EventListener implements Listener {
             } else
                 main.getLogger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
         }
-         */
-        // TODO: implementation
     }
 
     @EventHandler
@@ -57,11 +69,10 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onSaplingGrow(StructureGrowEvent e) {
-        /*
         if(!TerraWorld.isTerraWorld(e.getWorld())) return;
         TerraWorld tw = TerraWorld.getWorld(e.getWorld());
         ConfigPack c = tw.getConfig();
-        if(c.preventSaplingOverride) return;
+        if(c.getTemplate().isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();
         BlockData data = block.getBlockData();
@@ -70,11 +81,9 @@ public class EventListener implements Listener {
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
         if(tree instanceof TerraTree) {
-            if(!tree.plant(e.getLocation(), new FastRandom(), Terra.getInstance())) {
+            if(!((TerraTree) tree).plantBlockCheck(e.getLocation().subtract(0, 1, 0), new FastRandom())) {
                 block.setBlockData(data);
             }
-        } else if(!tree.plant(e.getLocation(), new FastRandom(), Terra.getInstance())) block.setBlockData(data);
-        */
-        // TODO: implementation
+        } else if(!tree.plant(e.getLocation().subtract(0, 1, 0), new FastRandom(), Terra.getInstance())) block.setBlockData(data);
     }
 }
