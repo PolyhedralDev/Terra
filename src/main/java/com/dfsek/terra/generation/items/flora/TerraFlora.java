@@ -52,7 +52,7 @@ public class TerraFlora implements Flora {
             current = current.getRelative(search.equals(Search.UP) ? BlockFace.UP : BlockFace.DOWN);
             if((spawnBlacklist != spawnable.contains(current.getType())) && isIrrigated(current) && valid(size, current)) {
                 blocks.add(current);
-                if(maxPlacements > 0 && blocks.size() > maxPlacements) break;
+                if(maxPlacements > 0 && blocks.size() >= maxPlacements) break;
             }
         }
         return blocks;

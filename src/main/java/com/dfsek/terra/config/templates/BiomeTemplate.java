@@ -101,7 +101,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private Map<Material, Palette<BlockData>> slabPalettes;
 
-    @Value("stair-palettes")
+    @Value("slabs.stair-palettes")
     @Abstractable
     @Default
     private Map<Material, Palette<BlockData>> stairPalettes;

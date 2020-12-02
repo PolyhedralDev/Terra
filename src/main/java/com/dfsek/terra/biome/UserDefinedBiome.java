@@ -1,6 +1,5 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.WorldObject;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * Class representing a config-defined biome
  */
-public class UserDefinedBiome implements Biome, WorldObject {
+public class UserDefinedBiome implements Biome {
     private final GeneratorBuilder gen;
     private final UserDefinedDecorator decorator;
     private final org.bukkit.block.Biome vanilla;
