@@ -8,13 +8,13 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.util.GlueList;
 import org.polydev.gaea.world.carving.Carver;
-import org.polydev.gaea.world.carving.CarvingData;
 import org.polydev.gaea.world.carving.Worm;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
@@ -24,6 +24,7 @@ import parsii.tokenizer.ParseException;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class UserDefinedCarver extends Carver {
     private final double[] start; // 0, 1, 2 = x, y, z.
@@ -82,11 +83,11 @@ public class UserDefinedCarver extends Carver {
     }
 
     @Override
-    public CarvingData carve(int chunkX, int chunkZ, World w) {
-        CarvingData data = new CarvingData(chunkX, chunkZ);
+    public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector, CarvingType> consumer) {
         int carvingRadius = getCarvingRadius();
         TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
+            z:
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
                     long seed = MathUtil.getCarverChunkSeed(x, z, w.getSeed());
@@ -94,24 +95,20 @@ public class UserDefinedCarver extends Carver {
                     Worm carving = getWorm(seed, new Vector((x << 4) + r.nextInt(16), height.get(r), (z << 4) + r.nextInt(16)));
                     Vector origin = carving.getOrigin();
                     List<Worm.WormPoint> points = new GlueList<>();
-                    boolean v = true;
                     for(int i = 0; i < carving.getLength(); i++) {
-                        if((i & 1) == 0 // This check is laggy. Do it every other step.
-                                && !((UserDefinedBiome) grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE)).getConfig().getCarvers().containsKey(this)) { // Stop if we enter a biome this carver is not present in
-                            v = false;
-                            break;
-                        }
                         carving.step();
-                        if(carving.getRunning().clone().setY(0).distanceSquared(origin.clone().setY(0)) > sixtyFourSq) break;
+                        Biome biome = grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE);
+                        if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(this)) { // Stop if we enter a biome this carver is not present in
+                            continue z;
+                        }
                         if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
                             continue;
                         points.add(carving.getPoint());
                     }
-                    if(v) points.forEach(point -> point.carve(data, chunkX, chunkZ));
+                    points.forEach(point -> point.carve(chunkX, chunkZ, consumer));
                 }
             }
         }
-        return data;
     }
 
     public void setRecalcMagnitude(double recalcMagnitude) {
