@@ -21,6 +21,7 @@ import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.loaders.LootTableLoader;
 import com.dfsek.terra.config.loaders.StructureLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
@@ -46,6 +47,7 @@ import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.util.ConfigUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.polydev.gaea.biome.Biome;
+import org.polydev.gaea.structures.loot.LootTable;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
@@ -143,7 +145,8 @@ public class ConfigPack {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
-        abstractConfigLoader.registerLoader(Structure.class, new StructureLoader(loader));
+        abstractConfigLoader.registerLoader(Structure.class, new StructureLoader(loader))
+                .registerLoader(LootTable.class, new LootTableLoader(loader)); // These loaders need access to the Loader instance to get files.
         loader
                 .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new))).close()
                 .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new))).close()
