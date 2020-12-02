@@ -8,7 +8,6 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
@@ -94,15 +93,15 @@ public class UserDefinedCarver extends Carver {
                     Random r = new FastRandom(seed);
                     Worm carving = getWorm(seed, new Vector((x << 4) + r.nextInt(16), height.get(r), (z << 4) + r.nextInt(16)));
                     Vector origin = carving.getOrigin();
-                    Biome comp = grid.getBiome(origin.toLocation(w), GenerationPhase.POPULATE);
                     List<Worm.WormPoint> points = new GlueList<>();
                     boolean v = true;
                     for(int i = 0; i < carving.getLength(); i++) {
-                        carving.step();
-                        if(!grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE).equals(comp)) {
+                        if((i & 1) == 0 // This check is laggy. Do it every other step.
+                                && !((UserDefinedBiome) grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE)).getConfig().getCarvers().containsKey(this)) { // Stop if we enter a biome this carver is not present in
                             v = false;
                             break;
                         }
+                        carving.step();
                         if(carving.getRunning().clone().setY(0).distanceSquared(origin.clone().setY(0)) > sixtyFourSq) break;
                         if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
                             continue;
