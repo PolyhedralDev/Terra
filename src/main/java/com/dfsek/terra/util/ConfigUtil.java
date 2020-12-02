@@ -12,6 +12,7 @@ import com.dfsek.terra.config.loaders.config.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.config.loaders.config.OreConfigLoader;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
+import com.dfsek.terra.config.loaders.config.StructureFeatureLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
@@ -24,10 +25,12 @@ import com.dfsek.terra.generation.items.ores.OreConfig;
 import com.dfsek.terra.generation.items.ores.OreHolder;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.procgen.GridSpawn;
+import com.dfsek.terra.structure.features.Feature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.EntityType;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 
@@ -54,6 +57,8 @@ public final class ConfigUtil {
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
+                .registerLoader(Feature.class, new StructureFeatureLoader())
+                .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o))
                 .registerLoader(StructureTypeEnum.class, (t, o, l) -> StructureTypeEnum.valueOf((String) o))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf((String) o));
     }

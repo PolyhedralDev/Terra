@@ -11,6 +11,7 @@ import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedInventory;
+import com.dfsek.terra.structure.features.Feature;
 import com.dfsek.terra.util.PopulationUtil;
 import com.dfsek.terra.util.structure.RotationUtil;
 import net.jafama.FastMath;
@@ -72,8 +73,7 @@ public class StructurePopulator extends BlockPopulator {
                                 Debug.stack(e);
                             }
                         }
-                        //for(Feature f : conf.getFeatures()) f.apply(struc, rotation, spawn, chunk); // Apply features.
-                        // TODO: features
+                        for(Feature f : conf.getTemplate().getFeatures()) f.apply(struc, rotation, spawn, chunk); // Apply features.
                         break;
                     }
                 }
