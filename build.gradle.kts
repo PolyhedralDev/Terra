@@ -56,7 +56,7 @@ dependencies {
 
     implementation("net.jafama:jafama:2.3.2")
 
-    implementation(name = "Tectonic-0.1.0", group = "")
+    implementation(name = "Tectonic-1.0.0", group = "")
 
 
     // JUnit.

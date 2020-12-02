@@ -101,8 +101,9 @@ public class UserDefinedCarver extends Carver {
                         if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(this)) { // Stop if we enter a biome this carver is not present in
                             continue z;
                         }
-                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
+                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) { // Only carve in the current chunk.
                             continue;
+                        }
                         points.add(carving.getPoint());
                     }
                     points.forEach(point -> point.carve(chunkX, chunkZ, consumer));
