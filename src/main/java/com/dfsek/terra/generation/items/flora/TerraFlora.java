@@ -30,7 +30,9 @@ public class TerraFlora implements Flora {
 
     private final boolean spawnBlacklist;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, int maxPlacements, Search search, boolean spawnBlacklist) {
+    private final int irrigableOffset;
+
+    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset) {
         this.floraPalette = floraPalette;
         this.physics = physics;
         this.spawnBlacklist = spawnBlacklist;
@@ -40,6 +42,7 @@ public class TerraFlora implements Flora {
         this.replaceable = replaceable;
         this.maxPlacements = maxPlacements;
         this.search = search;
+        this.irrigableOffset = irrigableOffset;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class TerraFlora implements Flora {
         for(int y : range) {
             if(y > 255 || y < 0) continue;
             current = current.getRelative(search.equals(Search.UP) ? BlockFace.UP : BlockFace.DOWN);
-            if((spawnBlacklist != spawnable.contains(current.getType())) && isIrrigated(current) && valid(size, current)) {
+            if((spawnBlacklist != spawnable.contains(current.getType())) && isIrrigated(current.getRelative(BlockFace.UP, irrigableOffset)) && valid(size, current)) {
                 blocks.add(current);
                 if(maxPlacements > 0 && blocks.size() >= maxPlacements) break;
             }

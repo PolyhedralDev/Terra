@@ -59,6 +59,15 @@ public class FloraTemplate extends AbstractableTemplate {
     @Abstractable
     private int maxPlacements = -1;
 
+    @Value("irrigable-offset")
+    @Abstractable
+    @Default
+    private int irrigableOffset;
+
+    public int getIrrigableOffset() {
+        return irrigableOffset;
+    }
+
     public TerraFlora.Search getSearch() {
         return search;
     }

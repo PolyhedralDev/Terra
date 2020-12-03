@@ -112,13 +112,13 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
                 if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
+                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
                     Stairs stairNew = (Stairs) stair.clone();
                     stairNew.setHalf(Bisected.Half.TOP);
                     if(placePart(orig, chunk, block, thresh, sampler, stairNew)) return;
                 }
             }
-            BlockData slab = slabs.getOrDefault(up.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
+            BlockData slab = slabs.getOrDefault(up.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ()).clone();
             if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
             if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
             if(slab instanceof Waterlogged) {
