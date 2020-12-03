@@ -31,7 +31,7 @@ public class ReloadCommand extends Command implements DebugCommand {
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         PluginConfig.load(getMain());
         LangUtil.load(PluginConfig.getLanguage(), getMain()); // Load language.
-        ConfigRegistry.loadAll(getMain());
+        if(!ConfigRegistry.loadAll(getMain())) LangUtil.send("command.reload-error", sender);
         TerraWorld.invalidate();
         LangUtil.send("command.reload", sender);
         return true;

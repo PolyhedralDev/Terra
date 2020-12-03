@@ -18,7 +18,7 @@ public class AirSpawn extends Requirement {
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
         BiomeTemplate c = b.getConfig();
         if(y <= c.getSeaLevel()) return false;
-        int yf = (int) (y - ((WorldGenerator) b.getGenerator()).getElevation(x, z));
-        return b.getGenerator().getNoise(getNoise(), getWorld(), x, yf, z) <= 0;
+        double elevation = ((WorldGenerator) b.getGenerator()).getElevation(x, z);
+        return b.getGenerator().getNoise(getNoise(), getWorld(), x, y, z) + elevation <= 0;
     }
 }

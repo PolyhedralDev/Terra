@@ -29,13 +29,15 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
         add(pack.getTemplate().getID(), pack);
     }
 
-    public static void loadAll(JavaPlugin main) {
+    public static boolean loadAll(JavaPlugin main) {
+        boolean valid = true;
         File packsFolder = new File(main.getDataFolder(), "packs");
         for(File dir : packsFolder.listFiles(File::isDirectory)) {
             try {
                 getRegistry().load(dir);
             } catch(ConfigException e) {
                 e.printStackTrace();
+                valid = false;
             }
         }
         for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".jar") || file.getName().endsWith(".terra"))) {
@@ -44,8 +46,10 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
                 getRegistry().load(new ZipFile(zip));
             } catch(IOException | ConfigException e) {
                 e.printStackTrace();
+                valid = false;
             }
         }
+        return valid;
     }
 
     public void load(ZipFile file) throws ConfigException {

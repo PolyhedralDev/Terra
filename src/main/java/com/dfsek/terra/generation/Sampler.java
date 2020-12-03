@@ -13,6 +13,6 @@ public class Sampler {
     }
 
     public double sample(double x, double y, double z) {
-        return interpolator.getNoise(x, y - elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z)), z);
+        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
     }
 }

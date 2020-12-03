@@ -15,7 +15,7 @@ public class LandSpawn extends Requirement {
     public boolean matches(int x, int y, int z) {
         TerraWorld tw = TerraWorld.getWorld(getWorld());
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
-        int yf = (int) (y - ((WorldGenerator) b.getGenerator()).getElevation(x, z));
-        return b.getGenerator().getNoise(getNoise(), getWorld(), x, yf, z) > 0;
+        double elevation = ((WorldGenerator) b.getGenerator()).getElevation(x, z);
+        return b.getGenerator().getNoise(getNoise(), getWorld(), x, y, z) + elevation > 0;
     }
 }

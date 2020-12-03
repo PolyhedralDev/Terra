@@ -20,8 +20,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
@@ -85,33 +87,15 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         return c.getPalette().getPalette(y);
     }
 
-    private static void prepareBlockPart(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                         Map<Material, Palette<BlockData>> stairs, double thresh, ChunkInterpolator interpolator, ElevationInterpolator elevationInterpolator) {
-        double elevation = elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ());
-        if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - 0.4 - elevation, block.getBlockZ()) > thresh) {
+    private static void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
+                                              Map<Material, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+        if(sampler.sample(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
                     Stairs stairNew = (Stairs) stair.clone();
-                    int elevationN = (int) elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() - 1); // Northern elevation
-                    int elevationS = (int) elevationInterpolator.getElevation(block.getBlockX(), block.getBlockZ() + 1); // Southern elevation
-                    int elevationE = (int) elevationInterpolator.getElevation(block.getBlockX() + 1, block.getBlockZ()); // Eastern elevation
-                    int elevationW = (int) elevationInterpolator.getElevation(block.getBlockX() - 1, block.getBlockZ()); // Western elevation
-                    if(interpolator.getNoise(block.getBlockX() - 0.5, block.getBlockY() - elevationW, block.getBlockZ()) > thresh) {
-                        stairNew.setFacing(BlockFace.WEST);
-                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - elevationN, block.getBlockZ() - 0.5) > thresh) {
-                        stairNew.setFacing(BlockFace.NORTH);
-                    } else if(interpolator.getNoise(block.getBlockX(), block.getBlockY() - elevationS, block.getBlockZ() + 0.5) > thresh) {
-                        stairNew.setFacing(BlockFace.SOUTH);
-                    } else if(interpolator.getNoise(block.getBlockX() + 0.5, block.getBlockY() - elevationE, block.getBlockZ()) > thresh) {
-                        stairNew.setFacing(BlockFace.EAST);
-                    } else stairNew = null;
-                    if(stairNew != null) {
-                        if(orig.matches(DataUtil.WATER)) stairNew.setWaterlogged(true);
-                        chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
-                        return;
-                    }
+                    if(placePart(orig, chunk, block, thresh, sampler, stairNew)) return;
                 }
             }
             BlockData slab = slabs.getOrDefault(down.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
@@ -120,6 +104,46 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
             } else if(orig.matches(DataUtil.WATER)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
+    }
+
+    private static void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
+                                                Map<Material, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+        if(sampler.sample(block.getBlockX(), block.getBlockY() + 0.4, block.getBlockZ()) > thresh) {
+            if(stairs != null) {
+                Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
+                if(stairPalette != null) {
+                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
+                    Stairs stairNew = (Stairs) stair.clone();
+                    stairNew.setHalf(Bisected.Half.TOP);
+                    if(placePart(orig, chunk, block, thresh, sampler, stairNew)) return;
+                }
+            }
+            BlockData slab = slabs.getOrDefault(up.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
+            if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
+            if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
+            if(slab instanceof Waterlogged) {
+                ((Waterlogged) slab).setWaterlogged(orig.matches(DataUtil.WATER));
+            } else if(orig.matches(DataUtil.WATER)) return;
+            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
+        }
+    }
+
+    private static boolean placePart(BlockData orig, ChunkData chunk, Vector block, double thresh, Sampler sampler, Stairs stairNew) {
+        if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+            stairNew.setFacing(BlockFace.WEST);
+        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.55) > thresh) {
+            stairNew.setFacing(BlockFace.NORTH);
+        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.55) > thresh) {
+            stairNew.setFacing(BlockFace.SOUTH);
+        } else if(sampler.sample(block.getBlockX() + 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+            stairNew.setFacing(BlockFace.EAST);
+        } else stairNew = null;
+        if(stairNew != null) {
+            if(orig.matches(DataUtil.WATER)) stairNew.setWaterlogged(true);
+            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -158,19 +182,30 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
 
                 int sea = c.getSeaLevel();
                 Palette<BlockData> seaPalette = c.getOceanPalette();
+
+                boolean justSet = false;
+                BlockData data = null;
                 for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
                     if(sampler.sample(x, y, z) > 0) {
-                        BlockData data = getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
+                        justSet = true;
+                        data = getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && c.doSlabs() && y < 255) {
-                            prepareBlockPart(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), c.getSlabPalettes(),
-                                    c.getStairPalettes(), c.getSlabThreshold(), interpolator, elevationInterpolator);
+                            prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), c.getSlabPalettes(),
+                                    c.getStairPalettes(), c.getSlabThreshold(), sampler);
                         }
                         paletteLevel++;
                     } else if(y <= sea) {
+                        justSet = false;
                         chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
-                    } else paletteLevel = 0;
+                    } else {
+                        if(justSet && c.doSlabs()) {
+                            prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                        }
+                        justSet = false;
+                        paletteLevel = 0;
+                    }
                 }
             }
         }
