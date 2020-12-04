@@ -5,6 +5,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
+import com.dfsek.terra.math.RandomFunction;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -42,6 +43,7 @@ public class UserDefinedCarver extends Carver {
     private final Expression zRad;
     private final Variable lengthVar;
     private final Variable position;
+    private final Variable seedVar;
     private final Range height;
     private final double sixtyFourSq = FastMath.pow(64, 2);
 
@@ -57,10 +59,15 @@ public class UserDefinedCarver extends Carver {
         this.config = config;
 
         Parser p = new Parser();
+
+        p.registerFunction("rand", new RandomFunction());
+
         Scope s = new Scope().withParent(parent);
 
         lengthVar = s.create("length");
         position = s.create("position");
+        seedVar = s.create("seed");
+
 
         xRad = p.parse(radii.get(0), s);
         yRad = p.parse(radii.get(1), s);
@@ -91,6 +98,7 @@ public class UserDefinedCarver extends Carver {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
                     long seed = MathUtil.getCarverChunkSeed(x, z, w.getSeed());
+                    seedVar.setValue(seed);
                     Random r = new FastRandom(seed);
                     Worm carving = getWorm(seed, new Vector((x << 4) + r.nextInt(16), height.get(r), (z << 4) + r.nextInt(16)));
                     Vector origin = carving.getOrigin();
@@ -151,7 +159,7 @@ public class UserDefinedCarver extends Carver {
         }
 
         @Override
-        public void step() {
+        public synchronized void step() {
             if(steps == nextDirection) {
                 direction.rotateAroundX(FastMath.toRadians((getRandom().nextGaussian()) * mutate[0] * recalcMagnitude));
                 direction.rotateAroundY(FastMath.toRadians((getRandom().nextGaussian()) * mutate[1] * recalcMagnitude));
