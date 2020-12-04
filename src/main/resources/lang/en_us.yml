@@ -28,6 +28,10 @@ command:
     invalid-radius: "Invalid radius: \"%s\""
     invalid: "Invalid Biome ID: \"%s\""
     in: "You are in \"%s\""
+  packs:
+    main: "Currently installed config packs:"
+    pack: " - %1$s by %2$s"
+    none: "No config packs are installed."
   ore:
     main-menu:
       - "---------------Terra/ore---------------"
