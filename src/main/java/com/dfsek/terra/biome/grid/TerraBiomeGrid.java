@@ -59,7 +59,7 @@ public class TerraBiomeGrid extends BiomeGrid {
             failNum++;
             return null;
         }
-        if(erode.isEroded(xp, zp)) return b.getErode();
+        if(erode != null && erode.isEroded(xp, zp)) return b.getErode();
         return b;
     }
 

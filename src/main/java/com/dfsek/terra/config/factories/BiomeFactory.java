@@ -24,6 +24,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, UserDefinedBiom
         generatorBuilder.setPalettes(template.getPalette());
         generatorBuilder.setSlantPalettes(template.getSlantPalette());
         generatorBuilder.setVarScope(pack.getVarScope());
+        generatorBuilder.setInterpolateElevation(template.interpolateElevation());
 
 
         return new UserDefinedBiome(template.getVanilla(), decorator, generatorBuilder, template, pack);

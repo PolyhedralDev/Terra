@@ -32,10 +32,10 @@ public class WorldGenerator extends Generator {
     private final Variable zVar;
     private final Variable elevationXVar;
     private final Variable elevationZVar;
-    private boolean elevationInterpolation = true;
+    private final boolean elevationInterpolation;
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean preventSmooth) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean preventSmooth, boolean elevationInterpolation) {
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
         Parser ep = new Parser();
@@ -51,6 +51,8 @@ public class WorldGenerator extends Generator {
 
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
+
+        this.elevationInterpolation = elevationInterpolation;
 
         for(Map.Entry<String, NoiseBuilder> e : noiseBuilders.entrySet()) {
             switch(e.getValue().getDimensions()) {
@@ -133,8 +135,4 @@ public class WorldGenerator extends Generator {
         return elevationInterpolation;
     }
 
-    public WorldGenerator setElevationInterpolation(boolean elevationInterpolation) {
-        this.elevationInterpolation = elevationInterpolation;
-        return this;
-    }
 }

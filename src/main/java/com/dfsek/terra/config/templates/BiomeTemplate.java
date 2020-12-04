@@ -111,6 +111,15 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private double slantThreshold = 0.1;
 
+    @Value("interpolate-elevation")
+    @Abstractable
+    @Default
+    private boolean interpolateElevation = true;
+
+    public boolean interpolateElevation() {
+        return interpolateElevation;
+    }
+
     public double getSlantThreshold() {
         return slantThreshold;
     }
