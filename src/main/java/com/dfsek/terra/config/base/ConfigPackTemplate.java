@@ -93,6 +93,14 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private boolean disableSaplings = false;
 
+    @Value("version")
+    @Default
+    private String version = "0.1.0";
+
+    public String getVersion() {
+        return version;
+    }
+
     public boolean isDisableSaplings() {
         return disableSaplings;
     }
