@@ -1,3 +1,4 @@
+//import java.util.zip.ZipFile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.io.ByteArrayOutputStream
 import java.net.URL
@@ -5,8 +6,6 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
-//import java.util.zip.ZipFile
-import java.util.zip.ZipInputStream
 
 plugins {
     java
@@ -164,9 +163,9 @@ val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         file("${buildDir}/resources/main/packs/").deleteRecursively()
 
         val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
-        downloadAndUnzipPack(defaultPackUrl)
+        downloadPack(defaultPackUrl)
         val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
-        downloadAndUnzipPack(netherPackUrl)
+        downloadPack(netherPackUrl)
     }
 }
 tasks.processResources.get().dependsOn(downloadDefaultPacks)
@@ -229,16 +228,9 @@ fun gitClone(name: String) {
     }
 }
 
-fun downloadAndUnzipPack(packUrl: URL) {
-    ZipInputStream(packUrl.openStream()).use { zip ->
-        while (true) {
-            val entry = zip.nextEntry ?: break
-            if (entry.isDirectory)
-                file("${buildDir}/resources/main/packs/${entry.name}").mkdirs()
-            else
-                file("${buildDir}/resources/main/packs/${entry.name}").outputStream().use { output ->
-                    output.write(zip.readBytes())
-                }
-        }
-    }
+fun downloadPack(packUrl: URL) {
+    val fileName = packUrl.file.substring(packUrl.file.lastIndexOf("/"))
+    val file = file("${buildDir}/resources/main/packs/${fileName}")
+    file.parentFile.mkdirs()
+    file.outputStream().write(packUrl.readBytes())
 }
