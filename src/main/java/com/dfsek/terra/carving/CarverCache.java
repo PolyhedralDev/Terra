@@ -3,6 +3,7 @@ package com.dfsek.terra.carving;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.config.base.PluginConfig;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.biome.Biome;
@@ -21,9 +22,11 @@ import java.util.Random;
 public class CarverCache {
     private final Map<ChunkCoordinate, List<Worm.WormPoint>> carvers = new HashMap<>();
 
-    public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, World w, ChunkCoordinate look, UserDefinedCarver carver) {
+    public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, World w, UserDefinedCarver carver) {
 
         ChunkCoordinate req = new ChunkCoordinate(chunkX, chunkZ, w.getUID());
+
+        if(carvers.size() > PluginConfig.getCacheSize() * 2) carvers.clear();
 
         return carvers.computeIfAbsent(req, key -> {
             TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
@@ -31,7 +34,6 @@ public class CarverCache {
             carver.getSeedVar().setValue(seed);
             Random r = new FastRandom(seed);
             Worm carving = carver.getWorm(seed, new Vector((chunkX << 4) + r.nextInt(16), carver.getConfig().getHeight().get(r), (chunkZ << 4) + r.nextInt(16)));
-            Vector origin = carving.getOrigin();
             List<Worm.WormPoint> points = new GlueList<>();
             for(int i = 0; i < carving.getLength(); i++) {
                 carving.step();

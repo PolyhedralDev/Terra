@@ -2,7 +2,6 @@ package com.dfsek.terra.carving;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.math.RandomFunction;
@@ -12,7 +11,6 @@ import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
-import org.polydev.gaea.population.ChunkCoordinate;
 import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
@@ -105,12 +103,10 @@ public class UserDefinedCarver extends Carver {
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector, CarvingType> consumer) {
         int carvingRadius = getCarvingRadius();
-        TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
-            z:
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
-                    cache.getPoints(x, z, w, new ChunkCoordinate(chunkX, chunkZ, w.getUID()), this).forEach(point -> {
+                    cache.getPoints(x, z, w, this).forEach(point -> {
                         Vector origin = point.getOrigin();
                         if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
                             return;
