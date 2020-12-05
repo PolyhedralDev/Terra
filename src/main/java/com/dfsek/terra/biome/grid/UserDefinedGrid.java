@@ -1,6 +1,5 @@
 package com.dfsek.terra.biome.grid;
 
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.Location;
@@ -16,7 +15,7 @@ public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader.Channel channelX;
     private final ImageLoader.Channel channelZ;
 
-    public UserDefinedGrid(World w, double freq1, double freq2, UserDefinedBiome[][] b, WorldConfig c) {
+    public UserDefinedGrid(World w, double freq1, double freq2, Biome[][] b, WorldConfig c) {
         super(w, freq1, freq2, b.length, b[0].length);
         super.setGrid(b);
         imageLoader = c.imageLoader;

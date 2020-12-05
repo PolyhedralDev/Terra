@@ -4,8 +4,9 @@
     <entry_points version="2.0">
       <entry_point TYPE="field" FQNAME="com.dfsek.terra.util.StructureTypeEnum NETHER_FORTRESS" />
     </entry_points>
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="org.bukkit.event.EventHandler" />
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="com.dfsek.tectonic.annotations.Value" />
+      <item index="1" class="java.lang.String" itemvalue="org.bukkit.event.EventHandler" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

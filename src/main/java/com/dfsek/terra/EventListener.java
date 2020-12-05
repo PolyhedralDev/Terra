@@ -2,8 +2,8 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.genconfig.TreeConfig;
-import com.dfsek.terra.config.genconfig.structure.StructureConfig;
+import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.generation.items.tree.TerraTree;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.bukkit.Material;
@@ -39,7 +39,7 @@ public class EventListener implements Listener {
             Debug.info("Detected Ender Signal...");
             TerraWorld tw = TerraWorld.getWorld(e.getEntity().getWorld());
             EnderSignal signal = (EnderSignal) entity;
-            StructureConfig config = tw.getConfig().getLocatable().get(StructureTypeEnum.STRONGHOLD);
+            TerraStructure config = tw.getConfig().getStructureLocatable(StructureTypeEnum.STRONGHOLD);
             if(config != null) {
                 Debug.info("Overriding Ender Signal...");
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getGrid(), config, e.getLocation(), 0, 500, location -> {
@@ -72,7 +72,7 @@ public class EventListener implements Listener {
         if(!TerraWorld.isTerraWorld(e.getWorld())) return;
         TerraWorld tw = TerraWorld.getWorld(e.getWorld());
         ConfigPack c = tw.getConfig();
-        if(c.preventSaplingOverride) return;
+        if(c.getTemplate().isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();
         BlockData data = block.getBlockData();
@@ -80,10 +80,10 @@ public class EventListener implements Listener {
         TreeRegistry registry = c.getTreeRegistry();
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
-        if(tree instanceof TreeConfig) {
-            if(!((TreeConfig) tree).plantBlockCheck(e.getLocation(), new FastRandom())) {
+        if(tree instanceof TerraTree) {
+            if(!((TerraTree) tree).plantBlockCheck(e.getLocation().subtract(0, 1, 0), new FastRandom())) {
                 block.setBlockData(data);
             }
-        } else if(!tree.plant(e.getLocation(), new FastRandom(), Terra.getInstance())) block.setBlockData(data);
+        } else if(!tree.plant(e.getLocation().subtract(0, 1, 0), new FastRandom(), Terra.getInstance())) block.setBlockData(data);
     }
 }

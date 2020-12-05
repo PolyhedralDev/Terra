@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.config;
 
-import com.dfsek.terra.config.genconfig.noise.NoiseConfig;
+import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.math.RandomFunction;
@@ -20,9 +20,9 @@ import java.util.Map;
 
 public class WorldGenerator extends Generator {
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
-    private final Palette<BlockData>[] palettes;
+    private final PaletteHolder palettes;
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
-    private final Palette<BlockData>[] slantPalettes;
+    private final PaletteHolder slantPalettes;
 
     private final boolean preventSmooth;
     private final Expression noiseExp;
@@ -32,10 +32,10 @@ public class WorldGenerator extends Generator {
     private final Variable zVar;
     private final Variable elevationXVar;
     private final Variable elevationZVar;
-    private boolean elevationInterpolation = true;
+    private final boolean elevationInterpolation;
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseConfig> noiseBuilders, Palette[] palettes, Palette[] slantPalettes, boolean preventSmooth) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean preventSmooth, boolean elevationInterpolation) {
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
         Parser ep = new Parser();
@@ -52,14 +52,16 @@ public class WorldGenerator extends Generator {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
 
-        for(Map.Entry<String, NoiseConfig> e : noiseBuilders.entrySet()) {
+        this.elevationInterpolation = elevationInterpolation;
+
+        for(Map.Entry<String, NoiseBuilder> e : noiseBuilders.entrySet()) {
             switch(e.getValue().getDimensions()) {
                 case 2:
-                    p.registerFunction(e.getKey(), new NoiseFunction2(seed, e.getValue().getBuilder()));
-                    ep.registerFunction(e.getKey(), new NoiseFunction2(seed, e.getValue().getBuilder()));
+                    p.registerFunction(e.getKey(), new NoiseFunction2(seed, e.getValue()));
+                    ep.registerFunction(e.getKey(), new NoiseFunction2(seed, e.getValue()));
                     break;
                 case 3:
-                    p.registerFunction(e.getKey(), new NoiseFunction3(seed, e.getValue().getBuilder()));
+                    p.registerFunction(e.getKey(), new NoiseFunction3(seed, e.getValue()));
                     break;
             }
         }
@@ -111,11 +113,11 @@ public class WorldGenerator extends Generator {
      */
     @Override
     public Palette<BlockData> getPalette(int y) {
-        return palettes[y];
+        return palettes.getPalette(y);
     }
 
     public Palette<BlockData> getSlantPalette(int y) {
-        return slantPalettes[y];
+        return slantPalettes.getPalette(y);
     }
 
 
@@ -133,8 +135,4 @@ public class WorldGenerator extends Generator {
         return elevationInterpolation;
     }
 
-    public WorldGenerator setElevationInterpolation(boolean elevationInterpolation) {
-        this.elevationInterpolation = elevationInterpolation;
-        return this;
-    }
 }

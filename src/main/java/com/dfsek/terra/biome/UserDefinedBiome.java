@@ -1,7 +1,8 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.config.genconfig.biome.GeneratorOptions;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.builder.GeneratorBuilder;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import org.bukkit.World;
 import org.polydev.gaea.biome.Biome;
@@ -15,21 +16,22 @@ import java.util.List;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements Biome {
-    private final GeneratorOptions gen;
+    private final GeneratorBuilder gen;
     private final UserDefinedDecorator decorator;
     private final org.bukkit.block.Biome vanilla;
     private final String id;
-    private final BiomeConfig config;
-    private final boolean erode;
+    private final BiomeTemplate config;
+    private final ConfigPack pack;
+    private UserDefinedBiome erode;
 
 
-    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorOptions gen, boolean erode, BiomeConfig config) {
+    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
         this.id = config.getID();
-        this.erode = erode;
         this.config = config;
+        this.pack = pack;
     }
 
     /**
@@ -49,7 +51,7 @@ public class UserDefinedBiome implements Biome {
      */
     @Override
     public Generator getGenerator() {
-        return gen.getGenerator(0);
+        return gen.build(0);
     }
 
     /**
@@ -76,16 +78,20 @@ public class UserDefinedBiome implements Biome {
         return id;
     }
 
-    public boolean isErodible() {
+    public UserDefinedBiome getErode() {
+        if(erode == null) {
+            erode = (config.getErode() == null) ? this : pack.getBiome(config.getErode());
+        }
         return erode;
     }
 
-    public BiomeConfig getConfig() {
+
+    public BiomeTemplate getConfig() {
         return config;
     }
 
     @Override
     public Generator getGenerator(World w) {
-        return gen.getGenerator(w.getSeed());
+        return gen.build(w.getSeed());
     }
 }

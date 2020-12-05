@@ -1,26 +1,74 @@
 package com.dfsek.terra.generation.config;
 
+import com.dfsek.tectonic.annotations.Default;
+import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.config.ConfigTemplate;
 import org.polydev.gaea.math.FastNoiseLite;
 
-public class NoiseBuilder {
+public class NoiseBuilder implements ConfigTemplate {
+    @Value("type")
+    @Default
     private FastNoiseLite.NoiseType type = FastNoiseLite.NoiseType.OpenSimplex2;
+
+    @Value("fractal.octaves")
+    @Default
     private int octaves = 1;
+
+    @Value("fractal.type")
+    @Default
     private FastNoiseLite.FractalType fractalType = FastNoiseLite.FractalType.None;
+
+    @Value("frequency")
+    @Default
     private double frequency = 0.02D;
+
+    @Value("fractal.gain")
+    @Default
     private double fractalGain = 0.5D;
+
+    @Value("fractal.lacunarity")
+    @Default
     private double fractalLacunarity = 2.0D;
+
+    @Value("fractal.ping-pong")
+    @Default
     private double pingPong = 2.0D;
+
+    @Value("fractal.weighted-strength")
+    @Default
     private double weightedStrength = 0.0D;
+
+    @Value("offset")
+    @Default
     private int seedOffset = 0;
 
+    @Value("cellular.distance")
+    @Default
     private FastNoiseLite.CellularDistanceFunction cellularDistanceFunction = FastNoiseLite.CellularDistanceFunction.EuclideanSq;
+
+    @Value("cellular.return")
+    @Default
     private FastNoiseLite.CellularReturnType cellularReturnType = FastNoiseLite.CellularReturnType.Distance;
+
+    @Value("cellular.jitter")
+    @Default
     private double cellularJitter = 1.0D;
 
+    @Value("domain-warp.type")
+    @Default
     private FastNoiseLite.DomainWarpType domainWarpType = FastNoiseLite.DomainWarpType.OpenSimplex2;
+
+    @Value("domain-warp.amplitude")
+    @Default
     private double domainWarpAmp = 1.0D;
 
+    @Value("rotation-type")
+    @Default
     private FastNoiseLite.RotationType3D rotationType3D = FastNoiseLite.RotationType3D.None;
+
+    @Value("dimensions")
+    @Default
+    private int dimensions = 2;
 
     public FastNoiseLite build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
@@ -181,6 +229,14 @@ public class NoiseBuilder {
     public NoiseBuilder setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
         this.rotationType3D = rotationType3D;
         return this;
+    }
+
+    public int getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(int dimensions) {
+        this.dimensions = dimensions;
     }
 }
 

@@ -1,10 +1,26 @@
 package com.dfsek.terra.registry;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.loading.TypeLoader;
 
-public abstract class TerraRegistry<T> {
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+
+public abstract class TerraRegistry<T> implements TypeLoader<T> {
     private final Map<String, T> objects = new HashMap<>();
+
+    @Override
+    public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+        T obj = get((String) o);
+        if(obj == null)
+            throw new LoadException("No such " + type.getTypeName() + " matching \"" + o + "\" was found in this registry.");
+        return obj;
+    }
 
     /**
      * Add an object to the registry with a name.
@@ -37,5 +53,20 @@ public abstract class TerraRegistry<T> {
      */
     public T get(String id) {
         return objects.get(id);
+    }
+
+    public void forEach(Consumer<T> consumer) {
+        objects.forEach((id, obj) -> consumer.accept(obj));
+    }
+
+    public Set<T> entries() {
+        return new HashSet<>(objects.values());
+    }
+
+    /**
+     * Clears all entries from the registry.
+     */
+    public void clear() {
+        objects.clear();
     }
 }

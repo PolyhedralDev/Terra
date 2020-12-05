@@ -3,11 +3,10 @@ package com.dfsek.terra.command.biome;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.genconfig.biome.BiomeConfig;
-import com.dfsek.terra.config.genconfig.biome.BiomeSnowConfig;
-import com.dfsek.terra.config.genconfig.structure.StructureConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import com.dfsek.terra.generation.items.TerraStructure;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,59 +29,26 @@ public class BiomeInfoCommand extends WorldCommand {
         ConfigPack cfg = TerraWorld.getWorld(world).getConfig();
         UserDefinedBiome b;
         try {
-            b = cfg.getBiome(id).getBiome();
+            b = cfg.getBiome(id);
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.biome.invalid", sender, id);
             return true;
         }
         sender.sendMessage("Biome info for \"" + b.getID() + "\".");
         sender.sendMessage("Vanilla biome: " + b.getVanillaBiome());
-        sender.sendMessage("Erodible: " + b.isErodible());
+        sender.sendMessage("Eroded by: " + b.getErode());
 
 
-        BiomeConfig bio = b.getConfig();
-        List<StructureConfig> structureConfigs = bio.getStructures();
+        BiomeTemplate bio = b.getConfig();
+        List<TerraStructure> structureConfigs = bio.getStructures();
 
         if(structureConfigs.size() == 0) sender.sendMessage("No Structures");
         else {
             sender.sendMessage("-------Structures-------");
-            for(StructureConfig c : structureConfigs) {
-                sender.sendMessage(" - " + c.getID());
+            for(TerraStructure c : structureConfigs) {
+                sender.sendMessage(" - " + c.getTemplate().getID());
             }
         }
-
-        // Get snow info
-        BiomeSnowConfig snowConfig = bio.getSnow();
-        StringBuilder snowMessage = new StringBuilder("----------Snow----------\n");
-        int comp = snowConfig.getSnowChance(0);
-        int compHeight = 0;
-        boolean changed = false;
-        // Rebuild original snow data (rather than simply getting it, since it may have changed during initial assembly, if any overlaps occurred)
-        for(int i = 0; i <= 255; i++) {
-            int snow = snowConfig.getSnowChance(i);
-            if(snow != comp) {
-                changed = true;
-                snowMessage.append("Y=")
-                        .append(compHeight)
-                        .append("-")
-                        .append(i)
-                        .append(": ")
-                        .append(comp)
-                        .append("% snow\n");
-                comp = snow;
-                compHeight = i;
-            }
-        }
-        if(!changed) {
-            snowMessage.append("Y=0")
-                    .append("-255")
-                    .append(": ")
-                    .append(comp)
-                    .append("% snow\n");
-        }
-        sender.sendMessage(snowMessage.toString());
-
-        sender.sendMessage("Do snow: " + snowConfig.doSnow());
 
         return true;
     }

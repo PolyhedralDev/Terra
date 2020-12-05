@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -28,7 +29,6 @@ public final class TagUtil {
                 try {
                     Tag<Material> tag = (Tag<Material>) field.get(new Object());
                     tagMap.put(tag.getKey().toString(), tag.getValues());
-                    Debug.info("Loaded tag: #" + tag.getKey().toString());
                 } catch(IllegalAccessException e) {
                     e.printStackTrace();
                 } catch(ClassCastException ignore) {
@@ -37,6 +37,26 @@ public final class TagUtil {
         }
         putCustomSet("minecraft:base_stone_nether", Material.NETHERRACK, Material.BASALT, Material.BLACKSTONE);
         putCustomSet("minecraft:base_stone_overworld", Material.STONE, Material.GRANITE, Material.DIORITE, Material.ANDESITE);
+
+        Set<Material> snow = new HashSet<>();
+        for(Material m : Material.values()) {
+            String name = m.toString().toLowerCase();
+            if(name.contains("slab")
+                    || name.contains("stair")
+                    || name.contains("wall")
+                    || name.contains("fence")
+                    || name.contains("lantern")
+                    || name.contains("chest")
+                    || name.contains("door")
+                    || name.contains("repeater")
+                    || name.equals("lily_pad")
+                    || name.equals("snow")
+                    || name.equals("pane")
+                    || !m.isSolid()) snow.add(m);
+        }
+        tagMap.put("terra:snow_blacklist", snow);
+        Debug.info("Added " + snow.size() + " materials to snow blacklist");
+        Debug.info("Loaded " + tagMap.size() + " tags.");
     }
 
     private static Set<Material> getSet(Material... materials) {
@@ -45,7 +65,6 @@ public final class TagUtil {
 
     private static void putCustomSet(String key, Material... materials) {
         tagMap.put(key, getSet(materials));
-        Debug.info("Loaded tag: #" + key);
     }
 
     @NotNull

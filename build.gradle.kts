@@ -30,12 +30,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("1", "5", "0", true)
+val versionObj = Version("2", "0", "0", true)
 
 version = versionObj
 
 dependencies {
-    val gaeaVersion = "1.14.3"
+    val gaeaVersion = "1.15.0"
     compileOnly(name = "Gaea-${gaeaVersion}", group = "")
     testImplementation(name = "Gaea-${gaeaVersion}", group = "")
 
@@ -49,12 +49,14 @@ dependencies {
 
     compileOnly("com.googlecode.json-simple:json-simple:1.1")
 
-    implementation(name = "parsii-1.2.1", group = "")
+    implementation("com.scireum:parsii:1.2.1")
 
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
 
     implementation("net.jafama:jafama:2.3.2")
+
+    implementation(name = "Tectonic-1.0.2", group = "")
 
 
     // JUnit.
@@ -107,6 +109,7 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
+    relocate("com.dfsek.tectonic", "com.dfsek.terra.lib.tectonic")
     minimize()
 }
 
