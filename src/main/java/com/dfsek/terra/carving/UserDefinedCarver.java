@@ -9,6 +9,7 @@ import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
+import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.carving.Carver;
@@ -30,6 +31,9 @@ public class UserDefinedCarver extends Carver {
     private final int hash;
     private final int topCut;
     private final int bottomCut;
+    private double step = 2;
+    private Range recalc = new Range(8, 10);
+    private double recalcMagnitude = 3;
     private final CarverTemplate config;
     private final Expression xRad;
     private final Expression yRad;
@@ -40,9 +44,6 @@ public class UserDefinedCarver extends Carver {
     private final Range height;
     private final double sixtyFourSq = FastMath.pow(64, 2);
     private final CarverCache cache = new CarverCache();
-    private double step = 2;
-    private Range recalc = new Range(8, 10);
-    private double recalcMagnitude = 3;
 
     public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, int hash, int topCut, int bottomCut, CarverTemplate config) throws ParseException {
         super(height.getMin(), height.getMax());
@@ -104,12 +105,14 @@ public class UserDefinedCarver extends Carver {
         int carvingRadius = getCarvingRadius();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
-                cache.getPoints(x, z, w, this).forEach(point -> {
-                    Vector origin = point.getOrigin();
-                    if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
-                        return;
-                    point.carve(chunkX, chunkZ, consumer);
-                });
+                if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
+                    cache.getPoints(x, z, w, this).forEach(point -> {
+                        Vector origin = point.getOrigin();
+                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
+                            return;
+                        point.carve(chunkX, chunkZ, consumer);
+                    });
+                }
             }
         }
     }

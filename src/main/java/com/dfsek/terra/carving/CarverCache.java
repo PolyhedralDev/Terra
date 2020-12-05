@@ -25,7 +25,7 @@ public class CarverCache {
         if(carvers.size() > PluginConfig.getCacheSize() * 2) carvers.clear();
         return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL) ^ w.getSeed(), key -> {
             TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
-            if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + chunkX + "&" + chunkZ)))) {
+            if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.hashToLong(carver.getClass().getName() + "_" + chunkX + "&" + chunkZ)))) {
                 long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
                 carver.getSeedVar().setValue(seed);
                 Random r = new FastRandom(seed);
