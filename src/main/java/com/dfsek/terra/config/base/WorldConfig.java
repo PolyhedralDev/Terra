@@ -6,7 +6,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
 import com.dfsek.terra.registry.ConfigRegistry;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -80,7 +79,7 @@ public class WorldConfig implements ConfigTemplate {
             } catch(IllegalArgumentException | NullPointerException e) {
                 throw new InvalidConfigurationException(e.getCause());
             }
-            Bukkit.getLogger().log(Level.INFO, "Loaded {0} BiomeGrids from list.", tConfig.getTemplate().getGrids().size());
+            Debug.info("Loaded " + tConfig.getTemplate().getGrids().size() + " BiomeGrids from list.");
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
             LangUtil.log("world-config.error", Level.SEVERE, worldID);

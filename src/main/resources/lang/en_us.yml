@@ -30,7 +30,7 @@ command:
     in: "You are in \"%s\""
   packs:
     main: "Currently installed config packs:"
-    pack: " - %1$s by %2$s"
+    pack: " - %1$s v%3$s by %2$s"
     none: "No config packs are installed."
   ore:
     main-menu:

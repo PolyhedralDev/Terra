@@ -38,7 +38,7 @@ public class PacksCommand extends Command {
         LangUtil.send("command.packs.main", commandSender);
         registry.entries().forEach(entry -> {
             ConfigPackTemplate template = entry.getTemplate();
-            LangUtil.send("command.packs.pack", commandSender, template.getID(), template.getAuthor());
+            LangUtil.send("command.packs.pack", commandSender, template.getID(), template.getAuthor(), template.getVersion());
         });
 
         return true;
