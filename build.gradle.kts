@@ -49,14 +49,14 @@ dependencies {
 
     compileOnly("com.googlecode.json-simple:json-simple:1.1")
 
-    implementation(name = "parsii-1.2.1", group = "")
+    implementation("com.scireum:parsii:1.2.1")
 
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
 
     implementation("net.jafama:jafama:2.3.2")
 
-    implementation(name = "Tectonic-1.0.1", group = "")
+    implementation(name = "Tectonic-1.0.2", group = "")
 
 
     // JUnit.

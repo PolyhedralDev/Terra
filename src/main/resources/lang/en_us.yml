@@ -87,11 +87,11 @@ command:
     invalid: "Invalid Structure ID: \"%s\""
     export: "Saved structure to \"%s\""
 world-config:
-  loading: "Loading world configuration values for world %s..."
+  load: "Loading world configuration values for world \"%s\"..."
   not-found: "Configuration for world \"%s\" not found. Copying default config."
   using-image: "Loading world from image."
   error: "Unable to load configuration for world %s"
-  done: "World load complete. Time elapsed: %sms"
+  done: "World load for world \"%1$s\" complete. Time elapsed: %2$sms"
 config-pack:
   loaded: "config %1$s by %3$s loaded in %2$sms."
 config:

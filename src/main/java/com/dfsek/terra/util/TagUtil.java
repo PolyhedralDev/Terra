@@ -1,7 +1,6 @@
 package com.dfsek.terra.util;
 
 import com.dfsek.terra.Debug;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +29,6 @@ public final class TagUtil {
                 try {
                     Tag<Material> tag = (Tag<Material>) field.get(new Object());
                     tagMap.put(tag.getKey().toString(), tag.getValues());
-                    Debug.info("Loaded tag: #" + tag.getKey().toString());
                 } catch(IllegalAccessException e) {
                     e.printStackTrace();
                 } catch(ClassCastException ignore) {
@@ -57,7 +55,8 @@ public final class TagUtil {
                     || !m.isSolid()) snow.add(m);
         }
         tagMap.put("terra:snow_blacklist", snow);
-        Bukkit.getLogger().info("Added " + snow.size() + " materials to snow blacklist");
+        Debug.info("Added " + snow.size() + " materials to snow blacklist");
+        Debug.info("Loaded " + tagMap.size() + " tags.");
     }
 
     private static Set<Material> getSet(Material... materials) {
@@ -66,7 +65,6 @@ public final class TagUtil {
 
     private static void putCustomSet(String key, Material... materials) {
         tagMap.put(key, getSet(materials));
-        Debug.info("Loaded tag: #" + key);
     }
 
     @NotNull
