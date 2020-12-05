@@ -9,12 +9,11 @@ import com.dfsek.terra.math.RandomFunction;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.population.ChunkCoordinate;
 import org.polydev.gaea.util.FastRandom;
-import org.polydev.gaea.util.GlueList;
 import org.polydev.gaea.world.carving.Carver;
 import org.polydev.gaea.world.carving.Worm;
 import parsii.eval.Expression;
@@ -46,6 +45,7 @@ public class UserDefinedCarver extends Carver {
     private final Variable seedVar;
     private final Range height;
     private final double sixtyFourSq = FastMath.pow(64, 2);
+    private final CarverCache cache = new CarverCache();
 
     public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, int hash, int topCut, int bottomCut, CarverTemplate config) throws ParseException {
         super(height.getMin(), height.getMax());
@@ -81,6 +81,19 @@ public class UserDefinedCarver extends Carver {
         return new UserDefinedWorm(length.get(r) / 2, r, vector, topCut, bottomCut);
     }
 
+    public Variable getSeedVar() {
+        return seedVar;
+    }
+
+
+    public Variable getLengthVar() {
+        return lengthVar;
+    }
+
+    public Variable getPosition() {
+        return position;
+    }
+
     public void setStep(double step) {
         this.step = step;
     }
@@ -97,24 +110,12 @@ public class UserDefinedCarver extends Carver {
             z:
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
-                    long seed = MathUtil.getCarverChunkSeed(x, z, w.getSeed());
-                    seedVar.setValue(seed);
-                    Random r = new FastRandom(seed);
-                    Worm carving = getWorm(seed, new Vector((x << 4) + r.nextInt(16), height.get(r), (z << 4) + r.nextInt(16)));
-                    Vector origin = carving.getOrigin();
-                    List<Worm.WormPoint> points = new GlueList<>();
-                    for(int i = 0; i < carving.getLength(); i++) {
-                        carving.step();
-                        Biome biome = grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE);
-                        if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(this)) { // Stop if we enter a biome this carver is not present in
-                            continue z;
-                        }
-                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) { // Only carve in the current chunk.
-                            continue;
-                        }
-                        points.add(carving.getPoint());
-                    }
-                    points.forEach(point -> point.carve(chunkX, chunkZ, consumer));
+                    cache.getPoints(x, z, w, new ChunkCoordinate(chunkX, chunkZ, w.getUID()), this).forEach(point -> {
+                        Vector origin = point.getOrigin();
+                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
+                            return;
+                        point.carve(chunkX, chunkZ, consumer);
+                    });
                 }
             }
         }
