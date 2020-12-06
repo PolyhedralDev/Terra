@@ -10,6 +10,7 @@ import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.listeners.EventListener;
 import com.dfsek.terra.listeners.SpigotListener;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.util.ConfigUtil;
 import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -27,23 +28,18 @@ import java.util.Objects;
 
 
 public class Terra extends GaeaPlugin {
-    private static Terra instance;
     private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
-
-    public static Terra getInstance() {
-        return instance;
-    }
 
     @Override
     public void onDisable() {
         TerraChunkGenerator.saveAll();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        Debug.setMain(this); // Set debug logger.
-        instance = this; // Singleton B)
+        Debug.setLogger(getLogger()); // Set debug logger.
+        ConfigUtil.setMain(this); // Set ConfigLoader's instance for use in some loaders
+
 
         saveDefaultConfig();
 
@@ -68,7 +64,7 @@ public class Terra extends GaeaPlugin {
 
 
         long save = PluginConfig.getDataSaveInterval();
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, save, save); // Schedule population data saving
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, TerraChunkGenerator::saveAll, save, save); // Schedule population data saving
 
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this); // Register master event listener
         Bukkit.getPluginManager().registerEvents(new SpigotListener(this), this); // Register Spigot event listener, once Paper accepts StructureLocateEvent PR Spigot and Paper events will be separate.
@@ -81,7 +77,7 @@ public class Terra extends GaeaPlugin {
         return generatorMap.computeIfAbsent(worldName, name -> {
             WorldConfig c = new WorldConfig(worldName, id, this);
             TerraWorld.loadWorld(c);
-            return new TerraChunkGenerator(c.getConfig());
+            return new TerraChunkGenerator(c.getConfig(), this);
         });
     }
 

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
@@ -19,8 +20,8 @@ import java.util.function.Consumer;
  * Runnable to locate structures asynchronously
  */
 public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
-    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
-        super(grid, target, origin, startRadius, maxRadius, callback);
+    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, GaeaPlugin main) {
+        super(grid, target, origin, startRadius, maxRadius, callback, main);
         setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
     }
 

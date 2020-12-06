@@ -21,7 +21,7 @@ import org.polydev.gaea.GaeaPlugin;
  * Listener to load on Spigot servers, contains Villager crash prevention and hacky ender eye redirection.
  * <p>
  * (This is currently loaded on all servers; once Paper accepts the StructureLocateEvent PR this will only be loaded on servers without
- * StructureLocateEvent.
+ * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
     private final GaeaPlugin main;
@@ -43,7 +43,7 @@ public class SpigotListener implements Listener {
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getGrid(), config, e.getLocation(), 0, 500, location -> {
                     if(location != null) signal.setTargetLocation(location.toLocation(signal.getWorld()));
                     Debug.info("Location: " + location);
-                });
+                }, main);
                 finder.run(); // Do this synchronously so eye doesn't change direction several ticks after spawning.
             } else
                 main.getLogger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");

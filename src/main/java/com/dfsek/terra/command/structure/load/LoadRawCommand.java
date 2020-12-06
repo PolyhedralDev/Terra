@@ -1,6 +1,5 @@
 package com.dfsek.terra.command.structure.load;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedBlock;
@@ -14,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.polydev.gaea.command.DebugCommand;
-import org.polydev.gaea.command.PlayerCommand;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LoadRawCommand extends PlayerCommand implements DebugCommand {
+public class LoadRawCommand extends LoadCommand implements DebugCommand {
     public LoadRawCommand(org.polydev.gaea.command.Command parent) {
         super(parent);
     }
@@ -36,7 +34,7 @@ public class LoadRawCommand extends PlayerCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         try {
-            Structure struc = Structure.load(new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
+            Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
             StructureInfo info = struc.getStructureInfo();
             int centerX = info.getCenterX();
             int centerZ = info.getCenterZ();
@@ -106,7 +104,7 @@ public class LoadRawCommand extends PlayerCommand implements DebugCommand {
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] args) {
         if(args.length == 1) {
-            return LoadCommand.getStructureNames().stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
+            return getStructureNames().stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

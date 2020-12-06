@@ -1,6 +1,5 @@
 package com.dfsek.terra.command.structure;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -45,18 +44,18 @@ public class LocateCommand extends WorldCommand {
             LangUtil.send("command.structure.invalid", sender, id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(Terra.getInstance(), new AsyncStructureFinder(TerraWorld.getWorld(world).getGrid(), s, sender.getLocation(), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncStructureFinder(TerraWorld.getWorld(world).getGrid(), s, sender.getLocation(), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     sender.sendMessage("Located structure at (" + location.getBlockX() + ", " + location.getBlockZ() + ").");
                     if(tp) {
                         int finalX = location.getBlockX();
                         int finalZ = location.getBlockZ();
-                        Bukkit.getScheduler().runTask(Terra.getInstance(), () -> sender.teleport(new Location(sender.getWorld(), finalX, sender.getLocation().getY(), finalZ)));
+                        Bukkit.getScheduler().runTask(getMain(), () -> sender.teleport(new Location(sender.getWorld(), finalX, sender.getLocation().getY(), finalZ)));
                     }
                 } else sender.sendMessage("Unable to locate structure. ");
             }
-        }));
+        }, getMain()));
         return true;
     }
 

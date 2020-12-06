@@ -31,7 +31,7 @@ public final class LangUtil {
             Debug.error("Report this to Terra!");
         }
         try {
-            language = new Language(new File(Terra.getInstance().getDataFolder(), "lang" + File.separator + langID + ".yml"));
+            language = new Language(new File(main.getDataFolder(), "lang" + File.separator + langID + ".yml"));
         } catch(InvalidConfigurationException | IOException e) {
             logger.severe("Unable to load language: " + langID);
             e.printStackTrace();

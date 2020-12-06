@@ -33,10 +33,17 @@ import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
+import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.math.ProbabilityCollection;
 import org.polydev.gaea.math.Range;
 
 public final class ConfigUtil {
+    private static GaeaPlugin main;
+
+    public static void setMain(GaeaPlugin main) {
+        ConfigUtil.main = main;
+    }
+
     /**
      * Register all Terra loaders to a {@link TypeRegistry}.
      *
@@ -56,7 +63,7 @@ public final class ConfigUtil {
                 .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf((String) o))
                 .registerLoader(OreConfig.class, new OreConfigLoader())
                 .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
-                .registerLoader(TreeLayer.class, new TreeLayerLoader())
+                .registerLoader(TreeLayer.class, new TreeLayerLoader(main))
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
                 .registerLoader(Feature.class, new StructureFeatureLoader())

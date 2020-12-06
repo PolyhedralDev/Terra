@@ -1,6 +1,5 @@
 package com.dfsek.terra.command.biome;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncBiomeFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -45,15 +44,15 @@ public class BiomeLocateCommand extends WorldCommand {
             LangUtil.send("command.biome.invalid", sender, id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(Terra.getInstance(), new AsyncBiomeFinder(TerraWorld.getWorld(world).getGrid(), b, sender.getLocation().clone().multiply((1D / PluginConfig.getBiomeSearchResolution())), 0, maxRadius, location -> {
+        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncBiomeFinder(TerraWorld.getWorld(world).getGrid(), b, sender.getLocation().clone().multiply((1D / PluginConfig.getBiomeSearchResolution())), 0, maxRadius, location -> {
             if(location != null) {
                 LangUtil.send("command.biome.biome-found", sender, String.valueOf(location.getBlockX()), String.valueOf(location.getBlockZ()));
                 if(tp) {
                     Location l = new Location(sender.getWorld(), location.getX(), sender.getLocation().getY(), location.getZ());
-                    Bukkit.getScheduler().runTask(Terra.getInstance(), () -> sender.teleport(l));
+                    Bukkit.getScheduler().runTask(getMain(), () -> sender.teleport(l));
                 }
             } else LangUtil.send("command.biome.unable-to-locate", sender);
-        }));
+        }, getMain()));
         return true;
     }
 

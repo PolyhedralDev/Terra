@@ -1,6 +1,5 @@
 package com.dfsek.terra.command.structure;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.InitializationException;
 import com.dfsek.terra.structure.Structure;
@@ -36,7 +35,7 @@ public class ExportCommand extends PlayerCommand {
             return true;
         }
         try {
-            File file = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure");
+            File file = new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure");
             //noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
             //noinspection ResultOfMethodCallIgnored

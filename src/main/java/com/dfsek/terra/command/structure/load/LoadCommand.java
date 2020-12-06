@@ -1,6 +1,5 @@
 package com.dfsek.terra.command.structure.load;
 
-import com.dfsek.terra.Terra;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,9 +20,9 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
         super(parent);
     }
 
-    public static List<String> getStructureNames() {
+    public List<String> getStructureNames() {
         List<String> names = new ArrayList<>();
-        File structureDir = new File(Terra.getInstance().getDataFolder() + File.separator + "export" + File.separator + "structures");
+        File structureDir = new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures");
         if(!structureDir.exists()) return Collections.emptyList();
         Path structurePath = structureDir.toPath();
 
