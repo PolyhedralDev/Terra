@@ -47,26 +47,32 @@ public class CavePopulator extends BlockPopulator {
                         case CENTER:
                             if(template.getInner().canReplace(m)) {
                                 b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
+                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case WALL:
                             if(template.getOuter().canReplace(m)) {
                                 b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
+                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case TOP:
                             if(template.getTop().canReplace(m)) {
                                 b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
+                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case BOTTOM:
                             if(template.getBottom().canReplace(m)) {
                                 b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
+                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                     }
-                    if(template.getShift().containsKey(b.getType())) shiftCandidate.put(b.getLocation(), b.getType());
-                    if(template.getUpdate().contains(m)) updateNeeded.add(b);
                 });
                 for(Map.Entry<Location, Material> entry : shiftCandidate.entrySet()) {
                     Location l = entry.getKey();
