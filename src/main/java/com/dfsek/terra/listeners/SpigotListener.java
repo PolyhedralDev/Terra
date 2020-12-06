@@ -35,6 +35,7 @@ public class SpigotListener implements Listener {
         Entity entity = e.getEntity();
         if(e.getEntityType().equals(EntityType.ENDER_SIGNAL)) {
             Debug.info("Detected Ender Signal...");
+            if(!TerraWorld.isTerraWorld(e.getEntity().getWorld())) return;
             TerraWorld tw = TerraWorld.getWorld(e.getEntity().getWorld());
             EnderSignal signal = (EnderSignal) entity;
             TerraStructure config = tw.getConfig().getStructureLocatable(StructureTypeEnum.STRONGHOLD);
@@ -52,6 +53,7 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
+        if(!TerraWorld.isTerraWorld(e.getEntity().getWorld())) return;
         if(!(e.getEntity() instanceof Villager)) return;
         if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER))
             e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
@@ -59,6 +61,7 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
+        if(!TerraWorld.isTerraWorld(e.getEntity().getWorld())) return;
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
             e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
             e.setCancelled(true);
