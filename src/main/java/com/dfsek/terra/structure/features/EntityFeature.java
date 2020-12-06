@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure.features;
 
-import com.dfsek.terra.Debug;
+import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureInfo;

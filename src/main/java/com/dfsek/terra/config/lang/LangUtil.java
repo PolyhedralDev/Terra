@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.lang;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.debug.Debug;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;

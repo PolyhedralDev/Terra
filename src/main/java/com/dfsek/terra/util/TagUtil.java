@@ -1,6 +1,6 @@
 package com.dfsek.terra.util;
 
-import com.dfsek.terra.Debug;
+import com.dfsek.terra.debug.Debug;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;

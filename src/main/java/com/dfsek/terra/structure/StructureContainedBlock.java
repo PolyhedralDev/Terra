@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.Debug;
+import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.structure.serialize.SerializableBlockData;
 import com.dfsek.terra.structure.serialize.block.SerializableBanner;
 import com.dfsek.terra.structure.serialize.block.SerializableBlockState;

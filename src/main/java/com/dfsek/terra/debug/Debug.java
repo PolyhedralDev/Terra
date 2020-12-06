@@ -1,4 +1,4 @@
-package com.dfsek.terra;
+package com.dfsek.terra.debug;
 
 import com.dfsek.terra.config.base.PluginConfig;
 import org.bukkit.plugin.java.JavaPlugin;

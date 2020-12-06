@@ -5,7 +5,10 @@ import com.dfsek.terra.command.structure.LocateCommand;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import com.dfsek.terra.listeners.EventListener;
+import com.dfsek.terra.listeners.SpigotListener;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
@@ -39,33 +42,37 @@ public class Terra extends GaeaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        instance = this;
+        Debug.setMain(this); // Set debug logger.
+        instance = this; // Singleton B)
 
         saveDefaultConfig();
 
-        Metrics metrics = new Metrics(this, 9017);
-        metrics.addCustomChart(new Metrics.SingleLineChart("worlds", TerraWorld::numWorlds));
+        Metrics metrics = new Metrics(this, 9017); // Set up bStats.
+        metrics.addCustomChart(new Metrics.SingleLineChart("worlds", TerraWorld::numWorlds)); // World number chart.
 
-        Debug.setMain(this);
-        PluginConfig.load(this);
+        PluginConfig.load(this); // Load master config.yml
         LangUtil.load(PluginConfig.getLanguage(), this); // Load language.
-        TerraWorld.invalidate();
-        ConfigRegistry.loadAll(this);
+
+        TerraWorld.invalidate(); // Clear/set up world cache.
+        ConfigRegistry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
-        TerraCommand command = new TerraCommand(this);
+        TerraCommand command = new TerraCommand(this); // Set up main Terra command.
         c.setExecutor(command);
         c.setTabCompleter(command);
 
         LocateCommand locate = new LocateCommand(command, false);
         PluginCommand locatePl = Objects.requireNonNull(getCommand("locate"));
-        locatePl.setExecutor(locate);
+        locatePl.setExecutor(locate); // Override locate command. Once Paper accepts StructureLocateEvent this will be unneeded on Paper implementations.
         locatePl.setTabCompleter(locate);
 
 
         long save = PluginConfig.getDataSaveInterval();
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, save, save);
-        Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, TerraChunkGenerator::saveAll, save, save); // Schedule population data saving
+
+        Bukkit.getPluginManager().registerEvents(new EventListener(this), this); // Register master event listener
+        Bukkit.getPluginManager().registerEvents(new SpigotListener(this), this); // Register Spigot event listener, once Paper accepts StructureLocateEvent PR Spigot and Paper events will be separate.
+
         PaperUtil.checkPaper(this);
     }
 

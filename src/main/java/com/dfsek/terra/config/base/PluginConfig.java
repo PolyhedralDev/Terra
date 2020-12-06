@@ -5,8 +5,8 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.debug.Debug;
 import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.util.JarUtil;
 

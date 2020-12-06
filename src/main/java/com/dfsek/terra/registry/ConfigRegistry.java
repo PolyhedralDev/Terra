@@ -1,8 +1,8 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.debug.Debug;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;

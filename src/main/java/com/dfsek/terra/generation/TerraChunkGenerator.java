@@ -1,6 +1,5 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.Debug;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
@@ -9,6 +8,7 @@ import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.math.MathUtil;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
