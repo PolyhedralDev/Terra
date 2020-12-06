@@ -17,11 +17,13 @@ import java.util.Map;
 public class TerraWorld {
     private static final Map<World, TerraWorld> map = new HashMap<>();
     private static final Map<String, WorldConfig> loaded = new HashMap<>();
+
     private final TerraBiomeGrid grid;
     private final BiomeZone zone;
     private final ConfigPack config;
     private final WorldConfig worldConfig;
     private boolean safe;
+
 
     private TerraWorld(World w) {
         safe = true;

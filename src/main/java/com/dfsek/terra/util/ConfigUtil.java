@@ -4,6 +4,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
+import com.dfsek.terra.config.loaders.ImageLoaderLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
@@ -24,6 +25,7 @@ import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.generation.items.ores.OreConfig;
 import com.dfsek.terra.generation.items.ores.OreHolder;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
+import com.dfsek.terra.image.ImageLoader;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.features.Feature;
 import org.bukkit.Bukkit;
@@ -58,8 +60,11 @@ public final class ConfigUtil {
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
                 .registerLoader(Feature.class, new StructureFeatureLoader())
+                .registerLoader(ImageLoader.class, new ImageLoaderLoader())
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o))
                 .registerLoader(StructureTypeEnum.class, (t, o, l) -> StructureTypeEnum.valueOf((String) o))
+                .registerLoader(ImageLoader.Channel.class, (t, o, l) -> ImageLoader.Channel.valueOf((String) o))
+                .registerLoader(ImageLoader.Align.class, (t, o, l) -> ImageLoader.Align.valueOf((String) o))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf((String) o));
     }
 }
