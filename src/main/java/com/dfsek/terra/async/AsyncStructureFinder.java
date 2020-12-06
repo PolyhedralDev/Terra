@@ -3,6 +3,7 @@ package com.dfsek.terra.async;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.TerraBiomeGrid;
 import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import org.bukkit.Location;
@@ -33,12 +34,11 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
     public boolean isValid(int x, int z, TerraStructure target) {
         World world = getWorld();
         Location spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
-        if(!((UserDefinedBiome) getGrid().getBiome(spawn)).getConfig().getStructures().contains(target))
-            return false;
+        if(!((UserDefinedBiome) grid.getBiome(spawn)).getConfig().getStructures().contains(target)) return false;
         Random r2 = new FastRandom(spawn.hashCode());
         Structure struc = target.getStructures().get(r2);
         Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
-        for(int y = target.getSpawnStart().get(r2); y > 0; y--) {
+        for(int y = target.getSpawnStart().get(r2); y > target.getBound().getMin(); y--) {
             if(!target.getBound().isInRange(y)) return false;
             spawn.setY(y);
             if(!struc.checkSpawns(spawn, rotation)) continue;
@@ -49,6 +49,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
 
     @Override
     public Vector finalizeVector(Vector orig) {
-        return getTarget().getSpawn().getNearestSpawn(orig.getBlockX() * getSearchSize(), orig.getBlockZ() * getSearchSize(), getWorld().getSeed());
+        GridSpawn spawn = target.getSpawn();
+        return spawn.getChunkSpawn(orig.getBlockX(), orig.getBlockZ(), world.getSeed());
     }
 }

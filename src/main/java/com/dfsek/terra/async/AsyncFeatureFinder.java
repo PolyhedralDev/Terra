@@ -11,15 +11,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public abstract class AsyncFeatureFinder<T> implements Runnable {
-    private final TerraBiomeGrid grid;
-    private final T target;
-    private final int startRadius;
-    private final int maxRadius;
-    private final int centerX;
-    private final int centerZ;
-    private final World world;
+    protected final TerraBiomeGrid grid;
+    protected final T target;
+    protected final int startRadius;
+    protected final int maxRadius;
+    protected final int centerX;
+    protected final int centerZ;
+    protected final World world;
     private final Consumer<Vector> callback;
-    private int searchSize = 1;
+    protected int searchSize = 1;
 
     public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback) {
         this.grid = grid;

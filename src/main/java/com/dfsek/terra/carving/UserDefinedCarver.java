@@ -77,16 +77,15 @@ public class UserDefinedCarver extends Carver {
         return new UserDefinedWorm(length.get(r) / 2, r, vector, topCut, bottomCut);
     }
 
-    public Variable getSeedVar() {
+    protected Variable getSeedVar() {
         return seedVar;
     }
 
-
-    public Variable getLengthVar() {
+    protected Variable getLengthVar() {
         return lengthVar;
     }
 
-    public Variable getPosition() {
+    protected Variable getPosition() {
         return position;
     }
 
@@ -106,7 +105,7 @@ public class UserDefinedCarver extends Carver {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 cache.getPoints(x, z, this).forEach(point -> {
                     Vector origin = point.getOrigin();
-                    if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
+                    if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
                         return;
                     point.carve(chunkX, chunkZ, consumer);
                 });
