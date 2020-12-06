@@ -33,6 +33,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     private final ConfigPack pack;
     @Value("id")
     private String id;
+
+    @Value("extends")
+    @Default
+    private String extend = null;
+
     @Value("palette")
     @Abstractable
     private PaletteHolder palette;
@@ -118,6 +123,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public boolean interpolateElevation() {
         return interpolateElevation;
+    }
+
+    public String getExtend() {
+        return extend;
     }
 
     public double getSlantThreshold() {
