@@ -9,7 +9,6 @@ import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.MathUtil;
 import org.polydev.gaea.math.Range;
 import org.polydev.gaea.util.FastRandom;
 import org.polydev.gaea.world.carving.Carver;
@@ -20,7 +19,9 @@ import parsii.eval.Scope;
 import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
@@ -28,12 +29,9 @@ public class UserDefinedCarver extends Carver {
     private final double[] start; // 0, 1, 2 = x, y, z.
     private final double[] mutate; // 0, 1, 2 = x, y, z. 3 = radius.
     private final Range length;
-    private final int hash;
+    private final long hash;
     private final int topCut;
     private final int bottomCut;
-    private double step = 2;
-    private Range recalc = new Range(8, 10);
-    private double recalcMagnitude = 3;
     private final CarverTemplate config;
     private final Expression xRad;
     private final Expression yRad;
@@ -41,14 +39,14 @@ public class UserDefinedCarver extends Carver {
     private final Variable lengthVar;
     private final Variable position;
     private final Variable seedVar;
-    private final Range height;
-    private final double sixtyFourSq = FastMath.pow(64, 2);
-    private final CarverCache cache = new CarverCache();
+    private final Map<World, CarverCache> cacheMap = new HashMap<>();
+    private double step = 2;
+    private Range recalc = new Range(8, 10);
+    private double recalcMagnitude = 3;
 
-    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, int hash, int topCut, int bottomCut, CarverTemplate config) throws ParseException {
+    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
-        this.height = height;
         this.start = start;
         this.mutate = mutate;
         this.hash = hash;
@@ -102,17 +100,16 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector, CarvingType> consumer) {
+        CarverCache cache = cacheMap.computeIfAbsent(w, CarverCache::new);
         int carvingRadius = getCarvingRadius();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
-                if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
-                    cache.getPoints(x, z, w, this).forEach(point -> {
-                        Vector origin = point.getOrigin();
-                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
-                            return;
-                        point.carve(chunkX, chunkZ, consumer);
-                    });
-                }
+                cache.getPoints(x, z, this).forEach(point -> {
+                    Vector origin = point.getOrigin();
+                    if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ)
+                        return;
+                    point.carve(chunkX, chunkZ, consumer);
+                });
             }
         }
     }
@@ -123,7 +120,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        BiomeTemplate conf = ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome(chunkX << 4, chunkZ << 4, GenerationPhase.POPULATE)).getConfig();
+        BiomeTemplate conf = ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8, GenerationPhase.POPULATE)).getConfig();
         if(conf.getCarvers().get(this) != null) {
             return new FastRandom(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
         }

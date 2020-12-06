@@ -19,13 +19,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class CarverCache {
+
+    private final World w;
     private final Map<Long, List<Worm.WormPoint>> carvers = new HashMap<>();
 
-    public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, World w, UserDefinedCarver carver) {
+    public CarverCache(World w) {
+        this.w = w;
+    }
+
+    public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, UserDefinedCarver carver) {
         if(carvers.size() > PluginConfig.getCacheSize() * 2) carvers.clear();
-        return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL) ^ w.getSeed(), key -> {
+        return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL), key -> {
             TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
-            if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.hashToLong(carver.getClass().getName() + "_" + chunkX + "&" + chunkZ)))) {
+            if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + carver.hashCode())))) {
                 long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
                 carver.getSeedVar().setValue(seed);
                 Random r = new FastRandom(seed);
