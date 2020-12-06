@@ -14,14 +14,10 @@ plugins {
 }
 
 repositories {
-    flatDir {
-        dirs("lib")
-    }
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-//    maven { url = uri("https://maven.pkg.github.com/solonovamax/Gaea") }
 }
 
 java {
@@ -35,8 +31,8 @@ version = versionObj
 
 dependencies {
     val gaeaVersion = "1.15.0"
-    compileOnly(name = "Gaea-${gaeaVersion}", group = "")
-    testImplementation(name = "Gaea-${gaeaVersion}", group = "")
+    compileOnly("org.polydev.gaea:Gaea:${gaeaVersion}")
+    testImplementation("org.polydev.gaea:Gaea:${gaeaVersion}")
 
     compileOnly("org.jetbrains:annotations:20.1.0")
 
@@ -55,7 +51,7 @@ dependencies {
 
     implementation("net.jafama:jafama:2.3.2")
 
-    implementation(name = "Tectonic-1.0.3", group = "")
+    implementation("com.dfsek:Tectonic:1.0.3")
 
 
     // JUnit.
