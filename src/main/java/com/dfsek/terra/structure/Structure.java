@@ -183,7 +183,7 @@ public class Structure implements Serializable {
 
             main:
             while(worldBlock.isEmpty()) {
-                if(loc.getBlockY() > 255 || loc.getBlockY() < 0) return;
+                if(worldBlock.getY() > 255 || worldBlock.getY() < 0) return;
                 if(block.getPull() == null) break;
                 switch(block.getPull()) {
                     case UP:
@@ -195,7 +195,6 @@ public class Structure implements Serializable {
                     default:
                         break main;
                 }
-
             }
             int offset = block.getPullOffset();
             if(offset != 0)
