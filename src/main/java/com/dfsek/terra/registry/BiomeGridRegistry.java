@@ -15,4 +15,10 @@ public class BiomeGridRegistry extends TerraRegistry<BiomeGridBuilder> {
         if(id.startsWith("BIOME:")) return new SingleGridBuilder(biomeRegistry.get(id.substring(6)));
         return super.get(id);
     }
+
+    @Override
+    public boolean contains(String name) {
+        if(name.startsWith("BIOME:")) return biomeRegistry.contains(name.substring(6));
+        return super.contains(name);
+    }
 }

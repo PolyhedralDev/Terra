@@ -1,6 +1,7 @@
 package com.dfsek.terra.util;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
@@ -69,6 +70,7 @@ public final class ConfigUtil {
                 .registerLoader(Feature.class, new StructureFeatureLoader())
                 .registerLoader(ImageLoader.class, new ImageLoaderLoader())
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o))
+                .registerLoader(TerraBiomeGrid.Type.class, (t, o, l) -> TerraBiomeGrid.Type.valueOf((String) o))
                 .registerLoader(StructureTypeEnum.class, (t, o, l) -> StructureTypeEnum.valueOf((String) o))
                 .registerLoader(ImageLoader.Channel.class, (t, o, l) -> ImageLoader.Channel.valueOf((String) o))
                 .registerLoader(ImageLoader.Align.class, (t, o, l) -> ImageLoader.Align.valueOf((String) o))

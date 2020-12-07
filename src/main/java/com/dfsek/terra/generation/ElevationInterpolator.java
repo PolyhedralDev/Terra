@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import org.polydev.gaea.generation.GenerationPhase;
 import org.polydev.gaea.math.Interpolator;

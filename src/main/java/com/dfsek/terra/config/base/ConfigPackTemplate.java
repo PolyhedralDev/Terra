@@ -2,7 +2,9 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.tectonic.config.ValidatedConfigTemplate;
+import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.util.StructureTypeEnum;
 
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ConfigPackTemplate implements ConfigTemplate {
+public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Value("id")
     private String id;
 
@@ -96,6 +98,18 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("version")
     @Default
     private String version = "0.1.0";
+
+    @Value("grid-options.type")
+    @Default
+    private TerraBiomeGrid.Type gridType = TerraBiomeGrid.Type.STANDARD;
+
+    @Value("grid-options.radial.radius")
+    @Default
+    private double radius = 1000D;
+
+    @Value("grid-options.radial.internal-grid")
+    @Default
+    private String internalGrid = null;
 
     public String getVersion() {
         return version;
@@ -183,5 +197,24 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public int getErodeOctaves() {
         return erodeOctaves;
+    }
+
+    public double getRadialGridRadius() {
+        return radius;
+    }
+
+    public String getRadialInternalGrid() {
+        return internalGrid;
+    }
+
+    public TerraBiomeGrid.Type getGridType() {
+        return gridType;
+    }
+
+    @Override
+    public boolean validate() throws ValidationException {
+        if(gridType.equals(TerraBiomeGrid.Type.RADIAL) && internalGrid == null)
+            throw new ValidationException("No internal BiomeGrid specified");
+        return true;
     }
 }

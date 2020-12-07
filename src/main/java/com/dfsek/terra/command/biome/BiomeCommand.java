@@ -2,7 +2,7 @@ package com.dfsek.terra.command.biome;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;

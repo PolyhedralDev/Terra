@@ -2,7 +2,7 @@ package com.dfsek.terra.carving;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.PluginConfig;
 import org.bukkit.World;
 import org.bukkit.util.Vector;

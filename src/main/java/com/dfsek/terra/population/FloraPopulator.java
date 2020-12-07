@@ -3,7 +3,7 @@ package com.dfsek.terra.population;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.procgen.math.Vector2;
 import org.bukkit.Chunk;

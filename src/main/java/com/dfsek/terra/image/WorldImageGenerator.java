@@ -1,7 +1,7 @@
 package com.dfsek.terra.image;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.bukkit.World;
 import org.polydev.gaea.biome.NormalizationUtil;
 

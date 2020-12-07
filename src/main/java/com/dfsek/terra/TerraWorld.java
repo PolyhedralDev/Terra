@@ -1,7 +1,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.biome.BiomeZone;
-import com.dfsek.terra.biome.grid.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraRadialBiomeGrid;
+import com.dfsek.terra.biome.grid.master.TerraStandardBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.base.WorldConfig;
@@ -52,7 +54,11 @@ public class TerraWorld {
             }
         }
         zone = new BiomeZone(w, worldConfig, definedGrids);
-        grid = new TerraBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config);
+
+        if(template.getGridType().equals(TerraBiomeGrid.Type.RADIAL)) {
+            BiomeGrid internal = config.getBiomeGrid(template.getRadialInternalGrid()).build(w, worldConfig);
+            grid = new TerraRadialBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config, template.getRadialGridRadius(), internal);
+        } else grid = new TerraStandardBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config);
     }
 
     public static void loadWorld(WorldConfig w) {
