@@ -62,22 +62,16 @@ dependencies {
 val compileJava: JavaCompile by tasks
 val mainSourceSet: SourceSet = sourceSets["main"]
 
-val tokenizeJavaSources = task<Copy>(name = "tokenizeJavaSources") {
-    from(mainSourceSet.allSource) {
-        include("**/plugin.yml")
-        println("version: $versionObj")
-        val tokens = mapOf("VERSION" to versionObj.toString())
-
-        filter(org.apache.tools.ant.filters.ReplaceTokens::class, "tokens" to tokens)
-    }
-    into("build/tokenizedSources")
-    includeEmptyDirs = false
+tasks.withType<ProcessResources> {
+    include("*.yml")
+    filter<org.apache.tools.ant.filters.ReplaceTokens>(
+            "tokens" to mapOf(
+                    "VERSION" to project.version.toString()
+            )
+    )
 }
 
-
 compileJava.apply {
-    dependsOn(tokenizeJavaSources)
-
     options.encoding = "UTF-8"
     doFirst {
         options.compilerArgs = mutableListOf("-Xlint:all")
@@ -94,7 +88,8 @@ tasks.test {
 }
 
 tasks.named<ShadowJar>("shadowJar") {
-    from(tokenizeJavaSources.destinationDir)
+    // Tell shadow to download the packs
+    dependsOn(downloadDefaultPacks)
 
     archiveClassifier.set("")
     archiveBaseName.set("Terra")
@@ -164,7 +159,6 @@ val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         downloadPack(netherPackUrl)
     }
 }
-tasks.processResources.get().dependsOn(downloadDefaultPacks)
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
