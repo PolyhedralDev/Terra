@@ -27,8 +27,10 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
     private static void setTerraSign(Sign sign, String data) {
         sign.setLine(0, "[TERRA]");
-        sign.setLine(2, data.substring(0, 16));
-        sign.setLine(3, data.substring(16));
+        if(data.length() > 16) {
+            sign.setLine(2, data.substring(0, 16));
+            sign.setLine(3, data.substring(16));
+        } else sign.setLine(2, data);
     }
 
     @Override
