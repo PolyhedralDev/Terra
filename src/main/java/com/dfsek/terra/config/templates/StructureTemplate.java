@@ -14,7 +14,7 @@ import org.polydev.gaea.util.GlueList;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class StructureTemplate extends AbstractableTemplate {
     @Value("id")
     private String id;
@@ -43,7 +43,7 @@ public class StructureTemplate extends AbstractableTemplate {
     @Value("features")
     @Abstractable
     @Default
-    private final List<Feature> features = new GlueList<>();
+    private List<Feature> features = new GlueList<>();
 
     public Map<Integer, LootTable> getLoot() {
         return loot;
