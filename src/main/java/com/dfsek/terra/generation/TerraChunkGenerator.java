@@ -197,6 +197,9 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                         }
                         paletteLevel++;
                     } else if(y <= sea) {
+                        if(justSet && c.doSlabs()) {
+                            prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                        }
                         justSet = false;
                         chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
