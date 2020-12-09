@@ -69,6 +69,7 @@ public class Terra extends GaeaPlugin {
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
+    private final PluginConfig config = new PluginConfig();
 
     public void invalidate() {
         worldMap.clear();
@@ -90,8 +91,9 @@ public class Terra extends GaeaPlugin {
         Metrics metrics = new Metrics(this, 9017); // Set up bStats.
         metrics.addCustomChart(new Metrics.SingleLineChart("worlds", worldMap::size)); // World number chart.
 
-        PluginConfig.load(this); // Load master config.yml
-        LangUtil.load(PluginConfig.getLanguage(), this); // Load language.
+        config.load(this); // Load master config.yml
+        LangUtil.load(config.getLanguage(), this); // Load language.
+        Debug.setDebug(isDebug());
 
         registry.loadAll(this); // Load all config packs.
 
@@ -106,7 +108,7 @@ public class Terra extends GaeaPlugin {
         locatePl.setTabCompleter(locate);
 
 
-        long save = PluginConfig.getDataSaveInterval();
+        long save = config.getDataSaveInterval();
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, TerraChunkGenerator::saveAll, save, save); // Schedule population data saving
 
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this); // Register master event listener
@@ -126,7 +128,7 @@ public class Terra extends GaeaPlugin {
 
     @Override
     public boolean isDebug() {
-        return PluginConfig.isDebug();
+        return config.isDebug();
     }
 
     @Override
@@ -171,6 +173,16 @@ public class Terra extends GaeaPlugin {
     }
 
     public TerraWorld getWorld(World w) {
+        if(!(w.getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException("Not a Terra world!");
+        if(!worlds.containsKey(w.getName())) {
+            getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
+            return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator()).getConfigPack());
+        }
         return worldMap.computeIfAbsent(w, world -> new TerraWorld(w, worlds.get(w.getName())));
+    }
+
+    @NotNull
+    public PluginConfig getTerraConfig() {
+        return config;
     }
 }

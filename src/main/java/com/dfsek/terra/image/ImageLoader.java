@@ -3,7 +3,6 @@ package com.dfsek.terra.image;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.debug.gui.DebugGUI;
 import net.jafama.FastMath;
 import org.bukkit.World;
@@ -26,7 +25,7 @@ public class ImageLoader {
     }
 
     public static void debugWorld(boolean genStep, World w, Terra main) {
-        if(!PluginConfig.isDebug()) return;
+        if(!main.isDebug()) return;
         BufferedImage newImg = new WorldImageGenerator(w, 1024, 1024, main).drawWorld(0, 0).getDraw();
         if(genStep) newImg = redrawStepped(newImg, w, Align.CENTER, main);
         DebugGUI debugGUI = new DebugGUI(newImg, main);
@@ -61,7 +60,7 @@ public class ImageLoader {
     }
 
     public void debug(boolean genStep, World w, Terra main) {
-        if(!PluginConfig.isDebug()) return;
+        if(!main.isDebug()) return;
         BufferedImage newImg = copyImage(image);
         if(genStep) {
             newImg = redrawStepped(image, w, align, main);

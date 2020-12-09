@@ -1,29 +1,36 @@
 package com.dfsek.terra.debug;
 
-import com.dfsek.terra.config.base.PluginConfig;
-
 import java.util.logging.Logger;
 
 public class Debug {
-    public static Logger logger;
+    private static Logger logger;
+    private static boolean debug = false;
+
+    public static boolean isDebug() {
+        return debug;
+    }
+
+    public static void setDebug(boolean debug) {
+        Debug.debug = debug;
+    }
 
     public static void setLogger(Logger logger) {
         Debug.logger = logger;
     }
 
     public static void info(String message) {
-        if(PluginConfig.isDebug()) logger.info(message);
+        if(debug) logger.info(message);
     }
 
     public static void warn(String message) {
-        if(PluginConfig.isDebug()) logger.warning(message);
+        if(debug) logger.warning(message);
     }
 
     public static void error(String message) {
-        if(PluginConfig.isDebug()) logger.severe(message);
+        if(debug) logger.severe(message);
     }
 
     public static void stack(Exception e) {
-        if(PluginConfig.isDebug()) e.printStackTrace();
+        if(debug) e.printStackTrace();
     }
 }

@@ -20,9 +20,6 @@ import java.util.logging.Logger;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PluginConfig implements ConfigTemplate {
-    private static final PluginConfig singleton = new PluginConfig();
-    private static boolean loaded = false;
-
     @Value("debug")
     @Default
     private boolean debug = false;
@@ -47,16 +44,13 @@ public class PluginConfig implements ConfigTemplate {
     @Default
     private boolean dumpDefaultConfig = true;
 
-    private PluginConfig() {
-    }
-
-    public static void load(GaeaPlugin main) {
+    public void load(GaeaPlugin main) {
         Logger logger = main.getLogger();
         logger.info("Loading config values");
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();
-            loader.load(singleton, file);
-            if(singleton.dumpDefaultConfig && !loaded) { // Don't dump default config if already loaded.
+            loader.load(this, file);
+            if(dumpDefaultConfig) { // Don't dump default config if already loaded.
                 try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
                     JarUtil.copyResourcesToDirectory(jar, "packs", new File(main.getDataFolder(), "packs").toString());
                 } catch(IOException | URISyntaxException e) {
@@ -65,30 +59,29 @@ public class PluginConfig implements ConfigTemplate {
                     Debug.error("Report this to Terra!");
                 }
             }
-            loaded = true;
         } catch(ConfigException | IOException e) {
             e.printStackTrace();
         }
         logger.info("Debug: " + isDebug());
     }
 
-    public static String getLanguage() {
-        return singleton.language;
+    public String getLanguage() {
+        return language;
     }
 
-    public static boolean isDebug() {
-        return singleton.debug;
+    public boolean isDebug() {
+        return debug;
     }
 
-    public static long getDataSaveInterval() {
-        return singleton.dataSave.toMillis() / 20L;
+    public long getDataSaveInterval() {
+        return dataSave.toMillis() / 20L;
     }
 
-    public static int getBiomeSearchResolution() {
-        return singleton.biomeSearch;
+    public int getBiomeSearchResolution() {
+        return biomeSearch;
     }
 
-    public static int getCacheSize() {
-        return singleton.cacheSize;
+    public int getCacheSize() {
+        return cacheSize;
     }
 }

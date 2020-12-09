@@ -1,6 +1,5 @@
 package com.dfsek.terra.math;
 
-import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.util.hash.HashMapDoubleDouble;
 import org.polydev.gaea.math.FastNoiseLite;
@@ -43,7 +42,7 @@ public class NoiseFunction2 implements NoiseFunction {
 
     private static class Cache extends HashMapDoubleDouble {
         private static final long serialVersionUID = 8915092734723467010L;
-        private static final int cacheSize = PluginConfig.getCacheSize();
+        private static final int cacheSize = 384;
 
         public double get(FastNoiseLite noise, double x, double z) {
             double xx = x >= 0 ? x * 2 : x * -2 - 1;

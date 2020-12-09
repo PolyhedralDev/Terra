@@ -3,7 +3,6 @@ package com.dfsek.terra.command.biome;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.async.AsyncBiomeFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
@@ -44,7 +43,7 @@ public class BiomeLocateCommand extends WorldCommand {
             LangUtil.send("command.biome.invalid", sender, id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncBiomeFinder(((Terra) getMain()).getWorld(world).getGrid(), b, sender.getLocation().clone().multiply((1D / PluginConfig.getBiomeSearchResolution())), 0, maxRadius, location -> {
+        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncBiomeFinder(((Terra) getMain()).getWorld(world).getGrid(), b, sender.getLocation().clone().multiply((1D / ((Terra) getMain()).getTerraConfig().getBiomeSearchResolution())), 0, maxRadius, location -> {
             if(location != null) {
                 LangUtil.send("command.biome.biome-found", sender, String.valueOf(location.getBlockX()), String.valueOf(location.getBlockZ()));
                 if(tp) {

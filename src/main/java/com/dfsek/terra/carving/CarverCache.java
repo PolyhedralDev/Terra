@@ -3,7 +3,6 @@ package com.dfsek.terra.carving;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.config.base.PluginConfig;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.polydev.gaea.biome.Biome;
@@ -30,7 +29,7 @@ public class CarverCache {
     }
 
     public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, UserDefinedCarver carver) {
-        if(carvers.size() > PluginConfig.getCacheSize() * 2) carvers.clear();
+        if(carvers.size() > main.getTerraConfig().getCacheSize() * 2) carvers.clear();
         return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL), key -> {
             TerraBiomeGrid grid = main.getWorld(w).getGrid();
             if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + carver.hashCode())))) {

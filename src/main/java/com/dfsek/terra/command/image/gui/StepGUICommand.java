@@ -1,7 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
@@ -21,7 +20,7 @@ public class StepGUICommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        if(!PluginConfig.isDebug()) {
+        if(!getMain().isDebug()) {
             LangUtil.send("command.image.gui.debug", sender);
             return true;
         }

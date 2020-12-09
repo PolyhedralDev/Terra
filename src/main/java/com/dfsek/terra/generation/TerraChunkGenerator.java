@@ -49,6 +49,11 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private boolean needsLoad = true;
     private final Terra main;
 
+    public ConfigPack getConfigPack() {
+        return configPack;
+    }
+
+
     public TerraChunkGenerator(ConfigPack c, Terra main) {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
         popMan = new PopulationManager(main);
