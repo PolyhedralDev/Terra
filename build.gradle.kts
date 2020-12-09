@@ -25,7 +25,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("2", "1", "0", true)
+val versionObj = Version("2", "0", "2", true)
 
 version = versionObj
 
@@ -63,7 +63,7 @@ val compileJava: JavaCompile by tasks
 val mainSourceSet: SourceSet = sourceSets["main"]
 
 tasks.withType<ProcessResources> {
-    include("*.yml")
+    include("**/*.yml")
     filter<org.apache.tools.ant.filters.ReplaceTokens>(
             "tokens" to mapOf(
                     "VERSION" to project.version.toString()
