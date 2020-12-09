@@ -1,7 +1,6 @@
 package com.dfsek.terra.generation;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -98,7 +97,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
 
         ElevationInterpolator elevationInterpolator;
-        try(ProfileFuture ignore = TerraProfiler.fromWorld(world).measure("ElevationTime")) {
+        try(ProfileFuture ignore = tw.getProfiler().measure("ElevationTime")) {
             elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid());
         }
 

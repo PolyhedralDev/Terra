@@ -1,7 +1,6 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -32,8 +31,8 @@ public class FloraPopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
-            TerraWorld tw = main.getWorld(world);
+        TerraWorld tw = main.getWorld(world);
+        try(ProfileFuture ignored = tw.getProfiler().measure("FloraTime")) {
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();

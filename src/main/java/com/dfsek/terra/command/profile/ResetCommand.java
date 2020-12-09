@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.profile;
 
-import com.dfsek.terra.TerraProfiler;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -20,7 +20,7 @@ public class ResetCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        WorldProfiler profile = TerraProfiler.fromWorld(world);
+        WorldProfiler profile = ((Terra) getMain()).getWorld(world).getProfiler();
         profile.reset();
         LangUtil.send("command.profile.reset", sender);
         return true;

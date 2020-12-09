@@ -1,7 +1,6 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -36,9 +35,9 @@ public class CavePopulator extends BlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
-        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
+        TerraWorld tw = main.getWorld(world);
+        try(ProfileFuture ignored = tw.getProfiler().measure("CaveTime")) {
             Random random = PopulationUtil.getRandom(chunk);
-            TerraWorld tw = main.getWorld(world);
             if(!tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
 

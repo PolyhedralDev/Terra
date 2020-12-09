@@ -18,11 +18,13 @@ public class TerraWorld {
     private final BiomeZone zone;
     private final ConfigPack config;
     private boolean safe;
+    private final TerraProfiler profiler;
 
 
     public TerraWorld(World w, ConfigPack c) {
         safe = true;
         config = c;
+        profiler = new TerraProfiler(w);
 
         ConfigPackTemplate template = config.getTemplate();
 
@@ -70,5 +72,9 @@ public class TerraWorld {
 
     public boolean isSafe() {
         return safe;
+    }
+
+    public TerraProfiler getProfiler() {
+        return profiler;
     }
 }

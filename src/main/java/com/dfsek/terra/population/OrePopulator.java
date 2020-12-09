@@ -1,7 +1,6 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -28,8 +27,8 @@ public class OrePopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
-        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("OreTime")) {
-            TerraWorld tw = main.getWorld(world);
+        TerraWorld tw = main.getWorld(world);
+        try(ProfileFuture ignored = tw.getProfiler().measure("OreTime")) {
             if(!tw.isSafe()) return;
             for(int cx = -1; cx <= 1; cx++) {
                 for(int cz = -1; cz <= 1; cz++) {

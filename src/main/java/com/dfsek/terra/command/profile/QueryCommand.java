@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.profile;
 
-import com.dfsek.terra.TerraProfiler;
+import com.dfsek.terra.Terra;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -18,8 +18,8 @@ public class QueryCommand extends WorldCommand {
     }
 
     @Override
-    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        WorldProfiler profile = TerraProfiler.fromWorld(w);
+    public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+        WorldProfiler profile = ((Terra) getMain()).getWorld(world).getProfiler();
         sender.sendMessage(profile.getResultsFormatted());
         return true;
     }

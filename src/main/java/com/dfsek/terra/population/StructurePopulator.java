@@ -1,7 +1,6 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -38,11 +37,11 @@ public class StructurePopulator extends BlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
-        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("StructureTime")) {
+        TerraWorld tw = main.getWorld(world);
+        try(ProfileFuture ignored = tw.getProfiler().measure("StructureTime")) {
             Random random = PopulationUtil.getRandom(chunk);
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
-            TerraWorld tw = main.getWorld(world);
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();

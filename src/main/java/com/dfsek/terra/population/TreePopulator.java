@@ -1,7 +1,6 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -32,8 +31,8 @@ public class TreePopulator extends GaeaBlockPopulator {
     @Override
     @SuppressWarnings("try")
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("TreeTime")) {
-            TerraWorld tw = main.getWorld(world);
+        TerraWorld tw = main.getWorld(world);
+        try(ProfileFuture ignored = tw.getProfiler().measure("TreeTime")) {
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             for(int x = 0; x < 16; x += 2) {
