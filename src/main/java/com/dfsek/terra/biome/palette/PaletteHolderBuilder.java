@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.palette;
 
-import com.dfsek.terra.util.DataUtil;
+import com.dfsek.terra.util.PaletteUtil;
 import net.jafama.FastMath;
 import org.bukkit.block.data.BlockData;
 import org.polydev.gaea.world.palette.Palette;
@@ -20,7 +20,7 @@ public class PaletteHolderBuilder {
     public PaletteHolder build() {
         Palette<BlockData>[] palettes = new Palette[paletteMap.lastKey() + 1];
         for(int y = 0; y <= FastMath.max(paletteMap.lastKey(), 255); y++) {
-            Palette<BlockData> d = DataUtil.BLANK_PALETTE;
+            Palette<BlockData> d = PaletteUtil.BLANK_PALETTE;
             for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
                 if(e.getKey() >= y) {
                     d = e.getValue();

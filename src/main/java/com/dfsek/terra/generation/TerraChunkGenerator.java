@@ -3,27 +3,20 @@ package com.dfsek.terra.generation;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.math.MathUtil;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.StructurePopulator;
 import com.dfsek.terra.population.TreePopulator;
-import com.dfsek.terra.util.DataUtil;
+import com.dfsek.terra.util.PaletteUtil;
+import com.dfsek.terra.util.SlabUtil;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
-import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.Stairs;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -80,73 +73,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    private static Palette<BlockData> getPalette(int x, int y, int z, BiomeTemplate c, Sampler sampler) {
-        PaletteHolder slant = c.getSlantPalette();
-        if(slant != null && MathUtil.derivative(sampler, x, y, z) > c.getSlantThreshold()) {
-            return slant.getPalette(y);
-        }
-        return c.getPalette().getPalette(y);
-    }
-
-    private static void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                              Map<Material, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
-        if(sampler.sample(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
-            if(stairs != null) {
-                Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
-                if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
-                    Stairs stairNew = (Stairs) stair.clone();
-                    if(placePart(orig, chunk, block, thresh, sampler, stairNew)) return;
-                }
-            }
-            BlockData slab = slabs.getOrDefault(down.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ());
-            if(slab instanceof Waterlogged) {
-                ((Waterlogged) slab).setWaterlogged(orig.matches(DataUtil.WATER));
-            } else if(orig.matches(DataUtil.WATER)) return;
-            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
-        }
-    }
-
-    private static void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                                Map<Material, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
-        if(sampler.sample(block.getBlockX(), block.getBlockY() + 0.4, block.getBlockZ()) > thresh) {
-            if(stairs != null) {
-                Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
-                if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
-                    Stairs stairNew = (Stairs) stair.clone();
-                    stairNew.setHalf(Bisected.Half.TOP);
-                    if(placePart(orig, chunk, block, thresh, sampler, stairNew)) return;
-                }
-            }
-            BlockData slab = slabs.getOrDefault(up.getMaterial(), DataUtil.BLANK_PALETTE).get(0, block.getBlockX(), block.getBlockZ()).clone();
-            if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
-            if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
-            if(slab instanceof Waterlogged) {
-                ((Waterlogged) slab).setWaterlogged(orig.matches(DataUtil.WATER));
-            } else if(orig.matches(DataUtil.WATER)) return;
-            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
-        }
-    }
-
-    private static boolean placePart(BlockData orig, ChunkData chunk, Vector block, double thresh, Sampler sampler, Stairs stairNew) {
-        if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
-            stairNew.setFacing(BlockFace.WEST);
-        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.55) > thresh) {
-            stairNew.setFacing(BlockFace.NORTH);
-        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.55) > thresh) {
-            stairNew.setFacing(BlockFace.SOUTH);
-        } else if(sampler.sample(block.getBlockX() + 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
-            stairNew.setFacing(BlockFace.EAST);
-        } else stairNew = null;
-        if(stairNew != null) {
-            if(orig.matches(DataUtil.WATER)) stairNew.setWaterlogged(true);
-            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void attachProfiler(WorldProfiler p) {
         super.attachProfiler(p);
@@ -189,23 +115,23 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
                 for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
                     if(sampler.sample(x, y, z) > 0) {
                         justSet = true;
-                        data = getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
+                        data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
                         chunk.setBlock(x, y, z, data);
                         if(paletteLevel == 0 && c.doSlabs() && y < 255) {
-                            prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), c.getSlabPalettes(),
+                            SlabUtil.prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector(x, y + 1, z), c.getSlabPalettes(),
                                     c.getStairPalettes(), c.getSlabThreshold(), sampler);
                         }
                         paletteLevel++;
                     } else if(y <= sea) {
-                        if(justSet && c.doSlabs()) {
-                            prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                        if(!(justSet && c.doSlabs())) {
+                            SlabUtil.prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                         }
                         justSet = false;
-                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                         paletteLevel = 0;
                     } else {
                         if(justSet && c.doSlabs()) {
-                            prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                            SlabUtil.prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                         }
                         justSet = false;
                         paletteLevel = 0;
@@ -215,7 +141,6 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         }
         return chunk;
     }
-
 
     private void load(World w) {
         try {
@@ -279,5 +204,4 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     public boolean shouldGenerateStructures() {
         return configPack.getTemplate().vanillaStructures();
     }
-
 }
