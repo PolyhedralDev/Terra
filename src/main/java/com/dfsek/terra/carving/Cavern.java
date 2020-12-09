@@ -42,7 +42,7 @@ public class Cavern {
 
     public static class Node {
         private final long seed;
-        private final GridSpawn spawn = new GridSpawn(16, 0);
+        private final GridSpawn spawn = new GridSpawn(16, 0, 0);
 
         public Node(World w) {
             this.seed = w.getSeed();

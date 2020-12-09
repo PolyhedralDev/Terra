@@ -31,7 +31,6 @@ public class StructureTemplate extends AbstractableTemplate {
     @Abstractable
     private Range bound;
 
-
     @Value("spawn")
     @Abstractable
     private GridSpawn spawn;
