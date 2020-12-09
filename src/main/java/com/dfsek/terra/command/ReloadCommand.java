@@ -29,8 +29,11 @@ public class ReloadCommand extends Command implements DebugCommand {
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         ((Terra) getMain()).getTerraConfig().load(getMain());
         LangUtil.load(((Terra) getMain()).getTerraConfig().getLanguage(), getMain()); // Load language.
-        if(!((Terra) getMain()).getRegistry().loadAll((Terra) getMain())) LangUtil.send("command.reload-error", sender);
-        ((Terra) getMain()).invalidate();
+        if(!((Terra) getMain()).getRegistry().loadAll((Terra) getMain())) {
+            LangUtil.send("command.reload-error", sender);
+            return true;
+        }
+        ((Terra) getMain()).reload();
         LangUtil.send("command.reload", sender);
         return true;
     }

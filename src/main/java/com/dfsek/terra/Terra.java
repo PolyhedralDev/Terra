@@ -71,11 +71,16 @@ public class Terra extends GaeaPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
 
-    public void invalidate() {
+    public void reload() {
+        Map<World, TerraWorld> newMap = new HashMap<>();
+        worldMap.forEach((world, tw) -> {
+            String packID = tw.getConfig().getTemplate().getID();
+            newMap.put(world, new TerraWorld(world, registry.get(packID)));
+        });
         worldMap.clear();
-        worlds.clear();
-        registry.clear();
+        worldMap.putAll(newMap);
     }
+
 
     @Override
     public void onDisable() {
