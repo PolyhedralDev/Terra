@@ -1,6 +1,6 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -43,8 +43,9 @@ public class UserDefinedCarver extends Carver {
     private double step = 2;
     private Range recalc = new Range(8, 10);
     private double recalcMagnitude = 3;
+    private final Terra main;
 
-    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config) throws ParseException {
+    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, Terra main) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;
@@ -53,6 +54,7 @@ public class UserDefinedCarver extends Carver {
         this.topCut = topCut;
         this.bottomCut = bottomCut;
         this.config = config;
+        this.main = main;
 
         Parser p = new Parser();
 
@@ -99,7 +101,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector, CarvingType> consumer) {
-        CarverCache cache = cacheMap.computeIfAbsent(w, CarverCache::new);
+        CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main));
         int carvingRadius = getCarvingRadius();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
@@ -119,7 +121,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        BiomeTemplate conf = ((UserDefinedBiome) TerraWorld.getWorld(w).getGrid().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8, GenerationPhase.POPULATE)).getConfig();
+        BiomeTemplate conf = ((UserDefinedBiome) main.getWorld(w).getGrid().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8, GenerationPhase.POPULATE)).getConfig();
         if(conf.getCarvers().get(this) != null) {
             return new FastRandom(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
         }

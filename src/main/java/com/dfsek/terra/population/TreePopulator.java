@@ -1,5 +1,6 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -18,6 +19,11 @@ import java.util.Random;
 
 
 public class TreePopulator extends GaeaBlockPopulator {
+    private final Terra main;
+
+    public TreePopulator(Terra main) {
+        this.main = main;
+    }
 
     private static int offset(Random r, int i) {
         return FastMath.min(FastMath.max(i + r.nextInt(3) - 1, 0), 15);
@@ -27,7 +33,7 @@ public class TreePopulator extends GaeaBlockPopulator {
     @SuppressWarnings("try")
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("TreeTime")) {
-            TerraWorld tw = TerraWorld.getWorld(world);
+            TerraWorld tw = main.getWorld(world);
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             for(int x = 0; x < 16; x += 2) {

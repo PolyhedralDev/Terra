@@ -1,5 +1,6 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -24,15 +25,20 @@ import java.util.Random;
 import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
+    private final Terra main;
     private static final Map<Material, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private static final BlockData AIR = Material.AIR.createBlockData();
+
+    public CavePopulator(Terra main) {
+        this.main = main;
+    }
 
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("CaveTime")) {
             Random random = PopulationUtil.getRandom(chunk);
-            TerraWorld tw = TerraWorld.getWorld(world);
+            TerraWorld tw = main.getWorld(world);
             if(!tw.isSafe()) return;
             ConfigPack config = tw.getConfig();
 

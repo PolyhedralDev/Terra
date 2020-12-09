@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.image;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.World;
@@ -21,7 +22,7 @@ public class RenderCommand extends WorldCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         try {
-            WorldImageGenerator g = new WorldImageGenerator(world, Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+            WorldImageGenerator g = new WorldImageGenerator(world, Integer.parseInt(args[0]), Integer.parseInt(args[1]), (Terra) getMain());
             g.drawWorld(sender.getLocation().getBlockX(), sender.getLocation().getBlockZ());
             File file = new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "map" + File.separator + "map_" + System.currentTimeMillis() + ".png");
             //noinspection ResultOfMethodCallIgnored

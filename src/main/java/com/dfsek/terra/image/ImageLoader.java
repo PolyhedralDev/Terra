@@ -1,6 +1,6 @@
 package com.dfsek.terra.image;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.PluginConfig;
@@ -25,18 +25,18 @@ public class ImageLoader {
         this.align = align;
     }
 
-    public static void debugWorld(boolean genStep, World w) {
+    public static void debugWorld(boolean genStep, World w, Terra main) {
         if(!PluginConfig.isDebug()) return;
-        BufferedImage newImg = new WorldImageGenerator(w, 1024, 1024).drawWorld(0, 0).getDraw();
-        if(genStep) newImg = redrawStepped(newImg, w, Align.CENTER);
-        DebugGUI debugGUI = new DebugGUI(newImg);
+        BufferedImage newImg = new WorldImageGenerator(w, 1024, 1024, main).drawWorld(0, 0).getDraw();
+        if(genStep) newImg = redrawStepped(newImg, w, Align.CENTER, main);
+        DebugGUI debugGUI = new DebugGUI(newImg, main);
         debugGUI.start();
     }
 
-    private static BufferedImage redrawStepped(BufferedImage original, World w, Align align) {
+    private static BufferedImage redrawStepped(BufferedImage original, World w, Align align, Terra main) {
         BufferedImage newImg = copyImage(original);
-        TerraBiomeGrid tb = TerraWorld.getWorld(w).getGrid();
-        BiomeZone z = TerraWorld.getWorld(w).getZone();
+        TerraBiomeGrid tb = main.getWorld(w).getGrid();
+        BiomeZone z = main.getWorld(w).getZone();
         for(int x = 0; x < newImg.getWidth(); x++) {
             for(int y = 0; y < newImg.getHeight(); y++) {
                 double[] noise;
@@ -60,13 +60,13 @@ public class ImageLoader {
         return b;
     }
 
-    public void debug(boolean genStep, World w) {
+    public void debug(boolean genStep, World w, Terra main) {
         if(!PluginConfig.isDebug()) return;
         BufferedImage newImg = copyImage(image);
         if(genStep) {
-            newImg = redrawStepped(image, w, align);
+            newImg = redrawStepped(image, w, align, main);
         }
-        DebugGUI debugGUI = new DebugGUI(newImg);
+        DebugGUI debugGUI = new DebugGUI(newImg, main);
         debugGUI.start();
     }
 

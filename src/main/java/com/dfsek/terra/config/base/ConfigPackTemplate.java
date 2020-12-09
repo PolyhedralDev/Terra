@@ -6,6 +6,7 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.image.ImageLoader;
 import com.dfsek.terra.util.StructureTypeEnum;
 
 import java.util.HashMap;
@@ -111,6 +112,25 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Default
     private String internalGrid = null;
 
+    @Value("image.enable")
+    @Default
+    private boolean fromImage = false;
+
+    @Value("image.channels.biome-x")
+    @Default
+    private ImageLoader.Channel biomeXChannel = ImageLoader.Channel.RED;
+    @Value("image.channels.biome-z")
+    @Default
+    private ImageLoader.Channel biomeZChannel = ImageLoader.Channel.GREEN;
+    @Value("image.channels.zone")
+    @Default
+    private ImageLoader.Channel zoneChannel = ImageLoader.Channel.BLUE;
+
+    @Value("image")
+    @Default
+    private ImageLoader imageLoader = null;
+
+
     public String getVersion() {
         return version;
     }
@@ -211,10 +231,32 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
         return gridType;
     }
 
+    public ImageLoader.Channel getBiomeXChannel() {
+        return biomeXChannel;
+    }
+
+    public ImageLoader.Channel getBiomeZChannel() {
+        return biomeZChannel;
+    }
+
+    public boolean isFromImage() {
+        return fromImage;
+    }
+
+    public ImageLoader.Channel getZoneChannel() {
+        return zoneChannel;
+    }
+
+    public ImageLoader getImageLoader() {
+        return imageLoader;
+    }
+
     @Override
     public boolean validate() throws ValidationException {
         if(gridType.equals(TerraBiomeGrid.Type.RADIAL) && internalGrid == null)
             throw new ValidationException("No internal BiomeGrid specified");
+        if(biomeZChannel.equals(biomeXChannel) || zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel))
+            throw new ValidationException("2 objects share the same image channels: biome-x and biome-z");
         return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -22,11 +23,17 @@ import java.util.Random;
  * Populates Flora and Trees
  */
 public class FloraPopulator extends GaeaBlockPopulator {
+    private final Terra main;
+
+    public FloraPopulator(Terra main) {
+        this.main = main;
+    }
+
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = TerraProfiler.fromWorld(world).measure("FloraTime")) {
-            TerraWorld tw = TerraWorld.getWorld(world);
+            TerraWorld tw = main.getWorld(world);
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();

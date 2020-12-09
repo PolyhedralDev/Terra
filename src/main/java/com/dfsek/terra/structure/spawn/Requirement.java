@@ -1,5 +1,6 @@
 package com.dfsek.terra.structure.spawn;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
 import org.polydev.gaea.math.FastNoiseLite;
@@ -7,10 +8,12 @@ import org.polydev.gaea.math.FastNoiseLite;
 import java.util.Objects;
 
 public abstract class Requirement {
-    private final World world;
+    protected final World world;
+    protected final Terra main;
 
-    public Requirement(World world) {
+    public Requirement(World world, Terra main) {
         this.world = world;
+        this.main = main;
     }
 
     public abstract boolean matches(int x, int y, int z);

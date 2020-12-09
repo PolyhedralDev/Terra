@@ -1,5 +1,6 @@
 package com.dfsek.terra.async;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.items.TerraStructure;
@@ -10,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * Runnable to locate structures asynchronously
  */
 public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
-    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, GaeaPlugin main) {
+    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, Terra main) {
         super(grid, target, origin, startRadius, maxRadius, callback, main);
         setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
     }
@@ -42,7 +42,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
         for(int y = target.getSpawnStart().get(r2); y > target.getBound().getMin(); y--) {
             if(!target.getBound().isInRange(y)) return false;
             spawn.setY(y);
-            if(!struc.checkSpawns(spawn, rotation)) continue;
+            if(!struc.checkSpawns(spawn, rotation, main)) continue;
             return true;
         }
         return false;

@@ -1,5 +1,6 @@
 package com.dfsek.terra.structure;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.util.structure.RotationUtil;
@@ -284,10 +285,10 @@ public class Structure implements Serializable {
         }
     }
 
-    public boolean checkSpawns(Location origin, Rotation r) {
+    public boolean checkSpawns(Location origin, Rotation r, Terra main) {
         for(StructureContainedBlock b : spawns) {
             Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
-            if(!b.getRequirement().getInstance(origin.getWorld()).matches((int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
+            if(!b.getRequirement().getInstance(origin.getWorld(), main).matches((int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
                 return false;
         }
         return true;

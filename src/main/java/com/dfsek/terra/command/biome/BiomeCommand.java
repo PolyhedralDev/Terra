@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.biome;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -23,7 +23,7 @@ public class BiomeCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        TerraBiomeGrid grid = TerraWorld.getWorld(sender.getWorld()).getGrid();
+        TerraBiomeGrid grid = ((Terra) getMain()).getWorld(sender.getWorld()).getGrid();
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(sender.getLocation(), GenerationPhase.POPULATE);
         LangUtil.send("command.biome.in", sender, biome.getID());
         return true;

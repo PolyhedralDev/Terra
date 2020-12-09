@@ -1,5 +1,6 @@
 package com.dfsek.terra.image;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.bukkit.World;
@@ -14,14 +15,16 @@ import java.io.IOException;
 public class WorldImageGenerator {
     private final World w;
     private final BufferedImage draw;
+    private final Terra main;
 
-    public WorldImageGenerator(World w, int width, int height) {
+    public WorldImageGenerator(World w, int width, int height, Terra main) {
         draw = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         this.w = w;
+        this.main = main;
     }
 
     public WorldImageGenerator drawWorld(int centerX, int centerZ) {
-        TerraWorld tw = TerraWorld.getWorld(w);
+        TerraWorld tw = main.getWorld(w);
         TerraBiomeGrid tb = tw.getGrid();
         int imY = 0;
         for(int y = centerZ - (draw.getHeight() / 2); y < centerZ + (draw.getHeight() / 2); y++) {

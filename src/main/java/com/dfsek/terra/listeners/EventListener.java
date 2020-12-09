@@ -1,5 +1,6 @@
 package com.dfsek.terra.listeners;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.debug.Debug;
@@ -11,7 +12,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.tree.Tree;
 import org.polydev.gaea.tree.TreeType;
 import org.polydev.gaea.util.FastRandom;
@@ -20,16 +20,16 @@ import org.polydev.gaea.util.FastRandom;
  * Listener for events on all implementations.
  */
 public class EventListener implements Listener {
-    private final GaeaPlugin main;
+    private final Terra main;
 
-    public EventListener(GaeaPlugin main) {
+    public EventListener(Terra main) {
         this.main = main;
     }
 
     @EventHandler
     public void onSaplingGrow(StructureGrowEvent e) {
         if(!TerraWorld.isTerraWorld(e.getWorld())) return;
-        TerraWorld tw = TerraWorld.getWorld(e.getWorld());
+        TerraWorld tw = main.getWorld(e.getWorld());
         ConfigPack c = tw.getConfig();
         if(c.getTemplate().isDisableSaplings()) return;
         e.setCancelled(true);

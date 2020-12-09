@@ -2,7 +2,7 @@ package com.dfsek.terra.structure.spawn;
 
 public class BlankSpawn extends Requirement {
     public BlankSpawn() {
-        super(null);
+        super(null, null);
     }
 
     @Override

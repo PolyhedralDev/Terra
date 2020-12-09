@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -12,9 +13,11 @@ import java.util.List;
 
 public class CarverFactory implements TerraFactory<CarverTemplate, UserDefinedCarver> {
     private final ConfigPack pack;
+    private final Terra main;
 
-    public CarverFactory(ConfigPack pack) {
+    public CarverFactory(ConfigPack pack, Terra main) {
         this.pack = pack;
+        this.main = main;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class CarverFactory implements TerraFactory<CarverTemplate, UserDefinedCa
         long hash = MathUtil.hashToLong(config.getID());
         UserDefinedCarver carver;
         try {
-            carver = new UserDefinedCarver(config.getHeight(), config.getLength(), start, mutate, radius, pack.getVarScope(), hash, config.getCutTop(), config.getCutBottom(), config);
+            carver = new UserDefinedCarver(config.getHeight(), config.getLength(), start, mutate, radius, pack.getVarScope(), hash, config.getCutTop(), config.getCutBottom(), config, main);
         } catch(ParseException e) {
             throw new LoadException("Unable to parse radius equations", e);
         }

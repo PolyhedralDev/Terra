@@ -116,7 +116,7 @@ public class ConfigPack {
             throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
         }
 
-        load(new FolderLoader(folder.toPath()), l);
+        load(new FolderLoader(folder.toPath()), l, main);
     }
 
     public ConfigPack(ZipFile file, Terra main) throws ConfigException {
@@ -140,10 +140,10 @@ public class ConfigPack {
 
         selfLoader.load(template, stream);
 
-        load(new ZIPLoader(file), l);
+        load(new ZIPLoader(file), l, main);
     }
 
-    private void load(Loader loader, long start) throws ConfigException {
+    private void load(Loader loader, long start, Terra main) throws ConfigException {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
@@ -153,7 +153,7 @@ public class ConfigPack {
                 .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new))).close()
                 .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new))).close()
                 .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new))).close()
-                .open("carving").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new))).close()
+                .open("carving").then(streams -> buildAll(new CarverFactory(this, main), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new))).close()
                 .open("structures/trees").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new))).close()
                 .open("structures/single").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new))).close()
                 .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)))).close()

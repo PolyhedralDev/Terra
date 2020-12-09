@@ -1,5 +1,6 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -28,6 +29,11 @@ import org.polydev.gaea.util.FastRandom;
 import java.util.Random;
 
 public class StructurePopulator extends BlockPopulator {
+    private final Terra main;
+
+    public StructurePopulator(Terra main) {
+        this.main = main;
+    }
 
     @SuppressWarnings("try")
     @Override
@@ -36,7 +42,7 @@ public class StructurePopulator extends BlockPopulator {
             Random random = PopulationUtil.getRandom(chunk);
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
-            TerraWorld tw = TerraWorld.getWorld(world);
+            TerraWorld tw = main.getWorld(world);
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
@@ -50,7 +56,7 @@ public class StructurePopulator extends BlockPopulator {
                 for(int y = conf.getSpawnStart().get(r2); y > 0; y--) {
                     if(!conf.getBound().isInRange(y)) continue structure;
                     spawn.setY(y);
-                    if(!struc.checkSpawns(spawn, rotation)) continue;
+                    if(!struc.checkSpawns(spawn, rotation, main)) continue;
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     if(FastMath.abs((cx + 8) - spawn.getBlockX()) <= horizontal && FastMath.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
                         struc.paste(spawn, chunk, rotation);

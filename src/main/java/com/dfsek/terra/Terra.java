@@ -7,8 +7,8 @@ import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
-import com.dfsek.terra.config.base.WorldConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.loaders.ImageLoaderLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
@@ -45,6 +45,7 @@ import com.dfsek.terra.util.StructureTypeEnum;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.PluginCommand;
@@ -65,7 +66,15 @@ import java.util.Objects;
 
 public class Terra extends GaeaPlugin {
     private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<World, TerraWorld> worldMap = new HashMap<>();
+    private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
+
+    public void invalidate() {
+        worldMap.clear();
+        worlds.clear();
+        registry.clear();
+    }
 
     @Override
     public void onDisable() {
@@ -76,16 +85,14 @@ public class Terra extends GaeaPlugin {
     public void onEnable() {
         Debug.setLogger(getLogger()); // Set debug logger.
 
-
         saveDefaultConfig();
 
         Metrics metrics = new Metrics(this, 9017); // Set up bStats.
-        metrics.addCustomChart(new Metrics.SingleLineChart("worlds", TerraWorld::numWorlds)); // World number chart.
+        metrics.addCustomChart(new Metrics.SingleLineChart("worlds", worldMap::size)); // World number chart.
 
         PluginConfig.load(this); // Load master config.yml
         LangUtil.load(PluginConfig.getLanguage(), this); // Load language.
 
-        TerraWorld.invalidate(); // Clear/set up world cache.
         registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
@@ -111,9 +118,9 @@ public class Terra extends GaeaPlugin {
     @Override
     public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
         return generatorMap.computeIfAbsent(worldName, name -> {
-            WorldConfig c = new WorldConfig(worldName, id, this);
-            TerraWorld.loadWorld(c);
-            return new TerraChunkGenerator(c.getConfig(), this);
+            if(!registry.contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
+            worlds.put(worldName, registry.get(id));
+            return new TerraChunkGenerator(registry.get(id), this);
         });
     }
 
@@ -161,5 +168,9 @@ public class Terra extends GaeaPlugin {
 
     public ConfigRegistry getRegistry() {
         return registry;
+    }
+
+    public TerraWorld getWorld(World w) {
+        return worldMap.computeIfAbsent(w, world -> new TerraWorld(w, worlds.get(w.getName())));
     }
 }

@@ -1,6 +1,7 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.config.base.WorldConfig;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
@@ -21,16 +22,17 @@ public class BiomeZone {
     private final boolean useImage;
     private final ImageLoader.Channel channel;
 
-    public BiomeZone(World w, WorldConfig wc, BiomeGrid[] grids) {
+    public BiomeZone(World w, ConfigPack wc, BiomeGrid[] grids) {
         this.noise = new FastNoiseLite((int) w.getSeed() + 2);
         this.noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         this.noise.setFractalType(FastNoiseLite.FractalType.FBm);
         this.noise.setFractalOctaves(4);
-        this.noise.setFrequency(1D / wc.getConfig().getTemplate().getZoneFreq());
+        ConfigPackTemplate t = wc.getTemplate();
+        this.noise.setFrequency(1D / t.getZoneFreq());
         this.grids = grids;
-        imageLoader = wc.imageLoader;
-        useImage = wc.fromImage;
-        channel = wc.zoneChannel;
+        imageLoader = t.getImageLoader();
+        useImage = t.isFromImage();
+        channel = t.getZoneChannel();
     }
 
     /**

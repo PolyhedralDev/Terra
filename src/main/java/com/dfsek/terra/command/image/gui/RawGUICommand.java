@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
@@ -25,9 +25,9 @@ public class RawGUICommand extends WorldCommand {
             LangUtil.send("command.image.gui.debug", sender);
             return true;
         }
-        ImageLoader loader = TerraWorld.getWorld(world).getWorldConfig().imageLoader;
-        if(loader != null) loader.debug(false, sender.getWorld());
-        else ImageLoader.debugWorld(false, world);
+        ImageLoader loader = ((Terra) getMain()).getWorld(world).getConfig().getTemplate().getImageLoader();
+        if(loader != null) loader.debug(false, sender.getWorld(), (Terra) getMain());
+        else ImageLoader.debugWorld(false, world, (Terra) getMain());
         return true;
     }
 

@@ -1,5 +1,6 @@
 package com.dfsek.terra.generation.items.tree;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -26,12 +27,12 @@ public class TerraTree implements Tree {
     }
 
     @Override
-    public boolean plant(Location location, Random random, JavaPlugin javaPlugin) {
+    public boolean plant(Location location, Random random, JavaPlugin main) {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
         Rotation rotation = Rotation.fromDegrees(random.nextInt(4) * 90);
-        if(!struc.checkSpawns(mut, rotation)) return false;
+        if(!struc.checkSpawns(mut, rotation, (Terra) main)) return false;
         struc.paste(mut, rotation);
         return true;
     }

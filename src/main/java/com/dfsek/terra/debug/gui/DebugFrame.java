@@ -1,6 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.ImageLoader;
@@ -20,12 +20,14 @@ public class DebugFrame extends JFrame implements ActionListener {
     private final int x;
     private final int z;
     private final BufferedImage img;
+    private final Terra main;
 
-    public DebugFrame(BufferedImage image, String s) {
+    public DebugFrame(BufferedImage image, String s, Terra main) {
         super(s);
         this.x = image.getWidth();
         this.z = image.getHeight();
         this.img = image;
+        this.main = main;
         new Timer(500, this).start();
     }
 
@@ -36,12 +38,12 @@ public class DebugFrame extends JFrame implements ActionListener {
             if(!(p.getWorld().getGenerator() instanceof TerraChunkGenerator)) break;
             int xp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
             int zp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
-            ImageLoader loader = TerraWorld.getWorld(p.getWorld()).getWorldConfig().imageLoader;
+            ImageLoader loader = main.getWorld(p.getWorld()).getConfig().getTemplate().getImageLoader();
             if(loader != null && loader.getAlign().equals(ImageLoader.Align.NONE)) {
                 xp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockX(), x) / x) * getWidth());
                 zp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockZ(), z) / z) * getHeight());
             }
-            String str = ((UserDefinedBiome) TerraWorld.getWorld(p.getWorld()).getGrid().getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
+            String str = ((UserDefinedBiome) main.getWorld(p.getWorld()).getGrid().getBiome(p.getLocation(), GenerationPhase.POPULATE)).getID();
             g.setColor(new Color(255, 255, 255, 128));
             g.fillRect(xp + 13, zp - 13, (int) (8 + 8.25 * str.length()), 33);
             g.setColor(Color.BLACK);

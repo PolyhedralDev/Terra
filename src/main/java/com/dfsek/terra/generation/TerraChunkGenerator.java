@@ -1,5 +1,6 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraProfiler;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -20,7 +21,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.GaeaPlugin;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.generation.GaeaChunkGenerator;
 import org.polydev.gaea.generation.GenerationPhase;
@@ -47,14 +47,16 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     private final PopulationManager popMan;
     private final ConfigPack configPack;
     private boolean needsLoad = true;
+    private final Terra main;
 
-    public TerraChunkGenerator(ConfigPack c, GaeaPlugin main) {
+    public TerraChunkGenerator(ConfigPack c, Terra main) {
         super(ChunkInterpolator.InterpolationType.TRILINEAR);
         popMan = new PopulationManager(main);
         this.configPack = c;
-        popMan.attach(new OrePopulator());
-        popMan.attach(new TreePopulator());
-        popMan.attach(new FloraPopulator());
+        this.main = main;
+        popMan.attach(new OrePopulator(main));
+        popMan.attach(new TreePopulator(main));
+        popMan.attach(new FloraPopulator(main));
     }
 
     public static synchronized void saveAll() {
@@ -84,7 +86,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     public ChunkData generateBase(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkInterpolator interpolator) {
         if(needsLoad) load(world); // Load population data for world.
         ChunkData chunk = createChunkData(world);
-        TerraWorld tw = TerraWorld.getWorld(world);
+        TerraWorld tw = main.getWorld(world);
         if(!tw.isSafe()) return chunk;
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
@@ -169,15 +171,14 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         return Collections.emptyList();
     }
 
-
     @Override
     public org.polydev.gaea.biome.BiomeGrid getBiomeGrid(World world) {
-        return TerraWorld.getWorld(world).getGrid();
+        return main.getWorld(world).getGrid();
     }
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Arrays.asList(new CavePopulator(), new StructurePopulator(), popMan);
+        return Arrays.asList(new CavePopulator(main), new StructurePopulator(main), popMan);
     }
 
     @Override

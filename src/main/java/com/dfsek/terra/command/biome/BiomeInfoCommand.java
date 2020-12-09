@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.biome;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -28,7 +28,7 @@ public class BiomeInfoCommand extends WorldCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         String id = args[0];
-        ConfigPack cfg = TerraWorld.getWorld(world).getConfig();
+        ConfigPack cfg = ((Terra) getMain()).getWorld(world).getConfig();
         UserDefinedBiome b;
         try {
             b = cfg.getBiome(id);
@@ -87,7 +87,7 @@ public class BiomeInfoCommand extends WorldCommand {
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
         if(!(sender instanceof Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
             return Collections.emptyList();
-        List<String> ids = TerraWorld.getWorld(((Player) sender).getWorld()).getConfig().getBiomeIDs();
+        List<String> ids = ((Terra) getMain()).getWorld(((Player) sender).getWorld()).getConfig().getBiomeIDs();
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         return Collections.emptyList();

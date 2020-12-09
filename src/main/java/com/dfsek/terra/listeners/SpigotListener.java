@@ -1,5 +1,6 @@
 package com.dfsek.terra.listeners;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.debug.Debug;
@@ -15,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
-import org.polydev.gaea.GaeaPlugin;
 
 /**
  * Listener to load on Spigot servers, contains Villager crash prevention and hacky ender eye redirection.
@@ -24,9 +24,9 @@ import org.polydev.gaea.GaeaPlugin;
  * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
-    private final GaeaPlugin main;
+    private final Terra main;
 
-    public SpigotListener(GaeaPlugin main) {
+    public SpigotListener(Terra main) {
         this.main = main;
     }
 
@@ -36,7 +36,7 @@ public class SpigotListener implements Listener {
         if(e.getEntityType().equals(EntityType.ENDER_SIGNAL)) {
             Debug.info("Detected Ender Signal...");
             if(!TerraWorld.isTerraWorld(e.getEntity().getWorld())) return;
-            TerraWorld tw = TerraWorld.getWorld(e.getEntity().getWorld());
+            TerraWorld tw = main.getWorld(e.getEntity().getWorld());
             EnderSignal signal = (EnderSignal) entity;
             TerraStructure config = tw.getConfig().getStructureLocatable(StructureTypeEnum.STRONGHOLD);
             if(config != null) {

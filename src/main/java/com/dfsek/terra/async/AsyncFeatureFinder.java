@@ -1,12 +1,12 @@
 package com.dfsek.terra.async;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.GaeaPlugin;
 
 import java.util.function.Consumer;
 
@@ -20,9 +20,9 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
     protected final World world;
     private final Consumer<Vector> callback;
     protected int searchSize = 1;
-    protected final GaeaPlugin main;
+    protected final Terra main;
 
-    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, GaeaPlugin main) {
+    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, Terra main) {
         this.grid = grid;
         this.target = target;
         this.main = main;

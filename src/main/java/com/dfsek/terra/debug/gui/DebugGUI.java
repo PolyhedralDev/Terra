@@ -1,5 +1,7 @@
 package com.dfsek.terra.debug.gui;
 
+import com.dfsek.terra.Terra;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,14 +9,16 @@ import java.awt.image.BufferedImage;
 public class DebugGUI extends Thread {
 
     private final BufferedImage img;
+    private final Terra main;
 
-    public DebugGUI(BufferedImage img) {
+    public DebugGUI(BufferedImage img, Terra main) {
         this.img = img;
+        this.main = main;
     }
 
     @Override
     public void run() {
-        DebugFrame frame = new DebugFrame(img, "Image2Map Debug GUI");
+        DebugFrame frame = new DebugFrame(img, "Image2Map Debug GUI", main);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1000);
         frame.setResizable(false);

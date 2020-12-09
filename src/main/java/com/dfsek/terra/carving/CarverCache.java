@@ -1,6 +1,6 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.PluginConfig;
@@ -22,15 +22,17 @@ public class CarverCache {
 
     private final World w;
     private final Map<Long, List<Worm.WormPoint>> carvers = new HashMap<>();
+    private final Terra main;
 
-    public CarverCache(World w) {
+    public CarverCache(World w, Terra main) {
         this.w = w;
+        this.main = main;
     }
 
     public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, UserDefinedCarver carver) {
         if(carvers.size() > PluginConfig.getCacheSize() * 2) carvers.clear();
         return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL), key -> {
-            TerraBiomeGrid grid = TerraWorld.getWorld(w).getGrid();
+            TerraBiomeGrid grid = main.getWorld(w).getGrid();
             if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + carver.hashCode())))) {
                 long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
                 carver.getSeedVar().setValue(seed);
