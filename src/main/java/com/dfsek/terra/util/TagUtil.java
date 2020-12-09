@@ -39,7 +39,9 @@ public final class TagUtil {
         putCustomSet("minecraft:base_stone_overworld", Material.STONE, Material.GRANITE, Material.DIORITE, Material.ANDESITE);
 
         Set<Material> snow = new HashSet<>();
+        Set<Material> solid = new HashSet<>();
         for(Material m : Material.values()) {
+            if(m.isSolid()) solid.add(m);
             String name = m.toString().toLowerCase();
             if(name.contains("slab")
                     || name.contains("stair")
@@ -55,7 +57,9 @@ public final class TagUtil {
                     || !m.isSolid()) snow.add(m);
         }
         tagMap.put("terra:snow_blacklist", snow);
+        tagMap.put("terra:solid", solid);
         Debug.info("Added " + snow.size() + " materials to snow blacklist");
+        Debug.info("Added " + solid.size() + " materials to solid list");
         Debug.info("Loaded " + tagMap.size() + " tags.");
     }
 

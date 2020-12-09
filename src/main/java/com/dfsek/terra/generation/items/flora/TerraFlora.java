@@ -7,7 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.MultipleFacing;
+import org.bukkit.block.data.Rotatable;
 import org.polydev.gaea.math.Range;
+import org.polydev.gaea.util.FastRandom;
+import org.polydev.gaea.util.GlueList;
 import org.polydev.gaea.world.Flora;
 import org.polydev.gaea.world.palette.Palette;
 
@@ -24,6 +29,8 @@ public class TerraFlora implements Flora {
     private final MaterialSet spawnable;
     private final MaterialSet replaceable;
 
+    private final MaterialSet testRotation;
+
     private final int maxPlacements;
 
     private final Search search;
@@ -32,9 +39,10 @@ public class TerraFlora implements Flora {
 
     private final int irrigableOffset;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset) {
+    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset) {
         this.floraPalette = floraPalette;
         this.physics = physics;
+        this.testRotation = testRotation;
         this.spawnBlacklist = spawnBlacklist;
         this.ceiling = ceiling;
         this.irrigable = irrigable;
@@ -81,13 +89,45 @@ public class TerraFlora implements Flora {
 
     @Override
     public boolean plant(Location location) {
+
+        boolean doRotation = testRotation.size() > 0;
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;
+
+        List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0).getBlock()) : new GlueList<>();
+        if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
+        BlockFace oneFace = doRotation ? faces.get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())) : null; // Get random face.
+
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
-            location.clone().add(0, i + c, 0).getBlock().setBlockData(floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()), physics);
+            BlockData data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()).clone();
+            if(doRotation) {
+                if(data instanceof Directional) {
+                    ((Directional) data).setFacing(oneFace);
+                } else if(data instanceof MultipleFacing) {
+                    MultipleFacing o = (MultipleFacing) data;
+                    for(BlockFace face : o.getFaces()) o.setFace(face, false);
+                    for(BlockFace face : faces) o.setFace(face, true);
+                } else if(data instanceof Rotatable) {
+                    ((Rotatable) data).setRotation(oneFace);
+                }
+            }
+            location.clone().add(0, i + c, 0).getBlock().setBlockData(data, physics);
         }
         return true;
+    }
+
+    private List<BlockFace> getFaces(Block b) {
+        List<BlockFace> faces = new GlueList<>();
+        test(faces, BlockFace.NORTH, b);
+        test(faces, BlockFace.SOUTH, b);
+        test(faces, BlockFace.EAST, b);
+        test(faces, BlockFace.WEST, b);
+        return faces;
+    }
+
+    private void test(List<BlockFace> faces, BlockFace f, Block b) {
+        if(testRotation.contains(b.getRelative(f).getType())) faces.add(f);
     }
 
     public enum Search {

@@ -35,6 +35,11 @@ public class FloraTemplate extends AbstractableTemplate {
     @Default
     private MaterialSet irrigable = null;
 
+    @Value("rotatable")
+    @Abstractable
+    @Default
+    private MaterialSet rotatable = new MaterialSet();
+
     @Value("layers")
     @Abstractable
     private List<PaletteLayer> palette;
@@ -106,5 +111,9 @@ public class FloraTemplate extends AbstractableTemplate {
 
     public boolean isSpawnBlacklist() {
         return spawnBlacklist;
+    }
+
+    public MaterialSet getRotatable() {
+        return rotatable;
     }
 }
