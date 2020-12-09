@@ -6,11 +6,9 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.image.ImageLoader;
-import com.dfsek.terra.registry.ConfigRegistry;
-import com.dfsek.terra.util.ConfigUtil;
 import org.apache.commons.io.FileUtils;
-import org.polydev.gaea.GaeaPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,13 +18,8 @@ import java.util.Objects;
 public class WorldConfig implements ValidatedConfigTemplate {
     private static final ConfigLoader LOADER = new ConfigLoader();
 
-    static {
-        ConfigUtil.registerAllLoaders(LOADER);
-    }
-
     private final String worldID;
     private final String configID;
-    private final GaeaPlugin main;
     @Value("image.enable")
     @Default
     public boolean fromImage = false;
@@ -46,15 +39,15 @@ public class WorldConfig implements ValidatedConfigTemplate {
     public ImageLoader imageLoader = null;
     private ConfigPack tConfig;
 
-    public WorldConfig(String w, String configID, GaeaPlugin main) {
+    public WorldConfig(String w, String configID, Terra main) {
+        main.registerAllLoaders(LOADER);
         this.worldID = w;
         this.configID = configID;
-        this.main = main;
-        load();
+        load(main);
     }
 
-    public void load() {
-        tConfig = ConfigRegistry.getRegistry().get(configID);
+    public void load(Terra main) {
+        tConfig = main.getRegistry().get(configID);
 
         if(tConfig == null) throw new IllegalStateException("No such config pack \"" + configID + "\"");
 

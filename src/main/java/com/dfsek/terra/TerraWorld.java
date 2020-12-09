@@ -71,9 +71,6 @@ public class TerraWorld {
 
     public static synchronized void invalidate() {
         map.clear();
-        for(WorldConfig config : loaded.values()) {
-            config.load(); // Reload all stored WorldConfigs
-        }
     }
 
     public static int numWorlds() {

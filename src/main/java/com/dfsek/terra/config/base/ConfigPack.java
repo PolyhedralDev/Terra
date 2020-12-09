@@ -4,6 +4,7 @@ import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -45,7 +46,6 @@ import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.TreeRegistry;
 import com.dfsek.terra.structure.Structure;
-import com.dfsek.terra.util.ConfigUtil;
 import com.dfsek.terra.util.StructureTypeEnum;
 import org.polydev.gaea.biome.Biome;
 import org.polydev.gaea.structures.loot.LootTable;
@@ -100,12 +100,13 @@ public class ConfigPack {
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry)
                 .registerLoader(TerraStructure.class, structureRegistry);
-        ConfigUtil.registerAllLoaders(abstractConfigLoader);
-        ConfigUtil.registerAllLoaders(selfLoader);
     }
 
-    public ConfigPack(File folder) throws ConfigException {
+    public ConfigPack(File folder, Terra main) throws ConfigException {
         long l = System.nanoTime();
+
+        main.registerAllLoaders(selfLoader);
+        main.registerAllLoaders(abstractConfigLoader);
 
         File pack = new File(folder, "pack.yml");
 
@@ -118,8 +119,11 @@ public class ConfigPack {
         load(new FolderLoader(folder.toPath()), l);
     }
 
-    public ConfigPack(ZipFile file) throws ConfigException {
+    public ConfigPack(ZipFile file, Terra main) throws ConfigException {
         long l = System.nanoTime();
+
+        main.registerAllLoaders(selfLoader);
+        main.registerAllLoaders(abstractConfigLoader);
 
         InputStream stream = null;
 
