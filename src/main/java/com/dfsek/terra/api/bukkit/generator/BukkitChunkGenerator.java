@@ -4,27 +4,25 @@ import com.dfsek.terra.api.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.api.bukkit.BukkitBlockData;
 import com.dfsek.terra.api.bukkit.BukkitWorld;
 import com.dfsek.terra.api.generic.BlockData;
-import com.dfsek.terra.api.generic.generator.BlockPopulator;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Random;
 
-public abstract class BukkitChunkGenerator extends ChunkGenerator implements com.dfsek.terra.api.generic.generator.ChunkGenerator {
+public class BukkitChunkGenerator extends ChunkGenerator {
+    private final com.dfsek.terra.api.generic.generator.ChunkGenerator delegate;
 
-
-    @Override
-    public ChunkGenerator.@NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
-        BukkitChunkData data = new BukkitChunkData(createChunkData(((BukkitWorld) world).getHandle()));
-        generateChunkData(new BukkitWorld(world), random, x, z, new BukkitBiomeGrid(biome), data);
-        return data.getHandle();
+    public BukkitChunkGenerator(com.dfsek.terra.api.generic.generator.ChunkGenerator delegate) {
+        this.delegate = delegate;
     }
 
     @Override
-    public List<BlockPopulator> getDefaultPopulators(com.dfsek.terra.api.generic.world.World world) {
-        return null;
+    public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
+        BukkitWorld bukkitWorld = new BukkitWorld(world);
+        BukkitChunkData data = new BukkitChunkData(createChunkData(world));
+        delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome), data);
+        return data.getHandle();
     }
 
     public static class BukkitChunkData implements com.dfsek.terra.api.generic.generator.ChunkGenerator.ChunkData {

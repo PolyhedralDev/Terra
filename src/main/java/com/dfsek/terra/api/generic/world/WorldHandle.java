@@ -13,4 +13,6 @@ public interface WorldHandle {
     BlockData getBlockData(Block block);
 
     Material getType(Block block);
+
+    com.dfsek.terra.api.generic.BlockData createBlockData(String data);
 }
