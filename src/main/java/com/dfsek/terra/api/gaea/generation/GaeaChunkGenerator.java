@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.gaea.generation;
 
 import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.gaea.math.ChunkInterpolator;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;

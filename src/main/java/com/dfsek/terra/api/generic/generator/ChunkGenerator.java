@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.generic.generator;
 
-import com.dfsek.terra.api.generic.BlockData;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

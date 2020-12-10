@@ -1,11 +1,10 @@
 package com.dfsek.terra.api.generic.world;
 
+import com.dfsek.terra.api.generic.Handle;
 import org.bukkit.block.Biome;
 import org.jetbrains.annotations.NotNull;
 
-public interface BiomeGrid {
-    Object getHandle();
-
+public interface BiomeGrid extends Handle {
     /**
      * Get biome at x, z within chunk being generated
      *

@@ -33,7 +33,6 @@ import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.flora.TerraFlora;

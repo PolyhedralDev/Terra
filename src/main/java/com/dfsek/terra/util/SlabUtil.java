@@ -1,22 +1,22 @@
 package com.dfsek.terra.util;
 
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.generator.ChunkGenerator;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.generic.world.block.data.Bisected;
+import com.dfsek.terra.api.generic.world.block.data.Stairs;
+import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.generation.Sampler;
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Bisected;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.Stairs;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.util.Vector;
 
 import java.util.Map;
 
 public final class SlabUtil {
-    public static void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkGenerator.ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                             Map<Material, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+    public static void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
+                                             Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
@@ -34,8 +34,8 @@ public final class SlabUtil {
         }
     }
 
-    public static void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkGenerator.ChunkData chunk, Vector block, Map<Material, Palette<BlockData>> slabs,
-                                               Map<Material, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+    public static void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
+                                               Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getBlockX(), block.getBlockY() + 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
@@ -56,7 +56,7 @@ public final class SlabUtil {
         }
     }
 
-    private static boolean placeStair(BlockData orig, ChunkGenerator.ChunkData chunk, Vector block, double thresh, Sampler sampler, Stairs stairNew) {
+    private static boolean placeStair(BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
         if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
             stairNew.setFacing(BlockFace.WEST);
         } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.55) > thresh) {

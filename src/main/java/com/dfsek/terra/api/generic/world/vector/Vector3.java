@@ -53,7 +53,7 @@ public class Vector3 implements Cloneable {
         return FastMath.floorToInt(z);
     }
 
-    public Vector3 multiply(int m) {
+    public Vector3 multiply(double m) {
         x *= m;
         y *= m;
         z *= m;
@@ -101,4 +101,7 @@ public class Vector3 implements Cloneable {
         return new Location(world, this.clone());
     }
 
+    public Vector3 normalize() {
+        return this.multiply(1D / this.length());
+    }
 }

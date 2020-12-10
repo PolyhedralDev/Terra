@@ -3,7 +3,6 @@ package com.dfsek.terra.debug.gui;
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.image.ImageLoader;
 import net.jafama.FastMath;
 import org.bukkit.Bukkit;
