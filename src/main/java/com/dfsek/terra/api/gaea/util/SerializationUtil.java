@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 public class SerializationUtil {
     public static Object fromFile(File f) throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new MovedObjectInputStream(new FileInputStream(f), "com.dfsek.betterend.gaea", "com.dfsek.terra.api.gaea"); // Backwards compat with old BetterEnd shade location
+        ObjectInputStream ois = new MovedObjectInputStream(new FileInputStream(f), "org.polydev.gaea", "com.dfsek.terra.api.gaea"); // Backwards compat with old Gaea location
         Object o = ois.readObject();
         ois.close();
         return o;

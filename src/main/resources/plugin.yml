@@ -1,5 +1,4 @@
 name: "Terra"
-depend: [ "Gaea" ]
 main: "com.dfsek.terra.Terra"
 version: "@VERSION@"
 load: "STARTUP"
