@@ -18,4 +18,9 @@ public class BukkitChunk implements Chunk {
     public int getZ() {
         return delegate.getZ();
     }
+
+    @Override
+    public org.bukkit.Chunk getHandle() {
+        return delegate;
+    }
 }

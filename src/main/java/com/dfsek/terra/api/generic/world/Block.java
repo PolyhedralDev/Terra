@@ -1,4 +1,6 @@
 package com.dfsek.terra.api.generic.world;
 
-public interface Block {
+import com.dfsek.terra.api.generic.Handle;
+
+public interface Block extends Handle {
 }

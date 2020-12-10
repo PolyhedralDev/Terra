@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.generic.world;
 
-public interface World {
-    long getSeed();
+import com.dfsek.terra.api.generic.Handle;
 
-    Object getHandle();
+public interface World extends Handle {
+    long getSeed();
 }
