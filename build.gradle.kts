@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption
 plugins {
     java
     maven
+    idea
     id("com.github.johnrengelman.shadow").version("6.1.0")
 }
 

@@ -5,12 +5,19 @@ import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.async.AsyncBiomeFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.generation.TerraChunkGenerator;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -25,6 +32,7 @@ public class BiomeLocateCommand extends WorldCommand {
         this.tp = teleport;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         String id = args[0];
@@ -44,11 +52,14 @@ public class BiomeLocateCommand extends WorldCommand {
         }
         Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncBiomeFinder(((Terra) getMain()).getWorld(world).getGrid(), b, sender.getLocation().clone().multiply((1D / ((Terra) getMain()).getTerraConfig().getBiomeSearchResolution())), 0, maxRadius, location -> {
             if(location != null) {
-                LangUtil.send("command.biome.biome-found", sender, String.valueOf(location.getBlockX()), String.valueOf(location.getBlockZ()));
-                if(tp) {
-                    Location l = new Location(sender.getWorld(), location.getX(), sender.getLocation().getY(), location.getZ());
-                    Bukkit.getScheduler().runTask(getMain(), () -> sender.teleport(l));
-                }
+                ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
+                        .append(String.format("[%d, ~, %d]", location.getBlockX(), location.getBlockZ()), ComponentBuilder.FormatRetention.NONE)
+                        .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/minecraft:tp %s %d.0 %.2f %d.0", sender.getName(), location.getBlockX(), sender.getLocation().getY(), location.getBlockZ())))
+                        .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {new TextComponent("Click to teleport")}))
+                        .color(ChatColor.GREEN)
+                        .append(String.format(" (%.1f blocks away)", location.add(new Vector(0, sender.getLocation().getY(), 0)).distance(sender.getLocation().toVector())), ComponentBuilder.FormatRetention.NONE);
+                sender.spigot().sendMessage(cm.create());
+                // LangUtil.send("command.biome.biome-found", sender, String.valueOf(location.getBlockX()), String.valueOf(location.getBlockZ()));
             } else LangUtil.send("command.biome.unable-to-locate", sender);
         }, (Terra) getMain()));
         return true;

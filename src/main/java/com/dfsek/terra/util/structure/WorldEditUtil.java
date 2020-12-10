@@ -10,13 +10,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class WorldEditUtil {
     public static Location[] getSelectionLocations(Player sender) {
-        WorldEditPlugin we = WorldEditUtil.getWorldEdit();
-        if(we == null) {
+        WorldEditPlugin we;
+        try {
+            we = WorldEditUtil.getWorldEdit();
+        } catch(WorldEditNotFoundException e) {
             sender.sendMessage("WorldEdit is not installed! Please install WorldEdit before attempting to export structures.");
-            return null;
+            throw e;
         }
         Region selection;
         try {
@@ -36,18 +39,27 @@ public final class WorldEditUtil {
         return new Location[] {l1, l2};
     }
 
+    /**
+     * Gets an instance of the WorldEditPlugin class.
+     *
+     * @return The world edit plugin instance.
+     * @throws WorldEditNotFoundException Thrown when worldedit cannot be found.
+     */
+    @NotNull
     public static WorldEditPlugin getWorldEdit() {
         Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
         if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
         Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
-        return null;
+        throw new WorldEditNotFoundException("Could not find World Edit!");
     }
 
     public static Location[] getSelectionPositions(Player sender) {
-        WorldEditPlugin we = WorldEditUtil.getWorldEdit();
-        if(we == null) {
+        WorldEditPlugin we;
+        try {
+            we = WorldEditUtil.getWorldEdit();
+        } catch(WorldEditNotFoundException e) {
             sender.sendMessage("WorldEdit is not installed! Please install WorldEdit before attempting to export structures.");
-            return null;
+            throw e;
         }
         CuboidRegion selection;
         try {
