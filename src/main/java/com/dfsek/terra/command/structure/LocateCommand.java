@@ -6,12 +6,18 @@ import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.generation.items.TerraStructure;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -27,10 +33,12 @@ public class LocateCommand extends WorldCommand {
         this.tp = tp;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         String id = args[0];
         int maxRadius;
+
         try {
             maxRadius = Integer.parseInt(args[1]);
         } catch(NumberFormatException e) {
@@ -47,13 +55,15 @@ public class LocateCommand extends WorldCommand {
         Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncStructureFinder(((Terra) getMain()).getWorld(world).getGrid(), s, sender.getLocation(), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
-                    sender.sendMessage("Located structure at (" + location.getBlockX() + ", " + location.getBlockZ() + ").");
-                    if(tp) {
-                        int finalX = location.getBlockX();
-                        int finalZ = location.getBlockZ();
-                        Bukkit.getScheduler().runTask(getMain(), () -> sender.teleport(new Location(sender.getWorld(), finalX, sender.getLocation().getY(), finalZ)));
-                    }
-                } else sender.sendMessage("Unable to locate structure. ");
+                    ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
+                            .append(String.format("[%d, ~, %d]", location.getBlockX(), location.getBlockZ()), ComponentBuilder.FormatRetention.NONE)
+                            .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/minecraft:tp %s %d.0 %.2f %d.0", sender.getName(), location.getBlockX(), sender.getLocation().getY(), location.getBlockZ())))
+                            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {new TextComponent("Click to teleport")}))
+                            .color(ChatColor.GREEN)
+                            .append(String.format(" (%.1f blocks away)", location.add(new Vector(0, sender.getLocation().getY(), 0)).distance(sender.getLocation().toVector())), ComponentBuilder.FormatRetention.NONE);
+                    sender.spigot().sendMessage(cm.create());
+                } else
+                    sender.sendMessage("Unable to locate structure. ");
             }
         }, (Terra) getMain()));
         return true;
