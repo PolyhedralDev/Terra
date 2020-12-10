@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.procgen.math.Vector2;
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import net.jafama.FastMath;
 
 import java.io.Serializable;

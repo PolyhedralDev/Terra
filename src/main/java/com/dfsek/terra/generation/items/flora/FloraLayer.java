@@ -1,7 +1,7 @@
 package com.dfsek.terra.generation.items.flora;
 
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.generation.items.PlaceableLayer;
-import com.dfsek.terra.procgen.math.Vector2;
 import org.bukkit.Chunk;
 import org.polydev.gaea.math.FastNoiseLite;
 import org.polydev.gaea.math.ProbabilityCollection;

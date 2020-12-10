@@ -1,7 +1,7 @@
 package com.dfsek.terra.generation.items.tree;
 
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.generation.items.PlaceableLayer;
-import com.dfsek.terra.procgen.math.Vector2;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

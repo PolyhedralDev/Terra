@@ -2,8 +2,8 @@ package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.util.structure.RotationUtil;
 import net.jafama.FastMath;
 import org.bukkit.Bukkit;

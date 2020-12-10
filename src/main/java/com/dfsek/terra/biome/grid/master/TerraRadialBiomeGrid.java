@@ -1,5 +1,6 @@
 package com.dfsek.terra.biome.grid.master;
 
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.UserDefinedGrid;
@@ -7,7 +8,6 @@ import com.dfsek.terra.biome.postprocessing.CoordinatePerturb;
 import com.dfsek.terra.biome.postprocessing.ErosionNoise;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
-import com.dfsek.terra.procgen.math.Vector2;
 import net.jafama.FastMath;
 import org.bukkit.Location;
 import org.bukkit.World;

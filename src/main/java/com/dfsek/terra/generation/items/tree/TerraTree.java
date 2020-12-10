@@ -1,7 +1,7 @@
 package com.dfsek.terra.generation.items.tree;
 
 import com.dfsek.terra.Terra;
-import com.dfsek.terra.procgen.math.Vector2;
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedBlock;

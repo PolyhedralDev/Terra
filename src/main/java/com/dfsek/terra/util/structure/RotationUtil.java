@@ -1,6 +1,6 @@
 package com.dfsek.terra.util.structure;
 
-import com.dfsek.terra.procgen.math.Vector2;
+import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.google.common.collect.Sets;
 import net.jafama.FastMath;
