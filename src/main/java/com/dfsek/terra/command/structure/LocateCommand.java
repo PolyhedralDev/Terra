@@ -4,7 +4,6 @@ import com.dfsek.terra.Terra;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.generation.items.TerraStructure;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

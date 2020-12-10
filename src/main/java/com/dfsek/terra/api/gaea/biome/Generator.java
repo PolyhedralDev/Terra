@@ -1,32 +1,20 @@
 package com.dfsek.terra.api.gaea.biome;
 
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.math.Interpolator;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
-import org.bukkit.World;
-import org.bukkit.block.data.BlockData;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 
 public abstract class Generator {
     /**
-     * Gets the 2D noise at a pair of coordinates using the provided FastNoiseLite instance.
-     *
-     * @param gen - The FastNoiseLite instance to use.
-     * @param x   - The x coordinate.
-     * @param z   - The z coordinate.
-     * @return double - Noise value at the specified coordinates.
-     */
-    public abstract double getNoise(FastNoiseLite gen, World w, int x, int z);
-
-    /**
      * Gets the 3D noise at a pair of coordinates using the provided FastNoiseLite instance.
      *
-     * @param gen - The FastNoiseLite instance to use.
-     * @param x   - The x coordinate.
-     * @param y   - The y coordinate.
-     * @param z   - The z coordinate.
+     * @param x - The x coordinate.
+     * @param y - The y coordinate.
+     * @param z - The z coordinate.
      * @return double - Noise value at the specified coordinates.
      */
-    public abstract double getNoise(FastNoiseLite gen, World w, int x, int y, int z);
+    public abstract double getNoise(World w, int x, int y, int z);
 
     /**
      * Gets the BlocPalette to generate the biome with.

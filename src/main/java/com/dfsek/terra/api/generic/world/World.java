@@ -4,4 +4,6 @@ import com.dfsek.terra.api.generic.Handle;
 
 public interface World extends Handle {
     long getSeed();
+
+    int getMaxHeight();
 }

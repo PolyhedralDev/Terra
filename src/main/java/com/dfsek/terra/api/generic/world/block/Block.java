@@ -1,6 +1,5 @@
-package com.dfsek.terra.api.generic.world;
+package com.dfsek.terra.api.generic.world.block;
 
-import com.dfsek.terra.api.generic.BlockData;
 import com.dfsek.terra.api.generic.Handle;
 
 public interface Block extends Handle {

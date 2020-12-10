@@ -9,7 +9,6 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

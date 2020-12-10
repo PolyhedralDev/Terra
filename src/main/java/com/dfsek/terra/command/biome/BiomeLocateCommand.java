@@ -5,7 +5,6 @@ import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.async.AsyncBiomeFinder;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
