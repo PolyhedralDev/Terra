@@ -2,6 +2,7 @@ package com.dfsek.terra.util.structure;
 
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.structure.Rotation;
+import com.google.common.collect.Sets;
 import net.jafama.FastMath;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -11,9 +12,11 @@ import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.RedstoneWire;
+import org.bukkit.block.data.type.Wall;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class RotationUtil {
     /**
@@ -243,6 +246,8 @@ public final class RotationUtil {
         return orig;
     }
 
+    private static final Set<BlockFace> CARDINALS = Sets.newHashSet(BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
+
     public static void rotateBlockData(BlockData data, Rotation r) {
         if(data instanceof Rotatable) {
             BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
@@ -273,6 +278,13 @@ public final class RotationUtil {
             }
             for(Map.Entry<BlockFace, RedstoneWire.Connection> e : connections.entrySet()) {
                 rData.setFace(getRotatedFace(e.getKey(), r), e.getValue());
+            }
+        } else if(data instanceof Wall) {
+            Wall wallData = (Wall) data;
+            Map<BlockFace, Wall.Height> faces = new EnumMap<>(BlockFace.class);
+            for(BlockFace b : CARDINALS) faces.put(b, wallData.getHeight(b));
+            for(Map.Entry<BlockFace, Wall.Height> face : faces.entrySet()) {
+                wallData.setHeight(getRotatedFace(face.getKey(), r), face.getValue());
             }
         }
     }
