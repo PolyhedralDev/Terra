@@ -1,16 +1,16 @@
 package com.dfsek.terra.generation.items.tree;
 
+import com.dfsek.terra.api.gaea.GaeaPlugin;
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.gaea.tree.TreeType;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.generation.items.PlaceableLayer;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.polydev.gaea.GaeaPlugin;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.math.Range;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
 
 import java.util.Random;
 

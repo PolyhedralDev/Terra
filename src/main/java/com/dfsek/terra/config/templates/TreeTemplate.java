@@ -3,9 +3,9 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.util.MaterialSet;
-import org.polydev.gaea.math.ProbabilityCollection;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class TreeTemplate extends AbstractableTemplate {

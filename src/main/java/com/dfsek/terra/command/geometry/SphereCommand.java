@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.geometry;
 
+import com.dfsek.terra.api.gaea.command.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.Sphere;
 import org.bukkit.Material;
@@ -8,13 +9,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.PlayerCommand;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SphereCommand extends PlayerCommand {
-    public SphereCommand(org.polydev.gaea.command.Command parent) {
+    public SphereCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -40,7 +40,7 @@ public class SphereCommand extends PlayerCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

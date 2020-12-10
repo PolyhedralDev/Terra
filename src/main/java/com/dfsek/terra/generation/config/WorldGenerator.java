@@ -1,15 +1,15 @@
 package com.dfsek.terra.generation.config;
 
+import com.dfsek.terra.api.gaea.biome.Generator;
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.gaea.math.Interpolator;
+import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.math.RandomFunction;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.biome.Generator;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.math.Interpolator;
-import org.polydev.gaea.world.palette.Palette;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;

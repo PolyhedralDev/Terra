@@ -1,5 +1,6 @@
 package com.dfsek.terra;
 
+import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.grid.master.TerraRadialBiomeGrid;
@@ -11,7 +12,6 @@ import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.polydev.gaea.biome.BiomeGrid;
 
 public class TerraWorld {
     private final TerraBiomeGrid grid;

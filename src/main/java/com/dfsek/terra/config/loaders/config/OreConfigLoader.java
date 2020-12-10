@@ -3,8 +3,8 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.generation.items.ores.OreConfig;
-import org.polydev.gaea.math.Range;
 
 import java.lang.reflect.Type;
 import java.util.Map;

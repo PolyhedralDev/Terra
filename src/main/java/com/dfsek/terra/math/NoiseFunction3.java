@@ -1,7 +1,7 @@
 package com.dfsek.terra.math;
 
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import org.polydev.gaea.math.FastNoiseLite;
 import parsii.eval.Expression;
 
 import java.util.List;

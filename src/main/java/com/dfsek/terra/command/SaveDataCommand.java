@@ -1,13 +1,13 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.api.gaea.command.Command;
+import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.Command;
-import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,13 +1,13 @@
 package com.dfsek.terra.math;
 
-import org.polydev.gaea.util.FastRandom;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import parsii.eval.Expression;
 import parsii.eval.Function;
 
 import java.util.List;
 
 /**
- * Provides access to a PRNG ({@link org.polydev.gaea.util.FastRandom})
+ * Provides access to a PRNG ({@link com.dfsek.terra.api.gaea.util.FastRandom})
  * <p>
  * Takes 1 argument, which sets the seed
  */

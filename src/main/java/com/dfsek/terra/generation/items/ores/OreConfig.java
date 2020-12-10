@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.ores;
 
-import org.polydev.gaea.math.Range;
+import com.dfsek.terra.api.gaea.math.Range;
 
 public class OreConfig {
     private final Range amount;

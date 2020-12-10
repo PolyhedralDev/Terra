@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.postprocessing;
 
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import net.jafama.FastMath;
-import org.polydev.gaea.math.FastNoiseLite;
 
 /**
  * Class to hold noise function to determine erosion.

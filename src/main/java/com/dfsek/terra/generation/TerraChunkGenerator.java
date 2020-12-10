@@ -2,6 +2,15 @@ package com.dfsek.terra.generation;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.biome.Biome;
+import com.dfsek.terra.api.gaea.generation.GaeaChunkGenerator;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.gaea.generation.GenerationPopulator;
+import com.dfsek.terra.api.gaea.math.ChunkInterpolator;
+import com.dfsek.terra.api.gaea.population.PopulationManager;
+import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
+import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
+import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -20,15 +29,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.generation.GaeaChunkGenerator;
-import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.generation.GenerationPopulator;
-import org.polydev.gaea.math.ChunkInterpolator;
-import org.polydev.gaea.population.PopulationManager;
-import org.polydev.gaea.profiler.ProfileFuture;
-import org.polydev.gaea.profiler.WorldProfiler;
-import org.polydev.gaea.world.palette.Palette;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -94,7 +94,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
         if(!tw.isSafe()) return chunk;
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
-        org.polydev.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
+        com.dfsek.terra.api.gaea.biome.BiomeGrid grid = getBiomeGrid(world);
 
         ElevationInterpolator elevationInterpolator;
         try(ProfileFuture ignore = tw.getProfiler().measure("ElevationTime")) {
@@ -176,7 +176,7 @@ public class TerraChunkGenerator extends GaeaChunkGenerator {
     }
 
     @Override
-    public org.polydev.gaea.biome.BiomeGrid getBiomeGrid(World world) {
+    public com.dfsek.terra.api.gaea.biome.BiomeGrid getBiomeGrid(World world) {
         return main.getWorld(world).getGrid();
     }
 

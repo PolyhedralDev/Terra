@@ -2,11 +2,11 @@ package com.dfsek.terra.structure.spawn;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import org.bukkit.World;
-import org.polydev.gaea.generation.GenerationPhase;
 
 public class AirSpawn extends Requirement {
     public AirSpawn(World world, Terra main) {

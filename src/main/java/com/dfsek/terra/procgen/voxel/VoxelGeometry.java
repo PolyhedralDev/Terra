@@ -1,7 +1,7 @@
 package com.dfsek.terra.procgen.voxel;
 
+import com.dfsek.terra.api.gaea.util.GlueList;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.util.GlueList;
 
 import java.util.List;
 

@@ -1,5 +1,8 @@
 package com.dfsek.terra.biome.grid.master;
 
+import com.dfsek.terra.api.gaea.biome.Biome;
+import com.dfsek.terra.api.gaea.biome.BiomeGrid;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -11,9 +14,6 @@ import com.dfsek.terra.config.base.ConfigPackTemplate;
 import net.jafama.FastMath;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.biome.BiomeGrid;
-import org.polydev.gaea.generation.GenerationPhase;
 
 public class TerraRadialBiomeGrid extends TerraBiomeGrid {
     private static final int failNum = 0;

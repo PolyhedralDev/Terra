@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.TerraChunkGenerator;
@@ -12,7 +13,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class LocateCommand extends WorldCommand {
     private final boolean tp;
 
-    public LocateCommand(org.polydev.gaea.command.Command parent, boolean tp) {
+    public LocateCommand(com.dfsek.terra.api.gaea.command.Command parent, boolean tp) {
         super(parent);
         this.tp = tp;
     }
@@ -65,7 +65,7 @@ public class LocateCommand extends WorldCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

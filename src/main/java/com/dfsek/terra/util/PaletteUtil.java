@@ -1,14 +1,14 @@
 package com.dfsek.terra.util;
 
+import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.gaea.world.palette.RandomPalette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.Sampler;
 import com.dfsek.terra.math.MathUtil;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.util.FastRandom;
-import org.polydev.gaea.world.palette.Palette;
-import org.polydev.gaea.world.palette.RandomPalette;
 
 public final class PaletteUtil {
     public static final BlockData WATER = Material.WATER.createBlockData();

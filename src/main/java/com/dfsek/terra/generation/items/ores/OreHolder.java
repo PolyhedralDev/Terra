@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.ores;
 
-import org.polydev.gaea.util.GlueList;
+import com.dfsek.terra.api.gaea.util.GlueList;
 
 import java.util.List;
 import java.util.function.BiConsumer;

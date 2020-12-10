@@ -2,6 +2,9 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
+import com.dfsek.terra.api.gaea.structures.loot.LootTable;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -21,9 +24,6 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.profiler.ProfileFuture;
-import org.polydev.gaea.structures.loot.LootTable;
-import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
 

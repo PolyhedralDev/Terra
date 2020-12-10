@@ -2,18 +2,18 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.biome.Biome;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.gaea.population.GaeaBlockPopulator;
+import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.MathUtil;
-import org.polydev.gaea.population.GaeaBlockPopulator;
-import org.polydev.gaea.profiler.ProfileFuture;
-import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
 

@@ -2,6 +2,11 @@ package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.bukkit.BukkitWorldHandle;
+import com.dfsek.terra.api.gaea.GaeaPlugin;
+import com.dfsek.terra.api.gaea.generation.GaeaChunkGenerator;
+import com.dfsek.terra.api.gaea.lang.Language;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -56,11 +61,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.polydev.gaea.GaeaPlugin;
-import org.polydev.gaea.generation.GaeaChunkGenerator;
-import org.polydev.gaea.lang.Language;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.math.Range;
 
 import java.util.HashMap;
 import java.util.Map;

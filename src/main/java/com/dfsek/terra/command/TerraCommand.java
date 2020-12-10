@@ -1,5 +1,7 @@
 package com.dfsek.terra.command;
 
+import com.dfsek.terra.api.gaea.GaeaPlugin;
+import com.dfsek.terra.api.gaea.command.Command;
 import com.dfsek.terra.command.biome.BiomeCommand;
 import com.dfsek.terra.command.geometry.GeometryCommand;
 import com.dfsek.terra.command.image.ImageCommand;
@@ -8,8 +10,6 @@ import com.dfsek.terra.command.structure.StructureCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.GaeaPlugin;
-import org.polydev.gaea.command.Command;
 
 import java.util.Arrays;
 import java.util.Collections;

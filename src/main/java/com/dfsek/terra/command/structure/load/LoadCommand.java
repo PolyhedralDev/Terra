@@ -1,11 +1,11 @@
 package com.dfsek.terra.command.structure.load;
 
+import com.dfsek.terra.api.gaea.command.DebugCommand;
+import com.dfsek.terra.api.gaea.command.PlayerCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.DebugCommand;
-import org.polydev.gaea.command.PlayerCommand;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class LoadCommand extends PlayerCommand implements DebugCommand {
-    public LoadCommand(org.polydev.gaea.command.Command parent) {
+    public LoadCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -45,7 +45,7 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Arrays.asList(new LoadRawCommand(this), new LoadFullCommand(this, true), new LoadFullCommand(this, false));
     }
 

@@ -1,11 +1,11 @@
 package com.dfsek.terra.generation.items;
 
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.gaea.structures.loot.LootTable;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.structure.Structure;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.math.Range;
-import org.polydev.gaea.structures.loot.LootTable;
 
 import java.util.Map;
 

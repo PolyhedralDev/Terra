@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.image;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.World;
@@ -8,14 +9,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.WorldCommand;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
 public class RenderCommand extends WorldCommand {
-    public RenderCommand(org.polydev.gaea.command.Command parent) {
+    public RenderCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -45,7 +45,7 @@ public class RenderCommand extends WorldCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

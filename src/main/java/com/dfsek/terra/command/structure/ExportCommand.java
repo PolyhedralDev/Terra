@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.structure;
 
+import com.dfsek.terra.api.gaea.command.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.InitializationException;
 import com.dfsek.terra.structure.Structure;
@@ -9,7 +10,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.PlayerCommand;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ExportCommand extends PlayerCommand {
-    public ExportCommand(org.polydev.gaea.command.Command parent) {
+    public ExportCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -54,7 +54,7 @@ public class ExportCommand extends PlayerCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

@@ -1,8 +1,8 @@
 package com.dfsek.terra.biome.grid.master;
 
+import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import org.bukkit.World;
-import org.polydev.gaea.biome.BiomeGrid;
 
 public abstract class TerraBiomeGrid extends BiomeGrid {
     public TerraBiomeGrid(World w, double freq1, double freq2, int sizeX, int sizeZ) {

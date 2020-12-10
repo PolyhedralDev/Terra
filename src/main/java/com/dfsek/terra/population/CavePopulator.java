@@ -2,6 +2,7 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -15,7 +16,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.profiler.ProfileFuture;
 
 import java.util.HashMap;
 import java.util.HashSet;

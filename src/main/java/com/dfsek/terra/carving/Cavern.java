@@ -1,5 +1,8 @@
 package com.dfsek.terra.carving;
 
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.procgen.GridSpawn;
 import com.dfsek.terra.procgen.voxel.DeformedSphere;
 import com.dfsek.terra.procgen.voxel.Tube;
@@ -7,9 +10,6 @@ import com.dfsek.terra.procgen.voxel.VoxelGeometry;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.math.MathUtil;
-import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
 

@@ -1,5 +1,9 @@
 package com.dfsek.terra.structure.features;
 
+import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -11,10 +15,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
-import org.polydev.gaea.math.MathUtil;
-import org.polydev.gaea.math.Range;
-import org.polydev.gaea.util.FastRandom;
-import org.polydev.gaea.util.GlueList;
 
 import java.util.List;
 import java.util.Objects;

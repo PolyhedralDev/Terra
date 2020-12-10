@@ -1,7 +1,7 @@
 package com.dfsek.terra.registry;
 
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
+import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.gaea.tree.TreeType;
 
 public class TreeRegistry extends TerraRegistry<Tree> {
     public TreeRegistry() {

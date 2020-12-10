@@ -3,13 +3,13 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.api.gaea.GaeaPlugin;
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
-import org.polydev.gaea.GaeaPlugin;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.math.Range;
-import org.polydev.gaea.tree.Tree;
 
 import java.lang.reflect.Type;
 import java.util.Map;

@@ -1,12 +1,12 @@
 package com.dfsek.terra.image;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.debug.gui.DebugGUI;
 import net.jafama.FastMath;
 import org.bukkit.World;
-import org.polydev.gaea.biome.NormalizationUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

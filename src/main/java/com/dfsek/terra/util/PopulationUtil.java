@@ -1,8 +1,8 @@
 package com.dfsek.terra.util;
 
+import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import org.bukkit.Chunk;
-import org.polydev.gaea.math.MathUtil;
-import org.polydev.gaea.util.FastRandom;
 
 public final class PopulationUtil {
     public static FastRandom getRandom(Chunk c) {

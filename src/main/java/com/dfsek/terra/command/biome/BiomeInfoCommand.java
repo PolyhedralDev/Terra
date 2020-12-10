@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.biome;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -13,7 +14,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BiomeInfoCommand extends WorldCommand {
-    public BiomeInfoCommand(org.polydev.gaea.command.Command parent) {
+    public BiomeInfoCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -74,7 +74,7 @@ public class BiomeInfoCommand extends WorldCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

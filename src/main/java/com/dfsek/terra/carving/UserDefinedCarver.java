@@ -1,6 +1,11 @@
 package com.dfsek.terra.carving;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.gaea.world.carving.Carver;
+import com.dfsek.terra.api.gaea.world.carving.Worm;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -8,11 +13,6 @@ import com.dfsek.terra.math.RandomFunction;
 import net.jafama.FastMath;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.Range;
-import org.polydev.gaea.util.FastRandom;
-import org.polydev.gaea.world.carving.Carver;
-import org.polydev.gaea.world.carving.Worm;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;

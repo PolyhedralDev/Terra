@@ -1,5 +1,6 @@
 package com.dfsek.terra.util;
 
+import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.generation.Sampler;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -10,7 +11,6 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.world.palette.Palette;
 
 import java.util.Map;
 

@@ -1,6 +1,7 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.items.TerraStructure;
@@ -11,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.util.FastRandom;
 
 import java.util.Random;
 import java.util.function.Consumer;

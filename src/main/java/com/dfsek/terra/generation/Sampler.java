@@ -1,7 +1,7 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.api.gaea.math.ChunkInterpolator;
 import net.jafama.FastMath;
-import org.polydev.gaea.math.ChunkInterpolator;
 
 public class Sampler {
     private final ChunkInterpolator interpolator;

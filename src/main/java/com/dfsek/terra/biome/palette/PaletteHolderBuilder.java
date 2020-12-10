@@ -1,9 +1,9 @@
 package com.dfsek.terra.biome.palette;
 
+import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.util.PaletteUtil;
 import net.jafama.FastMath;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.world.palette.Palette;
 
 import java.util.Map;
 import java.util.TreeMap;

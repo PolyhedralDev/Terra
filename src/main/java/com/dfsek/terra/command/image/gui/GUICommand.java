@@ -1,20 +1,20 @@
 package com.dfsek.terra.command.image.gui;
 
+import com.dfsek.terra.api.gaea.command.DebugCommand;
+import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.DebugCommand;
-import org.polydev.gaea.command.WorldCommand;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GUICommand extends WorldCommand implements DebugCommand {
-    public GUICommand(org.polydev.gaea.command.Command parent) {
+    public GUICommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -30,7 +30,7 @@ public class GUICommand extends WorldCommand implements DebugCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Arrays.asList(new StepGUICommand(this), new RawGUICommand(this));
     }
 

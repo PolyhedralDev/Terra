@@ -1,7 +1,7 @@
 package com.dfsek.terra.procgen.voxel;
 
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.FastNoiseLite;
 
 public class DeformedSphere extends VoxelGeometry {
     public DeformedSphere(Vector start, int rad, double deform, FastNoiseLite noise) {

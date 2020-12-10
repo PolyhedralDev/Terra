@@ -1,11 +1,11 @@
 package com.dfsek.terra.command;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.command.Command;
+import com.dfsek.terra.api.gaea.command.DebugCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.Command;
-import org.polydev.gaea.command.DebugCommand;
 
 import java.util.Collections;
 import java.util.List;

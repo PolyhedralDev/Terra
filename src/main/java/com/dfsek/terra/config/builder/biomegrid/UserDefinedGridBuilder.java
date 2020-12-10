@@ -1,9 +1,9 @@
 package com.dfsek.terra.config.builder.biomegrid;
 
+import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import org.bukkit.World;
-import org.polydev.gaea.biome.Biome;
 
 public class UserDefinedGridBuilder implements BiomeGridBuilder {
     private double xFreq;

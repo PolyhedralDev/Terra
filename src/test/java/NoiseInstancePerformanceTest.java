@@ -1,5 +1,5 @@
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import org.junit.jupiter.api.Test;
-import org.polydev.gaea.math.FastNoiseLite;
 
 public class NoiseInstancePerformanceTest {
     @Test

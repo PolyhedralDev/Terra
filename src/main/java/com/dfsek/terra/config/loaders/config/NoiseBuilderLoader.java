@@ -5,8 +5,8 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import org.polydev.gaea.math.FastNoiseLite;
 
 import java.lang.reflect.Type;
 import java.util.Map;

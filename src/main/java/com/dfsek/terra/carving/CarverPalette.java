@@ -1,9 +1,9 @@
 package com.dfsek.terra.carving;
 
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.math.ProbabilityCollection;
 
 import java.util.Map;
 import java.util.TreeMap;

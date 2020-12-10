@@ -2,6 +2,9 @@ package com.dfsek.terra.listeners;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.gaea.tree.TreeType;
+import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.items.tree.TerraTree;
@@ -12,9 +15,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.tree.TreeType;
-import org.polydev.gaea.util.FastRandom;
 
 /**
  * Listener for events on all implementations.

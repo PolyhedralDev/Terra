@@ -1,11 +1,11 @@
 package com.dfsek.terra.config.lang;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.debug.Debug;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.polydev.gaea.lang.Language;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.polydev.gaea.util.JarUtil.copyResourcesToDirectory;
+import static com.dfsek.terra.api.gaea.util.JarUtil.copyResourcesToDirectory;
 
 public final class LangUtil {
     private static Language language;

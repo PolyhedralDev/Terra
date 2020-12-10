@@ -2,10 +2,10 @@ package com.dfsek.terra.config.factories;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import org.polydev.gaea.math.MathUtil;
 import parsii.tokenizer.ParseException;
 
 import java.util.Arrays;

@@ -1,12 +1,12 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.UserDefinedDecorator;
-import org.polydev.gaea.math.ProbabilityCollection;
 
 public class BiomeFactory implements TerraFactory<BiomeTemplate, UserDefinedBiome> {
     private final ConfigPack pack;

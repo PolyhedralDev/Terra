@@ -1,6 +1,8 @@
 package com.dfsek.terra.generation.items.tree;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -10,8 +12,6 @@ import com.dfsek.terra.util.MaterialSet;
 import com.dfsek.terra.util.structure.RotationUtil;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.tree.Tree;
 
 import java.util.Random;
 

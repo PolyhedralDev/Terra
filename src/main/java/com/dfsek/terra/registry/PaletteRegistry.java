@@ -1,9 +1,9 @@
 package com.dfsek.terra.registry;
 
+import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.world.palette.Palette;
 
 public class PaletteRegistry extends TerraRegistry<Palette<BlockData>> {
     @Override

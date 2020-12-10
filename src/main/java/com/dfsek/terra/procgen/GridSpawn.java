@@ -1,9 +1,9 @@
 package com.dfsek.terra.procgen;
 
+import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.gaea.util.GlueList;
 import org.bukkit.util.Vector;
-import org.polydev.gaea.math.MathUtil;
-import org.polydev.gaea.util.FastRandom;
-import org.polydev.gaea.util.GlueList;
 
 import java.util.List;
 import java.util.Random;

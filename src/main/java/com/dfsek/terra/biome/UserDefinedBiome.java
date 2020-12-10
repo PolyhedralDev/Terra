@@ -1,16 +1,13 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.api.gaea.biome.Biome;
+import com.dfsek.terra.api.gaea.biome.Decorator;
+import com.dfsek.terra.api.gaea.biome.Generator;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.UserDefinedDecorator;
 import org.bukkit.World;
-import org.polydev.gaea.biome.Biome;
-import org.polydev.gaea.biome.Decorator;
-import org.polydev.gaea.biome.Generator;
-import org.polydev.gaea.structures.features.Feature;
-
-import java.util.List;
 
 /**
  * Class representing a config-defined biome
@@ -54,15 +51,6 @@ public class UserDefinedBiome implements Biome {
         return gen.build(0);
     }
 
-    /**
-     * Gets a list of Structure Features to be applied to all structures in the biome.
-     *
-     * @return List&lt;Feature&gt; - The list of Features.
-     */
-    @Override
-    public List<Feature> getStructureFeatures() {
-        return null;
-    }
 
     /**
      * Returns the Decorator instance containing information about the population in the biome.

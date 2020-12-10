@@ -1,5 +1,7 @@
 package com.dfsek.terra.command.geometry;
 
+import com.dfsek.terra.api.gaea.command.PlayerCommand;
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.DeformedSphere;
 import org.bukkit.Material;
@@ -8,14 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.PlayerCommand;
-import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.Collections;
 import java.util.List;
 
 public class DeformedSphereCommand extends PlayerCommand {
-    public DeformedSphereCommand(org.polydev.gaea.command.Command parent) {
+    public DeformedSphereCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -59,7 +59,7 @@ public class DeformedSphereCommand extends PlayerCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

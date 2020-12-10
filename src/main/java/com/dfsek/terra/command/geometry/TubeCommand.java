@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.geometry;
 
+import com.dfsek.terra.api.gaea.command.PlayerCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.Tube;
 import com.dfsek.terra.util.structure.WorldEditUtil;
@@ -10,13 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.PlayerCommand;
 
 import java.util.Collections;
 import java.util.List;
 
 public class TubeCommand extends PlayerCommand {
-    public TubeCommand(org.polydev.gaea.command.Command parent) {
+    public TubeCommand(com.dfsek.terra.api.gaea.command.Command parent) {
         super(parent);
     }
 
@@ -44,7 +44,7 @@ public class TubeCommand extends PlayerCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

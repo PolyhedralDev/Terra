@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.postprocessing;
 
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
-import org.polydev.gaea.math.FastNoiseLite;
 
 /**
  * Offset a coordinate pair by an amount.

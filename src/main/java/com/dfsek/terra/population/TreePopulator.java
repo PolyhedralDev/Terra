@@ -2,6 +2,9 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.gaea.population.GaeaBlockPopulator;
+import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -10,9 +13,6 @@ import net.jafama.FastMath;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.population.GaeaBlockPopulator;
-import org.polydev.gaea.profiler.ProfileFuture;
 
 import java.util.Random;
 

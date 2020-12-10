@@ -1,9 +1,9 @@
 package com.dfsek.terra.structure.spawn;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import org.bukkit.World;
-import org.polydev.gaea.math.FastNoiseLite;
 
 import java.util.Objects;
 

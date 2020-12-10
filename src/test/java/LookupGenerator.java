@@ -1,7 +1,7 @@
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.gaea.util.GlueList;
 import net.jafama.FastMath;
 import org.junit.jupiter.api.Test;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.util.GlueList;
 
 import java.util.ArrayList;
 import java.util.Collections;

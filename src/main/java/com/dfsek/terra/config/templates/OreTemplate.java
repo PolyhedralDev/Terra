@@ -3,10 +3,10 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.math.Range;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class OreTemplate extends AbstractableTemplate {

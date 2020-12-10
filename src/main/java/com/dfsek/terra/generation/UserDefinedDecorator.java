@@ -1,10 +1,10 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.api.gaea.biome.Decorator;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.gaea.world.Flora;
 import org.bukkit.block.Biome;
-import org.polydev.gaea.biome.Decorator;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.world.Flora;
 
 public class UserDefinedDecorator extends Decorator {
 

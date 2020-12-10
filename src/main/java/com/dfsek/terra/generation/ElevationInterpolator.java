@@ -1,9 +1,9 @@
 package com.dfsek.terra.generation;
 
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.gaea.math.Interpolator;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.WorldGenerator;
-import org.polydev.gaea.generation.GenerationPhase;
-import org.polydev.gaea.math.Interpolator;
 
 public class ElevationInterpolator {
     private final WorldGenerator[][] gens = new WorldGenerator[10][10];

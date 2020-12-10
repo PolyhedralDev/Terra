@@ -1,6 +1,7 @@
 package com.dfsek.terra.command.structure.load;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.command.DebugCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -8,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.command.DebugCommand;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 public class LoadFullCommand extends LoadCommand implements DebugCommand {
     private final boolean chunk;
 
-    public LoadFullCommand(org.polydev.gaea.command.Command parent, boolean chunk) {
+    public LoadFullCommand(com.dfsek.terra.api.gaea.command.Command parent, boolean chunk) {
         super(parent);
         this.chunk = chunk;
     }
@@ -52,7 +52,7 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
     }
 
     @Override
-    public List<org.polydev.gaea.command.Command> getSubCommands() {
+    public List<com.dfsek.terra.api.gaea.command.Command> getSubCommands() {
         return Collections.emptyList();
     }
 

@@ -1,12 +1,12 @@
 package com.dfsek.terra.generation.items.flora;
 
+import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.gaea.world.Flora;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.generation.items.PlaceableLayer;
 import org.bukkit.Chunk;
-import org.polydev.gaea.math.FastNoiseLite;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.math.Range;
-import org.polydev.gaea.world.Flora;
 
 import java.util.Random;
 

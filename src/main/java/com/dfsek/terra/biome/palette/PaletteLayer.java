@@ -1,8 +1,8 @@
 package com.dfsek.terra.biome.palette;
 
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.math.ProbabilityCollection;
 
 public class PaletteLayer {
     private final ProbabilityCollection<BlockData> layer;

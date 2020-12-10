@@ -1,6 +1,7 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.debug.Debug;
@@ -17,7 +18,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
-import org.polydev.gaea.math.Range;
 
 import java.io.File;
 import java.io.FileInputStream;

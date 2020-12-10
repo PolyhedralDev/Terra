@@ -1,9 +1,9 @@
 package com.dfsek.terra.registry;
 
+import com.dfsek.terra.api.gaea.world.Flora;
+import com.dfsek.terra.api.gaea.world.FloraType;
 import com.dfsek.terra.generation.items.flora.BlockFlora;
 import org.bukkit.Bukkit;
-import org.polydev.gaea.world.Flora;
-import org.polydev.gaea.world.FloraType;
 
 public class FloraRegistry extends TerraRegistry<Flora> {
     public FloraRegistry() {

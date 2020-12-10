@@ -1,11 +1,11 @@
 package com.dfsek.terra.config.loaders;
 
+import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.gaea.world.Flora;
+import com.dfsek.terra.api.gaea.world.palette.Palette;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.polydev.gaea.math.ProbabilityCollection;
-import org.polydev.gaea.tree.Tree;
-import org.polydev.gaea.world.Flora;
-import org.polydev.gaea.world.palette.Palette;
 
 import java.lang.reflect.Type;
 import java.util.Set;
