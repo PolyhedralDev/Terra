@@ -13,4 +13,9 @@ public class BukkitWorld implements World {
     public long getSeed() {
         return delegate.getSeed();
     }
+
+    @Override
+    public org.bukkit.World getHandle() {
+        return delegate;
+    }
 }
