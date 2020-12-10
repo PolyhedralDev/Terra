@@ -7,5 +7,6 @@ public class Tokenizer {
 
     public Tokenizer(String data) {
         reader = new Lookahead(new StringReader(data));
+
     }
 }

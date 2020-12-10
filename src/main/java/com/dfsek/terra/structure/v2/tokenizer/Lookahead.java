@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
+/**
+ * Stream-like data structure that allows viewing future elements without consuming current.
+ */
 public class Lookahead {
     private final List<Char> buffer = new GlueList<>();
     private final Reader input;
@@ -17,10 +20,20 @@ public class Lookahead {
         this.input = r;
     }
 
+    /**
+     * Get the current character without consuming it.
+     *
+     * @return
+     */
     public Char current() {
         return next(0);
     }
 
+    /**
+     * Consume and return one character.
+     *
+     * @return Character that was consumed.
+     */
     public Char consume() {
         Char consumed = current();
         consume(1);
@@ -28,7 +41,7 @@ public class Lookahead {
     }
 
     /**
-     * Fetch and consume the next character.
+     * Fetch the next character.
      *
      * @return Next character
      */
@@ -69,6 +82,11 @@ public class Lookahead {
         } else return buffer.get(ahead);
     }
 
+    /**
+     * Consume an amount of characters
+     *
+     * @param amount Number of characters to consume
+     */
     public void consume(int amount) {
         if(amount < 0) throw new IllegalArgumentException();
         while(amount-- > 0) {
