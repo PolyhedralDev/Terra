@@ -73,7 +73,7 @@ public class Terra extends GaeaPlugin implements TerraPlugin {
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
-    private final WorldHandle handle = new BukkitWorldHandle();
+    private WorldHandle handle = new BukkitWorldHandle();
 
     public void reload() {
         Map<World, TerraWorld> newMap = new HashMap<>();
@@ -85,6 +85,15 @@ public class Terra extends GaeaPlugin implements TerraPlugin {
         worldMap.putAll(newMap);
     }
 
+    public void setHandle(WorldHandle handle) {
+        getLogger().warning("|-------------------------------------------------------|");
+        getLogger().warning("A third-party addon has injected a custom WorldHandle!");
+        getLogger().warning("If you encounter issues, try *without* the addon before");
+        getLogger().warning("reporting to Terra. Report issues with the addon to the");
+        getLogger().warning("addon's maintainers!");
+        getLogger().warning("|-------------------------------------------------------|");
+        this.handle = handle;
+    }
 
     @Override
     public void onDisable() {
