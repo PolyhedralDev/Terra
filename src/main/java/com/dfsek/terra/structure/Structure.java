@@ -1,6 +1,7 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.procgen.math.Vector2;
 import com.dfsek.terra.util.structure.RotationUtil;
@@ -162,10 +163,10 @@ public class Structure implements Serializable {
      * @param origin Origin location
      * @param r      Rotation
      */
-    public void paste(@NotNull Location origin, Rotation r) {
+    public void paste(@NotNull Location origin, Rotation r, Terra main) {
         Range xRange = getRange(Rotation.Axis.X, r);
         Range zRange = getRange(Rotation.Axis.Z, r);
-        this.executeForBlocksInRange(xRange, getRange(Rotation.Axis.Y, r), zRange, block -> pasteBlock(block, origin, r), r);
+        this.executeForBlocksInRange(xRange, getRange(Rotation.Axis.Y, r), zRange, block -> pasteBlock(block, origin, r, main.getHandle()), r);
     }
 
     /**
@@ -175,7 +176,7 @@ public class Structure implements Serializable {
      * @param origin The origin location
      * @param r      The rotation of the structure
      */
-    private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r) {
+    private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r, WorldHandle handle) {
         BlockData data = block.getBlockData().clone();
         if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
 
@@ -203,7 +204,7 @@ public class Structure implements Serializable {
 
             RotationUtil.rotateBlockData(data, r);
 
-            worldBlock.setBlockData(data, false);
+            handle.setBlockData(worldBlock, data, false);
             if(block.getState() != null) {
                 block.getState().getState(worldBlock.getState()).update(true, false);
             }
@@ -309,13 +310,13 @@ public class Structure implements Serializable {
      * @param chunk  Chunk to confine pasting to
      * @param r      Rotation
      */
-    public void paste(Location origin, Chunk chunk, Rotation r) {
+    public void paste(Location origin, Chunk chunk, Rotation r, Terra main) {
         int xOr = (chunk.getX() << 4);
         int zOr = (chunk.getZ() << 4);
         Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());
         Range intersectZ = new Range(zOr, zOr + 16).sub(origin.getBlockZ() - structureInfo.getCenterZ());
         if(intersectX == null || intersectZ == null) return;
-        executeForBlocksInRange(intersectX, getRange(Rotation.Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r), r);
+        executeForBlocksInRange(intersectX, getRange(Rotation.Axis.Y, r), intersectZ, block -> pasteBlock(block, origin, r, main.getHandle()), r);
         Debug.info(intersectX.toString() + " : " + intersectZ.toString());
     }
 

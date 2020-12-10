@@ -1,6 +1,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.api.bukkit.BukkitWorldHandle;
+import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.PaletteLayer;
@@ -64,12 +67,13 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class Terra extends GaeaPlugin {
+public class Terra extends GaeaPlugin implements TerraPlugin {
     private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
+    private final WorldHandle handle = new BukkitWorldHandle();
 
     public void reload() {
         Map<World, TerraWorld> newMap = new HashMap<>();
@@ -189,5 +193,10 @@ public class Terra extends GaeaPlugin {
     @NotNull
     public PluginConfig getTerraConfig() {
         return config;
+    }
+
+    @Override
+    public WorldHandle getHandle() {
+        return handle;
     }
 }

@@ -1,5 +1,7 @@
 package com.dfsek.terra.generation.items.ores;
 
+import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
@@ -14,13 +16,14 @@ import java.util.Random;
 public class VanillaOre extends Ore {
     private final Range sizeRange;
 
-    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size) {
-        super(material, replaceable, applyGravity);
+    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, Terra main) {
+        super(material, replaceable, applyGravity, main);
         this.sizeRange = size;
     }
 
     @Override
     public void generate(Vector location, Chunk chunk, Random random) {
+        WorldHandle handle = main.getHandle();
         double size = sizeRange.get(random);
 
         int centerX = location.getBlockX();
@@ -65,7 +68,7 @@ public class VanillaOre extends Ore {
                                 if(x > 15 || z > 15 || y > 255 || x < 0 || z < 0 || y < 0) continue;
                                 Block block = chunk.getBlock(x, y, z);
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block.getType())) {
-                                    block.setBlockData(getMaterial(), isApplyGravity());
+                                    handle.setBlockData(block, getMaterial(), isApplyGravity());
                                 }
                             }
                         }

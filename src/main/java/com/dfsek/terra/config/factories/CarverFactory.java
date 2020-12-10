@@ -13,15 +13,13 @@ import java.util.List;
 
 public class CarverFactory implements TerraFactory<CarverTemplate, UserDefinedCarver> {
     private final ConfigPack pack;
-    private final Terra main;
 
-    public CarverFactory(ConfigPack pack, Terra main) {
+    public CarverFactory(ConfigPack pack) {
         this.pack = pack;
-        this.main = main;
     }
 
     @Override
-    public UserDefinedCarver build(CarverTemplate config) throws LoadException {
+    public UserDefinedCarver build(CarverTemplate config, Terra main) throws LoadException {
         double[] start = new double[] {config.getStartX(), config.getStartY(), config.getStartZ()};
         double[] mutate = new double[] {config.getMutateX(), config.getMutateY(), config.getMutateZ()};
         List<String> radius = Arrays.asList(config.getRadMX(), config.getRadMY(), config.getRadMZ());

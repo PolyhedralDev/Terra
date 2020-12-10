@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.factories;
 
+import com.dfsek.terra.Terra;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.config.builder.biomegrid.UserDefinedGridBuilder;
@@ -11,7 +12,7 @@ import java.util.List;
 public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, BiomeGridBuilder> {
 
     @Override
-    public UserDefinedGridBuilder build(BiomeGridTemplate config) {
+    public UserDefinedGridBuilder build(BiomeGridTemplate config, Terra main) {
 
         UserDefinedGridBuilder holder = new UserDefinedGridBuilder();
         holder.setXFreq(config.getXFreq());

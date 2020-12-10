@@ -1,5 +1,7 @@
 package com.dfsek.terra.generation.items.ores;
 
+import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
@@ -15,8 +17,8 @@ public class DeformedSphereOre extends Ore {
     private final double deformFrequency;
     private final Range size;
 
-    public DeformedSphereOre(BlockData material, MaterialSet replaceable, boolean applyGravity, double deform, double deformFrequency, Range size) {
-        super(material, replaceable, applyGravity);
+    public DeformedSphereOre(BlockData material, MaterialSet replaceable, boolean applyGravity, double deform, double deformFrequency, Range size, Terra main) {
+        super(material, replaceable, applyGravity, main);
         this.deform = deform;
         this.deformFrequency = deformFrequency;
         this.size = size;
@@ -25,6 +27,7 @@ public class DeformedSphereOre extends Ore {
 
     @Override
     public void generate(Vector origin, Chunk c, Random r) {
+        WorldHandle handle = main.getHandle();
         FastNoiseLite ore = new FastNoiseLite(r.nextInt());
         ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         ore.setFrequency(deformFrequency);
@@ -38,7 +41,7 @@ public class DeformedSphereOre extends Ore {
                     if(oreLoc.distance(origin) < (rad + 0.5) * ((ore.getNoise(x, y, z) + 1) * deform)) {
                         Block b = c.getBlock(oreLoc.getBlockX(), oreLoc.getBlockY(), oreLoc.getBlockZ());
                         if(getReplaceable().contains(b.getType()) && b.getLocation().getY() >= 0)
-                            b.setBlockData(getMaterial(), isApplyGravity());
+                            handle.setBlockData(b, getMaterial(), isApplyGravity());
                     }
                 }
             }

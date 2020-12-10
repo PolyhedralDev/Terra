@@ -33,7 +33,7 @@ public class TerraTree implements Tree {
         Structure struc = structure.get(random);
         Rotation rotation = Rotation.fromDegrees(random.nextInt(4) * 90);
         if(!struc.checkSpawns(mut, rotation, (Terra) main)) return false;
-        struc.paste(mut, rotation);
+        struc.paste(mut, rotation, (Terra) main);
         return true;
     }
 
@@ -42,7 +42,7 @@ public class TerraTree implements Tree {
         return spawnable;
     }
 
-    public boolean plantBlockCheck(Location location, Random random) {
+    public boolean plantBlockCheck(Location location, Random random, Terra main) {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
@@ -61,7 +61,7 @@ public class TerraTree implements Tree {
                     break;
             }
         }
-        struc.paste(mut, rotation);
+        struc.paste(mut, rotation, main);
         return true;
     }
 }

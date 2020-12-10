@@ -40,7 +40,7 @@ public class EventListener implements Listener {
         Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
         Debug.info("Overriding tree type: " + e.getSpecies());
         if(tree instanceof TerraTree) {
-            if(!((TerraTree) tree).plantBlockCheck(e.getLocation().subtract(0, 1, 0), new FastRandom())) {
+            if(!((TerraTree) tree).plantBlockCheck(e.getLocation().subtract(0, 1, 0), new FastRandom(), main)) {
                 block.setBlockData(data);
             }
         } else if(!tree.plant(e.getLocation().subtract(0, 1, 0), new FastRandom(), main)) block.setBlockData(data);

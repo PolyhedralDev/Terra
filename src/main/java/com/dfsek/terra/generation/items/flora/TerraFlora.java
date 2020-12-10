@@ -1,5 +1,7 @@
 package com.dfsek.terra.generation.items.flora;
 
+import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 import org.bukkit.Chunk;
@@ -39,7 +41,9 @@ public class TerraFlora implements Flora {
 
     private final int irrigableOffset;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset) {
+    private final Terra main;
+
+    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, Terra main) {
         this.floraPalette = floraPalette;
         this.physics = physics;
         this.testRotation = testRotation;
@@ -51,6 +55,7 @@ public class TerraFlora implements Flora {
         this.maxPlacements = maxPlacements;
         this.search = search;
         this.irrigableOffset = irrigableOffset;
+        this.main = main;
     }
 
     @Override
@@ -89,6 +94,7 @@ public class TerraFlora implements Flora {
 
     @Override
     public boolean plant(Location location) {
+        WorldHandle handle = main.getHandle();
 
         boolean doRotation = testRotation.size() > 0;
         int size = floraPalette.getSize();
@@ -112,7 +118,7 @@ public class TerraFlora implements Flora {
                     ((Rotatable) data).setRotation(oneFace);
                 }
             }
-            location.clone().add(0, i + c, 0).getBlock().setBlockData(data, physics);
+            handle.setBlockData(location.clone().add(0, i + c, 0).getBlock(), data, physics);
         }
         return true;
     }

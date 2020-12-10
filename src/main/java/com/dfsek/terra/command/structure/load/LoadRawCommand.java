@@ -1,5 +1,7 @@
 package com.dfsek.terra.command.structure.load;
 
+import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.structure.StructureContainedBlock;
@@ -36,6 +38,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         try {
+            WorldHandle handle = ((Terra) getMain()).getHandle();
             Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
             StructureInfo info = struc.getStructureInfo();
             int centerX = info.getCenterX();
@@ -45,21 +48,21 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
                     for(StructureContainedBlock block : level1) {
                         Location bLocation = sender.getLocation().add(block.getX() - centerX, block.getY(), block.getZ() - centerZ);
                         if(!block.getPull().equals(StructureContainedBlock.Pull.NONE)) {
-                            bLocation.getBlock().setBlockData(Material.OAK_SIGN.createBlockData(), false);
+                            handle.setBlockData(bLocation.getBlock(), Material.OAK_SIGN.createBlockData(), false);
                             Sign sign = (Sign) bLocation.getBlock().getState();
                             sign.setLine(1, "[PULL=" + block.getPull() + "_" + block.getPullOffset() + "]");
                             String data = block.getBlockData().getAsString(true);
                             setTerraSign(sign, data);
                             sign.update();
                         } else if(!block.getRequirement().equals(StructureSpawnRequirement.BLANK)) {
-                            bLocation.getBlock().setBlockData(Material.OAK_SIGN.createBlockData(), false);
+                            handle.setBlockData(bLocation.getBlock(), Material.OAK_SIGN.createBlockData(), false);
                             Sign sign = (Sign) bLocation.getBlock().getState();
                             sign.setLine(1, "[SPAWN=" + block.getRequirement() + "]");
                             String data = block.getBlockData().getAsString(true);
                             setTerraSign(sign, data);
                             sign.update();
                         } else {
-                            bLocation.getBlock().setBlockData(block.getBlockData(), false);
+                            handle.setBlockData(bLocation.getBlock(), block.getBlockData(), false);
                             if(block.getState() != null) {
                                 block.getState().getState(bLocation.getBlock().getState()).update(true, false);
                             }
@@ -72,7 +75,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
                 StructureContainedBlock block = struc.getRawStructure()[centerX][centerZ][y];
                 if(block.getRequirement().equals(StructureSpawnRequirement.BLANK) && block.getPull().equals(StructureContainedBlock.Pull.NONE)) {
                     Location bLocation = sender.getLocation().add(block.getX() - centerX, block.getY(), block.getZ() - centerZ);
-                    bLocation.getBlock().setBlockData(Material.OAK_SIGN.createBlockData(), false);
+                    handle.setBlockData(bLocation.getBlock(), Material.OAK_SIGN.createBlockData(), false);
                     Sign sign = (Sign) bLocation.getBlock().getState();
                     sign.setLine(1, "[CENTER]");
                     String data = block.getBlockData().getAsString(true);

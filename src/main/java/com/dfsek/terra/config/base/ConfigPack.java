@@ -150,14 +150,14 @@ public class ConfigPack {
         abstractConfigLoader.registerLoader(Structure.class, new StructureLoader(loader))
                 .registerLoader(LootTable.class, new LootTableLoader(loader)); // These loaders need access to the Loader instance to get files.
         loader
-                .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new))).close()
-                .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new))).close()
-                .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new))).close()
-                .open("carving").then(streams -> buildAll(new CarverFactory(this, main), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new))).close()
-                .open("structures/trees").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new))).close()
-                .open("structures/single").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new))).close()
-                .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)))).close()
-                .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new))).close();
+                .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
+                .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
+                .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
+                .open("carving").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
+                .open("structures/trees").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
+                .open("structures/single").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
+                .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)), main)).close()
+                .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
         for(UserDefinedBiome b : biomeRegistry.entries()) {
             try {
                 Objects.requireNonNull(b.getErode()); // Throws NPE if it cannot load erosion biomes.
@@ -179,8 +179,8 @@ public class ConfigPack {
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
     }
 
-    private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates) throws LoadException {
-        for(C template : configTemplates) registry.add(template.getID(), factory.build(template));
+    private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates, Terra main) throws LoadException {
+        for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 
     public UserDefinedBiome getBiome(String id) {

@@ -58,7 +58,7 @@ public class StructurePopulator extends BlockPopulator {
                     if(!struc.checkSpawns(spawn, rotation, main)) continue;
                     double horizontal = struc.getStructureInfo().getMaxHorizontal();
                     if(FastMath.abs((cx + 8) - spawn.getBlockX()) <= horizontal && FastMath.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
-                        struc.paste(spawn, chunk, rotation);
+                        struc.paste(spawn, chunk, rotation, main);
                         for(StructureContainedInventory i : struc.getInventories()) {
                             try {
                                 Vector2 lootCoords = RotationUtil.getRotatedCoords(new Vector2(i.getX() - struc.getStructureInfo().getCenterX(), i.getZ() - struc.getStructureInfo().getCenterZ()), rotation.inverse());
