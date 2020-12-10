@@ -2,57 +2,60 @@ package com.dfsek.terra.api.bukkit.generator;
 
 import com.dfsek.terra.api.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.api.bukkit.BukkitWorld;
-import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
-import com.dfsek.terra.api.generic.world.block.BlockData;
-import org.bukkit.World;
+import com.dfsek.terra.api.generic.generator.BlockPopulator;
+import com.dfsek.terra.api.generic.world.BiomeGrid;
+import com.dfsek.terra.api.generic.world.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class BukkitChunkGenerator extends ChunkGenerator {
-    private final com.dfsek.terra.api.generic.generator.ChunkGenerator delegate;
+public class BukkitChunkGenerator implements com.dfsek.terra.api.generic.generator.ChunkGenerator {
+    private final ChunkGenerator delegate;
 
-    public BukkitChunkGenerator(com.dfsek.terra.api.generic.generator.ChunkGenerator delegate) {
+    public BukkitChunkGenerator(ChunkGenerator delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
-        BukkitWorld bukkitWorld = new BukkitWorld(world);
-        BukkitChunkData data = new BukkitChunkData(createChunkData(world));
-        delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome), data);
-        return data.getHandle();
+    public ChunkGenerator getHandle() {
+        return delegate;
     }
 
-    public static class BukkitChunkData implements com.dfsek.terra.api.generic.generator.ChunkGenerator.ChunkData {
+    @Override
+    public boolean isParallelCapable() {
+        return delegate.isParallelCapable();
+    }
 
-        private final ChunkGenerator.ChunkData delegate;
+    @Override
+    public boolean shouldGenerateCaves() {
+        return delegate.shouldGenerateCaves();
+    }
 
-        public BukkitChunkData(ChunkGenerator.ChunkData delegate) {
-            this.delegate = delegate;
-        }
+    @Override
+    public boolean shouldGenerateDecorations() {
+        return delegate.shouldGenerateDecorations();
+    }
 
-        @Override
-        public ChunkGenerator.ChunkData getHandle() {
-            return delegate;
-        }
+    @Override
+    public boolean shouldGenerateMobs() {
+        return delegate.shouldGenerateMobs();
+    }
 
-        @Override
-        public int getMaxHeight() {
-            return delegate.getMaxHeight();
-        }
+    @Override
+    public boolean shouldGenerateStructures() {
+        return delegate.shouldGenerateStructures();
+    }
 
+    @Override
+    public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome, ChunkData data) {
+        return new BukkitChunkGeneratorWrapper.BukkitChunkData(delegate.generateChunkData(((BukkitWorld) world).getHandle(), random, x, z, ((BukkitBiomeGrid) biome).getHandle()));
+    }
 
-        @Override
-        public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-            delegate.setBlock(x, y, z, ((BukkitBlockData) blockData).getHandle());
-        }
-
-
-        @Override
-        public @NotNull BlockData getBlockData(int x, int y, int z) {
-            return new BukkitBlockData(delegate.getBlockData(x, y, z));
-        }
+    @Override
+    public List<BlockPopulator> getDefaultPopulators(World world) {
+        return delegate.getDefaultPopulators(((BukkitWorld) world).getHandle()).stream().map(BukkitPopulator::new).collect(Collectors.toList());
     }
 }

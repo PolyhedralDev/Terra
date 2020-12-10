@@ -1,10 +1,11 @@
 package com.dfsek.terra.api.gaea;
 
-import org.bukkit.World;
+
+import com.dfsek.terra.api.generic.world.World;
 
 import java.io.File;
 
-public class Gaea  {
+public class Gaea {
     private static boolean debug;
 
     public static File getGaeaFolder(World w) {

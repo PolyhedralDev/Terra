@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.bukkit;
 
 import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.World;
 
 public class BukkitChunk implements Chunk {
     private final org.bukkit.Chunk delegate;
@@ -17,6 +18,11 @@ public class BukkitChunk implements Chunk {
     @Override
     public int getZ() {
         return delegate.getZ();
+    }
+
+    @Override
+    public World getWorld() {
+        return new BukkitWorld(delegate.getWorld());
     }
 
     @Override

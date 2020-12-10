@@ -6,4 +6,6 @@ public interface Chunk extends Handle {
     int getX();
 
     int getZ();
+
+    World getWorld();
 }

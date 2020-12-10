@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.generic.generator;
 
+import com.dfsek.terra.api.generic.Handle;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.BlockData;
@@ -8,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Random;
 
-public interface ChunkGenerator {
+public interface ChunkGenerator extends Handle {
     boolean isParallelCapable();
 
     boolean shouldGenerateCaves();
@@ -19,7 +20,7 @@ public interface ChunkGenerator {
 
     boolean shouldGenerateStructures();
 
-    void generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome, ChunkData data);
+    ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome, ChunkData data);
 
     List<BlockPopulator> getDefaultPopulators(World world);
 

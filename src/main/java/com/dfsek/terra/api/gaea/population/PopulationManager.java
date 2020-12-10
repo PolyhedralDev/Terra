@@ -6,10 +6,10 @@ import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.util.SerializationUtil;
-import org.bukkit.Chunk;
-import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.generator.BlockPopulator;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -18,18 +18,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-public class PopulationManager extends BlockPopulator {
-    private final List<GaeaBlockPopulator> attachedPopulators = new GlueList<>();
+public class PopulationManager implements BlockPopulator {
+    private final List<BlockPopulator> attachedPopulators = new GlueList<>();
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
-    private final JavaPlugin main;
+    private final TerraPlugin main;
     private final Object popLock = new Object();
     private WorldProfiler profiler;
 
-    public PopulationManager(JavaPlugin main) {
+    public PopulationManager(TerraPlugin main) {
         this.main = main;
     }
 
-    public void attach(GaeaBlockPopulator populator) {
+    public void attach(BlockPopulator populator) {
         this.attachedPopulators.add(populator);
     }
 
@@ -85,7 +85,7 @@ public class PopulationManager extends BlockPopulator {
             long zRand = (random.nextLong() / 2L << 1L) + 1L;
             random.setSeed((long) x * xRand + (long) z * zRand ^ w.getSeed());
             Chunk currentChunk = w.getChunkAt(x, z);
-            for(GaeaBlockPopulator r : attachedPopulators) {
+            for(BlockPopulator r : attachedPopulators) {
                 r.populate(w, random, currentChunk);
             }
             needsPop.remove(c);

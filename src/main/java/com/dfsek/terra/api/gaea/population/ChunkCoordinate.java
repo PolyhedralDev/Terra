@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.gaea.population;
 
-import org.bukkit.Chunk;
+
+import com.dfsek.terra.api.generic.world.Chunk;
 
 import java.io.Serializable;
 import java.util.UUID;
