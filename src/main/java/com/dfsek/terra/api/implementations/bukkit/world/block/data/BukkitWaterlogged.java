@@ -1,7 +1,7 @@
-package com.dfsek.terra.api.bukkit.world.block.data;
+package com.dfsek.terra.api.implementations.bukkit.world.block.data;
 
-import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitBlockData;
 import org.bukkit.block.data.BlockData;
 
 public class BukkitWaterlogged extends BukkitBlockData implements Waterlogged {

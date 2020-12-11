@@ -1,13 +1,13 @@
-package com.dfsek.terra.api.bukkit;
+package com.dfsek.terra.api.implementations.bukkit;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.implementations.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
 import com.dfsek.terra.config.base.ConfigPack;

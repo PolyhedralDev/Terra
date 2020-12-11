@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.gaea.tree;
 
-import com.dfsek.terra.api.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitMaterialData;
 import com.google.common.collect.Sets;
 import org.bukkit.Material;
 

@@ -5,9 +5,9 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.util.JarUtil;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.debug.Debug;
 
 import java.io.File;

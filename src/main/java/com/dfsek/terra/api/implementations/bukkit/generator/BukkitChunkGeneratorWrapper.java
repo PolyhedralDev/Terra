@@ -1,8 +1,8 @@
-package com.dfsek.terra.api.bukkit.generator;
+package com.dfsek.terra.api.implementations.bukkit.generator;
 
-import com.dfsek.terra.api.bukkit.BukkitBiomeGrid;
-import com.dfsek.terra.api.bukkit.BukkitWorld;
 import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.implementations.bukkit.BukkitBiomeGrid;
+import com.dfsek.terra.api.implementations.bukkit.BukkitWorld;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;

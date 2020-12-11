@@ -1,9 +1,9 @@
 package com.dfsek.terra.command.profile;
 
-import com.dfsek.terra.api.bukkit.BukkitWorld;
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
+import com.dfsek.terra.api.implementations.bukkit.BukkitWorld;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

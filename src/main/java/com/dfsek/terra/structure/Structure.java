@@ -1,10 +1,10 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.debug.Debug;
 import net.jafama.FastMath;
 import org.bukkit.Chunk;

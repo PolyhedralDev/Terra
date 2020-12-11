@@ -1,14 +1,14 @@
-package com.dfsek.terra.api.bukkit;
+package com.dfsek.terra.api.implementations.bukkit;
 
-import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
-import com.dfsek.terra.api.bukkit.world.block.BukkitMaterialData;
-import com.dfsek.terra.api.bukkit.world.block.data.BukkitStairs;
-import com.dfsek.terra.api.bukkit.world.block.data.BukkitWaterlogged;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitBlockData;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitMaterialData;
+import com.dfsek.terra.api.implementations.bukkit.world.block.data.BukkitStairs;
+import com.dfsek.terra.api.implementations.bukkit.world.block.data.BukkitWaterlogged;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.Stairs;

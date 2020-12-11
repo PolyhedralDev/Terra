@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.bukkit.world.block;
+package com.dfsek.terra.api.implementations.bukkit.world.block;
 
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;

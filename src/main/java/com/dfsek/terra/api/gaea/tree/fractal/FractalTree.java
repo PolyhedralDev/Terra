@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.gaea.tree.fractal;
 
-import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitBlockData;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Consumer;

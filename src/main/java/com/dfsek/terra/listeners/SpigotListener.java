@@ -1,6 +1,6 @@
 package com.dfsek.terra.listeners;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import org.bukkit.event.Listener;
 
 /**

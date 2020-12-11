@@ -1,10 +1,10 @@
-package com.dfsek.terra.api.bukkit.generator;
+package com.dfsek.terra.api.implementations.bukkit.generator;
 
-import com.dfsek.terra.api.bukkit.BukkitChunk;
-import com.dfsek.terra.api.bukkit.BukkitWorld;
 import com.dfsek.terra.api.generic.generator.BlockPopulator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.implementations.bukkit.BukkitChunk;
+import com.dfsek.terra.api.implementations.bukkit.BukkitWorld;
 
 import java.util.Random;
 

@@ -1,12 +1,12 @@
-package com.dfsek.terra.api.bukkit.world.block;
+package com.dfsek.terra.api.implementations.bukkit.world.block;
 
-import com.dfsek.terra.api.bukkit.BukkitWorld;
-import com.dfsek.terra.api.bukkit.world.block.data.BukkitEnumAdapter;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.implementations.bukkit.BukkitWorld;
+import com.dfsek.terra.api.implementations.bukkit.world.block.data.BukkitEnumAdapter;
 
 public class BukkitBlock implements Block {
     private final org.bukkit.block.Block delegate;

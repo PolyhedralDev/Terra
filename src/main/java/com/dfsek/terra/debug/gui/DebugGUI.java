@@ -1,6 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 
 import javax.swing.*;
 import java.awt.*;

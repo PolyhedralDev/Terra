@@ -1,8 +1,8 @@
 package com.dfsek.terra.command;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.Command;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

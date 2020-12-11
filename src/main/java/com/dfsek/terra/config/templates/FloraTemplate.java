@@ -3,7 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.bukkit.world.block.BukkitMaterialData;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.generation.items.flora.TerraFlora;
 import com.dfsek.terra.util.MaterialSet;

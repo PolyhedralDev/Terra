@@ -1,9 +1,9 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.api.bukkit.BukkitWorld;
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.api.implementations.bukkit.BukkitWorld;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.items.TerraStructure;

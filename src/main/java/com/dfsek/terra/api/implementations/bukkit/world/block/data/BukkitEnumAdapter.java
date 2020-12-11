@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.bukkit.world.block.data;
+package com.dfsek.terra.api.implementations.bukkit.world.block.data;
 
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.data.Bisected;

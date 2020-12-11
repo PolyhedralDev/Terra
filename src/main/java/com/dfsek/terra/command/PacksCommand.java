@@ -1,7 +1,7 @@
 package com.dfsek.terra.command;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.Command;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.registry.ConfigRegistry;

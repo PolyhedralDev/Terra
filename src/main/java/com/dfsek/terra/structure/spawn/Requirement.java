@@ -1,7 +1,7 @@
 package com.dfsek.terra.structure.spawn;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 
 public abstract class Requirement {
     protected final World world;

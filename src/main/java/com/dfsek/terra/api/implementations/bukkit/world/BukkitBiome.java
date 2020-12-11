@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.bukkit.world;
+package com.dfsek.terra.api.implementations.bukkit.world;
 
 import com.dfsek.terra.api.generic.world.Biome;
 

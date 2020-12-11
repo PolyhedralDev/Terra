@@ -1,12 +1,12 @@
-package com.dfsek.terra.api.bukkit;
+package com.dfsek.terra.api.implementations.bukkit;
 
-import com.dfsek.terra.api.bukkit.generator.BukkitChunkGenerator;
-import com.dfsek.terra.api.bukkit.world.block.BukkitBlock;
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.implementations.bukkit.generator.BukkitChunkGenerator;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitBlock;
 import org.bukkit.TreeType;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Consumer;

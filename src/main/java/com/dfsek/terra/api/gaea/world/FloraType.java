@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.gaea.world;
 
-import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.generic.world.Chunk;
@@ -8,6 +7,7 @@ import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.implementations.bukkit.world.block.BukkitBlockData;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

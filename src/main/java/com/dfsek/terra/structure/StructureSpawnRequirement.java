@@ -1,7 +1,7 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.structure.spawn.AirSpawn;
 import com.dfsek.terra.structure.spawn.BlankSpawn;
 import com.dfsek.terra.structure.spawn.LandSpawn;

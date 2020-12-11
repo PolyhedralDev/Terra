@@ -1,5 +1,5 @@
 name: "Terra"
-main: "com.dfsek.terra.api.bukkit.TerraBukkitPlugin"
+main: "com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin"
 version: "@VERSION@"
 load: "STARTUP"
 api-version: "1.16"
