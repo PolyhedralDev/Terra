@@ -2,11 +2,14 @@ package com.dfsek.terra.api.implementations.bukkit;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.implementations.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
@@ -21,9 +24,7 @@ import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.ChunkGenerator;
@@ -42,6 +43,7 @@ public class TerraBukkitPlugin extends GaeaPlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
     private WorldHandle handle = new BukkitWorldHandle();
+    private final GenericLoaders genericLoaders = new GenericLoaders(this);
 
     public void reload() {
         Map<World, TerraWorld> newMap = new HashMap<>();
@@ -150,8 +152,9 @@ public class TerraBukkitPlugin extends GaeaPlugin implements TerraPlugin {
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(Biome.class, (t, o, l) -> Biome.valueOf((String) o))
-                .registerLoader(BlockData.class, (t, o, l) -> Bukkit.createBlockData((String) o))
-                .registerLoader(Material.class, (t, o, l) -> Material.matchMaterial((String) o))
+                .registerLoader(BlockData.class, (t, o, l) -> handle.createBlockData((String) o))
+                .registerLoader(MaterialData.class, (t, o, l) -> handle.createMaterialData((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
+        genericLoaders.register(registry);
     }
 }
