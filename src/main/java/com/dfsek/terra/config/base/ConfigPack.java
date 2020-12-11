@@ -4,6 +4,8 @@ import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.structures.loot.LootTable;
 import com.dfsek.terra.api.gaea.tree.Tree;
@@ -74,14 +76,14 @@ import java.util.zip.ZipFile;
 /**
  * Represents a Terra configuration pack.
  */
-public class ConfigPack {
+public class ConfigPack implements LoaderRegistrar {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
     private final BiomeRegistry biomeRegistry = new BiomeRegistry();
     private final BiomeGridRegistry biomeGridRegistry = new BiomeGridRegistry(biomeRegistry);
     private final StructureRegistry structureRegistry = new StructureRegistry();
     private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry = new PaletteRegistry();
-    private final FloraRegistry floraRegistry = new FloraRegistry();
+    private final FloraRegistry floraRegistry;
     private final OreRegistry oreRegistry = new OreRegistry();
     private final TreeRegistry treeRegistry = new TreeRegistry();
 
@@ -91,19 +93,11 @@ public class ConfigPack {
 
     private final Map<StructureTypeEnum, TerraStructure> structureMap = new HashMap<>();
 
-    {
-        abstractConfigLoader
-                .registerLoader(Palette.class, paletteRegistry)
-                .registerLoader(Biome.class, biomeRegistry)
-                .registerLoader(UserDefinedCarver.class, carverRegistry)
-                .registerLoader(Flora.class, floraRegistry)
-                .registerLoader(Ore.class, oreRegistry)
-                .registerLoader(Tree.class, treeRegistry)
-                .registerLoader(TerraStructure.class, structureRegistry);
-    }
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
+        floraRegistry = new FloraRegistry(main);
+        register(abstractConfigLoader);
 
         main.register(selfLoader);
         main.register(abstractConfigLoader);
@@ -121,6 +115,8 @@ public class ConfigPack {
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
+        floraRegistry = new FloraRegistry(main);
+        register(abstractConfigLoader);
 
         main.register(selfLoader);
         main.register(abstractConfigLoader);
@@ -233,5 +229,17 @@ public class ConfigPack {
 
     public TerraStructure getStructureLocatable(StructureTypeEnum type) {
         return structureMap.get(type);
+    }
+
+    @Override
+    public void register(TypeRegistry registry) {
+        registry
+                .registerLoader(Palette.class, paletteRegistry)
+                .registerLoader(Biome.class, biomeRegistry)
+                .registerLoader(UserDefinedCarver.class, carverRegistry)
+                .registerLoader(Flora.class, floraRegistry)
+                .registerLoader(Ore.class, oreRegistry)
+                .registerLoader(Tree.class, treeRegistry)
+                .registerLoader(TerraStructure.class, structureRegistry);
     }
 }
