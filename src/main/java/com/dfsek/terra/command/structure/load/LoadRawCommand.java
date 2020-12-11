@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.structure.load;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -38,7 +38,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         try {
-            WorldHandle handle = ((Terra) getMain()).getHandle();
+            WorldHandle handle = ((TerraBukkitPlugin) getMain()).getHandle();
             Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
             StructureInfo info = struc.getStructureInfo();
             int centerX = info.getCenterX();

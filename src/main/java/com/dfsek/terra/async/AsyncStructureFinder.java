@@ -1,6 +1,6 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * Runnable to locate structures asynchronously
  */
 public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
-    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, Terra main) {
+    public AsyncStructureFinder(TerraBiomeGrid grid, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, TerraBukkitPlugin main) {
         super(grid, target, origin, startRadius, maxRadius, callback, main);
         setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
     }

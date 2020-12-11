@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.image.ImageLoader;
@@ -24,9 +24,9 @@ public class StepGUICommand extends WorldCommand {
             LangUtil.send("command.image.gui.debug", sender);
             return true;
         }
-        ImageLoader loader = ((Terra) getMain()).getWorld(world).getConfig().getTemplate().getImageLoader();
-        if(loader != null) loader.debug(true, sender.getWorld(), (Terra) getMain());
-        else ImageLoader.debugWorld(true, world, (Terra) getMain());
+        ImageLoader loader = ((TerraBukkitPlugin) getMain()).getWorld(world).getConfig().getTemplate().getImageLoader();
+        if(loader != null) loader.debug(true, sender.getWorld(), (TerraBukkitPlugin) getMain());
+        else ImageLoader.debugWorld(true, world, (TerraBukkitPlugin) getMain());
         return true;
     }
 

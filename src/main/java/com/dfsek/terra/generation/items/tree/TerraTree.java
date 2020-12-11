@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.tree;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
@@ -32,8 +32,8 @@ public class TerraTree implements Tree {
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
         Rotation rotation = Rotation.fromDegrees(random.nextInt(4) * 90);
-        if(!struc.checkSpawns(mut, rotation, (Terra) main)) return false;
-        struc.paste(mut, rotation, (Terra) main);
+        if(!struc.checkSpawns(mut, rotation, (TerraBukkitPlugin) main)) return false;
+        struc.paste(mut, rotation, (TerraBukkitPlugin) main);
         return true;
     }
 
@@ -42,7 +42,7 @@ public class TerraTree implements Tree {
         return spawnable;
     }
 
-    public boolean plantBlockCheck(Location location, Random random, Terra main) {
+    public boolean plantBlockCheck(Location location, Random random, TerraBukkitPlugin main) {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);

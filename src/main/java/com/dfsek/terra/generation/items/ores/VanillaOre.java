@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.ores;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.util.MaterialSet;
@@ -16,7 +16,7 @@ import java.util.Random;
 public class VanillaOre extends Ore {
     private final Range sizeRange;
 
-    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, Terra main) {
+    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, TerraBukkitPlugin main) {
         super(material, replaceable, applyGravity, main);
         this.sizeRange = size;
     }

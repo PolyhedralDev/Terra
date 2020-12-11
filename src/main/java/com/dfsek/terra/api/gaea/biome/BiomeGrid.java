@@ -2,8 +2,8 @@ package com.dfsek.terra.api.gaea.biome;
 
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
-import org.bukkit.Location;
-import org.bukkit.World;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.vector.Location;
 
 public abstract class BiomeGrid {
     private final FastNoiseLite noiseX;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.structure;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -46,12 +46,12 @@ public class LocateCommand extends WorldCommand {
         }
         TerraStructure s;
         try {
-            s = Objects.requireNonNull(((Terra) getMain()).getWorld(world).getConfig().getStructure(id));
+            s = Objects.requireNonNull(((TerraBukkitPlugin) getMain()).getWorld(world).getConfig().getStructure(id));
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.structure.invalid", sender, id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncStructureFinder(((Terra) getMain()).getWorld(world).getGrid(), s, sender.getLocation(), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncStructureFinder(((TerraBukkitPlugin) getMain()).getWorld(world).getGrid(), s, sender.getLocation(), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
@@ -64,7 +64,7 @@ public class LocateCommand extends WorldCommand {
                 } else
                     sender.sendMessage("Unable to locate structure. ");
             }
-        }, (Terra) getMain()));
+        }, (TerraBukkitPlugin) getMain()));
         return true;
     }
 
@@ -87,7 +87,7 @@ public class LocateCommand extends WorldCommand {
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
         if(!(sender instanceof Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
             return Collections.emptyList();
-        List<String> ids = ((Terra) getMain()).getWorld(((Player) sender).getWorld()).getConfig().getStructureIDs();
+        List<String> ids = ((TerraBukkitPlugin) getMain()).getWorld(((Player) sender).getWorld()).getConfig().getStructureIDs();
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         return Collections.emptyList();

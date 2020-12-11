@@ -4,11 +4,11 @@ import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.image.ImageLoader;
-import org.bukkit.Location;
-import org.bukkit.World;
 
 public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader imageLoader;

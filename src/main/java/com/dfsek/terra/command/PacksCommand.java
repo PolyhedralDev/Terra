@@ -1,6 +1,6 @@
 package com.dfsek.terra.command;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.Command;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -29,7 +29,7 @@ public class PacksCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        ConfigRegistry registry = ((Terra) getMain()).getRegistry();
+        ConfigRegistry registry = ((TerraBukkitPlugin) getMain()).getRegistry();
 
         if(registry.entries().size() == 0) {
             LangUtil.send("command.packs.none", commandSender);

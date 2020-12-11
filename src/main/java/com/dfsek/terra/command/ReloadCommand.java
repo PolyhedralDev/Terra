@@ -1,6 +1,6 @@
 package com.dfsek.terra.command;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.Command;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -27,13 +27,13 @@ public class ReloadCommand extends Command implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        ((Terra) getMain()).getTerraConfig().load(getMain());
-        LangUtil.load(((Terra) getMain()).getTerraConfig().getLanguage(), getMain()); // Load language.
-        if(!((Terra) getMain()).getRegistry().loadAll((Terra) getMain())) {
+        ((TerraBukkitPlugin) getMain()).getTerraConfig().load(getMain());
+        LangUtil.load(((TerraBukkitPlugin) getMain()).getTerraConfig().getLanguage(), getMain()); // Load language.
+        if(!((TerraBukkitPlugin) getMain()).getRegistry().loadAll((TerraBukkitPlugin) getMain())) {
             LangUtil.send("command.reload-error", sender);
             return true;
         }
-        ((Terra) getMain()).reload();
+        ((TerraBukkitPlugin) getMain()).reload();
         LangUtil.send("command.reload", sender);
         return true;
     }

@@ -3,8 +3,8 @@ package com.dfsek.terra.biome.grid;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import org.bukkit.Location;
-import org.bukkit.World;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.vector.Location;
 
 /**
  * BiomeGrid implementation that holds a single biome.

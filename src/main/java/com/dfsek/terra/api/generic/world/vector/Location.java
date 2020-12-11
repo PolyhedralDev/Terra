@@ -24,4 +24,16 @@ public class Location implements Cloneable {
             throw new Error(e);
         }
     }
+
+    public int getBlockX() {
+        return vector.getBlockX();
+    }
+
+    public int getBlockY() {
+        return vector.getBlockY();
+    }
+
+    public int getBlockZ() {
+        return vector.getBlockZ();
+    }
 }

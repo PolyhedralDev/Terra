@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure.spawn;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import org.bukkit.World;
 
@@ -8,9 +8,9 @@ import java.util.Objects;
 
 public abstract class Requirement {
     protected final World world;
-    protected final Terra main;
+    protected final TerraBukkitPlugin main;
 
-    public Requirement(World world, Terra main) {
+    public Requirement(World world, TerraBukkitPlugin main) {
         this.world = world;
         this.main = main;
     }

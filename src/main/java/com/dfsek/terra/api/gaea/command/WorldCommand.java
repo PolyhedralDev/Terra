@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.gaea.command;
 
-import com.dfsek.terra.api.gaea.generation.GaeaChunkGenerator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,8 +28,7 @@ public abstract class WorldCommand extends PlayerCommand {
      */
     @Override
     public final boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        Class<? extends GaeaChunkGenerator> clazz = getMain().getGeneratorClass();
-        if(clazz.isInstance(sender.getWorld().getGenerator())) {
+        if(sender.getWorld().getGenerator() instanceof ChunkGenerator) { // TODO: implementation
             return execute(sender, command, label, args, sender.getWorld());
         } else {
             getMain().getLanguage().send("command.world", sender);

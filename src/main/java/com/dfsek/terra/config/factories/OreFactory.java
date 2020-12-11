@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.generation.items.ores.DeformedSphereOre;
 import com.dfsek.terra.generation.items.ores.Ore;
@@ -9,7 +9,7 @@ import org.bukkit.block.data.BlockData;
 
 public class OreFactory implements TerraFactory<OreTemplate, Ore> {
     @Override
-    public Ore build(OreTemplate config, Terra main) {
+    public Ore build(OreTemplate config, TerraPlugin main) {
         BlockData m = config.getMaterial();
         switch(config.getType()) {
             case SPHERE:

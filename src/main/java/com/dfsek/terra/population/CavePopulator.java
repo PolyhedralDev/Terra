@@ -1,7 +1,7 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -24,11 +24,11 @@ import java.util.Random;
 import java.util.Set;
 
 public class CavePopulator extends BlockPopulator {
-    private final Terra main;
+    private final TerraBukkitPlugin main;
     private static final Map<Material, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private static final BlockData AIR = Material.AIR.createBlockData();
 
-    public CavePopulator(Terra main) {
+    public CavePopulator(TerraBukkitPlugin main) {
         this.main = main;
     }
 

@@ -1,7 +1,7 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.MathUtil;
@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class OrePopulator extends GaeaBlockPopulator {
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public OrePopulator(Terra main) {
+    public OrePopulator(TerraBukkitPlugin main) {
         this.main = main;
     }
 

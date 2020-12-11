@@ -1,6 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +9,9 @@ import java.awt.image.BufferedImage;
 public class DebugGUI extends Thread {
 
     private final BufferedImage img;
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public DebugGUI(BufferedImage img, Terra main) {
+    public DebugGUI(BufferedImage img, TerraBukkitPlugin main) {
         this.img = img;
         this.main = main;
     }

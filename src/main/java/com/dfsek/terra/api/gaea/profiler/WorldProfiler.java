@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.gaea.profiler;
 
-import com.dfsek.terra.api.gaea.generation.GaeaChunkGenerator;
+import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.generic.world.World;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.jafama.FastMath;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class WorldProfiler {
     private boolean isProfiling;
 
     public WorldProfiler(World w) {
-        if(! (w.getGenerator() instanceof GaeaChunkGenerator))
+        if(!(w.getGenerator() instanceof TerraChunkGenerator))
             throw new IllegalArgumentException("Attempted to instantiate profiler on non-Gaea managed world!");
         this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime")
                 .addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "ChunkBaseGenTime")
@@ -23,7 +23,7 @@ public class WorldProfiler {
                 .addMeasurement(new Measurement(2000000, DataType.PERIOD_MILLISECONDS), "PopulationManagerTime");
         isProfiling = false;
         this.world = w;
-        ((GaeaChunkGenerator) w.getGenerator()).attachProfiler(this);
+        ((TerraChunkGenerator) w.getGenerator()).attachProfiler(this);
     }
 
     public String getResultsFormatted() {

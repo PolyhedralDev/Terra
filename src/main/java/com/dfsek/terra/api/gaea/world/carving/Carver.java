@@ -2,9 +2,9 @@ package com.dfsek.terra.api.gaea.world.carving;
 
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import net.jafama.FastMath;
-import org.bukkit.World;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
@@ -20,14 +20,14 @@ public abstract class Carver {
         this.maxY = maxY;
     }
 
-    public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector, CarvingType> consumer) {
+    public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 if(isChunkCarved(w, x, z, new FastRandom(MathUtil.hashToLong(this.getClass().getName() + "_" + x + "&" + z)))) {
                     long seed = MathUtil.getCarverChunkSeed(x, z, w.getSeed());
                     Random r = new FastRandom(seed);
-                    Worm carving = getWorm(seed, new Vector((x << 4) + r.nextInt(16), r.nextInt(maxY - minY + 1) + minY, (z << 4) + r.nextInt(16)));
-                    Vector origin = carving.getOrigin();
+                    Worm carving = getWorm(seed, new Vector3((x << 4) + r.nextInt(16), r.nextInt(maxY - minY + 1) + minY, (z << 4) + r.nextInt(16)));
+                    Vector3 origin = carving.getOrigin();
                     for(int i = 0; i < carving.getLength(); i++) {
                         carving.step();
                         if(carving.getRunning().clone().setY(0).distanceSquared(origin.clone().setY(0)) > sixtyFourSq)
@@ -49,7 +49,7 @@ public abstract class Carver {
         this.carvingRadius = carvingRadius;
     }
 
-    public abstract Worm getWorm(long seed, Vector l);
+    public abstract Worm getWorm(long seed, Vector3 l);
 
     public abstract boolean isChunkCarved(World w, int chunkX, int chunkZ, Random r);
 

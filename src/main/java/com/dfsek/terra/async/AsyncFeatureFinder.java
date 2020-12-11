@@ -1,6 +1,6 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,9 +20,9 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
     protected final World world;
     private final Consumer<Vector> callback;
     protected int searchSize = 1;
-    protected final Terra main;
+    protected final TerraBukkitPlugin main;
 
-    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, Terra main) {
+    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, TerraBukkitPlugin main) {
         this.grid = grid;
         this.target = target;
         this.main = main;

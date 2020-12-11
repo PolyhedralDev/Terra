@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.flora;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
@@ -41,9 +41,9 @@ public class TerraFlora implements Flora {
 
     private final int irrigableOffset;
 
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, Terra main) {
+    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraBukkitPlugin main) {
         this.floraPalette = floraPalette;
         this.physics = physics;
         this.testRotation = testRotation;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.structure.load;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.structure.Rotation;
@@ -36,8 +36,8 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
                 return true;
             }
             Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
-            if(chunk) struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r, (Terra) getMain());
-            else struc.paste(sender.getLocation(), r, (Terra) getMain());
+            if(chunk) struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r, (TerraBukkitPlugin) getMain());
+            else struc.paste(sender.getLocation(), r, (TerraBukkitPlugin) getMain());
             //sender.sendMessage(String.valueOf(struc.checkSpawns(sender.getLocation(), r)));
         } catch(IOException e) {
             e.printStackTrace();

@@ -1,7 +1,7 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.gaea.structures.loot.LootTable;
 import com.dfsek.terra.api.gaea.util.FastRandom;
@@ -28,9 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class StructurePopulator extends BlockPopulator {
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public StructurePopulator(Terra main) {
+    public StructurePopulator(TerraBukkitPlugin main) {
         this.main = main;
     }
 

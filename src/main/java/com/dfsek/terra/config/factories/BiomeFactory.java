@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
@@ -16,7 +16,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, UserDefinedBiom
     }
 
     @Override
-    public UserDefinedBiome build(BiomeTemplate template, Terra main) {
+    public UserDefinedBiome build(BiomeTemplate template, TerraPlugin main) {
         UserDefinedDecorator decorator = new UserDefinedDecorator(new ProbabilityCollection<>(), new ProbabilityCollection<>(), 0, 0);
         GeneratorBuilder generatorBuilder = new GeneratorBuilder();
         generatorBuilder.setElevationEquation(template.getElevationEquation());

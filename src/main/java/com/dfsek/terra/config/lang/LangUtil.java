@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.lang;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.debug.Debug;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public final class LangUtil {
     public static void load(String langID, JavaPlugin main) {
         logger = main.getLogger();
         File file = new File(main.getDataFolder(), "lang");
-        try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
+        try(JarFile jar = new JarFile(new File(TerraBukkitPlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
             copyResourcesToDirectory(jar, "lang", file.toString());
         } catch(IOException | URISyntaxException e) {
             Debug.error("Failed to dump language files!");

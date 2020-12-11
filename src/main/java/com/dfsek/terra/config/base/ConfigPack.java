@@ -4,12 +4,12 @@ import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.structures.loot.LootTable;
 import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.gaea.world.Flora;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -102,11 +102,11 @@ public class ConfigPack {
                 .registerLoader(TerraStructure.class, structureRegistry);
     }
 
-    public ConfigPack(File folder, Terra main) throws ConfigException {
+    public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
 
-        main.registerAllLoaders(selfLoader);
-        main.registerAllLoaders(abstractConfigLoader);
+        main.register(selfLoader);
+        main.register(abstractConfigLoader);
 
         File pack = new File(folder, "pack.yml");
 
@@ -119,11 +119,11 @@ public class ConfigPack {
         load(new FolderLoader(folder.toPath()), l, main);
     }
 
-    public ConfigPack(ZipFile file, Terra main) throws ConfigException {
+    public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
 
-        main.registerAllLoaders(selfLoader);
-        main.registerAllLoaders(abstractConfigLoader);
+        main.register(selfLoader);
+        main.register(abstractConfigLoader);
 
         InputStream stream = null;
 
@@ -143,7 +143,7 @@ public class ConfigPack {
         load(new ZIPLoader(file), l, main);
     }
 
-    private void load(Loader loader, long start, Terra main) throws ConfigException {
+    private void load(Loader loader, long start, TerraPlugin main) throws ConfigException {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
@@ -179,7 +179,7 @@ public class ConfigPack {
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
     }
 
-    private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates, Terra main) throws LoadException {
+    private <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 

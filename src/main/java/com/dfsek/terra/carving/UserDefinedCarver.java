@@ -1,18 +1,18 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.world.carving.Carver;
 import com.dfsek.terra.api.gaea.world.carving.Worm;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.math.RandomFunction;
 import net.jafama.FastMath;
-import org.bukkit.World;
-import org.bukkit.util.Vector;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;
@@ -43,9 +43,9 @@ public class UserDefinedCarver extends Carver {
     private double step = 2;
     private Range recalc = new Range(8, 10);
     private double recalcMagnitude = 3;
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, Terra main) throws ParseException {
+    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraBukkitPlugin main) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;
@@ -74,7 +74,7 @@ public class UserDefinedCarver extends Carver {
     }
 
     @Override
-    public Worm getWorm(long l, Vector vector) {
+    public Worm getWorm(long l, Vector3 vector) {
         Random r = new FastRandom(l + hash);
         return new UserDefinedWorm(length.get(r) / 2, r, vector, topCut, bottomCut);
     }
@@ -100,13 +100,13 @@ public class UserDefinedCarver extends Carver {
     }
 
     @Override
-    public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector, CarvingType> consumer) {
+    public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
         CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main));
         int carvingRadius = getCarvingRadius();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
                 cache.getPoints(x, z, this).forEach(point -> {
-                    Vector origin = point.getOrigin();
+                    Vector3 origin = point.getOrigin();
                     if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
                         return;
                     point.carve(chunkX, chunkZ, consumer);
@@ -133,16 +133,16 @@ public class UserDefinedCarver extends Carver {
     }
 
     private class UserDefinedWorm extends Worm {
-        private final Vector direction;
+        private final Vector3 direction;
         private int steps;
         private int nextDirection = 0;
         private double[] currentRotation = new double[3];
 
-        public UserDefinedWorm(int length, Random r, Vector origin, int topCut, int bottomCut) {
+        public UserDefinedWorm(int length, Random r, Vector3 origin, int topCut, int bottomCut) {
             super(length, r, origin);
             super.setTopCut(topCut);
             super.setBottomCut(bottomCut);
-            direction = new Vector((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
+            direction = new Vector3((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
             position.setValue(0);
             lengthVar.setValue(length);
             setRadius(new int[] {(int) (xRad.evaluate()), (int) (yRad.evaluate()), (int) (zRad.evaluate())});

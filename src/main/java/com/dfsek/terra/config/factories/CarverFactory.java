@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -19,7 +19,7 @@ public class CarverFactory implements TerraFactory<CarverTemplate, UserDefinedCa
     }
 
     @Override
-    public UserDefinedCarver build(CarverTemplate config, Terra main) throws LoadException {
+    public UserDefinedCarver build(CarverTemplate config, TerraPlugin main) throws LoadException {
         double[] start = new double[] {config.getStartX(), config.getStartY(), config.getStartZ()};
         double[] mutate = new double[] {config.getMutateX(), config.getMutateY(), config.getMutateZ()};
         List<String> radius = Arrays.asList(config.getRadMX(), config.getRadMY(), config.getRadMZ());

@@ -1,7 +1,7 @@
 package com.dfsek.terra.listeners;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.gaea.tree.TreeType;
 import com.dfsek.terra.api.gaea.util.FastRandom;
@@ -20,9 +20,9 @@ import org.bukkit.event.world.StructureGrowEvent;
  * Listener for events on all implementations.
  */
 public class EventListener implements Listener {
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public EventListener(Terra main) {
+    public EventListener(TerraBukkitPlugin main) {
         this.main = main;
     }
 

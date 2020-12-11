@@ -1,7 +1,7 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.ChunkInterpolator3;
@@ -9,7 +9,6 @@ import com.dfsek.terra.api.gaea.population.PopulationManager;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
-import com.dfsek.terra.api.generic.generator.BlockPopulator;
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.Chunk;
@@ -27,21 +26,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 
-public class ChunkGeneratorImpl implements ChunkGenerator {
+public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generator.TerraChunkGenerator {
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
     private final PopulationManager popMan;
     private final ConfigPack configPack;
-    private final Terra main;
+    private final TerraBukkitPlugin main;
     private boolean needsLoad = true;
 
-    public ChunkGeneratorImpl(ConfigPack c, Terra main) {
+    public TerraChunkGenerator(ConfigPack c, TerraBukkitPlugin main) {
         popMan = new PopulationManager(main);
         this.configPack = c;
         this.main = main;
@@ -62,7 +59,7 @@ public class ChunkGeneratorImpl implements ChunkGenerator {
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(!(c.getWorld().getGenerator() instanceof ChunkGeneratorImpl)) throw new IllegalArgumentException();
+        if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
@@ -92,7 +89,13 @@ public class ChunkGeneratorImpl implements ChunkGenerator {
     }
 
     @Override
-    public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome, ChunkData chunk) {
+    public ConfigPack getConfigPack() {
+        return configPack;
+    }
+
+
+    @Override
+    public void generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.gaea.biome.BiomeGrid grid = tw.getGrid();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
@@ -101,7 +104,7 @@ public class ChunkGeneratorImpl implements ChunkGenerator {
                 interp = new ChunkInterpolator3(world, chunkX, chunkZ, tw.getGrid());
                 if(needsLoad) load(world); // Load population data for world.
 
-                if(!tw.isSafe()) return chunk;
+                if(!tw.isSafe()) return;
                 int xOrig = (chunkX << 4);
                 int zOrig = (chunkZ << 4);
 
@@ -166,12 +169,6 @@ public class ChunkGeneratorImpl implements ChunkGenerator {
                 }
             }
         }
-        return chunk;
-    }
-
-    @Override
-    public List<BlockPopulator> getDefaultPopulators(World world) {
-        return Collections.emptyList();
     }
 
     public void attachProfiler(WorldProfiler p) {

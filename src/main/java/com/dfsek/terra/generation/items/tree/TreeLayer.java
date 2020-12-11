@@ -1,6 +1,5 @@
 package com.dfsek.terra.generation.items.tree;
 
-import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.math.Range;
@@ -15,11 +14,9 @@ import org.bukkit.block.BlockFace;
 import java.util.Random;
 
 public class TreeLayer extends PlaceableLayer<Tree> {
-    private final GaeaPlugin main;
 
-    public TreeLayer(double density, Range level, ProbabilityCollection<Tree> layer, FastNoiseLite noise, GaeaPlugin main) {
+    public TreeLayer(double density, Range level, ProbabilityCollection<Tree> layer, FastNoiseLite noise) {
         super(density, level, layer, noise);
-        this.main = main;
     }
 
     @Override
@@ -30,8 +27,8 @@ public class TreeLayer extends PlaceableLayer<Tree> {
             current = current.getRelative(BlockFace.DOWN);
             if(item.getSpawnable().contains(current.getType())) {
                 if(item instanceof TreeType && current.getRelative(BlockFace.UP).isEmpty())
-                    item.plant(current.getLocation().add(0, 1, 0), random, main);
-                else if(!(item instanceof TreeType)) item.plant(current.getLocation(), random, main);
+                    item.plant(current.getLocation().add(0, 1, 0), random);
+                else if(!(item instanceof TreeType)) item.plant(current.getLocation(), random);
             }
         }
     }

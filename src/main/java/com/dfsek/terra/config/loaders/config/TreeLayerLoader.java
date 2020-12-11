@@ -3,11 +3,11 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 
@@ -16,9 +16,9 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class TreeLayerLoader implements TypeLoader<TreeLayer> {
-    private final GaeaPlugin main;
+    private final TerraPlugin main;
 
-    public TreeLayerLoader(GaeaPlugin main) {
+    public TreeLayerLoader(TerraPlugin main) {
         this.main = main;
     }
 
@@ -33,9 +33,9 @@ public class TreeLayerLoader implements TypeLoader<TreeLayer> {
         if(map.containsKey("simplex-frequency")) {
             FastNoiseLite noiseLite = new FastNoiseLite();
             noiseLite.setFrequency((Double) map.get("simplex-frequency"));
-            return new TreeLayer(density, range, items, noiseLite, main);
+            return new TreeLayer(density, range, items, noiseLite);
         }
 
-        return new TreeLayer(density, range, items, null, main);
+        return new TreeLayer(density, range, items, null);
     }
 }

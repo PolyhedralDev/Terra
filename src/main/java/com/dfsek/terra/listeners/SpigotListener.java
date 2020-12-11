@@ -1,7 +1,7 @@
 package com.dfsek.terra.listeners;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.items.TerraStructure;
@@ -24,9 +24,9 @@ import org.bukkit.event.entity.VillagerCareerChangeEvent;
  * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public SpigotListener(Terra main) {
+    public SpigotListener(TerraBukkitPlugin main) {
         this.main = main;
     }
 

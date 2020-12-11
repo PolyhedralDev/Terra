@@ -89,10 +89,8 @@ public enum TreeType implements Tree {
         if(this.getVanillaTreeType() == null) {
             if(!spawnable.contains(l.subtract(0, 1, 0).getBlock().getType())) return false;
             FractalTree tree = getCustomTreeType().getTree(l, r);
-            if(main.isEnabled()) co.aikar.taskchain.BukkitTaskChainFactory.create(main).newChain()
-                    .async(tree::grow)
-                    .sync(tree::plant)
-                    .execute();
+            tree.grow();
+            tree.plant();
             return true;
         }
         return l.getWorld().generateTree(l, this.getVanillaTreeType());

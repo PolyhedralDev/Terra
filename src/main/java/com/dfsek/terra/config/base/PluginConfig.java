@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.util.JarUtil;
 import com.dfsek.terra.debug.Debug;
@@ -51,7 +51,7 @@ public class PluginConfig implements ConfigTemplate {
             ConfigLoader loader = new ConfigLoader();
             loader.load(this, file);
             if(dumpDefaultConfig) { // Don't dump default config if already loaded.
-                try(JarFile jar = new JarFile(new File(Terra.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
+                try(JarFile jar = new JarFile(new File(TerraBukkitPlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
                     JarUtil.copyResourcesToDirectory(jar, "packs", new File(main.getDataFolder(), "packs").toString());
                 } catch(IOException | URISyntaxException e) {
                     Debug.error("Failed to dump default config files!");

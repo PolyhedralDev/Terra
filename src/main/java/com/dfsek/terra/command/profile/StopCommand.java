@@ -1,6 +1,6 @@
 package com.dfsek.terra.command.profile;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -20,7 +20,7 @@ public class StopCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        WorldProfiler profile = ((Terra) getMain()).getWorld(world).getProfiler();
+        WorldProfiler profile = ((TerraBukkitPlugin) getMain()).getWorld(world).getProfiler();
         profile.setProfiling(false);
         LangUtil.send("command.profile.stop", sender);
         return true;

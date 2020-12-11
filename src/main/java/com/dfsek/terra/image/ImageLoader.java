@@ -1,12 +1,12 @@
 package com.dfsek.terra.image;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
+import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.debug.gui.DebugGUI;
 import net.jafama.FastMath;
-import org.bukkit.World;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class ImageLoader {
         this.align = align;
     }
 
-    public static void debugWorld(boolean genStep, World w, Terra main) {
+    public static void debugWorld(boolean genStep, World w, TerraBukkitPlugin main) {
         if(!main.isDebug()) return;
         BufferedImage newImg = new WorldImageGenerator(w, 1024, 1024, main).drawWorld(0, 0).getDraw();
         if(genStep) newImg = redrawStepped(newImg, w, Align.CENTER, main);
@@ -32,7 +32,7 @@ public class ImageLoader {
         debugGUI.start();
     }
 
-    private static BufferedImage redrawStepped(BufferedImage original, World w, Align align, Terra main) {
+    private static BufferedImage redrawStepped(BufferedImage original, World w, Align align, TerraBukkitPlugin main) {
         BufferedImage newImg = copyImage(original);
         TerraBiomeGrid tb = main.getWorld(w).getGrid();
         BiomeZone z = main.getWorld(w).getZone();
@@ -59,7 +59,7 @@ public class ImageLoader {
         return b;
     }
 
-    public void debug(boolean genStep, World w, Terra main) {
+    public void debug(boolean genStep, World w, TerraBukkitPlugin main) {
         if(!main.isDebug()) return;
         BufferedImage newImg = copyImage(image);
         if(genStep) {

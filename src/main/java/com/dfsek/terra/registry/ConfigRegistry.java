@@ -1,7 +1,7 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.debug.Debug;
 
@@ -13,12 +13,12 @@ import java.util.zip.ZipFile;
  * Class to hold config packs
  */
 public class ConfigRegistry extends TerraRegistry<ConfigPack> {
-    public void load(File folder, Terra main) throws ConfigException {
+    public void load(File folder, TerraBukkitPlugin main) throws ConfigException {
         ConfigPack pack = new ConfigPack(folder, main);
         add(pack.getTemplate().getID(), pack);
     }
 
-    public boolean loadAll(Terra main) {
+    public boolean loadAll(TerraBukkitPlugin main) {
         boolean valid = true;
         File packsFolder = new File(main.getDataFolder(), "packs");
         for(File dir : packsFolder.listFiles(File::isDirectory)) {
@@ -41,7 +41,7 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
         return valid;
     }
 
-    public void load(ZipFile file, Terra main) throws ConfigException {
+    public void load(ZipFile file, TerraBukkitPlugin main) throws ConfigException {
         ConfigPack pack = new ConfigPack(file, main);
         add(pack.getTemplate().getID(), pack);
     }

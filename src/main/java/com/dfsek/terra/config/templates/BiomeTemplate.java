@@ -7,8 +7,10 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.world.Biome;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.biome.palette.PaletteHolder;
-import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.TerraStructure;
@@ -16,9 +18,6 @@ import com.dfsek.terra.generation.items.flora.FloraLayer;
 import com.dfsek.terra.generation.items.ores.OreHolder;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.math.BlankFunction;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.block.data.BlockData;
 import parsii.eval.Parser;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
@@ -74,7 +73,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("ocean.palette")
     @Abstractable
     @Default
-    private Palette<BlockData> oceanPalette = new SinglePalette<>(Material.WATER.createBlockData());
+    private Palette<BlockData> oceanPalette = null;
 
     @Value("elevation.equation")
     @Default
@@ -104,12 +103,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("slabs.palettes")
     @Abstractable
     @Default
-    private Map<Material, Palette<BlockData>> slabPalettes;
+    private Map<MaterialData, Palette<BlockData>> slabPalettes;
 
     @Value("slabs.stair-palettes")
     @Abstractable
     @Default
-    private Map<Material, Palette<BlockData>> stairPalettes;
+    private Map<MaterialData, Palette<BlockData>> stairPalettes;
 
     @Value("slant.threshold")
     @Abstractable
@@ -145,11 +144,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return doSlabs;
     }
 
-    public Map<Material, Palette<BlockData>> getSlabPalettes() {
+    public Map<MaterialData, Palette<BlockData>> getSlabPalettes() {
         return slabPalettes;
     }
 
-    public Map<Material, Palette<BlockData>> getStairPalettes() {
+    public Map<MaterialData, Palette<BlockData>> getStairPalettes() {
         return stairPalettes;
     }
 

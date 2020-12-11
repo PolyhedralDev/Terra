@@ -1,6 +1,6 @@
 package com.dfsek.terra.structure;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
@@ -163,7 +163,7 @@ public class Structure implements Serializable {
      * @param origin Origin location
      * @param r      Rotation
      */
-    public void paste(@NotNull Location origin, Rotation r, Terra main) {
+    public void paste(@NotNull Location origin, Rotation r, TerraBukkitPlugin main) {
         Range xRange = getRange(Rotation.Axis.X, r);
         Range zRange = getRange(Rotation.Axis.Z, r);
         this.executeForBlocksInRange(xRange, getRange(Rotation.Axis.Y, r), zRange, block -> pasteBlock(block, origin, r, main.getHandle()), r);
@@ -286,7 +286,7 @@ public class Structure implements Serializable {
         }
     }
 
-    public boolean checkSpawns(Location origin, Rotation r, Terra main) {
+    public boolean checkSpawns(Location origin, Rotation r, TerraBukkitPlugin main) {
         for(StructureContainedBlock b : spawns) {
             Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
             if(!b.getRequirement().getInstance(origin.getWorld(), main).matches((int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
@@ -310,7 +310,7 @@ public class Structure implements Serializable {
      * @param chunk  Chunk to confine pasting to
      * @param r      Rotation
      */
-    public void paste(Location origin, Chunk chunk, Rotation r, Terra main) {
+    public void paste(Location origin, Chunk chunk, Rotation r, TerraBukkitPlugin main) {
         int xOr = (chunk.getX() << 4);
         int zOr = (chunk.getZ() << 4);
         Range intersectX = new Range(xOr, xOr + 16).sub(origin.getBlockX() - structureInfo.getCenterX());

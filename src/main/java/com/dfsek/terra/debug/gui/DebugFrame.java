@@ -1,6 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.image.ImageLoader;
@@ -19,9 +19,9 @@ public class DebugFrame extends JFrame implements ActionListener {
     private final int x;
     private final int z;
     private final BufferedImage img;
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public DebugFrame(BufferedImage image, String s, Terra main) {
+    public DebugFrame(BufferedImage image, String s, TerraBukkitPlugin main) {
         super(s);
         this.x = image.getWidth();
         this.z = image.getHeight();

@@ -1,6 +1,6 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.Terra;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class AsyncBiomeFinder extends AsyncFeatureFinder<Biome> {
 
-    public AsyncBiomeFinder(TerraBiomeGrid grid, Biome target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, Terra main) {
+    public AsyncBiomeFinder(TerraBiomeGrid grid, Biome target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, TerraBukkitPlugin main) {
         super(grid, target, origin, startRadius, maxRadius, callback, main);
     }
 

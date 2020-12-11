@@ -1,6 +1,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
+import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.grid.master.TerraRadialBiomeGrid;
@@ -9,8 +12,6 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.debug.Debug;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 
 public class TerraWorld {
     private final TerraBiomeGrid grid;
@@ -20,7 +21,7 @@ public class TerraWorld {
     private final TerraProfiler profiler;
 
 
-    public TerraWorld(World w, ConfigPack c) {
+    public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
         safe = true;
         config = c;
         profiler = new TerraProfiler(w);
@@ -39,10 +40,10 @@ public class TerraWorld {
             } catch(NullPointerException e) {
                 safe = false;
                 Debug.stack(e);
-                Bukkit.getLogger().severe("No such BiomeGrid " + partName);
-                Bukkit.getLogger().severe("Please check configuration files for errors. Configuration errors will have been reported during initialization.");
-                Bukkit.getLogger().severe("ONLY report this to Terra if you are SURE your config is error-free.");
-                Bukkit.getLogger().severe("Terrain will NOT generate properly at this point. Correct your config before using your server!");
+                main.getLogger().severe("No such BiomeGrid " + partName);
+                main.getLogger().severe("Please check configuration files for errors. Configuration errors will have been reported during initialization.");
+                main.getLogger().severe("ONLY report this to Terra if you are SURE your config is error-free.");
+                main.getLogger().severe("Terrain will NOT generate properly at this point. Correct your config before using your server!");
             }
         }
         zone = new BiomeZone(w, c, definedGrids);

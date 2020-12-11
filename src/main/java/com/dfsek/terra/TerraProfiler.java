@@ -3,7 +3,7 @@ package com.dfsek.terra;
 import com.dfsek.terra.api.gaea.profiler.DataType;
 import com.dfsek.terra.api.gaea.profiler.Measurement;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
-import org.bukkit.World;
+import com.dfsek.terra.api.generic.world.World;
 
 public class TerraProfiler extends WorldProfiler {
     public TerraProfiler(World w) {

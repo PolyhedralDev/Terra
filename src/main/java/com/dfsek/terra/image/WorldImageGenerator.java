@@ -1,10 +1,10 @@
 package com.dfsek.terra.image;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
+import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import org.bukkit.World;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,9 +15,9 @@ import java.io.IOException;
 public class WorldImageGenerator {
     private final World w;
     private final BufferedImage draw;
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public WorldImageGenerator(World w, int width, int height, Terra main) {
+    public WorldImageGenerator(World w, int width, int height, TerraBukkitPlugin main) {
         draw = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         this.w = w;
         this.main = main;

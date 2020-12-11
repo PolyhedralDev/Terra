@@ -1,15 +1,14 @@
 package com.dfsek.terra.generation.config;
 
 import com.dfsek.terra.api.gaea.biome.Generator;
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.math.Interpolator;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;
 import com.dfsek.terra.math.RandomFunction;
-import org.bukkit.World;
-import org.bukkit.block.data.BlockData;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;
@@ -91,15 +90,7 @@ public class WorldGenerator extends Generator {
     }
 
     @Override
-    public synchronized double getNoise(FastNoiseLite fastNoiseLite, World world, int x, int z) {
-        xVar.setValue(x);
-        yVar.setValue(0);
-        zVar.setValue(z);
-        return noiseExp.evaluate();
-    }
-
-    @Override
-    public synchronized double getNoise(FastNoiseLite fastNoiseLite, World world, int x, int y, int z) {
+    public synchronized double getNoise(World world, int x, int y, int z) {
         xVar.setValue(x);
         yVar.setValue(y);
         zVar.setValue(z);

@@ -34,7 +34,6 @@ version = versionObj
 dependencies {
     implementation("org.apache.commons:commons-rng-core:1.3")
     implementation("net.jafama:jafama:2.3.2")
-    implementation("co.aikar:taskchain-bukkit:3.7.2")
 
     compileOnly("org.jetbrains:annotations:20.1.0")
 
@@ -103,7 +102,6 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
     relocate("com.dfsek.tectonic", "com.dfsek.terra.lib.tectonic")
     relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-    relocate("co.aikar.taskchain", "com.dfsek.terra.lib.taskchain")
     minimize()
 }
 

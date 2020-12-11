@@ -1,7 +1,7 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.Terra;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.population.GaeaBlockPopulator;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
@@ -22,9 +22,9 @@ import java.util.Random;
  * Populates Flora and Trees
  */
 public class FloraPopulator extends GaeaBlockPopulator {
-    private final Terra main;
+    private final TerraBukkitPlugin main;
 
-    public FloraPopulator(Terra main) {
+    public FloraPopulator(TerraBukkitPlugin main) {
         this.main = main;
     }
 

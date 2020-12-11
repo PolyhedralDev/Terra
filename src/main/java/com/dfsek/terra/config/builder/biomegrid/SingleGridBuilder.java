@@ -1,9 +1,9 @@
 package com.dfsek.terra.config.builder.biomegrid;
 
 import com.dfsek.terra.api.gaea.biome.Biome;
+import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.biome.grid.SingleBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
-import org.bukkit.World;
 
 public class SingleGridBuilder implements BiomeGridBuilder {
     private final Biome biome;
