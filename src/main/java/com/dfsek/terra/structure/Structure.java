@@ -3,20 +3,11 @@ package com.dfsek.terra.structure;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.util.structure.RotationUtil;
 import net.jafama.FastMath;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.inventory.BlockInventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -28,7 +19,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -53,6 +43,7 @@ public class Structure implements Serializable {
         if(l1.getX() > l2.getX() || l1.getY() > l2.getY() || l1.getZ() > l2.getZ())
             throw new IllegalArgumentException("Invalid locations provided!");
         structure = new StructureContainedBlock[l2.getBlockX() - l1.getBlockX() + 1][l2.getBlockZ() - l1.getBlockZ() + 1][l2.getBlockY() - l1.getBlockY() + 1];
+        /*
         for(int x = 0; x <= l2.getBlockX() - l1.getBlockX(); x++) {
             for(int z = 0; z <= l2.getBlockZ() - l1.getBlockZ(); z++) {
                 for(int y = 0; y <= l2.getBlockY() - l1.getBlockY(); y++) {
@@ -110,6 +101,8 @@ public class Structure implements Serializable {
                 }
             }
         }
+
+         */
         if(centerX < 0 || centerZ < 0) throw new InitializationException("No structure center specified.", null);
         structureInfo = new StructureInfo(l2.getBlockX() - l1.getBlockX() + 1, l2.getBlockY() - l1.getBlockY() + 1, l2.getBlockZ() - l1.getBlockZ() + 1, new Vector2(centerX, centerZ));
     }
@@ -177,6 +170,7 @@ public class Structure implements Serializable {
      * @param r      The rotation of the structure
      */
     private void pasteBlock(StructureContainedBlock block, Location origin, Rotation r, WorldHandle handle) {
+        /*
         BlockData data = block.getBlockData().clone();
         if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
 
@@ -209,6 +203,8 @@ public class Structure implements Serializable {
                 block.getState().getState(worldBlock.getState()).update(true, false);
             }
         }
+
+         */
     }
 
     /**
@@ -287,12 +283,16 @@ public class Structure implements Serializable {
     }
 
     public boolean checkSpawns(Location origin, Rotation r, TerraBukkitPlugin main) {
+        /*
         for(StructureContainedBlock b : spawns) {
             Vector2 rot = getRotatedCoords(new Vector2(b.getX() - structureInfo.getCenterX(), b.getZ() - structureInfo.getCenterZ()), r);
             if(!b.getRequirement().getInstance(origin.getWorld(), main).matches((int) rot.getX() + origin.getBlockX(), origin.getBlockY() + b.getY(), (int) rot.getZ() + origin.getBlockZ()))
                 return false;
         }
-        return true;
+                return true;
+
+         */
+        return false;
     }
 
     public HashSet<StructureContainedBlock> getSpawns() {

@@ -1,11 +1,11 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.world.carving.Carver;
 import com.dfsek.terra.api.gaea.world.carving.Worm;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -43,9 +43,9 @@ public class UserDefinedCarver extends Carver {
     private double step = 2;
     private Range recalc = new Range(8, 10);
     private double recalcMagnitude = 3;
-    private final TerraBukkitPlugin main;
+    private final TerraPlugin main;
 
-    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraBukkitPlugin main) throws ParseException {
+    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraPlugin main) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;

@@ -5,11 +5,11 @@ import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.gaea.tree.TreeType;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.generation.items.PlaceableLayer;
-import org.bukkit.Chunk;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 
 import java.util.Random;
 

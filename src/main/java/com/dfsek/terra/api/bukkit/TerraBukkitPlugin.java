@@ -137,6 +137,7 @@ public class TerraBukkitPlugin extends GaeaPlugin implements TerraPlugin {
     }
 
     @NotNull
+    @Override
     public PluginConfig getTerraConfig() {
         return config;
     }

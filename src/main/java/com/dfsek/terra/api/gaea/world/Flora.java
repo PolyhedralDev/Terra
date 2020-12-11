@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.gaea.world;
 
 import com.dfsek.terra.api.gaea.math.Range;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.vector.Location;
 
 import java.util.List;
 

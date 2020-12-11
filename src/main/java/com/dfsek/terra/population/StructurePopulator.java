@@ -1,33 +1,14 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
-import com.dfsek.terra.api.gaea.structures.loot.LootTable;
-import com.dfsek.terra.api.gaea.util.FastRandom;
-import com.dfsek.terra.api.generic.world.vector.Vector2;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.items.TerraStructure;
-import com.dfsek.terra.structure.Rotation;
-import com.dfsek.terra.structure.Structure;
-import com.dfsek.terra.structure.StructureContainedInventory;
-import com.dfsek.terra.structure.features.Feature;
-import com.dfsek.terra.util.PopulationUtil;
-import com.dfsek.terra.util.structure.RotationUtil;
-import net.jafama.FastMath;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.BlockInventoryHolder;
+import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class StructurePopulator extends BlockPopulator {
+public class StructurePopulator implements TerraBlockPopulator {
     private final TerraBukkitPlugin main;
 
     public StructurePopulator(TerraBukkitPlugin main) {
@@ -37,6 +18,7 @@ public class StructurePopulator extends BlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
+        /*
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("StructureTime")) {
             Random random = PopulationUtil.getRandom(chunk);
@@ -80,5 +62,7 @@ public class StructurePopulator extends BlockPopulator {
                 }
             }
         }
+
+         */
     }
 }

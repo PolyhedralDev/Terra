@@ -1,14 +1,10 @@
 package com.dfsek.terra.util;
 
+import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.debug.Debug;
-import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -17,12 +13,13 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public final class TagUtil {
-    private static final Map<String, Set<Material>> tagMap;
+    private static final Map<String, Set<MaterialData>> tagMap;
 
     static {
         Debug.info("Loading tags...");
         tagMap = new HashMap<>();
 
+        /*
         Field[] tags = Tag.class.getFields(); // Add Bukkit tags
         for(Field field : tags) {
             if(Modifier.isStatic(field.getModifiers())) {
@@ -61,18 +58,20 @@ public final class TagUtil {
         Debug.info("Added " + snow.size() + " materials to snow blacklist");
         Debug.info("Added " + solid.size() + " materials to solid list");
         Debug.info("Loaded " + tagMap.size() + " tags.");
+
+         */
     }
 
-    private static Set<Material> getSet(Material... materials) {
+    private static Set<MaterialData> getSet(MaterialData... materials) {
         return Stream.of(materials).collect(Collectors.toSet());
     }
 
-    private static void putCustomSet(String key, Material... materials) {
+    private static void putCustomSet(String key, MaterialData... materials) {
         tagMap.put(key, getSet(materials));
     }
 
     @NotNull
-    public static Set<Material> getTag(String tag) {
+    public static Set<MaterialData> getTag(String tag) {
         return Objects.requireNonNull(tagMap.get(tag));
     }
 }

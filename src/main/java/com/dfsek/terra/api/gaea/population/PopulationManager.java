@@ -7,7 +7,7 @@ import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.util.SerializationUtil;
 import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.generator.BlockPopulator;
+import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -18,22 +18,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-public class PopulationManager implements BlockPopulator {
-    private final List<BlockPopulator> attachedPopulators = new GlueList<>();
+public class PopulationManager implements TerraBlockPopulator {
+    private final List<TerraBlockPopulator> attachedPopulators = new GlueList<>();
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
     private final TerraPlugin main;
-    private final Object popLock = new Object();
     private WorldProfiler profiler;
 
     public PopulationManager(TerraPlugin main) {
         this.main = main;
     }
 
-    public void attach(BlockPopulator populator) {
+    public void attach(TerraBlockPopulator populator) {
         this.attachedPopulators.add(populator);
     }
 
     @Override
+    @SuppressWarnings("try")
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = measure()) {
             needsPop.add(new ChunkCoordinate(chunk));
@@ -85,7 +85,7 @@ public class PopulationManager implements BlockPopulator {
             long zRand = (random.nextLong() / 2L << 1L) + 1L;
             random.setSeed((long) x * xRand + (long) z * zRand ^ w.getSeed());
             Chunk currentChunk = w.getChunkAt(x, z);
-            for(BlockPopulator r : attachedPopulators) {
+            for(TerraBlockPopulator r : attachedPopulators) {
                 r.populate(w, random, currentChunk);
             }
             needsPop.remove(c);

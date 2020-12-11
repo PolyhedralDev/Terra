@@ -1,14 +1,14 @@
 package com.dfsek.terra.generation.items.ores;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
-import org.bukkit.Chunk;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -16,13 +16,13 @@ import java.util.Random;
 public class VanillaOre extends Ore {
     private final Range sizeRange;
 
-    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, TerraBukkitPlugin main) {
+    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, TerraPlugin main) {
         super(material, replaceable, applyGravity, main);
         this.sizeRange = size;
     }
 
     @Override
-    public void generate(Vector location, Chunk chunk, Random random) {
+    public void generate(Vector3 location, Chunk chunk, Random random) {
         WorldHandle handle = main.getHandle();
         double size = sizeRange.get(random);
 

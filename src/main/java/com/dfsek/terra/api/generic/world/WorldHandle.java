@@ -1,9 +1,8 @@
 package com.dfsek.terra.api.generic.world;
 
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 
 /**
  * Interface to be implemented for world manipulation.
@@ -13,9 +12,9 @@ public interface WorldHandle {
 
     BlockData getBlockData(Block block);
 
-    Material getType(Block block);
+    MaterialData getType(Block block);
 
-    com.dfsek.terra.api.generic.world.block.BlockData createBlockData(String data);
+    BlockData createBlockData(String data);
 
     MaterialData createMaterialData(String data);
 }

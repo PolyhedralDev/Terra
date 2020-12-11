@@ -21,8 +21,8 @@ public final class SlabUtil {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ());
-                    Stairs stairNew = (Stairs) stair.clone();
+                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
+                    Stairs stairNew = (Stairs) stair;
                     if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
                 }
             }

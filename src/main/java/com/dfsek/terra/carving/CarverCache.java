@@ -1,12 +1,12 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.world.carving.Worm;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -21,9 +21,9 @@ public class CarverCache {
 
     private final World w;
     private final Map<Long, List<Worm.WormPoint>> carvers = new HashMap<>();
-    private final TerraBukkitPlugin main;
+    private final TerraPlugin main;
 
-    public CarverCache(World w, TerraBukkitPlugin main) {
+    public CarverCache(World w, TerraPlugin main) {
         this.w = w;
         this.main = main;
     }

@@ -1,12 +1,12 @@
 package com.dfsek.terra.structure;
 
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.structure.spawn.AirSpawn;
 import com.dfsek.terra.structure.spawn.BlankSpawn;
 import com.dfsek.terra.structure.spawn.LandSpawn;
 import com.dfsek.terra.structure.spawn.OceanSpawn;
 import com.dfsek.terra.structure.spawn.Requirement;
-import org.bukkit.World;
 
 import java.io.Serializable;
 

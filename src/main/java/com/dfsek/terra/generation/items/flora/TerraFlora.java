@@ -1,22 +1,22 @@
 package com.dfsek.terra.generation.items.flora;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.world.Flora;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.BlockFace;
+import com.dfsek.terra.api.generic.world.block.data.Directional;
+import com.dfsek.terra.api.generic.world.block.data.MultipleFacing;
+import com.dfsek.terra.api.generic.world.block.data.Rotatable;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.block.data.Rotatable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +41,9 @@ public class TerraFlora implements Flora {
 
     private final int irrigableOffset;
 
-    private final TerraBukkitPlugin main;
+    private final TerraPlugin main;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraBukkitPlugin main) {
+    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraPlugin main) {
         this.floraPalette = floraPalette;
         this.physics = physics;
         this.testRotation = testRotation;

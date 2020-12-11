@@ -1,10 +1,10 @@
 package com.dfsek.terra.generation.items.ores;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.util.MaterialSet;
-import org.bukkit.Chunk;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -13,9 +13,9 @@ public abstract class Ore {
     private final BlockData material;
     private final MaterialSet replaceable;
     private final boolean applyGravity;
-    protected TerraBukkitPlugin main;
+    protected TerraPlugin main;
 
-    public Ore(BlockData material, MaterialSet replaceable, boolean applyGravity, TerraBukkitPlugin main) {
+    public Ore(BlockData material, MaterialSet replaceable, boolean applyGravity, TerraPlugin main) {
 
         this.material = material;
         this.replaceable = replaceable;
@@ -23,7 +23,7 @@ public abstract class Ore {
         this.main = main;
     }
 
-    public abstract void generate(Vector origin, Chunk c, Random r);
+    public abstract void generate(Vector3 origin, Chunk c, Random r);
 
     public BlockData getMaterial() {
         return material;

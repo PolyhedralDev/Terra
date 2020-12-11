@@ -7,4 +7,5 @@ public interface MaterialData extends Handle {
 
     boolean matches(BlockData other);
 
+    boolean isSolid();
 }

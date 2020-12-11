@@ -11,7 +11,6 @@ public interface BiomeGrid extends Handle {
      * @param x - 0-15
      * @param z - 0-15
      * @return Biome value
-     * @deprecated biomes are now 3-dimensional
      */
     @NotNull
     Biome getBiome(int x, int z);
@@ -33,7 +32,6 @@ public interface BiomeGrid extends Handle {
      * @param x   - 0-15
      * @param z   - 0-15
      * @param bio - Biome value
-     * @deprecated biomes are now 3-dimensional
      */
     void setBiome(int x, int z, @NotNull Biome bio);
 

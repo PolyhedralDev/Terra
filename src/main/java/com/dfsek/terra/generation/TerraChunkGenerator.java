@@ -95,6 +95,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
 
 
     @Override
+    @SuppressWarnings({"deprecation", "try"})
     public void generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.gaea.biome.BiomeGrid grid = tw.getGrid();
@@ -165,6 +166,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                     int cx = xOrig + (x << 2);
                     int cz = zOrig + (z << 2);
                     Biome b = grid.getBiome(cx, cz, GenerationPhase.PALETTE_APPLY);
+
                     biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
                 }
             }

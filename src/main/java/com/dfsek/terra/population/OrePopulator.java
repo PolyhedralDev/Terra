@@ -5,19 +5,19 @@ import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.MathUtil;
-import com.dfsek.terra.api.gaea.population.GaeaBlockPopulator;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import org.bukkit.Chunk;
-import org.bukkit.World;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class OrePopulator extends GaeaBlockPopulator {
+public class OrePopulator implements TerraBlockPopulator {
     private final TerraBukkitPlugin main;
 
     public OrePopulator(TerraBukkitPlugin main) {
@@ -42,7 +42,7 @@ public class OrePopulator extends GaeaBlockPopulator {
                     config.getOreHolder().forEach((ore, oreConfig) -> {
                         int amount = oreConfig.getAmount().get(random);
                         for(int i = 0; i < amount; i++) {
-                            Vector location = new Vector(random.nextInt(16) + 16 * finalCx, oreConfig.getHeight().get(random), random.nextInt(16) + 16 * finalCz);
+                            Vector3 location = new Vector3(random.nextInt(16) + 16 * finalCx, oreConfig.getHeight().get(random), random.nextInt(16) + 16 * finalCz);
                             ore.generate(location, chunk, random);
                         }
                     });

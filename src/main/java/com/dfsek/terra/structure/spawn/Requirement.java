@@ -1,10 +1,7 @@
 package com.dfsek.terra.structure.spawn;
 
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
-import org.bukkit.World;
-
-import java.util.Objects;
+import com.dfsek.terra.api.generic.world.World;
 
 public abstract class Requirement {
     protected final World world;
@@ -17,9 +14,6 @@ public abstract class Requirement {
 
     public abstract boolean matches(int x, int y, int z);
 
-    protected FastNoiseLite getNoise() {
-        return ((TerraChunkGenerator) Objects.requireNonNull(world.getGenerator())).getNoiseGenerator();
-    }
 
     public World getWorld() {
         return world;

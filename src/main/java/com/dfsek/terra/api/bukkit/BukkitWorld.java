@@ -1,9 +1,12 @@
 package com.dfsek.terra.api.bukkit;
 
 import com.dfsek.terra.api.bukkit.generator.BukkitChunkGenerator;
+import com.dfsek.terra.api.bukkit.world.block.BukkitBlock;
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.vector.Location;
 
 import java.io.File;
 import java.util.UUID;
@@ -32,27 +35,37 @@ public class BukkitWorld implements World {
 
     @Override
     public String getName() {
-        return null;
+        return delegate.getName();
     }
 
     @Override
     public UUID getUID() {
-        return null;
+        return delegate.getUID();
     }
 
     @Override
     public boolean isChunkGenerated(int x, int z) {
-        return false;
+        return delegate.isChunkGenerated(x, z);
     }
 
     @Override
     public Chunk getChunkAt(int x, int z) {
-        return null;
+        return new BukkitChunk(delegate.getChunkAt(x, z));
     }
 
     @Override
     public File getWorldFolder() {
-        return null;
+        return delegate.getWorldFolder();
+    }
+
+    @Override
+    public Block getBlockAt(int x, int y, int z) {
+        return new BukkitBlock(delegate.getBlockAt(x, y, z));
+    }
+
+    @Override
+    public Block getBlockAt(Location l) {
+        return new BukkitBlock(delegate.getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
     }
 
     @Override

@@ -3,21 +3,21 @@ package com.dfsek.terra.population;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.api.gaea.population.GaeaBlockPopulator;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
+import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 import net.jafama.FastMath;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
 
-public class TreePopulator extends GaeaBlockPopulator {
+public class TreePopulator implements TerraBlockPopulator {
     private final TerraBukkitPlugin main;
 
     public TreePopulator(TerraBukkitPlugin main) {

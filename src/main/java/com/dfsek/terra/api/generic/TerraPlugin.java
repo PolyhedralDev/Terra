@@ -4,6 +4,7 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.config.base.PluginConfig;
 
 import java.util.logging.Logger;
 
@@ -15,4 +16,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     TerraWorld getWorld(World world);
 
     Logger getLogger();
+
+    PluginConfig getTerraConfig();
 }

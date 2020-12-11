@@ -3,7 +3,7 @@ package com.dfsek.terra.procgen;
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
-import org.bukkit.util.Vector;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 
 import java.util.List;
 import java.util.Random;
@@ -30,18 +30,18 @@ public class GridSpawn {
      * @param seed Seed for RNG
      * @return Vector representing nearest spawnpoint
      */
-    public Vector getNearestSpawn(int x, int z, long seed) {
+    public Vector3 getNearestSpawn(int x, int z, long seed) {
         int structureChunkX = x / (width + 2 * separation);
         int structureChunkZ = z / (width + 2 * separation);
-        List<Vector> zones = new GlueList<>();
+        List<Vector3> zones = new GlueList<>();
         for(int xi = structureChunkX - 1; xi <= structureChunkX + 1; xi++) {
             for(int zi = structureChunkZ - 1; zi <= structureChunkZ + 1; zi++) {
                 zones.add(getChunkSpawn(xi, zi, seed + seedOffset));
             }
         }
-        Vector shortest = zones.get(0);
-        Vector compare = new Vector(x, 0, z);
-        for(Vector v : zones) {
+        Vector3 shortest = zones.get(0);
+        Vector3 compare = new Vector3(x, 0, z);
+        for(Vector3 v : zones) {
             if(compare.distanceSquared(shortest) > compare.distanceSquared(v)) shortest = v.clone();
         }
         return shortest;
@@ -55,13 +55,13 @@ public class GridSpawn {
      * @param seed            Seed for RNG
      * @return Vector representing spawnpoint
      */
-    public Vector getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
+    public Vector3 getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
         Random r = new FastRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed + seedOffset));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;
         int sz = structureChunkZ * (width + 2 * separation) + offsetZ;
-        return new Vector(sx, 0, sz);
+        return new Vector3(sx, 0, sz);
     }
 
     public int getWidth() {

@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.generic.world.vector;
 
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.block.Block;
 
 public class Location implements Cloneable {
     private final World world;
@@ -35,5 +36,45 @@ public class Location implements Cloneable {
 
     public int getBlockZ() {
         return vector.getBlockZ();
+    }
+
+    public double getY() {
+        return vector.getY();
+    }
+
+    public Location setY(double y) {
+        vector.setY(y);
+        return this;
+    }
+
+    public double getX() {
+        return vector.getX();
+    }
+
+    public Location setX(double x) {
+        vector.setX(x);
+        return this;
+    }
+
+    public double getZ() {
+        return vector.getZ();
+    }
+
+    public Location setZ(double z) {
+        vector.setZ(z);
+        return this;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Location add(double x, double y, double z) {
+        vector.add(x, y, z);
+        return this;
+    }
+
+    public Block getBlock() {
+        return world.getBlockAt(this);
     }
 }

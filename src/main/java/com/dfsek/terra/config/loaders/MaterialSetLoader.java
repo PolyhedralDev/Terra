@@ -3,6 +3,7 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.Material;
 
@@ -19,7 +20,7 @@ public class MaterialSetLoader implements TypeLoader<MaterialSet> {
         for(String string : stringData) {
             try {
                 if(string.startsWith("#")) set.addTag(string.substring(1));
-                else set.add((Material) configLoader.loadType(Material.class, string));
+                else set.add((MaterialData) configLoader.loadType(Material.class, string));
             } catch(NullPointerException e) {
                 throw new LoadException("Invalid data identifier \"" + string + "\"", e);
             }
