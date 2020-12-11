@@ -4,8 +4,8 @@ import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 
 public class Location implements Cloneable {
-    private final World world;
-    private final Vector3 vector;
+    private World world;
+    private Vector3 vector;
 
     public Location(World w, double x, double y, double z) {
         this.world = w;
@@ -17,10 +17,24 @@ public class Location implements Cloneable {
         this.vector = vector;
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public Vector3 getVector() {
+        return vector;
+    }
+
+    public void setVector(Vector3 vector) {
+        this.vector = vector;
+    }
+
     @Override
     public Location clone() {
         try {
-            return (Location) super.clone();
+            Location other = (Location) super.clone();
+            other.setVector(other.getVector().clone());
+            return other;
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
