@@ -8,25 +8,33 @@ import com.dfsek.terra.api.gaea.population.PopulationManager;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
+import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
-import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.debug.Debug;
+import com.dfsek.terra.population.CavePopulator;
+import com.dfsek.terra.population.FloraPopulator;
+import com.dfsek.terra.population.OrePopulator;
+import com.dfsek.terra.population.StructurePopulator;
+import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.util.PaletteUtil;
 import com.dfsek.terra.util.SlabUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
@@ -35,16 +43,16 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
     private static final Map<World, PopulationManager> popMap = new HashMap<>();
     private final PopulationManager popMan;
     private final ConfigPack configPack;
-    private final TerraBukkitPlugin main;
+    private final TerraPlugin main;
     private boolean needsLoad = true;
 
-    public TerraChunkGenerator(ConfigPack c, TerraBukkitPlugin main) {
+    public TerraChunkGenerator(ConfigPack c, TerraPlugin main) {
         popMan = new PopulationManager(main);
         this.configPack = c;
         this.main = main;
-        //popMan.attach(new OrePopulator(main));
-        //popMan.attach(new TreePopulator(main));
-        //popMan.attach(new FloraPopulator(main));
+        popMan.attach(new OrePopulator(main));
+        popMan.attach(new TreePopulator(main));
+        popMan.attach(new FloraPopulator(main));
     }
 
     public static synchronized void saveAll() {
@@ -91,6 +99,11 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
     @Override
     public ConfigPack getConfigPack() {
         return configPack;
+    }
+
+    @Override
+    public List<TerraBlockPopulator> getPopulators() {
+        return Arrays.asList(new CavePopulator(main), new StructurePopulator(main), popMan);
     }
 
 

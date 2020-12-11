@@ -85,4 +85,16 @@ public class BukkitWorld implements World {
     public org.bukkit.World getHandle() {
         return delegate;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof BukkitWorld)) return false;
+        BukkitWorld other = (BukkitWorld) obj;
+        return other.getHandle().equals(delegate);
+    }
+
+    @Override
+    public int hashCode() {
+        return delegate.hashCode();
+    }
 }

@@ -40,4 +40,12 @@ public class BukkitMaterialData implements MaterialData {
     public int hashCode() {
         return delegate.hashCode();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof BukkitMaterialData)) return false;
+        BukkitMaterialData other = (BukkitMaterialData) obj;
+
+        return other.getHandle().equals(this.delegate);
+    }
 }

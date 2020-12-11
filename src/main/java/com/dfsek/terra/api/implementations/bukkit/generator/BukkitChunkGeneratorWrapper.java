@@ -4,10 +4,13 @@ import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
 import com.dfsek.terra.api.implementations.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.api.implementations.bukkit.BukkitWorld;
 import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class BukkitChunkGeneratorWrapper extends ChunkGenerator {
     private final TerraChunkGenerator delegate;
@@ -25,5 +28,35 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator {
 
     public TerraChunkGenerator getDelegate() {
         return delegate;
+    }
+
+    @Override
+    public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
+        return delegate.getPopulators().stream().map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isParallelCapable() {
+        return delegate.isParallelCapable();
+    }
+
+    @Override
+    public boolean shouldGenerateCaves() {
+        return delegate.shouldGenerateCaves();
+    }
+
+    @Override
+    public boolean shouldGenerateDecorations() {
+        return delegate.shouldGenerateDecorations();
+    }
+
+    @Override
+    public boolean shouldGenerateMobs() {
+        return delegate.shouldGenerateMobs();
+    }
+
+    @Override
+    public boolean shouldGenerateStructures() {
+        return super.shouldGenerateStructures();
     }
 }

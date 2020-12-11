@@ -1,17 +1,17 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
 public class StructurePopulator implements TerraBlockPopulator {
-    private final TerraBukkitPlugin main;
+    private final TerraPlugin main;
 
-    public StructurePopulator(TerraBukkitPlugin main) {
+    public StructurePopulator(TerraPlugin main) {
         this.main = main;
     }
 

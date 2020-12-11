@@ -1,11 +1,11 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.implementations.bukkit.TerraBukkitPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.Random;
 
 public class CavePopulator implements TerraBlockPopulator {
-    private final TerraBukkitPlugin main;
+    private final TerraPlugin main;
     private static final Map<MaterialData, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
 
-    public CavePopulator(TerraBukkitPlugin main) {
+    public CavePopulator(TerraPlugin main) {
         this.main = main;
     }
 

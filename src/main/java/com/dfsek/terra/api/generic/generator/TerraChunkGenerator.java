@@ -6,6 +6,7 @@ import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.config.base.ConfigPack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 public interface TerraChunkGenerator {
@@ -24,5 +25,7 @@ public interface TerraChunkGenerator {
     boolean shouldGenerateStructures();
 
     ConfigPack getConfigPack();
+
+    List<TerraBlockPopulator> getPopulators();
 
 }
