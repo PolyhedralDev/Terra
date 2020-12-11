@@ -6,11 +6,14 @@ import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.gaea.GaeaPlugin;
 import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.world.Biome;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.implementations.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.api.implementations.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.api.implementations.bukkit.world.BukkitBiome;
 import com.dfsek.terra.command.TerraCommand;
 import com.dfsek.terra.command.structure.LocateCommand;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -24,7 +27,6 @@ import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.util.PaperUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.block.Biome;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.ChunkGenerator;
@@ -130,7 +132,8 @@ public class TerraBukkitPlugin extends GaeaPlugin implements TerraPlugin {
     }
 
     public TerraWorld getWorld(World w) {
-        if(!(w.getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException("Not a Terra world!");
+        if(!(w.getGenerator() instanceof BukkitChunkGenerator))
+            throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
             return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator()).getConfigPack(), this);
@@ -151,9 +154,10 @@ public class TerraBukkitPlugin extends GaeaPlugin implements TerraPlugin {
 
     @Override
     public void register(TypeRegistry registry) {
-        registry.registerLoader(Biome.class, (t, o, l) -> Biome.valueOf((String) o))
+        registry
                 .registerLoader(BlockData.class, (t, o, l) -> handle.createBlockData((String) o))
                 .registerLoader(MaterialData.class, (t, o, l) -> handle.createMaterialData((String) o))
+                .registerLoader(Biome.class, (t, o, l) -> new BukkitBiome(org.bukkit.block.Biome.valueOf((String) o)))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         genericLoaders.register(registry);
     }

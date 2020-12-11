@@ -4,8 +4,8 @@ import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.gaea.world.Flora;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 
 import java.lang.reflect.Type;
 import java.util.Set;

@@ -95,8 +95,8 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
 
 
     @Override
-    @SuppressWarnings({"deprecation", "try"})
-    public void generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData chunk) {
+    @SuppressWarnings({"try"})
+    public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.gaea.biome.BiomeGrid grid = tw.getGrid();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
@@ -105,7 +105,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                 interp = new ChunkInterpolator3(world, chunkX, chunkZ, tw.getGrid());
                 if(needsLoad) load(world); // Load population data for world.
 
-                if(!tw.isSafe()) return;
+                if(!tw.isSafe()) return chunk;
                 int xOrig = (chunkX << 4);
                 int zOrig = (chunkZ << 4);
 
@@ -142,7 +142,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                                 }
                                 paletteLevel++;
                             } else if(y <= sea) {
-                                chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                                //chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                                 if(justSet && c.doSlabs()) {
                                     SlabUtil.prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                                 }
@@ -170,6 +170,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                     biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
                 }
             }
+            return chunk;
         }
     }
 

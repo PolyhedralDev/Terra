@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public interface TerraChunkGenerator {
-    void generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData data);
+    ChunkGenerator.ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData original);
 
     void attachProfiler(WorldProfiler profiler);
 
@@ -24,4 +24,5 @@ public interface TerraChunkGenerator {
     boolean shouldGenerateStructures();
 
     ConfigPack getConfigPack();
+
 }

@@ -22,6 +22,7 @@ public interface ChunkGenerator extends Handle {
 
     ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome);
 
+
     List<BlockPopulator> getDefaultPopulators(World world);
 
     interface ChunkData {

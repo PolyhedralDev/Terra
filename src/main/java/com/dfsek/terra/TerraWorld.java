@@ -2,8 +2,8 @@ package com.dfsek.terra;
 
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.implementations.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.grid.master.TerraRadialBiomeGrid;
@@ -55,7 +55,7 @@ public class TerraWorld {
     }
 
     public static boolean isTerraWorld(World w) {
-        return w.getGenerator() instanceof TerraChunkGenerator;
+        return w.getGenerator() instanceof BukkitChunkGenerator;
     }
 
     public TerraBiomeGrid getGrid() {

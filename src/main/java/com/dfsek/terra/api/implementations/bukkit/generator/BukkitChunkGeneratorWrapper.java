@@ -19,8 +19,11 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator {
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
         BukkitWorld bukkitWorld = new BukkitWorld(world);
-        BukkitChunkGenerator.BukkitChunkData data = new BukkitChunkGenerator.BukkitChunkData(createChunkData(world));
-        delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome), new BukkitChunkGenerator.BukkitChunkData(createChunkData(bukkitWorld.getHandle())));
-        return data.getHandle();
+
+        return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome), new BukkitChunkGenerator.BukkitChunkData(createChunkData(world))).getHandle();
+    }
+
+    public TerraChunkGenerator getDelegate() {
+        return delegate;
     }
 }
