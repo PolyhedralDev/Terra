@@ -1,5 +1,6 @@
 package com.dfsek.terra.command.profile;
 
+import com.dfsek.terra.api.bukkit.BukkitWorld;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
@@ -19,7 +20,7 @@ public class QueryCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        WorldProfiler profile = ((TerraBukkitPlugin) getMain()).getWorld(world).getProfiler();
+        WorldProfiler profile = ((TerraBukkitPlugin) getMain()).getWorld(new BukkitWorld(world)).getProfiler();
         sender.sendMessage(profile.getResultsFormatted());
         return true;
     }

@@ -1,14 +1,16 @@
 package com.dfsek.terra.api.gaea.tree;
 
+import com.dfsek.terra.api.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import com.google.common.collect.Sets;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public enum TreeType implements Tree {
     SHATTERED_SMALL(null, Collections.singleton(Material.END_STONE)),
@@ -85,7 +87,7 @@ public enum TreeType implements Tree {
         return CustomTreeType.valueOf(this.toString());
     }
 
-    public boolean plant(Location l, Random r, JavaPlugin main) {
+    public boolean plant(Location l, Random r) {
         if(this.getVanillaTreeType() == null) {
             if(!spawnable.contains(l.subtract(0, 1, 0).getBlock().getType())) return false;
             FractalTree tree = getCustomTreeType().getTree(l, r);
@@ -97,7 +99,7 @@ public enum TreeType implements Tree {
     }
 
     @Override
-    public Set<Material> getSpawnable() {
-        return spawnable;
+    public Set<MaterialData> getSpawnable() {
+        return spawnable.stream().map(BukkitMaterialData::new).collect(Collectors.toSet());
     }
 }

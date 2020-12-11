@@ -1,11 +1,6 @@
 package com.dfsek.terra.command.biome;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,9 +18,12 @@ public class BiomeCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
+        /*
         TerraBiomeGrid grid = ((TerraBukkitPlugin) getMain()).getWorld(sender.getWorld()).getGrid();
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(sender.getLocation(), GenerationPhase.POPULATE);
         LangUtil.send("command.biome.in", sender, biome.getID());
+
+         */
         return true;
     }
 

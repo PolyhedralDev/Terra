@@ -15,14 +15,14 @@ import org.bukkit.World;
 public class UserDefinedBiome implements Biome {
     private final GeneratorBuilder gen;
     private final UserDefinedDecorator decorator;
-    private final org.bukkit.block.Biome vanilla;
+    private final com.dfsek.terra.api.generic.world.Biome vanilla;
     private final String id;
     private final BiomeTemplate config;
     private final ConfigPack pack;
     private UserDefinedBiome erode;
 
 
-    public UserDefinedBiome(org.bukkit.block.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
+    public UserDefinedBiome(com.dfsek.terra.api.generic.world.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
@@ -37,7 +37,7 @@ public class UserDefinedBiome implements Biome {
      * @return Biome - The Vanilla biome.
      */
     @Override
-    public org.bukkit.block.Biome getVanillaBiome() {
+    public com.dfsek.terra.api.generic.world.Biome getVanillaBiome() {
         return vanilla;
     }
 

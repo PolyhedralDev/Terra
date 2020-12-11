@@ -22,6 +22,16 @@ public class BukkitMaterialData implements MaterialData {
     }
 
     @Override
+    public boolean isSolid() {
+        return delegate.isSolid();
+    }
+
+    @Override
+    public boolean isAir() {
+        return delegate.isAir();
+    }
+
+    @Override
     public Material getHandle() {
         return delegate;
     }

@@ -77,4 +77,18 @@ public class Location implements Cloneable {
     public Block getBlock() {
         return world.getBlockAt(this);
     }
+
+    public Location subtract(int x, int y, int z) {
+        vector.subtract(x, y, z);
+        return this;
+    }
+
+    public Location add(Vector3 add) {
+        vector.add(add);
+        return this;
+    }
+
+    public Vector3 toVector() {
+        return vector.clone();
+    }
 }

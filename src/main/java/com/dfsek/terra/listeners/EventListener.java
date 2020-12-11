@@ -1,17 +1,6 @@
 package com.dfsek.terra.listeners;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.api.gaea.tree.Tree;
-import com.dfsek.terra.api.gaea.tree.TreeType;
-import com.dfsek.terra.api.gaea.util.FastRandom;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.items.tree.TerraTree;
-import com.dfsek.terra.registry.TreeRegistry;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -28,8 +17,10 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onSaplingGrow(StructureGrowEvent e) {
-        if(!TerraWorld.isTerraWorld(e.getWorld())) return;
-        TerraWorld tw = main.getWorld(e.getWorld());
+        /*
+        World bukkit = new BukkitWorld(e.getWorld());
+        if(!TerraWorld.isTerraWorld(bukkit)) return;
+        TerraWorld tw = main.getWorld(bukkit);
         ConfigPack c = tw.getConfig();
         if(c.getTemplate().isDisableSaplings()) return;
         e.setCancelled(true);
@@ -44,5 +35,7 @@ public class EventListener implements Listener {
                 block.setBlockData(data);
             }
         } else if(!tree.plant(e.getLocation().subtract(0, 1, 0), new FastRandom(), main)) block.setBlockData(data);
+
+         */
     }
 }

@@ -1,9 +1,6 @@
 package com.dfsek.terra.command.image.gui;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.image.ImageLoader;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,6 +17,7 @@ public class RawGUICommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+       /*
         if(!getMain().isDebug()) {
             LangUtil.send("command.image.gui.debug", sender);
             return true;
@@ -27,6 +25,8 @@ public class RawGUICommand extends WorldCommand {
         ImageLoader loader = ((TerraBukkitPlugin) getMain()).getWorld(world).getConfig().getTemplate().getImageLoader();
         if(loader != null) loader.debug(false, sender.getWorld(), (TerraBukkitPlugin) getMain());
         else ImageLoader.debugWorld(false, world, (TerraBukkitPlugin) getMain());
+
+        */
         return true;
     }
 

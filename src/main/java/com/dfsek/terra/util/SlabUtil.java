@@ -4,19 +4,16 @@ import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.generic.world.block.data.Bisected;
 import com.dfsek.terra.api.generic.world.block.data.Stairs;
-import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.generation.Sampler;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.Slab;
 
 import java.util.Map;
 
 public final class SlabUtil {
     public static void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
                                              Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+        /*
         if(sampler.sample(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
@@ -32,10 +29,12 @@ public final class SlabUtil {
             } else if(orig.matches(PaletteUtil.WATER)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
+         */
     }
 
     public static void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
                                                Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+        /*
         if(sampler.sample(block.getBlockX(), block.getBlockY() + 0.4, block.getBlockZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
@@ -54,10 +53,14 @@ public final class SlabUtil {
             } else if(orig.matches(PaletteUtil.WATER)) return; // Only replace water if waterlogged.
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
+
+         */
     }
 
     private static boolean placeStair(BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
-        if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+         /*
+         if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+
             stairNew.setFacing(BlockFace.WEST);
         } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.55) > thresh) {
             stairNew.setFacing(BlockFace.NORTH);
@@ -71,6 +74,8 @@ public final class SlabUtil {
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
             return true;
         }
+
+             */
         return false;
     }
 }

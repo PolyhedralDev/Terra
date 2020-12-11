@@ -23,4 +23,6 @@ public interface Block extends Handle {
     int getZ();
 
     int getY();
+
+    boolean isPassable();
 }

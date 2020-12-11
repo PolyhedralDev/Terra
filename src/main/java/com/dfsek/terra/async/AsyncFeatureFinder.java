@@ -1,11 +1,11 @@
 package com.dfsek.terra.async;
 
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -18,11 +18,11 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
     protected final int centerX;
     protected final int centerZ;
     protected final World world;
-    private final Consumer<Vector> callback;
+    private final Consumer<Vector3> callback;
     protected int searchSize = 1;
     protected final TerraBukkitPlugin main;
 
-    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, TerraBukkitPlugin main) {
+    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraBukkitPlugin main) {
         this.grid = grid;
         this.target = target;
         this.main = main;
@@ -67,12 +67,12 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
             run++;
             toggle = !toggle;
         }
-        Vector finalSpawn = found ? finalizeVector(new Vector(x, 0, z)) : null;
+        Vector3 finalSpawn = found ? finalizeVector(new Vector3(x, 0, z)) : null;
         Bukkit.getScheduler().runTask(main, () -> callback.accept(finalSpawn));
     }
 
 
-    public abstract Vector finalizeVector(Vector orig);
+    public abstract Vector3 finalizeVector(Vector3 orig);
 
     public abstract boolean isValid(int x, int z, T target);
 

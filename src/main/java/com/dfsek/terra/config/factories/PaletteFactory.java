@@ -6,9 +6,9 @@ import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.api.gaea.world.palette.RandomPalette;
 import com.dfsek.terra.api.gaea.world.palette.SimplexPalette;
 import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.config.templates.PaletteTemplate;
-import org.bukkit.block.data.BlockData;
 
 public class PaletteFactory implements TerraFactory<PaletteTemplate, Palette<BlockData>> {
     @Override

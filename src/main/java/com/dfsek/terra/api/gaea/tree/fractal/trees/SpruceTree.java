@@ -2,10 +2,10 @@ package com.dfsek.terra.api.gaea.tree.fractal.trees;
 
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.gaea.tree.fractal.TreeGeometry;
+import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import net.jafama.FastMath;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -28,10 +28,10 @@ public class SpruceTree extends FractalTree {
      */
     @Override
     public void grow() {
-        growTrunk(super.getOrigin().clone(), new Vector(0, 16 + super.getRandom().nextInt(5), 0));
+        growTrunk(super.getOrigin().clone(), new Vector3(0, 16 + super.getRandom().nextInt(5), 0));
     }
 
-    private void growTrunk(Location l1, Vector diff) {
+    private void growTrunk(Location l1, Vector3 diff) {
         if(diff.getY() < 0) diff.rotateAroundAxis(TreeGeometry.getPerpendicular(diff.clone()).normalize(), FastMath.PI);
         int d = (int) diff.length();
         int rad = 7;

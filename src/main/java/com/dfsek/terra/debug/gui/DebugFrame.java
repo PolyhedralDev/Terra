@@ -1,12 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.image.ImageLoader;
-import net.jafama.FastMath;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,8 +27,8 @@ public class DebugFrame extends JFrame implements ActionListener {
     @Override
     public void paint(Graphics g) {
         super.paintComponents(g);
+        /*
         for(Player p : Bukkit.getOnlinePlayers()) {
-            if(!(p.getWorld().getGenerator() instanceof TerraChunkGenerator)) break;
             int xp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockX() - (img.getWidth() / 2), x) / x) * getWidth());
             int zp = (int) (((double) FastMath.floorMod(p.getLocation().getBlockZ() - (img.getHeight() / 2), z) / z) * getHeight());
             ImageLoader loader = main.getWorld(p.getWorld()).getConfig().getTemplate().getImageLoader();
@@ -52,6 +46,8 @@ public class DebugFrame extends JFrame implements ActionListener {
             g.setColor(Color.RED);
             g.fillOval(xp + 3, zp + 3, 5, 5);
         }
+
+         */
     }
 
     @Override

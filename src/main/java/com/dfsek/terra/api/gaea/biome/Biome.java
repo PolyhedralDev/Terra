@@ -13,7 +13,7 @@ public interface Biome {
      *
      * @return Biome - The Vanilla biome.
      */
-    org.bukkit.block.Biome getVanillaBiome();
+    com.dfsek.terra.api.generic.world.Biome getVanillaBiome();
 
     /**
      * Gets the BiomeTerrain instance used to generate the biome.

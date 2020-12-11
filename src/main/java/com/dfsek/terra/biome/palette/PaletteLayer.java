@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.palette;
 
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import org.bukkit.block.data.BlockData;
+import com.dfsek.terra.api.generic.world.block.BlockData;
 import org.jetbrains.annotations.NotNull;
 
 public class PaletteLayer {

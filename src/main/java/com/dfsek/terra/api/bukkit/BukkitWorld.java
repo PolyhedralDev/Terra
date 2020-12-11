@@ -7,6 +7,9 @@ import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import org.bukkit.TreeType;
+import org.bukkit.entity.Entity;
+import org.bukkit.util.Consumer;
 
 import java.io.File;
 import java.util.UUID;
@@ -66,6 +69,16 @@ public class BukkitWorld implements World {
     @Override
     public Block getBlockAt(Location l) {
         return new BukkitBlock(delegate.getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
+    }
+
+    @Override
+    public boolean generateTree(Location l, TreeType vanillaTreeType) {
+        return delegate.generateTree(new org.bukkit.Location(((BukkitWorld) l.getWorld()).getHandle(), l.getX(), l.getY(), l.getZ()), vanillaTreeType);
+    }
+
+    @Override
+    public void spawn(Location l, Class<Entity> entity, Consumer<Entity> consumer) {
+        delegate.spawn(new org.bukkit.Location(((BukkitWorld) l.getWorld()).getHandle(), l.getX(), l.getY(), l.getZ()), entity, consumer);
     }
 
     @Override

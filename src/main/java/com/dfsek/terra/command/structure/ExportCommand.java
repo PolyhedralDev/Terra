@@ -1,9 +1,6 @@
 package com.dfsek.terra.command.structure;
 
 import com.dfsek.terra.api.gaea.command.PlayerCommand;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.structure.InitializationException;
-import com.dfsek.terra.structure.Structure;
 import com.dfsek.terra.util.structure.WorldEditUtil;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -11,8 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +19,8 @@ public class ExportCommand extends PlayerCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Location[] l = WorldEditUtil.getSelectionLocations(sender);
-        if(l == null) return true;
+        /*if(l == null) return true;
+
         Location l1 = l[0];
         Location l2 = l[1];
         Structure structure;
@@ -45,6 +41,8 @@ public class ExportCommand extends PlayerCommand {
         } catch(IOException e) {
             e.printStackTrace();
         }
+
+         */
         return true;
     }
 

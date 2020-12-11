@@ -2,10 +2,10 @@ package com.dfsek.terra.api.gaea.tree.fractal.trees;
 
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.gaea.tree.fractal.TreeGeometry;
+import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import net.jafama.FastMath;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -29,10 +29,10 @@ public class OakTree extends FractalTree {
      */
     @Override
     public void grow() {
-        growBranch(super.getOrigin().clone(), new Vector(super.getRandom().nextInt(5) - 2, super.getRandom().nextInt(4) + 6, super.getRandom().nextInt(5) - 2), 2, 0);
+        growBranch(super.getOrigin().clone(), new Vector3(super.getRandom().nextInt(5) - 2, super.getRandom().nextInt(4) + 6, super.getRandom().nextInt(5) - 2), 2, 0);
     }
 
-    private void growBranch(Location l1, Vector diff, double d1, int recursions) {
+    private void growBranch(Location l1, Vector3 diff, double d1, int recursions) {
         if(recursions > 1) {
             geo.generateSphere(l1, Material.OAK_LEAVES, 1 + super.getRandom().nextInt(2) + (3 - recursions), false);
             if(recursions > 2) return;

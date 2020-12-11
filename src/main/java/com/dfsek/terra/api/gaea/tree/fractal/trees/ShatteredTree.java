@@ -3,10 +3,10 @@ package com.dfsek.terra.api.gaea.tree.fractal.trees;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.gaea.tree.fractal.TreeGeometry;
+import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import net.jafama.FastMath;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -35,11 +35,11 @@ public class ShatteredTree extends FractalTree {
      */
     @Override
     public void grow() {
-        growBranch(super.getOrigin().clone(), new Vector(super.getRandom().nextInt(5) - 2, super.getRandom().nextInt(4) + 6, super.getRandom().nextInt(5) - 2), 1, 0);
+        growBranch(super.getOrigin().clone(), new Vector3(super.getRandom().nextInt(5) - 2, super.getRandom().nextInt(4) + 6, super.getRandom().nextInt(5) - 2), 1, 0);
 
     }
 
-    private void growBranch(Location l1, Vector diff, double d1, int recursions) {
+    private void growBranch(Location l1, Vector3 diff, double d1, int recursions) {
         if(recursions > 2) {
             geo.generateSphere(l1, leaves, 1 + super.getRandom().nextInt(2), false);
             return;

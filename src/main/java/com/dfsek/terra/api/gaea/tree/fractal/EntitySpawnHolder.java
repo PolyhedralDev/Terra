@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.gaea.tree.fractal;
 
-import org.bukkit.Location;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Consumer;
 

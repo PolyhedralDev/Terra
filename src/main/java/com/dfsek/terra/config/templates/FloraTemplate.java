@@ -3,6 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.generation.items.flora.TerraFlora;
 import com.dfsek.terra.util.MaterialSet;
@@ -28,7 +29,7 @@ public class FloraTemplate extends AbstractableTemplate {
     @Value("replaceable")
     @Abstractable
     @Default
-    private MaterialSet replaceable = MaterialSet.singleton(Material.AIR);
+    private MaterialSet replaceable = MaterialSet.singleton(new BukkitMaterialData(Material.AIR));
 
     @Value("irrigable")
     @Abstractable

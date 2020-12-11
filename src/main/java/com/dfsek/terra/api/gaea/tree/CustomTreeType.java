@@ -10,7 +10,7 @@ import com.dfsek.terra.api.gaea.tree.fractal.trees.ShatteredTree;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.SmallShatteredPillar;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.SmallShatteredTree;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.SpruceTree;
-import org.bukkit.Location;
+import com.dfsek.terra.api.generic.world.vector.Location;
 
 import java.util.Random;
 

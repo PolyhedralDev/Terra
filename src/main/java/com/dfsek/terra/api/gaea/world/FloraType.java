@@ -1,19 +1,21 @@
 package com.dfsek.terra.api.gaea.world;
 
+import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.api.gaea.math.Range;
 import com.dfsek.terra.api.gaea.util.GlueList;
+import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.BlockFace;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public enum FloraType implements Flora {
     TALL_GRASS(Sets.newHashSet(Material.GRASS_BLOCK, Material.PODZOL), Bukkit.createBlockData("minecraft:tall_grass[half=lower]"), Bukkit.createBlockData("minecraft:tall_grass[half=upper]")),
@@ -51,8 +53,8 @@ public enum FloraType implements Flora {
 
     private final Set<Material> spawns;
 
-    FloraType(Set<Material> validSpawns, BlockData... type) {
-        data.addAll(Arrays.asList(type));
+    FloraType(Set<Material> validSpawns, org.bukkit.block.data.BlockData... type) {
+        data.addAll(Arrays.stream(type).map(BukkitBlockData::new).collect(Collectors.toList()));
         this.spawns = validSpawns;
     }
 

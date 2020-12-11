@@ -23,6 +23,15 @@ public class Vector3 implements Cloneable {
         this.z = z;
     }
 
+    /**
+     * Get the threshold used for equals().
+     *
+     * @return The epsilon.
+     */
+    public static double getEpsilon() {
+        return epsilon;
+    }
+
     public double getZ() {
         return z;
     }
@@ -87,15 +96,6 @@ public class Vector3 implements Cloneable {
         this.x += other.getX();
         this.z += other.getZ();
         return this;
-    }
-
-    /**
-     * Get the threshold used for equals().
-     *
-     * @return The epsilon.
-     */
-    public static double getEpsilon() {
-        return epsilon;
     }
 
     public double lengthSquared() {
@@ -299,5 +299,12 @@ public class Vector3 implements Cloneable {
 
     public Vector3 normalize() {
         return this.multiply(1D / this.length());
+    }
+
+    public Vector3 subtract(int x, int y, int z) {
+        this.x -= x;
+        this.y -= y;
+        this.z = -z;
+        return this;
     }
 }

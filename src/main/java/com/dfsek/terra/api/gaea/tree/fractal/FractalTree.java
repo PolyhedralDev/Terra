@@ -1,9 +1,11 @@
 package com.dfsek.terra.api.gaea.tree.fractal;
 
+import com.dfsek.terra.api.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.api.gaea.util.GlueList;
-import org.bukkit.Location;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Consumer;
 
@@ -70,7 +72,7 @@ public abstract class FractalTree {
      * @param m - The material to which it will be set.
      */
     public void setBlock(Location l, Material m) {
-        treeAssembler.put(l, m.createBlockData());
+        treeAssembler.put(l, new BukkitBlockData(m.createBlockData()));
     }
 
     /**
@@ -104,8 +106,8 @@ public abstract class FractalTree {
      * @param l - The location at which to check.
      * @return Material - The material at the specified block.
      */
-    public Material getMaterial(Location l) {
-        return treeAssembler.getOrDefault(l, Material.AIR.createBlockData()).getMaterial();
+    public MaterialData getMaterial(Location l) {
+        return treeAssembler.getOrDefault(l, new BukkitBlockData(Material.AIR.createBlockData())).getMaterial();
     }
 
 

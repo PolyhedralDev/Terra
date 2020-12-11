@@ -1,23 +1,12 @@
 package com.dfsek.terra.command.structure.load;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
-import com.dfsek.terra.api.generic.world.WorldHandle;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.structure.Structure;
-import com.dfsek.terra.structure.StructureContainedBlock;
-import com.dfsek.terra.structure.StructureInfo;
-import com.dfsek.terra.structure.StructureSpawnRequirement;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +26,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        /*
         try {
             WorldHandle handle = ((TerraBukkitPlugin) getMain()).getHandle();
             Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
@@ -88,6 +78,8 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
             e.printStackTrace();
             LangUtil.send("command.structure.invalid", sender, args[0]);
         }
+
+         */
         return true;
     }
 

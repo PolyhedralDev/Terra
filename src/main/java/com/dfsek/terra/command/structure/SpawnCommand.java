@@ -1,9 +1,7 @@
 package com.dfsek.terra.command.structure;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
-import com.dfsek.terra.structure.StructureSpawnRequirement;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -25,11 +23,14 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         int x = p.getBlockX();
         int y = p.getBlockY();
         int z = p.getBlockZ();
+        /*
         boolean air = StructureSpawnRequirement.AIR.getInstance(world, (TerraBukkitPlugin) getMain()).matches(x, y, z);
         boolean ground = StructureSpawnRequirement.LAND.getInstance(world, (TerraBukkitPlugin) getMain()).matches(x, y, z);
         boolean sea = StructureSpawnRequirement.OCEAN.getInstance(world, (TerraBukkitPlugin) getMain()).matches(x, y, z);
 
         sender.sendMessage("AIR: " + air + "\nLAND: " + ground + "\nOCEAN: " + sea);
+
+         */
         return true;
     }
 

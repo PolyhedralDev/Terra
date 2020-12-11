@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.gaea.tree.fractal.trees;
 
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
-import org.bukkit.Location;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EnderCrystal;
 

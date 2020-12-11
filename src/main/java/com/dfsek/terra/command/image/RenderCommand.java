@@ -1,16 +1,12 @@
 package com.dfsek.terra.command.image;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.image.WorldImageGenerator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +17,7 @@ public class RenderCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+        /*
         try {
             WorldImageGenerator g = new WorldImageGenerator(world, Integer.parseInt(args[0]), Integer.parseInt(args[1]), (TerraBukkitPlugin) getMain());
             g.drawWorld(sender.getLocation().getBlockX(), sender.getLocation().getBlockZ());
@@ -37,6 +34,9 @@ public class RenderCommand extends WorldCommand {
             LangUtil.send("command.image.render.error", sender);
             return true;
         }
+
+         */
+        return true;
     }
 
     @Override

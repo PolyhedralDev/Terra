@@ -1,17 +1,11 @@
 package com.dfsek.terra.command.structure.load;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.DebugCommand;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.structure.Rotation;
-import com.dfsek.terra.structure.Structure;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +21,7 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        /*
         try {
             Rotation r;
             try {
@@ -43,6 +38,8 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
             e.printStackTrace();
             LangUtil.send("command.structure.invalid", sender, args[0]);
         }
+
+         */
         return true;
     }
 

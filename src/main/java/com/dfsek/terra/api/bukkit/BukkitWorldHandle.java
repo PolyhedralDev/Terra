@@ -5,28 +5,28 @@ import com.dfsek.terra.api.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.api.bukkit.world.block.data.BukkitStairs;
 import com.dfsek.terra.api.bukkit.world.block.data.BukkitWaterlogged;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Stairs;
 
 public class BukkitWorldHandle implements WorldHandle {
 
     @Override
-    public void setBlockData(Block block, org.bukkit.block.data.BlockData data, boolean physics) {
+    public void setBlockData(Block block, BlockData data, boolean physics) {
         block.setBlockData(data, physics);
     }
 
     @Override
-    public org.bukkit.block.data.BlockData getBlockData(Block block) {
+    public BlockData getBlockData(Block block) {
         return block.getBlockData();
     }
 
     @Override
-    public Material getType(Block block) {
+    public MaterialData getType(Block block) {
         return block.getType();
     }
 

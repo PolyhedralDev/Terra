@@ -1,28 +1,14 @@
 package com.dfsek.terra.command.biome;
 
-import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.command.WorldCommand;
-import com.dfsek.terra.async.AsyncBiomeFinder;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.generation.TerraChunkGenerator;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BiomeLocateCommand extends WorldCommand {
     private final boolean tp;
@@ -35,6 +21,7 @@ public class BiomeLocateCommand extends WorldCommand {
     @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
+        /*
         String id = args[0];
         int maxRadius;
         try {
@@ -62,6 +49,8 @@ public class BiomeLocateCommand extends WorldCommand {
                 // LangUtil.send("command.biome.biome-found", sender, String.valueOf(location.getBlockX()), String.valueOf(location.getBlockZ()));
             } else LangUtil.send("command.biome.unable-to-locate", sender);
         }, (TerraBukkitPlugin) getMain()));
+
+         */
         return true;
     }
 
@@ -82,11 +71,14 @@ public class BiomeLocateCommand extends WorldCommand {
 
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        /*
         if(!(sender instanceof Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
             return Collections.emptyList();
         List<String> ids = ((TerraBukkitPlugin) getMain()).getWorld(((Player) sender).getWorld()).getConfig().getBiomeIDs();
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
+
+         */
         return Collections.emptyList();
     }
 }

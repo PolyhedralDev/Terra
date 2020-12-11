@@ -1,21 +1,7 @@
 package com.dfsek.terra.listeners;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.async.AsyncStructureFinder;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.items.TerraStructure;
-import com.dfsek.terra.util.StructureTypeEnum;
-import org.bukkit.entity.EnderSignal;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Villager;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.VillagerAcquireTradeEvent;
-import org.bukkit.event.entity.VillagerCareerChangeEvent;
 
 /**
  * Listener to load on Spigot servers, contains Villager crash prevention and hacky ender eye redirection.
@@ -29,6 +15,7 @@ public class SpigotListener implements Listener {
     public SpigotListener(TerraBukkitPlugin main) {
         this.main = main;
     }
+    /*
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEnderEye(EntitySpawnEvent e) {
@@ -67,4 +54,6 @@ public class SpigotListener implements Listener {
             e.setCancelled(true);
         }
     }
+
+     */
 }

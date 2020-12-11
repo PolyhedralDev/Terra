@@ -3,9 +3,9 @@ package com.dfsek.terra.async;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.bukkit.Location;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class AsyncBiomeFinder extends AsyncFeatureFinder<Biome> {
 
-    public AsyncBiomeFinder(TerraBiomeGrid grid, Biome target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector> callback, TerraBukkitPlugin main) {
+    public AsyncBiomeFinder(TerraBiomeGrid grid, Biome target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraBukkitPlugin main) {
         super(grid, target, origin, startRadius, maxRadius, callback, main);
     }
 
@@ -33,7 +33,7 @@ public class AsyncBiomeFinder extends AsyncFeatureFinder<Biome> {
     }
 
     @Override
-    public Vector finalizeVector(Vector orig) {
+    public Vector3 finalizeVector(Vector3 orig) {
         return orig.multiply(main.getTerraConfig().getBiomeSearchResolution());
     }
 }

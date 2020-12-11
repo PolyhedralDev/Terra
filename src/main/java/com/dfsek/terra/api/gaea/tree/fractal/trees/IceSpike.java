@@ -3,9 +3,9 @@ package com.dfsek.terra.api.gaea.tree.fractal.trees;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.gaea.tree.fractal.TreeGeometry;
-import org.bukkit.Location;
+import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.generic.world.vector.Vector3;
 import org.bukkit.Material;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -34,7 +34,7 @@ public class IceSpike extends FractalTree {
      */
     @Override
     public void grow() {
-        Vector direction = new Vector(getOffset(), 0, getOffset());
+        Vector3 direction = new Vector3(getOffset(), 0, getOffset());
         Location l1 = super.getOrigin().clone();
         int h = super.getRandom().nextInt(16) + 8;
         for(int i = 0; i < h; i++) {

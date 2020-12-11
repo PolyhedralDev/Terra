@@ -38,7 +38,7 @@ public class SaveDataCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        TerraChunkGenerator.saveAll();
+        //TerraChunkGenerator.saveAll();
         LangUtil.send("debug.data-save", sender, w.getName());
         return true;
     }

@@ -3,6 +3,7 @@ package com.dfsek.terra.generation.items.tree;
 import com.dfsek.terra.api.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.tree.Tree;
+import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import com.dfsek.terra.structure.Structure;
@@ -10,8 +11,6 @@ import com.dfsek.terra.structure.StructureContainedBlock;
 import com.dfsek.terra.structure.StructureInfo;
 import com.dfsek.terra.util.MaterialSet;
 import com.dfsek.terra.util.structure.RotationUtil;
-import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
 
@@ -27,13 +26,13 @@ public class TerraTree implements Tree {
     }
 
     @Override
-    public boolean plant(Location location, Random random, JavaPlugin main) {
+    public boolean plant(Location location, Random random) {
         Location mut = location.clone().subtract(0, yOffset, 0);
         if(!spawnable.contains(location.getBlock().getType())) return false;
         Structure struc = structure.get(random);
         Rotation rotation = Rotation.fromDegrees(random.nextInt(4) * 90);
-        if(!struc.checkSpawns(mut, rotation, (TerraBukkitPlugin) main)) return false;
-        struc.paste(mut, rotation, (TerraBukkitPlugin) main);
+        if(!struc.checkSpawns(mut, rotation, null)) return false;
+        struc.paste(mut, rotation, null);
         return true;
     }
 
