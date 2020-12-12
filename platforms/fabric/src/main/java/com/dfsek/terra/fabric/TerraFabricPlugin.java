@@ -9,6 +9,8 @@ import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
+import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.world.GeneratorType;
@@ -21,10 +23,8 @@ import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -40,10 +40,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     };
     private final Logger logger = Logger.getLogger("Terra");
     private final ItemHandle itemHandle = new FabricItemHandle();
+    private final WorldHandle worldHandle = new FabricWorldHandle();
+    private final ConfigRegistry registry = new ConfigRegistry();
 
     @Override
     public WorldHandle getWorldHandle() {
-        return null;
+        return worldHandle;
     }
 
     @Override
@@ -68,7 +70,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public File getDataFolder() {
-        return null;
+        try {
+            return new File(new File(TerraFabricPlugin.class.getProtectionDomain().getCodeSource().getLocation()
+                    .toURI()), "terra");
+        } catch(URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -83,7 +90,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public ConfigRegistry getRegistry() {
-        return null;
+        return registry;
     }
 
     @Override
@@ -93,7 +100,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public ItemHandle getItemHandle() {
-        return null;
+        return itemHandle;
     }
 
     @Override
@@ -101,24 +108,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onInitialize() {
         logger.info("Initializing Terra...");
-        Class<GeneratorType> generatorTypeClass = GeneratorType.class;
+        GeneratorTypeAccessor.getValues().add(TERRA);
+        registry.loadAll(this);
 
-        try {
-            Field values = generatorTypeClass.getDeclaredField("VALUES");
-            values.setAccessible(true);
-
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(values, values.getModifiers() & ~Modifier.FINAL);
-
-            ((List<GeneratorType>) values.get(null)).add(TERRA); // TODO: This is incredibly yucky and should be replaced by Mixin as soon as possible.
-        } catch(NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -7,9 +7,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.List;
 
 @Mixin(GeneratorType.class)
-public class GeneratorAccessor {
+public interface GeneratorTypeAccessor {
     @Accessor("VALUES")
-    public static List<GeneratorType> getValues() {
+    static List<GeneratorType> getValues() {
         throw new AssertionError();
     }
 }

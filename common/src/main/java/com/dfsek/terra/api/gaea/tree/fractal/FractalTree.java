@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.gaea.tree.fractal;
 
-import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.generic.Entity;
 import com.dfsek.terra.api.generic.TerraPlugin;
@@ -13,11 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Consumer;
 
 
-public abstract class FractalTree implements Tree {
+public abstract class FractalTree {
     private final Map<Location, BlockData> treeAssembler = new HashMap<>();
     private final List<EntitySpawnHolder> entities = new GlueList<>();
     private final Location origin;
@@ -110,15 +108,5 @@ public abstract class FractalTree implements Tree {
      */
     public MaterialData getMaterial(Location l) {
         return treeAssembler.getOrDefault(l, main.getWorldHandle().createBlockData("minecraft:air")).getMaterial();
-    }
-
-    @Override
-    public boolean plant(Location l, Random r) {
-        return false;
-    }
-
-    @Override
-    public Set<MaterialData> getSpawnable() {
-        return null;
     }
 }
