@@ -5,6 +5,7 @@ import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -24,6 +25,9 @@ public interface ChunkGenerator extends Handle {
 
 
     List<BlockPopulator> getDefaultPopulators(World world);
+
+    @Nullable
+    TerraChunkGenerator getTerraGenerator();
 
     interface ChunkData {
         Object getHandle();

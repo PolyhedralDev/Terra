@@ -85,7 +85,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private List<FloraLayer> flora = new GlueList<>();
 
-    @Value("trees")
+    //@Value("trees")
     @Abstractable
     @Default
     private List<TreeLayer> trees = new GlueList<>();
