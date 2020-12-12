@@ -33,3 +33,6 @@ gradleEnterprise {
 //        publishAlwaysIf(true)
     }
 }
+include("sponge")
+include("platforms:sponge")
+findProject(":platforms:sponge")?.name = "sponge"
