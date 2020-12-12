@@ -143,7 +143,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
                 .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
                 .open("carving").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this)), main)).close()
+                .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
                 .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
         for(UserDefinedBiome b : biomeRegistry.entries()) {
             try {

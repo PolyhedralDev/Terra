@@ -155,7 +155,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                                 }
                                 paletteLevel++;
                             } else if(y <= sea) {
-                                //chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                                chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                                 if(justSet && c.doSlabs()) {
                                     SlabUtil.prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                                 }

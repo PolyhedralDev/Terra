@@ -7,10 +7,12 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.Biome;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.biome.palette.PaletteHolder;
+import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.items.TerraStructure;
@@ -30,6 +32,8 @@ import java.util.Map;
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
 
     private final ConfigPack pack;
+
+
     @Value("id")
     private String id;
 
@@ -73,7 +77,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("ocean.palette")
     @Abstractable
     @Default
-    private Palette<BlockData> oceanPalette = null;
+    private Palette<BlockData> oceanPalette;
 
     @Value("elevation.equation")
     @Default
@@ -152,8 +156,9 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return stairPalettes;
     }
 
-    public BiomeTemplate(ConfigPack pack) {
+    public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
+        oceanPalette = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:water"));
     }
 
     public String getElevationEquation() {
