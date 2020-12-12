@@ -14,12 +14,19 @@ plugins {
     id("com.github.johnrengelman.shadow").version("6.1.0")
 }
 
+val versionObj = Version("2", "2", "0", true)
+
+allprojects {
+    version = versionObj
+    group = "com.dfsek.terra"
+
+}
+
 repositories {
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-    maven { url = uri("https://repo.aikar.co/content/groups/aikar/") }
 }
 
 java {
@@ -27,15 +34,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val versionObj = Version("2", "2", "0", true)
-
-version = versionObj
-
 dependencies {
     implementation("org.apache.commons:commons-rng-core:1.3")
     implementation("net.jafama:jafama:2.3.2")
 
-    compileOnly("org.jetbrains:annotations:20.1.0")
 
     implementation("commons-io:commons-io:2.4")
     implementation("org.apache.commons:commons-imaging:1.0-alpha2")
@@ -47,18 +49,19 @@ dependencies {
 
     implementation("com.scireum:parsii:1.2.1")
 
-    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
-    implementation("io.papermc:paperlib:1.0.5")
-
     implementation("net.jafama:jafama:2.3.2")
 
     implementation("com.dfsek:Tectonic:1.0.3")
+
+
 
 
     // JUnit.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
+
+
 
 val compileJava: JavaCompile by tasks
 val mainSourceSet: SourceSet = sourceSets["main"]
@@ -168,7 +171,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     // Copy Terra into dir
     doFirst {
         copy {
-            from("${buildDir}/libs/Terra-${versionObj}.jar")
+            from("${project("platforms:bukkit").buildDir}/libs/Terra-${versionObj}.jar")
             into("${testDir}/plugins/")
         }
     }

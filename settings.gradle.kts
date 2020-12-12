@@ -8,3 +8,6 @@
  */
 
 rootProject.name = "Terra"
+include("common")
+include("platforms:bukkit")
+include("platforms:fabric")
