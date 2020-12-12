@@ -12,4 +12,6 @@ public interface MaterialData extends Handle {
     boolean isAir();
 
     double getMaxDurability();
+
+    BlockData createBlockData();
 }

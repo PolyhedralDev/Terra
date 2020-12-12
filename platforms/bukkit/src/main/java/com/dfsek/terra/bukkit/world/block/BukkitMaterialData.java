@@ -37,6 +37,11 @@ public class BukkitMaterialData implements MaterialData {
     }
 
     @Override
+    public BlockData createBlockData() {
+        return new BukkitBlockData(delegate.createBlockData());
+    }
+
+    @Override
     public Material getHandle() {
         return delegate;
     }

@@ -1,16 +1,27 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.templates.CarverTemplate;
+import com.dfsek.terra.util.PopulationUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class CavePopulator implements TerraBlockPopulator {
     private final TerraPlugin main;
@@ -23,9 +34,9 @@ public class CavePopulator implements TerraBlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
-        /*
         TerraWorld tw = main.getWorld(world);
         WorldHandle handle = main.getWorldHandle();
+        BlockData AIR = handle.createBlockData("minecraft:air");
         try(ProfileFuture ignored = tw.getProfiler().measure("CaveTime")) {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
@@ -33,7 +44,7 @@ public class CavePopulator implements TerraBlockPopulator {
 
             for(UserDefinedCarver c : config.getCarvers()) {
                 CarverTemplate template = c.getConfig();
-                Map<Location, BlockData> shiftCandidate = new HashMap<>();
+                Map<Location, MaterialData> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
@@ -69,15 +80,15 @@ public class CavePopulator implements TerraBlockPopulator {
                             break;
                     }
                 });
-                for(Map.Entry<Location, Material> entry : shiftCandidate.entrySet()) {
+                for(Map.Entry<Location, MaterialData> entry : shiftCandidate.entrySet()) {
                     Location l = entry.getKey();
                     Location mut = l.clone();
-                    Material orig = handle.getType(l.getBlock());
+                    MaterialData orig = handle.getType(l.getBlock());
                     do mut.subtract(0, 1, 0);
                     while(handle.getType(mut.getBlock()).equals(orig));
                     try {
                         if(template.getShift().get(entry.getValue()).contains(mut.getBlock().getType())) {
-                            handle.setBlockData(mut.getBlock(), shiftStorage.computeIfAbsent(entry.getValue(), Material::createBlockData), false);
+                            handle.setBlockData(mut.getBlock(), shiftStorage.computeIfAbsent(entry.getValue(), MaterialData::createBlockData), false);
                         }
                     } catch(NullPointerException ignore) {
                     }
@@ -90,7 +101,5 @@ public class CavePopulator implements TerraBlockPopulator {
             }
 
         }
-
-         */
     }
 }
