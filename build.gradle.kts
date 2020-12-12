@@ -27,6 +27,9 @@ repositories {
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+    maven { url = uri("https://maven.fabricmc.net/") }
+    gradlePluginPortal()
+    jcenter()
 }
 
 java {
