@@ -5,6 +5,9 @@ import com.dfsek.terra.api.generic.world.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Stairs;
 
+/**
+ * Utility class to adapt Terra enums to Bukkit enums
+ */
 public final class TerraEnumAdapter {
     public static Stairs.Shape fromTerraStair(com.dfsek.terra.api.generic.world.block.data.Stairs.Shape shape) {
         switch(shape) {
