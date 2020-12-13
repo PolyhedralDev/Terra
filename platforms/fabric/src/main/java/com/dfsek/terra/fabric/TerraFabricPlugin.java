@@ -73,7 +73,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return null;
+        return new TerraWorld(world, getRegistry().get("DEFAULT"), this);
     }
 
     @Override

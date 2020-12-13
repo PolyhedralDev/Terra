@@ -55,6 +55,7 @@ public class FabricChunkGenerator implements ChunkGenerator {
 
     @Override
     public @Nullable TerraChunkGenerator getTerraGenerator() {
+        if(delegate instanceof FabricChunkGeneratorWrapper) return ((FabricChunkGeneratorWrapper) delegate).getHandle();
         return null;
     }
 
