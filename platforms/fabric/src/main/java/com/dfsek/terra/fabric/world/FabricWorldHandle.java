@@ -5,6 +5,9 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.command.argument.BlockArgumentParser;
 
 public class FabricWorldHandle implements WorldHandle {
     @Override
@@ -23,13 +26,18 @@ public class FabricWorldHandle implements WorldHandle {
     }
 
     @Override
-    public BlockData createBlockData(String data) {
-        return null;
+    public FabricBlockData createBlockData(String data) {
+        BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
+        try {
+            return new FabricBlockData(parser.parse(true).getBlockState());
+        } catch(CommandSyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     @Override
     public MaterialData createMaterialData(String data) {
-        return null;
+        return new FabricMaterialData(createBlockData(data).getHandle().getMaterial());
     }
 
     @Override

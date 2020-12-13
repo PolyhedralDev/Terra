@@ -2,17 +2,23 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.inventory.ItemHandle;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.config.base.PluginConfig;
+import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -23,7 +29,7 @@ import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -38,10 +44,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             return new FlatChunkGenerator(config);
         }
     };
+
+    private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = Logger.getLogger("Terra");
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
+    private File config;
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -70,12 +79,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public File getDataFolder() {
-        try {
-            return new File(new File(TerraFabricPlugin.class.getProtectionDomain().getCodeSource().getLocation()
-                    .toURI()), "terra");
-        } catch(URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        return config;
     }
 
     @Override
@@ -85,7 +89,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public Language getLanguage() {
-        return null;
+        try {
+            return new Language(new File(getDataFolder(), "lang/en_us/yml"));
+        } catch(IOException e) {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -105,14 +113,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public void register(TypeRegistry registry) {
-
+        genericLoaders.register(registry);
+        registry
+                .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
+                .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o))
+                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> new FabricBiome());
     }
 
     @Override
     public void onInitialize() {
+        config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
+        LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
-        GeneratorTypeAccessor.getValues().add(TERRA);
+        GeneratorTypeAccessor.accessor$getValues().add(TERRA);
         registry.loadAll(this);
-
     }
 }

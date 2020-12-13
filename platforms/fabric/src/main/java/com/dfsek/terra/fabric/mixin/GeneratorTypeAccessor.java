@@ -9,7 +9,7 @@ import java.util.List;
 @Mixin(GeneratorType.class)
 public interface GeneratorTypeAccessor {
     @Accessor("VALUES")
-    static List<GeneratorType> getValues() {
+    static List<GeneratorType> accessor$getValues() {
         throw new AssertionError();
     }
 }

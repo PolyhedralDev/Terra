@@ -37,11 +37,13 @@ dependencies {
     implementation("com.dfsek:Tectonic:1.0.3")
     implementation("net.jafama:jafama:2.3.2")
 
-    compileOnly("com.googlecode.json-simple:json-simple:1.1")
+    implementation("com.googlecode.json-simple:json-simple:1.1")
 
     implementation("com.google.guava:guava:30.0-jre")
 
     compileOnly("org.jetbrains:annotations:20.1.0")
+
+    implementation("org.yaml:snakeyaml:1.27")
 
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:1.16.4")

@@ -4,10 +4,10 @@
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
-  "client": [],
-  "server": [
+  "client": [
     "GeneratorTypeAccessor"
   ],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   }
