@@ -3,7 +3,6 @@ package com.dfsek.terra.biome.grid.master;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector2;
 import com.dfsek.terra.biome.BiomeZone;
@@ -23,15 +22,15 @@ public class TerraRadialBiomeGrid extends TerraBiomeGrid {
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
 
-    public TerraRadialBiomeGrid(World w, double freq1, double freq2, BiomeZone zone, ConfigPack c, double radius, BiomeGrid internal) {
-        super(w, freq1, freq2, 0, 0);
+    public TerraRadialBiomeGrid(long seed, double freq1, double freq2, BiomeZone zone, ConfigPack c, double radius, BiomeGrid internal) {
+        super(seed, freq1, freq2, 0, 0);
         ConfigPackTemplate t = c.getTemplate();
         if(c.getTemplate().isBlend()) {
-            perturb = new CoordinatePerturb(t.getBlendFreq(), t.getBlendAmp(), w.getSeed());
+            perturb = new CoordinatePerturb(t.getBlendFreq(), t.getBlendAmp(), seed);
         }
         this.zone = zone;
         if(c.getTemplate().isErode()) {
-            erode = new ErosionNoise(t.getErodeFreq(), t.getErodeThresh(), t.getErodeOctaves(), w.getSeed());
+            erode = new ErosionNoise(t.getErodeFreq(), t.getErodeThresh(), t.getErodeOctaves(), seed);
         }
         this.radiusSq = FastMath.pow2(radius);
         this.internal = internal;

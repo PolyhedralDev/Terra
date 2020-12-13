@@ -35,7 +35,7 @@ public class TerraWorld {
             String partName = template.getGrids().get(i);
             try {
                 BiomeGridBuilder g = config.getBiomeGrid(partName);
-                BiomeGrid b = g.build(w, c);
+                BiomeGrid b = g.build(w.getSeed(), c);
                 definedGrids[i] = b;
             } catch(NullPointerException e) {
                 safe = false;
@@ -46,12 +46,12 @@ public class TerraWorld {
                 main.getLogger().severe("Terrain will NOT generate properly at this point. Correct your config before using your server!");
             }
         }
-        zone = new BiomeZone(w, c, definedGrids);
+        zone = new BiomeZone(w.getSeed(), c, definedGrids);
 
         if(template.getGridType().equals(TerraBiomeGrid.Type.RADIAL)) {
-            BiomeGrid internal = config.getBiomeGrid(template.getRadialInternalGrid()).build(w, c);
-            grid = new TerraRadialBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config, template.getRadialGridRadius(), internal);
-        } else grid = new TerraStandardBiomeGrid(w, template.getGridFreqX(), template.getGridFreqZ(), zone, config);
+            BiomeGrid internal = config.getBiomeGrid(template.getRadialInternalGrid()).build(w.getSeed(), c);
+            grid = new TerraRadialBiomeGrid(w.getSeed(), template.getGridFreqX(), template.getGridFreqZ(), zone, config, template.getRadialGridRadius(), internal);
+        } else grid = new TerraStandardBiomeGrid(w.getSeed(), template.getGridFreqX(), template.getGridFreqZ(), zone, config);
     }
 
     public static boolean isTerraWorld(World w) {

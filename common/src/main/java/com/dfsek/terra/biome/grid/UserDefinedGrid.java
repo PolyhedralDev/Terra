@@ -4,7 +4,6 @@ import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
@@ -16,8 +15,8 @@ public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader.Channel channelX;
     private final ImageLoader.Channel channelZ;
 
-    public UserDefinedGrid(World w, double freq1, double freq2, Biome[][] b, ConfigPack c) {
-        super(w, freq1, freq2, b.length, b[0].length);
+    public UserDefinedGrid(long seed, double freq1, double freq2, Biome[][] b, ConfigPack c) {
+        super(seed, freq1, freq2, b.length, b[0].length);
         super.setGrid(b);
         ConfigPackTemplate t = c.getTemplate();
         imageLoader = t.getImageLoader();

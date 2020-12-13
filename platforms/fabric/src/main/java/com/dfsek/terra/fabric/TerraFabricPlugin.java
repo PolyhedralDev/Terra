@@ -16,6 +16,7 @@ import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
+import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.world.generator.TerraChunkGeneratorCodec;
 import com.dfsek.terra.registry.ConfigRegistry;
@@ -24,7 +25,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.VanillaLayeredBiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
@@ -45,7 +45,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
             config.updateLayerBlocks();
 
-            return new FabricChunkGeneratorWrapper(new VanillaLayeredBiomeSource(seed, false, false, biomeRegistry), seed);
+
+            return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed), seed);
         }
     };
     private final TerraChunkGeneratorCodec chunkGeneratorCodec = new TerraChunkGeneratorCodec(this);
