@@ -7,7 +7,7 @@ plugins {
 
 configureCommon()
 
-group = "com.dfsek.terra.bukkit"
+group = "com.dfsek.terra.fabric"
 
 
 minecraft {
