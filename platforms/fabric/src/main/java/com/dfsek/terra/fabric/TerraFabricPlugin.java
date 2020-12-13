@@ -16,15 +16,17 @@ import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
+import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.world.generator.TerraChunkGeneratorCodec;
 import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.VanillaLayeredBiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.FlatChunkGenerator;
 import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 
@@ -35,15 +37,22 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
-    private static final GeneratorType TERRA = new GeneratorType("terra") {
+    private static TerraFabricPlugin instance;
+    private final GeneratorType TERRA = new GeneratorType("terra") {
         @Override
         protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
             FlatChunkGeneratorConfig config = new FlatChunkGeneratorConfig(
                     new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
             config.updateLayerBlocks();
-            return new FlatChunkGenerator(config);
+
+            return new FabricChunkGeneratorWrapper(new VanillaLayeredBiomeSource(seed, false, false, biomeRegistry), seed);
         }
     };
+    private final TerraChunkGeneratorCodec chunkGeneratorCodec = new TerraChunkGeneratorCodec(this);
+
+    public static TerraFabricPlugin getInstance() {
+        return instance;
+    }
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = Logger.getLogger("Terra");
@@ -122,10 +131,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public void onInitialize() {
+        instance = this;
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
-        GeneratorTypeAccessor.accessor$getValues().add(TERRA);
+        GeneratorTypeAccessor.getValues().add(TERRA);
         registry.loadAll(this);
+    }
+
+    public TerraChunkGeneratorCodec getChunkGeneratorCodec() {
+        return chunkGeneratorCodec;
     }
 }

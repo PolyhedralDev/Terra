@@ -1,52 +1,65 @@
 package com.dfsek.terra.fabric.world.generator;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.StructuresConfig;
+import com.dfsek.terra.api.generic.generator.BlockPopulator;
+import com.dfsek.terra.api.generic.generator.ChunkGenerator;
+import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.generic.world.BiomeGrid;
+import com.dfsek.terra.api.generic.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class FabricChunkGenerator extends ChunkGenerator {
-    public FabricChunkGenerator(BiomeSource biomeSource, StructuresConfig structuresConfig) {
-        super(biomeSource, structuresConfig);
-    }
+import java.util.List;
+import java.util.Random;
 
-    public FabricChunkGenerator(BiomeSource populationSource, BiomeSource biomeSource, StructuresConfig structuresConfig, long worldSeed) {
-        super(populationSource, biomeSource, structuresConfig, worldSeed);
+public class FabricChunkGenerator implements ChunkGenerator {
+    private final net.minecraft.world.gen.chunk.ChunkGenerator delegate;
+
+    public FabricChunkGenerator(net.minecraft.world.gen.chunk.ChunkGenerator delegate) {
+        this.delegate = delegate;
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> getCodec() {
+    public boolean isParallelCapable() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldGenerateCaves() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldGenerateDecorations() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldGenerateMobs() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldGenerateStructures() {
+        return false;
+    }
+
+    @Override
+    public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
         return null;
     }
 
     @Override
-    public ChunkGenerator withSeed(long seed) {
+    public List<BlockPopulator> getDefaultPopulators(World world) {
         return null;
     }
 
     @Override
-    public void buildSurface(ChunkRegion region, Chunk chunk) {
-
-    }
-
-    @Override
-    public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-
-    }
-
-    @Override
-    public int getHeight(int x, int z, Heightmap.Type heightmapType) {
-        return 0;
-    }
-
-    @Override
-    public BlockView getColumnSample(int x, int z) {
+    public @Nullable TerraChunkGenerator getTerraGenerator() {
         return null;
+    }
+
+    @Override
+    public net.minecraft.world.gen.chunk.ChunkGenerator getHandle() {
+        return delegate;
     }
 }

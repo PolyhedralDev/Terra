@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.generic.generator;
 
 import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
+import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -28,4 +29,5 @@ public interface TerraChunkGenerator {
 
     List<TerraBlockPopulator> getPopulators();
 
+    TerraPlugin getMain();
 }
