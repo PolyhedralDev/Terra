@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":common"))
+    api(project(":common"))
 
     compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.5")
