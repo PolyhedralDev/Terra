@@ -109,6 +109,4 @@ public abstract class FractalTree {
     public MaterialData getMaterial(Location l) {
         return treeAssembler.getOrDefault(l, main.getWorldHandle().createBlockData("minecraft:air")).getMaterial();
     }
-
-
 }

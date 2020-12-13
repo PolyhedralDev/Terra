@@ -137,3 +137,4 @@ build
 
 !lib/*.jar
 .idea/Terra.iml
+/run/

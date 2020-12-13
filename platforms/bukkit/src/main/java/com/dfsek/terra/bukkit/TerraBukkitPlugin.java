@@ -45,7 +45,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
-    private WorldHandle handle = new BukkitWorldHandle();
+    private final ItemHandle itemHandle = new BukkitItemHandle();
+    private WorldHandle handle = new BukkitWorldHandle(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
 
 
@@ -61,7 +62,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     @Override
     public ItemHandle getItemHandle() {
-        return null;
+        return itemHandle;
     }
 
     public void setHandle(WorldHandle handle) {

@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.generic.world;
 
+import com.dfsek.terra.api.generic.Tree;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
@@ -17,4 +18,6 @@ public interface WorldHandle {
     BlockData createBlockData(String data);
 
     MaterialData createMaterialData(String data);
+
+    Tree getTree(String id);
 }

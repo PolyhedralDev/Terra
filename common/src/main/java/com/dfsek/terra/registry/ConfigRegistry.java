@@ -21,6 +21,7 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
     public boolean loadAll(TerraPlugin main) {
         boolean valid = true;
         File packsFolder = new File(main.getDataFolder(), "packs");
+        packsFolder.mkdirs();
         for(File dir : packsFolder.listFiles(File::isDirectory)) {
             try {
                 load(dir, main);

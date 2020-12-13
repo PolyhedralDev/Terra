@@ -77,7 +77,7 @@ public class ConfigPack implements LoaderRegistrar {
     private final PaletteRegistry paletteRegistry;
     private final FloraRegistry floraRegistry;
     private final OreRegistry oreRegistry = new OreRegistry();
-    private final TreeRegistry treeRegistry = new TreeRegistry();
+    private final TreeRegistry treeRegistry;
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -88,7 +88,8 @@ public class ConfigPack implements LoaderRegistrar {
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
         floraRegistry = new FloraRegistry(main);
-        paletteRegistry  = new PaletteRegistry(main);
+        paletteRegistry = new PaletteRegistry(main);
+        treeRegistry = new TreeRegistry(main);
         register(abstractConfigLoader);
 
         main.register(selfLoader);
@@ -108,7 +109,8 @@ public class ConfigPack implements LoaderRegistrar {
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
         floraRegistry = new FloraRegistry(main);
-        paletteRegistry  = new PaletteRegistry(main);
+        paletteRegistry = new PaletteRegistry(main);
+        treeRegistry = new TreeRegistry(main);
         register(abstractConfigLoader);
 
         main.register(selfLoader);

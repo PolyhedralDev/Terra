@@ -8,15 +8,44 @@ import com.dfsek.terra.api.generic.inventory.ItemHandle;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.config.base.PluginConfig;
+import com.dfsek.terra.fabric.inventory.FabricItemHandle;
+import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.registry.ConfigRegistry;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.world.GeneratorType;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.gen.chunk.FlatChunkGenerator;
+import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
+import net.minecraft.world.gen.chunk.StructuresConfig;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.logging.Logger;
 
-public class TerraFabricPlugin implements TerraPlugin {
+public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
+    private static final GeneratorType TERRA = new GeneratorType("terra") {
+        @Override
+        protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
+            FlatChunkGeneratorConfig config = new FlatChunkGeneratorConfig(
+                    new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
+            config.updateLayerBlocks();
+            return new FlatChunkGenerator(config);
+        }
+    };
+    private final Logger logger = Logger.getLogger("Terra");
+    private final ItemHandle itemHandle = new FabricItemHandle();
+    private final WorldHandle worldHandle = new FabricWorldHandle();
+    private final ConfigRegistry registry = new ConfigRegistry();
+
     @Override
     public WorldHandle getWorldHandle() {
-        return null;
+        return worldHandle;
     }
 
     @Override
@@ -31,7 +60,7 @@ public class TerraFabricPlugin implements TerraPlugin {
 
     @Override
     public Logger getLogger() {
-        return null;
+        return logger;
     }
 
     @Override
@@ -41,7 +70,12 @@ public class TerraFabricPlugin implements TerraPlugin {
 
     @Override
     public File getDataFolder() {
-        return null;
+        try {
+            return new File(new File(TerraFabricPlugin.class.getProtectionDomain().getCodeSource().getLocation()
+                    .toURI()), "terra");
+        } catch(URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -56,7 +90,7 @@ public class TerraFabricPlugin implements TerraPlugin {
 
     @Override
     public ConfigRegistry getRegistry() {
-        return null;
+        return registry;
     }
 
     @Override
@@ -66,11 +100,19 @@ public class TerraFabricPlugin implements TerraPlugin {
 
     @Override
     public ItemHandle getItemHandle() {
-        return null;
+        return itemHandle;
     }
 
     @Override
     public void register(TypeRegistry registry) {
+
+    }
+
+    @Override
+    public void onInitialize() {
+        logger.info("Initializing Terra...");
+        GeneratorTypeAccessor.getValues().add(TERRA);
+        registry.loadAll(this);
 
     }
 }

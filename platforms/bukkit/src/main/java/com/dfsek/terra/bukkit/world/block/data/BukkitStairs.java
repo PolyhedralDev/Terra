@@ -3,14 +3,13 @@ package com.dfsek.terra.bukkit.world.block.data;
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.data.Stairs;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
-import org.bukkit.block.data.BlockData;
 
 public class BukkitStairs extends BukkitBlockData implements Stairs {
     private final org.bukkit.block.data.type.Stairs stairs;
 
-    public BukkitStairs(BlockData delegate) {
+    public BukkitStairs(org.bukkit.block.data.type.Stairs delegate) {
         super(delegate);
-        this.stairs = (org.bukkit.block.data.type.Stairs) delegate;
+        this.stairs = delegate;
     }
 
     @Override
