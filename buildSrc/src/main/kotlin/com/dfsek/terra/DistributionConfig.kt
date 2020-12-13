@@ -24,6 +24,7 @@ fun Project.configureDistribution() {
             downloadPack(netherPackUrl, project)
         }
     }
+    tasks["processResources"].dependsOn(downloadDefaultPacks)
 
     tasks.register<Jar>("sourcesJar") {
         archiveClassifier.set("sources")

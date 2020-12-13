@@ -1,6 +1,6 @@
 import com.dfsek.terra.configureCommon
+import com.dfsek.terra.gitClone
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import java.io.ByteArrayOutputStream
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.file.Files
@@ -107,12 +107,4 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-}
-
-fun gitClone(name: String) {
-    val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine = mutableListOf("git", "clone", name)
-        standardOutput = stdout
-    }
 }
