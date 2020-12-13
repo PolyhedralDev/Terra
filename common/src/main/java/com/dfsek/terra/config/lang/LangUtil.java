@@ -29,7 +29,10 @@ public final class LangUtil {
             Debug.error("Report this to Terra!");
         }
         try {
-            language = new Language(new File(main.getDataFolder(), "lang" + File.separator + langID + ".yml"));
+            File file1 = new File(file, langID + ".yml");
+            logger.info(file1.getAbsolutePath());
+            language = new Language(file1);
+            logger.info("Loaded language " + langID);
         } catch(IOException e) {
             logger.severe("Unable to load language: " + langID);
             e.printStackTrace();

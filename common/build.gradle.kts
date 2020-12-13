@@ -15,6 +15,7 @@ dependencies {
     api("com.scireum:parsii:1.2.1")
     api("com.dfsek:Tectonic:1.0.3")
     api("net.jafama:jafama:2.3.2")
+    api("org.yaml:snakeyaml:1.27")
 
     compileOnly("com.googlecode.json-simple:json-simple:1.1")
 

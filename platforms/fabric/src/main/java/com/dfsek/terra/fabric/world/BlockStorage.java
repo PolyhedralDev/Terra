@@ -1,8 +1,9 @@
 package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.fabric.world.handles.FabricWorldAccess;
 import net.minecraft.block.Block;
-import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class BlockStorage {
     private final Block block;
@@ -21,8 +22,8 @@ public class BlockStorage {
         return location;
     }
 
-    public World getWorld() {
-        return ((FabricWorld) location.getWorld()).getHandle();
+    public WorldAccess getWorld() {
+        return ((FabricWorldAccess) location.getWorld()).getHandle();
     }
 
 

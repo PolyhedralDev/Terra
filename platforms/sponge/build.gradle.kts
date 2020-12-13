@@ -16,6 +16,3 @@ dependencies {
 
     compileOnly("org.spongepowered:spongeapi:7.2.0")
 }
-
-tasks.named<ShadowJar>("shadowJar") {
-}

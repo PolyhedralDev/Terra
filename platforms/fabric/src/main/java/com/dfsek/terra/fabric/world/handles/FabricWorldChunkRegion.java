@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world;
+package com.dfsek.terra.fabric.world.handles;
 
 import com.dfsek.terra.api.generic.Entity;
 import com.dfsek.terra.api.generic.Tree;
@@ -7,26 +7,27 @@ import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import net.minecraft.world.ChunkRegion;
 
 import java.io.File;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class FabricWorld implements World {
-    private final net.minecraft.world.World delegate;
+public class FabricWorldChunkRegion implements World {
+    private final ChunkRegion delegate;
 
-    public FabricWorld(net.minecraft.world.World delegate) {
+    public FabricWorldChunkRegion(ChunkRegion delegate) {
         this.delegate = delegate;
     }
 
     @Override
     public long getSeed() {
-        return 1234;
+        return delegate.getSeed();
     }
 
     @Override
     public int getMaxHeight() {
-        return delegate.getDimensionHeight();
+        return delegate.getHeight();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class FabricWorld implements World {
 
     @Override
     public String getName() {
-        return delegate.toString();
+        return null;
     }
 
     @Override
@@ -80,7 +81,7 @@ public class FabricWorld implements World {
     }
 
     @Override
-    public net.minecraft.world.World getHandle() {
-        return delegate;
+    public Object getHandle() {
+        return null;
     }
 }

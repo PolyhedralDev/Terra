@@ -106,6 +106,11 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
         return Arrays.asList(new CavePopulator(main), new StructurePopulator(main), popMan);
     }
 
+    @Override
+    public TerraPlugin getMain() {
+        return main;
+    }
+
 
     @Override
     @SuppressWarnings({"try"})
