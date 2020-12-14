@@ -23,8 +23,8 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Handl
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
         BukkitWorld bukkitWorld = new BukkitWorld(world);
-
-        return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome), new BukkitChunkGenerator.BukkitChunkData(createChunkData(world))).getHandle();
+        delegate.generateBiomes(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome));
+        return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkGenerator.BukkitChunkData(createChunkData(world))).getHandle();
     }
 
     @Override

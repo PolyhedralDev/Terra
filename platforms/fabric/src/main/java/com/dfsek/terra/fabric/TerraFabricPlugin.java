@@ -23,6 +23,8 @@ import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.world.GeneratorType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -127,7 +129,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o))
-                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> new FabricBiome());
+                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> {
+                    String id = (String) o;
+                    if(!id.contains(":")) id = "minecraft:" + id.toLowerCase();
+                    Identifier identifier = new Identifier(id);
+                    logger.info("Registering Vanilla biome: " + o.toString() + " with ID " + identifier + "/" + id);
+                    Biome biome = BuiltinRegistries.BIOME.get(identifier);
+                    logger.info("Found " + biome + " in registry.");
+                    return new FabricBiome(biome);
+                });
     }
 
     @Override

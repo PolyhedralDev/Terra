@@ -114,7 +114,7 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
 
     @Override
     @SuppressWarnings({"try"})
-    public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome, ChunkGenerator.ChunkData chunk) {
+    public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkGenerator.ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.gaea.biome.BiomeGrid grid = tw.getGrid();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
@@ -177,18 +177,24 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                     }
                 }
             }
-            int xOrig = (chunkX << 4);
-            int zOrig = (chunkZ << 4);
-            for(int x = 0; x < 4; x++) {
-                for(byte z = 0; z < 4; z++) {
-                    int cx = xOrig + (x << 2);
-                    int cz = zOrig + (z << 2);
-                    Biome b = grid.getBiome(cx, cz, GenerationPhase.PALETTE_APPLY);
 
-                    biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
-                }
-            }
             return chunk;
+        }
+    }
+
+    @Override
+    public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
+        int xOrig = (chunkX << 4);
+        int zOrig = (chunkZ << 4);
+        com.dfsek.terra.api.gaea.biome.BiomeGrid grid = main.getWorld(world).getGrid();
+        for(int x = 0; x < 4; x++) {
+            for(byte z = 0; z < 4; z++) {
+                int cx = xOrig + (x << 2);
+                int cz = zOrig + (z << 2);
+                Biome b = grid.getBiome(cx, cz, GenerationPhase.PALETTE_APPLY);
+
+                biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
+            }
         }
     }
 

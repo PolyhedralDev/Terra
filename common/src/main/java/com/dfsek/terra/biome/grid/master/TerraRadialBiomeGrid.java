@@ -16,19 +16,17 @@ import net.jafama.FastMath;
 
 public class TerraRadialBiomeGrid extends TerraBiomeGrid {
     private static final int failNum = 0;
-    private final BiomeZone zone;
     private final double radiusSq;
     private final BiomeGrid internal;
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
 
     public TerraRadialBiomeGrid(long seed, double freq1, double freq2, BiomeZone zone, ConfigPack c, double radius, BiomeGrid internal) {
-        super(seed, freq1, freq2, 0, 0);
+        super(seed, freq1, freq2, 0, 0, zone);
         ConfigPackTemplate t = c.getTemplate();
         if(c.getTemplate().isBlend()) {
             perturb = new CoordinatePerturb(t.getBlendFreq(), t.getBlendAmp(), seed);
         }
-        this.zone = zone;
         if(c.getTemplate().isErode()) {
             erode = new ErosionNoise(t.getErodeFreq(), t.getErodeThresh(), t.getErodeOctaves(), seed);
         }

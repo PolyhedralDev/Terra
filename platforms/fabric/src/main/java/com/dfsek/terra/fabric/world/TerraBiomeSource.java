@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,6 +9,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.gen.feature.StructureFeature;
 
 import java.util.stream.Collectors;
 
@@ -19,13 +21,13 @@ public class TerraBiomeSource extends BiomeSource {
 
     private final Registry<Biome> biomeRegistry;
     private final long seed;
-    private final TerraPlugin main;
+    private final TerraBiomeGrid grid;
 
     public TerraBiomeSource(Registry<Biome> biomes, long seed) {
         super(biomes.stream().collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.main = TerraFabricPlugin.getInstance();
+        this.grid = new TerraBiomeGrid.TerraBiomeGridBuilder(seed, TerraFabricPlugin.getInstance().getRegistry().get("DEFAULT"), TerraFabricPlugin.getInstance()).build();
     }
 
     @Override
@@ -40,6 +42,14 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        return null;
+        FabricBiome biome = ((FabricBiome) grid.getBiome(biomeX * 4, biomeZ * 4, GenerationPhase.BASE).getVanillaBiome());
+        return biome.getHandle();
     }
+
+    @Override
+    public boolean hasStructureFeature(StructureFeature<?> feature) {
+        return false;
+    }
+
+
 }

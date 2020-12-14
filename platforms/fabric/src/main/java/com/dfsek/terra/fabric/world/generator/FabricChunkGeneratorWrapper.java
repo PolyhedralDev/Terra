@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric.world.generator;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.Handle;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.world.FabricBiomeGrid;
+import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.FabricSeededWorldAccess;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.mojang.serialization.Codec;
@@ -14,7 +14,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -24,15 +23,18 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handle {
     private final long seed;
     private final TerraChunkGenerator delegate;
+    private final TerraBiomeSource biomeSource;
     private final Codec<FabricChunkGeneratorWrapper> codec = RecordCodecBuilder.create(instance -> instance.group(
-            BiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
+            TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
             Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
 
-    public FabricChunkGeneratorWrapper(BiomeSource biomeSource, long seed) {
+    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed) {
         super(biomeSource, new StructuresConfig(false));
+
         this.delegate = new TerraChunkGenerator(TerraFabricPlugin.getInstance().getRegistry().get("DEFAULT"), TerraFabricPlugin.getInstance());
         delegate.getMain().getLogger().info("Loading world...");
+        this.biomeSource = biomeSource;
 
         this.seed = seed;
     }
@@ -49,7 +51,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
 
     @Override
     public ChunkGenerator withSeed(long seed) {
-        return new FabricChunkGeneratorWrapper(this.biomeSource.withSeed(seed), seed);
+        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed);
     }
 
     @Override
@@ -59,7 +61,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
 
     @Override
     public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-        delegate.generateChunkData(new FabricSeededWorldAccess(world, seed, this), new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricBiomeGrid(), new FabricChunkData(chunk));
+        FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(world, seed, this);
+        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
     }
 
     @Override
