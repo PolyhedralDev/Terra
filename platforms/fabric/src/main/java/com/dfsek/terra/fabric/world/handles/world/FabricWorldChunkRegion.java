@@ -70,6 +70,17 @@ public class FabricWorldChunkRegion implements World {
     }
 
     @Override
+    public int hashCode() {
+        return delegate.generator.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof FabricWorldChunkRegion)) return false;
+        return ((FabricWorldChunkRegion) obj).delegate.generator.equals(delegate.generator);
+    }
+
+    @Override
     public Block getBlockAt(Location l) {
         return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
