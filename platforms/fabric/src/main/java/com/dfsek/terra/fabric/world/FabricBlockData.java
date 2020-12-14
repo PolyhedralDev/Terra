@@ -13,17 +13,21 @@ public class FabricBlockData implements BlockData {
 
     @Override
     public MaterialData getMaterial() {
-        return null;
+        return new FabricMaterialData(delegate.getBlock());
     }
 
     @Override
     public boolean matches(MaterialData materialData) {
-        return false;
+        return ((FabricMaterialData) materialData).getHandle().is(delegate.getBlock());
     }
 
     @Override
     public BlockData clone() {
-        return null;
+        try {
+            return (BlockData) super.clone();
+        } catch(CloneNotSupportedException e) {
+            throw new Error(e);
+        }
     }
 
     @Override

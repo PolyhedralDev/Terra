@@ -37,7 +37,7 @@ public class FabricWorldHandle implements WorldHandle {
 
     @Override
     public MaterialData createMaterialData(String data) {
-        return new FabricMaterialData(createBlockData(data).getHandle().getMaterial());
+        return new FabricMaterialData(createBlockData(data).getHandle().getBlock());
     }
 
     @Override

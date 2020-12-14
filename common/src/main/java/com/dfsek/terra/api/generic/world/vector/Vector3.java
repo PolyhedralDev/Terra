@@ -298,7 +298,7 @@ public class Vector3 implements Cloneable {
     public Vector3 subtract(int x, int y, int z) {
         this.x -= x;
         this.y -= y;
-        this.z = -z;
+        this.z -= z;
         return this;
     }
 

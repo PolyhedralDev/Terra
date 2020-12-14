@@ -7,7 +7,9 @@ import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.fabric.world.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 
 import java.io.File;
@@ -64,12 +66,13 @@ public class FabricSeededWorldAccess implements World {
 
     @Override
     public Block getBlockAt(int x, int y, int z) {
-        return null;
+        BlockPos pos = new BlockPos(x, y, z);
+        return new FabricBlock(handle.worldAccess.getBlockState(pos), pos, handle.worldAccess);
     }
 
     @Override
     public Block getBlockAt(Location l) {
-        return null;
+        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
     @Override

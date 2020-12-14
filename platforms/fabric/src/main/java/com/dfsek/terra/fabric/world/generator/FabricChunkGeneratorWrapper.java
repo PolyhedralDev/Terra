@@ -11,6 +11,7 @@ import com.dfsek.terra.fabric.world.handles.world.FabricWorldChunkRegion;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
+import com.dfsek.terra.population.OrePopulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -40,6 +41,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
     private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
+    private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed) {
         super(biomeSource, new StructuresConfig(false));
 
@@ -87,8 +89,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
         FabricWorldChunkRegion chunkRegion = new FabricWorldChunkRegion(region, this);
         FabricChunkRegionChunk regionChunk = new FabricChunkRegionChunk(region);
         cavePopulator.populate(chunkRegion, pop, regionChunk);
+        orePopulator.populate(chunkRegion, pop, regionChunk);
         floraPopulator.populate(chunkRegion, pop, regionChunk);
-        // Nope
     }
 
     @Override
