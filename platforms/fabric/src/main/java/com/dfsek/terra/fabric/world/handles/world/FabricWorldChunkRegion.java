@@ -66,7 +66,7 @@ public class FabricWorldChunkRegion implements World {
     @Override
     public Block getBlockAt(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        return new FabricBlock(delegate.chunk.getBlockState(pos), pos, delegate.chunk);
+        return new FabricBlock(pos, delegate.chunk);
     }
 
     @Override

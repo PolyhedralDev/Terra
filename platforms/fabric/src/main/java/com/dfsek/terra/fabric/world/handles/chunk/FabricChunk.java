@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world;
+package com.dfsek.terra.fabric.world.handles.chunk;
 
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;

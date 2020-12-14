@@ -37,7 +37,7 @@ public class FabricChunkRegionChunk implements Chunk {
     @Override
     public Block getBlock(int x, int y, int z) {
         BlockPos pos = new BlockPos(x + this.x, y, z + this.z);
-        return new FabricBlock(chunkRegion.getBlockState(pos), pos, chunkRegion);
+        return new FabricBlock(pos, chunkRegion);
     }
 
     @Override

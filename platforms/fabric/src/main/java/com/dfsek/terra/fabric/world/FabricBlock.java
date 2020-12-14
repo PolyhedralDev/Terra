@@ -6,14 +6,13 @@ import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 
 public class FabricBlock implements Block {
     private final Handle delegate;
 
-    public FabricBlock(BlockState state, BlockPos position, WorldAccess worldAccess) {
+    public FabricBlock(BlockPos position, WorldAccess worldAccess) {
         this.delegate = new Handle(position, worldAccess);
     }
 
@@ -35,7 +34,7 @@ public class FabricBlock implements Block {
     @Override
     public Block getRelative(BlockFace face, int len) {
         BlockPos newPos = delegate.position.add(face.getModX() * len, face.getModY() * len, face.getModZ() * len);
-        return new FabricBlock(delegate.worldAccess.getBlockState(newPos), newPos, delegate.worldAccess);
+        return new FabricBlock(newPos, delegate.worldAccess);
     }
 
     @Override

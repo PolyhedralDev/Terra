@@ -67,7 +67,7 @@ public class FabricSeededWorldAccess implements World {
     @Override
     public Block getBlockAt(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        return new FabricBlock(handle.worldAccess.getBlockState(pos), pos, handle.worldAccess);
+        return new FabricBlock(pos, handle.worldAccess);
     }
 
     @Override
