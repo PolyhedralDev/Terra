@@ -34,4 +34,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     void reload();
 
     ItemHandle getItemHandle();
+
+    void saveDefaultConfig();
 }

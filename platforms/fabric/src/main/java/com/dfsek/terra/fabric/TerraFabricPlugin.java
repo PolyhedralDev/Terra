@@ -29,9 +29,11 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -122,6 +124,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
+    public void saveDefaultConfig() {
+        try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
+            FileUtils.copyInputStreamToFile(stream, new File(getDataFolder(), "config.yml"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
         registry
@@ -139,11 +150,22 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public void onInitialize() {
         instance = this;
-        plugin.load(this);
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
+        saveDefaultConfig();
+        plugin.load(this);
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
         registry.loadAll(this);
+
+        /*
+        registry.forEach(config -> {
+            String pack = config.getTemplate().getID().toLowerCase();
+            config.getBiomeRegistry().forEach(terraBiome -> {
+                Biome biome = (new Biome.Builder()).build();
+                Registry.register(BuiltinRegistries.BIOME, new Identifier("terra",  pack + "_" + terraBiome.getID().toLowerCase()), biome);
+            });
+        });
+         */
 
         if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)) {
             GeneratorTypeAccessor.getValues().add(new GeneratorType("terra") {
