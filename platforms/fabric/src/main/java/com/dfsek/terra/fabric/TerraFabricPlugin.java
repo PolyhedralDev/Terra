@@ -15,16 +15,13 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
-import com.dfsek.terra.fabric.world.FabricMaterialData;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.ConfigRegistry;
-import com.dfsek.terra.util.MaterialSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -141,18 +138,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public void onInitialize() {
-        MaterialSet set = new MaterialSet();
-
-        set.add(new FabricMaterialData(Blocks.STONE));
-        set.add(new FabricMaterialData(Blocks.DIRT));
-
-        System.out.println("Contains: " + set.contains(new FabricMaterialData(Blocks.AIR)));
-        System.out.println("Contains: " + set.contains(new FabricMaterialData(Blocks.STONE)));
-
-        System.out.println("Matches: " + new FabricMaterialData(Blocks.STONE).matches(new FabricMaterialData(Blocks.STONE)));
-        System.out.println("Matches: " + new FabricMaterialData(Blocks.STONE).matches(new FabricMaterialData(Blocks.DIRT)));
-
-
         instance = this;
         plugin.load(this);
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");

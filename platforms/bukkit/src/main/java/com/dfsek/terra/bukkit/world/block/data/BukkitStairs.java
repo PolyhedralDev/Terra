@@ -5,50 +5,48 @@ import com.dfsek.terra.api.generic.world.block.data.Stairs;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 
 public class BukkitStairs extends BukkitBlockData implements Stairs {
-    private final org.bukkit.block.data.type.Stairs stairs;
 
     public BukkitStairs(org.bukkit.block.data.type.Stairs delegate) {
         super(delegate);
-        this.stairs = delegate;
     }
 
     @Override
     public Shape getShape() {
-        return BukkitEnumAdapter.fromBukkitStair(stairs.getShape());
+        return BukkitEnumAdapter.fromBukkitStair(((org.bukkit.block.data.type.Stairs) super.getHandle()).getShape());
     }
 
     @Override
     public void setShape(Shape shape) {
-        stairs.setShape(TerraEnumAdapter.fromTerraStair(shape));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setShape(TerraEnumAdapter.fromTerraStair(shape));
     }
 
     @Override
     public Half getHalf() {
-        return BukkitEnumAdapter.fromBukkitHalf(stairs.getHalf());
+        return BukkitEnumAdapter.fromBukkitHalf(((org.bukkit.block.data.type.Stairs) super.getHandle()).getHalf());
     }
 
     @Override
     public void setHalf(Half half) {
-        stairs.setHalf(TerraEnumAdapter.fromTerraHalf(half));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setHalf(TerraEnumAdapter.fromTerraHalf(half));
     }
 
     @Override
     public BlockFace getFacing() {
-        return BukkitEnumAdapter.fromBukkitBlockFace(stairs.getFacing());
+        return BukkitEnumAdapter.fromBukkitBlockFace(((org.bukkit.block.data.type.Stairs) super.getHandle()).getFacing());
     }
 
     @Override
     public void setFacing(BlockFace facing) {
-        stairs.setFacing(TerraEnumAdapter.fromTerraBlockFace(facing));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setFacing(TerraEnumAdapter.fromTerraBlockFace(facing));
     }
 
     @Override
     public boolean isWaterlogged() {
-        return stairs.isWaterlogged();
+        return ((org.bukkit.block.data.type.Stairs) super.getHandle()).isWaterlogged();
     }
 
     @Override
     public void setWaterlogged(boolean waterlogged) {
-        stairs.setWaterlogged(waterlogged);
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setWaterlogged(waterlogged);
     }
 }

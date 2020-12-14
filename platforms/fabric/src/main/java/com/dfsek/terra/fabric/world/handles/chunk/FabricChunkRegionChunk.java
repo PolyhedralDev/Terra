@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric.world.handles.chunk;
 import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
-import com.dfsek.terra.fabric.world.FabricBlock;
+import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;

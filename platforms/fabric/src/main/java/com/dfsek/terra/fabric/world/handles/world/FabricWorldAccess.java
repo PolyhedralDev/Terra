@@ -7,8 +7,9 @@ import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
-import com.dfsek.terra.fabric.world.FabricBlock;
+import com.dfsek.terra.fabric.world.block.FabricBlock;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.WorldAccess;
 
 import java.io.File;
@@ -24,7 +25,7 @@ public class FabricWorldAccess implements World {
 
     @Override
     public long getSeed() {
-        return 1234; // TODO: actually implement this
+        return ((StructureWorldAccess) delegate).getSeed();
     }
 
     @Override

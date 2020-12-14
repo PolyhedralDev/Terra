@@ -11,14 +11,21 @@ import com.dfsek.terra.api.generic.generator.ChunkGenerator;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.generic.world.block.BlockFace;
+import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.generic.world.block.data.Bisected;
+import com.dfsek.terra.api.generic.world.block.data.Slab;
+import com.dfsek.terra.api.generic.world.block.data.Stairs;
+import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.util.PaletteUtil;
-import com.dfsek.terra.util.SlabUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Random;
 
 public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generator.TerraChunkGenerator {
@@ -26,11 +33,15 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
 
     private final ConfigPack configPack;
     private final TerraPlugin main;
+    private final MaterialData water;
+    private final SinglePalette<BlockData> blank;
 
 
     public TerraChunkGenerator(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
+        water = main.getWorldHandle().createMaterialData("minecraft:water");
+        blank = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:air"));
     }
 
     @Override
@@ -110,20 +121,20 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                                 data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
                                 chunk.setBlock(x, y, z, data);
                                 if(paletteLevel == 0 && c.doSlabs() && y < 255) {
-                                    SlabUtil.prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector3(x, y + 1, z), c.getSlabPalettes(),
+                                    prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector3(x, y + 1, z), c.getSlabPalettes(),
                                             c.getStairPalettes(), c.getSlabThreshold(), sampler);
                                 }
                                 paletteLevel++;
                             } else if(y <= sea) {
                                 chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
                                 if(justSet && c.doSlabs()) {
-                                    SlabUtil.prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                                    prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                                 }
                                 justSet = false;
                                 paletteLevel = 0;
                             } else {
                                 if(justSet && c.doSlabs()) {
-                                    SlabUtil.prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                                    prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                                 }
                                 justSet = false;
                                 paletteLevel = 0;
@@ -135,6 +146,67 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
 
             return chunk;
         }
+    }
+
+    private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
+                                       Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+        if(sampler.sample(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
+            if(stairs != null) {
+                Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
+                if(stairPalette != null) {
+                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
+                    Stairs stairNew = (Stairs) stair;
+                    if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
+                }
+            }
+            BlockData slab = slabs.getOrDefault(down.getMaterial(), blank).get(0, block.getBlockX(), block.getBlockZ());
+            if(slab instanceof Waterlogged) {
+                ((Waterlogged) slab).setWaterlogged(orig.matches(water));
+            } else if(orig.matches(water)) return;
+            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
+        }
+    }
+
+    private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
+                                         Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+        if(sampler.sample(block.getBlockX(), block.getBlockY() + 0.4, block.getBlockZ()) > thresh) {
+            if(stairs != null) {
+                Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
+                if(stairPalette != null) {
+                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
+                    Stairs stairNew = (Stairs) stair.clone();
+                    stairNew.setHalf(Bisected.Half.TOP);
+                    if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
+                }
+            }
+            BlockData slab = slabs.getOrDefault(up.getMaterial(), blank).get(0, block.getBlockX(), block.getBlockZ()).clone();
+            if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
+            if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
+            if(slab instanceof Waterlogged) {
+                ((Waterlogged) slab).setWaterlogged(orig.matches(water));
+            } else if(orig.matches(water)) return; // Only replace water if waterlogged.
+            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
+        }
+    }
+
+    private boolean placeStair(BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
+
+        if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+
+            stairNew.setFacing(BlockFace.WEST);
+        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.55) > thresh) {
+            stairNew.setFacing(BlockFace.NORTH);
+        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.55) > thresh) {
+            stairNew.setFacing(BlockFace.SOUTH);
+        } else if(sampler.sample(block.getBlockX() + 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+            stairNew.setFacing(BlockFace.EAST);
+        } else stairNew = null;
+        if(stairNew != null) {
+            if(orig.matches(water)) stairNew.setWaterlogged(orig.matches(water));
+            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
+            return true;
+        }
+        return false;
     }
 
     @Override

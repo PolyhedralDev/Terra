@@ -5,9 +5,15 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.fabric.world.block.FabricBlockData;
+import com.dfsek.terra.fabric.world.block.FabricMaterialData;
+import com.dfsek.terra.fabric.world.block.data.FabricStairs;
+import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.block.BlockState;
 import net.minecraft.command.argument.BlockArgumentParser;
+import net.minecraft.state.property.Properties;
 
 public class FabricWorldHandle implements WorldHandle {
     @Override
@@ -29,7 +35,11 @@ public class FabricWorldHandle implements WorldHandle {
     public FabricBlockData createBlockData(String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
-            return new FabricBlockData(parser.parse(true).getBlockState());
+            BlockState state = parser.parse(true).getBlockState();
+            if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
+            if(state.contains(Properties.STAIR_SHAPE)) return new FabricStairs(state);
+            if(state.contains(Properties.WATERLOGGED)) return new FabricWaterlogged(state);
+            return new FabricBlockData(state);
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException(e);
         }
