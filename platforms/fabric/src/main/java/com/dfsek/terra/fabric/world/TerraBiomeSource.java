@@ -5,6 +5,7 @@ import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
@@ -43,8 +44,9 @@ public class TerraBiomeSource extends BiomeSource {
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
         FabricBiome biome = ((FabricBiome) grid.getBiome(biomeX * 4, biomeZ * 4, GenerationPhase.BASE).getVanillaBiome());
-        return biome.getHandle();
+        return biomeRegistry.get(BuiltinRegistries.BIOME.getRawId(biome.getHandle()));
     }
+
 
     @Override
     public boolean hasStructureFeature(StructureFeature<?> feature) {
