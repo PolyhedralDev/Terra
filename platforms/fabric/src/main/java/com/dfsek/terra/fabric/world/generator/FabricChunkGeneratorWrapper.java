@@ -3,6 +3,7 @@ package com.dfsek.terra.fabric.world.generator;
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.Handle;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.chunk.FabricChunkRegionChunk;
@@ -35,17 +36,26 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     private final long seed;
     private final TerraChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;
+    public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
+            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
+    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getRegistry()::get))));
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
-            Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed))
+            Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),
+            PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
+    private final ConfigPack pack;
+
+
     private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
-    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed) {
-        super(biomeSource, new StructuresConfig(false));
 
-        this.delegate = new TerraChunkGenerator(TerraFabricPlugin.getInstance().getRegistry().get("DEFAULT"), TerraFabricPlugin.getInstance());
+    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
+        super(biomeSource, new StructuresConfig(false));
+        this.pack = configPack;
+
+        this.delegate = new TerraChunkGenerator(configPack, TerraFabricPlugin.getInstance());
         delegate.getMain().getLogger().info("Loading world...");
         this.biomeSource = biomeSource;
 
@@ -64,7 +74,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
 
     @Override
     public ChunkGenerator withSeed(long seed) {
-        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed);
+        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
     @Override
