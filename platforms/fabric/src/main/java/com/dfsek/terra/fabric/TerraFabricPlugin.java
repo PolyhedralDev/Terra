@@ -20,6 +20,7 @@ import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.world.generator.TerraChunkGeneratorCodec;
 import com.dfsek.terra.registry.ConfigRegistry;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.world.GeneratorType;
@@ -29,28 +30,14 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
-import net.minecraft.world.gen.chunk.StructuresConfig;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private static TerraFabricPlugin instance;
-    private final GeneratorType TERRA = new GeneratorType("terra") {
-        @Override
-        protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-            FlatChunkGeneratorConfig config = new FlatChunkGeneratorConfig(
-                    new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
-            config.updateLayerBlocks();
-
-
-            return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed), seed);
-        }
-    };
     private final TerraChunkGeneratorCodec chunkGeneratorCodec = new TerraChunkGeneratorCodec(this);
 
     public static TerraFabricPlugin getInstance() {
@@ -63,6 +50,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private File config;
+
+    {
+        logger.setLevel(Level.INFO);
+    }
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -133,9 +124,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     String id = (String) o;
                     if(!id.contains(":")) id = "minecraft:" + id.toLowerCase();
                     Identifier identifier = new Identifier(id);
-                    logger.info("Registering Vanilla biome: " + o.toString() + " with ID " + identifier + "/" + id);
                     Biome biome = BuiltinRegistries.BIOME.get(identifier);
-                    logger.info("Found " + biome + " in registry.");
                     return new FabricBiome(biome);
                 });
     }
@@ -146,8 +135,18 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
-        GeneratorTypeAccessor.getValues().add(TERRA);
         registry.loadAll(this);
+
+        if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)) {
+            GeneratorTypeAccessor.getValues().add(new GeneratorType("terra") {
+                @Override
+                protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
+                    return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed), seed);
+                }
+            });
+        }
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
     }
 
     public TerraChunkGeneratorCodec getChunkGeneratorCodec() {

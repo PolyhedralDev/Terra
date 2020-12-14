@@ -2,6 +2,7 @@ package com.dfsek.terra.fabric.world.generator;
 
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.Handle;
+import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.FabricSeededWorldAccess;
@@ -10,11 +11,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.structure.StructureManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -24,7 +30,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     private final long seed;
     private final TerraChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;
-    private final Codec<FabricChunkGeneratorWrapper> codec = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
             Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
@@ -46,7 +52,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
 
     @Override
     protected Codec<? extends ChunkGenerator> getCodec() {
-        return codec;
+        return CODEC;
     }
 
     @Override
@@ -63,6 +69,29 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
         FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(world, seed, this);
         delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
+    }
+
+    @Override
+    public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
+        // No caves
+    }
+
+    @Override
+    public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
+        for(TerraBlockPopulator populator : delegate.getPopulators()) {
+            //populator.populate();
+        }
+        // Nope
+    }
+
+    @Override
+    public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) {
+
+    }
+
+    @Override
+    public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
+        return false;
     }
 
     @Override
