@@ -12,17 +12,17 @@ import net.minecraft.command.argument.BlockArgumentParser;
 public class FabricWorldHandle implements WorldHandle {
     @Override
     public void setBlockData(Block block, BlockData data, boolean physics) {
-
+        block.setBlockData(data, physics);
     }
 
     @Override
     public BlockData getBlockData(Block block) {
-        return null;
+        return block.getBlockData();
     }
 
     @Override
     public MaterialData getType(Block block) {
-        return null;
+        return block.getType();
     }
 
     @Override

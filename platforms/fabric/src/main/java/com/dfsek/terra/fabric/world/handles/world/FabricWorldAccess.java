@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world.handles;
+package com.dfsek.terra.fabric.world.handles.world;
 
 import com.dfsek.terra.api.generic.Entity;
 import com.dfsek.terra.api.generic.Tree;

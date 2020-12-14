@@ -45,4 +45,14 @@ public class FabricMaterialData implements MaterialData {
     public Material getHandle() {
         return delegate;
     }
+
+    @Override
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return delegate.equals(obj);
+    }
 }

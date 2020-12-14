@@ -5,71 +5,87 @@ import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldAccess;
 
 public class FabricBlock implements Block {
-    private final BlockStorage delegate;
+    private final Handle delegate;
 
-    public FabricBlock(BlockStorage block) {
-        this.delegate = block;
+    public FabricBlock(BlockState state, BlockPos position, WorldAccess worldAccess) {
+        this.delegate = new Handle(state, position, worldAccess);
     }
 
     @Override
     public void setBlockData(BlockData data, boolean physics) {
-        delegate.getWorld().setBlockState(FabricAdapters.fromVector(delegate.getLocation().getVector()), ((FabricBlockData) data).getHandle(), 0, 0);
+        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), 0, 0);
     }
 
     @Override
     public BlockData getBlockData() {
-        return null;
+        return new FabricBlockData(delegate.worldAccess.getBlockState(delegate.position));
     }
 
     @Override
     public Block getRelative(BlockFace face) {
-        return null;
+        return getRelative(face, 1);
     }
 
     @Override
     public Block getRelative(BlockFace face, int len) {
-        return null;
+        return new FabricBlock(delegate.state, delegate.position.add(face.getModX(), face.getModY(), face.getModZ()), delegate.worldAccess);
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return delegate.state.isAir();
     }
 
     @Override
     public Location getLocation() {
-        return delegate.getLocation();
+        return FabricAdapters.toVector(delegate.position).toLocation(new FabricWorldAccess(delegate.worldAccess));
     }
 
     @Override
     public MaterialData getType() {
-        return null;
+        return new FabricMaterialData(delegate.state.getMaterial());
     }
 
     @Override
     public int getX() {
-        return delegate.getLocation().getBlockX();
+        return delegate.position.getX();
     }
 
     @Override
     public int getZ() {
-        return delegate.getLocation().getBlockZ();
+        return delegate.position.getZ();
     }
 
     @Override
     public int getY() {
-        return delegate.getLocation().getBlockY();
+        return delegate.position.getY();
     }
 
     @Override
     public boolean isPassable() {
-        return false;
+        return delegate.state.isAir();
     }
 
     @Override
-    public BlockStorage getHandle() {
+    public Handle getHandle() {
         return delegate;
+    }
+
+    public static final class Handle {
+        private final BlockState state;
+        private final BlockPos position;
+        private final WorldAccess worldAccess;
+
+        public Handle(BlockState state, BlockPos position, WorldAccess worldAccess) {
+            this.state = state;
+            this.position = position;
+            this.worldAccess = worldAccess;
+        }
     }
 }

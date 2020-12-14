@@ -50,9 +50,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private File config;
+    private final PluginConfig plugin;
 
     {
         logger.setLevel(Level.INFO);
+        plugin = new PluginConfig();
     }
 
     @Override
@@ -77,7 +79,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public PluginConfig getTerraConfig() {
-        return null;
+        return plugin;
     }
 
     @Override
@@ -132,6 +134,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public void onInitialize() {
         instance = this;
+        plugin.load(this);
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");

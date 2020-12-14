@@ -1,12 +1,16 @@
 package com.dfsek.terra.fabric.world.generator;
 
+import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.Handle;
 import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
-import com.dfsek.terra.fabric.world.handles.FabricSeededWorldAccess;
+import com.dfsek.terra.fabric.world.handles.chunk.FabricChunkRegionChunk;
+import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
+import com.dfsek.terra.fabric.world.handles.world.FabricWorldChunkRegion;
 import com.dfsek.terra.generation.TerraChunkGenerator;
+import com.dfsek.terra.population.CavePopulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -34,7 +38,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
             TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
             Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
-
+    private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed) {
         super(biomeSource, new StructuresConfig(false));
 
@@ -79,7 +83,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     @Override
     public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
         for(TerraBlockPopulator populator : delegate.getPopulators()) {
-            //populator.populate();
+            FastRandom pop = new FastRandom(MathUtil.getCarverChunkSeed(region.getCenterChunkX(), region.getCenterChunkZ(), seed));
+            cavePopulator.populate(new FabricWorldChunkRegion(region, this), pop, new FabricChunkRegionChunk(region));
         }
         // Nope
     }
