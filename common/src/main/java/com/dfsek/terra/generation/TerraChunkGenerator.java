@@ -4,71 +4,33 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.gaea.biome.Biome;
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.ChunkInterpolator3;
-import com.dfsek.terra.api.gaea.population.PopulationManager;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
-import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.api.gaea.world.palette.Palette;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
-import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.generic.world.BiomeGrid;
-import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.population.CavePopulator;
-import com.dfsek.terra.population.FloraPopulator;
-import com.dfsek.terra.population.OrePopulator;
-import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.population.TreePopulator;
 import com.dfsek.terra.util.PaletteUtil;
 import com.dfsek.terra.util.SlabUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
 
 public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generator.TerraChunkGenerator {
-    private static final Map<World, PopulationManager> popMap = new HashMap<>();
-    private final PopulationManager popMan;
+
+
     private final ConfigPack configPack;
     private final TerraPlugin main;
-    private boolean needsLoad = true;
+
 
     public TerraChunkGenerator(ConfigPack c, TerraPlugin main) {
-        popMan = new PopulationManager(main);
         this.configPack = c;
         this.main = main;
-        popMan.attach(new OrePopulator(main));
-        popMan.attach(new TreePopulator(main));
-        popMan.attach(new FloraPopulator(main));
-    }
-
-    public static synchronized void saveAll() {
-        for(Map.Entry<World, PopulationManager> e : popMap.entrySet()) {
-            try {
-                e.getValue().saveBlocks(e.getKey());
-                Debug.info("Saved data for world " + e.getKey().getName());
-            } catch(IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-    }
-
-    public static synchronized void fixChunk(Chunk c) {
-        if(!(c.getWorld().getGenerator() instanceof TerraChunkGenerator)) throw new IllegalArgumentException();
-        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
     @Override
@@ -102,15 +64,9 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
     }
 
     @Override
-    public List<TerraBlockPopulator> getPopulators() {
-        return Arrays.asList(new CavePopulator(main), new StructurePopulator(main), popMan);
-    }
-
-    @Override
     public TerraPlugin getMain() {
         return main;
     }
-
 
     @Override
     @SuppressWarnings({"try"})
@@ -121,7 +77,6 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
             ChunkInterpolator3 interp;
             try(ProfileFuture ignored = tw.getProfiler().measure("ChunkBaseGenTime")) {
                 interp = new ChunkInterpolator3(world, chunkX, chunkZ, tw.getGrid());
-                if(needsLoad) load(world); // Load population data for world.
 
                 if(!tw.isSafe()) return chunk;
                 int xOrig = (chunkX << 4);
@@ -196,21 +151,5 @@ public class TerraChunkGenerator implements com.dfsek.terra.api.generic.generato
                 biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
             }
         }
-    }
-
-    public void attachProfiler(WorldProfiler p) {
-        popMan.attachProfiler(p);
-    }
-
-    private void load(World w) {
-        try {
-            popMan.loadBlocks(w);
-        } catch(FileNotFoundException e) {
-            LangUtil.log("warning.no-population", Level.WARNING);
-        } catch(IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        popMap.put(w, popMan);
-        needsLoad = false;
     }
 }
