@@ -36,10 +36,13 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
+    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
     private static TerraFabricPlugin instance;
     private final TerraChunkGeneratorCodec chunkGeneratorCodec = new TerraChunkGeneratorCodec(this);
 
@@ -72,7 +75,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return new TerraWorld(world, getRegistry().get("DEFAULT"), this);
+        return worldMap.computeIfAbsent(world.getSeed(), w -> {
+            logger.info("Loading world " + w);
+            return new TerraWorld(world, getRegistry().get("DEFAULT"), this);
+        });
     }
 
     @Override

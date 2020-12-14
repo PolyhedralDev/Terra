@@ -40,7 +40,7 @@ public class FabricWorldChunkRegion implements World {
 
     @Override
     public String getName() {
-        return getWorldFolder().getName();
+        return delegate.chunk.toString();
     }
 
     @Override
