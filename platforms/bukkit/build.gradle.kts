@@ -23,14 +23,14 @@ repositories {
 }
 
 dependencies {
-    api(project(":common"))
+    "shadedApi"(project(":common"))
 
-    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
-    implementation("io.papermc:paperlib:1.0.5")
+    "compileOnly"("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
+    "shadedImplementation"("io.papermc:paperlib:1.0.5")
 
-    implementation("org.bstats:bstats-bukkit:1.7")
+    "shadedImplementation"("org.bstats:bstats-bukkit:1.7")
 
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
+    "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
 }
 
 tasks.withType<ProcessResources> {

@@ -9,5 +9,5 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.jengelman.gradle.plugins:shadow:+")
+    "implementation"("com.github.jengelman.gradle.plugins:shadow:+")
 }
