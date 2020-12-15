@@ -1,16 +1,31 @@
 import com.dfsek.terra.configureCommon
+import net.fabricmc.loom.LoomGradleExtension
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "Fabric"
+            url = uri("https://maven.fabricmc.net/")
+        }
+    }
+//    dependencies {
+//        classpath("net.fabricmc:fabric-loom:+")
+//    }
+}
 
 plugins {
-    id("fabric-loom").version("0.5-SNAPSHOT")
+    id("fabric-loom").version("0.5.9")
     `java-library`
 }
+//apply(plugin = "fabric-loom")
 
 configureCommon()
 
 group = "com.dfsek.terra.fabric"
 
 
-minecraft {
+configure<LoomGradleExtension> {
     accessWidener("src/main/resources/terra.accesswidener")
 }
 
