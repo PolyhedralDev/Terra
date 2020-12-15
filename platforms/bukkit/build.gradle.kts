@@ -1,4 +1,6 @@
-import java.io.ByteArrayOutputStream
+import com.dfsek.terra.configureCommon
+import com.dfsek.terra.gitClone
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.file.Files
@@ -6,11 +8,9 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 plugins {
-    java
-    maven
-    idea
-    id("com.github.johnrengelman.shadow")
+    `java-library`
 }
+configureCommon()
 
 group = "com.dfsek.terra.bukkit"
 
@@ -23,27 +23,14 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    implementation(project(":common"))
-    implementation("org.apache.commons:commons-rng-core:1.3")
+    "shadedApi"(project(":common"))
 
-    compileOnly("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
-    implementation("io.papermc:paperlib:1.0.5")
+    "compileOnly"("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
+    "shadedImplementation"("io.papermc:paperlib:1.0.5")
 
-    implementation("com.scireum:parsii:1.2.1")
-    implementation("com.dfsek:Tectonic:1.0.3")
-    implementation("net.jafama:jafama:2.3.2")
+    "shadedImplementation"("org.bstats:bstats-bukkit:1.7")
 
-    compileOnly("com.googlecode.json-simple:json-simple:1.1")
-
-    implementation("com.google.guava:guava:30.0-jre")
-    implementation("org.bstats:bstats-bukkit:1.7")
-
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
-
-    compileOnly("org.jetbrains:annotations:20.1.0")
-
+    "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
 }
 
 tasks.withType<ProcessResources> {
@@ -58,7 +45,7 @@ tasks.withType<ProcessResources> {
 val testDir = "target/server/"
 
 val setupServer = tasks.create("setupServer") {
-    dependsOn(tasks.shadowJar)
+    dependsOn("shadowJar")
     doFirst {
         // clean
         file("${testDir}/").deleteRecursively()
@@ -93,7 +80,7 @@ val setupServer = tasks.create("setupServer") {
 
 val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     standardInput = System.`in`
-    dependsOn(tasks.shadowJar)
+    dependsOn("shadowJar")
     // Copy Terra into dir
     doFirst {
         copy {
@@ -117,25 +104,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     classpath = files("${testDir}/paper.jar")
 }
 
-tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-
-    archiveClassifier.set("")
-    archiveBaseName.set("Terra")
-    setVersion(project.version)
-    relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
+tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
-    relocate("parsii", "com.dfsek.terra.lib.parsii")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-    relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-    relocate("com.dfsek.tectonic", "com.dfsek.terra.lib.tectonic")
-    relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-    minimize()
-}
-
-fun gitClone(name: String) {
-    val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine = mutableListOf("git", "clone", name)
-        standardOutput = stdout
-    }
 }
