@@ -7,6 +7,8 @@ import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricMaterialData;
+import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
+import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
 import com.mojang.brigadier.StringReader;
@@ -14,6 +16,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.state.property.Properties;
+
+import java.util.Arrays;
 
 public class FabricWorldHandle implements WorldHandle {
     @Override
@@ -38,6 +42,9 @@ public class FabricWorldHandle implements WorldHandle {
             BlockState state = parser.parse(true).getBlockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
             if(state.contains(Properties.STAIR_SHAPE)) return new FabricStairs(state);
+            if(state.contains(Properties.SLAB_TYPE)) return new FabricSlab(state);
+            if(state.getProperties().containsAll(Arrays.asList(Properties.NORTH, Properties.SOUTH, Properties.EAST, Properties.WEST)))
+                return new FabricMultipleFacing(state);
             if(state.contains(Properties.WATERLOGGED)) return new FabricWaterlogged(state);
             return new FabricBlockData(state);
         } catch(CommandSyntaxException e) {

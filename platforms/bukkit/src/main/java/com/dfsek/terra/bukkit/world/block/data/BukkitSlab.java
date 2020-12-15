@@ -1,23 +1,10 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.generic.world.block.data.Slab;
-import com.dfsek.terra.api.generic.world.block.data.Waterlogged;
-import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
-import org.bukkit.block.data.BlockData;
 
-public class BukkitSlab extends BukkitBlockData implements Slab {
-    public BukkitSlab(BlockData delegate) {
+public class BukkitSlab extends BukkitWaterlogged implements Slab {
+    public BukkitSlab(org.bukkit.block.data.type.Slab delegate) {
         super(delegate);
-    }
-
-    @Override
-    public boolean isWaterlogged() {
-        return ((Waterlogged) getHandle()).isWaterlogged();
-    }
-
-    @Override
-    public void setWaterlogged(boolean waterlogged) {
-        ((Waterlogged) getHandle()).setWaterlogged(waterlogged);
     }
 
     @Override

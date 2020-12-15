@@ -2,8 +2,10 @@ package com.dfsek.terra.fabric.world.block.data;
 
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.data.Bisected;
+import com.dfsek.terra.api.generic.world.block.data.Slab;
 import com.dfsek.terra.api.generic.world.block.data.Stairs;
 import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.math.Direction;
 
@@ -50,6 +52,19 @@ public final class FabricEnumAdapter {
                 return BlockFace.NORTH;
             case SOUTH:
                 return BlockFace.SOUTH;
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    public static Slab.Type fromFabricSlabType(SlabType type) {
+        switch(type) {
+            case BOTTOM:
+                return Slab.Type.BOTTOM;
+            case TOP:
+                return Slab.Type.TOP;
+            case DOUBLE:
+                return Slab.Type.DOUBLE;
             default:
                 throw new IllegalStateException();
         }
