@@ -6,12 +6,19 @@ import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.Random;
 
 public class SpruceTree extends FractalTree {
     private final TreeGeometry geo;
+
+    @Override
+    public MaterialSet getSpawnable() {
+        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:podzol"),
+                main.getWorldHandle().createMaterialData("minecraft:grass_block"));
+    }
 
     /**
      * Instantiates a TreeGrower at an origin location.

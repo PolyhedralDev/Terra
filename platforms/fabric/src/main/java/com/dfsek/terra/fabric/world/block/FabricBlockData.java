@@ -24,7 +24,7 @@ public class FabricBlockData implements BlockData {
     @Override
     public BlockData clone() {
         try {
-            return (BlockData) super.clone();
+            return (FabricBlockData) super.clone();
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }

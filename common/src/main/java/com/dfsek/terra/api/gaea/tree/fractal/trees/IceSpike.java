@@ -8,6 +8,7 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
 
@@ -15,6 +16,14 @@ import java.util.Random;
 public class IceSpike extends FractalTree {
     private final TreeGeometry geo;
     private final ProbabilityCollection<BlockData> ice;
+
+    @Override
+    public MaterialSet getSpawnable() {
+        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:stone"),
+                main.getWorldHandle().createMaterialData("minecraft:gravel"),
+                main.getWorldHandle().createMaterialData("minecraft:snow_block"),
+                main.getWorldHandle().createMaterialData("minecraft:grass_block"));
+    }
 
     /**
      * Instantiates a TreeGrower at an origin location.

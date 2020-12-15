@@ -8,6 +8,7 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.Random;
@@ -16,6 +17,11 @@ public class SmallShatteredTree extends FractalTree {
     private final TreeGeometry geo;
     private final ProbabilityCollection<BlockData> bark;
     private final ProbabilityCollection<BlockData> leaves;
+
+    @Override
+    public MaterialSet getSpawnable() {
+        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:end_stone"));
+    }
 
     /**
      * Instantiates a TreeGrower at an origin location.

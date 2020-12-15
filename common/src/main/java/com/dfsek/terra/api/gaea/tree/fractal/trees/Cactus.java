@@ -4,10 +4,17 @@ import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
 
 public class Cactus extends FractalTree {
+    @Override
+    public MaterialSet getSpawnable() {
+        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:sand"),
+                main.getWorldHandle().createMaterialData("minecraft:red_sand"));
+    }
+
     /**
      * Instantiates a TreeGrower at an origin location.
      *

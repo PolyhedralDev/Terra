@@ -6,6 +6,7 @@ import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.util.MaterialSet;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +19,11 @@ import java.util.function.Consumer;
 public abstract class FractalTree {
     private final Map<Location, BlockData> treeAssembler = new HashMap<>();
     private final List<EntitySpawnHolder> entities = new GlueList<>();
-    private final Location origin;
-    private final Random random;
-    private final TerraPlugin main;
+    protected final Location origin;
+    protected final Random random;
+    protected final TerraPlugin main;
+
+    public abstract MaterialSet getSpawnable();
 
     /**
      * Instantiates a TreeGrower at an origin location.

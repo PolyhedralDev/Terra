@@ -4,10 +4,17 @@ import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.generic.TerraPlugin;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
 
 public class SmallShatteredPillar extends FractalTree {
+
+    @Override
+    public MaterialSet getSpawnable() {
+        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:end_stone"));
+    }
+
     /**
      * Instantiates a TreeGrower at an origin location.
      *
