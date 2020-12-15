@@ -77,7 +77,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     @Override
     public void onDisable() {
-        TerraChunkGenerator.saveAll();
+        BukkitChunkGeneratorWrapper.saveAll();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
 
         long save = config.getDataSaveInterval();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, TerraChunkGenerator::saveAll, save, save); // Schedule population data saving
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, BukkitChunkGeneratorWrapper::saveAll, save, save); // Schedule population data saving
 
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this); // Register master event listener
         Bukkit.getPluginManager().registerEvents(new SpigotListener(this), this); // Register Spigot event listener, once Paper accepts StructureLocateEvent PR Spigot and Paper events will be separate.

@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world.handles;
+package com.dfsek.terra.fabric.world.handles.world;
 
 import com.dfsek.terra.api.generic.Entity;
 import com.dfsek.terra.api.generic.Tree;
@@ -7,49 +7,50 @@ import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkRegion;
 
 import java.io.File;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class FabricSeededWorldAccess implements World {
+public class FabricWorldChunkRegion implements World {
+    private final Handle delegate;
 
-    private final Handle handle;
-
-    public FabricSeededWorldAccess(WorldAccess access, long seed, net.minecraft.world.gen.chunk.ChunkGenerator generator) {
-        this.handle = new Handle(access, seed, generator);
+    public FabricWorldChunkRegion(ChunkRegion delegate, net.minecraft.world.gen.chunk.ChunkGenerator generator) {
+        this.delegate = new Handle(delegate, generator);
     }
 
     @Override
     public long getSeed() {
-        return handle.getSeed();
+        return delegate.getChunk().getSeed();
     }
 
     @Override
     public int getMaxHeight() {
-        return handle.getWorldAccess().getDimensionHeight();
+        return delegate.getChunk().getHeight();
     }
 
     @Override
     public ChunkGenerator getGenerator() {
-        return new FabricChunkGenerator(handle.getGenerator());
+        return new FabricChunkGenerator(delegate.getGenerator());
     }
 
     @Override
     public String getName() {
-        return handle.toString(); // TODO: implementation
+        return delegate.chunk.toString();
     }
 
     @Override
     public UUID getUID() {
-        return UUID.randomUUID(); // TODO: implementation
+        return UUID.randomUUID();
     }
 
     @Override
     public boolean isChunkGenerated(int x, int z) {
-        return false;
+        return delegate.chunk.isChunkLoaded(x, z);
     }
 
     @Override
@@ -64,12 +65,24 @@ public class FabricSeededWorldAccess implements World {
 
     @Override
     public Block getBlockAt(int x, int y, int z) {
-        return null;
+        BlockPos pos = new BlockPos(x, y, z);
+        return new FabricBlock(pos, delegate.chunk);
+    }
+
+    @Override
+    public int hashCode() {
+        return delegate.generator.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof FabricWorldChunkRegion)) return false;
+        return ((FabricWorldChunkRegion) obj).delegate.generator.equals(delegate.generator);
     }
 
     @Override
     public Block getBlockAt(Location l) {
-        return null;
+        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
     @Override
@@ -83,18 +96,16 @@ public class FabricSeededWorldAccess implements World {
     }
 
     @Override
-    public Handle getHandle() {
-        return handle;
+    public Object getHandle() {
+        return null;
     }
 
-    public static class Handle {
-        private final WorldAccess worldAccess;
-        private final long seed;
+    public static final class Handle {
+        private final ChunkRegion chunk;
         private final net.minecraft.world.gen.chunk.ChunkGenerator generator;
 
-        public Handle(WorldAccess worldAccess, long seed, net.minecraft.world.gen.chunk.ChunkGenerator generator) {
-            this.worldAccess = worldAccess;
-            this.seed = seed;
+        public Handle(ChunkRegion chunk, net.minecraft.world.gen.chunk.ChunkGenerator generator) {
+            this.chunk = chunk;
             this.generator = generator;
         }
 
@@ -102,12 +113,8 @@ public class FabricSeededWorldAccess implements World {
             return generator;
         }
 
-        public long getSeed() {
-            return seed;
-        }
-
-        public WorldAccess getWorldAccess() {
-            return worldAccess;
+        public ChunkRegion getChunk() {
+            return chunk;
         }
     }
 }

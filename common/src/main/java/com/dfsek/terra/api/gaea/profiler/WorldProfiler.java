@@ -21,7 +21,6 @@ public class WorldProfiler {
                 .addMeasurement(new Measurement(2000000, DataType.PERIOD_MILLISECONDS), "PopulationManagerTime");
         isProfiling = false;
         this.world = w;
-        w.getGenerator().getTerraGenerator().attachProfiler(this);
     }
 
     public String getResultsFormatted() {

@@ -229,4 +229,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry);
     }
+
+    public BiomeRegistry getBiomeRegistry() {
+        return biomeRegistry;
+    }
 }

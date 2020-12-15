@@ -1,7 +1,6 @@
 package com.dfsek.terra.config.builder.biomegrid;
 
 import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 
@@ -12,8 +11,8 @@ public class UserDefinedGridBuilder implements BiomeGridBuilder {
     private Biome[][] biomes;
 
     @Override
-    public UserDefinedGrid build(World world, ConfigPack config) {
-        return new UserDefinedGrid(world, 1D / xFreq, 1D / zFreq, biomes, config);
+    public UserDefinedGrid build(long seed, ConfigPack config) {
+        return new UserDefinedGrid(seed, 1D / xFreq, 1D / zFreq, biomes, config);
     }
 
     public double getXFreq() {

@@ -3,6 +3,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.generic.world.block.BlockFace;
 import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 
 /**
@@ -77,6 +78,19 @@ public final class TerraEnumAdapter {
                 return org.bukkit.block.BlockFace.NORTH_NORTH_EAST;
             case SOUTH_SOUTH_EAST:
                 return org.bukkit.block.BlockFace.SOUTH_SOUTH_EAST;
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    public static Slab.Type fromTerraSlabType(com.dfsek.terra.api.generic.world.block.data.Slab.Type type) {
+        switch(type) {
+            case TOP:
+                return Slab.Type.TOP;
+            case DOUBLE:
+                return Slab.Type.DOUBLE;
+            case BOTTOM:
+                return Slab.Type.BOTTOM;
             default:
                 throw new IllegalStateException();
         }

@@ -1,13 +1,14 @@
-package com.dfsek.terra.fabric.world;
+package com.dfsek.terra.fabric.world.block;
 
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import net.minecraft.block.Material;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 
 public class FabricMaterialData implements MaterialData {
-    private final Material delegate;
+    private final Block delegate;
 
-    public FabricMaterialData(Material delegate) {
+    public FabricMaterialData(Block delegate) {
         this.delegate = delegate;
     }
 
@@ -23,12 +24,12 @@ public class FabricMaterialData implements MaterialData {
 
     @Override
     public boolean isSolid() {
-        return delegate.isSolid();
+        return !delegate.is(Blocks.AIR);
     }
 
     @Override
     public boolean isAir() {
-        return delegate.blocksMovement(); // TODO: better impl
+        return delegate.is(Blocks.AIR); // TODO: better impl
     }
 
     @Override
@@ -38,11 +39,25 @@ public class FabricMaterialData implements MaterialData {
 
     @Override
     public BlockData createBlockData() {
-        return null;
+        return new FabricBlockData(delegate.getDefaultState());
     }
 
     @Override
-    public Material getHandle() {
+    public Block getHandle() {
         return delegate;
+    }
+
+
+    @Override
+    public int hashCode() {
+        return delegate.asItem().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof FabricMaterialData) {
+            return ((FabricMaterialData) obj).matches(this);
+        }
+        return false;
     }
 }

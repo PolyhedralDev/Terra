@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world.handles;
+package com.dfsek.terra.fabric.world.handles.world;
 
 import com.dfsek.terra.api.generic.Entity;
 import com.dfsek.terra.api.generic.Tree;
@@ -7,27 +7,30 @@ import com.dfsek.terra.api.generic.world.Chunk;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
-import net.minecraft.world.ChunkRegion;
+import com.dfsek.terra.fabric.world.block.FabricBlock;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.world.WorldAccess;
 
 import java.io.File;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class FabricWorldChunkRegion implements World {
-    private final ChunkRegion delegate;
+public class FabricWorldAccess implements World {
+    private final WorldAccess delegate;
 
-    public FabricWorldChunkRegion(ChunkRegion delegate) {
+    public FabricWorldAccess(WorldAccess delegate) {
         this.delegate = delegate;
     }
 
     @Override
     public long getSeed() {
-        return delegate.getSeed();
+        return ((StructureWorldAccess) delegate).getSeed();
     }
 
     @Override
     public int getMaxHeight() {
-        return delegate.getHeight();
+        return delegate.getDimensionHeight();
     }
 
     @Override
@@ -37,7 +40,7 @@ public class FabricWorldChunkRegion implements World {
 
     @Override
     public String getName() {
-        return null;
+        return delegate.toString();
     }
 
     @Override
@@ -62,12 +65,13 @@ public class FabricWorldChunkRegion implements World {
 
     @Override
     public Block getBlockAt(int x, int y, int z) {
-        return null;
+        BlockPos pos = new BlockPos(x, y, z);
+        return new FabricBlock(pos, delegate);
     }
 
     @Override
     public Block getBlockAt(Location l) {
-        return null;
+        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
     @Override
@@ -81,7 +85,7 @@ public class FabricWorldChunkRegion implements World {
     }
 
     @Override
-    public Object getHandle() {
-        return null;
+    public WorldAccess getHandle() {
+        return delegate;
     }
 }

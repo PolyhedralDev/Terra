@@ -4,7 +4,7 @@ import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 
 public class BukkitBlockData implements BlockData {
-    private final org.bukkit.block.data.BlockData delegate;
+    private org.bukkit.block.data.BlockData delegate;
 
     public BukkitBlockData(org.bukkit.block.data.BlockData delegate) {
         this.delegate = delegate;
@@ -29,7 +29,9 @@ public class BukkitBlockData implements BlockData {
     @Override
     public BukkitBlockData clone() {
         try {
-            return (BukkitBlockData) super.clone();
+            BukkitBlockData n = (BukkitBlockData) super.clone();
+            n.delegate = delegate.clone();
+            return n;
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }

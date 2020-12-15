@@ -85,7 +85,7 @@ public class CavePopulator implements TerraBlockPopulator {
                     Location mut = l.clone();
                     MaterialData orig = handle.getType(l.getBlock());
                     do mut.subtract(0, 1, 0);
-                    while(handle.getType(mut.getBlock()).equals(orig));
+                    while(mut.getY() > 0 && handle.getType(mut.getBlock()).equals(orig));
                     try {
                         if(template.getShift().get(entry.getValue()).contains(mut.getBlock().getType())) {
                             handle.setBlockData(mut.getBlock(), shiftStorage.computeIfAbsent(entry.getValue(), MaterialData::createBlockData), false);

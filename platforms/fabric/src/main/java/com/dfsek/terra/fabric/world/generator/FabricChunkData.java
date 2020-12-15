@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.world.generator;
 
 import com.dfsek.terra.api.generic.generator.ChunkGenerator;
 import com.dfsek.terra.api.generic.world.block.BlockData;
-import com.dfsek.terra.fabric.world.FabricBlockData;
+import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.NotNull;

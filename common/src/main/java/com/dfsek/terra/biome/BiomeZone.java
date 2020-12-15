@@ -3,7 +3,6 @@ package com.dfsek.terra.biome;
 import com.dfsek.terra.api.gaea.biome.BiomeGrid;
 import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
-import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.image.ImageLoader;
@@ -22,8 +21,8 @@ public class BiomeZone {
     private final boolean useImage;
     private final ImageLoader.Channel channel;
 
-    public BiomeZone(World w, ConfigPack wc, BiomeGrid[] grids) {
-        this.noise = new FastNoiseLite((int) w.getSeed() + 2);
+    public BiomeZone(long seed, ConfigPack wc, BiomeGrid[] grids) {
+        this.noise = new FastNoiseLite((int) seed + 2);
         this.noise.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         this.noise.setFractalType(FastNoiseLite.FractalType.FBm);
         this.noise.setFractalOctaves(4);

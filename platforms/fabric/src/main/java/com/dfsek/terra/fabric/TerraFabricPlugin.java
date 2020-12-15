@@ -16,39 +16,33 @@ import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
+import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.world.generator.TerraChunkGeneratorCodec;
 import com.dfsek.terra.registry.ConfigRegistry;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.world.GeneratorType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.VanillaLayeredBiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
-import net.minecraft.world.gen.chunk.StructuresConfig;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Optional;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
-    private static TerraFabricPlugin instance;
-    private final GeneratorType TERRA = new GeneratorType("terra") {
-        @Override
-        protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-            FlatChunkGeneratorConfig config = new FlatChunkGeneratorConfig(
-                    new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
-            config.updateLayerBlocks();
 
-            return new FabricChunkGeneratorWrapper(new VanillaLayeredBiomeSource(seed, false, false, biomeRegistry), seed);
-        }
-    };
-    private final TerraChunkGeneratorCodec chunkGeneratorCodec = new TerraChunkGeneratorCodec(this);
+    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
+    private static TerraFabricPlugin instance;
 
     public static TerraFabricPlugin getInstance() {
         return instance;
@@ -60,6 +54,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private File config;
+    private final PluginConfig plugin;
+
+    {
+        logger.setLevel(Level.INFO);
+        plugin = new PluginConfig();
+    }
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -73,7 +73,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return new TerraWorld(world, getRegistry().get("DEFAULT"), this);
+        return worldMap.computeIfAbsent(world.getSeed(), w -> {
+            logger.info("Loading world " + w);
+            return new TerraWorld(world, getRegistry().get("DEFAULT"), this);
+        });
     }
 
     @Override
@@ -83,7 +86,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public PluginConfig getTerraConfig() {
-        return null;
+        return plugin;
     }
 
     @Override
@@ -121,25 +124,58 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
+    public void saveDefaultConfig() {
+        try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
+            FileUtils.copyInputStreamToFile(stream, new File(getDataFolder(), "config.yml"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o))
-                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> new FabricBiome());
+                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> {
+                    String id = (String) o;
+                    if(!id.contains(":")) id = "minecraft:" + id.toLowerCase();
+                    Identifier identifier = new Identifier(id);
+                    Biome biome = BuiltinRegistries.BIOME.get(identifier);
+                    return new FabricBiome(biome);
+                });
     }
 
     @Override
     public void onInitialize() {
         instance = this;
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
+        saveDefaultConfig();
+        plugin.load(this);
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
-        GeneratorTypeAccessor.getValues().add(TERRA);
         registry.loadAll(this);
-    }
 
-    public TerraChunkGeneratorCodec getChunkGeneratorCodec() {
-        return chunkGeneratorCodec;
+        /*
+        registry.forEach(config -> {
+            String pack = config.getTemplate().getID().toLowerCase();
+            config.getBiomeRegistry().forEach(terraBiome -> {
+                Biome biome = (new Biome.Builder()).build();
+                Registry.register(BuiltinRegistries.BIOME, new Identifier("terra",  pack + "_" + terraBiome.getID().toLowerCase()), biome);
+            });
+        });
+         */
+
+        if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)) {
+            GeneratorTypeAccessor.getValues().add(new GeneratorType("terra") {
+                @Override
+                protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
+                    return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed), seed, registry.get("DEFAULT"));
+                }
+            });
+        }
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
     }
 }

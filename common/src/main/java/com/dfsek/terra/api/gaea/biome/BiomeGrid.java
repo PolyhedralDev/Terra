@@ -2,24 +2,21 @@ package com.dfsek.terra.api.gaea.biome;
 
 import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
-import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.vector.Location;
 
 public abstract class BiomeGrid {
     private final FastNoiseLite noiseX;
     private final FastNoiseLite noiseZ;
-    private final World world;
     private final int sizeX;
     private final int sizeZ;
     private Biome[][] grid;
 
 
-    public BiomeGrid(World w, double freq1, double freq2, int sizeX, int sizeZ) {
+    public BiomeGrid(long seed, double freq1, double freq2, int sizeX, int sizeZ) {
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
-        this.world = w;
-        this.noiseX = new FastNoiseLite((int) w.getSeed());
-        this.noiseZ = new FastNoiseLite((int) w.getSeed() + 1);
+        this.noiseX = new FastNoiseLite((int) seed);
+        this.noiseZ = new FastNoiseLite((int) seed + 1);
         this.noiseX.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         this.noiseX.setFractalType(FastNoiseLite.FractalType.FBm);
         this.noiseX.setFractalOctaves(4);
@@ -94,10 +91,6 @@ public abstract class BiomeGrid {
         double biomeNoise = noiseX.getNoise(l.getBlockX(), l.getBlockZ());
         double climateNoise = noiseZ.getNoise(l.getBlockX(), l.getBlockZ());
         return grid[normalize(biomeNoise, sizeX)][normalize(climateNoise, sizeZ)];
-    }
-
-    public World getWorld() {
-        return world;
     }
 
     public int getSizeX() {
