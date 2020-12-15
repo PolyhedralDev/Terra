@@ -10,6 +10,8 @@ import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.translator.MapTransform;
+import com.dfsek.terra.api.translator.Transformer;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
@@ -29,6 +31,10 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.HugeMushroomFeature;
+import net.minecraft.world.gen.feature.TreeFeature;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -150,12 +156,34 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public void onInitialize() {
         instance = this;
+
+        Map<Identifier, Feature<?>> treeFeatureMap = new HashMap<>();
+        BuiltinRegistries.CONFIGURED_FEATURE.stream().filter(feature ->
+                feature.feature instanceof TreeFeature
+                        || feature.feature instanceof HugeMushroomFeature).forEach(tree -> System.out.println(BuiltinRegistries.CONFIGURED_FEATURE.getId(tree)));
+
+        Transformer<String, ConfiguredFeature<?, ?>> treeTransformer = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
+                .addTransform(id -> BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse(id)))
+                .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
+                        .add("BROWN_MUSHROOM", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_brown_mushroom")))
+                        .add("RED_MUSHROOM", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_red_mushroom")))
+                        .add("JUNGLE", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:mega_jungle_tree")))
+                        .add("JUNGLE_COCOA", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree_no_vine")))
+                        .add("LARGE_OAK", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:fancy_oak")))
+                        .add("LARGE_SPRUCE", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:pine")))
+                        .add("SMALL_JUNGLE", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree")))
+                        .add("SWAMP_OAK", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:oak")))
+                        .add("TALL_BIRCH", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:birch"))))
+                .addTransform(id -> BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:" + id.toLowerCase()))).build();
+        ((FabricWorldHandle) worldHandle).setTreeTransformer(treeTransformer);
+
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();
         plugin.load(this);
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
         registry.loadAll(this);
+
 
         /*
         registry.forEach(config -> {

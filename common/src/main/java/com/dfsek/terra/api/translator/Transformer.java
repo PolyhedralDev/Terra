@@ -32,7 +32,10 @@ public class Transformer<F, T> {
             }
         }
         StringBuilder exBuilder = new StringBuilder("Could not transform input; all attempts failed: ").append(from.toString()).append("\n");
-        for(Exception exception : exceptions) exBuilder.append(exception.getMessage()).append("\n");
+        for(Exception exception : exceptions) {
+            exBuilder.append(exception.getMessage()).append("\n");
+            exception.printStackTrace();
+        }
         throw new AttemptsFailedException(exBuilder.toString());
     }
 

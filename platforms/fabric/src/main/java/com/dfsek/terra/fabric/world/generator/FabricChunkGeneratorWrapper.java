@@ -13,6 +13,7 @@ import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
+import com.dfsek.terra.population.TreePopulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -50,6 +51,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
+    private final TreePopulator treePopulator = new TreePopulator(TerraFabricPlugin.getInstance());
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
