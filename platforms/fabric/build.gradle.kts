@@ -31,6 +31,8 @@ configure<LoomGradleExtension> {
 
 dependencies {
     "shadedApi"(project(":common"))
+    "shadedImplementation"("org.yaml:snakeyaml:1.27")
+    "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
 
 
     // To change the versions see the gradle.properties file
