@@ -35,6 +35,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.HugeMushroomFeature;
 import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -153,6 +154,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 });
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onInitialize() {
         instance = this;
@@ -162,19 +164,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 feature.feature instanceof TreeFeature
                         || feature.feature instanceof HugeMushroomFeature).forEach(tree -> System.out.println(BuiltinRegistries.CONFIGURED_FEATURE.getId(tree)));
 
-        Transformer<String, ConfiguredFeature<?, ?>> treeTransformer = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
-                .addTransform(id -> BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse(id)))
-                .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
-                        .add("BROWN_MUSHROOM", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_brown_mushroom")))
-                        .add("RED_MUSHROOM", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_red_mushroom")))
-                        .add("JUNGLE", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:mega_jungle_tree")))
-                        .add("JUNGLE_COCOA", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree_no_vine")))
-                        .add("LARGE_OAK", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:fancy_oak")))
-                        .add("LARGE_SPRUCE", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:pine")))
-                        .add("SMALL_JUNGLE", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree")))
-                        .add("SWAMP_OAK", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:oak")))
-                        .add("TALL_BIRCH", BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:birch"))))
-                .addTransform(id -> BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:" + id.toLowerCase()))).build();
+        Transformer<String, ConfiguredFeature<TreeFeatureConfig, ?>> treeTransformer = new Transformer.Builder<String, ConfiguredFeature<TreeFeatureConfig, ?>>()
+                .addTransform(id -> (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse(id)))
+                .addTransform(new MapTransform<String, ConfiguredFeature<TreeFeatureConfig, ?>>()
+                        .add("BROWN_MUSHROOM", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_brown_mushroom")))
+                        .add("RED_MUSHROOM", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_red_mushroom")))
+                        .add("JUNGLE", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:mega_jungle_tree")))
+                        .add("JUNGLE_COCOA", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree_no_vine")))
+                        .add("LARGE_OAK", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:fancy_oak")))
+                        .add("LARGE_SPRUCE", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:pine")))
+                        .add("SMALL_JUNGLE", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree")))
+                        .add("SWAMP_OAK", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:oak")))
+                        .add("TALL_BIRCH", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:birch"))))
+                .addTransform(id -> (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:" + id.toLowerCase()))).build();
         ((FabricWorldHandle) worldHandle).setTreeTransformer(treeTransformer);
 
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
