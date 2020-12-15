@@ -15,6 +15,7 @@ public class Cactus extends FractalTree {
                 main.getWorldHandle().createMaterialData("minecraft:red_sand"));
     }
 
+
     /**
      * Instantiates a TreeGrower at an origin location.
      *

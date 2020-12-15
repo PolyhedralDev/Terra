@@ -5,12 +5,15 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.gaea.lang.Language;
 import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.generic.Tree;
 import com.dfsek.terra.api.generic.inventory.ItemHandle;
 import com.dfsek.terra.api.generic.world.Biome;
 import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.translator.MapTransform;
+import com.dfsek.terra.api.translator.Transformer;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
 import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
@@ -25,8 +28,10 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.util.StringUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.TreeType;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.ChunkGenerator;
@@ -83,6 +88,19 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public void onEnable() {
         Debug.setLogger(getLogger()); // Set debug logger.
+
+        ((BukkitWorldHandle) handle).setTreeTransformer(new Transformer.Builder<String, Tree>()
+                .addTransform(id -> new BukkitTree(TreeType.valueOf(id), this)) // First try getting directly from enum
+                .addTransform(new MapTransform<String, Tree>() // Then try map of less stupid names
+                        .add("JUNGLE_COCOA", new BukkitTree(TreeType.COCOA_TREE, this))
+                        .add("LARGE_OAK", new BukkitTree(TreeType.BIG_TREE, this))
+                        .add("LARGE_SPRUCE", new BukkitTree(TreeType.TALL_REDWOOD, this))
+                        .add("SPRUCE", new BukkitTree(TreeType.REDWOOD, this))
+                        .add("OAK", new BukkitTree(TreeType.TREE, this))
+                        .add("MEGA_SPRUCE", new BukkitTree(TreeType.MEGA_REDWOOD, this))
+                        .add("SWAMP_OAK", new BukkitTree(TreeType.SWAMP, this)))
+                .addTransform(id -> new BukkitTree(TreeType.valueOf(StringUtils.stripMinecraftNamespace(id)), this)) // Finally, try stripping minecraft namespace.
+                .build());
 
         saveDefaultConfig();
 

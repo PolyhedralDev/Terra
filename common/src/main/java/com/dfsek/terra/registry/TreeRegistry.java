@@ -3,6 +3,7 @@ package com.dfsek.terra.registry;
 import com.dfsek.terra.api.gaea.tree.Tree;
 import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.Cactus;
+import com.dfsek.terra.api.gaea.tree.fractal.trees.IceSpike;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.OakTree;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.ShatteredPillar;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.ShatteredTree;
@@ -48,6 +49,7 @@ public class TreeRegistry extends TerraRegistry<Tree> {
         addTree("SPRUCE");
         addTree("SWAMP_OAK");
         tryAdd("SMALL_SHATTERED_PILLAR", SmallShatteredPillar.class);
+        tryAdd("ICE_SPIKE", IceSpike.class);
         addTree("TALL_BIRCH");
     }
 
@@ -81,7 +83,6 @@ public class TreeRegistry extends TerraRegistry<Tree> {
         public boolean plant(Location l, Random r) {
             try {
                 FractalTree tree = constructor.newInstance(l, r, main);
-                if(!getSpawnable().contains(l.subtract(0, 1, 0).getBlock().getType())) return false;
                 tree.grow();
                 tree.plant();
                 return true;

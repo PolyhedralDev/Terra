@@ -23,16 +23,16 @@ public class Transformer<F, T> {
      * @return Result
      */
     public T translate(F from) {
-        List<TransformException> exceptions = new ArrayList<>();
+        List<Exception> exceptions = new ArrayList<>();
         for(Transform<F, T> transform : transformer) {
             try {
                 return transform.transform(from);
-            } catch(TransformException exception) {
+            } catch(Exception exception) {
                 exceptions.add(exception);
             }
         }
         StringBuilder exBuilder = new StringBuilder("Could not transform input; all attempts failed: ").append(from.toString()).append("\n");
-        for(TransformException exception : exceptions) exBuilder.append(exception.getMessage()).append("\n");
+        for(Exception exception : exceptions) exBuilder.append(exception.getMessage()).append("\n");
         throw new AttemptsFailedException(exBuilder.toString());
     }
 

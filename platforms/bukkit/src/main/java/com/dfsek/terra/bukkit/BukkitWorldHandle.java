@@ -6,6 +6,7 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.translator.Transformer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitMultipleFacing;
@@ -13,16 +14,20 @@ import com.dfsek.terra.bukkit.world.block.data.BukkitStairs;
 import com.dfsek.terra.bukkit.world.block.data.BukkitWaterlogged;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
 import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Stairs;
 
 public class BukkitWorldHandle implements WorldHandle {
     private final TerraPlugin main;
+    private Transformer<String, Tree> treeTransformer;
 
     public BukkitWorldHandle(TerraPlugin main) {
         this.main = main;
+    }
+
+    public void setTreeTransformer(Transformer<String, Tree> treeTransformer) {
+        this.treeTransformer = treeTransformer;
     }
 
     @Override
@@ -56,6 +61,6 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public Tree getTree(String id) {
-        return new BukkitTree(TreeType.valueOf(id), main);
+        return treeTransformer.translate(id);
     }
 }
