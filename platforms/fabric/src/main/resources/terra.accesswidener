@@ -1,4 +1,5 @@
 accessWidener v1 named
 
 extendable method net/minecraft/client/world/GeneratorType <init> (Ljava/lang/String;)V
-accessible field net/minecraft/server/world/ServerWorld Lnet/minecraft/world/level/ServerWorldProperties worldProperties
+accessible field net/minecraft/server/world/ServerWorld worldProperties Lnet/minecraft/world/level/ServerWorldProperties;
+mutable field net/minecraft/server/world/ServerWorld worldProperties Lnet/minecraft/world/level/ServerWorldProperties;

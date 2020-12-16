@@ -35,7 +35,7 @@ public class OrePopulator implements TerraBlockPopulator {
                     Random random = new FastRandom(MathUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
                     int originX = ((chunk.getX() + cx) << 4);
                     int originZ = ((chunk.getZ() + cz) << 4);
-                    Biome b = main.getWorld(world).getGrid().getBiome(originX + 8, originZ + 8, GenerationPhase.POPULATE);
+                    Biome b = tw.getGrid().getBiome(originX + 8, originZ + 8, GenerationPhase.POPULATE);
                     BiomeTemplate config = ((UserDefinedBiome) b).getConfig();
                     int finalCx = cx;
                     int finalCz = cz;

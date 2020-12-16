@@ -5,7 +5,7 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.translator.Transformer;
+import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricMaterialData;
 import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;

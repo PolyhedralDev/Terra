@@ -8,7 +8,9 @@ import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
+import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.WorldAccess;
 
@@ -35,12 +37,12 @@ public class FabricWorldAccess implements World {
 
     @Override
     public ChunkGenerator getGenerator() {
-        return null;
+        return new FabricChunkGenerator(((ServerWorldAccess) delegate).toServerWorld().getChunkManager().getChunkGenerator());
     }
 
     @Override
     public String getName() {
-        return delegate.toString();
+        return ((ServerWorldAccess) delegate).toServerWorld().worldProperties.getLevelName();
     }
 
     @Override

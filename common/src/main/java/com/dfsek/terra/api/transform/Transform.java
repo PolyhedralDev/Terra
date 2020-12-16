@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.translator;
+package com.dfsek.terra.api.transform;
 
 /**
  * Interface to transform data from one type to another.

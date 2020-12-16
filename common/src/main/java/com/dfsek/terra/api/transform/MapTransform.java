@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.translator;
+package com.dfsek.terra.api.transform;
 
 import java.util.HashMap;
 import java.util.Map;

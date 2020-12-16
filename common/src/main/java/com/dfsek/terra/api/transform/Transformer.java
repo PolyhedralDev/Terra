@@ -1,7 +1,10 @@
-package com.dfsek.terra.api.translator;
+package com.dfsek.terra.api.transform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class to translate types from one style/platform to another.
@@ -10,10 +13,10 @@ import java.util.List;
  * @param <T> Data type to transform to.
  */
 public class Transformer<F, T> {
-    private final List<Transform<F, T>> transformer;
+    private final LinkedHashMap<Transform<F, T>, List<Validator<T>>> transformers;
 
-    private Transformer(List<Transform<F, T>> transformer) {
-        this.transformer = transformer;
+    private Transformer(LinkedHashMap<Transform<F, T>, List<Validator<T>>> transformer) {
+        this.transformers = transformer;
     }
 
     /**
@@ -24,9 +27,15 @@ public class Transformer<F, T> {
      */
     public T translate(F from) {
         List<Exception> exceptions = new ArrayList<>();
-        for(Transform<F, T> transform : transformer) {
+        for(Map.Entry<Transform<F, T>, List<Validator<T>>> transform : transformers.entrySet()) {
             try {
-                return transform.transform(from);
+                T result = transform.getKey().transform(from);
+                for(Validator<T> validator : transform.getValue()) {
+                    if(!validator.validate(result)) {
+                        throw new TransformException("Failed to validate result: " + result.toString());
+                    }
+                }
+                return result;
             } catch(Exception exception) {
                 exceptions.add(exception);
             }
@@ -45,15 +54,16 @@ public class Transformer<F, T> {
      * @param <T>
      * @param <F>
      */
-    public static class Builder<T, F> {
-        private final List<Transform<T, F>> transforms = new ArrayList<>();
+    public static final class Builder<F, T> {
+        private final LinkedHashMap<Transform<F, T>, List<Validator<T>>> transforms = new LinkedHashMap<>();
 
-        public Builder<T, F> addTransform(Transform<T, F> transform) {
-            transforms.add(transform);
+        @SafeVarargs
+        public final Builder<F, T> addTransform(Transform<F, T> transform, Validator<T>... validators) {
+            transforms.put(transform, Arrays.asList(validators));
             return this;
         }
 
-        public Transformer<T, F> build() {
+        public final Transformer<F, T> build() {
             return new Transformer<>(transforms);
         }
     }

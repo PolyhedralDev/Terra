@@ -10,8 +10,10 @@ import com.dfsek.terra.api.generic.world.World;
 import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.translator.MapTransform;
-import com.dfsek.terra.api.translator.Transformer;
+import com.dfsek.terra.api.transform.MapTransform;
+import com.dfsek.terra.api.transform.NotNullValidator;
+import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
@@ -29,9 +31,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.HugeMushroomFeature;
 import net.minecraft.world.gen.feature.TreeFeature;
@@ -139,19 +145,42 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         }
     }
 
+    Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
+            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
+            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
+
     @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o))
-                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> {
-                    String id = (String) o;
-                    if(!id.contains(":")) id = "minecraft:" + id.toLowerCase();
-                    Identifier identifier = new Identifier(id);
-                    Biome biome = BuiltinRegistries.BIOME.get(identifier);
-                    return new FabricBiome(biome);
-                });
+                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
+    }
+
+    private Biome createBiome(UserDefinedBiome biome) {
+        SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
+        DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
+        DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
+
+        GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
+
+        return (new Biome.Builder())
+                .precipitation(Biome.Precipitation.RAIN)
+                .category(Biome.Category.NONE)
+                .depth(0.125F)
+                .scale(0.05F)
+                .temperature(0.8F)
+                .downfall(0.4F)
+                .effects((new BiomeEffects.Builder())
+                        .waterColor(0x3f76e4)
+                        .waterFogColor(0x050533)
+                        .fogColor(0xc0d8ff)
+                        .skyColor(0x77adff)
+                        .build())
+                .spawnSettings(spawnSettings.build())
+                .generationSettings(generationSettings.build())
+                .build();
     }
 
     @SuppressWarnings("unchecked")

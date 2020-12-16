@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.translator;
+package com.dfsek.terra.api.transform;
 
 public class AttemptsFailedException extends RuntimeException {
     public AttemptsFailedException() {

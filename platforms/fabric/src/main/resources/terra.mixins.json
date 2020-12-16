@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
   "client": [
-    "GeneratorTypeAccessor",
-    "MoreOptionsDialogMixin"
+    "GeneratorTypeAccessor"
   ],
   "server": [],
   "injectors": {

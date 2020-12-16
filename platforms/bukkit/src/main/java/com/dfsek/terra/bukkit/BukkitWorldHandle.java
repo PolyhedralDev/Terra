@@ -6,7 +6,7 @@ import com.dfsek.terra.api.generic.world.WorldHandle;
 import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.translator.Transformer;
+import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitMultipleFacing;
