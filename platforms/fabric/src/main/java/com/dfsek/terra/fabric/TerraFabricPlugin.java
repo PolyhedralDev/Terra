@@ -22,6 +22,7 @@ import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
+import com.dfsek.terra.fabric.world.features.FloraFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.EnvType;
@@ -32,15 +33,21 @@ import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.HugeMushroomFeature;
 import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
@@ -64,6 +71,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static TerraFabricPlugin getInstance() {
         return instance;
     }
+
+    public static final FloraFeature FLORA = new FloraFeature(DefaultFeatureConfig.CODEC);
+    public static final ConfiguredFeature<?, ?> FLORA_CONFIGURED = FLORA.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = Logger.getLogger("Terra");
@@ -175,6 +185,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
+        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FLORA_CONFIGURED);
 
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
                 .waterColor(vanilla.getWaterColor())
@@ -196,7 +207,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .scale(vanilla.getScale())
                 .temperature(0.8F)
                 .downfall(0.4F)
-                .effects(effects.build())
+                .effects(vanilla.getEffects()) // TODO: configurable
                 .spawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())
                 .build();
@@ -233,29 +244,25 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
 
-
         registry.loadAll(this);
-        registry.forEach(pack -> pack.getBiomeRegistry().forEach(biome -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, biome)), createBiome(biome)))); // Register all Terra biomes.
 
-        /*
-        registry.forEach(config -> {
-            String pack = config.getTemplate().getID().toLowerCase();
-            config.getBiomeRegistry().forEach(terraBiome -> {
-                Biome biome = (new Biome.Builder()).build();
-                Registry.register(BuiltinRegistries.BIOME, new Identifier("terra",  pack + "_" + terraBiome.getID().toLowerCase()), biome);
-            });
-        });
-         */
+        Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), FLORA);
+        RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "flora_populator"));
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), FLORA_CONFIGURED);
+
+        registry.forEach(pack -> pack.getBiomeRegistry().forEach(biome -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, biome)), createBiome(biome)))); // Register all Terra biomes.
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
         if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)) {
             GeneratorTypeAccessor.getValues().add(new GeneratorType("terra") {
                 @Override
                 protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                    return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed), seed, registry.get("DEFAULT"));
+                    ConfigPack pack = registry.get("DEFAULT");
+                    return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
                 }
             });
         }
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
+
     }
 }

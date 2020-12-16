@@ -6,7 +6,7 @@ import com.dfsek.terra.api.generic.Handle;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
-import com.dfsek.terra.fabric.world.handles.chunk.FabricChunkRegionChunk;
+import com.dfsek.terra.fabric.world.handles.chunk.FabricChunkWorldAccess;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldChunkRegion;
 import com.dfsek.terra.generation.TerraChunkGenerator;
@@ -52,6 +52,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
     private final TreePopulator treePopulator = new TreePopulator(TerraFabricPlugin.getInstance());
+
+    public FloraPopulator getFloraPopulator() {
+        return floraPopulator;
+    }
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
@@ -99,10 +103,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
         FastRandom pop = new FastRandom(MathUtil.getCarverChunkSeed(region.getCenterChunkX(), region.getCenterChunkZ(), seed));
         FabricWorldChunkRegion chunkRegion = new FabricWorldChunkRegion(region, this);
-        FabricChunkRegionChunk regionChunk = new FabricChunkRegionChunk(region);
+        FabricChunkWorldAccess regionChunk = new FabricChunkWorldAccess(region, region.getCenterChunkX(), region.getCenterChunkZ());
+        super.generateFeatures(region, accessor);
         cavePopulator.populate(chunkRegion, pop, regionChunk);
         orePopulator.populate(chunkRegion, pop, regionChunk);
-        floraPopulator.populate(chunkRegion, pop, regionChunk);
     }
 
     @Override

@@ -17,9 +17,13 @@ import net.minecraft.world.gen.feature.StructureFeature;
 import java.util.stream.Collectors;
 
 public class TerraBiomeSource extends BiomeSource {
+    public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
+            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
+    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
-            Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed))
+            Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),
+            PACK_CODEC.fieldOf("pack").stable().forGetter(source -> source.pack))
             .apply(instance, instance.stable(TerraBiomeSource::new)));
 
     private final Registry<Biome> biomeRegistry;
@@ -27,12 +31,12 @@ public class TerraBiomeSource extends BiomeSource {
     private final TerraBiomeGrid grid;
     private final ConfigPack pack;
 
-    public TerraBiomeSource(Registry<Biome> biomes, long seed) {
+    public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream().collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.grid = new TerraBiomeGrid.TerraBiomeGridBuilder(seed, TerraFabricPlugin.getInstance().getRegistry().get("DEFAULT"), TerraFabricPlugin.getInstance()).build();
-        this.pack = TerraFabricPlugin.getInstance().getRegistry().get("DEFAULT");
+        this.grid = new TerraBiomeGrid.TerraBiomeGridBuilder(seed, pack, TerraFabricPlugin.getInstance()).build();
+        this.pack = pack;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public BiomeSource withSeed(long seed) {
-        return new TerraBiomeSource(this.biomeRegistry, seed);
+        return new TerraBiomeSource(this.biomeRegistry, seed, pack);
     }
 
     @Override

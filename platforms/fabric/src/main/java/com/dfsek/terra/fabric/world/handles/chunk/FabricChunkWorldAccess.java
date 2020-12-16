@@ -6,27 +6,27 @@ import com.dfsek.terra.api.generic.world.block.Block;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.WorldAccess;
 
-public class FabricChunkRegionChunk implements Chunk {
-    private final ChunkRegion chunkRegion;
+public class FabricChunkWorldAccess implements Chunk {
+    private final WorldAccess chunkRegion;
     private final int x;
     private final int z;
 
-    public FabricChunkRegionChunk(ChunkRegion chunkRegion) {
+    public FabricChunkWorldAccess(WorldAccess chunkRegion, int x, int z) {
         this.chunkRegion = chunkRegion;
-        this.x = chunkRegion.getCenterChunkX() << 4;
-        this.z = chunkRegion.getCenterChunkZ() << 4;
+        this.x = x << 4;
+        this.z = z << 4;
     }
 
     @Override
     public int getX() {
-        return chunkRegion.getCenterChunkX();
+        return x >> 4;
     }
 
     @Override
     public int getZ() {
-        return chunkRegion.getCenterChunkZ();
+        return z >> 4;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FabricChunkRegionChunk implements Chunk {
     }
 
     @Override
-    public ChunkRegion getHandle() {
+    public WorldAccess getHandle() {
         return chunkRegion;
     }
 }
