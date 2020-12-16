@@ -14,6 +14,7 @@ import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
@@ -26,6 +27,7 @@ import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -42,6 +44,8 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.HugeMushroomFeature;
 import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
+import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -158,26 +162,41 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
     }
 
+    public static String createBiomeID(ConfigPack pack, UserDefinedBiome biome) {
+        return pack.getTemplate().getID().toLowerCase() + "/" + biome.getID().toLowerCase();
+    }
+
     private Biome createBiome(UserDefinedBiome biome) {
         SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
 
+        Biome vanilla = ((FabricBiome) biome.getVanillaBiome()).getHandle();
+
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
+        generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
+
+        BiomeEffects.Builder effects = new BiomeEffects.Builder()
+                .waterColor(vanilla.getWaterColor())
+                .waterFogColor(vanilla.getWaterFogColor())
+                .fogColor(vanilla.getFogColor())
+                .skyColor(vanilla.getSkyColor())
+                .grassColorModifier(vanilla.getEffects().getGrassColorModifier());
+        if(vanilla.getEffects().getGrassColor().isPresent()) {
+            effects.grassColor(vanilla.getEffects().getGrassColor().get());
+        }
+        if(vanilla.getEffects().getFoliageColor().isPresent()) {
+            effects.foliageColor(vanilla.getEffects().getFoliageColor().get());
+        }
 
         return (new Biome.Builder())
-                .precipitation(Biome.Precipitation.RAIN)
-                .category(Biome.Category.NONE)
-                .depth(0.125F)
-                .scale(0.05F)
+                .precipitation(vanilla.getPrecipitation())
+                .category(vanilla.getCategory())
+                .depth(vanilla.getDepth())
+                .scale(vanilla.getScale())
                 .temperature(0.8F)
                 .downfall(0.4F)
-                .effects((new BiomeEffects.Builder())
-                        .waterColor(0x3f76e4)
-                        .waterFogColor(0x050533)
-                        .fogColor(0xc0d8ff)
-                        .skyColor(0x77adff)
-                        .build())
+                .effects(effects.build())
                 .spawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())
                 .build();
@@ -213,8 +232,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         plugin.load(this);
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
-        registry.loadAll(this);
 
+
+        registry.loadAll(this);
+        registry.forEach(pack -> pack.getBiomeRegistry().forEach(biome -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, biome)), createBiome(biome)))); // Register all Terra biomes.
 
         /*
         registry.forEach(config -> {
