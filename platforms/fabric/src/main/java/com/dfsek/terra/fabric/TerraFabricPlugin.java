@@ -48,10 +48,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.HugeMushroomFeature;
-import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import org.apache.commons.io.FileUtils;
@@ -83,12 +80,20 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private File config;
-    private final PluginConfig plugin;
-
-    {
-        logger.setLevel(Level.INFO);
-        plugin = new PluginConfig();
-    }
+    private static final Transformer<String, ConfiguredFeature<?, ?>> TREE_TRANSFORMER = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
+            .addTransform(TerraFabricPlugin::getFeature)
+            .addTransform(id -> getFeature(StringUtils.stripMinecraftNamespace(id)))
+            .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
+                    .add("BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT)
+                    .add("RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT)
+                    .add("JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE)
+                    .add("JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE)
+                    .add("LARGE_OAK", ConfiguredFeatures.FANCY_OAK)
+                    .add("LARGE_SPRUCE", ConfiguredFeatures.PINE)
+                    .add("SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE)
+                    .add("SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE)
+                    .add("TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL)).build();
+    private final PluginConfig plugin = new PluginConfig();
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -131,7 +136,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public Language getLanguage() {
         try {
-            return new Language(new File(getDataFolder(), "lang/en_us/yml"));
+            return new Language(new File(getDataFolder(), "lang/en_us.yml"));
         } catch(IOException e) {
             throw new IllegalArgumentException();
         }
@@ -207,8 +212,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .category(vanilla.getCategory())
                 .depth(vanilla.getDepth())
                 .scale(vanilla.getScale())
-                .temperature(0.8F)
-                .downfall(0.4F)
+                .temperature(vanilla.getTemperature())
+                .downfall(vanilla.getDownfall())
                 .effects(vanilla.getEffects()) // TODO: configurable
                 .spawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())
@@ -228,26 +233,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public void onInitialize() {
+        logger.setLevel(Level.INFO);
         instance = this;
 
-        Map<Identifier, Feature<?>> treeFeatureMap = new HashMap<>();
-        BuiltinRegistries.CONFIGURED_FEATURE.stream().filter(feature ->
-                feature.feature instanceof TreeFeature
-                        || feature.feature instanceof HugeMushroomFeature).forEach(tree -> System.out.println(BuiltinRegistries.CONFIGURED_FEATURE.getId(tree)));
-        Transformer<String, ConfiguredFeature<?, ?>> treeTransformer = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
-                .addTransform(TerraFabricPlugin::getFeature)
-                .addTransform(id -> getFeature(StringUtils.stripMinecraftNamespace(id)))
-                .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
-                        .add("BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT)
-                        .add("RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT)
-                        .add("JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE)
-                        .add("JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE)
-                        .add("LARGE_OAK", ConfiguredFeatures.FANCY_OAK)
-                        .add("LARGE_SPRUCE", ConfiguredFeatures.PINE)
-                        .add("SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE)
-                        .add("SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE)
-                        .add("TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL)).build();
-        ((FabricWorldHandle) worldHandle).setTreeTransformer(treeTransformer);
+        ((FabricWorldHandle) worldHandle).setTreeTransformer(TREE_TRANSFORMER);
 
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();
