@@ -104,9 +104,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
         FastRandom pop = new FastRandom(MathUtil.getCarverChunkSeed(region.getCenterChunkX(), region.getCenterChunkZ(), seed));
         FabricWorldChunkRegion chunkRegion = new FabricWorldChunkRegion(region, this);
         FabricChunkWorldAccess regionChunk = new FabricChunkWorldAccess(region, region.getCenterChunkX(), region.getCenterChunkZ());
-        super.generateFeatures(region, accessor);
         cavePopulator.populate(chunkRegion, pop, regionChunk);
         orePopulator.populate(chunkRegion, pop, regionChunk);
+        super.generateFeatures(region, accessor);
     }
 
     @Override
