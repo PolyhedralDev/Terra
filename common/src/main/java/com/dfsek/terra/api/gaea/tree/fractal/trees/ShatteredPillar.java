@@ -17,41 +17,40 @@ public class ShatteredPillar extends FractalTree {
 
     /**
      * Instantiates a TreeGrower at an origin location.
-     *
-     * @param origin - The origin location.
-     * @param random - The random object to use whilst generating the tree.
      */
-    public ShatteredPillar(Location origin, Random random, TerraPlugin main) {
-        super(origin, random, main);
+    public ShatteredPillar(TerraPlugin main) {
+        super(main);
     }
 
     /**
      * Grows the tree in memory. Intended to be invoked from an async thread.
+     * @param origin
+     * @param random
      */
     @Override
-    public void grow() {
+    public void grow(Location origin, Random random) {
         BlockData obsidian = getMain().getWorldHandle().createBlockData("minecraft:obsidian");
-        int h = super.getRandom().nextInt(5) + 8;
+        int h = random.nextInt(5) + 8;
         int max = h;
-        for(int i = - h; i < h; i++) setBlock(super.getOrigin().clone().add(0, i, 0), obsidian);
-        h = h + (getRandom().nextBoolean() ? getRandom().nextInt(3) + 1 : - (getRandom().nextInt(3) + 1));
+        for(int i = -h; i < h; i++) setBlock(origin.clone().add(0, i, 0), obsidian);
+        h = h + (random.nextBoolean() ? random.nextInt(3) + 1 : -(random.nextInt(3) + 1));
         int[] crystalLoc = new int[] {0, 0};
         if(h > max) {
             max = h;
             crystalLoc = new int[] {1, 0};
         }
-        for(int i = - h; i < h; i++) setBlock(super.getOrigin().clone().add(1, i, 0), obsidian);
-        h = h + (getRandom().nextBoolean() ? getRandom().nextInt(3) + 1 : - (getRandom().nextInt(3) + 1));
+        for(int i = -h; i < h; i++) setBlock(origin.clone().add(1, i, 0), obsidian);
+        h = h + (random.nextBoolean() ? random.nextInt(3) + 1 : -(random.nextInt(3) + 1));
         if(h > max) {
             max = h;
             crystalLoc = new int[] {0, 1};
         }
-        for(int i = - h; i < h; i++) setBlock(super.getOrigin().clone().add(0, i, 1), obsidian);
-        h = h + (getRandom().nextBoolean() ? getRandom().nextInt(3) + 1 : - (getRandom().nextInt(3) + 1));
+        for(int i = -h; i < h; i++) setBlock(origin.clone().add(0, i, 1), obsidian);
+        h = h + (random.nextBoolean() ? random.nextInt(3) + 1 : -(random.nextInt(3) + 1));
         if(h > max) {
             max = h;
             crystalLoc = new int[] {1, 1};
         }
-        for(int i = - h; i < h; i++) setBlock(super.getOrigin().clone().add(1, i, 1), obsidian);
+        for(int i = -h; i < h; i++) setBlock(origin.clone().add(1, i, 1), obsidian);
     }
 }

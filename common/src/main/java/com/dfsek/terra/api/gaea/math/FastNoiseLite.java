@@ -704,7 +704,7 @@ public class FastNoiseLite {
                 /*FNLdouble*/
                 double xy = x + y;
                 /*FNLdouble*/
-                double s2 = xy * -(/*FNLdouble*/ double) 0.211324865405187;
+                double s2 = xy * -0.211324865405187D;
                 /*FNLdouble*/
                 z *= 0.577350269189626;
                 x += s2 - z;
@@ -717,7 +717,7 @@ public class FastNoiseLite {
                 /*FNLdouble*/
                 double xz = x + z;
                 /*FNLdouble*/
-                double s2 = xz * -(/*FNLdouble*/ double) 0.211324865405187;
+                double s2 = xz * -0.211324865405187D;
                 /*FNLdouble*/
                 y *= 0.577350269189626;
                 x += s2 - y;
@@ -1898,7 +1898,7 @@ public class FastNoiseLite {
                 /*FNLdouble*/
                 double xy = xs + ys;
                 /*FNLdouble*/
-                double s2 = xy * -(/*FNLdouble*/ double) 0.211324865405187;
+                double s2 = xy * -0.211324865405187D;
                 /*FNLdouble*/
                 zs *= 0.577350269189626;
                 xs += s2 - zs;
@@ -1911,7 +1911,7 @@ public class FastNoiseLite {
                 /*FNLdouble*/
                 double xz = xs + zs;
                 /*FNLdouble*/
-                double s2 = xz * -(/*FNLdouble*/ double) 0.211324865405187;
+                double s2 = xz * -0.211324865405187D;
                 /*FNLdouble*/
                 ys *= 0.577350269189626;
                 xs += s2 - ys;
@@ -1989,7 +1989,7 @@ public class FastNoiseLite {
                     /*FNLdouble*/
                     double xy = xs + ys;
                     /*FNLdouble*/
-                    double s2 = xy * -(/*FNLdouble*/ double) 0.211324865405187;
+                    double s2 = xy * -0.211324865405187D;
                     /*FNLdouble*/
                     zs *= 0.577350269189626;
                     xs += s2 - zs;
@@ -2002,7 +2002,7 @@ public class FastNoiseLite {
                     /*FNLdouble*/
                     double xz = xs + zs;
                     /*FNLdouble*/
-                    double s2 = xz * -(/*FNLdouble*/ double) 0.211324865405187;
+                    double s2 = xz * -0.211324865405187D;
                     /*FNLdouble*/
                     ys *= 0.577350269189626;
                     xs += s2 - ys;
@@ -2081,7 +2081,7 @@ public class FastNoiseLite {
                 /*FNLdouble*/
                 double xy = xs + ys;
                 /*FNLdouble*/
-                double s2 = xy * -(/*FNLdouble*/ double) 0.211324865405187;
+                double s2 = xy * -0.211324865405187D;
                 /*FNLdouble*/
                 zs *= 0.577350269189626;
                 xs += s2 - zs;
@@ -2094,7 +2094,7 @@ public class FastNoiseLite {
                 /*FNLdouble*/
                 double xz = xs + zs;
                 /*FNLdouble*/
-                double s2 = xz * -(/*FNLdouble*/ double) 0.211324865405187;
+                double s2 = xz * -0.211324865405187D;
                 /*FNLdouble*/
                 ys *= 0.577350269189626;
                 xs += s2 - ys;

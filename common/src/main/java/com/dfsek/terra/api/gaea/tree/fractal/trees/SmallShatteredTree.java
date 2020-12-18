@@ -25,12 +25,9 @@ public class SmallShatteredTree extends FractalTree {
 
     /**
      * Instantiates a TreeGrower at an origin location.
-     *
-     * @param origin - The origin location.
-     * @param random - The random object to use whilst generating the tree.
      */
-    public SmallShatteredTree(Location origin, Random random, TerraPlugin main) {
-        super(origin, random, main);
+    public SmallShatteredTree(TerraPlugin main) {
+        super(main);
         geo = new TreeGeometry(this);
 
         WorldHandle handle = main.getWorldHandle();
@@ -46,14 +43,14 @@ public class SmallShatteredTree extends FractalTree {
      * Grows the tree in memory. Intended to be invoked from an async thread.
      */
     @Override
-    public void grow() {
-        growBranch(super.getOrigin().clone(), new Vector3(super.getRandom().nextInt(5) - 2, super.getRandom().nextInt(3) + 4, super.getRandom().nextInt(5) - 2), 1.5, 0);
+    public void grow(Location origin, Random random) {
+        growBranch(origin.clone(), new Vector3(random.nextInt(5) - 2, random.nextInt(3) + 4, random.nextInt(5) - 2), 1.5, 0, random);
 
     }
 
-    private void growBranch(Location l1, Vector3 diff, double d1, int recursions) {
+    private void growBranch(Location l1, Vector3 diff, double d1, int recursions, Random r) {
         if(recursions > 2) {
-            geo.generateSphere(l1, leaves, 1 + super.getRandom().nextInt(2) + (3 - recursions), false);
+            geo.generateSphere(l1, leaves, 1 + r.nextInt(2) + (3 - recursions), false);
             return;
         }
         if(diff.getY() < 0) diff.rotateAroundAxis(TreeGeometry.getPerpendicular(diff.clone()).normalize(), FastMath.PI);
@@ -62,17 +59,17 @@ public class SmallShatteredTree extends FractalTree {
             geo.generateSphere(l1.clone().add(diff.clone().multiply((double) i / d)), bark, FastMath.max((int) d1, 0), true);
         }
         double runningAngle = (double) 45 / (recursions + 1);
-        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundX(FastMath.toRadians(runningAngle + getNoise())).rotateAroundZ(FastMath.toRadians(getNoise())),
-                d1 - 1, recursions + 1);
-        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundX(FastMath.toRadians(- runningAngle + getNoise())).rotateAroundZ(FastMath.toRadians(getNoise())),
-                d1 - 1, recursions + 1);
-        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundZ(FastMath.toRadians(runningAngle + getNoise())).rotateAroundX(FastMath.toRadians(getNoise())),
-                d1 - 1, recursions + 1);
-        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundZ(FastMath.toRadians(- runningAngle + getNoise())).rotateAroundX(FastMath.toRadians(getNoise())),
-                d1 - 1, recursions + 1);
+        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundX(FastMath.toRadians(runningAngle + getNoise(r))).rotateAroundZ(FastMath.toRadians(getNoise(r))),
+                d1 - 1, recursions + 1, r);
+        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundX(FastMath.toRadians(-runningAngle + getNoise(r))).rotateAroundZ(FastMath.toRadians(getNoise(r))),
+                d1 - 1, recursions + 1, r);
+        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundZ(FastMath.toRadians(runningAngle + getNoise(r))).rotateAroundX(FastMath.toRadians(getNoise(r))),
+                d1 - 1, recursions + 1, r);
+        growBranch(l1.clone().add(diff), diff.clone().multiply(0.7).rotateAroundZ(FastMath.toRadians(-runningAngle + getNoise(r))).rotateAroundX(FastMath.toRadians(getNoise(r))),
+                d1 - 1, recursions + 1, r);
     }
 
-    private int getNoise() {
-        return super.getRandom().nextInt(90) - 45;
+    private int getNoise(Random r) {
+        return r.nextInt(90) - 45;
     }
 }

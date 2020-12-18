@@ -17,21 +17,20 @@ public class SmallShatteredPillar extends FractalTree {
 
     /**
      * Instantiates a TreeGrower at an origin location.
-     *
-     * @param origin - The origin location.
-     * @param random - The random object to use whilst generating the tree.
      */
-    public SmallShatteredPillar(Location origin, Random random, TerraPlugin main) {
-        super(origin, random, main);
+    public SmallShatteredPillar(TerraPlugin main) {
+        super(main);
     }
 
     /**
      * Grows the tree in memory. Intended to be invoked from an async thread.
+     * @param origin
+     * @param random
      */
     @Override
-    public void grow() {
-        int h = super.getRandom().nextInt(5) + 5;
+    public void grow(Location origin, Random random) {
+        int h = random.nextInt(5) + 5;
         BlockData obsidian = getMain().getWorldHandle().createBlockData("minecraft:obsidian");
-        for(int i = - h; i < h; i++) setBlock(super.getOrigin().clone().add(0, i, 0), obsidian);
+        for(int i = -h; i < h; i++) setBlock(origin.clone().add(0, i, 0), obsidian);
     }
 }

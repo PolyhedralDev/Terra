@@ -22,12 +22,9 @@ public class SpruceTree extends FractalTree {
 
     /**
      * Instantiates a TreeGrower at an origin location.
-     *
-     * @param origin - The origin location.
-     * @param random - The random object to use whilst generating the tree.
      */
-    public SpruceTree(Location origin, Random random, TerraPlugin main) {
-        super(origin, random, main);
+    public SpruceTree(TerraPlugin main) {
+        super(main);
         geo = new TreeGeometry(this);
     }
 
@@ -35,8 +32,8 @@ public class SpruceTree extends FractalTree {
      * Grows the tree in memory. Intended to be invoked from an async thread.
      */
     @Override
-    public void grow() {
-        growTrunk(super.getOrigin().clone(), new Vector3(0, 16 + super.getRandom().nextInt(5), 0));
+    public void grow(Location origin, Random random) {
+        growTrunk(origin.clone(), new Vector3(0, 16 + random.nextInt(5), 0));
     }
 
     private void growTrunk(Location l1, Vector3 diff) {

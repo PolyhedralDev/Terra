@@ -18,21 +18,18 @@ public class Cactus extends FractalTree {
 
     /**
      * Instantiates a TreeGrower at an origin location.
-     *
-     * @param origin - The origin location.
-     * @param random - The random object to use whilst generating the tree.
      */
-    public Cactus(Location origin, Random random, TerraPlugin main) {
-        super(origin, random, main);
+    public Cactus(TerraPlugin main) {
+        super(main);
     }
 
     /**
      * Grows the tree in memory. Intended to be invoked from an async thread.
      */
     @Override
-    public void grow() {
+    public void grow(Location origin, Random random) {
         BlockData cactus = getMain().getWorldHandle().createBlockData("minecraft:cactus");
-        int h = super.getRandom().nextInt(4) + 1;
-        for(int i = 0; i < h; i++) setBlock(super.getOrigin().clone().add(0, i, 0), cactus);
+        int h = random.nextInt(4) + 1;
+        for(int i = 0; i < h; i++) setBlock(origin.clone().add(0, i, 0), cactus);
     }
 }

@@ -11,10 +11,9 @@ import com.dfsek.terra.api.gaea.tree.fractal.trees.SmallShatteredPillar;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.SmallShatteredTree;
 import com.dfsek.terra.api.gaea.tree.fractal.trees.SpruceTree;
 import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.world.WorldHandle;
+import com.dfsek.terra.api.generic.world.block.BlockFace;
 import com.dfsek.terra.api.generic.world.block.MaterialData;
 import com.dfsek.terra.api.generic.world.vector.Location;
-import com.dfsek.terra.util.MaterialSet;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -69,32 +68,30 @@ public class TreeRegistry extends TerraRegistry<Tree> {
         }
     }
 
-    private final class FractalTreeHolder implements Tree { // TODO: this is jank and should be replaced later.
-        private final Constructor<? extends FractalTree> constructor;
-        private final MaterialSet set;
+    private final class FractalTreeHolder implements Tree {
+        private final FractalTree tree;
 
         private FractalTreeHolder(Class<? extends FractalTree> clazz) throws NoSuchMethodException {
-            constructor = clazz.getConstructor(Location.class, Random.class, TerraPlugin.class);
-            WorldHandle h = main.getWorldHandle();
-            set = MaterialSet.get(h.createMaterialData("minecraft:grass_block"), h.createMaterialData("minecraft:snow_block")); // TODO: actually implement
-        }
-
-        @Override
-        public boolean plant(Location l, Random r) {
+            Constructor<? extends FractalTree> constructor = clazz.getConstructor(TerraPlugin.class);
             try {
-                FractalTree tree = constructor.newInstance(l, r, main);
-                tree.grow();
-                tree.plant();
-                return true;
+                tree = constructor.newInstance(main);
             } catch(InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
-                return false;
+                throw new IllegalArgumentException("Unable to load tree: " + clazz);
             }
         }
 
         @Override
+        public boolean plant(Location l, Random r) {
+            if(!getSpawnable().contains(l.getBlock().getType())) return false;
+            if(!l.getBlock().getRelative(BlockFace.UP).isEmpty()) return false;
+            tree.grow(l.add(0, 1, 0), r);
+            return true;
+        }
+
+        @Override
         public Set<MaterialData> getSpawnable() {
-            return set;
+            return tree.getSpawnable();
         }
     }
 }

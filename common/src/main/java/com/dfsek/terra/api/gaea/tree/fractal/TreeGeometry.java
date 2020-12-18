@@ -5,6 +5,8 @@ import com.dfsek.terra.api.generic.world.block.BlockData;
 import com.dfsek.terra.api.generic.world.vector.Location;
 import com.dfsek.terra.api.generic.world.vector.Vector3;
 
+import java.util.Random;
+
 public class TreeGeometry {
     private final FractalTree tree;
 
@@ -33,19 +35,19 @@ public class TreeGeometry {
             for(int y = - radius; y <= radius; y++) {
                 for(int z = - radius; z <= radius; z++) {
                     Vector3 position = l.toVector().clone().add(new Vector3(x, y, z));
-                    if(l.toVector().distance(position) <= radius + 0.5 && (overwrite || tree.getMaterial(position.toLocation(l.getWorld())).isAir()))
+                    if(l.toVector().distance(position) <= radius + 0.5 && (overwrite || position.toLocation(l.getWorld()).getBlock().isEmpty()))
                         tree.setBlock(position.toLocation(l.getWorld()), m.get());
                 }
             }
         }
     }
 
-    public void generateSponge(Location l, ProbabilityCollection<BlockData> m, int radius, boolean overwrite, int sponginess) {
-        for(int x = - radius; x <= radius; x++) {
-            for(int y = - radius; y <= radius; y++) {
-                for(int z = - radius; z <= radius; z++) {
+    public void generateSponge(Location l, ProbabilityCollection<BlockData> m, int radius, boolean overwrite, int sponginess, Random r) {
+        for(int x = -radius; x <= radius; x++) {
+            for(int y = -radius; y <= radius; y++) {
+                for(int z = -radius; z <= radius; z++) {
                     Vector3 position = l.toVector().clone().add(new Vector3(x, y, z));
-                    if(tree.getRandom().nextInt(100) < sponginess && l.toVector().distance(position) <= radius + 0.5 && (overwrite || tree.getMaterial(position.toLocation(l.getWorld())).isAir()))
+                    if(r.nextInt(100) < sponginess && l.toVector().distance(position) <= radius + 0.5 && (overwrite || position.toLocation(l.getWorld()).getBlock().isEmpty()))
                         tree.setBlock(position.toLocation(l.getWorld()), m.get());
                 }
             }
@@ -57,7 +59,7 @@ public class TreeGeometry {
             for(int y = 0; y <= height; y++) {
                 for(int z = - radius; z <= radius; z++) {
                     Vector3 position = l.toVector().clone().add(new Vector3(x, 0, z));
-                    if(l.toVector().distance(position) <= radius + 0.5 && (overwrite || tree.getMaterial(position.toLocation(l.getWorld())).isAir()))
+                    if(l.toVector().distance(position) <= radius + 0.5 && (overwrite || position.toLocation(l.getWorld()).getBlock().isEmpty()))
                         tree.setBlock(position.toLocation(l.getWorld()), m.get());
                 }
             }
