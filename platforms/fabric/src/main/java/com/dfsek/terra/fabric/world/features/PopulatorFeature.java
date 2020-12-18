@@ -13,15 +13,22 @@ import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
 
-public class FloraFeature extends Feature<DefaultFeatureConfig> {
-    public FloraFeature(Codec<DefaultFeatureConfig> codec) {
+/**
+ * Feature wrapper for Terra populator
+ */
+public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
+    public PopulatorFeature(Codec<DefaultFeatureConfig> codec) {
         super(codec);
     }
 
     @Override
     public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-        ((FabricChunkGeneratorWrapper) chunkGenerator).getFloraPopulator().populate(new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator)),
-                random, new FabricChunkWorldAccess(world, pos.getX() >> 4, pos.getZ() >> 4));
+        FabricChunkGeneratorWrapper gen = (FabricChunkGeneratorWrapper) chunkGenerator;
+        FabricChunkWorldAccess chunk = new FabricChunkWorldAccess(world, pos.getX() >> 4, pos.getZ() >> 4);
+        FabricWorld world1 = new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator));
+        gen.getCavePopulator().populate(world1, random, chunk);
+        gen.getOrePopulator().populate(world1, random, chunk);
+        gen.getFloraPopulator().populate(world1, random, chunk);
         return true;
     }
 }

@@ -1,14 +1,11 @@
 package com.dfsek.terra.fabric.world.generator;
 
-import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.generic.Handle;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
-import com.dfsek.terra.fabric.world.handles.chunk.FabricChunkWorldAccess;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldChunkRegion;
 import com.dfsek.terra.generation.TerraChunkGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
@@ -52,6 +49,18 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
     private final TreePopulator treePopulator = new TreePopulator(TerraFabricPlugin.getInstance());
+
+    public TreePopulator getTreePopulator() {
+        return treePopulator;
+    }
+
+    public CavePopulator getCavePopulator() {
+        return cavePopulator;
+    }
+
+    public OrePopulator getOrePopulator() {
+        return orePopulator;
+    }
 
     public FloraPopulator getFloraPopulator() {
         return floraPopulator;
@@ -97,16 +106,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Handl
     @Override
     public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
         // No caves
-    }
-
-    @Override
-    public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
-        FastRandom pop = new FastRandom(MathUtil.getCarverChunkSeed(region.getCenterChunkX(), region.getCenterChunkZ(), seed));
-        FabricWorldChunkRegion chunkRegion = new FabricWorldChunkRegion(region, this);
-        FabricChunkWorldAccess regionChunk = new FabricChunkWorldAccess(region, region.getCenterChunkX(), region.getCenterChunkZ());
-        cavePopulator.populate(chunkRegion, pop, regionChunk);
-        orePopulator.populate(chunkRegion, pop, regionChunk);
-        super.generateFeatures(region, accessor);
     }
 
     @Override

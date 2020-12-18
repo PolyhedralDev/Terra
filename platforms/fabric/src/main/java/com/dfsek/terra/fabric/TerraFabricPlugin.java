@@ -22,7 +22,7 @@ import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
-import com.dfsek.terra.fabric.world.features.FloraFeature;
+import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.ConfigRegistry;
 import net.fabricmc.api.EnvType;
@@ -72,8 +72,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return instance;
     }
 
-    public static final FloraFeature FLORA = new FloraFeature(DefaultFeatureConfig.CODEC);
-    public static final ConfiguredFeature<?, ?> FLORA_CONFIGURED = FLORA.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
+    public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
+    public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = Logger.getLogger("Terra");
@@ -185,7 +185,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
-        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FLORA_CONFIGURED);
+        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
                 .waterColor(vanilla.getWaterColor())
@@ -246,9 +246,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         registry.loadAll(this);
 
-        Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), FLORA);
+        Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), POPULATOR_FEATURE);
         RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "flora_populator"));
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), FLORA_CONFIGURED);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), POPULATOR_CONFIGURED_FEATURE);
 
         registry.forEach(pack -> pack.getBiomeRegistry().forEach(biome -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, biome)), createBiome(biome)))); // Register all Terra biomes.
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
