@@ -28,8 +28,8 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
         FabricWorld world1 = new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator));
         gen.getCavePopulator().populate(world1, random, chunk);
         gen.getOrePopulator().populate(world1, random, chunk);
-        gen.getFloraPopulator().populate(world1, random, chunk);
         gen.getTreePopulator().populate(world1, random, chunk);
+        gen.getFloraPopulator().populate(world1, random, chunk);
         return true;
     }
 }
