@@ -25,6 +25,7 @@ import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.util.StringUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -44,13 +45,13 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.HugeMushroomFeature;
 import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import org.apache.commons.io.FileUtils;
@@ -58,6 +59,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -213,7 +215,17 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .build();
     }
 
-    @SuppressWarnings("unchecked")
+    private static ConfiguredFeature<?, ?> getFeature(String name) {
+        Class<ConfiguredFeatures> featuresClass = ConfiguredFeatures.class;
+        Field feature;
+        try {
+            feature = featuresClass.getField(name);
+            return (ConfiguredFeature<?, ?>) feature.get(null);
+        } catch(NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalArgumentException("No such feature: " + name);
+        }
+    }
+
     @Override
     public void onInitialize() {
         instance = this;
@@ -222,20 +234,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         BuiltinRegistries.CONFIGURED_FEATURE.stream().filter(feature ->
                 feature.feature instanceof TreeFeature
                         || feature.feature instanceof HugeMushroomFeature).forEach(tree -> System.out.println(BuiltinRegistries.CONFIGURED_FEATURE.getId(tree)));
-
-        Transformer<String, ConfiguredFeature<TreeFeatureConfig, ?>> treeTransformer = new Transformer.Builder<String, ConfiguredFeature<TreeFeatureConfig, ?>>()
-                .addTransform(id -> (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse(id)))
-                .addTransform(new MapTransform<String, ConfiguredFeature<TreeFeatureConfig, ?>>()
-                        .add("BROWN_MUSHROOM", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_brown_mushroom")))
-                        .add("RED_MUSHROOM", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:huge_red_mushroom")))
-                        .add("JUNGLE", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:mega_jungle_tree")))
-                        .add("JUNGLE_COCOA", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree_no_vine")))
-                        .add("LARGE_OAK", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:fancy_oak")))
-                        .add("LARGE_SPRUCE", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:pine")))
-                        .add("SMALL_JUNGLE", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:jungle_tree")))
-                        .add("SWAMP_OAK", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:oak")))
-                        .add("TALL_BIRCH", (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:birch"))))
-                .addTransform(id -> (ConfiguredFeature<TreeFeatureConfig, ?>) BuiltinRegistries.CONFIGURED_FEATURE.get(Identifier.tryParse("minecraft:" + id.toLowerCase()))).build();
+        Transformer<String, ConfiguredFeature<?, ?>> treeTransformer = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
+                .addTransform(TerraFabricPlugin::getFeature)
+                .addTransform(id -> getFeature(StringUtils.stripMinecraftNamespace(id)))
+                .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
+                        .add("BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT)
+                        .add("RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT)
+                        .add("JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE)
+                        .add("JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE)
+                        .add("LARGE_OAK", ConfiguredFeatures.FANCY_OAK)
+                        .add("LARGE_SPRUCE", ConfiguredFeatures.PINE)
+                        .add("SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE)
+                        .add("SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE)
+                        .add("TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL)).build();
         ((FabricWorldHandle) worldHandle).setTreeTransformer(treeTransformer);
 
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");

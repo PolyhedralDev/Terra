@@ -29,6 +29,7 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
         gen.getCavePopulator().populate(world1, random, chunk);
         gen.getOrePopulator().populate(world1, random, chunk);
         gen.getFloraPopulator().populate(world1, random, chunk);
+        gen.getTreePopulator().populate(world1, random, chunk);
         return true;
     }
 }

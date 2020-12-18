@@ -18,14 +18,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.state.property.Properties;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import java.util.Arrays;
 
 public class FabricWorldHandle implements WorldHandle {
-    private Transformer<String, ConfiguredFeature<TreeFeatureConfig, ?>> treeTransformer;
+    private Transformer<String, ConfiguredFeature<?, ?>> treeTransformer;
 
-    public void setTreeTransformer(Transformer<String, ConfiguredFeature<TreeFeatureConfig, ?>> treeTransformer) {
+    public void setTreeTransformer(Transformer<String, ConfiguredFeature<?, ?>> treeTransformer) {
         this.treeTransformer = treeTransformer;
     }
 

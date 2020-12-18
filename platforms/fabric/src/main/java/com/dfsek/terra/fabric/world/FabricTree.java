@@ -11,15 +11,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
 
 public class FabricTree implements Tree {
-    private final ConfiguredFeature<TreeFeatureConfig, ?> delegate;
+    private final ConfiguredFeature<?, ?> delegate;
 
-    public FabricTree(ConfiguredFeature<TreeFeatureConfig, ?> delegate) {
+    public FabricTree(ConfiguredFeature<?, ?> delegate) {
         this.delegate = delegate;
     }
 
