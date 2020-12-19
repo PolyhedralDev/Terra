@@ -1,9 +1,9 @@
 package com.dfsek.terra;
 
-import com.dfsek.terra.api.gaea.profiler.DataType;
-import com.dfsek.terra.api.gaea.profiler.Measurement;
-import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.profiler.DataType;
+import com.dfsek.terra.api.profiler.Measurement;
+import com.dfsek.terra.api.profiler.WorldProfiler;
 
 public class TerraProfiler extends WorldProfiler {
     public TerraProfiler(World w) {

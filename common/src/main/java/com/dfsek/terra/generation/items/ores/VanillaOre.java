@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation.items.ores;
 
-import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.WorldHandle;

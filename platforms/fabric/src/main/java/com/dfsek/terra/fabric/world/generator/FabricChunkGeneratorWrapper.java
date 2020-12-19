@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.world.generator;
 
-import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.platform.Handle;
+import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;

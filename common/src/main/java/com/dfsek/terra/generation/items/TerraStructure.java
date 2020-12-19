@@ -1,8 +1,8 @@
 package com.dfsek.terra.generation.items;
 
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import com.dfsek.terra.api.gaea.math.Range;
-import com.dfsek.terra.api.gaea.structures.loot.LootTable;
+import com.dfsek.terra.api.loot.LootTable;
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.procgen.GridSpawn;
 

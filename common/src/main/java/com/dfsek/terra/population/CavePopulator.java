@@ -1,7 +1,6 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
@@ -10,6 +9,7 @@ import com.dfsek.terra.api.platform.world.block.Block;
 import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.api.platform.world.block.MaterialData;
 import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;

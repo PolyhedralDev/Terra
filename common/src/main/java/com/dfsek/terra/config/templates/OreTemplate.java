@@ -3,7 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.util.MaterialSet;

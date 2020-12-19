@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.biome;
 
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.math.FastNoiseLite;
 import com.dfsek.terra.api.platform.world.vector.Location;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 

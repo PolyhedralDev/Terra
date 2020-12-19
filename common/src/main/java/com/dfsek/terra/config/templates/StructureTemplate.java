@@ -3,10 +3,10 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import com.dfsek.terra.api.gaea.math.Range;
-import com.dfsek.terra.api.gaea.structures.loot.LootTable;
-import com.dfsek.terra.api.gaea.util.GlueList;
+import com.dfsek.terra.api.loot.LootTable;
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.procgen.GridSpawn;
 
 import java.util.List;

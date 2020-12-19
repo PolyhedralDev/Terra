@@ -1,8 +1,7 @@
 package com.dfsek.terra.generation;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.gaea.math.ChunkInterpolator3;
-import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
+import com.dfsek.terra.api.math.ChunkInterpolator3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
@@ -15,6 +14,7 @@ import com.dfsek.terra.api.platform.world.block.data.Slab;
 import com.dfsek.terra.api.platform.world.block.data.Stairs;
 import com.dfsek.terra.api.platform.world.block.data.Waterlogged;
 import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.palette.Palette;

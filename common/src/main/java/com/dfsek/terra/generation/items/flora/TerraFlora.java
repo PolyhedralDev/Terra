@@ -1,9 +1,6 @@
 package com.dfsek.terra.generation.items.flora;
 
-import com.dfsek.terra.api.gaea.math.Range;
-import com.dfsek.terra.api.gaea.util.FastRandom;
-import com.dfsek.terra.api.gaea.util.GlueList;
-import com.dfsek.terra.api.gaea.world.Flora;
+import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.WorldHandle;
@@ -14,6 +11,9 @@ import com.dfsek.terra.api.platform.world.block.data.Directional;
 import com.dfsek.terra.api.platform.world.block.data.MultipleFacing;
 import com.dfsek.terra.api.platform.world.block.data.Rotatable;
 import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;

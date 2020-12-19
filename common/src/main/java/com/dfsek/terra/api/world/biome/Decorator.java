@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.biome;
 
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import com.dfsek.terra.api.gaea.world.Flora;
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.tree.Tree;
 
 public abstract class Decorator {

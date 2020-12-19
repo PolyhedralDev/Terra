@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.world.carving;
 
-import com.dfsek.terra.api.gaea.math.MathUtil;
-import com.dfsek.terra.api.gaea.util.FastRandom;
+import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.util.FastRandom;
 import net.jafama.FastMath;
 
 import java.util.Random;

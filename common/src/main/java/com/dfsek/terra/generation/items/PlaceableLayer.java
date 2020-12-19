@@ -1,8 +1,8 @@
 package com.dfsek.terra.generation.items;
 
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.math.FastNoiseLite;
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.vector.Vector2;
 

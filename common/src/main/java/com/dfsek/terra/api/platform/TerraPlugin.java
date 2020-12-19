@@ -2,7 +2,7 @@ package com.dfsek.terra.api.platform;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.LoaderRegistrar;
-import com.dfsek.terra.api.gaea.lang.Language;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.platform.inventory.ItemHandle;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.WorldHandle;

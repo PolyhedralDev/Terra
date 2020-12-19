@@ -3,7 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.util.MaterialSet;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})

@@ -3,7 +3,7 @@ package com.dfsek.terra.generation.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.math.FastNoiseLite;
 
 public class NoiseBuilder implements ConfigTemplate {
     @Value("type")

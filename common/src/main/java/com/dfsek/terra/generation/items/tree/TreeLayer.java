@@ -1,8 +1,8 @@
 package com.dfsek.terra.generation.items.tree;
 
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import com.dfsek.terra.api.gaea.math.Range;
+import com.dfsek.terra.api.math.FastNoiseLite;
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.block.Block;
 import com.dfsek.terra.api.platform.world.block.BlockFace;

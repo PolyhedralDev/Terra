@@ -1,9 +1,9 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.gaea.util.FastRandom;
-import com.dfsek.terra.api.gaea.world.Flora;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.RandomPalette;
 import com.dfsek.terra.biome.palette.PaletteLayer;

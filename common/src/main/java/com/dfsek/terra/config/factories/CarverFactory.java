@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.terra.api.gaea.math.MathUtil;
+import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;

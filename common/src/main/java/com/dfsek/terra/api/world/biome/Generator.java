@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.biome;
 
-import com.dfsek.terra.api.gaea.math.Interpolator;
+import com.dfsek.terra.api.math.Interpolator;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;

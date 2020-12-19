@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.lang;
 
-import com.dfsek.terra.api.gaea.lang.Language;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.debug.Debug;
@@ -12,7 +12,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.dfsek.terra.api.gaea.util.JarUtil.copyResourcesToDirectory;
+import static com.dfsek.terra.api.util.JarUtil.copyResourcesToDirectory;
 
 public final class LangUtil {
     private static Language language;

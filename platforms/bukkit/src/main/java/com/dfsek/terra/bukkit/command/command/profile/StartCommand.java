@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command.command.profile;
 
-import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
+import com.dfsek.terra.api.profiler.WorldProfiler;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.WorldCommand;

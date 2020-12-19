@@ -1,6 +1,6 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.api.platform.world.block.MaterialData;
 import com.dfsek.terra.util.MaterialSet;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command.command.geometry;
 
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.math.FastNoiseLite;
 import com.dfsek.terra.api.platform.world.vector.Vector3;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitPlayer;

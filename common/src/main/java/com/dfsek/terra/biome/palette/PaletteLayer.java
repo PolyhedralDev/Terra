@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.palette;
 
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.block.BlockData;
 import org.jetbrains.annotations.NotNull;
 

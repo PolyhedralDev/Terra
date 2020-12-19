@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.math.FastNoiseLite;
 
 import java.util.List;
 

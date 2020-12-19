@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.gaea.population.PopulationManager;
 import com.dfsek.terra.api.platform.Handle;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generation.population.PopulationManager;
 import com.dfsek.terra.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.config.lang.LangUtil;

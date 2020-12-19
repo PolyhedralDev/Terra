@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.tree.fractal;
 
-import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.api.platform.world.vector.Location;
 import com.dfsek.terra.api.platform.world.vector.Vector3;

@@ -1,11 +1,11 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.vector.Vector2;
+import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;

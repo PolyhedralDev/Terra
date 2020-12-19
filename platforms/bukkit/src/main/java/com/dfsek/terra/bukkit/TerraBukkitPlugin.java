@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
-import com.dfsek.terra.api.gaea.lang.Language;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.Tree;
 import com.dfsek.terra.api.platform.inventory.ItemHandle;
