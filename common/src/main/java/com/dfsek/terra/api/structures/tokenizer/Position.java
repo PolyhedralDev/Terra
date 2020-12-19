@@ -1,4 +1,4 @@
-package com.dfsek.terra.structure.v2.tokenizer;
+package com.dfsek.terra.api.structures.tokenizer;
 
 public class Position {
     private final int line;

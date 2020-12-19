@@ -1,4 +1,4 @@
-package com.dfsek.terra.structure.v2.tokenizer;
+package com.dfsek.terra.api.structures.tokenizer;
 
 public class Char {
     private final char character;
@@ -24,6 +24,18 @@ public class Char {
         return line;
     }
 
+    public boolean isWhitespace() {
+        return Character.isWhitespace(character);
+    }
+
+    public boolean isNewLine() {
+        return character == '\n';
+    }
+
+    public boolean isDigit() {
+        return Character.isDigit(character);
+    }
+
     public boolean is(char... tests) {
         for(char test : tests) {
             if(test == character && test != '\0') {
@@ -31,5 +43,14 @@ public class Char {
             }
         }
         return false;
+    }
+
+    public boolean isEOF() {
+        return character == '\0';
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(character);
     }
 }

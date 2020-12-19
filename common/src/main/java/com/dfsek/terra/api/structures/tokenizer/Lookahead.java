@@ -1,6 +1,6 @@
-package com.dfsek.terra.structure.v2.tokenizer;
+package com.dfsek.terra.api.structures.tokenizer;
 
-import org.polydev.gaea.util.GlueList;
+import com.dfsek.terra.api.util.GlueList;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -23,11 +23,12 @@ public class Lookahead {
     /**
      * Get the current character without consuming it.
      *
-     * @return
+     * @return current character
      */
     public Char current() {
         return next(0);
     }
+
 
     /**
      * Consume and return one character.
@@ -97,5 +98,16 @@ public class Lookahead {
                 if(item == null) end = true;
             }
         }
+    }
+
+    public boolean matches(String check, boolean consume) {
+        if(check == null) return false;
+
+        for(int i = 0; i < check.length(); i++) {
+            if(!next(i).is(check.charAt(i))) return false;
+        }
+
+        if(consume) consume(check.length()); // Consume string
+        return true;
     }
 }
