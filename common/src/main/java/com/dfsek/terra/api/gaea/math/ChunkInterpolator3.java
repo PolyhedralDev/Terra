@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.gaea.math;
 
-import com.dfsek.terra.api.gaea.biome.BiomeGrid;
-import com.dfsek.terra.api.gaea.biome.Generator;
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.biome.BiomeGrid;
+import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.generation.GenerationPhase;
 import net.jafama.FastMath;
 
 /**

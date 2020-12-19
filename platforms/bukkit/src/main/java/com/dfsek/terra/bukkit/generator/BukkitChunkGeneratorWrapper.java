@@ -1,14 +1,15 @@
 package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.gaea.population.PopulationManager;
-import com.dfsek.terra.api.generic.Handle;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
-import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.platform.Handle;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
+import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
 
 public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Handle {
 
-    private static final Map<com.dfsek.terra.api.generic.world.World, PopulationManager> popMap = new HashMap<>();
+    private static final Map<com.dfsek.terra.api.platform.world.World, PopulationManager> popMap = new HashMap<>();
 
     private final PopulationManager popMan;
 
@@ -52,7 +53,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Handl
 
 
     public static synchronized void saveAll() {
-        for(Map.Entry<com.dfsek.terra.api.generic.world.World, PopulationManager> e : popMap.entrySet()) {
+        for(Map.Entry<com.dfsek.terra.api.platform.world.World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());
                 Debug.info("Saved data for world " + e.getKey().getName());
@@ -63,11 +64,11 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Handl
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(!(c.getWorld().getGenerator() instanceof com.dfsek.terra.generation.TerraChunkGenerator)) throw new IllegalArgumentException();
+        if(!(c.getWorld().getGenerator() instanceof MasterChunkGenerator)) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    private void load(com.dfsek.terra.api.generic.world.World w) {
+    private void load(com.dfsek.terra.api.platform.world.World w) {
         try {
             popMan.loadBlocks(w);
         } catch(FileNotFoundException e) {

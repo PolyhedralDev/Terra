@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.gaea.lang;
 
 
-import com.dfsek.terra.api.generic.CommandSender;
+import com.dfsek.terra.api.platform.CommandSender;
 
 import java.util.Arrays;
 import java.util.logging.Level;

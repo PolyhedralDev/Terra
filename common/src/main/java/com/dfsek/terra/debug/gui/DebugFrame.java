@@ -1,6 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
 
 import javax.swing.*;
 import java.awt.*;

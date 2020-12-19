@@ -1,10 +1,10 @@
 package com.dfsek.terra.fabric.world.block;
 
-import com.dfsek.terra.api.generic.world.block.Block;
-import com.dfsek.terra.api.generic.world.block.BlockData;
-import com.dfsek.terra.api.generic.world.block.BlockFace;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.platform.world.block.Block;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
+import com.dfsek.terra.api.platform.world.vector.Location;
 import com.dfsek.terra.fabric.world.FabricAdapters;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;

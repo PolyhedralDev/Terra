@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.gaea.profiler;
 
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.world.World;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.jafama.FastMath;

@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.generic.generator.BlockPopulator;
-import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
-import com.dfsek.terra.api.generic.world.BiomeGrid;
-import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.platform.generator.BlockPopulator;
+import com.dfsek.terra.api.platform.world.BiomeGrid;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class BukkitChunkGenerator implements com.dfsek.terra.api.generic.generator.ChunkGenerator {
+public class BukkitChunkGenerator implements com.dfsek.terra.api.platform.generator.ChunkGenerator {
     private final ChunkGenerator delegate;
 
     public BukkitChunkGenerator(ChunkGenerator delegate) {

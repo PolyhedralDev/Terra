@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.palette;
 
-import com.dfsek.terra.api.gaea.world.palette.Palette;
+import com.dfsek.terra.api.world.palette.Palette;
 
 public class SinglePalette<E> extends Palette<E> {
     private final E item;

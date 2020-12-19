@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.generic.world.Biome;
+import com.dfsek.terra.api.platform.world.Biome;
 
 public class BukkitBiome implements Biome {
     private final org.bukkit.block.Biome biome;

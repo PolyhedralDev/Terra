@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.world.block.data;
 
-import com.dfsek.terra.api.generic.world.block.data.Slab;
+import com.dfsek.terra.api.platform.world.block.data.Slab;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;
 

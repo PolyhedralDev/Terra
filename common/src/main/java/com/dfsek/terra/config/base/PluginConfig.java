@@ -6,7 +6,7 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.gaea.util.JarUtil;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.debug.Debug;
 
 import java.io.File;

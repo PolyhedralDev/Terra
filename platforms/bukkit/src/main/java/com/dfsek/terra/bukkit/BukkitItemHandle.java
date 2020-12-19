@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.generic.inventory.ItemHandle;
-import com.dfsek.terra.api.generic.inventory.ItemStack;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 
 public class BukkitItemHandle implements ItemHandle {

@@ -4,7 +4,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.gaea.structures.loot.LootTable;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.config.files.Loader;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;

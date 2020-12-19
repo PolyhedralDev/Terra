@@ -1,9 +1,9 @@
 package com.dfsek.terra.generation.items.tree;
 
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
-import com.dfsek.terra.api.gaea.tree.Tree;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;

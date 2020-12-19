@@ -4,12 +4,12 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.gaea.lang.Language;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.inventory.ItemHandle;
-import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.generic.world.WorldHandle;
-import com.dfsek.terra.api.generic.world.block.BlockData;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.WorldHandle;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
@@ -176,7 +176,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o))
-                .registerLoader(com.dfsek.terra.api.generic.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
+                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
     }
 
     public static String createBiomeID(ConfigPack pack, UserDefinedBiome biome) {

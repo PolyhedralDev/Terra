@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.generic.world.Chunk;
-import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.generic.world.block.Block;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.block.Block;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
 
 public class BukkitChunk implements Chunk {

@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.gaea;
 
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
 
 public class Debug {
     public static TerraPlugin main;

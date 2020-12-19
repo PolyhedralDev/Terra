@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
+import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;

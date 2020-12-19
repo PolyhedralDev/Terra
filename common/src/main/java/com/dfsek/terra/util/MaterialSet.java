@@ -1,7 +1,7 @@
 package com.dfsek.terra.util;
 
-import com.dfsek.terra.api.generic.world.block.BlockData;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
 
 import java.util.Arrays;
 import java.util.HashSet;

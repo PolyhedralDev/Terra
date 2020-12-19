@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.lang;
 
 import com.dfsek.terra.api.gaea.lang.Language;
-import com.dfsek.terra.api.generic.CommandSender;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.debug.Debug;
 
 import java.io.File;

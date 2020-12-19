@@ -1,9 +1,9 @@
 package com.dfsek.terra.image;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.biome.NormalizationUtil;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 
 import javax.imageio.ImageIO;

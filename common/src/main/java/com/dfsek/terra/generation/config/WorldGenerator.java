@@ -1,10 +1,10 @@
 package com.dfsek.terra.generation.config;
 
-import com.dfsek.terra.api.gaea.biome.Generator;
 import com.dfsek.terra.api.gaea.math.Interpolator;
-import com.dfsek.terra.api.gaea.world.palette.Palette;
-import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.math.NoiseFunction2;
 import com.dfsek.terra.math.NoiseFunction3;

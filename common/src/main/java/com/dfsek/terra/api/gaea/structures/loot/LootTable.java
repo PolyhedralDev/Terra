@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.gaea.structures.loot;
 
 import com.dfsek.terra.api.gaea.util.GlueList;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.inventory.Inventory;
-import com.dfsek.terra.api.generic.inventory.ItemStack;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.inventory.Inventory;
+import com.dfsek.terra.api.platform.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -1,9 +1,9 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.gaea.biome.Decorator;
-import com.dfsek.terra.api.gaea.biome.Generator;
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.Decorator;
+import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -15,14 +15,14 @@ import com.dfsek.terra.generation.UserDefinedDecorator;
 public class UserDefinedBiome implements Biome {
     private final GeneratorBuilder gen;
     private final UserDefinedDecorator decorator;
-    private final com.dfsek.terra.api.generic.world.Biome vanilla;
+    private final com.dfsek.terra.api.platform.world.Biome vanilla;
     private final String id;
     private final BiomeTemplate config;
     private final ConfigPack pack;
     private UserDefinedBiome erode;
 
 
-    public UserDefinedBiome(com.dfsek.terra.api.generic.world.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
+    public UserDefinedBiome(com.dfsek.terra.api.platform.world.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
         this.vanilla = vanilla;
         this.decorator = dec;
         this.gen = gen;
@@ -37,7 +37,7 @@ public class UserDefinedBiome implements Biome {
      * @return Biome - The Vanilla biome.
      */
     @Override
-    public com.dfsek.terra.api.generic.world.Biome getVanillaBiome() {
+    public com.dfsek.terra.api.platform.world.Biome getVanillaBiome() {
         return vanilla;
     }
 

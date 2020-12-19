@@ -1,16 +1,16 @@
 package com.dfsek.terra.bukkit.structure;
 
-import com.dfsek.terra.api.generic.world.block.Axis;
-import com.dfsek.terra.api.generic.world.block.BlockData;
-import com.dfsek.terra.api.generic.world.block.BlockFace;
-import com.dfsek.terra.api.generic.world.block.data.Directional;
-import com.dfsek.terra.api.generic.world.block.data.MultipleFacing;
-import com.dfsek.terra.api.generic.world.block.data.Orientable;
-import com.dfsek.terra.api.generic.world.block.data.Rail;
-import com.dfsek.terra.api.generic.world.block.data.RedstoneWire;
-import com.dfsek.terra.api.generic.world.block.data.Rotatable;
-import com.dfsek.terra.api.generic.world.block.data.Wall;
-import com.dfsek.terra.api.generic.world.vector.Vector2;
+import com.dfsek.terra.api.platform.world.block.Axis;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.world.block.data.Directional;
+import com.dfsek.terra.api.platform.world.block.data.MultipleFacing;
+import com.dfsek.terra.api.platform.world.block.data.Orientable;
+import com.dfsek.terra.api.platform.world.block.data.Rail;
+import com.dfsek.terra.api.platform.world.block.data.RedstoneWire;
+import com.dfsek.terra.api.platform.world.block.data.Rotatable;
+import com.dfsek.terra.api.platform.world.block.data.Wall;
+import com.dfsek.terra.api.platform.world.vector.Vector2;
 import com.dfsek.terra.structure.Rotation;
 import net.jafama.FastMath;
 

@@ -1,6 +1,6 @@
 package com.dfsek.terra.procgen.pixel;
 
-import com.dfsek.terra.api.generic.world.vector.Vector2;
+import com.dfsek.terra.api.platform.world.vector.Vector2;
 import net.jafama.FastMath;
 
 import java.util.HashSet;

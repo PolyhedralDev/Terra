@@ -1,6 +1,6 @@
 package com.dfsek.terra.procgen.voxel;
 
-import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.api.platform.world.vector.Vector3;
 
 public class Tube extends VoxelGeometry {
     public Tube(Vector3 start, Vector3 end, int radius) {

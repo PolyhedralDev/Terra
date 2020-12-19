@@ -6,10 +6,10 @@ import com.dfsek.terra.api.gaea.profiler.WorldProfiler;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
 import com.dfsek.terra.api.gaea.util.SerializationUtil;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
-import com.dfsek.terra.api.generic.world.Chunk;
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

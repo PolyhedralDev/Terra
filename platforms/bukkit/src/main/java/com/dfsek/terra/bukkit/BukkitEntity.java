@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.generic.Entity;
+import com.dfsek.terra.api.platform.Entity;
 
 public class BukkitEntity implements Entity {
     private final org.bukkit.entity.Entity entity;

@@ -4,14 +4,14 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.gaea.lang.Language;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.Tree;
-import com.dfsek.terra.api.generic.inventory.ItemHandle;
-import com.dfsek.terra.api.generic.world.Biome;
-import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.generic.world.WorldHandle;
-import com.dfsek.terra.api.generic.world.block.BlockData;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.Tree;
+import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.world.Biome;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.WorldHandle;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
@@ -26,7 +26,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.TerraChunkGenerator;
+import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.util.StringUtils;
 import org.bstats.bukkit.Metrics;
@@ -45,7 +45,7 @@ import java.util.Objects;
 
 
 public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
-    private final Map<String, TerraChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<String, MasterChunkGenerator> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
@@ -138,7 +138,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             if(!registry.contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
             worlds.put(worldName, registry.get(id));
-            return new TerraChunkGenerator(registry.get(id), this);
+            return new MasterChunkGenerator(registry.get(id), this);
         }));
     }
 
@@ -162,7 +162,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator()).getConfigPack(), this);
+            return new TerraWorld(w, ((MasterChunkGenerator) w.getGenerator()).getConfigPack(), this);
         }
         return worldMap.computeIfAbsent(w, world -> new TerraWorld(w, worlds.get(w.getName()), this));
     }

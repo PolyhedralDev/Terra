@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 
-import com.dfsek.terra.api.generic.world.block.BlockFace;
-import com.dfsek.terra.api.generic.world.block.data.Bisected;
-import com.dfsek.terra.api.generic.world.block.data.Slab;
-import com.dfsek.terra.api.generic.world.block.data.Stairs;
+import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.world.block.data.Bisected;
+import com.dfsek.terra.api.platform.world.block.data.Slab;
+import com.dfsek.terra.api.platform.world.block.data.Stairs;
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.

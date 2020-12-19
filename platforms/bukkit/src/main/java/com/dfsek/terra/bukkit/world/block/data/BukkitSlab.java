@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.generic.world.block.data.Slab;
+import com.dfsek.terra.api.platform.world.block.data.Slab;
 
 public class BukkitSlab extends BukkitWaterlogged implements Slab {
     public BukkitSlab(org.bukkit.block.data.type.Slab delegate) {

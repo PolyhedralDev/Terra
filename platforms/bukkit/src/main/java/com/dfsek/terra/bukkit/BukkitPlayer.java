@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit;
 
 import com.dfsek.terra.api.Player;
-import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.platform.world.vector.Location;
 
 public class BukkitPlayer implements Player {
     private final org.bukkit.entity.Player delegate;

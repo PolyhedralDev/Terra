@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.gaea.math;
 
-import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
+import com.dfsek.terra.api.world.biome.NormalizationUtil;
 
 import java.util.HashSet;
 import java.util.Random;

@@ -3,7 +3,7 @@ package com.dfsek.terra.procgen;
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
 import com.dfsek.terra.api.gaea.util.GlueList;
-import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.api.platform.world.vector.Vector3;
 
 import java.util.List;
 import java.util.Random;

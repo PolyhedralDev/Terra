@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.generation.items.ores.DeformedSphereOre;
 import com.dfsek.terra.generation.items.ores.Ore;

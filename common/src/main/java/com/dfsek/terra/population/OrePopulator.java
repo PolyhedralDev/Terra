@@ -1,16 +1,16 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.profiler.ProfileFuture;
 import com.dfsek.terra.api.gaea.util.FastRandom;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
-import com.dfsek.terra.api.generic.world.Chunk;
-import com.dfsek.terra.api.generic.world.World;
-import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.generation.GenerationPhase;
+import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import org.jetbrains.annotations.NotNull;

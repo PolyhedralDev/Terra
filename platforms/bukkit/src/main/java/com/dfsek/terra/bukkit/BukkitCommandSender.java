@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.generic.CommandSender;
+import com.dfsek.terra.api.platform.CommandSender;
 import org.bukkit.ChatColor;
 
 public class BukkitCommandSender implements CommandSender {

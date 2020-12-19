@@ -1,9 +1,9 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.generator.TerraBlockPopulator;
-import com.dfsek.terra.api.generic.world.Chunk;
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;

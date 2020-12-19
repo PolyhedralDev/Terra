@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.api.generic.world.Biome;
+import com.dfsek.terra.api.platform.world.Biome;
 
 public class FabricBiome implements Biome {
     private final net.minecraft.world.biome.Biome delegate;

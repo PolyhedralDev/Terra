@@ -1,10 +1,10 @@
 package com.dfsek.terra.fabric.world.generator;
 
-import com.dfsek.terra.api.generic.generator.BlockPopulator;
-import com.dfsek.terra.api.generic.generator.ChunkGenerator;
-import com.dfsek.terra.api.generic.generator.TerraChunkGenerator;
-import com.dfsek.terra.api.generic.world.BiomeGrid;
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.generator.BlockPopulator;
+import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.BiomeGrid;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

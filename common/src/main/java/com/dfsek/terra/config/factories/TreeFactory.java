@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.terra.api.gaea.tree.Tree;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.generation.items.tree.TerraTree;
 

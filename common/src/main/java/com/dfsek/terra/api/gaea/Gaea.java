@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.gaea;
 
 
-import com.dfsek.terra.api.generic.world.World;
+import com.dfsek.terra.api.platform.world.World;
 
 import java.io.File;
 

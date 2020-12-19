@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.config.builder.biomegrid.UserDefinedGridBuilder;

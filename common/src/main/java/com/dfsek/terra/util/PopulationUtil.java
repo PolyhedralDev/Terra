@@ -2,7 +2,7 @@ package com.dfsek.terra.util;
 
 import com.dfsek.terra.api.gaea.math.MathUtil;
 import com.dfsek.terra.api.gaea.util.FastRandom;
-import com.dfsek.terra.api.generic.world.Chunk;
+import com.dfsek.terra.api.platform.world.Chunk;
 
 public final class PopulationUtil {
     public static FastRandom getRandom(Chunk c) {

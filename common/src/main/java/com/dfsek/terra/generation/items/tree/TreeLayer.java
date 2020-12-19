@@ -3,11 +3,11 @@ package com.dfsek.terra.generation.items.tree;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.math.Range;
-import com.dfsek.terra.api.gaea.tree.Tree;
-import com.dfsek.terra.api.generic.world.Chunk;
-import com.dfsek.terra.api.generic.world.block.Block;
-import com.dfsek.terra.api.generic.world.block.BlockFace;
-import com.dfsek.terra.api.generic.world.vector.Vector2;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.block.Block;
+import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.world.vector.Vector2;
+import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.generation.items.PlaceableLayer;
 
 import java.util.Random;

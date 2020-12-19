@@ -1,10 +1,10 @@
 package com.dfsek.terra.async;
 
-import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.world.vector.Location;
-import com.dfsek.terra.api.generic.world.vector.Vector3;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import org.jetbrains.annotations.NotNull;
 

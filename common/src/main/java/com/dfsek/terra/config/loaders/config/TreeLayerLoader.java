@@ -6,8 +6,8 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
 import com.dfsek.terra.api.gaea.math.ProbabilityCollection;
 import com.dfsek.terra.api.gaea.math.Range;
-import com.dfsek.terra.api.gaea.tree.Tree;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.generation.items.tree.TreeLayer;
 

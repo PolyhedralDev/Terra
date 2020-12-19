@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.world.block.data;
 
-import com.dfsek.terra.api.generic.world.block.BlockFace;
-import com.dfsek.terra.api.generic.world.block.data.MultipleFacing;
+import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.world.block.data.MultipleFacing;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;

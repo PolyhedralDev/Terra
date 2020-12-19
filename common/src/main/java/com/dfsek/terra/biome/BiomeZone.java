@@ -1,8 +1,8 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.api.gaea.biome.BiomeGrid;
-import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
 import com.dfsek.terra.api.gaea.math.FastNoiseLite;
+import com.dfsek.terra.api.world.biome.BiomeGrid;
+import com.dfsek.terra.api.world.biome.NormalizationUtil;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.image.ImageLoader;

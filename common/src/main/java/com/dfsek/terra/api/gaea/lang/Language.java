@@ -2,7 +2,7 @@ package com.dfsek.terra.api.gaea.lang;
 
 
 import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.terra.api.generic.CommandSender;
+import com.dfsek.terra.api.platform.CommandSender;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.Tree;
-import com.dfsek.terra.api.generic.world.WorldHandle;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.Tree;
+import com.dfsek.terra.api.platform.world.WorldHandle;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
+import com.dfsek.terra.api.platform.world.vector.Location;
 import com.dfsek.terra.bukkit.util.BukkitConversions;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.TreeType;

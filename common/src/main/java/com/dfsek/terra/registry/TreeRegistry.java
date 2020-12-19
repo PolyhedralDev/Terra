@@ -1,19 +1,19 @@
 package com.dfsek.terra.registry;
 
-import com.dfsek.terra.api.gaea.tree.Tree;
-import com.dfsek.terra.api.gaea.tree.fractal.FractalTree;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.Cactus;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.IceSpike;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.OakTree;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.ShatteredPillar;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.ShatteredTree;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.SmallShatteredPillar;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.SmallShatteredTree;
-import com.dfsek.terra.api.gaea.tree.fractal.trees.SpruceTree;
-import com.dfsek.terra.api.generic.TerraPlugin;
-import com.dfsek.terra.api.generic.world.block.BlockFace;
-import com.dfsek.terra.api.generic.world.block.MaterialData;
-import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.world.block.MaterialData;
+import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.world.tree.Tree;
+import com.dfsek.terra.api.world.tree.fractal.FractalTree;
+import com.dfsek.terra.api.world.tree.fractal.trees.Cactus;
+import com.dfsek.terra.api.world.tree.fractal.trees.IceSpike;
+import com.dfsek.terra.api.world.tree.fractal.trees.OakTree;
+import com.dfsek.terra.api.world.tree.fractal.trees.ShatteredPillar;
+import com.dfsek.terra.api.world.tree.fractal.trees.ShatteredTree;
+import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredPillar;
+import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredTree;
+import com.dfsek.terra.api.world.tree.fractal.trees.SpruceTree;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

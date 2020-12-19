@@ -1,10 +1,10 @@
 package com.dfsek.terra.biome.grid;
 
-import com.dfsek.terra.api.gaea.biome.Biome;
-import com.dfsek.terra.api.gaea.biome.BiomeGrid;
-import com.dfsek.terra.api.gaea.biome.NormalizationUtil;
-import com.dfsek.terra.api.gaea.generation.GenerationPhase;
-import com.dfsek.terra.api.generic.world.vector.Location;
+import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.BiomeGrid;
+import com.dfsek.terra.api.world.biome.NormalizationUtil;
+import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.image.ImageLoader;

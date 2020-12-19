@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.palette;
 
-import com.dfsek.terra.api.gaea.world.palette.Palette;
-import com.dfsek.terra.api.generic.world.block.BlockData;
+import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.world.palette.Palette;
 
 public class PaletteHolder {
     private final Palette<BlockData>[] palettes;

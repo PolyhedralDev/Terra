@@ -2,7 +2,7 @@ package com.dfsek.terra.config.templates;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.gaea.biome.Biome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.grid.master;
 
-import com.dfsek.terra.api.gaea.biome.BiomeGrid;
-import com.dfsek.terra.api.generic.TerraPlugin;
+import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
