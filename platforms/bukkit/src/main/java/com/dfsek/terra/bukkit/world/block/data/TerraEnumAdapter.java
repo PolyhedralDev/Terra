@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 
-import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
@@ -10,7 +10,7 @@ import org.bukkit.block.data.type.Stairs;
  * Utility class to adapt Terra enums to Bukkit enums
  */
 public final class TerraEnumAdapter {
-    public static Stairs.Shape fromTerraStair(com.dfsek.terra.api.platform.world.block.data.Stairs.Shape shape) {
+    public static Stairs.Shape fromTerraStair(com.dfsek.terra.api.platform.block.data.Stairs.Shape shape) {
         switch(shape) {
             case STRAIGHT:
                 return Stairs.Shape.STRAIGHT;
@@ -27,7 +27,7 @@ public final class TerraEnumAdapter {
         }
     }
 
-    public static Bisected.Half fromTerraHalf(com.dfsek.terra.api.platform.world.block.data.Bisected.Half half) {
+    public static Bisected.Half fromTerraHalf(com.dfsek.terra.api.platform.block.data.Bisected.Half half) {
         switch(half) {
             case TOP:
                 return Bisected.Half.TOP;
@@ -83,7 +83,7 @@ public final class TerraEnumAdapter {
         }
     }
 
-    public static Slab.Type fromTerraSlabType(com.dfsek.terra.api.platform.world.block.data.Slab.Type type) {
+    public static Slab.Type fromTerraSlabType(com.dfsek.terra.api.platform.block.data.Slab.Type type) {
         switch(type) {
             case TOP:
                 return Slab.Type.TOP;

@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.platform.world;
 
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.Entity;
 import com.dfsek.terra.api.platform.Handle;
 import com.dfsek.terra.api.platform.Tree;
+import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.generator.ChunkGenerator;
-import com.dfsek.terra.api.platform.world.block.Block;
-import com.dfsek.terra.api.platform.world.vector.Location;
 
 import java.io.File;
 import java.util.UUID;

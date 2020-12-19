@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.world.block.data;
 
-import com.dfsek.terra.api.platform.world.block.data.Waterlogged;
+import com.dfsek.terra.api.platform.block.data.Waterlogged;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;

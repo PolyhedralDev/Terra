@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.platform.world;
 
 import com.dfsek.terra.api.platform.Handle;
-import com.dfsek.terra.api.platform.world.block.Block;
+import com.dfsek.terra.api.platform.block.Block;
 
 public interface Chunk extends Handle {
     int getX();

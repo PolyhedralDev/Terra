@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.world.tree.fractal.trees;
 
+import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.vector.Location;
-import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
 import com.dfsek.terra.api.world.tree.fractal.TreeGeometry;
 import com.dfsek.terra.util.MaterialSet;

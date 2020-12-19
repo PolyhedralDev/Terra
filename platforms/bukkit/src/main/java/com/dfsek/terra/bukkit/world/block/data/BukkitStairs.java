@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.platform.world.block.BlockFace;
-import com.dfsek.terra.api.platform.world.block.data.Stairs;
+import com.dfsek.terra.api.platform.block.BlockFace;
+import com.dfsek.terra.api.platform.block.data.Stairs;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 
 public class BukkitStairs extends BukkitBlockData implements Stairs {

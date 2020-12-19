@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.platform.world.block.data;
+package com.dfsek.terra.api.platform.block.data;
 
 public interface Stairs extends Waterlogged, Directional, Bisected {
     Shape getShape();

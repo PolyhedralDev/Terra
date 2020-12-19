@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.world.block;
 
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.MaterialData;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 

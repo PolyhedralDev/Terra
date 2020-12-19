@@ -1,7 +1,7 @@
-package com.dfsek.terra.api.platform.world.block.data;
+package com.dfsek.terra.api.platform.block.data;
 
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.block.BlockFace;
+import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.BlockFace;
 
 public interface Wall extends BlockData, Waterlogged {
     boolean isUp();

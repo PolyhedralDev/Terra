@@ -2,10 +2,10 @@ package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.vector.Vector3;
 import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.Biome;

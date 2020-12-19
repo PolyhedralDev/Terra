@@ -1,6 +1,6 @@
 package com.dfsek.terra.util;
 
-import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.templates.BiomeTemplate;

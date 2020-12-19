@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.tree.fractal;
 
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.Entity;
-import com.dfsek.terra.api.platform.world.vector.Location;
 
 import java.util.function.Consumer;
 

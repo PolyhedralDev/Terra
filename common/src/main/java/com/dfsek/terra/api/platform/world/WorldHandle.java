@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.platform.world;
 
 import com.dfsek.terra.api.platform.Tree;
-import com.dfsek.terra.api.platform.world.block.Block;
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.block.MaterialData;
+import com.dfsek.terra.api.platform.block.Block;
+import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.MaterialData;
 
 /**
  * Interface to be implemented for world manipulation.

@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.platform.world.block;
+package com.dfsek.terra.api.platform.block;
 
 import com.dfsek.terra.api.platform.Handle;
 

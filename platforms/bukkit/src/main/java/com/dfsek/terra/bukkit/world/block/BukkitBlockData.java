@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block;
 
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.MaterialData;
 
 public class BukkitBlockData implements BlockData {
     private org.bukkit.block.data.BlockData delegate;

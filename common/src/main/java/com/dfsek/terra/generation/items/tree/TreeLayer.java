@@ -3,10 +3,10 @@ package com.dfsek.terra.generation.items.tree;
 import com.dfsek.terra.api.math.FastNoiseLite;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.vector.Vector2;
+import com.dfsek.terra.api.platform.block.Block;
+import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.block.Block;
-import com.dfsek.terra.api.platform.world.block.BlockFace;
-import com.dfsek.terra.api.platform.world.vector.Vector2;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.generation.items.PlaceableLayer;
 

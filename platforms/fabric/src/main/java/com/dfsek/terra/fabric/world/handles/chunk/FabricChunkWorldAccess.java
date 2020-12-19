@@ -1,8 +1,8 @@
 package com.dfsek.terra.fabric.world.handles.chunk;
 
+import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.block.Block;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;

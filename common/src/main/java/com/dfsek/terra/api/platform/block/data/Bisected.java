@@ -1,6 +1,6 @@
-package com.dfsek.terra.api.platform.world.block.data;
+package com.dfsek.terra.api.platform.block.data;
 
-import com.dfsek.terra.api.platform.world.block.BlockData;
+import com.dfsek.terra.api.platform.block.BlockData;
 
 public interface Bisected extends BlockData {
     Half getHalf();

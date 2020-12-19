@@ -1,7 +1,7 @@
-package com.dfsek.terra.api.platform.world.vector;
+package com.dfsek.terra.api.math.vector;
 
+import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.block.Block;
 
 public class Location implements Cloneable {
     private World world;

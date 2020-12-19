@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math;
+package com.dfsek.terra.api.math.interpolation;
 
 import net.jafama.FastMath;
 

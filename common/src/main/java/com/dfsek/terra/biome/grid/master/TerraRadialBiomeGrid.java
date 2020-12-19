@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.grid.master;
 
-import com.dfsek.terra.api.platform.world.vector.Location;
-import com.dfsek.terra.api.platform.world.vector.Vector2;
+import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.api.world.generation.GenerationPhase;

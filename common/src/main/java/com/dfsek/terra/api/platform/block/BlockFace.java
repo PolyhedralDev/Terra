@@ -1,6 +1,6 @@
-package com.dfsek.terra.api.platform.world.block;
+package com.dfsek.terra.api.platform.block;
 
-import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.math.vector.Vector3;
 import org.jetbrains.annotations.NotNull;
 
 public enum BlockFace {

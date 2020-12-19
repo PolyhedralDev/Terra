@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.platform.generator;
 
 import com.dfsek.terra.api.platform.Handle;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -2,10 +2,10 @@ package com.dfsek.terra.bukkit;
 
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.Tree;
+import com.dfsek.terra.api.platform.block.Block;
+import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.world.WorldHandle;
-import com.dfsek.terra.api.platform.world.block.Block;
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.block.MaterialData;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;

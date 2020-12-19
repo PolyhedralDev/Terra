@@ -1,9 +1,9 @@
 package com.dfsek.terra.carving;
 
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.vector.Vector3;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.carving.Carver;
 import com.dfsek.terra.api.world.carving.Worm;

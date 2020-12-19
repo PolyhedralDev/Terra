@@ -1,10 +1,10 @@
 package com.dfsek.terra.population;
 
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.vector.Vector2;
 import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;

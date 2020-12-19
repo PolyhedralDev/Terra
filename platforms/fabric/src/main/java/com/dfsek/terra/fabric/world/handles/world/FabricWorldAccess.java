@@ -1,12 +1,12 @@
 package com.dfsek.terra.fabric.world.handles.world;
 
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.Entity;
 import com.dfsek.terra.api.platform.Tree;
+import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.block.Block;
-import com.dfsek.terra.api.platform.world.vector.Location;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import net.minecraft.util.math.BlockPos;

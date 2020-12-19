@@ -1,6 +1,6 @@
 package com.dfsek.terra.generation;
 
-import com.dfsek.terra.api.math.Interpolator;
+import com.dfsek.terra.api.math.interpolation.Interpolator;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.WorldGenerator;

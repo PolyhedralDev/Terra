@@ -1,9 +1,9 @@
 package com.dfsek.terra.fabric.world.block.data;
 
-import com.dfsek.terra.api.platform.world.block.BlockFace;
-import com.dfsek.terra.api.platform.world.block.data.Bisected;
-import com.dfsek.terra.api.platform.world.block.data.Slab;
-import com.dfsek.terra.api.platform.world.block.data.Stairs;
+import com.dfsek.terra.api.platform.block.BlockFace;
+import com.dfsek.terra.api.platform.block.data.Bisected;
+import com.dfsek.terra.api.platform.block.data.Slab;
+import com.dfsek.terra.api.platform.block.data.Stairs;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;

@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.world.biome;
 
-import com.dfsek.terra.api.math.Interpolator;
+import com.dfsek.terra.api.math.interpolation.Interpolator;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 
 public abstract class Generator {

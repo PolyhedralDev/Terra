@@ -1,12 +1,12 @@
 package com.dfsek.terra.generation.items.ores;
 
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.block.Block;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.WorldHandle;
-import com.dfsek.terra.api.platform.world.block.Block;
-import com.dfsek.terra.api.platform.world.block.BlockData;
-import com.dfsek.terra.api.platform.world.vector.Vector3;
 import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 

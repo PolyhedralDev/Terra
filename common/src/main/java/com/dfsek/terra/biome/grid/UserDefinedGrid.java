@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.grid;
 
-import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.api.world.biome.NormalizationUtil;

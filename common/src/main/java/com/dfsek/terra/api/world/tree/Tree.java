@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.world.tree;
 
 
-import com.dfsek.terra.api.platform.world.block.MaterialData;
-import com.dfsek.terra.api.platform.world.vector.Location;
+import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.platform.block.MaterialData;
 
 import java.util.Random;
 import java.util.Set;

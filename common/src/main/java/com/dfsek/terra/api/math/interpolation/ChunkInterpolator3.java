@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math;
+package com.dfsek.terra.api.math.interpolation;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.BiomeGrid;

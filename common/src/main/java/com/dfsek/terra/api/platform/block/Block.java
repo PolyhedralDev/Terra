@@ -1,7 +1,7 @@
-package com.dfsek.terra.api.platform.world.block;
+package com.dfsek.terra.api.platform.block;
 
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.Handle;
-import com.dfsek.terra.api.platform.world.vector.Location;
 
 public interface Block extends Handle {
     void setBlockData(BlockData data, boolean physics);

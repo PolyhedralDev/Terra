@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.math.vector.Vector3;
 import net.minecraft.util.math.BlockPos;
 
 public final class FabricAdapters {

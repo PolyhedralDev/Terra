@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.carving;
 
-import com.dfsek.terra.api.platform.world.vector.Vector3;
+import com.dfsek.terra.api.math.vector.Vector3;
 import net.jafama.FastMath;
 
 import java.util.Random;
