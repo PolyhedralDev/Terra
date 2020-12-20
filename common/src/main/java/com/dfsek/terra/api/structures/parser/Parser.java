@@ -45,6 +45,14 @@ public class Parser {
         } catch(TokenizerException e) {
             throw new ParseException("Failed to tokenize input", e);
         }
+        // Check for dangling brackets
+        int blockLevel = 0;
+        for(Token t : tokens) {
+            if(t.getType().equals(Token.Type.BLOCK_BEGIN)) blockLevel++;
+            else if(t.getType().equals(Token.Type.BLOCK_END)) blockLevel--;
+            if(blockLevel < 0) throw new ParseException("Dangling closing brace: " + t.getStart());
+        }
+        if(blockLevel != 0) throw new ParseException("Dangling opening brace");
 
         return parseBlock(tokens);
     }
@@ -121,8 +129,8 @@ public class Parser {
         List<String> arg = args.stream().map(Token::getContent).collect(Collectors.toList());
 
         FunctionBuilder<?> builder = functions.get(identifier.getContent());
-        if(arg.size() != builder.getArguments().size())
-            throw new ParseException("Expected " + builder.getArguments().size() + " arguments, found " + arg.size() + ": " + identifier.getStart());
+        if(arg.size() != builder.getArguments() && builder.getArguments() != -1)
+            throw new ParseException("Expected " + builder.getArguments() + " arguments, found " + arg.size() + ": " + identifier.getStart());
         return functions.get(identifier.getContent()).build(arg);
     }
 

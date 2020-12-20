@@ -5,14 +5,12 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
-import com.dfsek.terra.api.structures.parser.lang.Argument;
 import com.dfsek.terra.api.structures.parser.lang.Function;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class ParserTest {
@@ -27,8 +25,8 @@ public class ParserTest {
             }
 
             @Override
-            public List<Argument<?>> getArguments() {
-                return Arrays.asList(id -> id, Double::parseDouble);
+            public int getArguments() {
+                return 2;
             }
         });
 
