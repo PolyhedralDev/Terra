@@ -11,6 +11,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return (line + 1) + ":" + (index + 1);
+        return (line + 1) + ":" + index;
     }
 }

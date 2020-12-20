@@ -2,11 +2,12 @@ package structure;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.structures.parser.Argument;
-import com.dfsek.terra.api.structures.parser.Function;
 import com.dfsek.terra.api.structures.parser.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.parser.lang.Argument;
+import com.dfsek.terra.api.structures.parser.lang.Function;
+import com.dfsek.terra.api.structures.parser.lang.Item;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -32,11 +33,11 @@ public class ParserTest {
         });
 
         long l = System.nanoTime();
-        List<Function<?>> functions = parser.parse();
+        List<Item<?>> functions = parser.parse().getItems();
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        for(Function<?> f : functions) System.out.println(f);
+        for(Item<?> f : functions) System.out.println(f);
     }
 
     private static class Test1 implements Function<Void> {

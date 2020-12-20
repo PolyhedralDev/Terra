@@ -29,6 +29,53 @@ public class Token {
     }
 
     public enum Type {
-        IDENTIFIER, NUMBER, STRING, BOOLEAN, BODY_BEGIN, BODY_END, STATEMENT_END, SEPARATOR, BLOCK_BEGIN, BLOCK_END
+        /**
+         * Function identifier or language keyword
+         */
+        IDENTIFIER,
+        /**
+         * Numeric literal
+         */
+        NUMBER,
+        /**
+         * String literal
+         */
+        STRING,
+        /**
+         * Boolean literal
+         */
+        BOOLEAN,
+        /**
+         * Beginning of function body
+         */
+        BODY_BEGIN,
+        /**
+         * Ending of function body
+         */
+        BODY_END,
+        /**
+         * End of statement
+         */
+        STATEMENT_END,
+        /**
+         * Argument separator
+         */
+        SEPARATOR,
+        /**
+         * Beginning of code block
+         */
+        BLOCK_BEGIN,
+        /**
+         * End of code block
+         */
+        BLOCK_END,
+        /**
+         * assignment operator
+         */
+        ASSIGNMENT,
+        /**
+         * Boolean operator
+         */
+        BOOLEAN_OPERATOR
     }
 }

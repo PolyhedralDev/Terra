@@ -1,6 +1,8 @@
 package com.dfsek.terra.api.structures.parser;
 
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.parser.lang.Argument;
+import com.dfsek.terra.api.structures.parser.lang.Function;
 
 import java.util.List;
 

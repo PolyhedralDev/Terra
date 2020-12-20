@@ -1,6 +1,13 @@
 package com.dfsek.terra.api.structures.parser;
 
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.parser.lang.Function;
+import com.dfsek.terra.api.structures.parser.lang.Item;
+import com.dfsek.terra.api.structures.parser.lang.Keyword;
+import com.dfsek.terra.api.structures.parser.lang.Statement;
+import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
+import com.dfsek.terra.api.structures.parser.lang.statements.EqualsStatement;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
@@ -16,6 +23,8 @@ import java.util.stream.Collectors;
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
+    private final Set<String> keywords = Sets.newHashSet("if");
+
     Set<Token.Type> allowedArguments = Sets.newHashSet(Token.Type.STRING, Token.Type.NUMBER, Token.Type.IDENTIFIER);
 
     public Parser(String data) {
@@ -27,49 +36,94 @@ public class Parser {
         return this;
     }
 
-    public List<Function<?>> parse() throws ParseException {
+    public Block parse() throws ParseException {
         Tokenizer tokenizer = new Tokenizer(data);
-        List<Function<?>> builtFunctions = new GlueList<>();
-        List<Token> functionBuilder = new GlueList<>();
-        Token token = null;
-        while(tokenizer.hasNext()) {
-            try {
-                token = tokenizer.fetch();
-                functionBuilder.add(token);
 
-                if(token.getType().equals(Token.Type.STATEMENT_END)) {
-                    Token identifier = functionBuilder.remove(0);
-                    checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
+        List<Token> tokens = new GlueList<>();
+        try {
+            while(tokenizer.hasNext()) tokens.add(tokenizer.fetch());
+        } catch(TokenizerException e) {
+            throw new ParseException("Failed to tokenize input", e);
+        }
 
-                    if(!functions.containsKey(identifier.getContent()))
-                        throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getStart());
-
-                    checkType(functionBuilder.remove(0), Token.Type.BODY_BEGIN); // Second is body begin
+        return parseBlock(tokens);
+    }
 
 
-                    List<Token> args = getArgs(functionBuilder); // Extract arguments, consume the rest.
+    private Keyword<?> parseKeyword(List<Token> tokens, List<Token> functionAndArguments) throws ParseException {
 
-                    functionBuilder.remove(0); // Remove body end
+        Token identifier = functionAndArguments.remove(0);
+        System.out.println("Parsing keyword at " + identifier.getStart());
+        checkType(identifier, Token.Type.IDENTIFIER);
+        if(!keywords.contains(identifier.getContent()))
+            throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getStart());
+        Keyword<?> k = null;
+        if(identifier.getContent().equals("if")) {
 
-                    checkType(functionBuilder.remove(0), Token.Type.STATEMENT_END);
+            checkType(functionAndArguments.remove(0), Token.Type.BODY_BEGIN);
 
-                    List<String> arg = args.stream().map(Token::getContent).collect(Collectors.toList());
+            Function<?> left = parseFunction(functionAndArguments, false);
 
-                    FunctionBuilder<?> builder = functions.get(identifier.getContent());
-                    if(arg.size() != builder.getArguments().size())
-                        throw new ParseException("Expected " + builder.getArguments().size() + " arguments, found " + arg.size() + ": " + identifier.getStart());
+            Statement statement = null;
+            Token comparator = functionAndArguments.remove(0);
+            checkType(comparator, Token.Type.BOOLEAN_OPERATOR);
 
-                    builtFunctions.add(functions.get(identifier.getContent()).build(arg));
+            Function<?> right = parseFunction(functionAndArguments, false);
 
-                    functionBuilder.clear();
-                }
-            } catch(TokenizerException e) {
-                throw new ParseException("Failed to tokenize input", e);
+            checkType(functionAndArguments.remove(0), Token.Type.BODY_END);
+            if(comparator.getContent().equals("==")) {
+                statement = new EqualsStatement(left, right);
             }
 
+            k = new IfKeyword(parseBlock(tokens), statement);
+
         }
-        if(token != null) checkType(token, Token.Type.STATEMENT_END);
-        return builtFunctions;
+        return k;
+    }
+
+    private Block parseBlock(List<Token> tokens) throws ParseException {
+        List<Item<?>> parsedItems = new GlueList<>();
+        List<Token> functionArgs = new GlueList<>();
+
+        while(tokens.size() > 0) {
+            Token token = tokens.remove(0);
+            System.out.println(token);
+            if(token.getType().equals(Token.Type.BLOCK_END)) break;
+            functionArgs.add(token);
+            if(token.getType().equals(Token.Type.STATEMENT_END)) {
+                parsedItems.add(parseFunction(functionArgs, true));
+                functionArgs.clear();
+            } else if(token.getType().equals(Token.Type.BLOCK_BEGIN)) {
+                parsedItems.add(parseKeyword(tokens, functionArgs));
+                functionArgs.clear();
+            }
+        }
+        return new Block(parsedItems);
+    }
+
+    private Function<?> parseFunction(List<Token> functionAndArguments, boolean fullStatement) throws ParseException {
+        Token identifier = functionAndArguments.remove(0);
+        System.out.println("Parsing function at " + identifier.getStart());
+        checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
+
+        if(!functions.containsKey(identifier.getContent()))
+            throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getStart());
+
+        checkType(functionAndArguments.remove(0), Token.Type.BODY_BEGIN); // Second is body begin
+
+
+        List<Token> args = getArgs(functionAndArguments); // Extract arguments, consume the rest.
+
+        functionAndArguments.remove(0); // Remove body end
+
+        if(fullStatement) checkType(functionAndArguments.remove(0), Token.Type.STATEMENT_END);
+
+        List<String> arg = args.stream().map(Token::getContent).collect(Collectors.toList());
+
+        FunctionBuilder<?> builder = functions.get(identifier.getContent());
+        if(arg.size() != builder.getArguments().size())
+            throw new ParseException("Expected " + builder.getArguments().size() + " arguments, found " + arg.size() + ": " + identifier.getStart());
+        return functions.get(identifier.getContent()).build(arg);
     }
 
     private List<Token> getArgs(List<Token> functionBuilder) throws ParseException {

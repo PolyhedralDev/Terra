@@ -11,7 +11,7 @@ import java.util.Set;
 public class Tokenizer {
     private final Lookahead reader;
 
-    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', // Currently used chars
+    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', // Currently used chars
             '{', '}'); // Reserved chars
 
 
@@ -31,6 +31,13 @@ public class Tokenizer {
         if(reader.matches("//", true)) skipLine(); // Skip line if comment
 
         if(reader.matches("/*", true)) skipTo("*/"); // Skip multi line comment
+
+        if(reader.matches("true", true))
+            return new Token("true", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("false", true))
+            return new Token("false", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("==", true))
+            return new Token("==", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
 
         if(isNumberStart()) {
             StringBuilder num = new StringBuilder();
@@ -55,6 +62,7 @@ public class Tokenizer {
                 string.append(reader.consume());
             }
             reader.consume(); // Consume last quote
+
             return new Token(string.toString(), Token.Type.STRING, new Position(reader.getLine(), reader.getIndex()));
         }
 
@@ -70,6 +78,8 @@ public class Tokenizer {
             return new Token(reader.consume().toString(), Token.Type.BLOCK_BEGIN, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is('}'))
             return new Token(reader.consume().toString(), Token.Type.BLOCK_END, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('='))
+            return new Token(reader.consume().toString(), Token.Type.ASSIGNMENT, new Position(reader.getLine(), reader.getIndex()));
 
         StringBuilder token = new StringBuilder();
         while(!reader.current().isEOF() && !isSyntaxSignificant(reader.current().getCharacter())) {
@@ -77,7 +87,10 @@ public class Tokenizer {
             if(!c.isWhitespace()) token.append(c);
         }
 
-        return new Token(token.toString(), Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
+        String tokenString = token.toString();
+
+
+        return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
 
     private boolean isNumberLike() {
