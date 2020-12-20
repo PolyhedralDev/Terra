@@ -40,4 +40,9 @@ public class CheckFunction implements Function<String> {
             return "OCEAN";
         return "AIR";
     }
+
+    @Override
+    public ReturnType returnType() {
+        return ReturnType.STRING;
+    }
 }

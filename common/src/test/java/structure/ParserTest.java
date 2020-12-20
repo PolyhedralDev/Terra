@@ -74,5 +74,10 @@ public class ParserTest {
         public String toString() {
             return "string: " + a + ", double: " + b;
         }
+
+        @Override
+        public ReturnType returnType() {
+            return ReturnType.VOID;
+        }
     }
 }

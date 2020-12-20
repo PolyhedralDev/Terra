@@ -98,7 +98,7 @@ public class Parser {
 
     private Executable<?> parseExpression(List<Token> tokens) throws ParseException {
         if(tokens.get(0).isConstant()) {
-            return new ConstantExpression(tokens.remove(0).getContent());
+            return new ConstantExpression<>(tokens.remove(0).getContent());
         } else return parseFunction(tokens, false);
     }
 
@@ -128,21 +128,21 @@ public class Parser {
         return new Block(parsedItems);
     }
 
-    private Function<?> parseFunction(List<Token> functionAndArguments, boolean fullStatement) throws ParseException {
-        Token identifier = functionAndArguments.remove(0);
+    private Function<?> parseFunction(List<Token> tokens, boolean fullStatement) throws ParseException {
+        Token identifier = tokens.remove(0);
         checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
         if(!functions.containsKey(identifier.getContent()))
             throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getStart());
 
-        checkType(functionAndArguments.remove(0), Token.Type.BODY_BEGIN); // Second is body begin
+        checkType(tokens.remove(0), Token.Type.BODY_BEGIN); // Second is body begin
 
 
-        List<Token> args = getArgs(functionAndArguments); // Extract arguments, consume the rest.
+        List<Token> args = getArgs(tokens); // Extract arguments, consume the rest.
 
-        functionAndArguments.remove(0); // Remove body end
+        tokens.remove(0); // Remove body end
 
-        if(fullStatement) checkType(functionAndArguments.get(0), Token.Type.STATEMENT_END);
+        if(fullStatement) checkType(tokens.get(0), Token.Type.STATEMENT_END);
 
         List<String> arg = args.stream().map(Token::getContent).collect(Collectors.toList());
 

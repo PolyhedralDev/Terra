@@ -26,4 +26,9 @@ public class IfKeyword implements Keyword<Void> {
         if(statement.apply(location, chunk)) conditional.apply(location, chunk);
         return null;
     }
+
+    @Override
+    public ReturnType returnType() {
+        return ReturnType.VOID;
+    }
 }

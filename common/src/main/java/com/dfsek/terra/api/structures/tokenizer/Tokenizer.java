@@ -82,6 +82,8 @@ public class Tokenizer {
             return new Token(reader.consume().toString(), Token.Type.BLOCK_END, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is('='))
             return new Token(reader.consume().toString(), Token.Type.ASSIGNMENT, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('+'))
+            return new Token(reader.consume().toString(), Token.Type.ADDITION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
 
         StringBuilder token = new StringBuilder();
         while(!reader.current().isEOF() && !isSyntaxSignificant(reader.current().getCharacter())) {

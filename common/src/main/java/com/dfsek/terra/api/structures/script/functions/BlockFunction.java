@@ -32,4 +32,9 @@ public class BlockFunction implements Function<Void> {
         //TODO: do
         return null;
     }
+
+    @Override
+    public ReturnType returnType() {
+        return ReturnType.VOID;
+    }
 }

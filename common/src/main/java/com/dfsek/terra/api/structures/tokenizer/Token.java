@@ -85,6 +85,10 @@ public class Token {
         /**
          * Boolean operator
          */
-        BOOLEAN_OPERATOR
+        BOOLEAN_OPERATOR,
+        /**
+         * Addition/concatenation operator
+         */
+        ADDITION_OPERATOR
     }
 }

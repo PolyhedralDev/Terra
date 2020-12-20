@@ -5,22 +5,22 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Statement;
 
-public class NotEqualsStatement implements Statement {
-    private final Item<?> left;
-    private final Item<?> right;
+public class GreaterThanStatement<T extends Comparable<T>> implements Statement {
+    private final Item<T> left;
+    private final Item<T> right;
 
-    public NotEqualsStatement(Item<?> left, Item<?> right) {
+    public GreaterThanStatement(Item<T> left, Item<T> right) {
         this.left = left;
         this.right = right;
     }
 
     @Override
     public Boolean apply(Location location) {
-        return !left.apply(location).equals(right.apply(location));
+        return left.apply(location).compareTo(right.apply(location)) > 0;
     }
 
     @Override
     public Boolean apply(Location location, Chunk chunk) {
-        return !left.apply(location, chunk).equals(right.apply(location, chunk));
+        return left.apply(location).compareTo(right.apply(location)) > 0;
     }
 }

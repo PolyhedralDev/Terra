@@ -14,4 +14,9 @@ public class ReturnKeyword implements Keyword<Void> {
     public Void apply(Location location, Chunk chunk) {
         return null;
     }
+
+    @Override
+    public ReturnType returnType() {
+        return ReturnType.VOID;
+    }
 }
