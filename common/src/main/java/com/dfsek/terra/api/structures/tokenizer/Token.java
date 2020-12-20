@@ -28,6 +28,10 @@ public class Token {
         return type + ": '" + content + "'";
     }
 
+    public boolean isConstant() {
+        return this.type.equals(Type.NUMBER) || this.type.equals(Type.STRING) || this.type.equals(Type.BOOLEAN);
+    }
+
     public enum Type {
         /**
          * Function identifier or language keyword

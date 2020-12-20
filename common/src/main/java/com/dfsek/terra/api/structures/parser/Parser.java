@@ -2,6 +2,8 @@ package com.dfsek.terra.api.structures.parser;
 
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.parser.lang.ConstantExpression;
+import com.dfsek.terra.api.structures.parser.lang.Expression;
 import com.dfsek.terra.api.structures.parser.lang.Function;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
@@ -70,13 +72,13 @@ public class Parser {
 
             checkType(functionAndArguments.remove(0), Token.Type.BODY_BEGIN);
 
-            Function<?> left = parseFunction(functionAndArguments, false);
+            Expression<?> left = parseExpression(functionAndArguments);
 
             Statement statement = null;
             Token comparator = functionAndArguments.remove(0);
             checkType(comparator, Token.Type.BOOLEAN_OPERATOR);
 
-            Function<?> right = parseFunction(functionAndArguments, false);
+            Expression<?> right = parseExpression(functionAndArguments);
 
             checkType(functionAndArguments.remove(0), Token.Type.BODY_END);
             if(comparator.getContent().equals("==")) {
@@ -87,6 +89,12 @@ public class Parser {
 
         }
         return k;
+    }
+
+    private Expression<?> parseExpression(List<Token> tokens) throws ParseException {
+        if(tokens.get(0).isConstant()) {
+            return new ConstantExpression(tokens.remove(0));
+        } else return parseFunction(tokens, false);
     }
 
     private Block parseBlock(List<Token> tokens) throws ParseException {
