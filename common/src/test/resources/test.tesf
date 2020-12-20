@@ -1,0 +1,8 @@
+test("hello", 2);
+
+if(test("fsdfsdf", 3) == 2) {
+    test("fdsgdf", 3.4);
+    if(test("fsdfsdf", 3) == 2) {
+        test("fdsgdf", 3.4);
+    }
+}

@@ -3,7 +3,7 @@ package com.dfsek.terra.api.structures.parser.lang;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 
-public class ConstantExpression implements Expression<Object> {
+public class ConstantExpression implements Executable<Object> {
     private final Object constant;
 
     public ConstantExpression(Object constant) {

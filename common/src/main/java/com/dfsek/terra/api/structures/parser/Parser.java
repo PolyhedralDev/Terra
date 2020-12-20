@@ -3,19 +3,21 @@ package com.dfsek.terra.api.structures.parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.ConstantExpression;
-import com.dfsek.terra.api.structures.parser.lang.Expression;
+import com.dfsek.terra.api.structures.parser.lang.Executable;
 import com.dfsek.terra.api.structures.parser.lang.Function;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Statement;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
 import com.dfsek.terra.api.structures.parser.lang.statements.EqualsStatement;
+import com.dfsek.terra.api.structures.parser.lang.statements.NotEqualsStatement;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
 import com.dfsek.terra.api.util.GlueList;
 import com.google.common.collect.Sets;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,29 +62,33 @@ public class Parser {
     }
 
 
-    private Keyword<?> parseKeyword(List<Token> tokens, List<Token> functionAndArguments) throws ParseException {
+    private Keyword<?> parseKeyword(List<Token> tokens) throws ParseException {
 
-        Token identifier = functionAndArguments.remove(0);
-        checkType(identifier, Token.Type.IDENTIFIER);
+        Token identifier = tokens.remove(0);
+        checkType(identifier, Token.Type.KEYWORD);
         if(!keywords.contains(identifier.getContent()))
             throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getStart());
         Keyword<?> k = null;
         if(identifier.getContent().equals("if")) {
 
-            checkType(functionAndArguments.remove(0), Token.Type.BODY_BEGIN);
+            checkType(tokens.remove(0), Token.Type.BODY_BEGIN);
 
-            Expression<?> left = parseExpression(functionAndArguments);
+            Executable<?> left = parseExpression(tokens);
 
             Statement statement = null;
-            Token comparator = functionAndArguments.remove(0);
+            Token comparator = tokens.remove(0);
             checkType(comparator, Token.Type.BOOLEAN_OPERATOR);
 
-            Expression<?> right = parseExpression(functionAndArguments);
+            Executable<?> right = parseExpression(tokens);
 
-            checkType(functionAndArguments.remove(0), Token.Type.BODY_END);
+            checkType(tokens.remove(0), Token.Type.BODY_END);
             if(comparator.getContent().equals("==")) {
                 statement = new EqualsStatement(left, right);
+            } else if(comparator.getContent().equals("!=")) {
+                statement = new NotEqualsStatement(left, right);
             }
+
+            checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
 
             k = new IfKeyword(parseBlock(tokens), statement);
 
@@ -90,7 +96,7 @@ public class Parser {
         return k;
     }
 
-    private Expression<?> parseExpression(List<Token> tokens) throws ParseException {
+    private Executable<?> parseExpression(List<Token> tokens) throws ParseException {
         if(tokens.get(0).isConstant()) {
             return new ConstantExpression(tokens.remove(0).getContent());
         } else return parseFunction(tokens, false);
@@ -98,18 +104,25 @@ public class Parser {
 
     private Block parseBlock(List<Token> tokens) throws ParseException {
         List<Item<?>> parsedItems = new GlueList<>();
-        List<Token> functionArgs = new GlueList<>();
-
+        checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.KEYWORD);
+        main:
         while(tokens.size() > 0) {
-            Token token = tokens.remove(0);
-            if(token.getType().equals(Token.Type.BLOCK_END)) break;
-            functionArgs.add(token);
-            if(token.getType().equals(Token.Type.STATEMENT_END)) {
-                parsedItems.add(parseFunction(functionArgs, true));
-                functionArgs.clear();
-            } else if(token.getType().equals(Token.Type.BLOCK_BEGIN)) {
-                parsedItems.add(parseKeyword(tokens, functionArgs));
-                functionArgs.clear();
+            Token token = tokens.get(0);
+            checkType(token, Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END);
+            switch(token.getType()) {
+                case KEYWORD:
+                    parsedItems.add(parseKeyword(tokens));
+                    if(tokens.isEmpty()) break;
+                    checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END);
+                    break;
+                case IDENTIFIER:
+                    parsedItems.add(parseFunction(tokens, true));
+                    if(tokens.isEmpty()) break;
+                    checkType(tokens.remove(0), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
+                    break;
+                case BLOCK_END:
+                    tokens.remove(0);
+                    break main;
             }
         }
         return new Block(parsedItems);
@@ -129,7 +142,7 @@ public class Parser {
 
         functionAndArguments.remove(0); // Remove body end
 
-        if(fullStatement) checkType(functionAndArguments.remove(0), Token.Type.STATEMENT_END);
+        if(fullStatement) checkType(functionAndArguments.get(0), Token.Type.STATEMENT_END);
 
         List<String> arg = args.stream().map(Token::getContent).collect(Collectors.toList());
 
@@ -158,8 +171,8 @@ public class Parser {
         return args;
     }
 
-    private void checkType(Token token, Token.Type expected) throws ParseException {
-        if(!token.getType().equals(expected))
-            throw new ParseException("Expected " + expected + " but found " + token.getType() + ": " + token.getStart());
+    private void checkType(Token token, Token.Type... expected) throws ParseException {
+        for(Token.Type type : expected) if(token.getType().equals(type)) return;
+        throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType() + ": " + token.getStart());
     }
 }

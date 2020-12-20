@@ -11,8 +11,8 @@ import java.util.Set;
 public class Tokenizer {
     private final Lookahead reader;
 
-    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', // Currently used chars
-            '{', '}'); // Reserved chars
+    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+'); // Reserved chars
+    private final Set<String> keywords = Sets.newHashSet("if", "return");
 
 
     public Tokenizer(String data) {
@@ -38,6 +38,8 @@ public class Tokenizer {
             return new Token("false", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("==", true))
             return new Token("==", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("!=", true))
+            return new Token("!=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
 
         if(isNumberStart()) {
             StringBuilder num = new StringBuilder();
@@ -90,7 +92,7 @@ public class Tokenizer {
         String tokenString = token.toString();
 
 
-        return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
+        return new Token(tokenString, keywords.contains(tokenString) ? Token.Type.KEYWORD : Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
 
     private boolean isNumberLike() {

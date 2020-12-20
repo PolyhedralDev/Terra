@@ -37,6 +37,11 @@ public class Token {
          * Function identifier or language keyword
          */
         IDENTIFIER,
+
+        /**
+         * Language keyword
+         */
+        KEYWORD,
         /**
          * Numeric literal
          */
