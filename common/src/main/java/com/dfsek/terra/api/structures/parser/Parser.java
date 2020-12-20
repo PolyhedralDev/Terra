@@ -63,7 +63,6 @@ public class Parser {
     private Keyword<?> parseKeyword(List<Token> tokens, List<Token> functionAndArguments) throws ParseException {
 
         Token identifier = functionAndArguments.remove(0);
-        System.out.println("Parsing keyword at " + identifier.getStart());
         checkType(identifier, Token.Type.IDENTIFIER);
         if(!keywords.contains(identifier.getContent()))
             throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getStart());
@@ -93,7 +92,7 @@ public class Parser {
 
     private Expression<?> parseExpression(List<Token> tokens) throws ParseException {
         if(tokens.get(0).isConstant()) {
-            return new ConstantExpression(tokens.remove(0));
+            return new ConstantExpression(tokens.remove(0).getContent());
         } else return parseFunction(tokens, false);
     }
 
@@ -103,7 +102,6 @@ public class Parser {
 
         while(tokens.size() > 0) {
             Token token = tokens.remove(0);
-            System.out.println(token);
             if(token.getType().equals(Token.Type.BLOCK_END)) break;
             functionArgs.add(token);
             if(token.getType().equals(Token.Type.STATEMENT_END)) {
@@ -119,7 +117,6 @@ public class Parser {
 
     private Function<?> parseFunction(List<Token> functionAndArguments, boolean fullStatement) throws ParseException {
         Token identifier = functionAndArguments.remove(0);
-        System.out.println("Parsing function at " + identifier.getStart());
         checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
         if(!functions.containsKey(identifier.getContent()))

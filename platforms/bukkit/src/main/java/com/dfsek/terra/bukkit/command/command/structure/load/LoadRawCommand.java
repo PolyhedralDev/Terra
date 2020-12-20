@@ -1,12 +1,23 @@
 package com.dfsek.terra.bukkit.command.command.structure.load;
 
+import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.structures.parser.Parser;
+import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.SpawnCheckBuilder;
+import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +37,16 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        try {
+            Parser parser = new Parser(IOUtils.toString(new FileInputStream(new File(getMain().getDataFolder(), "test.tesf"))));
+            parser.addFunction("block", new BlockFunctionBuilder(getMain()));
+            parser.addFunction("check", new SpawnCheckBuilder(getMain()));
+            Block main = parser.parse();
+            main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()));
+
+        } catch(IOException | ParseException e) {
+            e.printStackTrace();
+        }
         /*
         try {
             WorldHandle handle = ((TerraBukkitPlugin) getMain()).getWorldHandle();

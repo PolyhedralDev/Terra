@@ -16,7 +16,7 @@ import java.util.List;
 public class ParserTest {
     @Test
     public void parse() throws IOException, ParseException {
-        Parser parser = new Parser(IOUtils.toString(getClass().getResourceAsStream("/test.tesf")));
+        Parser parser = new Parser(IOUtils.toString(getClass().getResourceAsStream("/target/server/plugins/Terra/test.tesf")));
 
         parser.addFunction("test", new FunctionBuilder<Test1>() {
             @Override

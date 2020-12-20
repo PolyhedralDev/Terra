@@ -16,6 +16,8 @@ public class EqualsStatement implements Statement {
 
     @Override
     public Boolean apply(Location location) {
+        System.out.println(left.apply(location));
+        System.out.println(right.apply(location));
         return left.apply(location).equals(right.apply(location));
     }
 

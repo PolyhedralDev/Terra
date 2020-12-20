@@ -11,7 +11,7 @@ import java.io.IOException;
 public class TokenizerTest {
     @Test
     public void tokens() throws IOException, TokenizerException {
-        Tokenizer tokenizer = new Tokenizer(IOUtils.toString(getClass().getResourceAsStream("/test.tesf")));
+        Tokenizer tokenizer = new Tokenizer(IOUtils.toString(getClass().getResourceAsStream("/target/server/plugins/Terra/test.tesf")));
         // Actual run
         long l = System.nanoTime();
 

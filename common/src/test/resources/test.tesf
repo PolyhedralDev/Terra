@@ -1,8 +1,0 @@
-test("hello", 1);
-test("ghgj{}()\"\\hgjhgj", 3.4);
-
-if(test("hello", 1) == "a string literal") {
-    test("hello", 1);
-}
-
-test("ghgj{}()\"\\hgjhgj", 3.4);

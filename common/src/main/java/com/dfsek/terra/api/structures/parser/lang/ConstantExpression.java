@@ -15,6 +15,7 @@ public class ConstantExpression implements Expression<Object> {
         return constant;
     }
 
+
     @Override
     public Object apply(Location location, Chunk chunk) {
         return constant;
