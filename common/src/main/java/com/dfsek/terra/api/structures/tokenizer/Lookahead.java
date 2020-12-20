@@ -83,6 +83,14 @@ public class Lookahead {
         } else return buffer.get(ahead);
     }
 
+    public int getLine() {
+        return line;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
     /**
      * Consume an amount of characters
      *

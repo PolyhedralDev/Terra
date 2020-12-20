@@ -1,18 +1,4 @@
-FUNCTION(1, "hello");
+test("hello", 1);
 
-;
-)
+test("ghgjhgjhgj", 3.4);
 
-FUNCTION2(1.2, "he423llo");
-
-// comment
-
-FUNCTION3(3.4, "35234523452345");
-
-/*
-block comment
-fsfsdf
-gsdfgsdfg
-*/
-
-FUNCTION(1, "hello");

@@ -8,4 +8,9 @@ public class Position {
         this.line = line;
         this.index = index;
     }
+
+    @Override
+    public String toString() {
+        return (line + 1) + ":" + (index + 1);
+    }
 }

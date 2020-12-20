@@ -3,10 +3,12 @@ package com.dfsek.terra.api.structures.tokenizer;
 public class Token {
     private final String content;
     private final Type type;
+    private final Position start;
 
-    public Token(String content, Type type) {
+    public Token(String content, Type type, Position start) {
         this.content = content;
         this.type = type;
+        this.start = start;
     }
 
     public Type getType() {
@@ -15,6 +17,10 @@ public class Token {
 
     public String getContent() {
         return content;
+    }
+
+    public Position getStart() {
+        return start;
     }
 
     @Override

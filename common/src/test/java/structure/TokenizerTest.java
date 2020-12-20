@@ -12,12 +12,15 @@ public class TokenizerTest {
     @Test
     public void tokens() throws IOException, TokenizerException {
         Tokenizer tokenizer = new Tokenizer(IOUtils.toString(getClass().getResourceAsStream("/test.tesf")));
+        // Actual run
+        long l = System.nanoTime();
 
-        for(int i = 0; i < 100; i++) {
+
+        while(tokenizer.hasNext()) {
             Token t = tokenizer.fetch();
-            if(t == null) break;
             System.out.println(t);
-
         }
+
+        System.out.println((double) (System.nanoTime() - l) / 1000000);
     }
 }

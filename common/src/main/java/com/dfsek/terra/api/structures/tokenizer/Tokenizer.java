@@ -1,13 +1,11 @@
 package com.dfsek.terra.api.structures.tokenizer;
 
 import com.dfsek.terra.api.structures.tokenizer.exceptions.EOFException;
+import com.dfsek.terra.api.structures.tokenizer.exceptions.FormatException;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
-import com.dfsek.terra.api.structures.tokenizer.group.Group;
-import com.dfsek.terra.api.util.GlueList;
 import com.google.common.collect.Sets;
 
 import java.io.StringReader;
-import java.util.List;
 import java.util.Set;
 
 public class Tokenizer {
@@ -20,46 +18,47 @@ public class Tokenizer {
         reader = new Lookahead(new StringReader(data + '\0'));
     }
 
-    public List<TokenizedStatement> tokenize() {
-        List<TokenizedStatement> tokens = new GlueList<>();
-        while(reader.current().isEOF()) {
-            Char c = reader.current();
-        }
-
-        return tokens;
+    public boolean hasNext() {
+        while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume(); // Consume whitespace.
+        return !reader.current().isEOF();
     }
 
     public Token fetch() throws TokenizerException {
-
         while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume();
         if(reader.current().isEOF()) return null; // EOF
 
         if(reader.matches("//", true)) skipLine(); // Skip line if comment
 
-        if(reader.matches("/*", true)) skipTo("*/");
+        if(reader.matches("/*", true)) skipTo("*/"); // Skip multi line comment
 
         if(isNumberStart()) {
             StringBuilder num = new StringBuilder();
             while(!reader.current().isEOF() && isNumberLike()) {
                 num.append(reader.consume());
             }
-            return new Token(num.toString(), Token.Type.NUMBER);
+            return new Token(num.toString(), Token.Type.NUMBER, new Position(reader.getLine(), reader.getIndex()));
         }
 
         if(reader.current().is('"')) {
             reader.consume(); // Consume first quote
             StringBuilder string = new StringBuilder();
-            while(!reader.current().isEOF() && !reader.current().is('"')) {
+            while(!reader.current().is('"')) {
+                if(reader.current().isEOF())
+                    throw new FormatException("No end of string literal found. " + reader.getLine() + ":" + reader.getIndex());
                 string.append(reader.consume());
             }
             reader.consume(); // Consume last quote
-            return new Token(string.toString(), Token.Type.STRING);
+            return new Token(string.toString(), Token.Type.STRING, new Position(reader.getLine(), reader.getIndex()));
         }
 
-        if(reader.current().is('(')) return new Token(reader.consume().toString(), Token.Type.BODY_BEGIN);
-        if(reader.current().is(')')) return new Token(reader.consume().toString(), Token.Type.BODY_END);
-        if(reader.current().is(';')) return new Token(reader.consume().toString(), Token.Type.STATEMENT_END);
-        if(reader.current().is(',')) return new Token(reader.consume().toString(), Token.Type.SEPARATOR);
+        if(reader.current().is('('))
+            return new Token(reader.consume().toString(), Token.Type.BODY_BEGIN, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is(')'))
+            return new Token(reader.consume().toString(), Token.Type.BODY_END, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is(';'))
+            return new Token(reader.consume().toString(), Token.Type.STATEMENT_END, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is(','))
+            return new Token(reader.consume().toString(), Token.Type.SEPARATOR, new Position(reader.getLine(), reader.getIndex()));
 
         StringBuilder token = new StringBuilder();
         while(!reader.current().isEOF() && !isSyntaxSignificant(reader.current().getCharacter())) {
@@ -67,7 +66,7 @@ public class Tokenizer {
             if(!c.isWhitespace()) token.append(c);
         }
 
-        return new Token(token.toString(), Token.Type.IDENTIFIER);
+        return new Token(token.toString(), Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
 
     private boolean isNumberLike() {
@@ -92,21 +91,6 @@ public class Tokenizer {
             reader.consume();
         }
         throw new EOFException("No end of expression found.");
-    }
-
-    /**
-     * Read to the end of a group, consuming all
-     *
-     * @param g
-     * @return
-     */
-    private String readToEndOfGroup(Group g) {
-        StringBuilder builder = new StringBuilder();
-        do {
-            Char current = reader.consume();
-
-        } while(reader.current().getCharacter() != g.getEnd());
-        return builder.toString();
     }
 
     public boolean isSyntaxSignificant(char c) {
