@@ -11,7 +11,8 @@ import java.util.Set;
 public class Tokenizer {
     private final Lookahead reader;
 
-    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', '[', ']', ',');
+    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', // Currently used chars
+            '{', '}'); // Reserved chars
 
 
     public Tokenizer(String data) {
@@ -42,7 +43,13 @@ public class Tokenizer {
         if(reader.current().is('"')) {
             reader.consume(); // Consume first quote
             StringBuilder string = new StringBuilder();
-            while(!reader.current().is('"')) {
+            boolean ignoreNext = false;
+            while((!reader.current().is('"')) || ignoreNext) {
+                if(reader.current().is('\\') && !ignoreNext) {
+                    ignoreNext = true;
+                    reader.consume();
+                    continue;
+                } else ignoreNext = false;
                 if(reader.current().isEOF())
                     throw new FormatException("No end of string literal found. " + reader.getLine() + ":" + reader.getIndex());
                 string.append(reader.consume());
@@ -59,6 +66,10 @@ public class Tokenizer {
             return new Token(reader.consume().toString(), Token.Type.STATEMENT_END, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is(','))
             return new Token(reader.consume().toString(), Token.Type.SEPARATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('{'))
+            return new Token(reader.consume().toString(), Token.Type.BLOCK_BEGIN, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('}'))
+            return new Token(reader.consume().toString(), Token.Type.BLOCK_END, new Position(reader.getLine(), reader.getIndex()));
 
         StringBuilder token = new StringBuilder();
         while(!reader.current().isEOF() && !isSyntaxSignificant(reader.current().getCharacter())) {

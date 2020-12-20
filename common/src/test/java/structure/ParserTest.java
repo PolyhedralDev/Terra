@@ -31,14 +31,15 @@ public class ParserTest {
             }
         });
 
-        List<Function> functions = parser.parse();
+        long l = System.nanoTime();
+        List<Function<?>> functions = parser.parse();
+        long t = System.nanoTime() - l;
+        System.out.println("Took " + (double) t / 1000000);
 
-        for(Function f : functions) {
-            System.out.println(f);
-        }
+        for(Function<?> f : functions) System.out.println(f);
     }
 
-    private static class Test1 implements Function {
+    private static class Test1 implements Function<Void> {
         private final String a;
         private final double b;
 
@@ -56,18 +57,23 @@ public class ParserTest {
         }
 
         @Override
-        public void apply(Location location) {
-
+        public Void apply(Location location) {
+            return null;
         }
 
         @Override
-        public void apply(Location location, Chunk chunk) {
-
+        public Void apply(Location location, Chunk chunk) {
+            return null;
         }
 
         @Override
         public String name() {
             return null;
+        }
+
+        @Override
+        public String toString() {
+            return "string: " + a + ", double: " + b;
         }
     }
 }

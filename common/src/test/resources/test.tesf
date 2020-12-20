@@ -1,4 +1,2 @@
 test("hello", 1);
-
-test("ghgjhgjhgj", 3.4);
-
+test("ghgj{}()\"\\hgjhgj", 3.4);
