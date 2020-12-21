@@ -1,5 +1,5 @@
-test("hello", 2);
+test("hello" + 3 + "gdfg", 2 + 1.2);
 
-if("true") {
-    test("fdsgdf", 3.4);
+if(true) {
+    test("fdsgdf" + 2, 3.4);
 }

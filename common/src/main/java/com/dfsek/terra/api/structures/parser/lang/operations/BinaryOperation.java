@@ -20,7 +20,7 @@ public abstract class BinaryOperation<T> implements Returnable<T> {
 
     @Override
     public Position getPosition() {
-        return getPosition();
+        return start;
     }
 
     @Override

@@ -32,6 +32,14 @@ public class Token {
         return this.type.equals(Type.NUMBER) || this.type.equals(Type.STRING) || this.type.equals(Type.BOOLEAN);
     }
 
+    public boolean isBinaryOperator() {
+        return type.equals(Type.ADDITION_OPERATOR)
+                || type.equals(Type.SUBTRACTION_OPERATOR)
+                || type.equals(Type.MULTIPLICATION_OPERATOR)
+                || type.equals(Type.DIVISION_OPERATOR)
+                || type.equals(Type.BOOLEAN_OPERATOR);
+    }
+
     public enum Type {
         /**
          * Function identifier or language keyword

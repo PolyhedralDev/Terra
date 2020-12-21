@@ -1,10 +1,11 @@
-package com.dfsek.terra.api.structures.parser.lang;
+package com.dfsek.terra.api.structures.parser.lang.constants;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-public class ConstantExpression<T> implements Returnable<T> {
+public abstract class ConstantExpression<T> implements Returnable<T> {
     private final T constant;
     private final Position position;
 
@@ -31,13 +32,5 @@ public class ConstantExpression<T> implements Returnable<T> {
 
     public T getConstant() {
         return constant;
-    }
-
-    @Override
-    public ReturnType returnType() {
-        if(constant instanceof String) return ReturnType.STRING;
-        if(constant instanceof Number) return ReturnType.NUMBER;
-        if(constant instanceof Boolean) return ReturnType.BOOLEAN;
-        return ReturnType.OBJECT;
     }
 }

@@ -2,14 +2,19 @@ package com.dfsek.terra.api.structures.parser;
 
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
-import com.dfsek.terra.api.structures.parser.lang.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.constants.BooleanConstant;
+import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
+import com.dfsek.terra.api.structures.parser.lang.constants.StringConstant;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
+import com.dfsek.terra.api.structures.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.ConcatenationOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.NumberAdditionOperation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
@@ -100,17 +105,53 @@ public class Parser {
 
         Returnable<?> expression;
         if(tokens.get(0).isConstant()) {
-            Object constant;
-            Position position = tokens.get(0).getPosition();
-            if(tokens.get(0).getType().equals(Token.Type.BOOLEAN)) constant = Boolean.parseBoolean(tokens.remove(0).getContent());
-            else constant = tokens.remove(0).getContent();
-            expression = new ConstantExpression<>(constant, position);
+            Token constantToken = tokens.remove(0);
+            Position position = constantToken.getPosition();
+            switch(constantToken.getType()) {
+                case NUMBER:
+                    String content = constantToken.getContent();
+                    expression = new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), position);
+                    break;
+                case STRING:
+                    expression = new StringConstant(constantToken.getContent(), position);
+                    break;
+                case BOOLEAN:
+                    expression = new BooleanConstant(Boolean.parseBoolean(constantToken.getContent()), position);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unsupported constant token: " + constantToken.getType() + " at position: " + position);
+            }
         } else expression = parseFunction(tokens, false);
+
 
         if(not) {
             checkReturnType(expression, Returnable.ReturnType.BOOLEAN);
-            return new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
-        } else return expression;
+            expression = new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
+        }
+        if(tokens.get(0).isBinaryOperator()) return parseBinaryOperation(expression, tokens);
+        return expression;
+    }
+
+    @SuppressWarnings("unchecked")
+    private BinaryOperation<?> parseBinaryOperation(Returnable<?> left, List<Token> tokens) throws ParseException {
+        Token binaryOperator = tokens.remove(0);
+        Returnable<?> right = parseExpression(tokens);
+
+        switch(binaryOperator.getType()) {
+            case ADDITION_OPERATOR:
+                System.out.println(left.returnType());
+                System.out.println(right.returnType());
+                if(left.returnType().equals(Returnable.ReturnType.NUMBER) && right.returnType().equals(Returnable.ReturnType.NUMBER)) {
+                    System.out.println("number " + binaryOperator.getPosition());
+                    return new NumberAdditionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                }
+                return new ConcatenationOperation((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+            case BOOLEAN_OPERATOR:
+
+            default:
+                throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
+        }
+
     }
 
     private Block parseBlock(List<Token> tokens) throws ParseException {

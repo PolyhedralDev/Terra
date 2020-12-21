@@ -4,7 +4,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public class NumberAdditionOperation extends BinaryOperation<Number> {
-    protected NumberAdditionOperation(Returnable<Number> left, Returnable<Number> right, Position position) {
+    public NumberAdditionOperation(Returnable<Number> left, Returnable<Number> right, Position position) {
         super(left, right, position);
     }
 
