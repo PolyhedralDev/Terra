@@ -3,14 +3,14 @@ package com.dfsek.terra.api.structures.parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.ConstantExpression;
-import com.dfsek.terra.api.structures.parser.lang.Executable;
-import com.dfsek.terra.api.structures.parser.lang.Function;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
-import com.dfsek.terra.api.structures.parser.lang.Statement;
+import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
-import com.dfsek.terra.api.structures.parser.lang.statements.EqualsStatement;
-import com.dfsek.terra.api.structures.parser.lang.statements.NotEqualsStatement;
+import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation;
+import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Parser {
     private final String data;
@@ -54,7 +53,7 @@ public class Parser {
         for(Token t : tokens) {
             if(t.getType().equals(Token.Type.BLOCK_BEGIN)) blockLevel++;
             else if(t.getType().equals(Token.Type.BLOCK_END)) blockLevel--;
-            if(blockLevel < 0) throw new ParseException("Dangling closing brace: " + t.getStart());
+            if(blockLevel < 0) throw new ParseException("Dangling closing brace: " + t.getPosition());
         }
         if(blockLevel != 0) throw new ParseException("Dangling opening brace");
 
@@ -62,52 +61,67 @@ public class Parser {
     }
 
 
+    @SuppressWarnings("unchecked")
     private Keyword<?> parseKeyword(List<Token> tokens) throws ParseException {
 
         Token identifier = tokens.remove(0);
         checkType(identifier, Token.Type.KEYWORD);
         if(!keywords.contains(identifier.getContent()))
-            throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getStart());
+            throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getPosition());
         Keyword<?> k = null;
         if(identifier.getContent().equals("if")) {
 
             checkType(tokens.remove(0), Token.Type.BODY_BEGIN);
 
-            Executable<?> left = parseExpression(tokens);
-
-            Statement statement = null;
-            Token comparator = tokens.remove(0);
-            checkType(comparator, Token.Type.BOOLEAN_OPERATOR);
-
-            Executable<?> right = parseExpression(tokens);
+            Returnable<?> comparator = parseExpression(tokens);
+            checkReturnType(comparator, Returnable.ReturnType.BOOLEAN);
 
             checkType(tokens.remove(0), Token.Type.BODY_END);
-            if(comparator.getContent().equals("==")) {
-                statement = new EqualsStatement(left, right);
-            } else if(comparator.getContent().equals("!=")) {
-                statement = new NotEqualsStatement(left, right);
-            }
 
             checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
 
-            k = new IfKeyword(parseBlock(tokens), statement);
+            k = new IfKeyword(parseBlock(tokens), (Returnable<Boolean>) comparator, identifier.getPosition());
 
         }
         return k;
     }
 
-    private Executable<?> parseExpression(List<Token> tokens) throws ParseException {
+    @SuppressWarnings("unchecked")
+    private Returnable<?> parseExpression(List<Token> tokens) throws ParseException {
+        System.out.println(tokens.get(0));
+        Token first = tokens.get(0);
+        checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT);
+
+        boolean not = false;
+        if(first.getType().equals(Token.Type.BOOLEAN_NOT)) {
+            not = true;
+            tokens.remove(0);
+        }
+
+        Returnable<?> expression;
         if(tokens.get(0).isConstant()) {
-            return new ConstantExpression<>(tokens.remove(0).getContent());
-        } else return parseFunction(tokens, false);
+            Object constant;
+            Position position = tokens.get(0).getPosition();
+            if(tokens.get(0).getType().equals(Token.Type.BOOLEAN)) constant = Boolean.parseBoolean(tokens.remove(0).getContent());
+            else constant = tokens.remove(0).getContent();
+            expression = new ConstantExpression<>(constant, position);
+        } else expression = parseFunction(tokens, false);
+
+        if(not) {
+            checkReturnType(expression, Returnable.ReturnType.BOOLEAN);
+            return new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
+        } else return expression;
     }
 
     private Block parseBlock(List<Token> tokens) throws ParseException {
         List<Item<?>> parsedItems = new GlueList<>();
+        Token first = tokens.get(0);
+
         checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.KEYWORD);
         main:
         while(tokens.size() > 0) {
             Token token = tokens.get(0);
+            System.out.println(token);
             checkType(token, Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END);
             switch(token.getType()) {
                 case KEYWORD:
@@ -125,7 +139,7 @@ public class Parser {
                     break main;
             }
         }
-        return new Block(parsedItems);
+        return new Block(parsedItems, first.getPosition());
     }
 
     private Function<?> parseFunction(List<Token> tokens, boolean fullStatement) throws ParseException {
@@ -133,46 +147,42 @@ public class Parser {
         checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
         if(!functions.containsKey(identifier.getContent()))
-            throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getStart());
+            throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getPosition());
 
         checkType(tokens.remove(0), Token.Type.BODY_BEGIN); // Second is body begin
 
 
-        List<Token> args = getArgs(tokens); // Extract arguments, consume the rest.
+        List<Returnable<?>> args = getArgs(tokens); // Extract arguments, consume the rest.
 
         tokens.remove(0); // Remove body end
 
         if(fullStatement) checkType(tokens.get(0), Token.Type.STATEMENT_END);
 
-        List<String> arg = args.stream().map(Token::getContent).collect(Collectors.toList());
-
         FunctionBuilder<?> builder = functions.get(identifier.getContent());
-        if(arg.size() != builder.getArguments() && builder.getArguments() != -1)
-            throw new ParseException("Expected " + builder.getArguments() + " arguments, found " + arg.size() + ": " + identifier.getStart());
-        return functions.get(identifier.getContent()).build(arg);
+        if(args.size() != builder.getArguments() && builder.getArguments() != -1)
+            throw new ParseException("Expected " + builder.getArguments() + " arguments, found " + args.size() + ": " + identifier.getPosition());
+        return functions.get(identifier.getContent()).build(args, identifier.getPosition());
     }
 
-    private List<Token> getArgs(List<Token> functionBuilder) throws ParseException {
-        List<Token> args = new GlueList<>();
-        boolean expectingSeparator = false;
 
-        while(!functionBuilder.get(0).getType().equals(Token.Type.BODY_END)) {
-            Token current = functionBuilder.remove(0);
-            if(expectingSeparator) {
-                checkType(current, Token.Type.SEPARATOR);
-                expectingSeparator = false;
-            } else {
-                if(!allowedArguments.contains(current.getType()))
-                    throw new ParseException("Token type " + current.getType() + " not allowed in arguments: " + current.getStart());
-                args.add(current);
-                expectingSeparator = true;
-            }
+    private List<Returnable<?>> getArgs(List<Token> tokens) throws ParseException {
+        List<Returnable<?>> args = new GlueList<>();
+
+        while(!tokens.get(0).getType().equals(Token.Type.BODY_END)) {
+            args.add(parseExpression(tokens));
+            checkType(tokens.get(0), Token.Type.SEPARATOR, Token.Type.BODY_END);
+            if(tokens.get(0).getType().equals(Token.Type.SEPARATOR)) tokens.remove(0);
         }
         return args;
     }
 
     private void checkType(Token token, Token.Type... expected) throws ParseException {
         for(Token.Type type : expected) if(token.getType().equals(type)) return;
-        throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType() + ": " + token.getStart());
+        throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType() + ": " + token.getPosition());
+    }
+
+    private void checkReturnType(Returnable<?> returnable, Returnable.ReturnType... types) throws ParseException {
+        for(Returnable.ReturnType type : types) if(returnable.returnType().equals(type)) return;
+        throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType() + ": " + returnable.getPosition());
     }
 }

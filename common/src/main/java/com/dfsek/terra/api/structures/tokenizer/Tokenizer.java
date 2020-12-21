@@ -11,7 +11,7 @@ import java.util.Set;
 public class Tokenizer {
     private final Lookahead reader;
 
-    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+'); // Reserved chars
+    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
     private final Set<String> keywords = Sets.newHashSet("if", "return");
 
 
@@ -36,10 +36,21 @@ public class Tokenizer {
             return new Token("true", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("false", true))
             return new Token("false", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
+
+
         if(reader.matches("==", true))
             return new Token("==", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("!=", true))
             return new Token("!=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches(">", true))
+            return new Token(">", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("<", true))
+            return new Token("<", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches(">=", true))
+            return new Token(">=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("<=", true))
+            return new Token("<=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+
 
         if(isNumberStart()) {
             StringBuilder num = new StringBuilder();
@@ -84,6 +95,14 @@ public class Tokenizer {
             return new Token(reader.consume().toString(), Token.Type.ASSIGNMENT, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is('+'))
             return new Token(reader.consume().toString(), Token.Type.ADDITION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('-'))
+            return new Token(reader.consume().toString(), Token.Type.SUBTRACTION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('*'))
+            return new Token(reader.consume().toString(), Token.Type.MULTIPLICATION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('/'))
+            return new Token(reader.consume().toString(), Token.Type.DIVISION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('!'))
+            return new Token(reader.consume().toString(), Token.Type.BOOLEAN_NOT, new Position(reader.getLine(), reader.getIndex()));
 
         StringBuilder token = new StringBuilder();
         while(!reader.current().isEOF() && !isSyntaxSignificant(reader.current().getCharacter())) {

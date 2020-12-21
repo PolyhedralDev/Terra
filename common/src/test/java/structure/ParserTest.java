@@ -2,11 +2,13 @@ package structure;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.structures.parser.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
-import com.dfsek.terra.api.structures.parser.lang.Function;
 import com.dfsek.terra.api.structures.parser.lang.Item;
+import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.tokenizer.Position;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +22,8 @@ public class ParserTest {
 
         parser.addFunction("test", new FunctionBuilder<Test1>() {
             @Override
-            public Test1 build(List<String> argumentList) throws ParseException {
-                return new Test1(argumentList.get(0), Double.parseDouble(argumentList.get(1)));
+            public Test1 build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+                return new Test1(argumentList.get(0).apply(new Location(null, 0, 0, 0)).toString(), Double.parseDouble(argumentList.get(1).apply(new Location(null, 0, 0, 0)).toString()), position);
             }
 
             @Override
@@ -41,10 +43,12 @@ public class ParserTest {
     private static class Test1 implements Function<Void> {
         private final String a;
         private final double b;
+        private final Position position;
 
-        public Test1(String a, double b) {
+        public Test1(String a, double b, Position position) {
             this.a = a;
             this.b = b;
+            this.position = position;
         }
 
         public String getA() {
@@ -62,6 +66,11 @@ public class ParserTest {
 
         @Override
         public Void apply(Location location, Chunk chunk) {
+            return null;
+        }
+
+        @Override
+        public Position getPosition() {
             return null;
         }
 

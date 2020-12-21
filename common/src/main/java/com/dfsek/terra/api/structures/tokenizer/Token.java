@@ -19,7 +19,7 @@ public class Token {
         return content;
     }
 
-    public Position getStart() {
+    public Position getPosition() {
         return start;
     }
 
@@ -89,6 +89,22 @@ public class Token {
         /**
          * Addition/concatenation operator
          */
-        ADDITION_OPERATOR
+        ADDITION_OPERATOR,
+        /**
+         * Subtraction operator
+         */
+        SUBTRACTION_OPERATOR,
+        /**
+         * Multiplication operator
+         */
+        MULTIPLICATION_OPERATOR,
+        /**
+         * Division operator
+         */
+        DIVISION_OPERATOR,
+        /**
+         * Boolean not operator
+         */
+        BOOLEAN_NOT
     }
 }

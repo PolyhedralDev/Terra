@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.parser.lang;
 
-public interface Executable<T> extends Item<T> {
+public interface Returnable<T> extends Item<T> {
     ReturnType returnType();
 
     enum ReturnType {

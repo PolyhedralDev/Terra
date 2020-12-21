@@ -4,14 +4,17 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Statement;
+import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public class EqualsStatement implements Statement {
     private final Item<?> left;
     private final Item<?> right;
+    private final Position position;
 
-    public EqualsStatement(Item<?> left, Item<?> right) {
+    public EqualsStatement(Item<?> left, Item<?> right, Position position) {
         this.left = left;
         this.right = right;
+        this.position = position;
     }
 
     @Override
@@ -22,5 +25,10 @@ public class EqualsStatement implements Statement {
     @Override
     public Boolean apply(Location location, Chunk chunk) {
         return left.apply(location, chunk).equals(right.apply(location, chunk));
+    }
+
+    @Override
+    public Position getPosition() {
+        return position;
     }
 }

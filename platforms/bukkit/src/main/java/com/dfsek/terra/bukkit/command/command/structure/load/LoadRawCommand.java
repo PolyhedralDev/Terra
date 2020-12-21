@@ -4,8 +4,6 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
-import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
-import com.dfsek.terra.api.structures.script.builders.SpawnCheckBuilder;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import org.apache.commons.io.IOUtils;
@@ -39,8 +37,6 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         try {
             Parser parser = new Parser(IOUtils.toString(new FileInputStream(new File(getMain().getDataFolder(), "test.tesf"))));
-            parser.addFunction("block", new BlockFunctionBuilder(getMain()));
-            parser.addFunction("check", new SpawnCheckBuilder(getMain()));
             Block main = parser.parse();
             main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()));
 

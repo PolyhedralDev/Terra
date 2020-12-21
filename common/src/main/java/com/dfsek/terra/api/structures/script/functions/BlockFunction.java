@@ -1,16 +1,24 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.structures.parser.lang.Function;
+import com.dfsek.terra.api.structures.parser.lang.ConstantExpression;
+import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public class BlockFunction implements Function<Void> {
     private final BlockData data;
-    private final int x, y, z;
+    private final Returnable<Integer> x, y, z;
+    private final Position position;
 
-    public BlockFunction(int x, int y, int z, BlockData data) {
-        this.data = data;
+    public BlockFunction(Returnable<Integer> x, Returnable<Integer> y, Returnable<Integer> z, Returnable<String> data, TerraPlugin main, Position position) {
+        this.position = position;
+        if(!(data instanceof ConstantExpression)) throw new IllegalArgumentException("Block data must be constant.");
+
+        this.data = main.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
         this.x = x;
         this.y = y;
         this.z = z;
@@ -23,7 +31,7 @@ public class BlockFunction implements Function<Void> {
 
     @Override
     public Void apply(Location location) {
-        location.clone().add(x, y, z).getBlock().setBlockData(data, false);
+        location.clone().add(x.apply(location), y.apply(location), z.apply(location)).getBlock().setBlockData(data, false);
         return null;
     }
 
@@ -31,6 +39,11 @@ public class BlockFunction implements Function<Void> {
     public Void apply(Location location, Chunk chunk) {
         //TODO: do
         return null;
+    }
+
+    @Override
+    public Position getPosition() {
+        return position;
     }
 
     @Override
