@@ -40,6 +40,12 @@ public class Token {
                 || type.equals(Type.BOOLEAN_OPERATOR);
     }
 
+    public boolean isStrictArithmeticOperator() {
+        return type.equals(Type.SUBTRACTION_OPERATOR)
+                || type.equals(Type.MULTIPLICATION_OPERATOR)
+                || type.equals(Type.DIVISION_OPERATOR);
+    }
+
     public enum Type {
         /**
          * Function identifier or language keyword

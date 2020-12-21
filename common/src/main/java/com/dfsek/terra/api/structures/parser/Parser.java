@@ -14,7 +14,10 @@ import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
 import com.dfsek.terra.api.structures.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.ConcatenationOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.DivisionOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.MultiplicationOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.NumberAdditionOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.SubtractionOperation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
@@ -78,7 +81,7 @@ public class Parser {
 
             checkType(tokens.remove(0), Token.Type.BODY_BEGIN);
 
-            Returnable<?> comparator = parseExpression(tokens);
+            Returnable<?> comparator = parseExpression(tokens, true);
             checkReturnType(comparator, Returnable.ReturnType.BOOLEAN);
 
             checkType(tokens.remove(0), Token.Type.BODY_END);
@@ -92,10 +95,10 @@ public class Parser {
     }
 
     @SuppressWarnings("unchecked")
-    private Returnable<?> parseExpression(List<Token> tokens) throws ParseException {
+    private Returnable<?> parseExpression(List<Token> tokens, boolean full) throws ParseException {
         System.out.println(tokens.get(0));
         Token first = tokens.get(0);
-        checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT);
+        checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT, Token.Type.BODY_BEGIN);
 
         boolean not = false;
         if(first.getType().equals(Token.Type.BOOLEAN_NOT)) {
@@ -128,30 +131,52 @@ public class Parser {
             checkReturnType(expression, Returnable.ReturnType.BOOLEAN);
             expression = new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
         }
-        if(tokens.get(0).isBinaryOperator()) return parseBinaryOperation(expression, tokens);
+        if(full && tokens.get(0).isBinaryOperator()) {
+            return parseBinaryOperation(expression, tokens);
+        }
         return expression;
     }
 
-    @SuppressWarnings("unchecked")
+
     private BinaryOperation<?> parseBinaryOperation(Returnable<?> left, List<Token> tokens) throws ParseException {
         Token binaryOperator = tokens.remove(0);
-        Returnable<?> right = parseExpression(tokens);
+        checkType(binaryOperator, Token.Type.ADDITION_OPERATOR, Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR, Token.Type.BOOLEAN_OPERATOR);
 
+        Returnable<?> right = parseExpression(tokens, false);
+        if(binaryOperator.isStrictArithmeticOperator()) checkArithmeticOperation(left, right, binaryOperator.getType());
+
+        Token other = tokens.get(0);
+        System.out.println("other: " + other);
+        if(other.isBinaryOperator() && (other.getType().equals(Token.Type.MULTIPLICATION_OPERATOR) || other.getType().equals(Token.Type.DIVISION_OPERATOR))) {
+            System.out.println("using left");
+            return assemble(left, parseBinaryOperation(right, tokens), binaryOperator);
+        } else if(other.isBinaryOperator()) {
+            System.out.println("using right");
+            return parseBinaryOperation(assemble(left, right, binaryOperator), tokens);
+        }
+        return assemble(left, right, binaryOperator);
+    }
+
+    @SuppressWarnings("unchecked")
+    private BinaryOperation<?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) {
         switch(binaryOperator.getType()) {
             case ADDITION_OPERATOR:
-                System.out.println(left.returnType());
-                System.out.println(right.returnType());
                 if(left.returnType().equals(Returnable.ReturnType.NUMBER) && right.returnType().equals(Returnable.ReturnType.NUMBER)) {
-                    System.out.println("number " + binaryOperator.getPosition());
                     return new NumberAdditionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
                 }
                 return new ConcatenationOperation((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+            case SUBTRACTION_OPERATOR:
+                return new SubtractionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+            case MULTIPLICATION_OPERATOR:
+                return new MultiplicationOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+            case DIVISION_OPERATOR:
+                return new DivisionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
             case BOOLEAN_OPERATOR:
+
 
             default:
                 throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
         }
-
     }
 
     private Block parseBlock(List<Token> tokens) throws ParseException {
@@ -162,7 +187,6 @@ public class Parser {
         main:
         while(tokens.size() > 0) {
             Token token = tokens.get(0);
-            System.out.println(token);
             checkType(token, Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END);
             switch(token.getType()) {
                 case KEYWORD:
@@ -210,7 +234,7 @@ public class Parser {
         List<Returnable<?>> args = new GlueList<>();
 
         while(!tokens.get(0).getType().equals(Token.Type.BODY_END)) {
-            args.add(parseExpression(tokens));
+            args.add(parseExpression(tokens, true));
             checkType(tokens.get(0), Token.Type.SEPARATOR, Token.Type.BODY_END);
             if(tokens.get(0).getType().equals(Token.Type.SEPARATOR)) tokens.remove(0);
         }
@@ -225,5 +249,11 @@ public class Parser {
     private void checkReturnType(Returnable<?> returnable, Returnable.ReturnType... types) throws ParseException {
         for(Returnable.ReturnType type : types) if(returnable.returnType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType() + ": " + returnable.getPosition());
+    }
+
+    private void checkArithmeticOperation(Returnable<?> left, Returnable<?> right, Token.Type operation) throws ParseException {
+        if(!left.returnType().equals(Returnable.ReturnType.NUMBER) && !right.returnType().equals(Returnable.ReturnType.NUMBER)) {
+            throw new ParseException("Operation " + operation + " not supported between " + left.returnType() + " and " + right.returnType());
+        }
     }
 }
