@@ -255,9 +255,6 @@ public class Parser {
                     if(tokens.isEmpty()) break;
                     ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
                     break;
-                case BLOCK_END:
-                    tokens.remove(0); // Remove block end.
-                    break main;
                 case NUMBER_VARIABLE:
                 case BOOLEAN_VARIABLE:
                 case STRING_VARIABLE:
@@ -269,11 +266,18 @@ public class Parser {
                     else temp = parseVariableDeclaration(tokens, Returnable.ReturnType.BOOLEAN);
                     Token name = tokens.get(1);
 
-                    ParserUtil.checkType(name, Token.Type.IDENTIFIER);
+                    ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
+
+                    if(functions.containsKey(name.getContent()) || parsedVariables.containsKey(name.getContent()))
+                        throw new ParseException(name.getContent() + " is already defined in this scope: " + name.getPosition());
 
                     parsedVariables.put(name.getContent(), temp);
                     parsedItems.add(parseAssignment(temp, tokens, parsedVariables));
                     ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+                    break;
+                case BLOCK_END:
+                    tokens.remove(0); // Remove block end.
+                    break main;
             }
         }
         return new Block(parsedItems, first.getPosition());
