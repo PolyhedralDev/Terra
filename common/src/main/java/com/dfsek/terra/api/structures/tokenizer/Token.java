@@ -42,7 +42,9 @@ public class Token {
                 || type.equals(Type.LESS_THAN_OPERATOR)
                 || type.equals(Type.GREATER_THAN_OPERATOR)
                 || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
-                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR);
+                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
+                || type.equals(Type.BOOLEAN_OR)
+                || type.equals(Type.BOOLEAN_AND);
     }
 
     public boolean isStrictNumericOperator() {
@@ -53,6 +55,11 @@ public class Token {
                 || type.equals(Type.LESS_THAN_OPERATOR)
                 || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
                 || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR);
+    }
+
+    public boolean isStrictBooleanOperator() {
+        return type.equals(Type.BOOLEAN_AND)
+                || type.equals(Type.BOOLEAN_OR);
     }
 
     public enum Type {
@@ -148,6 +155,14 @@ public class Token {
         /**
          * Boolean not operator
          */
-        BOOLEAN_NOT
+        BOOLEAN_NOT,
+        /**
+         * Boolean or
+         */
+        BOOLEAN_OR,
+        /**
+         * Boolean and
+         */
+        BOOLEAN_AND
     }
 }

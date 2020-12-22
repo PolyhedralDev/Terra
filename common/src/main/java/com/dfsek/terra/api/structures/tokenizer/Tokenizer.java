@@ -50,6 +50,10 @@ public class Tokenizer {
             return new Token(">=", Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("<=", true))
             return new Token("<=", Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("||", true))
+            return new Token("||", Token.Type.BOOLEAN_OR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("&&", true))
+            return new Token("&&", Token.Type.BOOLEAN_AND, new Position(reader.getLine(), reader.getIndex()));
 
 
         if(isNumberStart()) {

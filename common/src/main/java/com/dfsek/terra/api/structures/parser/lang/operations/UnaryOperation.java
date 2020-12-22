@@ -9,7 +9,7 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
     private final Returnable<T> input;
     private final Position position;
 
-    protected UnaryOperation(Returnable<T> input, Position position) {
+    public UnaryOperation(Returnable<T> input, Position position) {
         this.input = input;
         this.position = position;
     }

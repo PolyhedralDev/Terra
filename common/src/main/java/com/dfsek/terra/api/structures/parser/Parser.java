@@ -12,7 +12,9 @@ import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
 import com.dfsek.terra.api.structures.parser.lang.operations.BinaryOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.BooleanAndOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.BooleanOrOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.ConcatenationOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.DivisionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.MultiplicationOperation;
@@ -156,7 +158,8 @@ public class Parser {
     private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, List<Token> tokens) throws ParseException {
         Token binaryOperator = tokens.remove(0);
         checkType(binaryOperator, Token.Type.ADDITION_OPERATOR, Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR,
-                Token.Type.GREATER_THAN_OPERATOR, Token.Type.LESS_THAN_OPERATOR, Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, Token.Type.EQUALS_OPERATOR, Token.Type.NOT_EQUALS_OPERATOR);
+                Token.Type.GREATER_THAN_OPERATOR, Token.Type.LESS_THAN_OPERATOR, Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, Token.Type.EQUALS_OPERATOR, Token.Type.NOT_EQUALS_OPERATOR,
+                Token.Type.BOOLEAN_AND, Token.Type.BOOLEAN_OR);
 
         Returnable<?> right = parseExpression(tokens, false);
 
@@ -172,6 +175,7 @@ public class Parser {
     @SuppressWarnings("unchecked")
     private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) throws ParseException {
         if(binaryOperator.isStrictNumericOperator()) checkArithmeticOperation(left, right, binaryOperator.getType());
+        if(binaryOperator.isStrictBooleanOperator()) checkBooleanOperation(left, right, binaryOperator.getType());
         switch(binaryOperator.getType()) {
             case ADDITION_OPERATOR:
                 if(left.returnType().equals(Returnable.ReturnType.NUMBER) && right.returnType().equals(Returnable.ReturnType.NUMBER)) {
@@ -196,6 +200,10 @@ public class Parser {
                 return new GreaterOrEqualsThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
             case LESS_THAN_OR_EQUALS_OPERATOR:
                 return new LessThanOrEqualsStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+            case BOOLEAN_AND:
+                return new BooleanAndOperation((Returnable<Boolean>) left, (Returnable<Boolean>) right, binaryOperator.getPosition());
+            case BOOLEAN_OR:
+                return new BooleanOrOperation((Returnable<Boolean>) left, (Returnable<Boolean>) right, binaryOperator.getPosition());
             default:
                 throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
         }
@@ -275,6 +283,12 @@ public class Parser {
 
     private void checkArithmeticOperation(Returnable<?> left, Returnable<?> right, Token.Type operation) throws ParseException {
         if(!left.returnType().equals(Returnable.ReturnType.NUMBER) || !right.returnType().equals(Returnable.ReturnType.NUMBER)) {
+            throw new ParseException("Operation " + operation + " not supported between " + left.returnType() + " and " + right.returnType());
+        }
+    }
+
+    private void checkBooleanOperation(Returnable<?> left, Returnable<?> right, Token.Type operation) throws ParseException {
+        if(!left.returnType().equals(Returnable.ReturnType.BOOLEAN) || !right.returnType().equals(Returnable.ReturnType.BOOLEAN)) {
             throw new ParseException("Operation " + operation + " not supported between " + left.returnType() + " and " + right.returnType());
         }
     }

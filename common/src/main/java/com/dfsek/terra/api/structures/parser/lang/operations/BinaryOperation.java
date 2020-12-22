@@ -10,7 +10,7 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
     private final Returnable<I> right;
     private final Position start;
 
-    protected BinaryOperation(Returnable<I> left, Returnable<I> right, Position start) {
+    public BinaryOperation(Returnable<I> left, Returnable<I> right, Position start) {
         this.left = left;
         this.right = right;
         this.start = start;
