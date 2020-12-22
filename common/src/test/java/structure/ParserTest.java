@@ -4,7 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
-import com.dfsek.terra.api.structures.parser.lang.Item;
+import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
@@ -23,7 +23,7 @@ public class ParserTest {
         parser.addFunction("test", new FunctionBuilder<Test1>() {
             @Override
             public Test1 build(List<Returnable<?>> argumentList, Position position) throws ParseException {
-                return new Test1(argumentList.get(0).apply(new Location(null, 0, 0, 0)).toString(), Double.parseDouble(argumentList.get(1).apply(new Location(null, 0, 0, 0)).toString()), position);
+                return new Test1(argumentList.get(0), argumentList.get(1), position);
             }
 
             @Override
@@ -46,34 +46,27 @@ public class ParserTest {
         });
 
         long l = System.nanoTime();
-        List<Item<?>> functions = parser.parse().getItems();
+        Block block = parser.parse();
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        for(Item<?> f : functions) System.out.println(f);
+        block.apply(null);
     }
 
     private static class Test1 implements Function<Void> {
-        private final String a;
-        private final double b;
+        private final Returnable<?> a;
+        private final Returnable<?> b;
         private final Position position;
 
-        public Test1(String a, double b, Position position) {
+        public Test1(Returnable<?> a, Returnable<?> b, Position position) {
             this.a = a;
             this.b = b;
             this.position = position;
         }
 
-        public String getA() {
-            return a;
-        }
-
-        public double getB() {
-            return b;
-        }
-
         @Override
         public Void apply(Location location) {
+            System.out.println("string: " + a.apply(location) + ", double: " + b.apply(location));
             return null;
         }
 
@@ -90,11 +83,6 @@ public class ParserTest {
         @Override
         public String name() {
             return null;
-        }
-
-        @Override
-        public String toString() {
-            return "string: " + a + ", double: " + b;
         }
 
         @Override

@@ -12,7 +12,7 @@ public class Tokenizer {
     private final Lookahead reader;
 
     private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
-    private final Set<String> keywords = Sets.newHashSet("if", "return");
+    private final Set<String> keywords = Sets.newHashSet("if", "return", "num", "bool", "str");
 
 
     public Tokenizer(String data) {
@@ -20,7 +20,7 @@ public class Tokenizer {
     }
 
     public boolean hasNext() {
-        while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume(); // Consume whitespace.
+        //while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume(); // Consume whitespace.
         return !reader.current().isEOF();
     }
 
@@ -50,10 +50,18 @@ public class Tokenizer {
             return new Token(">=", Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("<=", true))
             return new Token("<=", Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+
         if(reader.matches("||", true))
             return new Token("||", Token.Type.BOOLEAN_OR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("&&", true))
             return new Token("&&", Token.Type.BOOLEAN_AND, new Position(reader.getLine(), reader.getIndex()));
+
+        if(reader.matches("num ", true))
+            return new Token("num ", Token.Type.NUMBER_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("str ", true))
+            return new Token("str ", Token.Type.STRING_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("bool ", true))
+            return new Token("bool ", Token.Type.BOOLEAN_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
 
 
         if(isNumberStart()) {
@@ -111,7 +119,8 @@ public class Tokenizer {
         StringBuilder token = new StringBuilder();
         while(!reader.current().isEOF() && !isSyntaxSignificant(reader.current().getCharacter())) {
             Char c = reader.consume();
-            if(!c.isWhitespace()) token.append(c);
+            if(c.isWhitespace()) break;
+            token.append(c);
         }
 
         String tokenString = token.toString();

@@ -1,5 +1,12 @@
 test("hello" + 3 + "gdfg", (2 * (3+1) * (2 * (1+1))));
 
-if(true || false) {
-    test("fdsgdf" + 2, 1);
+num testVar = 3.4;
+bool boolean = true;
+str stringVar = "hello!";
+
+if(true && boolean) {
+    num scopedVar = 2;
+    test("fdsgdf" + 2 + stringVar, 1 + testVar + scopedVar);
 }
+
+test("fdsgdf" + 2, 1 + testVar);

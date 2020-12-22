@@ -163,6 +163,12 @@ public class Token {
         /**
          * Boolean and
          */
-        BOOLEAN_AND
+        BOOLEAN_AND,
+        /**
+         * Variable declaration
+         */
+        NUMBER_VARIABLE,
+        STRING_VARIABLE,
+        BOOLEAN_VARIABLE
     }
 }
