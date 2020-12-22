@@ -78,13 +78,13 @@ public class Token {
          */
         BOOLEAN,
         /**
-         * Beginning of function body
+         * Beginning of group
          */
-        BODY_BEGIN,
+        GROUP_BEGIN,
         /**
-         * Ending of function body
+         * Ending of group
          */
-        BODY_END,
+        GROUP_END,
         /**
          * End of statement
          */
@@ -109,10 +109,25 @@ public class Token {
          * Boolean equals operator
          */
         EQUALS_OPERATOR,
+        /**
+         * Boolean not equals operator
+         */
         NOT_EQUALS_OPERATOR,
+        /**
+         * Boolean greater than operator
+         */
         GREATER_THAN_OPERATOR,
+        /**
+         * Boolean less than operator
+         */
         LESS_THAN_OPERATOR,
+        /**
+         * Boolean greater than or equal to operator
+         */
         GREATER_THAN_OR_EQUALS_OPERATOR,
+        /**
+         * Boolean less than or equal to operator
+         */
         LESS_THAN_OR_EQUALS_OPERATOR,
         /**
          * Addition/concatenation operator

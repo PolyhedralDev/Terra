@@ -85,12 +85,12 @@ public class Parser {
         Keyword<?> k = null;
         if(identifier.getContent().equals("if")) {
 
-            checkType(tokens.remove(0), Token.Type.BODY_BEGIN);
+            checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
 
             Returnable<?> comparator = parseExpression(tokens, true);
             checkReturnType(comparator, Returnable.ReturnType.BOOLEAN);
 
-            checkType(tokens.remove(0), Token.Type.BODY_END);
+            checkType(tokens.remove(0), Token.Type.GROUP_END);
 
             checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
 
@@ -104,7 +104,7 @@ public class Parser {
     private Returnable<?> parseExpression(List<Token> tokens, boolean full) throws ParseException {
         System.out.println(tokens.get(0));
         Token first = tokens.get(0);
-        checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT, Token.Type.BODY_BEGIN);
+        checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT, Token.Type.GROUP_BEGIN);
 
         boolean not = false;
         if(first.getType().equals(Token.Type.BOOLEAN_NOT)) {
@@ -152,12 +152,9 @@ public class Parser {
         Returnable<?> right = parseExpression(tokens, false);
 
         Token other = tokens.get(0);
-        System.out.println("other: " + other);
         if(other.isBinaryOperator() && (other.getType().equals(Token.Type.MULTIPLICATION_OPERATOR) || other.getType().equals(Token.Type.DIVISION_OPERATOR))) {
-            System.out.println("using left");
             return assemble(left, parseBinaryOperation(right, tokens), binaryOperator);
         } else if(other.isBinaryOperator()) {
-            System.out.println("using right");
             return parseBinaryOperation(assemble(left, right, binaryOperator), tokens);
         }
         return assemble(left, right, binaryOperator);
@@ -232,7 +229,7 @@ public class Parser {
         if(!functions.containsKey(identifier.getContent()))
             throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getPosition());
 
-        checkType(tokens.remove(0), Token.Type.BODY_BEGIN); // Second is body begin
+        checkType(tokens.remove(0), Token.Type.GROUP_BEGIN); // Second is body begin
 
 
         List<Returnable<?>> args = getArgs(tokens); // Extract arguments, consume the rest.
@@ -251,9 +248,9 @@ public class Parser {
     private List<Returnable<?>> getArgs(List<Token> tokens) throws ParseException {
         List<Returnable<?>> args = new GlueList<>();
 
-        while(!tokens.get(0).getType().equals(Token.Type.BODY_END)) {
+        while(!tokens.get(0).getType().equals(Token.Type.GROUP_END)) {
             args.add(parseExpression(tokens, true));
-            checkType(tokens.get(0), Token.Type.SEPARATOR, Token.Type.BODY_END);
+            checkType(tokens.get(0), Token.Type.SEPARATOR, Token.Type.GROUP_END);
             if(tokens.get(0).getType().equals(Token.Type.SEPARATOR)) tokens.remove(0);
         }
         return args;

@@ -80,9 +80,9 @@ public class Tokenizer {
         }
 
         if(reader.current().is('('))
-            return new Token(reader.consume().toString(), Token.Type.BODY_BEGIN, new Position(reader.getLine(), reader.getIndex()));
+            return new Token(reader.consume().toString(), Token.Type.GROUP_BEGIN, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is(')'))
-            return new Token(reader.consume().toString(), Token.Type.BODY_END, new Position(reader.getLine(), reader.getIndex()));
+            return new Token(reader.consume().toString(), Token.Type.GROUP_END, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is(';'))
             return new Token(reader.consume().toString(), Token.Type.STATEMENT_END, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is(','))
