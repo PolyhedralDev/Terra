@@ -11,6 +11,7 @@ import com.dfsek.terra.api.structures.parser.lang.constants.StringConstant;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.WhileKeyword;
 import com.dfsek.terra.api.structures.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanAndOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation;
@@ -47,7 +48,7 @@ import java.util.Set;
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
-    private final Set<String> keywords = Sets.newHashSet("if", "return", "var");
+    private final Set<String> keywords = Sets.newHashSet("if", "return", "while");
 
     Set<Token.Type> allowedArguments = Sets.newHashSet(Token.Type.STRING, Token.Type.NUMBER, Token.Type.IDENTIFIER);
 
@@ -90,7 +91,7 @@ public class Parser {
         if(!keywords.contains(identifier.getContent()))
             throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getPosition());
         Keyword<?> k = null;
-        if(identifier.getContent().equals("if")) {
+        if(identifier.getContent().equals("if") || identifier.getContent().equals("while")) {
 
             ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
 
@@ -101,7 +102,10 @@ public class Parser {
 
             ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
 
-            k = new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition());
+            if(identifier.getContent().equals("if"))
+                k = new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // If statement
+            else
+                k = new WhileKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // While loop
 
         }
         return k;
@@ -232,6 +236,7 @@ public class Parser {
         throw new UnsupportedOperationException("Unsupported variable type: " + type);
     }
 
+    @SuppressWarnings("unchecked")
     private Block parseBlock(List<Token> tokens, Map<String, Variable<?>> superVars) throws ParseException {
         List<Item<?>> parsedItems = new GlueList<>();
 
@@ -251,7 +256,11 @@ public class Parser {
                     ParserUtil.checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END);
                     break;
                 case IDENTIFIER:
-                    parsedItems.add(parseFunction(tokens, true, parsedVariables));
+                    if(parsedVariables.containsKey(token.getContent())) {
+                        Variable<?> variable = parsedVariables.get(token.getContent());
+
+                        parsedItems.add(parseAssignment(variable, tokens, parsedVariables));
+                    } else parsedItems.add(parseFunction(tokens, true, parsedVariables));
                     if(tokens.isEmpty()) break;
                     ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
                     break;
@@ -272,6 +281,9 @@ public class Parser {
                         throw new ParseException(name.getContent() + " is already defined in this scope: " + name.getPosition());
 
                     parsedVariables.put(name.getContent(), temp);
+
+                    ParserUtil.checkType(tokens.remove(0), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+
                     parsedItems.add(parseAssignment(temp, tokens, parsedVariables));
                     ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
                     break;
@@ -285,8 +297,6 @@ public class Parser {
 
     @SuppressWarnings("unchecked")
     private Assignment<?> parseAssignment(Variable<?> variable, List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
-        ParserUtil.checkType(tokens.remove(0), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
-
         Token name = tokens.get(0);
 
         ParserUtil.checkType(tokens.remove(0), Token.Type.IDENTIFIER);

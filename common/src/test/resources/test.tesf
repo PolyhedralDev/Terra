@@ -1,8 +1,17 @@
 test("hello" + 3 + "gdfg", (2 * (3+1) * (2 * (1+1))));
 //
+
 num testVar = 3.4;
 bool boolean = true;
 str stringVar = "hello!";
+
+num iterator = 0;
+
+while(iterator < 5) {
+    test("fdsgdf" + 2 + stringVar, iterator);
+    iterator = iterator + 1;
+}
+
 
 if(true && boolean) {
     num scopedVar = 2;

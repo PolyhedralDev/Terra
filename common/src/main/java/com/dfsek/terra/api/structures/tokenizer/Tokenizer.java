@@ -12,7 +12,7 @@ public class Tokenizer {
     private final Lookahead reader;
 
     private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
-    private final Set<String> keywords = Sets.newHashSet("if", "return", "num", "bool", "str");
+    private final Set<String> keywords = Sets.newHashSet("if", "while", "num", "bool", "str");
 
 
     public Tokenizer(String data) {
