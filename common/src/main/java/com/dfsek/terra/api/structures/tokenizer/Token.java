@@ -62,6 +62,21 @@ public class Token {
                 || type.equals(Type.BOOLEAN_OR);
     }
 
+    public boolean isVariableDeclaration() {
+        return type.equals(Type.STRING_VARIABLE)
+                || type.equals(Type.BOOLEAN_VARIABLE)
+                || type.equals(Type.NUMBER_VARIABLE);
+    }
+
+    public boolean isLoopLike() {
+        return type.equals(Type.IF_STATEMENT)
+                || type.equals(Type.WHILE_LOOP);
+    }
+
+    public boolean isIdentifier() {
+        return type.equals(Type.IDENTIFIER);
+    }
+
     public enum Type {
         /**
          * Function identifier or language keyword
@@ -169,16 +184,5 @@ public class Token {
 
         IF_STATEMENT,
         WHILE_LOOP
-    }
-
-    public enum Group {
-        KEYWORD(Type.IF_STATEMENT, Type.WHILE_LOOP, Type.BOOLEAN_VARIABLE, Type.STRING_VARIABLE, Type.NUMBER_VARIABLE),
-        IDENTIFIER(Type.IDENTIFIER),
-        BINARY_OPERATOR(Type.BOOLEAN_AND, Type.BOOLEAN_OR, Type.ADDITION_OPERATOR, Type.MULTIPLICATION_OPERATOR, Type.SUBTRACTION_OPERATOR, Type.DIVISION_OPERATOR, Type.GREATER_THAN_OPERATOR, Type.GREATER_THAN_OR_EQUALS_OPERATOR, Type.LESS_THAN_OPERATOR, Type.LESS_THAN_OR_EQUALS_OPERATOR, Type.EQUALS_OPERATOR, Type.NOT_EQUALS_OPERATOR);
-        private final Type[] types;
-
-        Group(Type... types) {
-            this.types = types;
-        }
     }
 }
