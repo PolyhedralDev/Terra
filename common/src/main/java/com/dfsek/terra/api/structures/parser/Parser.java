@@ -165,7 +165,7 @@ public class Parser {
 
     private Returnable<?> parseGroup(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
         ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
-        Returnable<?> expression = parseExpression(tokens, true, variableMap);
+        Returnable<?> expression = parseExpression(tokens, true, variableMap); // Parse inside of group as a separate expression
         ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
         return expression;
     }

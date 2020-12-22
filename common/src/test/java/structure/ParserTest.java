@@ -51,6 +51,8 @@ public class ParserTest {
         System.out.println("Took " + (double) t / 1000000);
 
         block.apply(null);
+
+        block.apply(null);
     }
 
     private static class Test1 implements Function<Void> {

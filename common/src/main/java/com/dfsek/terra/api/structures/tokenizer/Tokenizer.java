@@ -11,7 +11,7 @@ import java.util.Set;
 public class Tokenizer {
     private final Lookahead reader;
 
-    private final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
+    public static final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
     private final Set<String> keywords = Sets.newHashSet("if", "while", "num", "bool", "str");
 
 
@@ -36,11 +36,6 @@ public class Tokenizer {
 
         if(reader.matches("/*", true)) skipTo("*/"); // Skip multi line comment
 
-        if(reader.matches("true", true))
-            return new Token("true", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
-        if(reader.matches("false", true))
-            return new Token("false", Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
-
 
         if(reader.matches("==", true))
             return new Token("==", Token.Type.EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
@@ -59,13 +54,6 @@ public class Tokenizer {
             return new Token("||", Token.Type.BOOLEAN_OR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("&&", true))
             return new Token("&&", Token.Type.BOOLEAN_AND, new Position(reader.getLine(), reader.getIndex()));
-
-        if(reader.matches("num ", true))
-            return new Token("num ", Token.Type.NUMBER_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
-        if(reader.matches("str ", true))
-            return new Token("str ", Token.Type.STRING_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
-        if(reader.matches("bool ", true))
-            return new Token("bool ", Token.Type.BOOLEAN_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
 
 
         if(isNumberStart()) {
@@ -129,7 +117,24 @@ public class Tokenizer {
 
         String tokenString = token.toString();
 
-        return new Token(tokenString, keywords.contains(tokenString) ? Token.Type.KEYWORD : Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("true"))
+            return new Token(tokenString, Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("false"))
+            return new Token(tokenString, Token.Type.BOOLEAN, new Position(reader.getLine(), reader.getIndex()));
+
+        if(tokenString.equals("num"))
+            return new Token(tokenString, Token.Type.NUMBER_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("str"))
+            return new Token(tokenString, Token.Type.STRING_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("bool"))
+            return new Token(tokenString, Token.Type.BOOLEAN_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
+
+        if(tokenString.equals("if"))
+            return new Token(tokenString, Token.Type.KEYWORD, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("while"))
+            return new Token(tokenString, Token.Type.KEYWORD, new Position(reader.getLine(), reader.getIndex()));
+
+        return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
 
     private boolean isNumberLike() {

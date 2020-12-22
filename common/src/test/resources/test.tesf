@@ -5,6 +5,10 @@ num testVar = 3.4;
 bool boolean = true;
 str stringVar = "hello!";
 
+bool iftest = false;
+
+bool truetest = false;
+
 num iterator = 0;
 
 while(iterator < 5) {
