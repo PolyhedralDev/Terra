@@ -17,9 +17,9 @@ while(iterator < 5) {
 }
 
 
-if(true && boolean) {
+if(true && !(boolean && false) && true) {
     num scopedVar = 2;
-    test("fdsgdf" + 2 + stringVar, 1 + testVar + scopedVar);
+    test("if statement" + 2 + stringVar, 1 + testVar + scopedVar);
 }
 // comment
 

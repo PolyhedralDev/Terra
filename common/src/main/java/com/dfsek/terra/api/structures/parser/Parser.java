@@ -6,6 +6,7 @@ import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.constants.BooleanConstant;
+import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.api.structures.parser.lang.constants.StringConstant;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
@@ -38,19 +39,14 @@ import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
 import com.dfsek.terra.api.util.GlueList;
-import com.google.common.collect.Sets;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
-    private final Set<String> keywords = Sets.newHashSet("if", "return", "while");
-
-    Set<Token.Type> allowedArguments = Sets.newHashSet(Token.Type.STRING, Token.Type.NUMBER, Token.Type.IDENTIFIER);
 
     public Parser(String data) {
         this.data = data;
@@ -87,63 +83,41 @@ public class Parser {
     private Keyword<?> parseKeyword(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
 
         Token identifier = tokens.remove(0);
-        ParserUtil.checkType(identifier, Token.Type.KEYWORD);
-        if(!keywords.contains(identifier.getContent()))
-            throw new ParseException("No such keyword " + identifier.getContent() + ": " + identifier.getPosition());
-        Keyword<?> k = null;
-        if(identifier.getContent().equals("if") || identifier.getContent().equals("while")) {
+        ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP);
 
-            ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
+        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
 
-            Returnable<?> comparator = parseExpression(tokens, true, variableMap);
-            ParserUtil.checkReturnType(comparator, Returnable.ReturnType.BOOLEAN);
+        Returnable<?> comparator = parseExpression(tokens, true, variableMap);
+        ParserUtil.checkReturnType(comparator, Returnable.ReturnType.BOOLEAN);
 
-            ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
+        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
 
-            ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
+        ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
 
-            if(identifier.getContent().equals("if"))
-                k = new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // If statement
-            else
-                k = new WhileKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // While loop
-
-        }
-        return k;
+        if(identifier.getType().equals(Token.Type.IF_STATEMENT))
+            return new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // If statement
+        else if(identifier.getType().equals(Token.Type.WHILE_LOOP))
+            return new WhileKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // While loop
+        else throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
     }
 
     @SuppressWarnings("unchecked")
     private Returnable<?> parseExpression(List<Token> tokens, boolean full, Map<String, Variable<?>> variableMap) throws ParseException {
-        Token first = tokens.get(0);
-
-        if(first.getType().equals(Token.Type.GROUP_BEGIN)) return parseGroup(tokens, variableMap);
-
-        ParserUtil.checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT, Token.Type.GROUP_BEGIN);
-
-        boolean not = false;
-        if(first.getType().equals(Token.Type.BOOLEAN_NOT)) {
-            not = true;
+        boolean booleanInverted = false; // Check for boolean not operator
+        if(tokens.get(0).getType().equals(Token.Type.BOOLEAN_NOT)) {
+            booleanInverted = true;
             tokens.remove(0);
         }
 
         Token id = tokens.get(0);
+
+        ParserUtil.checkType(id, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.GROUP_BEGIN);
+
         Returnable<?> expression;
         if(id.isConstant()) {
-            Token constantToken = tokens.remove(0);
-            Position position = constantToken.getPosition();
-            switch(constantToken.getType()) {
-                case NUMBER:
-                    String content = constantToken.getContent();
-                    expression = new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), position);
-                    break;
-                case STRING:
-                    expression = new StringConstant(constantToken.getContent(), position);
-                    break;
-                case BOOLEAN:
-                    expression = new BooleanConstant(Boolean.parseBoolean(constantToken.getContent()), position);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Unsupported constant token: " + constantToken.getType() + " at position: " + position);
-            }
+            expression = parseConstantExpression(tokens);
+        } else if(id.getType().equals(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
+            expression = parseGroup(tokens, variableMap);
         } else {
             if(functions.containsKey(id.getContent())) expression = parseFunction(tokens, false, variableMap);
             else if(variableMap.containsKey(id.getContent())) {
@@ -152,15 +126,31 @@ public class Parser {
             } else throw new ParseException("Unexpected token: " + id.getContent() + " at " + id.getPosition());
         }
 
-
-        if(not) {
+        if(booleanInverted) { // Invert operation if boolean not detected
             ParserUtil.checkReturnType(expression, Returnable.ReturnType.BOOLEAN);
             expression = new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
         }
-        if(full && tokens.get(0).isBinaryOperator()) {
+
+        if(full && tokens.get(0).isBinaryOperator()) { // Parse binary operations
             return parseBinaryOperation(expression, tokens, variableMap);
         }
         return expression;
+    }
+
+    private ConstantExpression<?> parseConstantExpression(List<Token> tokens) {
+        Token constantToken = tokens.remove(0);
+        Position position = constantToken.getPosition();
+        switch(constantToken.getType()) {
+            case NUMBER:
+                String content = constantToken.getContent();
+                return new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), position);
+            case STRING:
+                return new StringConstant(constantToken.getContent(), position);
+            case BOOLEAN:
+                return new BooleanConstant(Boolean.parseBoolean(constantToken.getContent()), position);
+            default:
+                throw new UnsupportedOperationException("Unsupported constant token: " + constantToken.getType() + " at position: " + position);
+        }
     }
 
     private Returnable<?> parseGroup(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
@@ -243,17 +233,18 @@ public class Parser {
         Map<String, Variable<?>> parsedVariables = new HashMap<>(superVars); // New hashmap as to not mutate parent scope's declarations.
 
         Token first = tokens.get(0);
+        ParserUtil.checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE);
 
-        ParserUtil.checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE);
         main:
         while(tokens.size() > 0) {
             Token token = tokens.get(0);
-            ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE);
+            ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.BLOCK_END, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE);
             switch(token.getType()) {
-                case KEYWORD:
+                case IF_STATEMENT:
+                case WHILE_LOOP:
                     parsedItems.add(parseKeyword(tokens, parsedVariables));
                     if(tokens.isEmpty()) break;
-                    ParserUtil.checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.KEYWORD, Token.Type.BLOCK_END);
+                    ParserUtil.checkType(tokens.get(0), Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.BLOCK_END);
                     break;
                 case IDENTIFIER:
                     if(parsedVariables.containsKey(token.getContent())) {

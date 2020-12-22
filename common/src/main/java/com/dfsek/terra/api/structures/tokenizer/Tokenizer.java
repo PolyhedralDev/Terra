@@ -130,9 +130,9 @@ public class Tokenizer {
             return new Token(tokenString, Token.Type.BOOLEAN_VARIABLE, new Position(reader.getLine(), reader.getIndex()));
 
         if(tokenString.equals("if"))
-            return new Token(tokenString, Token.Type.KEYWORD, new Position(reader.getLine(), reader.getIndex()));
+            return new Token(tokenString, Token.Type.IF_STATEMENT, new Position(reader.getLine(), reader.getIndex()));
         if(tokenString.equals("while"))
-            return new Token(tokenString, Token.Type.KEYWORD, new Position(reader.getLine(), reader.getIndex()));
+            return new Token(tokenString, Token.Type.WHILE_LOOP, new Position(reader.getLine(), reader.getIndex()));
 
         return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
