@@ -174,8 +174,8 @@ public class Parser {
 
     @SuppressWarnings("unchecked")
     private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) throws ParseException {
-        if(binaryOperator.isStrictNumericOperator()) checkArithmeticOperation(left, right, binaryOperator.getType());
-        if(binaryOperator.isStrictBooleanOperator()) checkBooleanOperation(left, right, binaryOperator.getType());
+        if(binaryOperator.isStrictNumericOperator()) checkArithmeticOperation(left, right, binaryOperator);
+        if(binaryOperator.isStrictBooleanOperator()) checkBooleanOperation(left, right, binaryOperator);
         switch(binaryOperator.getType()) {
             case ADDITION_OPERATOR:
                 if(left.returnType().equals(Returnable.ReturnType.NUMBER) && right.returnType().equals(Returnable.ReturnType.NUMBER)) {
@@ -254,9 +254,17 @@ public class Parser {
         if(fullStatement) checkType(tokens.get(0), Token.Type.STATEMENT_END);
 
         FunctionBuilder<?> builder = functions.get(identifier.getContent());
-        if(args.size() != builder.getArguments() && builder.getArguments() != -1)
-            throw new ParseException("Expected " + builder.getArguments() + " arguments, found " + args.size() + ": " + identifier.getPosition());
-        return functions.get(identifier.getContent()).build(args, identifier.getPosition());
+
+        if(builder.argNumber() != -1 && args.size() != builder.argNumber())
+            throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size() + ": " + identifier.getPosition());
+
+        for(int i = 0; i < args.size(); i++) {
+            Returnable<?> argument = args.get(i);
+            if(builder.getArgument(i) == null)
+                throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent() + ": " + identifier.getPosition());
+            checkReturnType(argument, builder.getArgument(i));
+        }
+        return builder.build(args, identifier.getPosition());
     }
 
 
@@ -281,15 +289,15 @@ public class Parser {
         throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType() + ": " + returnable.getPosition());
     }
 
-    private void checkArithmeticOperation(Returnable<?> left, Returnable<?> right, Token.Type operation) throws ParseException {
+    private void checkArithmeticOperation(Returnable<?> left, Returnable<?> right, Token operation) throws ParseException {
         if(!left.returnType().equals(Returnable.ReturnType.NUMBER) || !right.returnType().equals(Returnable.ReturnType.NUMBER)) {
-            throw new ParseException("Operation " + operation + " not supported between " + left.returnType() + " and " + right.returnType());
+            throw new ParseException("Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType() + ": " + operation.getPosition());
         }
     }
 
-    private void checkBooleanOperation(Returnable<?> left, Returnable<?> right, Token.Type operation) throws ParseException {
+    private void checkBooleanOperation(Returnable<?> left, Returnable<?> right, Token operation) throws ParseException {
         if(!left.returnType().equals(Returnable.ReturnType.BOOLEAN) || !right.returnType().equals(Returnable.ReturnType.BOOLEAN)) {
-            throw new ParseException("Operation " + operation + " not supported between " + left.returnType() + " and " + right.returnType());
+            throw new ParseException("Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType() + ": " + operation.getPosition());
         }
     }
 }

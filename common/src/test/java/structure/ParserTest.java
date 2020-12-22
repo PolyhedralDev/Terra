@@ -27,9 +27,22 @@ public class ParserTest {
             }
 
             @Override
-            public int getArguments() {
+            public int argNumber() {
                 return 2;
             }
+
+            @Override
+            public Returnable.ReturnType getArgument(int position) {
+                switch(position) {
+                    case 0:
+                        return Returnable.ReturnType.STRING;
+                    case 1:
+                        return Returnable.ReturnType.NUMBER;
+                    default:
+                        return null;
+                }
+            }
+
         });
 
         long l = System.nanoTime();
@@ -71,7 +84,7 @@ public class ParserTest {
 
         @Override
         public Position getPosition() {
-            return null;
+            return position;
         }
 
         @Override
