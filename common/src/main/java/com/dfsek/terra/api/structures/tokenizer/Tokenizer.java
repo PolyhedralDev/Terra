@@ -20,8 +20,12 @@ public class Tokenizer {
     }
 
     public boolean hasNext() {
-        //while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume(); // Consume whitespace.
-        return !reader.current().isEOF();
+
+        int whiteEnd = 0;
+
+        while(!reader.next(whiteEnd).isEOF() && reader.next(whiteEnd).isWhitespace()) whiteEnd++; // Consume whitespace.
+
+        return !reader.next(whiteEnd).isEOF();
     }
 
     public Token fetch() throws TokenizerException {
@@ -125,7 +129,6 @@ public class Tokenizer {
 
         String tokenString = token.toString();
 
-
         return new Token(tokenString, keywords.contains(tokenString) ? Token.Type.KEYWORD : Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
 
@@ -143,11 +146,19 @@ public class Tokenizer {
 
     private void skipLine() {
         while(!reader.current().isEOF() && !reader.current().isNewLine()) reader.consume();
+        consumeWhitespace();
+    }
+
+    private void consumeWhitespace() {
+        while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume(); // Consume whitespace.
     }
 
     private void skipTo(String s) throws EOFException {
         while(!reader.current().isEOF()) {
-            if(reader.matches(s, true)) return;
+            if(reader.matches(s, true)) {
+                consumeWhitespace();
+                return;
+            }
             reader.consume();
         }
         throw new EOFException("No end of expression found.");
