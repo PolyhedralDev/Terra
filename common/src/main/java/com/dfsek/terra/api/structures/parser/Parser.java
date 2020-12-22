@@ -102,8 +102,10 @@ public class Parser {
 
     @SuppressWarnings("unchecked")
     private Returnable<?> parseExpression(List<Token> tokens, boolean full) throws ParseException {
-        System.out.println(tokens.get(0));
         Token first = tokens.get(0);
+
+        if(first.getType().equals(Token.Type.GROUP_BEGIN)) return parseGroup(tokens);
+
         checkType(first, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.BOOLEAN_NOT, Token.Type.GROUP_BEGIN);
 
         boolean not = false;
@@ -140,6 +142,13 @@ public class Parser {
         if(full && tokens.get(0).isBinaryOperator()) {
             return parseBinaryOperation(expression, tokens);
         }
+        return expression;
+    }
+
+    private Returnable<?> parseGroup(List<Token> tokens) throws ParseException {
+        checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
+        Returnable<?> expression = parseExpression(tokens, true);
+        checkType(tokens.remove(0), Token.Type.GROUP_END);
         return expression;
     }
 
@@ -187,8 +196,6 @@ public class Parser {
                 return new GreaterOrEqualsThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
             case LESS_THAN_OR_EQUALS_OPERATOR:
                 return new LessThanOrEqualsStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
-
-
             default:
                 throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
         }
