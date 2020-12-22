@@ -3,7 +3,7 @@ package com.dfsek.terra.api.structures.parser.lang.operations;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-public class DivisionOperation extends BinaryOperation<Number> {
+public class DivisionOperation extends BinaryOperation<Number, Number> {
     public DivisionOperation(Returnable<Number> left, Returnable<Number> right, Position position) {
         super(left, right, position);
     }

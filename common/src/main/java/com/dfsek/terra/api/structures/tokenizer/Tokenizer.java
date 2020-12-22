@@ -39,17 +39,17 @@ public class Tokenizer {
 
 
         if(reader.matches("==", true))
-            return new Token("==", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+            return new Token("==", Token.Type.EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("!=", true))
-            return new Token("!=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+            return new Token("!=", Token.Type.NOT_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches(">", true))
-            return new Token(">", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+            return new Token(">", Token.Type.GREATER_THAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("<", true))
-            return new Token("<", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+            return new Token("<", Token.Type.LESS_THAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches(">=", true))
-            return new Token(">=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+            return new Token(">=", Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("<=", true))
-            return new Token("<=", Token.Type.BOOLEAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+            return new Token("<=", Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
 
 
         if(isNumberStart()) {

@@ -37,13 +37,22 @@ public class Token {
                 || type.equals(Type.SUBTRACTION_OPERATOR)
                 || type.equals(Type.MULTIPLICATION_OPERATOR)
                 || type.equals(Type.DIVISION_OPERATOR)
-                || type.equals(Type.BOOLEAN_OPERATOR);
+                || type.equals(Type.EQUALS_OPERATOR)
+                || type.equals(Type.NOT_EQUALS_OPERATOR)
+                || type.equals(Type.LESS_THAN_OPERATOR)
+                || type.equals(Type.GREATER_THAN_OPERATOR)
+                || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
+                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR);
     }
 
-    public boolean isStrictArithmeticOperator() {
+    public boolean isStrictNumericOperator() {
         return type.equals(Type.SUBTRACTION_OPERATOR)
                 || type.equals(Type.MULTIPLICATION_OPERATOR)
-                || type.equals(Type.DIVISION_OPERATOR);
+                || type.equals(Type.DIVISION_OPERATOR)
+                || type.equals(Type.GREATER_THAN_OPERATOR)
+                || type.equals(Type.LESS_THAN_OPERATOR)
+                || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
+                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR);
     }
 
     public enum Type {
@@ -97,9 +106,14 @@ public class Token {
          */
         ASSIGNMENT,
         /**
-         * Boolean operator
+         * Boolean equals operator
          */
-        BOOLEAN_OPERATOR,
+        EQUALS_OPERATOR,
+        NOT_EQUALS_OPERATOR,
+        GREATER_THAN_OPERATOR,
+        LESS_THAN_OPERATOR,
+        GREATER_THAN_OR_EQUALS_OPERATOR,
+        LESS_THAN_OR_EQUALS_OPERATOR,
         /**
          * Addition/concatenation operator
          */

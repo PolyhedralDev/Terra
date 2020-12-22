@@ -18,6 +18,12 @@ import com.dfsek.terra.api.structures.parser.lang.operations.DivisionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.MultiplicationOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.NumberAdditionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.SubtractionOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.statements.EqualsStatement;
+import com.dfsek.terra.api.structures.parser.lang.operations.statements.GreaterOrEqualsThanStatement;
+import com.dfsek.terra.api.structures.parser.lang.operations.statements.GreaterThanStatement;
+import com.dfsek.terra.api.structures.parser.lang.operations.statements.LessThanOrEqualsStatement;
+import com.dfsek.terra.api.structures.parser.lang.operations.statements.LessThanStatement;
+import com.dfsek.terra.api.structures.parser.lang.operations.statements.NotEqualsStatement;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
@@ -138,12 +144,12 @@ public class Parser {
     }
 
 
-    private BinaryOperation<?> parseBinaryOperation(Returnable<?> left, List<Token> tokens) throws ParseException {
+    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, List<Token> tokens) throws ParseException {
         Token binaryOperator = tokens.remove(0);
-        checkType(binaryOperator, Token.Type.ADDITION_OPERATOR, Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR, Token.Type.BOOLEAN_OPERATOR);
+        checkType(binaryOperator, Token.Type.ADDITION_OPERATOR, Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR,
+                Token.Type.GREATER_THAN_OPERATOR, Token.Type.LESS_THAN_OPERATOR, Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, Token.Type.EQUALS_OPERATOR, Token.Type.NOT_EQUALS_OPERATOR);
 
         Returnable<?> right = parseExpression(tokens, false);
-        if(binaryOperator.isStrictArithmeticOperator()) checkArithmeticOperation(left, right, binaryOperator.getType());
 
         Token other = tokens.get(0);
         System.out.println("other: " + other);
@@ -158,7 +164,8 @@ public class Parser {
     }
 
     @SuppressWarnings("unchecked")
-    private BinaryOperation<?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) {
+    private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) throws ParseException {
+        if(binaryOperator.isStrictNumericOperator()) checkArithmeticOperation(left, right, binaryOperator.getType());
         switch(binaryOperator.getType()) {
             case ADDITION_OPERATOR:
                 if(left.returnType().equals(Returnable.ReturnType.NUMBER) && right.returnType().equals(Returnable.ReturnType.NUMBER)) {
@@ -171,7 +178,18 @@ public class Parser {
                 return new MultiplicationOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
             case DIVISION_OPERATOR:
                 return new DivisionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
-            case BOOLEAN_OPERATOR:
+            case EQUALS_OPERATOR:
+                return new EqualsStatement((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+            case NOT_EQUALS_OPERATOR:
+                return new NotEqualsStatement((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+            case GREATER_THAN_OPERATOR:
+                return new GreaterThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+            case LESS_THAN_OPERATOR:
+                return new LessThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+            case GREATER_THAN_OR_EQUALS_OPERATOR:
+                return new GreaterOrEqualsThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+            case LESS_THAN_OR_EQUALS_OPERATOR:
+                return new LessThanOrEqualsStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
 
 
             default:
@@ -252,7 +270,7 @@ public class Parser {
     }
 
     private void checkArithmeticOperation(Returnable<?> left, Returnable<?> right, Token.Type operation) throws ParseException {
-        if(!left.returnType().equals(Returnable.ReturnType.NUMBER) && !right.returnType().equals(Returnable.ReturnType.NUMBER)) {
+        if(!left.returnType().equals(Returnable.ReturnType.NUMBER) || !right.returnType().equals(Returnable.ReturnType.NUMBER)) {
             throw new ParseException("Operation " + operation + " not supported between " + left.returnType() + " and " + right.returnType());
         }
     }

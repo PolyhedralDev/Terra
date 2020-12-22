@@ -1,5 +1,5 @@
-test("hello" + 3 + "gdfg", 3 + 8*2 - 1);
+test("hello" + 3 + "gdfg", 2);
 
-if(true) {
+if(true == test("hello" + 3 + "gdfg", 3 + 8*2 - 1)) {
     test("fdsgdf" + 2, 3.4);
 }
