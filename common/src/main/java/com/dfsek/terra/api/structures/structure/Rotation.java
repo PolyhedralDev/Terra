@@ -45,6 +45,10 @@ public enum Rotation {
         }
     }
 
+    public Rotation rotate(Rotation rotation) {
+        return fromDegrees(this.getDegrees() + rotation.getDegrees());
+    }
+
     public enum Axis {
         X, Y, Z
     }

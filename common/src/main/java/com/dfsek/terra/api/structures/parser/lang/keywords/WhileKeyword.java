@@ -20,9 +20,9 @@ public class WhileKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Location location, Rotation rotation) {
-        while(statement.apply(location, rotation)) {
-            Block.ReturnLevel level = conditional.apply(location, rotation);
+    public Block.ReturnLevel apply(Location location, Rotation rotation, int recursions) {
+        while(statement.apply(location, rotation, recursions)) {
+            Block.ReturnLevel level = conditional.apply(location, rotation, recursions);
             if(level.equals(Block.ReturnLevel.BREAK)) break;
             if(level.equals(Block.ReturnLevel.RETURN)) return Block.ReturnLevel.RETURN;
         }
@@ -30,9 +30,9 @@ public class WhileKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
-        while(statement.apply(location, chunk, rotation)) {
-            Block.ReturnLevel level = conditional.apply(location, chunk, rotation);
+    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        while(statement.apply(location, chunk, rotation, recursions)) {
+            Block.ReturnLevel level = conditional.apply(location, chunk, rotation, recursions);
             if(level.equals(Block.ReturnLevel.BREAK)) break;
             if(level.equals(Block.ReturnLevel.RETURN)) return Block.ReturnLevel.RETURN;
         }

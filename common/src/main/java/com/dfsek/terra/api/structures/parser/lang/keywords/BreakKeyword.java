@@ -15,12 +15,12 @@ public class BreakKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Location location, Rotation rotation) {
+    public Block.ReturnLevel apply(Location location, Rotation rotation, int recursions) {
         return Block.ReturnLevel.BREAK;
     }
 
     @Override
-    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
+    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         return Block.ReturnLevel.BREAK;
     }
 

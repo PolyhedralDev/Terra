@@ -16,13 +16,13 @@ public abstract class ConstantExpression<T> implements Returnable<T> {
     }
 
     @Override
-    public T apply(Location location, Rotation rotation) {
+    public T apply(Location location, Rotation rotation, int recursions) {
         return constant;
     }
 
 
     @Override
-    public T apply(Location location, Chunk chunk, Rotation rotation) {
+    public T apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         return constant;
     }
 

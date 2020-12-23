@@ -9,6 +9,7 @@ import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.registry.ScriptRegistry;
@@ -31,7 +32,8 @@ public class StructureScript {
         parser.addFunction("block", new BlockFunctionBuilder(main))
                 .addFunction("check", new CheckFunctionBuilder(main))
                 .addFunction("structure", new StructureFunctionBuilder(registry, main))
-                .addFunction("randomInt", new RandomFunctionBuilder());
+                .addFunction("randomInt", new RandomFunctionBuilder())
+                .addFunction("recursions", new RecursionsFunctionBuilder());
 
         try {
             block = parser.parse();
@@ -41,12 +43,12 @@ public class StructureScript {
         this.id = parser.getID();
     }
 
-    public void execute(Location location, Rotation rotation) {
-        block.apply(location, rotation);
+    public void execute(Location location, Rotation rotation, int recursions) {
+        block.apply(location, rotation, recursions);
     }
 
-    public void execute(Location location, Chunk chunk, Rotation rotation) {
-        block.apply(location, chunk, rotation);
+    public void execute(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        block.apply(location, chunk, rotation, recursions);
     }
 
     public String getId() {

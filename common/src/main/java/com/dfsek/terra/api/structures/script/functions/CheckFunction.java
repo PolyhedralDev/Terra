@@ -33,19 +33,19 @@ public class CheckFunction implements Function<String> {
         return "check";
     }
 
-    private Vector3 getVector(Location location, Chunk chunk, Rotation rotation) {
-        Vector2 xz = chunk == null ? new Vector2(x.apply(location, rotation).doubleValue(), z.apply(location, rotation).doubleValue())
-                : new Vector2(x.apply(location, chunk, rotation).doubleValue(), z.apply(location, chunk, rotation).doubleValue());
+    private Vector3 getVector(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        Vector2 xz = chunk == null ? new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue())
+                : new Vector2(x.apply(location, chunk, rotation, recursions).doubleValue(), z.apply(location, chunk, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        return location.clone().add(chunk == null ? new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, rotation).intValue(), FastMath.roundToInt(xz.getZ()))
-                : new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, chunk, rotation).intValue(), FastMath.roundToInt(xz.getZ()))).toVector();
+        return location.clone().add(chunk == null ? new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()))
+                : new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, chunk, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()))).toVector();
     }
 
     @Override
-    public String apply(Location location, Rotation rotation) {
-        return apply(getVector(location, null, rotation), location.getWorld());
+    public String apply(Location location, Rotation rotation, int recursions) {
+        return apply(getVector(location, null, rotation, recursions), location.getWorld());
     }
 
     private String apply(Vector3 vector, World world) {
@@ -57,8 +57,8 @@ public class CheckFunction implements Function<String> {
     }
 
     @Override
-    public String apply(Location location, Chunk chunk, Rotation rotation) {
-        return apply(getVector(location, chunk, rotation), location.getWorld());
+    public String apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        return apply(getVector(location, chunk, rotation, recursions), location.getWorld());
     }
 
     @Override

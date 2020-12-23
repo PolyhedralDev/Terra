@@ -6,9 +6,9 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public interface Item<T> {
-    T apply(Location location, Rotation rotation);
+    T apply(Location location, Rotation rotation, int recursions);
 
-    T apply(Location location, Chunk chunk, Rotation rotation);
+    T apply(Location location, Chunk chunk, Rotation rotation, int recursions);
 
     Position getPosition();
 }

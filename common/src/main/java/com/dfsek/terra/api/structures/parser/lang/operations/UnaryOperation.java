@@ -18,13 +18,13 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
     public abstract T apply(T input);
 
     @Override
-    public T apply(Location location, Rotation rotation) {
-        return apply(input.apply(location, rotation));
+    public T apply(Location location, Rotation rotation, int recursions) {
+        return apply(input.apply(location, rotation, recursions));
     }
 
     @Override
-    public T apply(Location location, Chunk chunk, Rotation rotation) {
-        return apply(input.apply(location, chunk, rotation));
+    public T apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        return apply(input.apply(location, chunk, rotation, recursions));
     }
 
     @Override

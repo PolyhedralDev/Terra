@@ -35,17 +35,17 @@ public class BlockFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Location location, Rotation rotation) {
-        Vector2 xz = new Vector2(x.apply(location, rotation).doubleValue(), z.apply(location, rotation).doubleValue());
+    public Void apply(Location location, Rotation rotation, int recursions) {
+        Vector2 xz = new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        location.clone().add(FastMath.roundToInt(xz.getX()), y.apply(location, rotation).intValue(), FastMath.roundToInt(xz.getZ())).getBlock().setBlockData(data, false);
+        location.clone().add(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())).getBlock().setBlockData(data, false);
         return null;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk, Rotation rotation) {
+    public Void apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         //TODO: do
         return null;
     }

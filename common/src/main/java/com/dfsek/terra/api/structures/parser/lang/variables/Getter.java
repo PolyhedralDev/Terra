@@ -19,12 +19,12 @@ public class Getter implements Returnable<Object> {
     }
 
     @Override
-    public Object apply(Location location, Rotation rotation) {
+    public Object apply(Location location, Rotation rotation, int recursions) {
         return delegate.getValue();
     }
 
     @Override
-    public Object apply(Location location, Chunk chunk, Rotation rotation) {
+    public Object apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         return delegate.getValue();
     }
 

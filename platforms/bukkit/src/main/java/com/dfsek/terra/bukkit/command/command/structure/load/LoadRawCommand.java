@@ -32,9 +32,14 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
 
-        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
+
+        TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
+        long t = System.nanoTime();
+        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)), 0);
+        long l = System.nanoTime() - t;
+
+        sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");
 
         /*
         try {

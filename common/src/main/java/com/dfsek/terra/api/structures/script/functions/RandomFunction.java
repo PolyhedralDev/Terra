@@ -30,13 +30,13 @@ public class RandomFunction implements Function<Integer> {
     }
 
     @Override
-    public Integer apply(Location location, Rotation rotation) {
-        return ThreadLocalRandom.current().nextInt(numberReturnable.apply(location, rotation).intValue()); // TODO: deterministic random
+    public Integer apply(Location location, Rotation rotation, int recursions) {
+        return ThreadLocalRandom.current().nextInt(numberReturnable.apply(location, rotation, recursions).intValue()); // TODO: deterministic random
     }
 
     @Override
-    public Integer apply(Location location, Chunk chunk, Rotation rotation) {
-        return ThreadLocalRandom.current().nextInt(numberReturnable.apply(location, chunk, rotation).intValue());
+    public Integer apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        return ThreadLocalRandom.current().nextInt(numberReturnable.apply(location, chunk, rotation, recursions).intValue());
     }
 
     @Override

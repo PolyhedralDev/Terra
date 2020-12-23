@@ -51,9 +51,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(null, Rotation.NONE);
+        block.apply(null, Rotation.NONE, recursions);
 
-        block.apply(null, Rotation.NONE);
+        block.apply(null, Rotation.NONE, recursions);
     }
 
     private static class Test1 implements Function<Void> {
@@ -68,13 +68,13 @@ public class ParserTest {
         }
 
         @Override
-        public Void apply(Location location, Rotation rotation) {
-            System.out.println("string: " + a.apply(location, rotation) + ", double: " + b.apply(location, rotation));
+        public Void apply(Location location, Rotation rotation, int recursions) {
+            System.out.println("string: " + a.apply(location, rotation, recursions) + ", double: " + b.apply(location, rotation, recursions));
             return null;
         }
 
         @Override
-        public Void apply(Location location, Chunk chunk, Rotation rotation) {
+        public Void apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
             return null;
         }
 

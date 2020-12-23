@@ -20,14 +20,14 @@ public class IfKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Location location, Rotation rotation) {
-        if(statement.apply(location, rotation)) return conditional.apply(location, rotation);
+    public Block.ReturnLevel apply(Location location, Rotation rotation, int recursions) {
+        if(statement.apply(location, rotation, recursions)) return conditional.apply(location, rotation, recursions);
         return Block.ReturnLevel.NONE;
     }
 
     @Override
-    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
-        if(statement.apply(location, chunk, rotation)) return conditional.apply(location, chunk, rotation);
+    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+        if(statement.apply(location, chunk, rotation, recursions)) return conditional.apply(location, chunk, rotation, recursions);
         return Block.ReturnLevel.NONE;
     }
 

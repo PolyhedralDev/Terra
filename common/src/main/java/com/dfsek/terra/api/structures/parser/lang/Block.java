@@ -21,9 +21,9 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public ReturnLevel apply(Location location, Rotation rotation) {
+    public ReturnLevel apply(Location location, Rotation rotation, int recursions) {
         for(Item<?> item : items) {
-            Object result = item.apply(location, rotation);
+            Object result = item.apply(location, rotation, recursions);
             if(result instanceof ReturnLevel) {
                 ReturnLevel level = (ReturnLevel) result;
                 if(!level.equals(ReturnLevel.NONE)) return level;
@@ -33,9 +33,9 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
+    public ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         for(Item<?> item : items) {
-            Object result = item.apply(location, chunk, rotation);
+            Object result = item.apply(location, chunk, rotation, recursions);
             if(result instanceof ReturnLevel) {
                 ReturnLevel level = (ReturnLevel) result;
                 if(!level.equals(ReturnLevel.NONE)) return level;
