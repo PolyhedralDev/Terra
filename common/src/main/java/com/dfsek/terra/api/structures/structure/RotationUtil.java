@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.structure;
+package com.dfsek.terra.api.structures.structure;
 
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.block.Axis;
@@ -11,15 +11,16 @@ import com.dfsek.terra.api.platform.block.data.Rail;
 import com.dfsek.terra.api.platform.block.data.RedstoneWire;
 import com.dfsek.terra.api.platform.block.data.Rotatable;
 import com.dfsek.terra.api.platform.block.data.Wall;
-import com.dfsek.terra.structure.Rotation;
+import com.google.common.collect.Sets;
 import net.jafama.FastMath;
 
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public final class RotationUtil {
+public class RotationUtil {
+    private static final Set<BlockFace> CARDINALS = Sets.newHashSet(BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
+
     /**
      * Rotate and mirror a coordinate pair.
      *
@@ -245,14 +246,6 @@ public final class RotationUtil {
                 }
         }
         return orig;
-    }
-
-    private static final Set<BlockFace> CARDINALS = new HashSet<>();
-    static {
-        CARDINALS.add(BlockFace.NORTH);
-        CARDINALS.add(BlockFace.SOUTH);
-        CARDINALS.add(BlockFace.EAST);
-        CARDINALS.add(BlockFace.WEST);
     }
 
     public static void rotateBlockData(BlockData data, Rotation r) {

@@ -3,8 +3,8 @@ package com.dfsek.terra.api.structures.parser.lang.operations;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.structure.Rotation;
 
 public abstract class BinaryOperation<I, O> implements Returnable<O> {
     private final Returnable<I> left;

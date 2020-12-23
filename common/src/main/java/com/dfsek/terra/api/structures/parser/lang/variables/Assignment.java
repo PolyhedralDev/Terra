@@ -4,8 +4,8 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.structure.Rotation;
 
 public class Assignment<T> implements Item<T> {
     private final Variable<T> delegate;

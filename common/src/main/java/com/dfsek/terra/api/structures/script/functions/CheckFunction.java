@@ -7,10 +7,10 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.world.LandCheck;
 import com.dfsek.terra.api.structures.world.OceanCheck;
-import com.dfsek.terra.structure.Rotation;
 
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;

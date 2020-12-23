@@ -5,8 +5,8 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.structure.Rotation;
 
 public class WhileKeyword implements Keyword<Void> {
     private final Block conditional;

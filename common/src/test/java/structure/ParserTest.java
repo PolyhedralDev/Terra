@@ -8,8 +8,8 @@ import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.structure.Rotation;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 

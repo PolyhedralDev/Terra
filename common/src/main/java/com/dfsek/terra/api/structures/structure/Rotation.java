@@ -1,4 +1,4 @@
-package com.dfsek.terra.structure;
+package com.dfsek.terra.api.structures.structure;
 
 import net.jafama.FastMath;
 

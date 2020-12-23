@@ -8,8 +8,8 @@ import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.structure.Rotation;
 
 public class BlockFunction implements Function<Void> {
     private final BlockData data;
