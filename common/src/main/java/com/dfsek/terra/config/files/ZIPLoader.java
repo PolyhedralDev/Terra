@@ -30,7 +30,7 @@ public class ZIPLoader extends Loader {
             ZipEntry entry = entries.nextElement();
             if(!entry.isDirectory() && entry.getName().startsWith(directory) && entry.getName().endsWith(".yml")) {
                 try {
-                    streams.add(file.getInputStream(entry));
+                    streams.put(entry.getName(), file.getInputStream(entry));
                 } catch(IOException e) {
                     e.printStackTrace();
                 }

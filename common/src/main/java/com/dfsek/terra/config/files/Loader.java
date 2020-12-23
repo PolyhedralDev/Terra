@@ -1,14 +1,17 @@
 package com.dfsek.terra.config.files;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.terra.api.util.GlueList;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class Loader {
-    protected final List<InputStream> streams = new ArrayList<>();
+    protected final Map<String, InputStream> streams = new HashMap<>();
 
     /**
      * Do something with the InputStreams.
@@ -16,7 +19,12 @@ public abstract class Loader {
      * @param consumer Something to do with the streams.
      */
     public Loader then(ExceptionalConsumer<List<InputStream>> consumer) throws ConfigException {
-        consumer.accept(streams);
+        consumer.accept(new GlueList<>(streams.values()));
+        return this;
+    }
+
+    public Loader thenNames(Consumer<List<String>> consumer) throws ConfigException {
+        consumer.accept(new GlueList<>(streams.keySet()));
         return this;
     }
 
@@ -45,7 +53,7 @@ public abstract class Loader {
      * Close all InputStreams opened.
      */
     public Loader close() {
-        streams.forEach(input -> {
+        streams.forEach((name, input) -> {
             try {
                 input.close();
             } catch(IOException e) {

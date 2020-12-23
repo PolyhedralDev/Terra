@@ -31,7 +31,7 @@ public class FolderLoader extends Loader {
         try(Stream<Path> paths = Files.walk(newPath.toPath())) {
             paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(".yml")).forEach(file -> {
                 try {
-                    streams.add(new FileInputStream(file.toFile()));
+                    streams.put(newPath.toURI().relativize(file.toUri()).getPath(), new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {
                     e.printStackTrace();
                 }
