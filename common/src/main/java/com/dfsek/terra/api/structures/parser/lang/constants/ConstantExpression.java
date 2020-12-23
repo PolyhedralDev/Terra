@@ -4,6 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public abstract class ConstantExpression<T> implements Returnable<T> {
     private final T constant;
@@ -15,13 +16,13 @@ public abstract class ConstantExpression<T> implements Returnable<T> {
     }
 
     @Override
-    public T apply(Location location) {
+    public T apply(Location location, Rotation rotation) {
         return constant;
     }
 
 
     @Override
-    public T apply(Location location, Chunk chunk) {
+    public T apply(Location location, Chunk chunk, Rotation rotation) {
         return constant;
     }
 

@@ -9,6 +9,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -50,9 +51,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(null);
+        block.apply(null, Rotation.NONE);
 
-        block.apply(null);
+        block.apply(null, Rotation.NONE);
     }
 
     private static class Test1 implements Function<Void> {
@@ -67,13 +68,13 @@ public class ParserTest {
         }
 
         @Override
-        public Void apply(Location location) {
-            System.out.println("string: " + a.apply(location) + ", double: " + b.apply(location));
+        public Void apply(Location location, Rotation rotation) {
+            System.out.println("string: " + a.apply(location, rotation) + ", double: " + b.apply(location, rotation));
             return null;
         }
 
         @Override
-        public Void apply(Location location, Chunk chunk) {
+        public Void apply(Location location, Chunk chunk, Rotation rotation) {
             return null;
         }
 

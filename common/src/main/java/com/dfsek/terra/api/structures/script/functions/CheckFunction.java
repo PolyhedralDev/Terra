@@ -10,6 +10,7 @@ import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.world.LandCheck;
 import com.dfsek.terra.api.structures.world.OceanCheck;
+import com.dfsek.terra.structure.Rotation;
 
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;
@@ -29,14 +30,14 @@ public class CheckFunction implements Function<String> {
         return "check";
     }
 
-    private Vector3 getVector(Location location, Chunk chunk) {
-        return location.clone().add(chunk == null ? new Vector3(x.apply(location).intValue(), y.apply(location).intValue(), z.apply(location).intValue())
-                : new Vector3(x.apply(location, chunk).intValue(), y.apply(location, chunk).intValue(), z.apply(location, chunk).intValue())).toVector();
+    private Vector3 getVector(Location location, Chunk chunk, Rotation rotation) {
+        return location.clone().add(chunk == null ? new Vector3(x.apply(location, rotation).intValue(), y.apply(location, rotation).intValue(), z.apply(location, rotation).intValue())
+                : new Vector3(x.apply(location, chunk, rotation).intValue(), y.apply(location, chunk, rotation).intValue(), z.apply(location, chunk, rotation).intValue())).toVector();
     }
 
     @Override
-    public String apply(Location location) {
-        return apply(getVector(location, null), location.getWorld());
+    public String apply(Location location, Rotation rotation) {
+        return apply(getVector(location, null, rotation), location.getWorld());
     }
 
     private String apply(Vector3 vector, World world) {
@@ -48,8 +49,8 @@ public class CheckFunction implements Function<String> {
     }
 
     @Override
-    public String apply(Location location, Chunk chunk) {
-        return apply(getVector(location, chunk), location.getWorld());
+    public String apply(Location location, Chunk chunk, Rotation rotation) {
+        return apply(getVector(location, chunk, rotation), location.getWorld());
     }
 
     @Override

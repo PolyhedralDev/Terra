@@ -9,6 +9,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public class BlockFunction implements Function<Void> {
     private final BlockData data;
@@ -31,13 +32,13 @@ public class BlockFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Location location) {
-        location.clone().add(x.apply(location).intValue(), y.apply(location).intValue(), z.apply(location).intValue()).getBlock().setBlockData(data, false);
+    public Void apply(Location location, Rotation rotation) {
+        location.clone().add(x.apply(location, rotation).intValue(), y.apply(location, rotation).intValue(), z.apply(location, rotation).intValue()).getBlock().setBlockData(data, false);
         return null;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk) {
+    public Void apply(Location location, Chunk chunk, Rotation rotation) {
         //TODO: do
         return null;
     }

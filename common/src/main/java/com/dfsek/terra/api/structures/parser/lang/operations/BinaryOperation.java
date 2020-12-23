@@ -4,6 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public abstract class BinaryOperation<I, O> implements Returnable<O> {
     private final Returnable<I> left;
@@ -24,12 +25,12 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
     }
 
     @Override
-    public O apply(Location location) {
-        return apply(left.apply(location), right.apply(location));
+    public O apply(Location location, Rotation rotation) {
+        return apply(left.apply(location, rotation), right.apply(location, rotation));
     }
 
     @Override
-    public O apply(Location location, Chunk chunk) {
-        return apply(left.apply(location, chunk), right.apply(location, chunk));
+    public O apply(Location location, Chunk chunk, Rotation rotation) {
+        return apply(left.apply(location, chunk, rotation), right.apply(location, chunk, rotation));
     }
 }

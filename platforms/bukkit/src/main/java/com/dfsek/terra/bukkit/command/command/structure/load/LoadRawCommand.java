@@ -8,6 +8,7 @@ import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
+import com.dfsek.terra.structure.Rotation;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -48,7 +49,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
             System.out.println("Done parsing");
 
-            main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()));
+            main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.NONE);
 
         } catch(IOException | ParseException e) {
             e.printStackTrace();

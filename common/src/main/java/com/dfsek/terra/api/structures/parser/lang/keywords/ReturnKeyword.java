@@ -4,6 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public class ReturnKeyword implements Keyword<Void> {
     private final Position position;
@@ -13,12 +14,12 @@ public class ReturnKeyword implements Keyword<Void> {
     }
 
     @Override
-    public Void apply(Location location) {
+    public Void apply(Location location, Rotation rotation) {
         return null;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk) {
+    public Void apply(Location location, Chunk chunk, Rotation rotation) {
         return null;
     }
 

@@ -23,8 +23,13 @@ public abstract class Loader {
         return this;
     }
 
-    public Loader thenNames(Consumer<List<String>> consumer) throws ConfigException {
+    public Loader thenNames(Consumer<List<String>> consumer) {
         consumer.accept(new GlueList<>(streams.keySet()));
+        System.out.println("names ^ ");
+        streams.forEach((name, stream) -> {
+            System.out.println(name);
+        });
+        System.out.println("names ^ ");
         return this;
     }
 

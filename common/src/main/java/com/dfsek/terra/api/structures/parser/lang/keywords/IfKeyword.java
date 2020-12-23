@@ -6,6 +6,7 @@ import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public class IfKeyword implements Keyword<Void> {
     private final Block conditional;
@@ -19,14 +20,14 @@ public class IfKeyword implements Keyword<Void> {
     }
 
     @Override
-    public Void apply(Location location) {
-        if(statement.apply(location)) conditional.apply(location);
+    public Void apply(Location location, Rotation rotation) {
+        if(statement.apply(location, rotation)) conditional.apply(location, rotation);
         return null;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk) {
-        if(statement.apply(location, chunk)) conditional.apply(location, chunk);
+    public Void apply(Location location, Chunk chunk, Rotation rotation) {
+        if(statement.apply(location, chunk, rotation)) conditional.apply(location, chunk, rotation);
         return null;
     }
 

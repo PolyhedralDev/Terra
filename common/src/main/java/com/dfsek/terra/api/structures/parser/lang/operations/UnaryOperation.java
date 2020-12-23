@@ -4,6 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public abstract class UnaryOperation<T> implements Returnable<T> {
     private final Returnable<T> input;
@@ -17,13 +18,13 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
     public abstract T apply(T input);
 
     @Override
-    public T apply(Location location) {
-        return apply(input.apply(location));
+    public T apply(Location location, Rotation rotation) {
+        return apply(input.apply(location, rotation));
     }
 
     @Override
-    public T apply(Location location, Chunk chunk) {
-        return apply(input.apply(location, chunk));
+    public T apply(Location location, Chunk chunk, Rotation rotation) {
+        return apply(input.apply(location, chunk, rotation));
     }
 
     @Override

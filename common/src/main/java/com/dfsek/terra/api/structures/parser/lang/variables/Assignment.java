@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.structure.Rotation;
 
 public class Assignment<T> implements Item<T> {
     private final Variable<T> delegate;
@@ -18,15 +19,15 @@ public class Assignment<T> implements Item<T> {
     }
 
     @Override
-    public T apply(Location location) {
-        T val = value.apply(location);
+    public T apply(Location location, Rotation rotation) {
+        T val = value.apply(location, rotation);
         delegate.setValue(val);
         return val;
     }
 
     @Override
-    public T apply(Location location, Chunk chunk) {
-        T val = value.apply(location, chunk);
+    public T apply(Location location, Chunk chunk, Rotation rotation) {
+        T val = value.apply(location, chunk, rotation);
         delegate.setValue(val);
         return val;
     }
