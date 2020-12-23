@@ -12,7 +12,6 @@ public class Tokenizer {
     private final Lookahead reader;
 
     public static final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
-    private final Set<String> keywords = Sets.newHashSet("if", "while", "num", "bool", "str");
 
 
     public Tokenizer(String data) {
@@ -41,14 +40,15 @@ public class Tokenizer {
             return new Token("==", Token.Type.EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("!=", true))
             return new Token("!=", Token.Type.NOT_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
-        if(reader.matches(">", true))
-            return new Token(">", Token.Type.GREATER_THAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
-        if(reader.matches("<", true))
-            return new Token("<", Token.Type.LESS_THAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches(">=", true))
             return new Token(">=", Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.matches("<=", true))
             return new Token("<=", Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches(">", true))
+            return new Token(">", Token.Type.GREATER_THAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.matches("<", true))
+            return new Token("<", Token.Type.LESS_THAN_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+
 
         if(reader.matches("||", true))
             return new Token("||", Token.Type.BOOLEAN_OR, new Position(reader.getLine(), reader.getIndex()));
@@ -133,6 +133,13 @@ public class Tokenizer {
             return new Token(tokenString, Token.Type.IF_STATEMENT, new Position(reader.getLine(), reader.getIndex()));
         if(tokenString.equals("while"))
             return new Token(tokenString, Token.Type.WHILE_LOOP, new Position(reader.getLine(), reader.getIndex()));
+
+        if(tokenString.equals("return"))
+            return new Token(tokenString, Token.Type.RETURN, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("continue"))
+            return new Token(tokenString, Token.Type.CONTINUE, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("break"))
+            return new Token(tokenString, Token.Type.BREAK, new Position(reader.getLine(), reader.getIndex()));
 
         return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }

@@ -2,11 +2,12 @@ package com.dfsek.terra.api.structures.parser.lang.keywords;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-public class ReturnKeyword implements Keyword<Void> {
+public class ReturnKeyword implements Keyword<Block.ReturnLevel> {
     private final Position position;
 
     public ReturnKeyword(Position position) {
@@ -14,13 +15,13 @@ public class ReturnKeyword implements Keyword<Void> {
     }
 
     @Override
-    public Void apply(Location location, Rotation rotation) {
-        return null;
+    public Block.ReturnLevel apply(Location location, Rotation rotation) {
+        return Block.ReturnLevel.RETURN;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk, Rotation rotation) {
-        return null;
+    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
+        return Block.ReturnLevel.RETURN;
     }
 
     @Override

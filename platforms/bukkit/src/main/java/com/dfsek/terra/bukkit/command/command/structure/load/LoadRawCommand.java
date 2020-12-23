@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class LoadRawCommand extends LoadCommand implements DebugCommand {
@@ -49,7 +50,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
             System.out.println("Done parsing");
 
-            main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.NONE);
+            main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
 
         } catch(IOException | ParseException e) {
             e.printStackTrace();

@@ -46,7 +46,7 @@ public class TerraTree implements Tree {
         Rotation rotation = Rotation.fromDegrees(random.nextInt(4) * 90);
         StructureInfo info = struc.getStructureInfo();
         for(StructureContainedBlock spawn : struc.getSpawns()) {
-            Vector2 rot = RotationUtil.getRotatedCoords(new Vector2(spawn.getX() - info.getCenterX(), spawn.getZ() - info.getCenterZ()), rotation);
+            Vector2 rot = RotationUtil.rotateVector(new Vector2(spawn.getX() - info.getCenterX(), spawn.getZ() - info.getCenterZ()), rotation);
             int x = (int) rot.getX();
             int z = (int) rot.getZ();
             switch(spawn.getRequirement()) {

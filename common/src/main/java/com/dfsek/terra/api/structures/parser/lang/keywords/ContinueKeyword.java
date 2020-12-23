@@ -4,31 +4,24 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
-import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-public class IfKeyword implements Keyword<Block.ReturnLevel> {
-    private final Block conditional;
-    private final Returnable<Boolean> statement;
+public class ContinueKeyword implements Keyword<Block.ReturnLevel> {
     private final Position position;
 
-    public IfKeyword(Block conditional, Returnable<Boolean> statement, Position position) {
-        this.conditional = conditional;
-        this.statement = statement;
+    public ContinueKeyword(Position position) {
         this.position = position;
     }
 
     @Override
     public Block.ReturnLevel apply(Location location, Rotation rotation) {
-        if(statement.apply(location, rotation)) return conditional.apply(location, rotation);
-        return Block.ReturnLevel.NONE;
+        return Block.ReturnLevel.CONTINUE;
     }
 
     @Override
     public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
-        if(statement.apply(location, chunk, rotation)) return conditional.apply(location, chunk, rotation);
-        return Block.ReturnLevel.NONE;
+        return Block.ReturnLevel.CONTINUE;
     }
 
     @Override

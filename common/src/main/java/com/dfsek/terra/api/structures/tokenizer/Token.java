@@ -183,6 +183,10 @@ public class Token {
         BOOLEAN_VARIABLE,
 
         IF_STATEMENT,
-        WHILE_LOOP
+        WHILE_LOOP,
+
+        RETURN,
+        CONTINUE,
+        BREAK
     }
 }

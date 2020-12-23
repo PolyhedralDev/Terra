@@ -12,13 +12,16 @@ bool truetest = false;
 num iterator = 0;
 
 while(iterator < 5) {
-    test("fdsgdf" + 2 + stringVar, iterator);
+    test("always, even after " + 2, iterator);
     iterator = iterator + 1;
+    if(iterator > 2) {
+        continue;
+    }
+    test("not after " + 2, iterator);
 }
 
 
 if(true && !(boolean && false) && true) {
-test(0,-1,0, "minecraft:green_w" + "ool");
     num scopedVar = 2;
     test("if statement" + 2 + stringVar, 1 + testVar + scopedVar);
 }

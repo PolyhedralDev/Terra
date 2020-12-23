@@ -26,9 +26,8 @@ public class RotationUtil {
      *
      * @param orig Vector to rotate.
      * @param r    Rotation
-     * @return Rotated coordinate pair
      */
-    public static Vector2 getRotatedCoords(Vector2 orig, Rotation r) {
+    public static void rotateVector(Vector2 orig, Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
             case CW_90:
@@ -41,7 +40,8 @@ public class RotationUtil {
                 copy.multiply(-1);
                 break;
         }
-        return copy;
+        orig.setX(copy.getX());
+        orig.setZ(copy.getZ());
     }
 
     /**

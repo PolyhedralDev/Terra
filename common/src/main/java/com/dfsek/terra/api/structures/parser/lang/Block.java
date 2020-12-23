@@ -7,7 +7,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
 
-public class Block implements Item<Void> {
+public class Block implements Item<Block.ReturnLevel> {
     private final List<Item<?>> items;
     private final Position position;
 
@@ -21,19 +21,36 @@ public class Block implements Item<Void> {
     }
 
     @Override
-    public Void apply(Location location, Rotation rotation) {
-        items.forEach(item -> item.apply(location, rotation));
-        return null;
+    public ReturnLevel apply(Location location, Rotation rotation) {
+
+        for(Item<?> item : items) {
+            Object result = item.apply(location, rotation);
+            if(result instanceof ReturnLevel) {
+                ReturnLevel level = (ReturnLevel) result;
+                if(!level.equals(ReturnLevel.NONE)) return level;
+            }
+        }
+        return ReturnLevel.NONE;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk, Rotation rotation) {
-        items.forEach(item -> item.apply(location, chunk, rotation));
-        return null;
+    public ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
+        for(Item<?> item : items) {
+            Object result = item.apply(location, chunk, rotation);
+            if(result instanceof ReturnLevel) {
+                ReturnLevel level = (ReturnLevel) result;
+                if(!level.equals(ReturnLevel.NONE)) return level;
+            }
+        }
+        return ReturnLevel.NONE;
     }
 
     @Override
     public Position getPosition() {
         return position;
+    }
+
+    public enum ReturnLevel {
+        NONE, BREAK, CONTINUE, RETURN
     }
 }

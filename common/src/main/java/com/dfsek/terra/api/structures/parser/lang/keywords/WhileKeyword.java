@@ -8,7 +8,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-public class WhileKeyword implements Keyword<Void> {
+public class WhileKeyword implements Keyword<Block.ReturnLevel> {
     private final Block conditional;
     private final Returnable<Boolean> statement;
     private final Position position;
@@ -20,15 +20,23 @@ public class WhileKeyword implements Keyword<Void> {
     }
 
     @Override
-    public Void apply(Location location, Rotation rotation) {
-        while(statement.apply(location, rotation)) conditional.apply(location, rotation);
-        return null;
+    public Block.ReturnLevel apply(Location location, Rotation rotation) {
+        while(statement.apply(location, rotation)) {
+            Block.ReturnLevel level = conditional.apply(location, rotation);
+            if(level.equals(Block.ReturnLevel.BREAK)) break;
+            if(level.equals(Block.ReturnLevel.RETURN)) return Block.ReturnLevel.RETURN;
+        }
+        return Block.ReturnLevel.NONE;
     }
 
     @Override
-    public Void apply(Location location, Chunk chunk, Rotation rotation) {
-        while(statement.apply(location, chunk, rotation)) conditional.apply(location, chunk, rotation);
-        return null;
+    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation) {
+        while(statement.apply(location, chunk, rotation)) {
+            Block.ReturnLevel level = conditional.apply(location, chunk, rotation);
+            if(level.equals(Block.ReturnLevel.BREAK)) break;
+            if(level.equals(Block.ReturnLevel.RETURN)) return Block.ReturnLevel.RETURN;
+        }
+        return Block.ReturnLevel.NONE;
     }
 
     @Override

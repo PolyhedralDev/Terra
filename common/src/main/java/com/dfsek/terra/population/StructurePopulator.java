@@ -44,7 +44,7 @@ public class StructurePopulator implements TerraBlockPopulator {
                         struc.paste(spawn, chunk, rotation, main);
                         for(StructureContainedInventory i : struc.getInventories()) {
                             try {
-                                Vector2 lootCoords = RotationUtil.getRotatedCoords(new Vector2(i.getX() - struc.getStructureInfo().getCenterX(), i.getZ() - struc.getStructureInfo().getCenterZ()), rotation.inverse());
+                                Vector2 lootCoords = RotationUtil.rotateVector(new Vector2(i.getX() - struc.getStructureInfo().getCenterX(), i.getZ() - struc.getStructureInfo().getCenterZ()), rotation.inverse());
                                 Location inv = spawn.clone().add(lootCoords.getX(), i.getY(), lootCoords.getZ());
                                 if(FastMath.floorDiv(inv.getBlockX(), 16) != chunk.getX() || FastMath.floorDiv(inv.getBlockZ(), 16) != chunk.getZ())
                                     continue;
