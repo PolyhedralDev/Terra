@@ -4,6 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
@@ -11,12 +12,12 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public class BlockFunction implements Function<Void> {
     private final BlockData data;
-    private final Returnable<Integer> x, y, z;
+    private final Returnable<Number> x, y, z;
     private final Position position;
 
-    public BlockFunction(Returnable<Integer> x, Returnable<Integer> y, Returnable<Integer> z, Returnable<String> data, TerraPlugin main, Position position) {
+    public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, TerraPlugin main, Position position) throws ParseException {
         this.position = position;
-        if(!(data instanceof ConstantExpression)) throw new IllegalArgumentException("Block data must be constant.");
+        if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant.");
 
         this.data = main.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
         this.x = x;
@@ -31,7 +32,7 @@ public class BlockFunction implements Function<Void> {
 
     @Override
     public Void apply(Location location) {
-        location.clone().add(x.apply(location), y.apply(location), z.apply(location)).getBlock().setBlockData(data, false);
+        location.clone().add(x.apply(location).intValue(), y.apply(location).intValue(), z.apply(location).intValue()).getBlock().setBlockData(data, false);
         return null;
     }
 

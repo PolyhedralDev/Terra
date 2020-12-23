@@ -13,10 +13,10 @@ import com.dfsek.terra.api.structures.world.OceanCheck;
 
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;
-    private final Returnable<Integer> x, y, z;
+    private final Returnable<Number> x, y, z;
     private final Position position;
 
-    public CheckFunction(TerraPlugin main, Returnable<Integer> x, Returnable<Integer> y, Returnable<Integer> z, Position position) {
+    public CheckFunction(TerraPlugin main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.main = main;
         this.x = x;
         this.y = y;
@@ -30,8 +30,8 @@ public class CheckFunction implements Function<String> {
     }
 
     private Vector3 getVector(Location location, Chunk chunk) {
-        return chunk == null ? new Vector3(x.apply(location) + location.getBlockX(), y.apply(location) + location.getBlockY(), z.apply(location) + location.getBlockZ())
-                : new Vector3(x.apply(location, chunk) + location.getBlockX(), y.apply(location, chunk) + location.getBlockY(), z.apply(location, chunk) + location.getBlockZ());
+        return location.clone().add(chunk == null ? new Vector3(x.apply(location).intValue(), y.apply(location).intValue(), z.apply(location).intValue())
+                : new Vector3(x.apply(location, chunk).intValue(), y.apply(location, chunk).intValue(), z.apply(location, chunk).intValue())).toVector();
     }
 
     @Override
