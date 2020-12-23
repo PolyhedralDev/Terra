@@ -8,7 +8,10 @@ import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.registry.ScriptRegistry;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -18,7 +21,7 @@ public class StructureScript {
     private final Block block;
     private final String id;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main) {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry) {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -26,7 +29,9 @@ public class StructureScript {
             throw new RuntimeException(e);
         }
         parser.addFunction("block", new BlockFunctionBuilder(main))
-                .addFunction("check", new CheckFunctionBuilder(main));
+                .addFunction("check", new CheckFunctionBuilder(main))
+                .addFunction("structure", new StructureFunctionBuilder(registry, main))
+                .addFunction("randomInt", new RandomFunctionBuilder());
 
         try {
             block = parser.parse();
