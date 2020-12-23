@@ -141,6 +141,9 @@ public class Tokenizer {
         if(tokenString.equals("break"))
             return new Token(tokenString, Token.Type.BREAK, new Position(reader.getLine(), reader.getIndex()));
 
+        if(tokenString.equals("id"))
+            return new Token(tokenString, Token.Type.ID, new Position(reader.getLine(), reader.getIndex()));
+
         return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
 

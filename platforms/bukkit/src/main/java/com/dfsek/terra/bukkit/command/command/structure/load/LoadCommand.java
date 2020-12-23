@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.command.command.structure.load;
 
+import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
 import org.bukkit.command.Command;
@@ -7,9 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,17 +19,14 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
         super(parent);
     }
 
-    public List<String> getStructureNames() {
+    public List<String> getStructureNames(World world) {
         List<String> names = new ArrayList<>();
-        File structureDir = new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures");
-        if(!structureDir.exists()) return Collections.emptyList();
-        Path structurePath = structureDir.toPath();
+        TerraWorld terraWorld = getMain().getWorld(world);
 
-        FilenameFilter filter = (dir, name) -> name.endsWith(".tstructure");
-        for(File f : structureDir.listFiles(filter)) {
-            String path = structurePath.relativize(f.toPath()).toString();
-            names.add(path.substring(0, path.length() - 11));
-        }
+        terraWorld.getConfig().getScriptRegistry().forEach(script -> {
+            names.add(script.getId());
+        });
+
         return names;
     }
 

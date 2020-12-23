@@ -24,11 +24,11 @@ public class ZIPLoader extends Loader {
     }
 
     @Override
-    protected void load(String directory) {
+    protected void load(String directory, String extension) {
         Enumeration<? extends ZipEntry> entries = file.entries();
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
-            if(!entry.isDirectory() && entry.getName().startsWith(directory) && entry.getName().endsWith(".yml")) {
+            if(!entry.isDirectory() && entry.getName().startsWith(directory) && entry.getName().endsWith(extension)) {
                 try {
                     streams.put(entry.getName(), file.getInputStream(entry));
                 } catch(IOException e) {

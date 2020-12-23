@@ -45,14 +45,15 @@ public abstract class Loader {
      * Open a subdirectory.
      *
      * @param directory Directory to open
+     * @param extension
      */
-    public Loader open(String directory) {
+    public Loader open(String directory, String extension) {
         if(streams.size() != 0) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
-        load(directory);
+        load(directory, extension);
         return this;
     }
 
-    protected abstract void load(String directory);
+    protected abstract void load(String directory, String extension);
 
     /**
      * Close all InputStreams opened.

@@ -8,6 +8,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.loot.LootTable;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -44,6 +45,7 @@ import com.dfsek.terra.registry.CarverRegistry;
 import com.dfsek.terra.registry.FloraRegistry;
 import com.dfsek.terra.registry.OreRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
+import com.dfsek.terra.registry.ScriptRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.TreeRegistry;
@@ -78,6 +80,7 @@ public class ConfigPack implements LoaderRegistrar {
     private final FloraRegistry floraRegistry;
     private final OreRegistry oreRegistry = new OreRegistry();
     private final TreeRegistry treeRegistry;
+    private final ScriptRegistry scriptRegistry = new ScriptRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -141,13 +144,19 @@ public class ConfigPack implements LoaderRegistrar {
         abstractConfigLoader
                 .registerLoader(LootTable.class, new LootTableLoader(loader, main)); // These loaders need access to the Loader instance to get files.
         loader
-                .open("palettes").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
-                .open("palettes").thenNames(names -> names.forEach(System.out::println)).close()
-                .open("ores").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
-                .open("flora").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
-                .open("carving").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("biomes").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
-                .open("grids").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
+                .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
+                .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
+                .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
+                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
+                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
+                .open("grids", ".yml").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
+
+
+        loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
+            StructureScript structureScript = new StructureScript(stream, main);
+            scriptRegistry.add(structureScript.getId(), structureScript);
+        })).close();
+
         for(UserDefinedBiome b : biomeRegistry.entries()) {
             try {
                 Objects.requireNonNull(b.getErode()); // Throws NPE if it cannot load erosion biomes.
@@ -229,6 +238,10 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry);
+    }
+
+    public ScriptRegistry getScriptRegistry() {
+        return scriptRegistry;
     }
 
     public BiomeRegistry getBiomeRegistry() {

@@ -25,11 +25,11 @@ public class FolderLoader extends Loader {
     }
 
     @Override
-    protected void load(String directory) {
+    protected void load(String directory, String extension) {
         File newPath = new File(path.toFile(), directory);
         newPath.mkdirs();
         try(Stream<Path> paths = Files.walk(newPath.toPath())) {
-            paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(".yml")).forEach(file -> {
+            paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(extension)).forEach(file -> {
                 try {
                     streams.put(newPath.toURI().relativize(file.toUri()).getPath(), new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {

@@ -206,6 +206,10 @@ public class Token {
         /**
          * Break statement
          */
-        BREAK
+        BREAK,
+        /**
+         * ID declaration
+         */
+        ID
     }
 }

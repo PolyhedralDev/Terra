@@ -50,6 +50,7 @@ import java.util.Map;
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
+    private String id;
 
     public Parser(String data) {
         this.data = data;
@@ -58,6 +59,10 @@ public class Parser {
     public Parser addFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
         functions.put(name, functionBuilder);
         return this;
+    }
+
+    public String getID() {
+        return id;
     }
 
     /**
@@ -75,6 +80,14 @@ public class Parser {
         } catch(TokenizerException e) {
             throw new ParseException("Failed to tokenize input", e);
         }
+
+        // Parse ID
+        ParserUtil.checkType(tokens.remove(0), Token.Type.ID); // First token must be ID
+        Token idToken = tokens.get(0);
+        ParserUtil.checkType(tokens.remove(0), Token.Type.STRING); // Second token must be string literal containing ID
+        ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+        this.id = idToken.getContent();
+
         // Check for dangling brackets
         int blockLevel = 0;
         for(Token t : tokens) {

@@ -1,24 +1,16 @@
 package com.dfsek.terra.bukkit.command.command.structure.load;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.structures.parser.Parser;
-import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
-import com.dfsek.terra.api.structures.parser.lang.Block;
-import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
-import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
-import org.apache.commons.io.IOUtils;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -37,24 +29,13 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
         } else sign.setLine(2, data);
     }
 
+
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        try {
-            Parser parser = new Parser(IOUtils.toString(new FileInputStream(new File(getMain().getDataFolder(), "test.tesf"))));
-            parser.addFunction("block", new BlockFunctionBuilder(getMain()))
-                    .addFunction("check", new CheckFunctionBuilder(getMain()));
+        TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
 
-            System.out.println("Parsing...");
+        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
 
-            Block main = parser.parse();
-
-            System.out.println("Done parsing");
-
-            main.apply(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
-
-        } catch(IOException | ParseException e) {
-            e.printStackTrace();
-        }
         /*
         try {
             WorldHandle handle = ((TerraBukkitPlugin) getMain()).getWorldHandle();
@@ -130,7 +111,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] args) {
         if(args.length == 1) {
-            return getStructureNames().stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
+            return getStructureNames(new BukkitWorld(((Player) commandSender).getWorld())).stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
