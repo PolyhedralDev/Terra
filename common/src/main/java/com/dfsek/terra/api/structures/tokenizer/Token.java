@@ -176,17 +176,36 @@ public class Token {
          */
         BOOLEAN_AND,
         /**
-         * Variable declaration
+         * Numeric variable declaration
          */
         NUMBER_VARIABLE,
+        /**
+         * String variable declaration
+         */
         STRING_VARIABLE,
+        /**
+         * Boolean variable declaration
+         */
         BOOLEAN_VARIABLE,
-
+        /**
+         * If statement declaration
+         */
         IF_STATEMENT,
+        /**
+         * While loop declaration
+         */
         WHILE_LOOP,
-
+        /**
+         * Return statement
+         */
         RETURN,
+        /**
+         * Continue statement
+         */
         CONTINUE,
+        /**
+         * Break statement
+         */
         BREAK
     }
 }

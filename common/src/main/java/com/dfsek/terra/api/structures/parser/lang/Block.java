@@ -22,7 +22,6 @@ public class Block implements Item<Block.ReturnLevel> {
 
     @Override
     public ReturnLevel apply(Location location, Rotation rotation) {
-
         for(Item<?> item : items) {
             Object result = item.apply(location, rotation);
             if(result instanceof ReturnLevel) {
