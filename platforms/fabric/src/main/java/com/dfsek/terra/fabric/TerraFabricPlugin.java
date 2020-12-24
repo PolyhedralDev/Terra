@@ -92,7 +92,17 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     .add("LARGE_SPRUCE", ConfiguredFeatures.PINE)
                     .add("SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE)
                     .add("SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE)
-                    .add("TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL)).build();
+                    .add("TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL)
+                    .add("ACACIA", ConfiguredFeatures.ACACIA)
+                    .add("BIRCH", ConfiguredFeatures.BIRCH)
+                    .add("DARK_OAK", ConfiguredFeatures.DARK_OAK)
+                    .add("OAK", ConfiguredFeatures.OAK)
+                    .add("CHORUS_PLANT", ConfiguredFeatures.CHORUS_PLANT)
+                    .add("SPRUCE", ConfiguredFeatures.SPRUCE)
+                    .add("JUNGLE_BUSH", ConfiguredFeatures.JUNGLE_BUSH)
+                    .add("MEGA_SPRUCE", ConfiguredFeatures.MEGA_SPRUCE)
+                    .add("CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI)
+                    .add("WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI)).build();
     private final PluginConfig plugin = new PluginConfig();
 
     @Override
@@ -160,7 +170,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public void saveDefaultConfig() {
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
-            FileUtils.copyInputStreamToFile(stream, new File(getDataFolder(), "config.yml"));
+            File configFile = new File(getDataFolder(), "config.yml");
+            if(!configFile.exists()) FileUtils.copyInputStreamToFile(stream, configFile);
         } catch(IOException e) {
             e.printStackTrace();
         }

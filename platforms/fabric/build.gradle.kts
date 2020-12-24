@@ -1,5 +1,6 @@
 import com.dfsek.terra.configureCommon
 import net.fabricmc.loom.LoomGradleExtension
+import net.fabricmc.loom.task.RemapJarTask
 
 buildscript {
     repositories {
@@ -27,6 +28,12 @@ group = "com.dfsek.terra.fabric"
 
 configure<LoomGradleExtension> {
     accessWidener("src/main/resources/terra.accesswidener")
+}
+
+tasks.register<RemapJarTask>("remapShadedJar") {
+    setProperty("input", file("build/libs/fabric-${version}-shaded.jar"))
+    setProperty("addNestedDependencies", false)
+    setProperty("remapAccessWidener", true)
 }
 
 dependencies {
