@@ -19,14 +19,14 @@ public class Assignment<T> implements Item<T> {
     }
 
     @Override
-    public T apply(Location location, Rotation rotation, int recursions) {
+    public synchronized T apply(Location location, Rotation rotation, int recursions) {
         T val = value.apply(location, rotation, recursions);
         delegate.setValue(val);
         return val;
     }
 
     @Override
-    public T apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+    public synchronized T apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         T val = value.apply(location, chunk, rotation, recursions);
         delegate.setValue(val);
         return val;

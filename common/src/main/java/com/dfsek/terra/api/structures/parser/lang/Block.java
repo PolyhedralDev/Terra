@@ -21,7 +21,7 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public ReturnLevel apply(Location location, Rotation rotation, int recursions) {
+    public synchronized ReturnLevel apply(Location location, Rotation rotation, int recursions) {
         for(Item<?> item : items) {
             Object result = item.apply(location, rotation, recursions);
             if(result instanceof ReturnLevel) {
@@ -33,7 +33,7 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
+    public synchronized ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         for(Item<?> item : items) {
             Object result = item.apply(location, chunk, rotation, recursions);
             if(result instanceof ReturnLevel) {

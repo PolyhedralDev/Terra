@@ -25,6 +25,7 @@ import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.factories.TerraFactory;
+import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
@@ -37,6 +38,7 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
+import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.generation.items.TerraStructure;
 import com.dfsek.terra.generation.items.ores.Ore;
 import com.dfsek.terra.registry.BiomeGridRegistry;
@@ -143,19 +145,21 @@ public class ConfigPack implements LoaderRegistrar {
         }
         abstractConfigLoader
                 .registerLoader(LootTable.class, new LootTableLoader(loader, main)); // These loaders need access to the Loader instance to get files.
-        loader
-                .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
-                .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
-                .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
-                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
-                .open("grids", ".yml").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
-
 
         loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
             StructureScript structureScript = new StructureScript(stream, main, scriptRegistry);
             scriptRegistry.add(structureScript.getId(), structureScript);
         })).close();
+
+        loader
+                .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
+                .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
+                .open("structures/trees", ".yml").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
+                .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
+                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
+                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
+                .open("grids", ".yml").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
+
 
         for(UserDefinedBiome b : biomeRegistry.entries()) {
             try {
@@ -237,7 +241,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry)
-                .registerLoader(Tree.class, treeRegistry);
+                .registerLoader(Tree.class, treeRegistry)
+                .registerLoader(StructureScript.class, scriptRegistry);
     }
 
     public ScriptRegistry getScriptRegistry() {
