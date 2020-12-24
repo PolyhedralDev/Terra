@@ -1,11 +1,11 @@
 package com.dfsek.terra;
 
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.generation.MasterChunkGenerator;
 
 public class TerraWorld {
     private final TerraBiomeGrid grid;
@@ -24,7 +24,7 @@ public class TerraWorld {
     }
 
     public static boolean isTerraWorld(World w) {
-        return w.getGenerator() instanceof MasterChunkGenerator;
+        return w.getGenerator().getHandle() instanceof GeneratorWrapper;
     }
 
     public TerraBiomeGrid getGrid() {

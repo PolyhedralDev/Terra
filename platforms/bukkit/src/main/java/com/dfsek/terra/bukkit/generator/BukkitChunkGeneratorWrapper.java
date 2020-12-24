@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.platform.Handle;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.generation.population.PopulationManager;
@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Handle {
+public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
 
     private static final Map<com.dfsek.terra.api.platform.world.World, PopulationManager> popMap = new HashMap<>();
 

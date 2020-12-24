@@ -1,6 +1,21 @@
 package com.dfsek.terra.bukkit.listeners;
 
+import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.transform.MapTransform;
+import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.tree.Tree;
+import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.debug.Debug;
+import com.dfsek.terra.registry.TreeRegistry;
+import org.bukkit.Material;
+import org.bukkit.TreeType;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -15,9 +30,19 @@ public class EventListener implements Listener {
         this.main = main;
     }
 
+    private static final Transformer<TreeType, String> TREE_TYPE_STRING_TRANSFORMER = new Transformer.Builder<TreeType, String>()
+            .addTransform(new MapTransform<TreeType, String>()
+                    .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
+                    .add(TreeType.BIG_TREE, "LARGE_OAK")
+                    .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
+                    .add(TreeType.REDWOOD, "SPRUCE")
+                    .add(TreeType.TREE, "OAK")
+                    .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
+                    .add(TreeType.SWAMP, "SWAMP_OAK"))
+            .addTransform(TreeType::toString).build();
+
     @EventHandler
     public void onSaplingGrow(StructureGrowEvent e) {
-        /*
         World bukkit = new BukkitWorld(e.getWorld());
         if(!TerraWorld.isTerraWorld(bukkit)) return;
         TerraWorld tw = main.getWorld(bukkit);
@@ -28,14 +53,10 @@ public class EventListener implements Listener {
         BlockData data = block.getBlockData();
         block.setType(Material.AIR);
         TreeRegistry registry = c.getTreeRegistry();
-        Tree tree = registry.get(TreeType.fromBukkit(e.getSpecies()).toString());
-        Debug.info("Overriding tree type: " + e.getSpecies());
-        if(tree instanceof TerraTree) {
-            if(!((TerraTree) tree).plantBlockCheck(e.getLocation().subtract(0, 1, 0), new FastRandom(), main)) {
-                block.setBlockData(data);
-            }
-        } else if(!tree.plant(e.getLocation().subtract(0, 1, 0), new FastRandom(), main)) block.setBlockData(data);
+        Tree tree = registry.get(TREE_TYPE_STRING_TRANSFORMER.translate(e.getSpecies()));
+        Debug.info("Overrode tree type: " + e.getSpecies());
+        org.bukkit.Location location = e.getLocation().subtract(0, 1, 0);
+        if(!tree.plant(new Location(bukkit, location.getX(), location.getY(), location.getZ()), new FastRandom())) block.setBlockData(data);
 
-         */
     }
 }
