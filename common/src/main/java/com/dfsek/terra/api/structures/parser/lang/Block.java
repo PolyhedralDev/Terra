@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.structures.parser.lang;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
@@ -24,18 +23,6 @@ public class Block implements Item<Block.ReturnLevel> {
     public synchronized ReturnLevel apply(Location location, Rotation rotation, int recursions) {
         for(Item<?> item : items) {
             Object result = item.apply(location, rotation, recursions);
-            if(result instanceof ReturnLevel) {
-                ReturnLevel level = (ReturnLevel) result;
-                if(!level.equals(ReturnLevel.NONE)) return level;
-            }
-        }
-        return ReturnLevel.NONE;
-    }
-
-    @Override
-    public synchronized ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        for(Item<?> item : items) {
-            Object result = item.apply(location, chunk, rotation, recursions);
             if(result instanceof ReturnLevel) {
                 ReturnLevel level = (ReturnLevel) result;
                 if(!level.equals(ReturnLevel.NONE)) return level;

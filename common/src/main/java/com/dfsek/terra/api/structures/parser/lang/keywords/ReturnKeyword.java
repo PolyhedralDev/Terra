@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.structures.parser.lang.keywords;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.structure.Rotation;
@@ -16,11 +15,6 @@ public class ReturnKeyword implements Keyword<Block.ReturnLevel> {
 
     @Override
     public Block.ReturnLevel apply(Location location, Rotation rotation, int recursions) {
-        return Block.ReturnLevel.RETURN;
-    }
-
-    @Override
-    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         return Block.ReturnLevel.RETURN;
     }
 

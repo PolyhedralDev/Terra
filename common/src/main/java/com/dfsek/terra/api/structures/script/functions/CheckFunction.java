@@ -4,7 +4,6 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
@@ -33,19 +32,17 @@ public class CheckFunction implements Function<String> {
         return "check";
     }
 
-    private Vector3 getVector(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        Vector2 xz = chunk == null ? new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue())
-                : new Vector2(x.apply(location, chunk, rotation, recursions).doubleValue(), z.apply(location, chunk, rotation, recursions).doubleValue());
+    private Vector3 getVector(Location location, Rotation rotation, int recursions) {
+        Vector2 xz = new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        return location.clone().add(chunk == null ? new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()))
-                : new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, chunk, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()))).toVector();
+        return new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
     }
 
     @Override
     public String apply(Location location, Rotation rotation, int recursions) {
-        return apply(getVector(location, null, rotation, recursions), location.getWorld());
+        return apply(getVector(location, rotation, recursions), location.getWorld());
     }
 
     private String apply(Vector3 vector, World world) {
@@ -54,11 +51,6 @@ public class CheckFunction implements Function<String> {
         if(new OceanCheck(world, main).check(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ()))
             return "OCEAN";
         return "AIR";
-    }
-
-    @Override
-    public String apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        return apply(getVector(location, chunk, rotation, recursions), location.getWorld());
     }
 
     @Override

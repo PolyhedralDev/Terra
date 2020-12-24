@@ -1,7 +1,6 @@
 package structure;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
@@ -70,11 +69,6 @@ public class ParserTest {
         @Override
         public Void apply(Location location, Rotation rotation, int recursions) {
             System.out.println("string: " + a.apply(location, rotation, recursions) + ", double: " + b.apply(location, rotation, recursions));
-            return null;
-        }
-
-        @Override
-        public Void apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
             return null;
         }
 

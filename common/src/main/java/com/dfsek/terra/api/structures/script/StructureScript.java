@@ -2,7 +2,6 @@ package com.dfsek.terra.api.structures.script;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
@@ -45,10 +44,6 @@ public class StructureScript {
 
     public void execute(Location location, Rotation rotation, int recursions) {
         block.apply(location, rotation, recursions);
-    }
-
-    public void execute(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        block.apply(location, chunk, rotation, recursions);
     }
 
     public String getId() {

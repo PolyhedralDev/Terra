@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.structure.Rotation;
@@ -32,11 +31,6 @@ public class RandomFunction implements Function<Integer> {
     @Override
     public Integer apply(Location location, Rotation rotation, int recursions) {
         return ThreadLocalRandom.current().nextInt(numberReturnable.apply(location, rotation, recursions).intValue()); // TODO: deterministic random
-    }
-
-    @Override
-    public Integer apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        return ThreadLocalRandom.current().nextInt(numberReturnable.apply(location, chunk, rotation, recursions).intValue());
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
@@ -41,12 +40,6 @@ public class BlockFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, rotation);
 
         location.clone().add(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())).getBlock().setBlockData(data, false);
-        return null;
-    }
-
-    @Override
-    public Void apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        //TODO: do
         return null;
     }
 

@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.structures.parser.lang.keywords;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
@@ -23,16 +22,6 @@ public class WhileKeyword implements Keyword<Block.ReturnLevel> {
     public Block.ReturnLevel apply(Location location, Rotation rotation, int recursions) {
         while(statement.apply(location, rotation, recursions)) {
             Block.ReturnLevel level = conditional.apply(location, rotation, recursions);
-            if(level.equals(Block.ReturnLevel.BREAK)) break;
-            if(level.equals(Block.ReturnLevel.RETURN)) return Block.ReturnLevel.RETURN;
-        }
-        return Block.ReturnLevel.NONE;
-    }
-
-    @Override
-    public Block.ReturnLevel apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
-        while(statement.apply(location, chunk, rotation, recursions)) {
-            Block.ReturnLevel level = conditional.apply(location, chunk, rotation, recursions);
             if(level.equals(Block.ReturnLevel.BREAK)) break;
             if(level.equals(Block.ReturnLevel.RETURN)) return Block.ReturnLevel.RETURN;
         }

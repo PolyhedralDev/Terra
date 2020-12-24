@@ -3,7 +3,6 @@ package com.dfsek.terra.api.structures.script.functions;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.StructureScript;
@@ -71,11 +70,6 @@ public class StructureFunction implements Function<Void> {
 
         script.execute(location1, rotation.rotate(rotation1), recursions + 1);
 
-        return null;
-    }
-
-    @Override
-    public Void apply(Location location, Chunk chunk, Rotation rotation, int recursions) {
         return null;
     }
 
