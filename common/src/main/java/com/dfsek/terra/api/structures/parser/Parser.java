@@ -11,6 +11,9 @@ import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.api.structures.parser.lang.constants.StringConstant;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.parser.lang.functions.builtin.AbsFunction;
+import com.dfsek.terra.api.structures.parser.lang.functions.builtin.PowFunction;
+import com.dfsek.terra.api.structures.parser.lang.functions.builtin.SqrtFunction;
 import com.dfsek.terra.api.structures.parser.lang.keywords.BreakKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.ContinueKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
@@ -42,14 +45,18 @@ import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
 import com.dfsek.terra.api.util.GlueList;
+import com.google.common.collect.Sets;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
+    private final Set<String> builtinFunctions = Sets.newHashSet("abs", "sqrt", "pow");
+
     private String id;
 
     public Parser(String data) {
@@ -141,7 +148,8 @@ public class Parser {
         } else if(id.getType().equals(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
             expression = parseGroup(tokens, variableMap);
         } else {
-            if(functions.containsKey(id.getContent())) expression = parseFunction(tokens, false, variableMap);
+            if(functions.containsKey(id.getContent()) || builtinFunctions.contains(id.getContent()))
+                expression = parseFunction(tokens, false, variableMap);
             else if(variableMap.containsKey(id.getContent())) {
                 ParserUtil.checkType(tokens.remove(0), Token.Type.IDENTIFIER);
                 expression = new Getter(variableMap.get(id.getContent()));
@@ -280,7 +288,7 @@ public class Parser {
 
                 ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
 
-                if(functions.containsKey(name.getContent()) || parsedVariables.containsKey(name.getContent()))
+                if(functions.containsKey(name.getContent()) || parsedVariables.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
                     throw new ParseException(name.getContent() + " is already defined in this scope: " + name.getPosition());
 
                 parsedVariables.put(name.getContent(), temp);
@@ -313,11 +321,12 @@ public class Parser {
         return new Assignment<>((Variable<Object>) variable, (Returnable<Object>) expression, name.getPosition());
     }
 
+    @SuppressWarnings("unchecked")
     private Function<?> parseFunction(List<Token> tokens, boolean fullStatement, Map<String, Variable<?>> variableMap) throws ParseException {
         Token identifier = tokens.remove(0);
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
-        if(!functions.containsKey(identifier.getContent()))
+        if(!functions.containsKey(identifier.getContent()) && !builtinFunctions.contains(identifier.getContent()))
             throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getPosition());
 
         ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN); // Second is body begin
@@ -325,22 +334,45 @@ public class Parser {
 
         List<Returnable<?>> args = getArgs(tokens, variableMap); // Extract arguments, consume the rest.
 
-        tokens.remove(0); // Remove body end
+        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END); // Remove body end
 
         if(fullStatement) ParserUtil.checkType(tokens.get(0), Token.Type.STATEMENT_END);
 
-        FunctionBuilder<?> builder = functions.get(identifier.getContent());
+        if(functions.containsKey(identifier.getContent())) {
+            FunctionBuilder<?> builder = functions.get(identifier.getContent());
 
-        if(builder.argNumber() != -1 && args.size() != builder.argNumber())
-            throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size() + ": " + identifier.getPosition());
+            if(builder.argNumber() != -1 && args.size() != builder.argNumber())
+                throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size() + ": " + identifier.getPosition());
 
-        for(int i = 0; i < args.size(); i++) {
-            Returnable<?> argument = args.get(i);
-            if(builder.getArgument(i) == null)
-                throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent() + ": " + identifier.getPosition());
-            ParserUtil.checkReturnType(argument, builder.getArgument(i));
+            for(int i = 0; i < args.size(); i++) {
+                Returnable<?> argument = args.get(i);
+                if(builder.getArgument(i) == null)
+                    throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent() + ": " + identifier.getPosition());
+                ParserUtil.checkReturnType(argument, builder.getArgument(i));
+            }
+            return builder.build(args, identifier.getPosition());
+        } else {
+            switch(identifier.getContent()) {
+                case "abs":
+                    ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
+                    if(args.size() != 1)
+                        throw new ParseException("Expected 1 arguments; found " + args.size() + ": " + identifier.getPosition());
+                    return new AbsFunction(identifier.getPosition(), (Returnable<Number>) args.get(0));
+                case "sqrt":
+                    ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
+                    if(args.size() != 1)
+                        throw new ParseException("Expected 1 arguments; found " + args.size() + ": " + identifier.getPosition());
+                    return new SqrtFunction(identifier.getPosition(), (Returnable<Number>) args.get(0));
+                case "pow":
+                    ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
+                    ParserUtil.checkReturnType(args.get(1), Returnable.ReturnType.NUMBER);
+                    if(args.size() != 2)
+                        throw new ParseException("Expected 1 arguments; found " + args.size() + ": " + identifier.getPosition());
+                    return new PowFunction(identifier.getPosition(), (Returnable<Number>) args.get(0), (Returnable<Number>) args.get(1));
+                default:
+                    throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());
+            }
         }
-        return builder.build(args, identifier.getPosition());
     }
 
 
