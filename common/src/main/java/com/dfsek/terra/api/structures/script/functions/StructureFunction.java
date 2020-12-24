@@ -47,7 +47,6 @@ public class StructureFunction implements Function<Void> {
 
     @Override
     public Void apply(Location location, Rotation rotation, int recursions) {
-        System.out.println("executing structure function");
 
         Vector2 xz = new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue());
 

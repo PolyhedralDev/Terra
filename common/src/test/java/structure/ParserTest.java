@@ -51,9 +51,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(null, Rotation.NONE, recursions);
+        block.apply(null, Rotation.NONE, 0);
 
-        block.apply(null, Rotation.NONE, recursions);
+        block.apply(null, Rotation.NONE, 0);
     }
 
     private static class Test1 implements Function<Void> {
