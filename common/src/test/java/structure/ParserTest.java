@@ -1,6 +1,5 @@
 package structure;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
@@ -8,6 +7,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -67,8 +67,8 @@ public class ParserTest {
         }
 
         @Override
-        public Void apply(Location location, Rotation rotation, int recursions) {
-            System.out.println("string: " + a.apply(location, rotation, recursions) + ", double: " + b.apply(location, rotation, recursions));
+        public Void apply(Buffer buffer, Rotation rotation, int recursions) {
+            System.out.println("string: " + a.apply(buffer, rotation, recursions) + ", double: " + b.apply(buffer, rotation, recursions));
             return null;
         }
 

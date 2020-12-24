@@ -36,7 +36,7 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
         TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
         long t = System.nanoTime();
-        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)), 0);
+        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
         long l = System.nanoTime() - t;
 
         sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");

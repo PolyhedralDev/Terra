@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.parser.lang;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public synchronized ReturnLevel apply(Location location, Rotation rotation, int recursions) {
+    public synchronized ReturnLevel apply(Buffer buffer, Rotation rotation, int recursions) {
         for(Item<?> item : items) {
-            Object result = item.apply(location, rotation, recursions);
+            Object result = item.apply(buffer, rotation, recursions);
             if(result instanceof ReturnLevel) {
                 ReturnLevel level = (ReturnLevel) result;
                 if(!level.equals(ReturnLevel.NONE)) return level;

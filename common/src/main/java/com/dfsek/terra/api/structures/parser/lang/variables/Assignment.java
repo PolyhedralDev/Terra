@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.structures.parser.lang.variables;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public class Assignment<T> implements Item<T> {
@@ -18,8 +18,8 @@ public class Assignment<T> implements Item<T> {
     }
 
     @Override
-    public synchronized T apply(Location location, Rotation rotation, int recursions) {
-        T val = value.apply(location, rotation, recursions);
+    public synchronized T apply(Buffer buffer, Rotation rotation, int recursions) {
+        T val = value.apply(buffer, rotation, recursions);
         delegate.setValue(val);
         return val;
     }

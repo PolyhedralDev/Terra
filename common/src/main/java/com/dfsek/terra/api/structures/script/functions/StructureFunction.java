@@ -1,13 +1,15 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structures.structure.buffer.IntermediateBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.registry.ScriptRegistry;
 import net.jafama.FastMath;
@@ -45,20 +47,20 @@ public class StructureFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Location location, Rotation rotation, int recursions) {
+    public Void apply(Buffer buffer, Rotation rotation, int recursions) {
 
-        Vector2 xz = new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue());
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        StructureScript script = registry.get(id.apply(location, rotation, recursions));
+        StructureScript script = registry.get(id.apply(buffer, rotation, recursions));
         if(script == null) {
-            main.getLogger().severe("No such structure " + id.apply(location, rotation, recursions));
+            main.getLogger().severe("No such structure " + id.apply(buffer, rotation, recursions));
             return null;
         }
 
         Rotation rotation1;
-        String rotString = rotations.get(ThreadLocalRandom.current().nextInt(rotations.size())).apply(location, rotation, recursions);
+        String rotString = rotations.get(ThreadLocalRandom.current().nextInt(rotations.size())).apply(buffer, rotation, recursions);
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
@@ -66,9 +68,9 @@ public class StructureFunction implements Function<Void> {
             return null;
         }
 
-        Location location1 = location.clone().add(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
 
-        script.execute(location1, rotation.rotate(rotation1), recursions + 1);
+        script.executeInBuffer(new IntermediateBuffer(buffer, offset), rotation.rotate(rotation1), recursions + 1);
 
         return null;
     }

@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.parser.lang.constants;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public abstract class ConstantExpression<T> implements Returnable<T> {
@@ -15,7 +15,7 @@ public abstract class ConstantExpression<T> implements Returnable<T> {
     }
 
     @Override
-    public T apply(Location location, Rotation rotation, int recursions) {
+    public T apply(Buffer buffer, Rotation rotation, int recursions) {
         return constant;
     }
 

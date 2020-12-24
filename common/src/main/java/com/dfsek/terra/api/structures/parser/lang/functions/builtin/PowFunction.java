@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.parser.lang.functions.builtin;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
@@ -22,7 +22,7 @@ public class PowFunction extends MathFunction {
     }
 
     @Override
-    public Number apply(Location location, Rotation rotation, int recursions) {
-        return FastMath.pow(base.apply(location, rotation, recursions).doubleValue(), power.apply(location, rotation, recursions).doubleValue());
+    public Number apply(Buffer buffer, Rotation rotation, int recursions) {
+        return FastMath.pow(base.apply(buffer, rotation, recursions).doubleValue(), power.apply(buffer, rotation, recursions).doubleValue());
     }
 }

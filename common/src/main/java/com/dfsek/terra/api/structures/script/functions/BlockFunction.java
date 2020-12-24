@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
@@ -10,6 +10,8 @@ import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structures.structure.buffer.BufferedBlock;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
@@ -34,12 +36,12 @@ public class BlockFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Location location, Rotation rotation, int recursions) {
-        Vector2 xz = new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue());
+    public Void apply(Buffer buffer, Rotation rotation, int recursions) {
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        location.clone().add(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())).getBlock().setBlockData(data, false);
+        buffer.addItem(new BufferedBlock(data), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

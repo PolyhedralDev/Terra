@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 public class RecursionsFunction implements Function<Number> {
@@ -23,7 +23,7 @@ public class RecursionsFunction implements Function<Number> {
     }
 
     @Override
-    public Number apply(Location location, Rotation rotation, int recursions) {
+    public Number apply(Buffer buffer, Rotation rotation, int recursions) {
         return recursions;
     }
 

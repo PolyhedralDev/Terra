@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
@@ -9,6 +8,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.world.LandCheck;
 import com.dfsek.terra.api.structures.world.OceanCheck;
@@ -32,17 +32,17 @@ public class CheckFunction implements Function<String> {
         return "check";
     }
 
-    private Vector3 getVector(Location location, Rotation rotation, int recursions) {
-        Vector2 xz = new Vector2(x.apply(location, rotation, recursions).doubleValue(), z.apply(location, rotation, recursions).doubleValue());
+    private Vector3 getVector(Buffer buffer, Rotation rotation, int recursions) {
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        return new Vector3(FastMath.roundToInt(xz.getX()), y.apply(location, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
+        return new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())).add(buffer.getOrigin().toVector());
     }
 
     @Override
-    public String apply(Location location, Rotation rotation, int recursions) {
-        return apply(getVector(location, rotation, recursions), location.getWorld());
+    public String apply(Buffer buffer, Rotation rotation, int recursions) {
+        return apply(getVector(buffer, rotation, recursions), buffer.getOrigin().getWorld());
     }
 
     private String apply(Vector3 vector, World world) {

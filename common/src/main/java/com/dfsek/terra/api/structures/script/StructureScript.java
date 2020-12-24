@@ -11,6 +11,8 @@ import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.registry.ScriptRegistry;
 import org.apache.commons.io.IOUtils;
 
@@ -42,8 +44,14 @@ public class StructureScript {
         this.id = parser.getID();
     }
 
-    public void execute(Location location, Rotation rotation, int recursions) {
-        block.apply(location, rotation, recursions);
+    public void execute(Location location, Rotation rotation) {
+        StructureBuffer buffer = new StructureBuffer(location);
+        block.apply(buffer, rotation, 0);
+        buffer.paste();
+    }
+
+    public void executeInBuffer(Buffer buffer, Rotation rotation, int recursions) {
+        block.apply(buffer, rotation, recursions);
     }
 
     public String getId() {
