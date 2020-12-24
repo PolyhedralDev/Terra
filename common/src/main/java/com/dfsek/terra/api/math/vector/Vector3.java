@@ -303,9 +303,42 @@ public class Vector3 implements Cloneable {
     }
 
     public Vector3 subtract(Vector3 end) {
-        x-=end.x;
-        y-=end.y;
-        z-=end.z;
+        x -= end.x;
+        y -= end.y;
+        z -= end.z;
         return this;
+    }
+
+    /**
+     * Returns a hash code for this vector
+     *
+     * @return hash code
+     */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.z) ^ (Double.doubleToLongBits(this.z) >>> 32));
+        return hash;
+    }
+
+    /**
+     * Checks to see if two objects are equal.
+     * <p>
+     * Only two Vectors can ever return true. This method uses a fuzzy match
+     * to account for floating point errors. The epsilon can be retrieved
+     * with epsilon.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Vector3)) {
+            return false;
+        }
+
+        Vector3 other = (Vector3) obj;
+
+        return Math.abs(x - other.x) < epsilon && Math.abs(y - other.y) < epsilon && Math.abs(z - other.z) < epsilon && (this.getClass().equals(obj.getClass()));
     }
 }
