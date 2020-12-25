@@ -83,7 +83,7 @@ public class Parser {
     public Block parse() throws ParseException {
         Tokenizer tokenizer = new Tokenizer(data);
 
-        List<Token> tokens = new GlueList<>();
+        TokenHolder tokens = new TokenHolder();
         try {
             while(tokenizer.hasNext()) tokens.add(tokenizer.fetch());
         } catch(TokenizerException e) {
@@ -91,15 +91,15 @@ public class Parser {
         }
 
         // Parse ID
-        ParserUtil.checkType(tokens.remove(0), Token.Type.ID); // First token must be ID
-        Token idToken = tokens.get(0);
-        ParserUtil.checkType(tokens.remove(0), Token.Type.STRING); // Second token must be string literal containing ID
-        ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+        ParserUtil.checkType(tokens.consume(), Token.Type.ID); // First token must be ID
+        Token idToken = tokens.get();
+        ParserUtil.checkType(tokens.consume(), Token.Type.STRING); // Second token must be string literal containing ID
+        ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
         this.id = idToken.getContent();
 
         // Check for dangling brackets
         int blockLevel = 0;
-        for(Token t : tokens) {
+        for(Token t : tokens.getTokens()) {
             if(t.getType().equals(Token.Type.BLOCK_BEGIN)) blockLevel++;
             else if(t.getType().equals(Token.Type.BLOCK_END)) blockLevel--;
             if(blockLevel < 0) throw new ParseException("Dangling closing brace: " + t.getPosition());
@@ -111,40 +111,41 @@ public class Parser {
 
 
     @SuppressWarnings("unchecked")
-    private Keyword<?> parseLoopLike(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+    private Keyword<?> parseLoopLike(TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
 
-        Token identifier = tokens.remove(0);
+        Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP);
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
 
 
         if(identifier.getType().equals(Token.Type.FOR_LOOP)) {
-            Token f = tokens.get(0);
+            Token f = tokens.get();
             ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
             Item<?> initializer;
             if(f.isVariableDeclaration()) {
                 Variable<?> forVar = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(f));
-                Token name = tokens.get(1);
-                ParserUtil.checkType(tokens.remove(0), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+                ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+                Token name = tokens.get();
+
                 initializer = parseAssignment(forVar, tokens, variableMap);
                 variableMap.put(name.getContent(), forVar);
             } else initializer = parseExpression(tokens, true, variableMap);
-            ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+            ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
             Returnable<?> conditional = parseExpression(tokens, true, variableMap);
             ParserUtil.checkReturnType(conditional, Returnable.ReturnType.BOOLEAN);
-            ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+            ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
 
             Item<?> incrementer;
-            Token token = tokens.get(0);
+            Token token = tokens.get();
             if(variableMap.containsKey(token.getContent())) { // Assume variable assignment
                 Variable<?> variable = variableMap.get(token.getContent());
                 incrementer = parseAssignment(variable, tokens, variableMap);
             } else incrementer = parseFunction(tokens, true, variableMap);
 
-            ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
+            ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
 
-            ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
+            ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
 
             return new ForKeyword(parseBlock(tokens, variableMap), initializer, (Returnable<Boolean>) conditional, incrementer, identifier.getPosition());
         }
@@ -152,9 +153,9 @@ public class Parser {
         Returnable<?> first = parseExpression(tokens, true, variableMap);
         ParserUtil.checkReturnType(first, Returnable.ReturnType.BOOLEAN);
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
+        ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
 
         if(identifier.getType().equals(Token.Type.IF_STATEMENT))
             return new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) first, identifier.getPosition()); // If statement
@@ -164,14 +165,14 @@ public class Parser {
     }
 
     @SuppressWarnings("unchecked")
-    private Returnable<?> parseExpression(List<Token> tokens, boolean full, Map<String, Variable<?>> variableMap) throws ParseException {
+    private Returnable<?> parseExpression(TokenHolder tokens, boolean full, Map<String, Variable<?>> variableMap) throws ParseException {
         boolean booleanInverted = false; // Check for boolean not operator
-        if(tokens.get(0).getType().equals(Token.Type.BOOLEAN_NOT)) {
+        if(tokens.get().getType().equals(Token.Type.BOOLEAN_NOT)) {
             booleanInverted = true;
-            tokens.remove(0);
+            tokens.consume();
         }
 
-        Token id = tokens.get(0);
+        Token id = tokens.get();
 
         ParserUtil.checkType(id, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.GROUP_BEGIN);
 
@@ -184,7 +185,7 @@ public class Parser {
             if(functions.containsKey(id.getContent()) || builtinFunctions.contains(id.getContent()))
                 expression = parseFunction(tokens, false, variableMap);
             else if(variableMap.containsKey(id.getContent())) {
-                ParserUtil.checkType(tokens.remove(0), Token.Type.IDENTIFIER);
+                ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
                 expression = new Getter(variableMap.get(id.getContent()));
             } else throw new ParseException("Unexpected token: " + id.getContent() + " at " + id.getPosition());
         }
@@ -194,14 +195,14 @@ public class Parser {
             expression = new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
         }
 
-        if(full && tokens.get(0).isBinaryOperator()) { // Parse binary operations
+        if(full && tokens.get().isBinaryOperator()) { // Parse binary operations
             return parseBinaryOperation(expression, tokens, variableMap);
         }
         return expression;
     }
 
-    private ConstantExpression<?> parseConstantExpression(List<Token> tokens) {
-        Token constantToken = tokens.remove(0);
+    private ConstantExpression<?> parseConstantExpression(TokenHolder tokens) throws ParseException {
+        Token constantToken = tokens.consume();
         Position position = constantToken.getPosition();
         switch(constantToken.getType()) {
             case NUMBER:
@@ -216,21 +217,21 @@ public class Parser {
         }
     }
 
-    private Returnable<?> parseGroup(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
-        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
+    private Returnable<?> parseGroup(TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
         Returnable<?> expression = parseExpression(tokens, true, variableMap); // Parse inside of group as a separate expression
-        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
         return expression;
     }
 
 
-    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
-        Token binaryOperator = tokens.remove(0);
+    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+        Token binaryOperator = tokens.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
 
         Returnable<?> right = parseExpression(tokens, false, variableMap);
 
-        Token other = tokens.get(0);
+        Token other = tokens.get();
         if(other.isBinaryOperator() && (other.getType().equals(Token.Type.MULTIPLICATION_OPERATOR) || other.getType().equals(Token.Type.DIVISION_OPERATOR))) {
             return assemble(left, parseBinaryOperation(right, tokens, variableMap), binaryOperator);
         } else if(other.isBinaryOperator()) {
@@ -277,28 +278,28 @@ public class Parser {
         }
     }
 
-    private Variable<?> parseVariableDeclaration(List<Token> tokens, Returnable.ReturnType type) throws ParseException {
-        ParserUtil.checkVarType(tokens.get(0), type); // Check for type mismatch
+    private Variable<?> parseVariableDeclaration(TokenHolder tokens, Returnable.ReturnType type) throws ParseException {
+        ParserUtil.checkVarType(tokens.get(), type); // Check for type mismatch
         switch(type) {
             case NUMBER:
-                return new NumberVariable(0d, tokens.get(0).getPosition());
+                return new NumberVariable(0d, tokens.get().getPosition());
             case STRING:
-                return new StringVariable("", tokens.get(0).getPosition());
+                return new StringVariable("", tokens.get().getPosition());
             case BOOLEAN:
-                return new BooleanVariable(false, tokens.get(0).getPosition());
+                return new BooleanVariable(false, tokens.get().getPosition());
         }
         throw new UnsupportedOperationException("Unsupported variable type: " + type);
     }
 
-    private Block parseBlock(List<Token> tokens, Map<String, Variable<?>> superVars) throws ParseException {
+    private Block parseBlock(TokenHolder tokens, Map<String, Variable<?>> superVars) throws ParseException {
         List<Item<?>> parsedItems = new GlueList<>();
 
         Map<String, Variable<?>> parsedVariables = new HashMap<>(superVars); // New hashmap as to not mutate parent scope's declarations.
 
-        Token first = tokens.get(0);
+        Token first = tokens.get();
 
-        while(tokens.size() > 0) {
-            Token token = tokens.get(0);
+        while(tokens.hasNext()) {
+            Token token = tokens.get();
             if(token.getType().equals(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
 
             ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
@@ -313,7 +314,9 @@ public class Parser {
                 } else parsedItems.add(parseFunction(tokens, true, parsedVariables));
             } else if(token.isVariableDeclaration()) {
                 Variable<?> temp = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(token));
-                Token name = tokens.get(1);
+
+                ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+                Token name = tokens.get();
                 ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
 
                 if(functions.containsKey(name.getContent()) || parsedVariables.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
@@ -321,27 +324,26 @@ public class Parser {
 
                 parsedVariables.put(name.getContent(), temp);
 
-                ParserUtil.checkType(tokens.remove(0), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
 
                 parsedItems.add(parseAssignment(temp, tokens, parsedVariables));
-            } else if(token.getType().equals(Token.Type.RETURN)) parsedItems.add(new ReturnKeyword(tokens.remove(0).getPosition()));
-            else if(token.getType().equals(Token.Type.BREAK)) parsedItems.add(new BreakKeyword(tokens.remove(0).getPosition()));
-            else if(token.getType().equals(Token.Type.CONTINUE)) parsedItems.add(new ContinueKeyword(tokens.remove(0).getPosition()));
-            else if(token.getType().equals(Token.Type.FAIL)) parsedItems.add(new FailKeyword(tokens.remove(0).getPosition()));
+            } else if(token.getType().equals(Token.Type.RETURN)) parsedItems.add(new ReturnKeyword(tokens.consume().getPosition()));
+            else if(token.getType().equals(Token.Type.BREAK)) parsedItems.add(new BreakKeyword(tokens.consume().getPosition()));
+            else if(token.getType().equals(Token.Type.CONTINUE)) parsedItems.add(new ContinueKeyword(tokens.consume().getPosition()));
+            else if(token.getType().equals(Token.Type.FAIL)) parsedItems.add(new FailKeyword(tokens.consume().getPosition()));
             else throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
 
-            if(!tokens.isEmpty()) ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
+            if(tokens.hasNext()) ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
         }
         return new Block(parsedItems, first.getPosition());
     }
 
     @SuppressWarnings("unchecked")
-    private Assignment<?> parseAssignment(Variable<?> variable, List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
-        Token name = tokens.get(0);
+    private Assignment<?> parseAssignment(Variable<?> variable, TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+        Token name = tokens.get();
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.IDENTIFIER);
+        ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.ASSIGNMENT);
+        ParserUtil.checkType(tokens.consume(), Token.Type.ASSIGNMENT);
 
         Returnable<?> expression = parseExpression(tokens, true, variableMap);
 
@@ -351,21 +353,21 @@ public class Parser {
     }
 
     @SuppressWarnings("unchecked")
-    private Function<?> parseFunction(List<Token> tokens, boolean fullStatement, Map<String, Variable<?>> variableMap) throws ParseException {
-        Token identifier = tokens.remove(0);
+    private Function<?> parseFunction(TokenHolder tokens, boolean fullStatement, Map<String, Variable<?>> variableMap) throws ParseException {
+        Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
         if(!functions.containsKey(identifier.getContent()) && !builtinFunctions.contains(identifier.getContent()))
             throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getPosition());
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN); // Second is body begin
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN); // Second is body begin
 
 
         List<Returnable<?>> args = getArgs(tokens, variableMap); // Extract arguments, consume the rest.
 
-        ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END); // Remove body end
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END); // Remove body end
 
-        if(fullStatement) ParserUtil.checkType(tokens.get(0), Token.Type.STATEMENT_END);
+        if(fullStatement) ParserUtil.checkType(tokens.get(), Token.Type.STATEMENT_END);
 
         if(functions.containsKey(identifier.getContent())) {
             FunctionBuilder<?> builder = functions.get(identifier.getContent());
@@ -405,13 +407,13 @@ public class Parser {
     }
 
 
-    private List<Returnable<?>> getArgs(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+    private List<Returnable<?>> getArgs(TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
         List<Returnable<?>> args = new GlueList<>();
 
-        while(!tokens.get(0).getType().equals(Token.Type.GROUP_END)) {
+        while(!tokens.get().getType().equals(Token.Type.GROUP_END)) {
             args.add(parseExpression(tokens, true, variableMap));
-            ParserUtil.checkType(tokens.get(0), Token.Type.SEPARATOR, Token.Type.GROUP_END);
-            if(tokens.get(0).getType().equals(Token.Type.SEPARATOR)) tokens.remove(0);
+            ParserUtil.checkType(tokens.get(), Token.Type.SEPARATOR, Token.Type.GROUP_END);
+            if(tokens.get().getType().equals(Token.Type.SEPARATOR)) tokens.consume();
         }
         return args;
     }
