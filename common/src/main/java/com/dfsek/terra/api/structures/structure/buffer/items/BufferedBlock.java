@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.structures.structure.buffer;
+package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.BlockData;

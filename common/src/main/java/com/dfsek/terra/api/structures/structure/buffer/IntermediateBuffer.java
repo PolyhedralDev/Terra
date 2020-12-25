@@ -2,6 +2,8 @@ package com.dfsek.terra.api.structures.structure.buffer;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.structures.structure.buffer.items.BufferedItem;
+import com.dfsek.terra.api.structures.structure.buffer.items.Mark;
 
 public class IntermediateBuffer implements Buffer {
     private final Buffer original;
@@ -20,5 +22,16 @@ public class IntermediateBuffer implements Buffer {
     @Override
     public Location getOrigin() {
         return original.getOrigin().add(offset);
+    }
+
+    @Override
+    public Mark getMark(Vector3 location) {
+        return original.getMark(location.add(offset));
+    }
+
+    @Override
+    public Buffer setMark(Mark mark, Vector3 location) {
+        original.setMark(mark, location.add(offset));
+        return this;
     }
 }
