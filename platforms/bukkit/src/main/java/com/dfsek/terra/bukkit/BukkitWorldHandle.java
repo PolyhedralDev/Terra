@@ -10,20 +10,20 @@ import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitMultipleFacing;
+import com.dfsek.terra.bukkit.world.block.data.BukkitSlab;
 import com.dfsek.terra.bukkit.world.block.data.BukkitStairs;
 import com.dfsek.terra.bukkit.world.block.data.BukkitWaterlogged;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 
 public class BukkitWorldHandle implements WorldHandle {
-    private final TerraPlugin main;
     private Transformer<String, Tree> treeTransformer;
 
     public BukkitWorldHandle(TerraPlugin main) {
-        this.main = main;
     }
 
     public void setTreeTransformer(Transformer<String, Tree> treeTransformer) {
@@ -50,6 +50,7 @@ public class BukkitWorldHandle implements WorldHandle {
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data);
         if(bukkitData instanceof MultipleFacing) return new BukkitMultipleFacing((MultipleFacing) bukkitData);
         if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
+        if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
         if(bukkitData instanceof Waterlogged) return new BukkitWaterlogged((Waterlogged) bukkitData);
         return new BukkitBlockData(Bukkit.createBlockData(data));
     }
