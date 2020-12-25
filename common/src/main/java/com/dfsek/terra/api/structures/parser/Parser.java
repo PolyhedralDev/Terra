@@ -128,6 +128,9 @@ public class Parser {
                 ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
                 Token name = tokens.get();
 
+                if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
+                    throw new ParseException(name.getContent() + " is already defined in this scope: " + name.getPosition());
+
                 initializer = parseAssignment(forVar, tokens, variableMap);
                 variableMap.put(name.getContent(), forVar);
             } else initializer = parseExpression(tokens, true, variableMap);
