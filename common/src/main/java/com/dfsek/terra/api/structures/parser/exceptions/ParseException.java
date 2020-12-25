@@ -1,19 +1,26 @@
 package com.dfsek.terra.api.structures.parser.exceptions;
 
+import com.dfsek.terra.api.structures.tokenizer.Position;
+
 public class ParseException extends Exception {
-    public ParseException() {
-        super();
-    }
+    private final Position position;
 
-    public ParseException(String message) {
+    public ParseException(String message, Position position) {
         super(message);
+        this.position = position;
     }
 
-    public ParseException(String message, Throwable cause) {
+    public ParseException(String message, Position position, Throwable cause) {
         super(message, cause);
+        this.position = position;
     }
 
-    public ParseException(Throwable cause) {
-        super(cause);
+    @Override
+    public String getMessage() {
+        return super.getMessage() + ": " + position;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }

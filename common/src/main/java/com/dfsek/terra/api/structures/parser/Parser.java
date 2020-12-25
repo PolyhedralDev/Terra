@@ -87,7 +87,7 @@ public class Parser {
         try {
             while(tokenizer.hasNext()) tokens.add(tokenizer.fetch());
         } catch(TokenizerException e) {
-            throw new ParseException("Failed to tokenize input", e);
+            throw new ParseException("Failed to tokenize input", new Position(0, 0), e);
         }
 
         // Parse ID
@@ -102,9 +102,10 @@ public class Parser {
         for(Token t : tokens.getTokens()) {
             if(t.getType().equals(Token.Type.BLOCK_BEGIN)) blockLevel++;
             else if(t.getType().equals(Token.Type.BLOCK_END)) blockLevel--;
-            if(blockLevel < 0) throw new ParseException("Dangling closing brace: " + t.getPosition());
+            if(blockLevel < 0) throw new ParseException("Dangling closing brace", t.getPosition());
         }
-        if(blockLevel != 0) throw new ParseException("Dangling opening brace");
+        if(blockLevel != 0)
+            throw new ParseException("Dangling opening brace", tokens.getTokens().get(tokens.getTokens().size() - 1).getPosition());
 
         return parseBlock(tokens, new HashMap<>());
     }
@@ -129,7 +130,7 @@ public class Parser {
                 Token name = tokens.get();
 
                 if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
-                    throw new ParseException(name.getContent() + " is already defined in this scope: " + name.getPosition());
+                    throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
 
                 initializer = parseAssignment(forVar, tokens, variableMap);
                 variableMap.put(name.getContent(), forVar);
@@ -190,7 +191,7 @@ public class Parser {
             else if(variableMap.containsKey(id.getContent())) {
                 ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
                 expression = new Getter(variableMap.get(id.getContent()));
-            } else throw new ParseException("Unexpected token: " + id.getContent() + " at " + id.getPosition());
+            } else throw new ParseException("Unexpected token \" " + id.getContent() + "\"", id.getPosition());
         }
 
         if(booleanInverted) { // Invert operation if boolean not detected
@@ -323,7 +324,7 @@ public class Parser {
                 ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
 
                 if(functions.containsKey(name.getContent()) || parsedVariables.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
-                    throw new ParseException(name.getContent() + " is already defined in this scope: " + name.getPosition());
+                    throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
 
                 parsedVariables.put(name.getContent(), temp);
 
@@ -361,7 +362,7 @@ public class Parser {
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
         if(!functions.containsKey(identifier.getContent()) && !builtinFunctions.contains(identifier.getContent()))
-            throw new ParseException("No such function " + identifier.getContent() + ": " + identifier.getPosition());
+            throw new ParseException("No such function \"" + identifier.getContent() + "\"", identifier.getPosition());
 
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN); // Second is body begin
 
@@ -376,12 +377,12 @@ public class Parser {
             FunctionBuilder<?> builder = functions.get(identifier.getContent());
 
             if(builder.argNumber() != -1 && args.size() != builder.argNumber())
-                throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size() + ": " + identifier.getPosition());
+                throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size(), identifier.getPosition());
 
             for(int i = 0; i < args.size(); i++) {
                 Returnable<?> argument = args.get(i);
                 if(builder.getArgument(i) == null)
-                    throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent() + ": " + identifier.getPosition());
+                    throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent(), identifier.getPosition());
                 ParserUtil.checkReturnType(argument, builder.getArgument(i));
             }
             return builder.build(args, identifier.getPosition());
@@ -390,18 +391,18 @@ public class Parser {
                 case "abs":
                     ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
                     if(args.size() != 1)
-                        throw new ParseException("Expected 1 arguments; found " + args.size() + ": " + identifier.getPosition());
+                        throw new ParseException("Expected 1 argument; found " + args.size(), identifier.getPosition());
                     return new AbsFunction(identifier.getPosition(), (Returnable<Number>) args.get(0));
                 case "sqrt":
                     ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
                     if(args.size() != 1)
-                        throw new ParseException("Expected 1 arguments; found " + args.size() + ": " + identifier.getPosition());
+                        throw new ParseException("Expected 1 argument; found " + args.size(), identifier.getPosition());
                     return new SqrtFunction(identifier.getPosition(), (Returnable<Number>) args.get(0));
                 case "pow":
                     ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
                     ParserUtil.checkReturnType(args.get(1), Returnable.ReturnType.NUMBER);
                     if(args.size() != 2)
-                        throw new ParseException("Expected 1 arguments; found " + args.size() + ": " + identifier.getPosition());
+                        throw new ParseException("Expected 1 argument; found " + args.size(), identifier.getPosition());
                     return new PowFunction(identifier.getPosition(), (Returnable<Number>) args.get(0), (Returnable<Number>) args.get(1));
                 default:
                     throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());

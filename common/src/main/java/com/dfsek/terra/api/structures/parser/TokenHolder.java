@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.structures.parser;
 
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.util.GlueList;
 
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class TokenHolder {
     private final List<Token> tokens = new GlueList<>();
+    private Position last;
 
     /**
      * Add a token to the top of the stack.
@@ -28,8 +30,10 @@ public class TokenHolder {
      * @throws ParseException If stack is empty
      */
     public Token get() throws ParseException {
-        if(!hasNext()) throw new ParseException("Unexpected end of input");
-        return tokens.get(0);
+        if(!hasNext()) throw new ParseException("Unexpected end of input", last);
+        Token token = tokens.get(0);
+        last = token.getPosition();
+        return token;
     }
 
     /**
@@ -39,8 +43,10 @@ public class TokenHolder {
      * @throws ParseException If stack is empty
      */
     public Token consume() throws ParseException {
-        if(!hasNext()) throw new ParseException("Unexpected end of input");
-        return tokens.remove(0);
+        if(!hasNext()) throw new ParseException("Unexpected end of input", last);
+        Token token = tokens.remove(0);
+        last = token.getPosition();
+        return token;
     }
 
     public List<Token> getTokens() {
