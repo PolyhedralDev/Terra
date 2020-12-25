@@ -37,6 +37,16 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     public enum ReturnLevel {
-        NONE, BREAK, CONTINUE, RETURN, FAIL
+        NONE(false), BREAK(false), CONTINUE(false), RETURN(true), FAIL(true);
+
+        private final boolean returnFast;
+
+        ReturnLevel(boolean returnFast) {
+            this.returnFast = returnFast;
+        }
+
+        public boolean isReturnFast() {
+            return returnFast;
+        }
     }
 }

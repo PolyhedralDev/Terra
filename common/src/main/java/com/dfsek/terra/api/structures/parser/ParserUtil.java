@@ -46,4 +46,17 @@ public class ParserUtil {
         if(!token.isBinaryOperator())
             throw new ParseException("Expected binary operator, found " + token.getType() + ": " + token.getPosition());
     }
+
+    public static Returnable.ReturnType getVariableReturnType(Token varToken) throws ParseException {
+        switch(varToken.getType()) {
+            case NUMBER_VARIABLE:
+                return Returnable.ReturnType.NUMBER;
+            case STRING_VARIABLE:
+                return Returnable.ReturnType.STRING;
+            case BOOLEAN_VARIABLE:
+                return Returnable.ReturnType.BOOLEAN;
+            default:
+                throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration: " + varToken.getPosition());
+        }
+    }
 }

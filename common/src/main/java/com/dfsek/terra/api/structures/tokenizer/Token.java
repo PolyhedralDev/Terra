@@ -70,7 +70,8 @@ public class Token {
 
     public boolean isLoopLike() {
         return type.equals(Type.IF_STATEMENT)
-                || type.equals(Type.WHILE_LOOP);
+                || type.equals(Type.WHILE_LOOP)
+                || type.equals(Type.FOR_LOOP);
     }
 
     public boolean isIdentifier() {
@@ -214,6 +215,10 @@ public class Token {
         /**
          * ID declaration
          */
-        ID
+        ID,
+        /**
+         * For loop initializer token
+         */
+        FOR_LOOP
     }
 }

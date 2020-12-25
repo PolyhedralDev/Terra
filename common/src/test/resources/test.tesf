@@ -13,6 +13,11 @@ bool truetest = false;
 
 num iterator = 0;
 
+for(num i = 0; i < 5; i = i + 1) {
+    test("i = " + i, iterator);
+}
+
+
 while(iterator < 5) {
     test("always, even after " + 2, iterator);
     iterator = iterator + 1;

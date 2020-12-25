@@ -17,9 +17,10 @@ import com.dfsek.terra.api.structures.parser.lang.functions.builtin.SqrtFunction
 import com.dfsek.terra.api.structures.parser.lang.keywords.BreakKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.ContinueKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.FailKeyword;
-import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.ReturnKeyword;
-import com.dfsek.terra.api.structures.parser.lang.keywords.WhileKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.looplike.ForKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.looplike.IfKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.looplike.WhileKeyword;
 import com.dfsek.terra.api.structures.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanAndOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation;
@@ -113,21 +114,52 @@ public class Parser {
     private Keyword<?> parseLoopLike(List<Token> tokens, Map<String, Variable<?>> variableMap) throws ParseException {
 
         Token identifier = tokens.remove(0);
-        ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP);
+        ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP);
 
         ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_BEGIN);
 
-        Returnable<?> comparator = parseExpression(tokens, true, variableMap);
-        ParserUtil.checkReturnType(comparator, Returnable.ReturnType.BOOLEAN);
+
+        if(identifier.getType().equals(Token.Type.FOR_LOOP)) {
+            Token f = tokens.get(0);
+            ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
+            Item<?> initializer;
+            if(f.isVariableDeclaration()) {
+                Variable<?> forVar = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(f));
+                Token name = tokens.get(1);
+                ParserUtil.checkType(tokens.remove(0), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+                initializer = parseAssignment(forVar, tokens, variableMap);
+                variableMap.put(name.getContent(), forVar);
+            } else initializer = parseExpression(tokens, true, variableMap);
+            ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+            Returnable<?> conditional = parseExpression(tokens, true, variableMap);
+            ParserUtil.checkReturnType(conditional, Returnable.ReturnType.BOOLEAN);
+            ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END);
+
+            Item<?> incrementer;
+            Token token = tokens.get(0);
+            if(variableMap.containsKey(token.getContent())) { // Assume variable assignment
+                Variable<?> variable = variableMap.get(token.getContent());
+                incrementer = parseAssignment(variable, tokens, variableMap);
+            } else incrementer = parseFunction(tokens, true, variableMap);
+
+            ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
+
+            ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
+
+            return new ForKeyword(parseBlock(tokens, variableMap), initializer, (Returnable<Boolean>) conditional, incrementer, identifier.getPosition());
+        }
+
+        Returnable<?> first = parseExpression(tokens, true, variableMap);
+        ParserUtil.checkReturnType(first, Returnable.ReturnType.BOOLEAN);
 
         ParserUtil.checkType(tokens.remove(0), Token.Type.GROUP_END);
 
         ParserUtil.checkType(tokens.remove(0), Token.Type.BLOCK_BEGIN);
 
         if(identifier.getType().equals(Token.Type.IF_STATEMENT))
-            return new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // If statement
+            return new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) first, identifier.getPosition()); // If statement
         else if(identifier.getType().equals(Token.Type.WHILE_LOOP))
-            return new WhileKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) comparator, identifier.getPosition()); // While loop
+            return new WhileKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) first, identifier.getPosition()); // While loop
         else throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
     }
 
@@ -269,7 +301,8 @@ public class Parser {
             Token token = tokens.get(0);
             if(token.getType().equals(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
 
-            ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE, Token.Type.FAIL);
+            ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
+                    Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE, Token.Type.FAIL);
 
             if(token.isLoopLike()) { // Parse loop-like tokens (if, while, etc)
                 parsedItems.add(parseLoopLike(tokens, parsedVariables));
@@ -279,14 +312,8 @@ public class Parser {
                     parsedItems.add(parseAssignment(variable, tokens, parsedVariables));
                 } else parsedItems.add(parseFunction(tokens, true, parsedVariables));
             } else if(token.isVariableDeclaration()) {
-                Variable<?> temp;
-                if(token.getType().equals(Token.Type.NUMBER_VARIABLE))
-                    temp = parseVariableDeclaration(tokens, Returnable.ReturnType.NUMBER);
-                else if(token.getType().equals(Token.Type.STRING_VARIABLE))
-                    temp = parseVariableDeclaration(tokens, Returnable.ReturnType.STRING);
-                else temp = parseVariableDeclaration(tokens, Returnable.ReturnType.BOOLEAN);
+                Variable<?> temp = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(token));
                 Token name = tokens.get(1);
-
                 ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
 
                 if(functions.containsKey(name.getContent()) || parsedVariables.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))

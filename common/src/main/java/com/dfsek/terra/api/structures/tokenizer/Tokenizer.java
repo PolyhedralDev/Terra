@@ -133,6 +133,8 @@ public class Tokenizer {
             return new Token(tokenString, Token.Type.IF_STATEMENT, new Position(reader.getLine(), reader.getIndex()));
         if(tokenString.equals("while"))
             return new Token(tokenString, Token.Type.WHILE_LOOP, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("for"))
+            return new Token(tokenString, Token.Type.FOR_LOOP, new Position(reader.getLine(), reader.getIndex()));
 
         if(tokenString.equals("return"))
             return new Token(tokenString, Token.Type.RETURN, new Position(reader.getLine(), reader.getIndex()));
