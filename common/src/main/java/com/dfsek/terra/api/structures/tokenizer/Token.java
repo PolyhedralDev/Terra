@@ -208,6 +208,10 @@ public class Token {
          */
         BREAK,
         /**
+         * Fail statement. Like return keyword, but specifies that generation has failed.
+         */
+        FAIL,
+        /**
          * ID declaration
          */
         ID

@@ -37,6 +37,6 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     public enum ReturnLevel {
-        NONE, BREAK, CONTINUE, RETURN
+        NONE, BREAK, CONTINUE, RETURN, FAIL
     }
 }

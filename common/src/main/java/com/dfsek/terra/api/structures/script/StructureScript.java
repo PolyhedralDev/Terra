@@ -44,10 +44,18 @@ public class StructureScript {
         this.id = parser.getID();
     }
 
-    public void execute(Location location, Rotation rotation) {
+    /**
+     * Paste the structure at a location
+     *
+     * @param location Location to paste structure
+     * @param rotation Rotation of structure
+     * @return Whether generation was successful
+     */
+    public boolean execute(Location location, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        block.apply(buffer, rotation, 0);
+        Block.ReturnLevel level = block.apply(buffer, rotation, 0);
         buffer.paste();
+        return !level.equals(Block.ReturnLevel.FAIL);
     }
 
     public void executeInBuffer(Buffer buffer, Rotation rotation, int recursions) {

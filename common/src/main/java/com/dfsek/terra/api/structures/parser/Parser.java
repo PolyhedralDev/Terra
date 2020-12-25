@@ -16,6 +16,7 @@ import com.dfsek.terra.api.structures.parser.lang.functions.builtin.PowFunction;
 import com.dfsek.terra.api.structures.parser.lang.functions.builtin.SqrtFunction;
 import com.dfsek.terra.api.structures.parser.lang.keywords.BreakKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.ContinueKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.FailKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.IfKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.ReturnKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.WhileKeyword;
@@ -268,7 +269,7 @@ public class Parser {
             Token token = tokens.get(0);
             if(token.getType().equals(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
 
-            ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE);
+            ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE, Token.Type.FAIL);
 
             if(token.isLoopLike()) { // Parse loop-like tokens (if, while, etc)
                 parsedItems.add(parseLoopLike(tokens, parsedVariables));
@@ -299,6 +300,7 @@ public class Parser {
             } else if(token.getType().equals(Token.Type.RETURN)) parsedItems.add(new ReturnKeyword(tokens.remove(0).getPosition()));
             else if(token.getType().equals(Token.Type.BREAK)) parsedItems.add(new BreakKeyword(tokens.remove(0).getPosition()));
             else if(token.getType().equals(Token.Type.CONTINUE)) parsedItems.add(new ContinueKeyword(tokens.remove(0).getPosition()));
+            else if(token.getType().equals(Token.Type.FAIL)) parsedItems.add(new FailKeyword(tokens.remove(0).getPosition()));
             else throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
 
             if(!tokens.isEmpty()) ParserUtil.checkType(tokens.remove(0), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
