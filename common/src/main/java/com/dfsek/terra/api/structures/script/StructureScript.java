@@ -9,6 +9,7 @@ import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.GetMarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.MarkFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.PullFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
@@ -38,7 +39,8 @@ public class StructureScript {
                 .addFunction("randomInt", new RandomFunctionBuilder())
                 .addFunction("recursions", new RecursionsFunctionBuilder())
                 .addFunction("setMark", new MarkFunctionBuilder())
-                .addFunction("getMark", new GetMarkFunctionBuilder());
+                .addFunction("getMark", new GetMarkFunctionBuilder())
+                .addFunction("pull", new PullFunctionBuilder(main));
 
         try {
             block = parser.parse();
