@@ -5,6 +5,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public abstract class ConstantExpression<T> implements Returnable<T> {
     private final T constant;
     private final Position position;
@@ -15,7 +17,7 @@ public abstract class ConstantExpression<T> implements Returnable<T> {
     }
 
     @Override
-    public T apply(Buffer buffer, Rotation rotation, int recursions) {
+    public T apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return constant;
     }
 

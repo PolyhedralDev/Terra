@@ -7,6 +7,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public class IfKeyword implements Keyword<Block.ReturnLevel> {
     private final Block conditional;
     private final Returnable<Boolean> statement;
@@ -19,8 +21,8 @@ public class IfKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, int recursions) {
-        if(statement.apply(buffer, rotation, recursions)) return conditional.apply(buffer, rotation, recursions);
+    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        if(statement.apply(buffer, rotation, random, recursions)) return conditional.apply(buffer, rotation, random, recursions);
         return Block.ReturnLevel.NONE;
     }
 

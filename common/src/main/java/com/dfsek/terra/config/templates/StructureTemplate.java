@@ -3,9 +3,11 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.config.ValidatedConfigTemplate;
+import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.loot.LootTable;
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.procgen.GridSpawn;
 
@@ -13,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class StructureTemplate extends AbstractableTemplate {
+public class StructureTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
     @Value("id")
     private String id;
 
-    @Value("files")
+    @Value("script")
     @Abstractable
-    private ProbabilityCollection<Void> structures;
+    private StructureScript structure;
 
     @Value("spawn.start")
     @Abstractable
@@ -50,8 +52,8 @@ public class StructureTemplate extends AbstractableTemplate {
         return id;
     }
 
-    public ProbabilityCollection<Void> getStructures() {
-        return structures;
+    public StructureScript getStructures() {
+        return structure;
     }
 
     public Range getY() {
@@ -68,5 +70,11 @@ public class StructureTemplate extends AbstractableTemplate {
 
     public GridSpawn getSpawn() {
         return spawn;
+    }
+
+    @Override
+    public boolean validate() throws ValidationException {
+        System.out.println("added structure " + id);
+        return true;
     }
 }

@@ -5,6 +5,7 @@ import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
+import java.util.Random;
 
 public class Block implements Item<Block.ReturnLevel> {
     private final List<Item<?>> items;
@@ -20,9 +21,9 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public synchronized ReturnLevel apply(Buffer buffer, Rotation rotation, int recursions) {
+    public synchronized ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         for(Item<?> item : items) {
-            Object result = item.apply(buffer, rotation, recursions);
+            Object result = item.apply(buffer, rotation, random, recursions);
             if(result instanceof ReturnLevel) {
                 ReturnLevel level = (ReturnLevel) result;
                 if(!level.equals(ReturnLevel.NONE)) return level;

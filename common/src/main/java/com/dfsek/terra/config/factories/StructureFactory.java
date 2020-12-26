@@ -8,6 +8,6 @@ import com.dfsek.terra.generation.items.TerraStructure;
 public class StructureFactory implements TerraFactory<StructureTemplate, TerraStructure> {
     @Override
     public TerraStructure build(StructureTemplate config, TerraPlugin main) throws LoadException {
-        return new TerraStructure(null, config.getBound(), config.getY(), config.getSpawn(), config.getLoot(), config);
+        return new TerraStructure(config.getStructures(), config.getBound(), config.getY(), config.getSpawn(), config.getLoot(), config);
     }
 }

@@ -6,6 +6,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public class Assignment<T> implements Item<T> {
     private final Variable<T> delegate;
     private final Returnable<T> value;
@@ -18,8 +20,8 @@ public class Assignment<T> implements Item<T> {
     }
 
     @Override
-    public synchronized T apply(Buffer buffer, Rotation rotation, int recursions) {
-        T val = value.apply(buffer, rotation, recursions);
+    public synchronized T apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        T val = value.apply(buffer, rotation, random, recursions);
         delegate.setValue(val);
         return val;
     }

@@ -6,7 +6,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 public class RandomFunction implements Function<Integer> {
     private final Returnable<Number> numberReturnable;
@@ -29,8 +29,8 @@ public class RandomFunction implements Function<Integer> {
     }
 
     @Override
-    public Integer apply(Buffer buffer, Rotation rotation, int recursions) {
-        return ThreadLocalRandom.current().nextInt(numberReturnable.apply(buffer, rotation, recursions).intValue()); // TODO: deterministic random
+    public Integer apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        return random.nextInt(numberReturnable.apply(buffer, rotation, random, recursions).intValue()); // TODO: deterministic random
     }
 
     @Override

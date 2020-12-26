@@ -15,7 +15,7 @@ import com.dfsek.terra.registry.ScriptRegistry;
 import net.jafama.FastMath;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 public class StructureFunction implements Function<Void> {
     private final ScriptRegistry registry;
@@ -47,20 +47,20 @@ public class StructureFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Buffer buffer, Rotation rotation, int recursions) {
+    public Void apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
 
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        StructureScript script = registry.get(id.apply(buffer, rotation, recursions));
+        StructureScript script = registry.get(id.apply(buffer, rotation, random, recursions));
         if(script == null) {
-            main.getLogger().severe("No such structure " + id.apply(buffer, rotation, recursions));
+            main.getLogger().severe("No such structure " + id.apply(buffer, rotation, random, recursions));
             return null;
         }
 
         Rotation rotation1;
-        String rotString = rotations.get(ThreadLocalRandom.current().nextInt(rotations.size())).apply(buffer, rotation, recursions);
+        String rotString = rotations.get(random.nextInt(rotations.size())).apply(buffer, rotation, random, recursions);
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
@@ -68,9 +68,9 @@ public class StructureFunction implements Function<Void> {
             return null;
         }
 
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
 
-        script.executeInBuffer(new IntermediateBuffer(buffer, offset), rotation.rotate(rotation1), recursions + 1);
+        script.executeInBuffer(new IntermediateBuffer(buffer, offset), random, rotation.rotate(rotation1), recursions + 1);
 
         return null;
     }

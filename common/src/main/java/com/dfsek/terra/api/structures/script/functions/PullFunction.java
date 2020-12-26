@@ -15,6 +15,8 @@ import com.dfsek.terra.api.structures.structure.buffer.items.BufferedPulledBlock
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
+import java.util.Random;
+
 public class PullFunction implements Function<Void> {
     private final BlockData data;
     private final Returnable<Number> x, y, z;
@@ -36,13 +38,13 @@ public class PullFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Buffer buffer, Rotation rotation, int recursions) {
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
+    public Void apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
         BlockData rot = data.clone();
         RotationUtil.rotateBlockData(rot, rotation.inverse());
-        buffer.addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
+        buffer.addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

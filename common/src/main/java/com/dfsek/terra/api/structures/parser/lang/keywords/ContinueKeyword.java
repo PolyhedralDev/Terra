@@ -6,6 +6,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public class ContinueKeyword implements Keyword<Block.ReturnLevel> {
     private final Position position;
 
@@ -14,7 +16,7 @@ public class ContinueKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, int recursions) {
+    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return Block.ReturnLevel.CONTINUE;
     }
 

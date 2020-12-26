@@ -6,6 +6,8 @@ import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
+import java.util.Random;
+
 public class SqrtFunction extends MathFunction {
     private final Returnable<Number> returnable;
 
@@ -20,7 +22,7 @@ public class SqrtFunction extends MathFunction {
     }
 
     @Override
-    public Number apply(Buffer buffer, Rotation rotation, int recursions) {
-        return FastMath.sqrt(returnable.apply(buffer, rotation, recursions).doubleValue());
+    public Number apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        return FastMath.sqrt(returnable.apply(buffer, rotation, random, recursions).doubleValue());
     }
 }

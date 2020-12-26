@@ -1,9 +1,20 @@
 package com.dfsek.terra.population;
 
+import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.profiler.ProfileFuture;
+import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
+import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
+import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.debug.Debug;
+import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.util.PopulationUtil;
+import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -18,7 +29,6 @@ public class StructurePopulator implements TerraBlockPopulator {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
-        /*
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("StructureTime")) {
             Random random = PopulationUtil.getRandom(chunk);
@@ -27,42 +37,17 @@ public class StructurePopulator implements TerraBlockPopulator {
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
             ConfigPack config = tw.getConfig();
-            structure:
             for(TerraStructure conf : config.getStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
+
+                if(!(FastMath.floorDiv(spawn.getBlockX(), 16) == chunk.getX()) || !(FastMath.floorDiv(spawn.getBlockZ(), 16) == chunk.getZ()))
+                    continue;
+
                 if(!((UserDefinedBiome) grid.getBiome(spawn)).getConfig().getStructures().contains(conf))
                     continue;
-                Random r2 = new FastRandom(spawn.hashCode());
-                Structure struc = conf.getStructures().get(r2);
-                Rotation rotation = Rotation.fromDegrees(r2.nextInt(4) * 90);
-                for(int y = conf.getSpawnStart().get(r2); y > 0; y--) {
-                    if(!conf.getBound().isInRange(y)) continue structure;
-                    spawn.setY(y);
-                    if(!struc.checkSpawns(spawn, rotation, main)) continue;
-                    double horizontal = struc.getStructureInfo().getMaxHorizontal();
-                    if(FastMath.abs((cx + 8) - spawn.getBlockX()) <= horizontal && FastMath.abs((cz + 8) - spawn.getBlockZ()) <= horizontal) {
-                        struc.paste(spawn, chunk, rotation, main);
-                        for(StructureContainedInventory i : struc.getInventories()) {
-                            try {
-                                Vector2 lootCoords = RotationUtil.rotateVector(new Vector2(i.getX() - struc.getStructureInfo().getCenterX(), i.getZ() - struc.getStructureInfo().getCenterZ()), rotation.inverse());
-                                Location inv = spawn.clone().add(lootCoords.getX(), i.getY(), lootCoords.getZ());
-                                if(FastMath.floorDiv(inv.getBlockX(), 16) != chunk.getX() || FastMath.floorDiv(inv.getBlockZ(), 16) != chunk.getZ())
-                                    continue;
-                                LootTable table = conf.getLoot().get(i.getUid());
-                                if(table == null) continue;
-                                table.fillInventory(((BlockInventoryHolder) inv.getBlock().getState()).getInventory(), random);
-                            } catch(ClassCastException e) {
-                                Debug.error("Could not populate structure loot!");
-                                Debug.stack(e);
-                            }
-                        }
-                        for(Feature f : conf.getTemplate().getFeatures()) f.apply(struc, rotation, spawn, chunk); // Apply features.
-                        break;
-                    }
-                }
+                Debug.info("Generating structure at (" + spawn.getBlockX() + ", " + spawn.getBlockY() + ", " + spawn.getBlockZ() + ")");
+                conf.getStructure().execute(spawn.setY(conf.getSpawnStart().get(random)), random, Rotation.fromDegrees(90 * random.nextInt(4)));
             }
         }
-
-         */
     }
 }

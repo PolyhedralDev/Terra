@@ -5,6 +5,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public class Getter implements Returnable<Object> {
     private final Variable<?> delegate;
 
@@ -18,7 +20,7 @@ public class Getter implements Returnable<Object> {
     }
 
     @Override
-    public synchronized Object apply(Buffer buffer, Rotation rotation, int recursions) {
+    public synchronized Object apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return delegate.getValue();
     }
 

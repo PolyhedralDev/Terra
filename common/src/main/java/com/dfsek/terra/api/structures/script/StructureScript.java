@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 public class StructureScript {
     private final Block block;
@@ -57,15 +58,15 @@ public class StructureScript {
      * @param rotation Rotation of structure
      * @return Whether generation was successful
      */
-    public boolean execute(Location location, Rotation rotation) {
+    public boolean execute(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        Block.ReturnLevel level = block.apply(buffer, rotation, 0);
+        Block.ReturnLevel level = block.apply(buffer, rotation, random, 0);
         buffer.paste();
         return !level.equals(Block.ReturnLevel.FAIL);
     }
 
-    public void executeInBuffer(Buffer buffer, Rotation rotation, int recursions) {
-        block.apply(buffer, rotation, recursions);
+    public void executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
+        block.apply(buffer, rotation, random, recursions);
     }
 
     public String getId() {

@@ -5,6 +5,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public abstract class UnaryOperation<T> implements Returnable<T> {
     private final Returnable<T> input;
     private final Position position;
@@ -17,8 +19,8 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
     public abstract T apply(T input);
 
     @Override
-    public T apply(Buffer buffer, Rotation rotation, int recursions) {
-        return apply(input.apply(buffer, rotation, recursions));
+    public T apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        return apply(input.apply(buffer, rotation, random, recursions));
     }
 
     @Override

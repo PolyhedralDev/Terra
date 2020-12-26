@@ -24,6 +24,7 @@ import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
+import com.dfsek.terra.config.factories.StructureFactory;
 import com.dfsek.terra.config.factories.TerraFactory;
 import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.files.FolderLoader;
@@ -38,6 +39,7 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
+import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.generation.items.TerraStructure;
 import com.dfsek.terra.generation.items.ores.Ore;
@@ -155,6 +157,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
                 .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
                 .open("structures/trees", ".yml").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
+                .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
                 .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
                 .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
@@ -242,7 +245,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry)
-                .registerLoader(StructureScript.class, scriptRegistry);
+                .registerLoader(StructureScript.class, scriptRegistry)
+                .registerLoader(TerraStructure.class, structureRegistry);
     }
 
     public ScriptRegistry getScriptRegistry() {

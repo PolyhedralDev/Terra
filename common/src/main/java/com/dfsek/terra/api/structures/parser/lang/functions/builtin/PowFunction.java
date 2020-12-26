@@ -6,6 +6,8 @@ import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
+import java.util.Random;
+
 public class PowFunction extends MathFunction {
     private final Returnable<Number> base;
     private final Returnable<Number> power;
@@ -22,7 +24,7 @@ public class PowFunction extends MathFunction {
     }
 
     @Override
-    public Number apply(Buffer buffer, Rotation rotation, int recursions) {
-        return FastMath.pow(base.apply(buffer, rotation, recursions).doubleValue(), power.apply(buffer, rotation, recursions).doubleValue());
+    public Number apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        return FastMath.pow(base.apply(buffer, rotation, random, recursions).doubleValue(), power.apply(buffer, rotation, random, recursions).doubleValue());
     }
 }

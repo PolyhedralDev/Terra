@@ -15,6 +15,8 @@ import com.dfsek.terra.api.structures.world.LandCheck;
 import com.dfsek.terra.api.structures.world.OceanCheck;
 import net.jafama.FastMath;
 
+import java.util.Random;
+
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;
     private final Returnable<Number> x, y, z;
@@ -33,17 +35,17 @@ public class CheckFunction implements Function<String> {
         return "check";
     }
 
-    private Location getVector(Buffer buffer, Rotation rotation, int recursions) {
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
+
+    @Override
+    public String apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        return buffer.getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
-    }
+        Location location = buffer.getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
 
-    @Override
-    public String apply(Buffer buffer, Rotation rotation, int recursions) {
-        return apply(getVector(buffer, rotation, recursions), buffer.getOrigin().getWorld());
+        return apply(location, buffer.getOrigin().getWorld());
     }
 
     private String apply(Location vector, World world) {

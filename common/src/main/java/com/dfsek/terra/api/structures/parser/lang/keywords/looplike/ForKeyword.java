@@ -8,6 +8,8 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.Random;
+
 public class ForKeyword implements Keyword<Block.ReturnLevel> {
     private final Block conditional;
     private final Item<?> initializer;
@@ -24,9 +26,9 @@ public class ForKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, int recursions) {
-        for(initializer.apply(buffer, rotation, recursions); statement.apply(buffer, rotation, recursions); incrementer.apply(buffer, rotation, recursions)) {
-            Block.ReturnLevel level = conditional.apply(buffer, rotation, recursions);
+    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        for(initializer.apply(buffer, rotation, random, recursions); statement.apply(buffer, rotation, random, recursions); incrementer.apply(buffer, rotation, random, recursions)) {
+            Block.ReturnLevel level = conditional.apply(buffer, rotation, random, recursions);
             if(level.equals(Block.ReturnLevel.BREAK)) break;
             if(level.isReturnFast()) return level;
         }

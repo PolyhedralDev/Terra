@@ -12,6 +12,8 @@ import com.dfsek.terra.api.structures.structure.buffer.items.Mark;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
+import java.util.Random;
+
 public class GetMarkFunction implements Function<String> {
     private final Returnable<Number> x, y, z;
     private final Position position;
@@ -29,11 +31,11 @@ public class GetMarkFunction implements Function<String> {
     }
 
     @Override
-    public String apply(Buffer buffer, Rotation rotation, int recursions) {
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
+    public String apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
-        Mark mark = buffer.getMark(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
+        Mark mark = buffer.getMark(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
         return mark == null ? "" : mark.getContent();
     }
 

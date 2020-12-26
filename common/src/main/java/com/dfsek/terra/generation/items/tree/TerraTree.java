@@ -21,7 +21,7 @@ public class TerraTree implements Tree {
 
     @Override
     public synchronized boolean plant(Location location, Random random) {
-        structure.execute(location.clone().add(0, yOffset, 0), Rotation.fromDegrees(90 * random.nextInt(4)));
+        structure.execute(location.clone().add(0, yOffset, 0), random, Rotation.fromDegrees(90 * random.nextInt(4)));
         return true;
     }
 

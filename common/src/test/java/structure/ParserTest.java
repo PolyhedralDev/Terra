@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class ParserTest {
     @Test
@@ -50,9 +51,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(null, Rotation.NONE, 0);
+        block.apply(null, Rotation.NONE, new Random(), 0);
 
-        block.apply(null, Rotation.NONE, 0);
+        block.apply(null, Rotation.NONE, new Random(), 0);
     }
 
     private static class Test1 implements Function<Void> {
@@ -67,8 +68,8 @@ public class ParserTest {
         }
 
         @Override
-        public Void apply(Buffer buffer, Rotation rotation, int recursions) {
-            System.out.println("string: " + a.apply(buffer, rotation, recursions) + ", double: " + b.apply(buffer, rotation, recursions));
+        public Void apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+            System.out.println("string: " + a.apply(buffer, rotation, random, recursions) + ", double: " + b.apply(buffer, rotation, random, recursions));
             return null;
         }
 

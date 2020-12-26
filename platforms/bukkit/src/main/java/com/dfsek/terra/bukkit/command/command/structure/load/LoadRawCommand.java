@@ -3,6 +3,7 @@ package com.dfsek.terra.bukkit.command.command.structure.load;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import org.bukkit.block.Sign;
@@ -36,65 +37,11 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
         TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
         long t = System.nanoTime();
-        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
+        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), new FastRandom(), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
         long l = System.nanoTime() - t;
 
         sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");
 
-        /*
-        try {
-            WorldHandle handle = ((TerraBukkitPlugin) getMain()).getWorldHandle();
-            Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
-            StructureInfo info = struc.getStructureInfo();
-            int centerX = info.getCenterX();
-            int centerZ = info.getCenterZ();
-            for(StructureContainedBlock[][] level0 : struc.getRawStructure()) {
-                for(StructureContainedBlock[] level1 : level0) {
-                    for(StructureContainedBlock block : level1) {
-                        Location bLocation = sender.getLocation().add(block.getX() - centerX, block.getY(), block.getZ() - centerZ);
-                        if(!block.getPull().equals(StructureContainedBlock.Pull.NONE)) {
-                            handle.setBlockData(bLocation.getBlock(), Material.OAK_SIGN.createBlockData(), false);
-                            Sign sign = (Sign) bLocation.getBlock().getState();
-                            sign.setLine(1, "[PULL=" + block.getPull() + "_" + block.getPullOffset() + "]");
-                            String data = block.getBlockData().getAsString(true);
-                            setTerraSign(sign, data);
-                            sign.update();
-                        } else if(!block.getRequirement().equals(StructureSpawnRequirement.BLANK)) {
-                            handle.setBlockData(bLocation.getBlock(), Material.OAK_SIGN.createBlockData(), false);
-                            Sign sign = (Sign) bLocation.getBlock().getState();
-                            sign.setLine(1, "[SPAWN=" + block.getRequirement() + "]");
-                            String data = block.getBlockData().getAsString(true);
-                            setTerraSign(sign, data);
-                            sign.update();
-                        } else {
-                            handle.setBlockData(bLocation.getBlock(), block.getBlockData(), false);
-                            if(block.getState() != null) {
-                                block.getState().getState(bLocation.getBlock().getState()).update(true, false);
-                            }
-                        }
-                    }
-                }
-            }
-
-            for(int y = 0; y < struc.getStructureInfo().getSizeY(); y++) {
-                StructureContainedBlock block = struc.getRawStructure()[centerX][centerZ][y];
-                if(block.getRequirement().equals(StructureSpawnRequirement.BLANK) && block.getPull().equals(StructureContainedBlock.Pull.NONE)) {
-                    Location bLocation = sender.getLocation().add(block.getX() - centerX, block.getY(), block.getZ() - centerZ);
-                    handle.setBlockData(bLocation.getBlock(), Material.OAK_SIGN.createBlockData(), false);
-                    Sign sign = (Sign) bLocation.getBlock().getState();
-                    sign.setLine(1, "[CENTER]");
-                    String data = block.getBlockData().getAsString(true);
-                    setTerraSign(sign, data);
-                    sign.update();
-                    break;
-                }
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-            LangUtil.send("command.structure.invalid", sender, args[0]);
-        }
-
-         */
         return true;
     }
 
