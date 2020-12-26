@@ -4,8 +4,10 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.bukkit.BukkitChunk;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
+import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class LoadRawCommand extends LoadCommand implements DebugCommand {
@@ -37,7 +38,9 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
 
         TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
         long t = System.nanoTime();
-        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), new FastRandom(), Rotation.fromDegrees(90 * ThreadLocalRandom.current().nextInt(4)));
+        FastRandom chunk = PopulationUtil.getRandom(new BukkitChunk(sender.getLocation().getChunk()));
+
+        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
         long l = System.nanoTime() - t;
 
         sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");

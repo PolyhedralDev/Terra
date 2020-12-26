@@ -1,6 +1,13 @@
 package com.dfsek.terra.bukkit.command.command.structure.load;
 
+import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.bukkit.BukkitChunk;
+import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
+import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,25 +28,18 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        /*
-        try {
-            Rotation r;
-            try {
-                r = Rotation.fromDegrees(Integer.parseInt(args[1]));
-            } catch(NumberFormatException e) {
-                LangUtil.send("command.structure.invalid-rotation", sender, args[1]);
-                return true;
-            }
-            Structure struc = Structure.load(new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure"));
-            if(chunk) struc.paste(sender.getLocation(), sender.getLocation().getChunk(), r, (TerraBukkitPlugin) getMain());
-            else struc.paste(sender.getLocation(), r, (TerraBukkitPlugin) getMain());
-            //sender.sendMessage(String.valueOf(struc.checkSpawns(sender.getLocation(), r)));
-        } catch(IOException e) {
-            e.printStackTrace();
-            LangUtil.send("command.structure.invalid", sender, args[0]);
-        }
+        TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
+        long t = System.nanoTime();
+        FastRandom chunk = PopulationUtil.getRandom(new BukkitChunk(sender.getLocation().getChunk()));
 
-         */
+        if(this.chunk) {
+            terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), new BukkitChunk(sender.getLocation().getChunk()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
+        } else {
+            terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
+        }
+        long l = System.nanoTime() - t;
+
+        sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");
         return true;
     }
 

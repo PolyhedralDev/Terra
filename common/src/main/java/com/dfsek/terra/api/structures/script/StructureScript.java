@@ -2,6 +2,7 @@ package com.dfsek.terra.api.structures.script;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
@@ -62,6 +63,13 @@ public class StructureScript {
         StructureBuffer buffer = new StructureBuffer(location);
         Block.ReturnLevel level = block.apply(buffer, rotation, random, 0);
         buffer.paste();
+        return !level.equals(Block.ReturnLevel.FAIL);
+    }
+
+    public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
+        StructureBuffer buffer = new StructureBuffer(location);
+        Block.ReturnLevel level = block.apply(buffer, rotation, random, 0);
+        buffer.paste(chunk);
         return !level.equals(Block.ReturnLevel.FAIL);
     }
 
