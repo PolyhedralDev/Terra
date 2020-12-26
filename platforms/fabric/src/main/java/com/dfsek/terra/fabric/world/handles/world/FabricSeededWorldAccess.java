@@ -86,6 +86,16 @@ public class FabricSeededWorldAccess implements World {
     }
 
     @Override
+    public int hashCode() {
+        return handle.worldAccess.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
     public Handle getHandle() {
         return handle;
     }

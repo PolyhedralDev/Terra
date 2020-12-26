@@ -9,6 +9,7 @@ import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricMaterialData;
 import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
+import com.dfsek.terra.fabric.world.block.data.FabricOrientable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
@@ -49,8 +50,13 @@ public class FabricWorldHandle implements WorldHandle {
         try {
             BlockState state = parser.parse(true).getBlockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
+
             if(state.contains(Properties.STAIR_SHAPE)) return new FabricStairs(state);
+
             if(state.contains(Properties.SLAB_TYPE)) return new FabricSlab(state);
+
+            if(state.contains(Properties.AXIS)) return new FabricOrientable(state);
+
             if(state.getProperties().containsAll(Arrays.asList(Properties.NORTH, Properties.SOUTH, Properties.EAST, Properties.WEST)))
                 return new FabricMultipleFacing(state);
             if(state.contains(Properties.WATERLOGGED)) return new FabricWaterlogged(state);

@@ -11,11 +11,11 @@ public class FabricSlab extends FabricWaterlogged implements Slab {
 
     @Override
     public Type getType() {
-        return FabricEnumAdapter.fromFabricSlabType(delegate.get(Properties.SLAB_TYPE));
+        return FabricEnumAdapter.adapt(delegate.get(Properties.SLAB_TYPE));
     }
 
     @Override
     public void setType(Type type) {
-        delegate = delegate.with(Properties.SLAB_TYPE, TerraEnumAdapter.fromTerraSlabType(type));
+        delegate = delegate.with(Properties.SLAB_TYPE, FabricEnumAdapter.adapt(type));
     }
 }
