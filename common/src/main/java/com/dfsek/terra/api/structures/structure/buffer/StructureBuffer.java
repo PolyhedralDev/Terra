@@ -13,6 +13,7 @@ import java.util.Map;
 public class StructureBuffer implements Buffer {
     private final Map<Vector3, Cell> bufferedItemMap = new HashMap<>();
     private final Location origin;
+    private boolean succeeded;
 
     public StructureBuffer(Location origin) {
         this.origin = origin;
@@ -54,6 +55,13 @@ public class StructureBuffer implements Buffer {
         return this;
     }
 
+    public void setSucceeded(boolean succeeded) {
+        this.succeeded = succeeded;
+    }
+
+    public boolean succeeded() {
+        return succeeded;
+    }
 
     @Override
     public Location getOrigin() {

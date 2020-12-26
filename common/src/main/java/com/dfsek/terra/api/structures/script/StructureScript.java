@@ -22,11 +22,19 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class StructureScript {
     private final Block block;
     private final String id;
+    private final LinkedHashMap<Location, StructureBuffer> cache = new LinkedHashMap<Location, StructureBuffer>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
+            return this.size() > 128;
+        }
+    };
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry) {
         Parser parser;
@@ -67,10 +75,15 @@ public class StructureScript {
     }
 
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
-        StructureBuffer buffer = new StructureBuffer(location);
-        Block.ReturnLevel level = block.apply(buffer, rotation, random, 0);
+        StructureBuffer buffer = cache.computeIfAbsent(location, loc -> {
+            System.out.println("Recalculating for (" + loc.getBlockX() + ", " + loc.getBlockZ() + "), chunk {" + chunk.getX() + ", " + chunk.getZ() + "}, cache size: " + cache.size());
+            StructureBuffer buf = new StructureBuffer(loc);
+            Block.ReturnLevel level = block.apply(buf, rotation, random, 0);
+            buf.setSucceeded(!level.equals(Block.ReturnLevel.FAIL));
+            return buf;
+        });
         buffer.paste(chunk);
-        return !level.equals(Block.ReturnLevel.FAIL);
+        return buffer.succeeded();
     }
 
     public void executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
