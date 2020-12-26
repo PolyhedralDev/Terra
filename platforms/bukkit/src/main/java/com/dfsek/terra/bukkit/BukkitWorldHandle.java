@@ -11,6 +11,7 @@ import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitDirectional;
 import com.dfsek.terra.bukkit.world.block.data.BukkitMultipleFacing;
+import com.dfsek.terra.bukkit.world.block.data.BukkitOrientable;
 import com.dfsek.terra.bukkit.world.block.data.BukkitRotatable;
 import com.dfsek.terra.bukkit.world.block.data.BukkitSlab;
 import com.dfsek.terra.bukkit.world.block.data.BukkitStairs;
@@ -19,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.MultipleFacing;
+import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Slab;
@@ -57,6 +59,7 @@ public class BukkitWorldHandle implements WorldHandle {
         if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
         if(bukkitData instanceof Rotatable) return new BukkitRotatable((Rotatable) bukkitData);
         if(bukkitData instanceof Directional) return new BukkitDirectional((Directional) bukkitData);
+        if(bukkitData instanceof Orientable) return new BukkitOrientable((Orientable) bukkitData);
         if(bukkitData instanceof Waterlogged) return new BukkitWaterlogged((Waterlogged) bukkitData);
         return new BukkitBlockData(Bukkit.createBlockData(data));
     }

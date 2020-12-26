@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 
+import com.dfsek.terra.api.platform.block.Axis;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Bisected;
 import com.dfsek.terra.api.platform.block.data.Slab;
@@ -22,6 +23,19 @@ public final class BukkitEnumAdapter {
                 return Stairs.Shape.INNER_RIGHT;
             case OUTER_RIGHT:
                 return Stairs.Shape.OUTER_RIGHT;
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    public static Axis fromBukkitAxis(org.bukkit.Axis axis) {
+        switch(axis) {
+            case X:
+                return Axis.X;
+            case Y:
+                return Axis.Y;
+            case Z:
+                return Axis.Z;
             default:
                 throw new IllegalStateException();
         }

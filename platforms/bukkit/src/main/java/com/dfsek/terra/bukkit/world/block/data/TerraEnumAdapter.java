@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 
 import com.dfsek.terra.api.platform.block.BlockFace;
+import org.bukkit.Axis;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
@@ -33,6 +34,19 @@ public final class TerraEnumAdapter {
                 return Bisected.Half.TOP;
             case BOTTOM:
                 return Bisected.Half.BOTTOM;
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    public static Axis fromTerraAxis(com.dfsek.terra.api.platform.block.Axis axis) {
+        switch(axis) {
+            case Z:
+                return Axis.Z;
+            case Y:
+                return Axis.Y;
+            case X:
+                return Axis.X;
             default:
                 throw new IllegalStateException();
         }
