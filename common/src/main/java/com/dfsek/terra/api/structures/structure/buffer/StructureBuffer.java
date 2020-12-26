@@ -48,6 +48,6 @@ public class StructureBuffer implements Buffer {
 
     @Override
     public Location getOrigin() {
-        return origin;
+        return origin.clone();
     }
 }

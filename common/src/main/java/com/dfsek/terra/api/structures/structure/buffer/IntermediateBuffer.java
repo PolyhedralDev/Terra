@@ -21,7 +21,7 @@ public class IntermediateBuffer implements Buffer {
 
     @Override
     public Location getOrigin() {
-        return original.getOrigin().add(offset);
+        return original.getOrigin().clone().add(offset);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.structures.script.functions;
 
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
@@ -32,12 +33,12 @@ public class CheckFunction implements Function<String> {
         return "check";
     }
 
-    private Vector3 getVector(Buffer buffer, Rotation rotation, int recursions) {
+    private Location getVector(Buffer buffer, Rotation rotation, int recursions) {
         Vector2 xz = new Vector2(x.apply(buffer, rotation, recursions).doubleValue(), z.apply(buffer, rotation, recursions).doubleValue());
 
         RotationUtil.rotateVector(xz, rotation);
 
-        return new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())).add(buffer.getOrigin().toVector());
+        return buffer.getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
     }
 
     @Override
@@ -45,7 +46,7 @@ public class CheckFunction implements Function<String> {
         return apply(getVector(buffer, rotation, recursions), buffer.getOrigin().getWorld());
     }
 
-    private String apply(Vector3 vector, World world) {
+    private String apply(Location vector, World world) {
         if(new LandCheck(world, main).check(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ()))
             return "LAND";
         if(new OceanCheck(world, main).check(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ()))
