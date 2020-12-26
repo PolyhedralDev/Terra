@@ -9,11 +9,11 @@ public class BukkitSlab extends BukkitWaterlogged implements Slab {
 
     @Override
     public Type getType() {
-        return BukkitEnumAdapter.fromBukkitSlabType(((org.bukkit.block.data.type.Slab) getHandle()).getType());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Slab) getHandle()).getType());
     }
 
     @Override
     public void setType(Type type) {
-        ((org.bukkit.block.data.type.Slab) getHandle()).setType(TerraEnumAdapter.fromTerraSlabType(type));
+        ((org.bukkit.block.data.type.Slab) getHandle()).setType(BukkitEnumAdapter.adapt(type));
     }
 }

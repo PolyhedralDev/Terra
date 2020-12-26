@@ -12,32 +12,32 @@ public class BukkitStairs extends BukkitBlockData implements Stairs {
 
     @Override
     public Shape getShape() {
-        return BukkitEnumAdapter.fromBukkitStair(((org.bukkit.block.data.type.Stairs) super.getHandle()).getShape());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getShape());
     }
 
     @Override
     public void setShape(Shape shape) {
-        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setShape(TerraEnumAdapter.fromTerraStair(shape));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setShape(BukkitEnumAdapter.adapt(shape));
     }
 
     @Override
     public Half getHalf() {
-        return BukkitEnumAdapter.fromBukkitHalf(((org.bukkit.block.data.type.Stairs) super.getHandle()).getHalf());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getHalf());
     }
 
     @Override
     public void setHalf(Half half) {
-        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setHalf(TerraEnumAdapter.fromTerraHalf(half));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setHalf(BukkitEnumAdapter.adapt(half));
     }
 
     @Override
     public BlockFace getFacing() {
-        return BukkitEnumAdapter.fromBukkitBlockFace(((org.bukkit.block.data.type.Stairs) super.getHandle()).getFacing());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getFacing());
     }
 
     @Override
     public void setFacing(BlockFace facing) {
-        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setFacing(TerraEnumAdapter.fromTerraBlockFace(facing));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setFacing(BukkitEnumAdapter.adapt(facing));
     }
 
     @Override

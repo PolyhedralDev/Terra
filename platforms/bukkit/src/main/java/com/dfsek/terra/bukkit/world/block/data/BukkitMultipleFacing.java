@@ -15,21 +15,21 @@ public class BukkitMultipleFacing extends BukkitBlockData implements MultipleFac
 
     @Override
     public Set<BlockFace> getFaces() {
-        return ((org.bukkit.block.data.MultipleFacing) super.getHandle()).getFaces().stream().map(BukkitEnumAdapter::fromBukkitBlockFace).collect(Collectors.toSet());
+        return ((org.bukkit.block.data.MultipleFacing) super.getHandle()).getFaces().stream().map(BukkitEnumAdapter::adapt).collect(Collectors.toSet());
     }
 
     @Override
     public void setFace(BlockFace face, boolean facing) {
-        ((org.bukkit.block.data.MultipleFacing) super.getHandle()).setFace(TerraEnumAdapter.fromTerraBlockFace(face), facing);
+        ((org.bukkit.block.data.MultipleFacing) super.getHandle()).setFace(BukkitEnumAdapter.adapt(face), facing);
     }
 
     @Override
     public Set<BlockFace> getAllowedFaces() {
-        return ((org.bukkit.block.data.MultipleFacing) super.getHandle()).getAllowedFaces().stream().map(BukkitEnumAdapter::fromBukkitBlockFace).collect(Collectors.toSet());
+        return ((org.bukkit.block.data.MultipleFacing) super.getHandle()).getAllowedFaces().stream().map(BukkitEnumAdapter::adapt).collect(Collectors.toSet());
     }
 
     @Override
     public boolean hasFace(BlockFace f) {
-        return ((org.bukkit.block.data.MultipleFacing) super.getHandle()).hasFace(TerraEnumAdapter.fromTerraBlockFace(f));
+        return ((org.bukkit.block.data.MultipleFacing) super.getHandle()).hasFace(BukkitEnumAdapter.adapt(f));
     }
 }

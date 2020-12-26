@@ -6,7 +6,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.bukkit.BukkitWorld;
-import com.dfsek.terra.bukkit.world.block.data.TerraEnumAdapter;
+import com.dfsek.terra.bukkit.world.block.data.BukkitEnumAdapter;
 
 public class BukkitBlock implements Block {
     private final org.bukkit.block.Block delegate;
@@ -27,12 +27,12 @@ public class BukkitBlock implements Block {
 
     @Override
     public Block getRelative(BlockFace face) {
-        return new BukkitBlock(delegate.getRelative(TerraEnumAdapter.fromTerraBlockFace(face)));
+        return new BukkitBlock(delegate.getRelative(BukkitEnumAdapter.adapt(face)));
     }
 
     @Override
     public Block getRelative(BlockFace face, int len) {
-        return new BukkitBlock(delegate.getRelative(TerraEnumAdapter.fromTerraBlockFace(face), len));
+        return new BukkitBlock(delegate.getRelative(BukkitEnumAdapter.adapt(face), len));
     }
 
     @Override

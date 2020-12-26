@@ -11,11 +11,11 @@ public class BukkitRotatable extends BukkitBlockData implements Rotatable {
 
     @Override
     public BlockFace getRotation() {
-        return BukkitEnumAdapter.fromBukkitBlockFace(((org.bukkit.block.data.Rotatable) getHandle()).getRotation());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.Rotatable) getHandle()).getRotation());
     }
 
     @Override
     public void setRotation(BlockFace face) {
-        ((org.bukkit.block.data.Rotatable) getHandle()).setRotation(TerraEnumAdapter.fromTerraBlockFace(face));
+        ((org.bukkit.block.data.Rotatable) getHandle()).setRotation(BukkitEnumAdapter.adapt(face));
     }
 }

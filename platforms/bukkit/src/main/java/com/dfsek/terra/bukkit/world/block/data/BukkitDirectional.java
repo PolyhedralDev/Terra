@@ -11,11 +11,11 @@ public class BukkitDirectional extends BukkitBlockData implements Directional {
 
     @Override
     public BlockFace getFacing() {
-        return BukkitEnumAdapter.fromBukkitBlockFace(((org.bukkit.block.data.Directional) getHandle()).getFacing());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.Directional) getHandle()).getFacing());
     }
 
     @Override
     public void setFacing(BlockFace facing) {
-        ((org.bukkit.block.data.Directional) getHandle()).setFacing(TerraEnumAdapter.fromTerraBlockFace(facing));
+        ((org.bukkit.block.data.Directional) getHandle()).setFacing(BukkitEnumAdapter.adapt(facing));
     }
 }

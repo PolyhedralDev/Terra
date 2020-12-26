@@ -15,16 +15,16 @@ public class BukkitOrientable extends BukkitBlockData implements Orientable {
 
     @Override
     public Set<Axis> getAxes() {
-        return ((org.bukkit.block.data.Orientable) getHandle()).getAxes().stream().map(BukkitEnumAdapter::fromBukkitAxis).collect(Collectors.toSet());
+        return ((org.bukkit.block.data.Orientable) getHandle()).getAxes().stream().map(BukkitEnumAdapter::adapt).collect(Collectors.toSet());
     }
 
     @Override
     public Axis getAxis() {
-        return BukkitEnumAdapter.fromBukkitAxis(((org.bukkit.block.data.Orientable) getHandle()).getAxis());
+        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.Orientable) getHandle()).getAxis());
     }
 
     @Override
     public void setAxis(Axis axis) {
-        ((org.bukkit.block.data.Orientable) getHandle()).setAxis(TerraEnumAdapter.fromTerraAxis(axis));
+        ((org.bukkit.block.data.Orientable) getHandle()).setAxis(BukkitEnumAdapter.adapt(axis));
     }
 }
