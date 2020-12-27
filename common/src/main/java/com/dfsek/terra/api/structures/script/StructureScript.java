@@ -29,12 +29,7 @@ import java.util.Random;
 public class StructureScript {
     private final Block block;
     private final String id;
-    private final LinkedHashMap<Location, StructureBuffer> cache = new LinkedHashMap<Location, StructureBuffer>() {
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
-            return this.size() > 128;
-        }
-    };
+    private final LinkedHashMap<Location, StructureBuffer> cache;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry) {
         Parser parser;
@@ -58,6 +53,12 @@ public class StructureScript {
             throw new RuntimeException(e);
         }
         this.id = parser.getID();
+        this.cache = new LinkedHashMap<Location, StructureBuffer>() {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
+                return this.size() > main.getTerraConfig().getStructureCache();
+            }
+        };
     }
 
     /**

@@ -1,9 +1,10 @@
 debug: false
 data-save: PT6M
 language: "en_us"
-fail-type: SHUTDOWN
 dump-default: true
 biome-search-resolution: 4
-cache-size: 384
+cache:
+  carver: 512
+  structure: 128
 master-disable:
   caves: false

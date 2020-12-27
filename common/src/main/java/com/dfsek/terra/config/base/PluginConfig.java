@@ -35,9 +35,12 @@ public class PluginConfig implements ConfigTemplate {
     @Default
     private int biomeSearch = 4;
 
-    @Value("cache-size")
+    @Value("cache.carver")
     @Default
-    private int cacheSize = 384;
+    private int carverCache = 512;
+    @Value("cache.structure")
+    @Default
+    private int structureCache = 128;
 
     @Value("dump-default")
     @Default
@@ -80,7 +83,11 @@ public class PluginConfig implements ConfigTemplate {
         return biomeSearch;
     }
 
-    public int getCacheSize() {
-        return cacheSize;
+    public int getCarverCacheSize() {
+        return carverCache;
+    }
+
+    public int getStructureCache() {
+        return structureCache;
     }
 }
