@@ -6,6 +6,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.loot.LootTable;
+import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.GlueList;
@@ -19,9 +20,9 @@ public class StructureTemplate extends AbstractableTemplate implements Validated
     @Value("id")
     private String id;
 
-    @Value("script")
+    @Value("scripts")
     @Abstractable
-    private StructureScript structure;
+    private ProbabilityCollection<StructureScript> structure;
 
     @Value("spawn.start")
     @Abstractable
@@ -52,7 +53,7 @@ public class StructureTemplate extends AbstractableTemplate implements Validated
         return id;
     }
 
-    public StructureScript getStructures() {
+    public ProbabilityCollection<StructureScript> getStructures() {
         return structure;
     }
 

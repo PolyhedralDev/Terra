@@ -42,7 +42,7 @@ public class StructurePopulator implements TerraBlockPopulator {
                 if(!((UserDefinedBiome) grid.getBiome(spawn)).getConfig().getStructures().contains(conf))
                     continue;
                 Random random = new FastRandom(MathUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
-                conf.getStructure().execute(spawn.setY(conf.getSpawnStart().get(random)), chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));
+                conf.getStructure().get(random).execute(spawn.setY(conf.getSpawnStart().get(random)), chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));
             }
         }
     }

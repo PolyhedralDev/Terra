@@ -3,14 +3,15 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.util.MaterialSet;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class TreeTemplate extends AbstractableTemplate {
-    @Value("script")
+    @Value("scripts")
     @Abstractable
-    private StructureScript structure;
+    private ProbabilityCollection<StructureScript> structure;
 
     @Value("id")
     private String id;
@@ -24,7 +25,7 @@ public class TreeTemplate extends AbstractableTemplate {
     @Abstractable
     private MaterialSet spawnable;
 
-    public StructureScript getStructures() {
+    public ProbabilityCollection<StructureScript> getStructures() {
         return structure;
     }
 
