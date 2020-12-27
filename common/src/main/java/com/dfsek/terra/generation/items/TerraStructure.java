@@ -12,15 +12,13 @@ import java.util.Map;
 // TODO: implementation
 public class TerraStructure {
     private final ProbabilityCollection<StructureScript> structure;
-    private final Range bound;
     private final Range spawnStart;
     private final GridSpawn spawn;
     private final Map<Integer, LootTable> loot;
     private final StructureTemplate template;
 
-    public TerraStructure(ProbabilityCollection<StructureScript> structures, Range bound, Range spawnStart, GridSpawn spawn, Map<Integer, LootTable> loot, StructureTemplate template) {
+    public TerraStructure(ProbabilityCollection<StructureScript> structures, Range spawnStart, GridSpawn spawn, Map<Integer, LootTable> loot, StructureTemplate template) {
         this.structure = structures;
-        this.bound = bound;
         this.spawnStart = spawnStart;
         this.spawn = spawn;
         this.loot = loot;
@@ -33,10 +31,6 @@ public class TerraStructure {
 
     public ProbabilityCollection<StructureScript> getStructure() {
         return structure;
-    }
-
-    public Range getBound() {
-        return bound;
     }
 
     public Range getSpawnStart() {

@@ -1,8 +1,21 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
+import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
+import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.generation.items.TerraStructure;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class LocateCommand extends WorldCommand {
     private final boolean tp;
@@ -32,15 +46,14 @@ public class LocateCommand extends WorldCommand {
             LangUtil.send("command.structure.invalid-radius", new BukkitCommandSender(sender), args[1]);
             return true;
         }
-        /*
         TerraStructure s;
         try {
-            s = Objects.requireNonNull(((TerraBukkitPlugin) getMain()).getWorld(world).getConfig().getStructure(id));
+            s = Objects.requireNonNull(getMain().getWorld(new BukkitWorld(world)).getConfig().getStructure(id));
         } catch(IllegalArgumentException | NullPointerException e) {
-            LangUtil.send("command.structure.invalid", sender, id);
+            //LangUtil.send("command.structure.invalid", sender, id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(getMain(), new AsyncStructureFinder(((TerraBukkitPlugin) getMain()).getWorld(world).getGrid(), s, sender.getLocation(), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(new BukkitWorld(world)).getGrid(), s, new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
@@ -48,14 +61,14 @@ public class LocateCommand extends WorldCommand {
                             .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/minecraft:tp %s %d.0 %.2f %d.0", sender.getName(), location.getBlockX(), sender.getLocation().getY(), location.getBlockZ())))
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {new TextComponent("Click to teleport")}))
                             .color(ChatColor.GREEN)
-                            .append(String.format(" (%.1f blocks away)", location.add(new Vector(0, sender.getLocation().getY(), 0)).distance(sender.getLocation().toVector())), ComponentBuilder.FormatRetention.NONE);
+                            .append(String.format(" (%.1f blocks away)", location.add(new Vector3(0, sender.getLocation().getY(), 0)).distance(
+                                    new Vector3(sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()))), ComponentBuilder.FormatRetention.NONE);
                     sender.spigot().sendMessage(cm.create());
                 } else
                     sender.sendMessage("Unable to locate structure. ");
             }
-        }, (TerraBukkitPlugin) getMain()));
+        }, getMain()));
 
-         */
         return true;
     }
 

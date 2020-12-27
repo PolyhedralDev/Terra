@@ -87,6 +87,11 @@ public class StructureScript {
         return buffer.succeeded();
     }
 
+    public boolean test(Location location, Random random, Rotation rotation) {
+        StructureBuffer buffer = new StructureBuffer(location);
+        return !block.apply(buffer, rotation, random, 0).equals(Block.ReturnLevel.FAIL);
+    }
+
     public void executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
         block.apply(buffer, rotation, random, recursions);
     }
