@@ -28,10 +28,6 @@ public class StructureTemplate extends AbstractableTemplate implements Validated
     @Abstractable
     private Range y;
 
-    @Value("spawn.bound")
-    @Abstractable
-    private Range bound;
-
     @Value("spawn")
     @Abstractable
     private GridSpawn spawn;
@@ -59,10 +55,6 @@ public class StructureTemplate extends AbstractableTemplate implements Validated
 
     public Range getY() {
         return y;
-    }
-
-    public Range getBound() {
-        return bound;
     }
 
     public List<Void> getFeatures() {
