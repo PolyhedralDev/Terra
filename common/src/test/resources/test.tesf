@@ -54,10 +54,7 @@ if(false) {
 }
 
 
-if(true && !(boolean && false) && true) {
-    num scopedVar = 2;
-    test("if statement" + 2 + stringVar, 1 + testVar + scopedVar);
-}
+
 // comment
 
 /*
@@ -66,3 +63,7 @@ fsdfsd
 
 test("fdsgdf" + 2, 1 + testVar);
 
+if(true && !(boolean && false) && true) {
+    num scopedVar = 2;
+    test("if statement" + 2 + stringVar, 1 + testVar + scopedVar);
+}

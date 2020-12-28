@@ -152,9 +152,7 @@ public class Parser {
 
         List<IfKeyword.Pair<Returnable<Boolean>, Block>> elseIf = new GlueList<>();
 
-        System.out.println(tokens.get());
-
-        while(tokens.get().getType().equals(Token.Type.ELSE)) {
+        while(tokens.hasNext() && tokens.get().getType().equals(Token.Type.ELSE)) {
             tokens.consume(); // Consume else.
             System.out.println("int: " + tokens.get());
             if(tokens.get().getType().equals(Token.Type.IF_STATEMENT)) {
