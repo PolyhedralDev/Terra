@@ -17,7 +17,7 @@ import net.jafama.FastMath;
 import java.util.List;
 import java.util.Random;
 
-public class StructureFunction implements Function<Void> {
+public class StructureFunction implements Function<Boolean> {
     private final ScriptRegistry registry;
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
@@ -43,11 +43,11 @@ public class StructureFunction implements Function<Void> {
 
     @Override
     public ReturnType returnType() {
-        return ReturnType.VOID;
+        return ReturnType.BOOLEAN;
     }
 
     @Override
-    public Void apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public Boolean apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
 
         Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 
@@ -70,9 +70,7 @@ public class StructureFunction implements Function<Void> {
 
         Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
 
-        script.executeInBuffer(new IntermediateBuffer(buffer, offset), random, rotation.rotate(rotation1), recursions + 1);
-
-        return null;
+        return script.executeInBuffer(new IntermediateBuffer(buffer, offset), random, rotation.rotate(rotation1), recursions + 1);
     }
 
     @Override

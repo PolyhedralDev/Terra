@@ -92,8 +92,8 @@ public class StructureScript {
         return !block.apply(buffer, rotation, random, 0).equals(Block.ReturnLevel.FAIL);
     }
 
-    public void executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
-        block.apply(buffer, rotation, random, recursions);
+    public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
+        return !block.apply(buffer, rotation, random, recursions).equals(Block.ReturnLevel.FAIL);
     }
 
     public String getId() {
