@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
@@ -111,7 +112,6 @@ public class Parser {
     }
 
 
-    @SuppressWarnings("unchecked")
     private Keyword<?> parseLoopLike(TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
 
         Token identifier = tokens.consume();
@@ -119,56 +119,100 @@ public class Parser {
 
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
 
-
-        if(identifier.getType().equals(Token.Type.FOR_LOOP)) {
-            Token f = tokens.get();
-            ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
-            Item<?> initializer;
-            if(f.isVariableDeclaration()) {
-                Variable<?> forVar = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(f));
-                ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
-                Token name = tokens.get();
-
-                if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
-                    throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
-
-                initializer = parseAssignment(forVar, tokens, variableMap);
-                variableMap.put(name.getContent(), forVar);
-            } else initializer = parseExpression(tokens, true, variableMap);
-            ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
-            Returnable<?> conditional = parseExpression(tokens, true, variableMap);
-            ParserUtil.checkReturnType(conditional, Returnable.ReturnType.BOOLEAN);
-            ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
-
-            Item<?> incrementer;
-            Token token = tokens.get();
-            if(variableMap.containsKey(token.getContent())) { // Assume variable assignment
-                Variable<?> variable = variableMap.get(token.getContent());
-                incrementer = parseAssignment(variable, tokens, variableMap);
-            } else incrementer = parseFunction(tokens, true, variableMap);
-
-            ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
-
-            ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
-
-            return new ForKeyword(parseBlock(tokens, variableMap), initializer, (Returnable<Boolean>) conditional, incrementer, identifier.getPosition());
+        switch(identifier.getType()) {
+            case FOR_LOOP:
+                return parseForLoop(tokens, variableMap, identifier.getPosition());
+            case IF_STATEMENT:
+                return parseIfStatement(tokens, variableMap, identifier.getPosition());
+            case WHILE_LOOP:
+                return parseWhileLoop(tokens, variableMap, identifier.getPosition());
+            default:
+                throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
         }
+    }
 
+    private WhileKeyword parseWhileLoop(TokenHolder tokens, Map<String, Variable<?>> variableMap, Position start) throws ParseException {
         Returnable<?> first = parseExpression(tokens, true, variableMap);
         ParserUtil.checkReturnType(first, Returnable.ReturnType.BOOLEAN);
 
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
 
-        ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
-
-        if(identifier.getType().equals(Token.Type.IF_STATEMENT))
-            return new IfKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) first, identifier.getPosition()); // If statement
-        else if(identifier.getType().equals(Token.Type.WHILE_LOOP))
-            return new WhileKeyword(parseBlock(tokens, variableMap), (Returnable<Boolean>) first, identifier.getPosition()); // While loop
-        else throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
+        return new WhileKeyword(parseStatementBlock(tokens, variableMap), (Returnable<Boolean>) first, start); // While loop
     }
 
-    @SuppressWarnings("unchecked")
+    private IfKeyword parseIfStatement(TokenHolder tokens, Map<String, Variable<?>> variableMap, Position start) throws ParseException {
+        Returnable<?> condition = parseExpression(tokens, true, variableMap);
+        ParserUtil.checkReturnType(condition, Returnable.ReturnType.BOOLEAN);
+
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
+
+        Block elseBlock = null;
+        Block statement = parseStatementBlock(tokens, variableMap);
+
+        List<IfKeyword.Pair<Returnable<Boolean>, Block>> elseIf = new GlueList<>();
+
+        System.out.println(tokens.get());
+
+        while(tokens.get().getType().equals(Token.Type.ELSE)) {
+            tokens.consume(); // Consume else.
+            System.out.println("int: " + tokens.get());
+            if(tokens.get().getType().equals(Token.Type.IF_STATEMENT)) {
+                System.out.println("else if");
+                tokens.consume(); // Consume if.
+                Returnable<?> elseCondition = parseExpression(tokens, true, variableMap);
+                ParserUtil.checkReturnType(elseCondition, Returnable.ReturnType.BOOLEAN);
+                elseIf.add(new IfKeyword.Pair<>((Returnable<Boolean>) elseCondition, parseStatementBlock(tokens, variableMap)));
+            } else {
+                elseBlock = parseStatementBlock(tokens, variableMap);
+                break; // Else must be last.
+            }
+        }
+
+        return new IfKeyword(statement, (Returnable<Boolean>) condition, elseIf, elseBlock, start); // If statement
+    }
+
+    private Block parseStatementBlock(TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+        ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
+        Block block = parseBlock(tokens, variableMap);
+        ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_END);
+        return block;
+    }
+
+    private ForKeyword parseForLoop(TokenHolder tokens, Map<String, Variable<?>> variableMap, Position start) throws ParseException {
+        Token f = tokens.get();
+        ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
+        Item<?> initializer;
+        if(f.isVariableDeclaration()) {
+            Variable<?> forVar = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(f));
+            ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+            Token name = tokens.get();
+
+            if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
+                throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
+
+            initializer = parseAssignment(forVar, tokens, variableMap);
+            variableMap.put(name.getContent(), forVar);
+        } else initializer = parseExpression(tokens, true, variableMap);
+        ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
+        Returnable<?> conditional = parseExpression(tokens, true, variableMap);
+        ParserUtil.checkReturnType(conditional, Returnable.ReturnType.BOOLEAN);
+        ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
+
+        Item<?> incrementer;
+        Token token = tokens.get();
+        if(variableMap.containsKey(token.getContent())) { // Assume variable assignment
+            Variable<?> variable = variableMap.get(token.getContent());
+            incrementer = parseAssignment(variable, tokens, variableMap);
+        } else incrementer = parseFunction(tokens, true, variableMap);
+
+        ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
+
+        ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
+        Block block = parseBlock(tokens, variableMap);
+        ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_END);
+        return new ForKeyword(block, initializer, (Returnable<Boolean>) conditional, incrementer, start);
+    }
+
     private Returnable<?> parseExpression(TokenHolder tokens, boolean full, Map<String, Variable<?>> variableMap) throws ParseException {
         boolean booleanInverted = false; // Check for boolean not operator
         if(tokens.get().getType().equals(Token.Type.BOOLEAN_NOT)) {
@@ -244,7 +288,6 @@ public class Parser {
         return assemble(left, right, binaryOperator);
     }
 
-    @SuppressWarnings("unchecked")
     private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) throws ParseException {
         if(binaryOperator.isStrictNumericOperator())
             ParserUtil.checkArithmeticOperation(left, right, binaryOperator); // Numeric type checking
@@ -311,6 +354,7 @@ public class Parser {
 
             if(token.isLoopLike()) { // Parse loop-like tokens (if, while, etc)
                 parsedItems.add(parseLoopLike(tokens, parsedVariables));
+                continue; // No statement end
             } else if(token.isIdentifier()) { // Parse identifiers
                 if(parsedVariables.containsKey(token.getContent())) { // Assume variable assignment
                     Variable<?> variable = parsedVariables.get(token.getContent());
@@ -336,12 +380,11 @@ public class Parser {
             else if(token.getType().equals(Token.Type.FAIL)) parsedItems.add(new FailKeyword(tokens.consume().getPosition()));
             else throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
 
-            if(tokens.hasNext()) ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END, Token.Type.BLOCK_END);
+            if(tokens.hasNext()) ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
         }
         return new Block(parsedItems, first.getPosition());
     }
 
-    @SuppressWarnings("unchecked")
     private Assignment<?> parseAssignment(Variable<?> variable, TokenHolder tokens, Map<String, Variable<?>> variableMap) throws ParseException {
         Token name = tokens.get();
 
@@ -356,7 +399,6 @@ public class Parser {
         return new Assignment<>((Variable<Object>) variable, (Returnable<Object>) expression, name.getPosition());
     }
 
-    @SuppressWarnings("unchecked")
     private Function<?> parseFunction(TokenHolder tokens, boolean fullStatement, Map<String, Variable<?>> variableMap) throws ParseException {
         Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier

@@ -27,6 +27,26 @@ while(iterator < 5) {
     test("not after " + 2, iterator);
 }
 
+if(true) {
+    test("true!" + 2, iterator);
+} else {
+     test("false!" + 2, iterator);
+ }
+
+if(false) {
+    test("true!" + 2, iterator);
+} else {
+    test("false!" + 2, iterator);
+}
+
+if(false) {
+    test("true again!" + 2, iterator);
+} else if(true == true) {
+   test("false again!" + 2, iterator);
+} else {
+   test("not logged!" + 2, iterator);
+}
+
 
 if(true && !(boolean && false) && true) {
     num scopedVar = 2;

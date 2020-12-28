@@ -131,6 +131,8 @@ public class Tokenizer {
 
         if(tokenString.equals("if"))
             return new Token(tokenString, Token.Type.IF_STATEMENT, new Position(reader.getLine(), reader.getIndex()));
+        if(tokenString.equals("else"))
+            return new Token(tokenString, Token.Type.ELSE, new Position(reader.getLine(), reader.getIndex()));
         if(tokenString.equals("while"))
             return new Token(tokenString, Token.Type.WHILE_LOOP, new Position(reader.getLine(), reader.getIndex()));
         if(tokenString.equals("for"))

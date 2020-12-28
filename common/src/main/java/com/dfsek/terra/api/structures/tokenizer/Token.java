@@ -219,6 +219,10 @@ public class Token {
         /**
          * For loop initializer token
          */
-        FOR_LOOP
+        FOR_LOOP,
+        /**
+         * Else keyword
+         */
+        ELSE
     }
 }
