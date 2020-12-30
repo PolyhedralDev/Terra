@@ -1,0 +1,122 @@
+enable:
+  - "Hvis du kan lide Terra, kan du overveje at støtte projektet på Patreon!"
+  - "Du vil få adgang til eksperimentelle funktioner, før de udgives!"
+  - "Støt projektet her: https://www.patreon.com/dfsek"
+disable:
+  - "Tak for at du bruger Terra!"
+command:
+  debug-only: "Denne kommando skal bruges med fejlfindingstilstand aktiveret!"
+  player-only: "Denne kommando er kun til spillere!"
+  invalid: "Ugyldig kommando. (Forventede %1$s argumenter, fandt %2$s)."
+  players-only: "Kommando er kun til spillere."
+  world: "Denne kommando skal anvendes i en Terra verden!"
+  reload: "Genindlæste Terra konfigurationen."
+  reload-error: "Der opstod fejl under genindlæsning af Terra konfigurationer. Tjek logfilerne for at få flere oplysninger."
+  version: "Denne server kører Terra version \"%1$s\", implementerer Gaea version \"%2$s\""
+  main-menu:
+    - "--------------------Terra--------------------"
+    - "reload    - Genindlæs konfigurationsdataene"
+    - "biome     - Få den nuværende biome"
+    - "ore       - Generer en åre malm ved den lokation du står overfor (Til fejlfinding)"
+    - "save-data - Gem populations data"
+    - "structure - Indlæs og eksporter strukturer"
+    - "profile   - Profiler indstillinger"
+    - "image     - Billede/GUI indstillinger"
+  biome:
+    biome-found: "Lokaliserede biome ved (%1$s, %2$s)"
+    unable-to-locate: "Kan ikke lokalisere biome."
+    invalid-radius: "Ugyldig radius: \"%s\""
+    invalid: "Ugyldigt Biome ID: \"%s\""
+    in: "Du er i \"%s\""
+  packs:
+    main: "Aktuelt installerede konfigurationspakker:"
+    pack: " - %1$s v%3$s ved %2$s"
+    none: "Ingen konfigurationspakker er installeret."
+  ore:
+    main-menu:
+      - "---------------Terra/malm---------------"
+      - "Genererer en åre malm ved den blok, du kigger på."
+    out-of-range: "Blok uden for rækkevidde"
+    invalid-ore: "Kan ikke finde Malm \"%s\""
+  geometry:
+    main-menu:
+      - "---------------Terra/geometri----------------"
+      - "Forskellige kommandoer til fejlfinding af voxel-geometri"
+      - "sphere       - Generer en kugle"
+      - "deformsphere - Generer en deformeret kugle"
+      - "tube         - Generer et rør"
+    deform:
+      invalid-radius: "Ugyldig radius: \"%s\""
+      invalid-deform: "Ugyldig deformering: \"%s\""
+      invalid-frequency: "Ugyldig frekvens: \"%s\""
+    sphere:
+      invalid-radius: "Ugyldig radius: \"%s\""
+    tube:
+      invalid-radius: "Ugyldig radius: \"%s\""
+  image:
+    main-menu:
+      - "---------------Terra/billede---------------"
+      - "render - Render et billede med en given bredde og højde, der senere kan importeres som en verden."
+      - "gui    - Åbn fejlfindings-GUI (Skal være aktiveret i konfigurationen)"
+    gui:
+      main-menu:
+        - "-------------Terra/billede/gui-------------"
+        - "raw  - Åbn GUI med rå Biome-data"
+        - "step - Re-render data igen for at vise grænser mere tydeligt"
+      debug: "Fejlfindingstilstand skal være aktiveret for at bruge fejlfindings-GUI! Fejlfindings-GUI'en er IKKE PRODUKTIONSSIKKER!"
+    render:
+      save: "Gemte billede som \"%s\""
+      error: "Der opstod en fejl under generering af billedet!"
+  profile:
+    main-menu:
+      - "---------------Terra/profiler---------------"
+      - "start - Starter profiler"
+      - "stop  - Stopper profiler"
+      - "query - Henter profiler data"
+      - "reset - Nulstiller profiler data"
+    reset: "Profiler er blevet nulstillet."
+    start: "Profiler er startet."
+    stop: "Profiler er stoppet."
+  structure:
+    main-menu:
+      - "---------------Terra/struktur---------------"
+      - "export - Eksporter din nuværende WorldEdit selektion som en Terra struktur."
+      - "load   - Indlæs en Terra struktur"
+    invalid-radius: "Ugyldig radius: \"%s\""
+    invalid-rotation: "Ugyldig rotation: \"%s\""
+    invalid: "Ugyldigt Struktur ID: \"%s\""
+    export: "Gemte struktur til \"%s\""
+world-config:
+  loading: "Indlæser verdenskonfigurationsværdier til verden \"%s\"..."
+  not-found: "Konfiguration til verden \"%s\" ikke fundet. Kopier standardkonfigurationen."
+  using-image: "Indlæser verden fra billede."
+  error: "Kan ikke indlæse konfiguration til verden %s"
+  done: "Indlæsning af verden \"%1$s\" er færdig. Forløbet tid: %2$sms"
+config-pack:
+  loaded: "Konfigurationspakke %1$s v%4$s ved %3$s indlæst på %2$sms."
+config:
+  loaded: "Indlæste %1$s fra fil %2$s"
+  loaded-all: "Indlæste %1$s %2$s(s) på %3$sms."
+  error:
+    invalid-failover: "Ugyldig failover type: \"%s\""
+    duplicate: "Duplikeret ID fundet i filen: %s"
+    file:
+      - "Konfigurationsfejl for Terra objekt. Fil: %1$s"
+      - "%2$s"
+      - "Ret dette, inden du fortsætter!"
+    generic:
+      - "Der opstod en fejl under indlæsning af konfigurationer."
+      - "Rapporter dette til Terra."
+warning:
+  no-population: "Ingen populations chunks blev indlæst. Hvis dette er første gang du starter din server med Terra, eller hvis du opretter en ny verden, er dette normalt."
+error:
+  severe-config: "En alvorlig konfigurationsfejl har forhindret Terra i at generere terræn korrekt ved koordinater: %1$s, %2$s. Kontroller din konfiguration for fejl. Eventuelle konfigurationsfejl vil være rapporteret ovenfor."
+debug:
+  data-save: "Gemte populations data for verden \"%s\""
+use-paper:
+  - "Det ser ud til, at du bruger Spigot/CraftBukkit."
+  - "Mens Terra &ovil&r virke på Spigot, vil nogle funktioner gå tabt. (Terra er uprøvet på CraftBukkit; ingen support vil blive givet til CraftBukkit)."
+  - "For at få mest muligt ud af Terra, skal du skifte til Paper."
+  - "Plus, Paper tilbyder store ydeevne forbedringer over Spigot, og alle Spigot plugins bør virke med Paper!"
+  - "For at få den bedste oplevelse med Terra, og alle dine plugins, brug Paper."
+  - "Få mere at vide på Paper's hjemmeside: https://papermc.io/"
