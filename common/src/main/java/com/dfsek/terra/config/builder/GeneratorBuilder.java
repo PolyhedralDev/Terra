@@ -27,8 +27,9 @@ public class GeneratorBuilder {
 
     private boolean interpolateElevation;
 
+
     public WorldGenerator build(long seed) {
-        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, preventInterpolation, interpolateElevation));
+        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation));
     }
 
     public String getNoiseEquation() {

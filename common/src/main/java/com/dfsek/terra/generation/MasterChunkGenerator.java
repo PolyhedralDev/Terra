@@ -88,7 +88,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
             ChunkInterpolator3 interp;
             try(ProfileFuture ignored = tw.getProfiler().measure("ChunkBaseGenTime")) {
-                interp = new ChunkInterpolator3(world, chunkX, chunkZ, tw.getGrid());
+                interp = new ChunkInterpolator3(world, chunkX, chunkZ, tw.getGrid(), 16);
 
                 if(!tw.isSafe()) return chunk;
                 int xOrig = (chunkX << 4);
@@ -96,7 +96,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
                 ElevationInterpolator elevationInterpolator;
                 try(ProfileFuture ignored1 = tw.getProfiler().measure("ElevationTime")) {
-                    elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid(), 8);
+                    elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid(), 4);
                 }
 
                 Sampler sampler = new Sampler(interp, elevationInterpolator);

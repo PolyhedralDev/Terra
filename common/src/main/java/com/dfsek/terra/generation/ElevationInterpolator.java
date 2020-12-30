@@ -4,6 +4,7 @@ import com.dfsek.terra.api.math.interpolation.Interpolator;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.WorldGenerator;
+import net.jafama.FastMath;
 
 public class ElevationInterpolator {
     private final WorldGenerator[][] gens;
@@ -12,17 +13,20 @@ public class ElevationInterpolator {
     private final int zOrigin;
     private final TerraBiomeGrid grid;
     private final int smooth;
+    private final int pow;
 
     public ElevationInterpolator(int chunkX, int chunkZ, TerraBiomeGrid grid, int smooth) {
         this.xOrigin = chunkX << 4;
         this.zOrigin = chunkZ << 4;
         this.grid = grid;
         this.smooth = smooth;
-        this.gens = new WorldGenerator[10][10];
+        this.pow = FastMath.log2(smooth);
+        this.gens = new WorldGenerator[6 + 2 * pow][6 + 2 * pow];
 
-        for(int x = -2; x < 8; x++) {
-            for(int z = -2; z < 8; z++) {
-                gens[x + 2][z + 2] = (WorldGenerator) grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator();
+
+        for(int x = -pow; x < 6 + pow; x++) {
+            for(int z = -pow; z < 6 + pow; z++) {
+                gens[x + pow][z + pow] = (WorldGenerator) grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator();
             }
         }
 
@@ -45,12 +49,12 @@ public class ElevationInterpolator {
     }
 
     private WorldGenerator getStoredGen(int x, int z) {
-        return gens[x + 2][z + 2];
+        return gens[x + pow][z + pow];
     }
 
     private boolean compareGens(int x, int z, WorldGenerator comp) {
-        for(int xi = x - 2; xi <= x + 2; xi++) {
-            for(int zi = z - 2; zi <= z + 2; zi++) {
+        for(int xi = x - pow; xi <= x + pow; xi++) {
+            for(int zi = z - pow; zi <= z + pow; zi++) {
                 if(!comp.equals(getStoredGen(xi, zi))) return true;
             }
         }

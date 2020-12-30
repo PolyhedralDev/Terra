@@ -22,7 +22,6 @@ public class WorldGenerator implements Generator {
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final PaletteHolder slantPalettes;
 
-    private final boolean preventSmooth;
     private final Expression noiseExp;
     private final Expression elevationExp;
     private final Variable xVar;
@@ -32,7 +31,7 @@ public class WorldGenerator implements Generator {
     private final Variable elevationZVar;
     private final boolean elevationInterpolation;
 
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean preventSmooth, boolean elevationInterpolation) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation) {
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
         Parser ep = new Parser();
@@ -43,8 +42,6 @@ public class WorldGenerator implements Generator {
         yVar = s.create("y");
         zVar = s.create("z");
         s.create("seed").setValue(seed);
-
-        this.preventSmooth = preventSmooth;
 
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
@@ -109,11 +106,6 @@ public class WorldGenerator implements Generator {
         return slantPalettes.getPalette(y);
     }
 
-
-    @Override
-    public boolean useMinimalInterpolation() {
-        return preventSmooth;
-    }
 
     public boolean interpolateElevation() {
         return elevationInterpolation;

@@ -15,6 +15,7 @@ public class ChunkInterpolator3 {
     private final Generator[][] gens = new Generator[7][7];
     private final boolean[][] needsBiomeInterp = new boolean[5][5];
     private final double[][][] noiseStorage = new double[7][7][65];
+    private final int smooth;
 
     /**
      * Instantiates a 3D ChunkInterpolator at a pair of chunk coordinates, with a BiomeGrid and FastNoiseLite instance.
@@ -23,14 +24,15 @@ public class ChunkInterpolator3 {
      * @param chunkZ Z coordinate of the chunk.
      * @param grid   BiomeGrid to use for noise fetching.
      */
-    public ChunkInterpolator3(World w, int chunkX, int chunkZ, BiomeGrid grid) {
+    public ChunkInterpolator3(World w, int chunkX, int chunkZ, BiomeGrid grid, int smooth) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
+        this.smooth = smooth;
 
 
         for(int x = -1; x < 6; x++) {
             for(int z = -1; z < 6; z++) {
-                gens[x + 1][z + 1] = grid.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), GenerationPhase.BASE).getGenerator();
+                gens[x + 1][z + 1] = grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator();
             }
         }
         for(int x = 0; x < 5; x++) {
@@ -42,7 +44,7 @@ public class ChunkInterpolator3 {
         for(byte x = -1; x < 6; x++) {
             for(byte z = -1; z < 6; z++) {
                 for(int y = 0; y < 65; y++) {
-                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise(w, (x << 2) + xOrigin, y << 2, (z << 2) + zOrigin);
+                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise(w, (x * smooth) + xOrigin, y << 2, (z * smooth) + zOrigin);
                 }
             }
         }
@@ -64,43 +66,40 @@ public class ChunkInterpolator3 {
         }
     }
 
+    private static int reRange(int value, int high) {
+        return FastMath.max(FastMath.min(value, high), 0);
+    }
+
     private boolean compareGens(int x, int z) {
         Generator comp = gens[x][z];
-        if(!comp.equals(gens[x+1][z])) return true;
+        if(!comp.equals(gens[x + 1][z])) return true;
 
-        if(!comp.equals(gens[x][z+1])) return true;
+        if(!comp.equals(gens[x][z + 1])) return true;
 
-        if(!comp.equals(gens[x-1][z])) return true;
+        if(!comp.equals(gens[x - 1][z])) return true;
 
-        if(!comp.equals(gens[x][z-1])) return true;
+        if(!comp.equals(gens[x][z - 1])) return true;
 
-        if(!comp.equals(gens[x+1][z+1])) return true;
+        if(!comp.equals(gens[x + 1][z + 1])) return true;
 
-        if(!comp.equals(gens[x-1][z-1])) return true;
+        if(!comp.equals(gens[x - 1][z - 1])) return true;
 
-        if(!comp.equals(gens[x+1][z-1])) return true;
+        if(!comp.equals(gens[x + 1][z - 1])) return true;
 
         return !comp.equals(gens[x - 1][z + 1]);
     }
 
     private double biomeAvg(int x, int y, int z) {
-        if(needsBiomeInterp[x][z]) return (noiseStorage[x + 2][z + 1][y]
-                + noiseStorage[x][z + 1][y]
-                + noiseStorage[x + 1][z + 2][y]
-                + noiseStorage[x + 1][z][y]
-                + noiseStorage[x][z][y]
-                + noiseStorage[x + 2][z + 2][y]
-                + noiseStorage[x + 2][z][y]
-                + noiseStorage[x][z + 2][y]
-                + noiseStorage[x + 1][z + 1][y]
-        ) / 9D;
-        else {
-            if(gens[x+1][z+1].useMinimalInterpolation()) return noiseStorage[x+1][z+1][y];
-            else return (noiseStorage[x + 2][z + 1][y]
-                    + noiseStorage[x][z + 1][y]
-                    + noiseStorage[x + 1][z + 2][y]
-                    + noiseStorage[x + 1][z][y]
-                    + noiseStorage[x+1][z+1][y]) / 5D;
+        if(needsBiomeInterp[x][z]) {
+            double t = 0d;
+            for(int xi = 0; xi <= 2; xi++) {
+                for(int zi = 0; zi <= 2; zi++) {
+                    t += noiseStorage[x + xi][z + zi][y];
+                }
+            }
+            return t / 9d;
+        } else {
+            return noiseStorage[x + 1][z + 1][y];
         }
     }
 
@@ -112,10 +111,6 @@ public class ChunkInterpolator3 {
      * @return double - The interpolated noise at the coordinates.
      */
     public double getNoise(double x, double y, double z) {
-        return interpGrid[reRange(((int) x) / 4, 3)][reRange(((int) y) / 4, 63)][reRange(((int) z) / 4, 3)].trilerp((x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
-    }
-
-    private static int reRange(int value, int high) {
-        return FastMath.max(FastMath.min(value, high), 0);
+        return interpGrid[reRange(((int) x) / smooth, 3)][reRange(((int) y) / 4, 63)][reRange(((int) z) / smooth, 3)].trilerp((x % smooth) / smooth, (y % 4) / 4, (z % smooth) / smooth);
     }
 }
