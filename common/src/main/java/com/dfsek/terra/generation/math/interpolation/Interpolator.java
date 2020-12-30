@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math.interpolation;
+package com.dfsek.terra.generation.math.interpolation;
 
 /**
  * Class for bilinear interpolation of values arranged on a unit square.

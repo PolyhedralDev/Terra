@@ -4,7 +4,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.generation.Sampler;
+import com.dfsek.terra.generation.math.Sampler;
 import com.dfsek.terra.math.MathUtil;
 
 public final class PaletteUtil {

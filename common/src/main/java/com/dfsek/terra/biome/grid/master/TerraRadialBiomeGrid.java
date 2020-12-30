@@ -15,7 +15,6 @@ import com.dfsek.terra.config.base.ConfigPackTemplate;
 import net.jafama.FastMath;
 
 public class TerraRadialBiomeGrid extends TerraBiomeGrid {
-    private static final int failNum = 0;
     private final double radiusSq;
     private final BiomeGrid internal;
     private CoordinatePerturb perturb;
@@ -40,6 +39,11 @@ public class TerraRadialBiomeGrid extends TerraBiomeGrid {
     }
 
     @Override
+    public boolean isEroded(int x, int z) {
+        return erode != null && erode.isEroded(x, z);
+    }
+
+    @Override
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x, zp = z;
         if(perturb != null && (phase.equals(GenerationPhase.PALETTE_APPLY) || phase.equals(GenerationPhase.POPULATE))) {
@@ -54,7 +58,7 @@ public class TerraRadialBiomeGrid extends TerraBiomeGrid {
         } else {
             b = (UserDefinedBiome) internal.getBiome(xp, zp, phase);
         }
-        if(erode != null && erode.isEroded(xp, zp)) return b.getErode();
+        if(isEroded(xp, zp)) return b.getErode();
         return b;
     }
 

@@ -1,6 +1,6 @@
 package com.dfsek.terra.math;
 
-import com.dfsek.terra.generation.Sampler;
+import com.dfsek.terra.generation.math.Sampler;
 
 public final class MathUtil {
     private static final double CONST = 0.55;

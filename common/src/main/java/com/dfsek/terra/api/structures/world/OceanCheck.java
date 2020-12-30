@@ -19,7 +19,7 @@ public class OceanCheck extends SpawnCheck {
         UserDefinedBiome b = (UserDefinedBiome) tw.getGrid().getBiome(x, z, GenerationPhase.POPULATE);
         BiomeTemplate c = b.getConfig();
         if(y > c.getSeaLevel()) return false;
-        double elevation = ((WorldGenerator) b.getGenerator()).getElevation(x, z);
-        return b.getGenerator().getNoise(world, x, y, z) + elevation <= 0;
+        double elevation = ((WorldGenerator) b.getGenerator(world)).getElevation(x, z);
+        return b.getGenerator(world).getNoise(x, y, z) + elevation <= 0;
     }
 }

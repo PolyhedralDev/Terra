@@ -1,7 +1,6 @@
 package com.dfsek.terra.generation.config;
 
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
@@ -85,7 +84,7 @@ public class WorldGenerator implements Generator {
     }
 
     @Override
-    public synchronized double getNoise(World world, int x, int y, int z) {
+    public synchronized double getNoise(int x, int y, int z) {
         xVar.setValue(x);
         yVar.setValue(y);
         zVar.setValue(z);

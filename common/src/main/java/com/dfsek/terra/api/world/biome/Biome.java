@@ -21,14 +21,5 @@ public interface Biome {
      *
      * @return BiomeTerrain - The terrain generation instance.
      */
-    Generator getGenerator();
-
-    /**
-     * Gets the BiomeTerrain instance used to generate the biome in this world.
-     *
-     * @return BiomeTerrain - The terrain generation instance.
-     */
-    default Generator getGenerator(World w) {
-        return getGenerator();
-    }
+    Generator getGenerator(World w);
 }

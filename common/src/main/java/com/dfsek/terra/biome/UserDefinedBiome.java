@@ -37,16 +37,6 @@ public class UserDefinedBiome implements Biome {
         return vanilla;
     }
 
-    /**
-     * Gets the Generator instance used to generate the biome.
-     *
-     * @return Generator - The terrain generation instance.
-     */
-    @Override
-    public Generator getGenerator() {
-        return gen.build(0);
-    }
-
 
     public String getID() {
         return id;

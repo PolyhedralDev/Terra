@@ -27,6 +27,8 @@ public abstract class TerraBiomeGrid extends BiomeGrid {
         RADIAL, STANDARD
     }
 
+    public abstract boolean isEroded(int x, int z);
+
     public static final class TerraBiomeGridBuilder {
         private final long seed;
         private final ConfigPack config;

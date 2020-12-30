@@ -1,7 +1,6 @@
 package com.dfsek.terra.generation;
 
 import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.math.interpolation.ChunkInterpolator3;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -23,6 +22,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.generation.math.Sampler;
 import com.dfsek.terra.util.PaletteUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -86,20 +86,12 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.world.biome.BiomeGrid grid = tw.getGrid();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
-            ChunkInterpolator3 interp;
             try(ProfileFuture ignored = tw.getProfiler().measure("ChunkBaseGenTime")) {
-                interp = new ChunkInterpolator3(world, chunkX, chunkZ, tw.getGrid(), 16);
-
                 if(!tw.isSafe()) return chunk;
                 int xOrig = (chunkX << 4);
                 int zOrig = (chunkZ << 4);
 
-                ElevationInterpolator elevationInterpolator;
-                try(ProfileFuture ignored1 = tw.getProfiler().measure("ElevationTime")) {
-                    elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid(), 4);
-                }
-
-                Sampler sampler = new Sampler(interp, elevationInterpolator);
+                Sampler sampler = new Sampler(chunkX, chunkZ, tw.getGrid(), world, 4, 8);
 
                 for(byte x = 0; x < 16; x++) {
                     for(byte z = 0; z < 16; z++) {

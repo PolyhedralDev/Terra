@@ -13,7 +13,6 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 
 public class TerraStandardBiomeGrid extends TerraBiomeGrid {
-    private static final int failNum = 0;
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
 
@@ -34,6 +33,11 @@ public class TerraStandardBiomeGrid extends TerraBiomeGrid {
     }
 
     @Override
+    public boolean isEroded(int x, int z) {
+        return erode != null && erode.isEroded(x, z);
+    }
+
+    @Override
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x, zp = z;
         if(perturb != null && (phase.equals(GenerationPhase.PALETTE_APPLY) || phase.equals(GenerationPhase.POPULATE))) {
@@ -43,9 +47,10 @@ public class TerraStandardBiomeGrid extends TerraBiomeGrid {
         }
 
         UserDefinedBiome b = (UserDefinedBiome) zone.getGrid(xp, zp).getBiome(xp, zp, phase);
-        if(erode != null && erode.isEroded(xp, zp)) return b.getErode();
+        if(isEroded(xp, zp)) return b.getErode();
         return b;
     }
+
 
     @Override
     public Biome getBiome(Location l, GenerationPhase phase) {

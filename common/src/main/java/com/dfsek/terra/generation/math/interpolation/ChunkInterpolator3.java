@@ -1,9 +1,9 @@
-package com.dfsek.terra.api.math.interpolation;
+package com.dfsek.terra.generation.math.interpolation;
 
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
+import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import net.jafama.FastMath;
 
 /**
@@ -18,23 +18,23 @@ public class ChunkInterpolator3 {
     private final int smooth;
 
     /**
-     * Instantiates a 3D ChunkInterpolator at a pair of chunk coordinates, with a BiomeGrid and FastNoiseLite instance.
+     * Instantiates a 3D ChunkInterpolator at a pair of chunk coordinates.
      *
      * @param chunkX X coordinate of the chunk.
      * @param chunkZ Z coordinate of the chunk.
      * @param grid   BiomeGrid to use for noise fetching.
      */
-    public ChunkInterpolator3(World w, int chunkX, int chunkZ, BiomeGrid grid, int smooth) {
+    public ChunkInterpolator3(World w, int chunkX, int chunkZ, TerraBiomeGrid grid, int smooth) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         this.smooth = smooth;
 
-
         for(int x = -1; x < 6; x++) {
             for(int z = -1; z < 6; z++) {
-                gens[x + 1][z + 1] = grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator();
+                gens[x + 1][z + 1] = grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator(w);
             }
         }
+
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
                 needsBiomeInterp[x][z] = compareGens(x + 1, z + 1);
@@ -44,7 +44,7 @@ public class ChunkInterpolator3 {
         for(byte x = -1; x < 6; x++) {
             for(byte z = -1; z < 6; z++) {
                 for(int y = 0; y < 65; y++) {
-                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise(w, (x * smooth) + xOrigin, y << 2, (z * smooth) + zOrigin);
+                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise((x * smooth) + xOrigin, y << 2, (z * smooth) + zOrigin);
                 }
             }
         }
