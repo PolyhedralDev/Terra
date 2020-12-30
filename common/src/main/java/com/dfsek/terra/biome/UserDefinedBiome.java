@@ -2,19 +2,16 @@ package com.dfsek.terra.biome;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.biome.Decorator;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.generation.UserDefinedDecorator;
 
 /**
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements Biome {
     private final GeneratorBuilder gen;
-    private final UserDefinedDecorator decorator;
     private final com.dfsek.terra.api.platform.world.Biome vanilla;
     private final String id;
     private final BiomeTemplate config;
@@ -22,9 +19,8 @@ public class UserDefinedBiome implements Biome {
     private UserDefinedBiome erode;
 
 
-    public UserDefinedBiome(com.dfsek.terra.api.platform.world.Biome vanilla, UserDefinedDecorator dec, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
+    public UserDefinedBiome(com.dfsek.terra.api.platform.world.Biome vanilla, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
         this.vanilla = vanilla;
-        this.decorator = dec;
         this.gen = gen;
         this.id = config.getID();
         this.config = config;
@@ -51,16 +47,6 @@ public class UserDefinedBiome implements Biome {
         return gen.build(0);
     }
 
-
-    /**
-     * Returns the Decorator instance containing information about the population in the biome.
-     *
-     * @return Decorator - the Decorator instance.
-     */
-    @Override
-    public Decorator getDecorator() {
-        return decorator;
-    }
 
     public String getID() {
         return id;

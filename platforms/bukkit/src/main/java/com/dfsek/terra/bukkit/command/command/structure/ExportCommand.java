@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -59,6 +60,7 @@ public class ExportCommand extends PlayerCommand {
         for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
+                    String data;
                     Block block = new Location(l1.getWorld(), x, y, z).getBlock();
                     if(block.getType().equals(Material.STRUCTURE_VOID)) continue;
                     scriptBuilder.append("block(").append(x - l1.getBlockX() - centerX).append(", y + ").append(y - l1.getBlockY() - centerY).append(", ").append(z - l1.getBlockZ() - centerZ).append(", ")
@@ -67,12 +69,17 @@ public class ExportCommand extends PlayerCommand {
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]")) {
-                            scriptBuilder.append(Bukkit.createBlockData(sign.getLine(2) + sign.getLine(3)).getAsString(false));
-                        } else scriptBuilder.append(block.getBlockData().getAsString(false));
+                            data = sign.getLine(2) + sign.getLine(3);
+                            BlockData data1 = Bukkit.createBlockData(sign.getLine(2) + sign.getLine(3));
+                            if(data1.getMaterial().equals(Material.STRUCTURE_VOID)) continue;
+                            scriptBuilder.append(data1.getAsString(false));
+                        } else {
+                            data = block.getBlockData().getAsString(false);
+                        }
                     } else {
-                        scriptBuilder.append(block.getBlockData().getAsString(false));
+                        data = block.getBlockData().getAsString(false);
                     }
-                    scriptBuilder.append("\");\n");
+                    scriptBuilder.append(data).append("\");\n");
                 }
             }
         }

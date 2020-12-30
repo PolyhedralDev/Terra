@@ -5,7 +5,6 @@ package com.dfsek.terra.api.math.interpolation;
  */
 public class Interpolator3 {
     private final double _000, _100, _010, _110, _001, _101, _011, _111;
-    private final Interpolator.Type type;
 
     /**
      * Constructs an interpolator with given values as vertices of a unit cube.
@@ -20,7 +19,7 @@ public class Interpolator3 {
      */
     public Interpolator3(double _000, double _100,
                          double _010, double _110, double _001, double _101,
-                         double _011, double _111, Interpolator.Type type) {
+                         double _011, double _111) {
         this._000 = _000;
         this._001 = _001;
         this._010 = _010;
@@ -29,12 +28,11 @@ public class Interpolator3 {
         this._101 = _101;
         this._110 = _110;
         this._111 = _111;
-        this.type = type;
     }
 
     public double trilerp(double x, double y, double z) {
-        Interpolator top = new Interpolator(_000, _010, _001, _011, type);
-        Interpolator bottom = new Interpolator(_100, _110, _101, _111, type);
-        return Interpolator.lerp(x, top.bilerp(y, z), bottom.bilerp(y, z), type);
+        Interpolator top = new Interpolator(_000, _010, _001, _011);
+        Interpolator bottom = new Interpolator(_100, _110, _101, _111);
+        return Interpolator.lerp(x, top.bilerp(y, z), bottom.bilerp(y, z));
     }
 }

@@ -17,6 +17,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.palette.SinglePalette;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Random;
 
-public class MasterChunkGenerator implements com.dfsek.terra.api.world.generation.TerraChunkGenerator {
+public class MasterChunkGenerator implements TerraChunkGenerator {
 
 
     private final ConfigPack configPack;
@@ -95,7 +96,7 @@ public class MasterChunkGenerator implements com.dfsek.terra.api.world.generatio
 
                 ElevationInterpolator elevationInterpolator;
                 try(ProfileFuture ignored1 = tw.getProfiler().measure("ElevationTime")) {
-                    elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid());
+                    elevationInterpolator = new ElevationInterpolator(chunkX, chunkZ, tw.getGrid(), 8);
                 }
 
                 Sampler sampler = new Sampler(interp, elevationInterpolator);

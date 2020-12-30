@@ -6,33 +6,35 @@ import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.WorldGenerator;
 
 public class ElevationInterpolator {
-    private final WorldGenerator[][] gens = new WorldGenerator[10][10];
+    private final WorldGenerator[][] gens;
     private final double[][] values = new double[18][18];
     private final int xOrigin;
     private final int zOrigin;
     private final TerraBiomeGrid grid;
+    private final int smooth;
 
-    public ElevationInterpolator(int chunkX, int chunkZ, TerraBiomeGrid grid) {
+    public ElevationInterpolator(int chunkX, int chunkZ, TerraBiomeGrid grid, int smooth) {
         this.xOrigin = chunkX << 4;
         this.zOrigin = chunkZ << 4;
         this.grid = grid;
+        this.smooth = smooth;
+        this.gens = new WorldGenerator[10][10];
 
         for(int x = -2; x < 8; x++) {
             for(int z = -2; z < 8; z++) {
-                gens[x + 2][z + 2] = (WorldGenerator) grid.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), GenerationPhase.BASE).getGenerator();
+                gens[x + 2][z + 2] = (WorldGenerator) grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator();
             }
         }
 
         for(byte x = -1; x <= 16; x++) {
             for(byte z = -1; z <= 16; z++) {
                 WorldGenerator generator = getGenerator(x, z);
-                if(compareGens((x / 4), (z / 4)) && generator.interpolateElevation()) {
-                    Interpolator interpolator = new Interpolator(biomeAvg(x / 4, z / 4),
-                            biomeAvg((x / 4) + 1, z / 4),
-                            biomeAvg(x / 4, (z / 4) + 1),
-                            biomeAvg((x / 4) + 1, (z / 4) + 1),
-                            Interpolator.Type.LINEAR);
-                    values[x + 1][z + 1] = interpolator.bilerp((double) (x % 4) / 4, (double) (z % 4) / 4);
+                if(compareGens((x / smooth), (z / smooth), generator) && generator.interpolateElevation()) {
+                    Interpolator interpolator = new Interpolator(biomeAvg(x / smooth, z / smooth),
+                            biomeAvg((x / smooth) + 1, z / smooth),
+                            biomeAvg(x / smooth, (z / smooth) + 1),
+                            biomeAvg((x / smooth) + 1, (z / smooth) + 1));
+                    values[x + 1][z + 1] = interpolator.bilerp((double) (x % smooth) / smooth, (double) (z % smooth) / smooth);
                 } else values[x + 1][z + 1] = elevate(generator, xOrigin + x, zOrigin + z);
             }
         }
@@ -46,9 +48,7 @@ public class ElevationInterpolator {
         return gens[x + 2][z + 2];
     }
 
-    private boolean compareGens(int x, int z) {
-        WorldGenerator comp = getStoredGen(x, z);
-
+    private boolean compareGens(int x, int z, WorldGenerator comp) {
         for(int xi = x - 2; xi <= x + 2; xi++) {
             for(int zi = z - 2; zi <= z + 2; zi++) {
                 if(!comp.equals(getStoredGen(xi, zi))) return true;
@@ -58,15 +58,15 @@ public class ElevationInterpolator {
     }
 
     private double biomeAvg(int x, int z) {
-        return (elevate(getStoredGen(x + 1, z), (x << 2) + 4 + xOrigin, (z << 2) + zOrigin)
-                + elevate(getStoredGen(x - 1, z), (x << 2) - 4 + xOrigin, (z << 2) + zOrigin)
-                + elevate(getStoredGen(x, z + 1), (x << 2) + xOrigin, (z << 2) + 4 + zOrigin)
-                + elevate(getStoredGen(x, z - 1), (x << 2) + xOrigin, (z << 2) - 4 + zOrigin)
-                + elevate(getStoredGen(x, z), (x << 2) + xOrigin, (z << 2) + zOrigin)
-                + elevate(getStoredGen(x - 1, z - 1), (x << 2) + xOrigin, (z << 2) + zOrigin)
-                + elevate(getStoredGen(x - 1, z + 1), (x << 2) + xOrigin, (z << 2) + zOrigin)
-                + elevate(getStoredGen(x + 1, z - 1), (x << 2) + xOrigin, (z << 2) + zOrigin)
-                + elevate(getStoredGen(x + 1, z + 1), (x << 2) + xOrigin, (z << 2) + zOrigin)) / 9D;
+        return (elevate(getStoredGen(x + 1, z), (x * smooth) + smooth + xOrigin, (z * smooth) + zOrigin)
+                + elevate(getStoredGen(x - 1, z), (x * smooth) - smooth + xOrigin, (z * smooth) + zOrigin)
+                + elevate(getStoredGen(x, z + 1), (x * smooth) + xOrigin, (z * smooth) + smooth + zOrigin)
+                + elevate(getStoredGen(x, z - 1), (x * smooth) + xOrigin, (z * smooth) - smooth + zOrigin)
+                + elevate(getStoredGen(x, z), (x * smooth) + xOrigin, (z * smooth) + zOrigin)
+                + elevate(getStoredGen(x - 1, z - 1), (x * smooth) - smooth + xOrigin, (z * smooth) - smooth + zOrigin)
+                + elevate(getStoredGen(x - 1, z + 1), (x * smooth) - smooth + xOrigin, (z * smooth) + smooth + zOrigin)
+                + elevate(getStoredGen(x + 1, z - 1), (x * smooth) + smooth + xOrigin, (z * smooth) - smooth + zOrigin)
+                + elevate(getStoredGen(x + 1, z + 1), (x * smooth) + smooth + xOrigin, (z * smooth) + smooth + zOrigin)) / 9D;
     }
 
     private double elevate(WorldGenerator g, int x, int z) {

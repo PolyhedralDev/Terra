@@ -15,9 +15,6 @@ public class ChunkInterpolator3 {
     private final Generator[][] gens = new Generator[7][7];
     private final boolean[][] needsBiomeInterp = new boolean[5][5];
     private final double[][][] noiseStorage = new double[7][7][65];
-    private final int xOrigin;
-    private final int zOrigin;
-    private final World w;
 
     /**
      * Instantiates a 3D ChunkInterpolator at a pair of chunk coordinates, with a BiomeGrid and FastNoiseLite instance.
@@ -27,9 +24,8 @@ public class ChunkInterpolator3 {
      * @param grid   BiomeGrid to use for noise fetching.
      */
     public ChunkInterpolator3(World w, int chunkX, int chunkZ, BiomeGrid grid) {
-        this.xOrigin = chunkX << 4;
-        this.zOrigin = chunkZ << 4;
-        this.w = w;
+        int xOrigin = chunkX << 4;
+        int zOrigin = chunkZ << 4;
 
 
         for(int x = -1; x < 6; x++) {
@@ -39,11 +35,17 @@ public class ChunkInterpolator3 {
         }
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                needsBiomeInterp[x][z] = compareGens(x+1, z+1);
+                needsBiomeInterp[x][z] = compareGens(x + 1, z + 1);
             }
         }
 
-        storeNoise();
+        for(byte x = -1; x < 6; x++) {
+            for(byte z = -1; z < 6; z++) {
+                for(int y = 0; y < 65; y++) {
+                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise(w, (x << 2) + xOrigin, y << 2, (z << 2) + zOrigin);
+                }
+            }
+        }
 
         for(byte x = 0; x < 4; x++) {
             for(byte z = 0; z < 4; z++) {
@@ -56,7 +58,7 @@ public class ChunkInterpolator3 {
                             biomeAvg(x, y, z + 1),
                             biomeAvg(x + 1, y, z + 1),
                             biomeAvg(x, y + 1, z + 1),
-                            biomeAvg(x + 1, y + 1, z + 1), gens[x+1][z+1].getInterpolationType());
+                            biomeAvg(x + 1, y + 1, z + 1));
                 }
             }
         }
@@ -79,15 +81,6 @@ public class ChunkInterpolator3 {
         if(!comp.equals(gens[x+1][z-1])) return true;
 
         return !comp.equals(gens[x - 1][z + 1]);
-    }
-    private void storeNoise() {
-        for(byte x = - 1; x < 6; x++) {
-            for(byte z = - 1; z < 6; z++) {
-                for(int y = 0; y < 64; y++) {
-                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise(w, (x << 2) + xOrigin, y << 2, (z << 2) + zOrigin);
-                }
-            }
-        }
     }
 
     private double biomeAvg(int x, int y, int z) {

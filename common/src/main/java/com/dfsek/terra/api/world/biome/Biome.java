@@ -24,13 +24,6 @@ public interface Biome {
     Generator getGenerator();
 
     /**
-     * Returns the Decorator instance containing information about the population in the biome.
-     *
-     * @return Decorator - the Decorator instance.
-     */
-    Decorator getDecorator();
-
-    /**
      * Gets the BiomeTerrain instance used to generate the biome in this world.
      *
      * @return BiomeTerrain - The terrain generation instance.

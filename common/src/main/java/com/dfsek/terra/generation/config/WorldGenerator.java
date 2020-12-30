@@ -1,6 +1,5 @@
 package com.dfsek.terra.generation.config;
 
-import com.dfsek.terra.api.math.interpolation.Interpolator;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
@@ -17,7 +16,7 @@ import parsii.tokenizer.ParseException;
 
 import java.util.Map;
 
-public class WorldGenerator extends Generator {
+public class WorldGenerator implements Generator {
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final PaletteHolder palettes;
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
@@ -33,7 +32,6 @@ public class WorldGenerator extends Generator {
     private final Variable elevationZVar;
     private final boolean elevationInterpolation;
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean preventSmooth, boolean elevationInterpolation) {
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
@@ -115,11 +113,6 @@ public class WorldGenerator extends Generator {
     @Override
     public boolean useMinimalInterpolation() {
         return preventSmooth;
-    }
-
-    @Override
-    public Interpolator.Type getInterpolationType() {
-        return Interpolator.Type.LINEAR;
     }
 
     public boolean interpolateElevation() {
