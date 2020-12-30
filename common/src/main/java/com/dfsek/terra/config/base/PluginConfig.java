@@ -42,6 +42,10 @@ public class PluginConfig implements ConfigTemplate {
     @Default
     private int structureCache = 128;
 
+    @Value("cache.checks")
+    @Default
+    private int checkCache = 128;
+
     @Value("dump-default")
     @Default
     private boolean dumpDefaultConfig = true;
@@ -89,5 +93,9 @@ public class PluginConfig implements ConfigTemplate {
 
     public int getStructureCache() {
         return structureCache;
+    }
+
+    public int getCheckCache() {
+        return checkCache;
     }
 }
