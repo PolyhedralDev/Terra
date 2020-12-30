@@ -68,7 +68,7 @@ public class ExportCommand extends PlayerCommand {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]")) {
                             scriptBuilder.append(Bukkit.createBlockData(sign.getLine(2) + sign.getLine(3)).getAsString(false));
-                        }
+                        } else scriptBuilder.append(block.getBlockData().getAsString(false));
                     } else {
                         scriptBuilder.append(block.getBlockData().getAsString(false));
                     }
