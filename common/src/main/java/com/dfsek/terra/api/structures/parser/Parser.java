@@ -187,7 +187,8 @@ public class Parser {
         }
     }
 
-    private ForKeyword parseForLoop(TokenHolder tokens, Map<String, Variable<?>> variableMap, Position start) throws ParseException {
+    private ForKeyword parseForLoop(TokenHolder tokens, Map<String, Variable<?>> old, Position start) throws ParseException {
+        Map<String, Variable<?>> variableMap = new HashMap<>(old);
         Token f = tokens.get();
         ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
         Item<?> initializer;

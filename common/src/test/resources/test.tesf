@@ -22,6 +22,10 @@ for(num i = 0; i < 5; i = i + 1) {
     test("i = " + i, iterator);
 }
 
+for(num i = 0; i < 5; i = i + 1) {
+    test("i = " + i, iterator);
+}
+
 for(num j = 0; j < 5; j = j + 1) test("single statement j = " + j, iterator);
 
 if(4 + 2 == 2 + 4) {
