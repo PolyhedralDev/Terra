@@ -1,5 +1,12 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
+import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
+import com.dfsek.terra.api.structures.script.functions.CheckFunction;
+import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
+import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import org.bukkit.Location;
@@ -23,14 +30,13 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         int x = p.getBlockX();
         int y = p.getBlockY();
         int z = p.getBlockZ();
-        /*
-        boolean air = StructureSpawnRequirement.AIR.getInstance(world, (TerraBukkitPlugin) getMain()).matches(x, y, z);
-        boolean ground = StructureSpawnRequirement.LAND.getInstance(world, (TerraBukkitPlugin) getMain()).matches(x, y, z);
-        boolean sea = StructureSpawnRequirement.OCEAN.getInstance(world, (TerraBukkitPlugin) getMain()).matches(x, y, z);
+        Position dummy = new Position(0, 0);
+        com.dfsek.terra.api.platform.world.World w = new BukkitWorld(world);
+        String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), getMain().getWorld(w).getConfig().getCheckCache(), dummy).apply(new StructureBuffer(
+                new com.dfsek.terra.api.math.vector.Location(w, x, y, z)
+        ), Rotation.NONE, new FastRandom(), 0);
 
-        sender.sendMessage("AIR: " + air + "\nLAND: " + ground + "\nOCEAN: " + sea);
-
-         */
+        sender.sendMessage("Found: " + check);
         return true;
     }
 

@@ -91,10 +91,12 @@ public class ConfigPack implements LoaderRegistrar {
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
 
+    private final CheckCache checkCache;
 
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
+        this.checkCache = new CheckCache(main);
         floraRegistry = new FloraRegistry(main);
         paletteRegistry = new PaletteRegistry(main);
         treeRegistry = new TreeRegistry(main);
@@ -116,6 +118,7 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
+        this.checkCache = new CheckCache(main);
         floraRegistry = new FloraRegistry(main);
         paletteRegistry = new PaletteRegistry(main);
         treeRegistry = new TreeRegistry(main);
@@ -149,7 +152,6 @@ public class ConfigPack implements LoaderRegistrar {
         abstractConfigLoader
                 .registerLoader(LootTable.class, new LootTableLoader(loader, main)); // These loaders need access to the Loader instance to get files.
 
-        CheckCache checkCache = new CheckCache(main);
         loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
             StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, checkCache);
             scriptRegistry.add(structureScript.getId(), structureScript);
@@ -257,5 +259,9 @@ public class ConfigPack implements LoaderRegistrar {
 
     public BiomeRegistry getBiomeRegistry() {
         return biomeRegistry;
+    }
+
+    public CheckCache getCheckCache() {
+        return checkCache;
     }
 }

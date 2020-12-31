@@ -9,7 +9,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import java.util.List;
 import java.util.Random;
 
-public class FunctionBlock<T> implements Item<Block.ReturnInfo<T>> {
+public class FunctionBlock<T> implements Item<T> {
     private final List<Item<?>> items;
     private final Position position;
     private final T defaultVal;
@@ -26,15 +26,15 @@ public class FunctionBlock<T> implements Item<Block.ReturnInfo<T>> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public synchronized Block.ReturnInfo<T> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public synchronized T apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         for(Item<?> item : items) {
             Object result = item.apply(buffer, rotation, random, recursions);
             if(result instanceof Block.ReturnInfo) {
                 Block.ReturnInfo<T> level = (Block.ReturnInfo<T>) result;
-                if(!level.getLevel().equals(Block.ReturnLevel.NONE)) return level;
+                if(level.getLevel().equals(Block.ReturnLevel.RETURN)) return level.getData();
             }
         }
-        return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, defaultVal);
+        return defaultVal;
     }
 
     @Override
