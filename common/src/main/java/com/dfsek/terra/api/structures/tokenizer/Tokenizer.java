@@ -18,23 +18,14 @@ public class Tokenizer {
         reader = new Lookahead(new StringReader(data + '\0'));
     }
 
-    public boolean hasNext() {
-
-        int whiteEnd = 0;
-
-        while(!reader.next(whiteEnd).isEOF() && reader.next(whiteEnd).isWhitespace()) whiteEnd++; // Consume whitespace.
-
-        return !reader.next(whiteEnd).isEOF();
-    }
-
     public Token fetch() throws TokenizerException {
         while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume();
-        if(reader.current().isEOF()) return null; // EOF
 
-        if(reader.matches("//", true)) skipLine(); // Skip line if comment
+        while(reader.matches("//", true)) skipLine(); // Skip line if comment
 
         if(reader.matches("/*", true)) skipTo("*/"); // Skip multi line comment
 
+        if(reader.current().isEOF()) return null; // EOF
 
         if(reader.matches("==", true))
             return new Token("==", Token.Type.EQUALS_OPERATOR, new Position(reader.getLine(), reader.getIndex()));

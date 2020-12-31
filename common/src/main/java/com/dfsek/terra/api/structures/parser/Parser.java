@@ -87,7 +87,11 @@ public class Parser {
 
         TokenHolder tokens = new TokenHolder();
         try {
-            while(tokenizer.hasNext()) tokens.add(tokenizer.fetch());
+            Token t = tokenizer.fetch();
+            while(t != null) {
+                tokens.add(t);
+                t = tokenizer.fetch();
+            }
         } catch(TokenizerException e) {
             throw new ParseException("Failed to tokenize input", new Position(0, 0), e);
         }
