@@ -158,9 +158,7 @@ public class Parser {
 
         while(tokens.hasNext() && tokens.get().getType().equals(Token.Type.ELSE)) {
             tokens.consume(); // Consume else.
-            System.out.println("int: " + tokens.get());
             if(tokens.get().getType().equals(Token.Type.IF_STATEMENT)) {
-                System.out.println("else if");
                 tokens.consume(); // Consume if.
                 Returnable<?> elseCondition = parseExpression(tokens, true, variableMap);
                 ParserUtil.checkReturnType(elseCondition, Returnable.ReturnType.BOOLEAN);
