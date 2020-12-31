@@ -7,9 +7,9 @@ num testVar = 3.4;
 bool boolean = true;
 str stringVar = "hello!";
 
-num precedence = 2 + 2 * 2;
+num precedence = (3 + 2) * 2 + 3;
 test("precedence: " + precedence, 2);
-num precedence2 = 2 * 2 + 2;
+num precedence2 = 3 * 2 + 2 * 3;
 test("precedence 2: " + precedence2, 2);
 
 bool iftest = false;
@@ -20,6 +20,9 @@ num iterator = 0;
 
 for(num i = 0; i < 5; i = i + 1) {
     test("i = " + i, iterator);
+    if(i > 1 + 1) {
+        test("more than 2", iterator);
+    }
 }
 
 for(num i = 0; i < 5; i = i + 1) {

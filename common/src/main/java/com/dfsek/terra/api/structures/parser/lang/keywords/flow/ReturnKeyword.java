@@ -8,7 +8,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.Random;
 
-public class ReturnKeyword implements Keyword<Block.ReturnLevel> {
+public class ReturnKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Position position;
 
     public ReturnKeyword(Position position) {
@@ -16,8 +16,8 @@ public class ReturnKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        return Block.ReturnLevel.RETURN;
+    public Block.ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        return new Block.ReturnInfo<>(Block.ReturnLevel.RETURN, null);
     }
 
     @Override

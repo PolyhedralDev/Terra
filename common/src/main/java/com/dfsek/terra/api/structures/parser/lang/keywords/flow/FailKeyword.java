@@ -8,7 +8,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.Random;
 
-public class FailKeyword implements Keyword<Block.ReturnLevel> {
+public class FailKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Position position;
 
     public FailKeyword(Position position) {
@@ -16,8 +16,8 @@ public class FailKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        return Block.ReturnLevel.FAIL;
+    public Block.ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+        return new Block.ReturnInfo<>(Block.ReturnLevel.FAIL, null);
     }
 
     @Override

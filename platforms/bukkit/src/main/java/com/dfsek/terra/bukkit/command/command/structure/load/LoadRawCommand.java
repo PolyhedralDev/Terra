@@ -40,10 +40,10 @@ public class LoadRawCommand extends LoadCommand implements DebugCommand {
         long t = System.nanoTime();
         FastRandom chunk = PopulationUtil.getRandom(new BukkitChunk(sender.getLocation().getChunk()));
 
-        terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
+        boolean success = terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
         long l = System.nanoTime() - t;
 
-        sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");
+        sender.sendMessage("Took " + ((double) l) / 1000000 + "ms. Success: " + success);
 
         return true;
     }
