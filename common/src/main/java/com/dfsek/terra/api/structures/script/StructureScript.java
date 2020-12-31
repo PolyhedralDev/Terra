@@ -17,6 +17,7 @@ import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
+import com.dfsek.terra.api.structures.world.CheckCache;
 import com.dfsek.terra.registry.ScriptRegistry;
 import org.apache.commons.io.IOUtils;
 
@@ -31,7 +32,7 @@ public class StructureScript {
     private final String id;
     private final LinkedHashMap<Location, StructureBuffer> cache;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry) {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, CheckCache cache) {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -39,7 +40,7 @@ public class StructureScript {
             throw new RuntimeException(e);
         }
         parser.addFunction("block", new BlockFunctionBuilder(main))
-                .addFunction("check", new CheckFunctionBuilder(main))
+                .addFunction("check", new CheckFunctionBuilder(main, cache))
                 .addFunction("structure", new StructureFunctionBuilder(registry, main))
                 .addFunction("randomInt", new RandomFunctionBuilder())
                 .addFunction("recursions", new RecursionsFunctionBuilder())

@@ -6,20 +6,23 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.api.structures.world.CheckCache;
 
 import java.util.List;
 
 public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
     private final TerraPlugin main;
+    private final CheckCache cache;
 
-    public CheckFunctionBuilder(TerraPlugin main) {
+    public CheckFunctionBuilder(TerraPlugin main, CheckCache cache) {
         this.main = main;
+        this.cache = cache;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public CheckFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
-        return new CheckFunction(main, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1), (Returnable<Number>) argumentList.get(2), position);
+        return new CheckFunction(main, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1), (Returnable<Number>) argumentList.get(2), cache, position);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.loot.LootTable;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.structures.world.CheckCache;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -148,8 +149,9 @@ public class ConfigPack implements LoaderRegistrar {
         abstractConfigLoader
                 .registerLoader(LootTable.class, new LootTableLoader(loader, main)); // These loaders need access to the Loader instance to get files.
 
+        CheckCache checkCache = new CheckCache(main);
         loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
-            StructureScript structureScript = new StructureScript(stream, main, scriptRegistry);
+            StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, checkCache);
             scriptRegistry.add(structureScript.getId(), structureScript);
         })).close();
 
