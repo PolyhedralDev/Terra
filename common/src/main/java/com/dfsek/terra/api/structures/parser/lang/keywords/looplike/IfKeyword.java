@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class IfKeyword implements Keyword<Block.ReturnLevel> {
+public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
     private final Returnable<Boolean> statement;
     private final Position position;
@@ -27,7 +27,7 @@ public class IfKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public Block.ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         if(statement.apply(buffer, rotation, random, recursions)) return conditional.apply(buffer, rotation, random, recursions);
         else {
             for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
@@ -37,7 +37,7 @@ public class IfKeyword implements Keyword<Block.ReturnLevel> {
             }
             if(elseBlock != null) return elseBlock.apply(buffer, rotation, random, recursions);
         }
-        return Block.ReturnLevel.NONE;
+        return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }
 
 

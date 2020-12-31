@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.structures.parser.lang.keywords;
+package com.dfsek.terra.api.structures.parser.lang.keywords.flow;
 
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;

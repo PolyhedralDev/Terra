@@ -71,16 +71,16 @@ public class StructureScript {
      */
     public boolean execute(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        Block.ReturnLevel level = block.apply(buffer, rotation, random, 0);
+        Block.ReturnInfo<?> level = block.apply(buffer, rotation, random, 0);
         buffer.paste();
-        return !level.equals(Block.ReturnLevel.FAIL);
+        return !level.getLevel().equals(Block.ReturnLevel.FAIL);
     }
 
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
         StructureBuffer buffer = cache.computeIfAbsent(location, loc -> {
             StructureBuffer buf = new StructureBuffer(loc);
-            Block.ReturnLevel level = block.apply(buf, rotation, random, 0);
-            buf.setSucceeded(!level.equals(Block.ReturnLevel.FAIL));
+            Block.ReturnInfo<?> level = block.apply(buf, rotation, random, 0);
+            buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
             return buf;
         });
         buffer.paste(chunk);

@@ -14,10 +14,10 @@ import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.parser.lang.functions.builtin.AbsFunction;
 import com.dfsek.terra.api.structures.parser.lang.functions.builtin.PowFunction;
 import com.dfsek.terra.api.structures.parser.lang.functions.builtin.SqrtFunction;
-import com.dfsek.terra.api.structures.parser.lang.keywords.BreakKeyword;
-import com.dfsek.terra.api.structures.parser.lang.keywords.ContinueKeyword;
-import com.dfsek.terra.api.structures.parser.lang.keywords.FailKeyword;
-import com.dfsek.terra.api.structures.parser.lang.keywords.ReturnKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.flow.BreakKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.flow.ContinueKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.flow.FailKeyword;
+import com.dfsek.terra.api.structures.parser.lang.keywords.flow.ReturnKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.looplike.ForKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.looplike.IfKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.looplike.WhileKeyword;
@@ -188,7 +188,7 @@ public class Parser {
     }
 
     private ForKeyword parseForLoop(TokenHolder tokens, Map<String, Variable<?>> old, Position start) throws ParseException {
-        Map<String, Variable<?>> variableMap = new HashMap<>(old);
+        Map<String, Variable<?>> variableMap = new HashMap<>(old); // New scope
         Token f = tokens.get();
         ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
         Item<?> initializer;

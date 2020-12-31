@@ -7,7 +7,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import java.util.List;
 import java.util.Random;
 
-public class Block implements Item<Block.ReturnLevel> {
+public class Block implements Item<Block.ReturnInfo<?>> {
     private final List<Item<?>> items;
     private final Position position;
 
@@ -21,20 +21,38 @@ public class Block implements Item<Block.ReturnLevel> {
     }
 
     @Override
-    public synchronized ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public synchronized ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         for(Item<?> item : items) {
             Object result = item.apply(buffer, rotation, random, recursions);
-            if(result instanceof ReturnLevel) {
-                ReturnLevel level = (ReturnLevel) result;
-                if(!level.equals(ReturnLevel.NONE)) return level;
+            if(result instanceof ReturnInfo) {
+                ReturnInfo<?> level = (ReturnInfo<?>) result;
+                if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
             }
         }
-        return ReturnLevel.NONE;
+        return new ReturnInfo<>(ReturnLevel.NONE, null);
     }
 
     @Override
     public Position getPosition() {
         return position;
+    }
+
+    public static class ReturnInfo<T> {
+        private final ReturnLevel level;
+        private final T data;
+
+        public ReturnInfo(ReturnLevel level, T data) {
+            this.level = level;
+            this.data = data;
+        }
+
+        public ReturnLevel getLevel() {
+            return level;
+        }
+
+        public T getData() {
+            return data;
+        }
     }
 
     public enum ReturnLevel {

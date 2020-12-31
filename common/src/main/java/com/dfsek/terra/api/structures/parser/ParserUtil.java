@@ -13,6 +13,7 @@ public class ParserUtil {
 
     private static final Map<Token.Type, List<Token.Type>> PRECEDENCE = new HashMap<>();
     private static final List<Token.Type> ARITHMETIC = Arrays.asList(Token.Type.ADDITION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR, Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR);
+    private static final List<Token.Type> COMPARISON = Arrays.asList(Token.Type.EQUALS_OPERATOR, Token.Type.NOT_EQUALS_OPERATOR, Token.Type.LESS_THAN_OPERATOR, Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, Token.Type.GREATER_THAN_OPERATOR, Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR);
 
     static { // Setup precedence
         PRECEDENCE.put(Token.Type.ADDITION_OPERATOR, Arrays.asList(Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR));
@@ -23,6 +24,8 @@ public class ParserUtil {
         PRECEDENCE.put(Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, ARITHMETIC);
         PRECEDENCE.put(Token.Type.LESS_THAN_OPERATOR, ARITHMETIC);
         PRECEDENCE.put(Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, ARITHMETIC);
+        PRECEDENCE.put(Token.Type.BOOLEAN_AND, COMPARISON);
+        PRECEDENCE.put(Token.Type.BOOLEAN_OR, COMPARISON);
     }
 
     public static void checkType(Token token, Token.Type... expected) throws ParseException {

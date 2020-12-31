@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.structures.parser.lang.keywords;
+package com.dfsek.terra.api.structures.parser.lang.keywords.flow;
 
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
@@ -8,16 +8,16 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.Random;
 
-public class BreakKeyword implements Keyword<Block.ReturnLevel> {
+public class ReturnKeyword implements Keyword<Block.ReturnLevel> {
     private final Position position;
 
-    public BreakKeyword(Position position) {
+    public ReturnKeyword(Position position) {
         this.position = position;
     }
 
     @Override
     public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        return Block.ReturnLevel.BREAK;
+        return Block.ReturnLevel.RETURN;
     }
 
     @Override

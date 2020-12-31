@@ -9,7 +9,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.Random;
 
-public class WhileKeyword implements Keyword<Block.ReturnLevel> {
+public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
     private final Returnable<Boolean> statement;
     private final Position position;
@@ -21,13 +21,13 @@ public class WhileKeyword implements Keyword<Block.ReturnLevel> {
     }
 
     @Override
-    public Block.ReturnLevel apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public Block.ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         while(statement.apply(buffer, rotation, random, recursions)) {
-            Block.ReturnLevel level = conditional.apply(buffer, rotation, random, recursions);
-            if(level.equals(Block.ReturnLevel.BREAK)) break;
-            if(level.isReturnFast()) return level;
+            Block.ReturnInfo<?> level = conditional.apply(buffer, rotation, random, recursions);
+            if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
+            if(level.getLevel().isReturnFast()) return level;
         }
-        return Block.ReturnLevel.NONE;
+        return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }
 
     @Override
