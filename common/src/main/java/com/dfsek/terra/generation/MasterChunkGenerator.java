@@ -91,7 +91,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                 int xOrig = (chunkX << 4);
                 int zOrig = (chunkZ << 4);
 
-                Sampler sampler = new Sampler(chunkX, chunkZ, tw.getGrid(), world, 4, 8);
+                Sampler sampler = new Sampler(chunkX, chunkZ, tw.getGrid(), world, configPack.getTemplate().getElevationBlend(), configPack.getTemplate().getBaseBlend());
 
                 for(byte x = 0; x < 16; x++) {
                     for(byte z = 0; z < 16; z++) {

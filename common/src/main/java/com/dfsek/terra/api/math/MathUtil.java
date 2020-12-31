@@ -8,7 +8,9 @@ import java.util.Random;
 /**
  * Utility class for mathematical functions.
  */
-public class MathUtil {
+public final class MathUtil {
+    private static final double EPSILON = 0.1E-5;
+
     /**
      * Gets the standard deviation of an array of doubles.
      *
@@ -57,29 +59,13 @@ public class MathUtil {
     }
 
     /**
-     * Compute binary logarithm
+     * Compare 2 floating-point values with epsilon to account for rounding errors
      *
-     * @param bits Input
-     * @return Binary logarithm
+     * @param a Value 1
+     * @param b Value 2
+     * @return Whether these values are equal
      */
-    public static int binlog(int bits) {
-        int log = 0;
-        if((bits & 0xffff0000) != 0) {
-            bits >>>= 16;
-            log = 16;
-        }
-        if(bits >= 256) {
-            bits >>>= 8;
-            log += 8;
-        }
-        if(bits >= 16) {
-            bits >>>= 4;
-            log += 4;
-        }
-        if(bits >= 4) {
-            bits >>>= 2;
-            log += 2;
-        }
-        return log + (bits >>> 1);
+    public static boolean equals(double a, double b) {
+        return a == b || FastMath.abs(a - b) < EPSILON;
     }
 }

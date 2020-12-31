@@ -4,9 +4,11 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.image.ImageLoader;
+import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,16 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Value("blend.amplitude")
     @Default
     private double blendAmp = 4.0D;
+
+    @Value("blend.terrain.base")
+    @Default
+    private int baseBlend = 4;
+
+
+    @Value("blend.terrain.elevation")
+    @Default
+    private int elevationBlend = 4;
+
 
     @Value("erode.enable")
     @Default
@@ -243,12 +255,27 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
         return imageLoader;
     }
 
+    public int getBaseBlend() {
+        return baseBlend;
+    }
+
+    public int getElevationBlend() {
+        return elevationBlend;
+    }
+
     @Override
     public boolean validate() throws ValidationException {
         if(gridType.equals(TerraBiomeGrid.Type.RADIAL) && internalGrid == null)
             throw new ValidationException("No internal BiomeGrid specified");
         if(biomeZChannel.equals(biomeXChannel) || zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel))
             throw new ValidationException("2 objects share the same image channels: biome-x and biome-z");
+
+        if(!MathUtil.equals(FastMath.log(baseBlend) / FastMath.log(2d), FastMath.round(FastMath.log(baseBlend) / FastMath.log(2d)))) {
+            throw new ValidationException("Biome base blend value \"" + baseBlend + "\" is not a power of 2.");
+        }
+        if(!MathUtil.equals(FastMath.log(elevationBlend) / FastMath.log(2d), FastMath.round(FastMath.log(elevationBlend) / FastMath.log(2d)))) {
+            throw new ValidationException("Biome elevation blend value \"" + baseBlend + "\" is not a power of 2.");
+        }
         return true;
     }
 }
