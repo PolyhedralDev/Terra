@@ -18,10 +18,13 @@ bool truetest = false;
 
 num iterator = 0;
 
+
+
 for(num i = 0; i < 5; i = i + 1) {
     test("i = " + i, iterator);
     if(i > 1 + 1) {
         test("more than 2", iterator);
+        continue;
     }
 }
 
