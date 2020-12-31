@@ -7,6 +7,11 @@ num testVar = 3.4;
 bool boolean = true;
 str stringVar = "hello!";
 
+num precedence = 2 + 2 * 2;
+test("precedence: " + precedence, 2);
+num precedence2 = 2 * 2 + 2;
+test("precedence 2: " + precedence2, 2);
+
 bool iftest = false;
 
 bool truetest = false;
@@ -19,7 +24,9 @@ for(num i = 0; i < 5; i = i + 1) {
 
 for(num j = 0; j < 5; j = j + 1) test("single statement j = " + j, iterator);
 
-
+if(4 + 2 == 2 + 4) {
+    test("new thing " + 2, iterator);
+}
 
 while(iterator < 5) {
     test("always, even after " + 2, iterator);

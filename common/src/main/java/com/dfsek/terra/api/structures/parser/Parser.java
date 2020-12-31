@@ -286,7 +286,7 @@ public class Parser {
         Returnable<?> right = parseExpression(tokens, false, variableMap);
 
         Token other = tokens.get();
-        if(other.isBinaryOperator() && (other.getType().equals(Token.Type.MULTIPLICATION_OPERATOR) || other.getType().equals(Token.Type.DIVISION_OPERATOR))) {
+        if(ParserUtil.hasPrecedence(binaryOperator.getType(), other.getType())) {
             return assemble(left, parseBinaryOperation(right, tokens, variableMap), binaryOperator);
         } else if(other.isBinaryOperator()) {
             return parseBinaryOperation(assemble(left, right, binaryOperator), tokens, variableMap);

@@ -5,8 +5,26 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParserUtil {
+
+    private static final Map<Token.Type, List<Token.Type>> PRECEDENCE = new HashMap<>();
+    private static final List<Token.Type> ARITHMETIC = Arrays.asList(Token.Type.ADDITION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR, Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR);
+
+    static { // Setup precedence
+        PRECEDENCE.put(Token.Type.ADDITION_OPERATOR, Arrays.asList(Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR));
+        PRECEDENCE.put(Token.Type.SUBTRACTION_OPERATOR, Arrays.asList(Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR));
+        PRECEDENCE.put(Token.Type.EQUALS_OPERATOR, ARITHMETIC);
+        PRECEDENCE.put(Token.Type.NOT_EQUALS_OPERATOR, ARITHMETIC);
+        PRECEDENCE.put(Token.Type.GREATER_THAN_OPERATOR, ARITHMETIC);
+        PRECEDENCE.put(Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, ARITHMETIC);
+        PRECEDENCE.put(Token.Type.LESS_THAN_OPERATOR, ARITHMETIC);
+        PRECEDENCE.put(Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, ARITHMETIC);
+    }
+
     public static void checkType(Token token, Token.Type... expected) throws ParseException {
         for(Token.Type type : expected) if(token.getType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
@@ -58,5 +76,10 @@ public class ParserUtil {
             default:
                 throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration", varToken.getPosition());
         }
+    }
+
+    public static boolean hasPrecedence(Token.Type first, Token.Type second) {
+        if(!PRECEDENCE.containsKey(first)) return false;
+        return PRECEDENCE.get(first).contains(second);
     }
 }
