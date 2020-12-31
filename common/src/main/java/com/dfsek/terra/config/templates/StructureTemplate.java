@@ -3,8 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ValidatedConfigTemplate;
-import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.loot.LootTable;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class StructureTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
+public class StructureTemplate extends AbstractableTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
 
@@ -63,11 +62,5 @@ public class StructureTemplate extends AbstractableTemplate implements Validated
 
     public GridSpawn getSpawn() {
         return spawn;
-    }
-
-    @Override
-    public boolean validate() throws ValidationException {
-        System.out.println("added structure " + id);
-        return true;
     }
 }

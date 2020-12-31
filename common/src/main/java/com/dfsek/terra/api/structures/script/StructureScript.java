@@ -78,7 +78,6 @@ public class StructureScript {
 
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
         StructureBuffer buffer = cache.computeIfAbsent(location, loc -> {
-            System.out.println("Recalculating for (" + loc.getBlockX() + ", " + loc.getBlockZ() + "), chunk {" + chunk.getX() + ", " + chunk.getZ() + "}, cache size: " + cache.size());
             StructureBuffer buf = new StructureBuffer(loc);
             Block.ReturnLevel level = block.apply(buf, rotation, random, 0);
             buf.setSucceeded(!level.equals(Block.ReturnLevel.FAIL));
