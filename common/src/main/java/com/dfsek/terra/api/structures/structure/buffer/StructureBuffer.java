@@ -34,8 +34,7 @@ public class StructureBuffer implements Buffer {
 
     @Override
     public Buffer addItem(BufferedItem item, Vector3 location) {
-        bufferedItemMap.putIfAbsent(location, new Cell());
-        bufferedItemMap.get(location).add(item);
+        bufferedItemMap.computeIfAbsent(location, l -> new Cell()).add(item);
         return this;
     }
 
@@ -50,8 +49,7 @@ public class StructureBuffer implements Buffer {
 
     @Override
     public Buffer setMark(Mark mark, Vector3 location) {
-        bufferedItemMap.putIfAbsent(location, new Cell());
-        bufferedItemMap.get(location).setMark(mark);
+        bufferedItemMap.computeIfAbsent(location, l -> new Cell()).setMark(mark);
         return this;
     }
 

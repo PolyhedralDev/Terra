@@ -2,7 +2,6 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Directional;
-import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 
 public class BukkitDirectional extends BukkitBlockData implements Directional {
     public BukkitDirectional(org.bukkit.block.data.Directional delegate) {

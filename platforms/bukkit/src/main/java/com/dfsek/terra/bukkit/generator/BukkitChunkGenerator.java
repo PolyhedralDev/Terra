@@ -7,7 +7,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitBiomeGrid;
 import com.dfsek.terra.bukkit.BukkitWorld;
-import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -95,7 +95,7 @@ public class BukkitChunkGenerator implements com.dfsek.terra.api.platform.genera
 
         @Override
         public @NotNull BlockData getBlockData(int x, int y, int z) {
-            return new BukkitBlockData(delegate.getBlockData(x, y, z));
+            return BukkitBlockData.newInstance(delegate.getBlockData(x, y, z));
         }
     }
 }

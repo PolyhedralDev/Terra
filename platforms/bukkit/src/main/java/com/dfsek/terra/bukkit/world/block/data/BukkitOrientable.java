@@ -2,7 +2,6 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.platform.block.Axis;
 import com.dfsek.terra.api.platform.block.data.Orientable;
-import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 
 import java.util.Set;
 import java.util.stream.Collectors;

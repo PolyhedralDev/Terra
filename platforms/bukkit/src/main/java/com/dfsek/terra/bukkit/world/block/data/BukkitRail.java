@@ -1,7 +1,6 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.platform.block.data.Rail;
-import com.dfsek.terra.bukkit.world.block.BukkitBlockData;
 
 public class BukkitRail extends BukkitBlockData implements Rail {
     public BukkitRail(org.bukkit.block.data.Rail delegate) {

@@ -15,10 +15,10 @@ public class TokenizerTest {
         // Actual run
         long l = System.nanoTime();
 
-
-        while(tokenizer.hasNext()) {
-            Token t = tokenizer.fetch();
+        Token t = tokenizer.fetch();
+        while(t != null) {
             System.out.println(t);
+            t = tokenizer.fetch();
         }
 
         System.out.println((double) (System.nanoTime() - l) / 1000000);

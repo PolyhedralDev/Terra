@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.world.block;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import org.bukkit.Material;
 
 public class BukkitMaterialData implements MaterialData {
@@ -38,7 +39,7 @@ public class BukkitMaterialData implements MaterialData {
 
     @Override
     public BlockData createBlockData() {
-        return new BukkitBlockData(delegate.createBlockData());
+        return BukkitBlockData.newInstance(delegate.createBlockData());
     }
 
     @Override
