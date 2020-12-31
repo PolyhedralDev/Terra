@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.transform;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -42,8 +44,9 @@ public class Transformer<F, T> {
         }
         StringBuilder exBuilder = new StringBuilder("Could not transform input; all attempts failed: ").append(from.toString()).append("\n");
         for(Exception exception : exceptions) {
-            exBuilder.append(exception.getMessage()).append("\n");
-            exception.printStackTrace();
+            StringWriter writer = new StringWriter();
+            exception.printStackTrace(new PrintWriter(writer));
+            exBuilder.append("\n").append(writer.toString());
         }
         throw new AttemptsFailedException(exBuilder.toString());
     }
