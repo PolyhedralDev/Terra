@@ -121,7 +121,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         c.setExecutor(command);
         c.setTabCompleter(command);
 
-        LocateCommand locate = new LocateCommand(command, false);
+        LocateCommand locate = new LocateCommand(command);
         PluginCommand locatePl = Objects.requireNonNull(getCommand("locate"));
         locatePl.setExecutor(locate); // Override locate command. Once Paper accepts StructureLocateEvent this will be unneeded on Paper implementations.
         locatePl.setTabCompleter(locate);

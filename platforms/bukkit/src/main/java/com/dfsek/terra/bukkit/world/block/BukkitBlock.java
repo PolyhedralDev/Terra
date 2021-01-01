@@ -7,7 +7,6 @@ import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;
 
@@ -50,7 +49,7 @@ public class BukkitBlock implements Block {
 
     @Override
     public Location getLocation() {
-        return new Location(new BukkitWorld(delegate.getWorld()), delegate.getX(), delegate.getY(), delegate.getZ());
+        return BukkitAdapter.adapt(delegate.getLocation());
     }
 
     @Override

@@ -8,6 +8,8 @@ import com.dfsek.terra.api.platform.block.data.Rail;
 import com.dfsek.terra.api.platform.block.data.RedstoneWire;
 import com.dfsek.terra.api.platform.block.data.Slab;
 import com.dfsek.terra.api.platform.block.data.Stairs;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.World;
 import org.bukkit.Location;
 import org.bukkit.block.data.type.Wall;
 
@@ -325,6 +327,22 @@ public final class BukkitAdapter {
     }
 
     public static com.dfsek.terra.api.math.vector.Location adapt(Location location) {
-        return new com.dfsek.terra.api.math.vector.Location(new BukkitWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
+        return new com.dfsek.terra.api.math.vector.Location(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+    }
+
+    public static World adapt(org.bukkit.World world) {
+        return new BukkitWorld(world);
+    }
+
+    public static org.bukkit.World adapt(World world) {
+        return (org.bukkit.World) world.getHandle();
+    }
+
+    public static Chunk adapt(org.bukkit.Chunk chunk) {
+        return new BukkitChunk(chunk);
+    }
+
+    public static org.bukkit.Chunk adapt(Chunk chunk) {
+        return (org.bukkit.Chunk) chunk.getHandle();
     }
 }

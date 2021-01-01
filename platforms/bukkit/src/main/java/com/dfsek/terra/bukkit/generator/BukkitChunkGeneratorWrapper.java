@@ -5,8 +5,8 @@ import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.generation.population.PopulationManager;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.MasterChunkGenerator;
@@ -82,7 +82,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
-        BukkitWorld bukkitWorld = new BukkitWorld(world);
+        com.dfsek.terra.api.platform.world.World bukkitWorld = BukkitAdapter.adapt(world);
         if(needsLoad) load(bukkitWorld); // Load population data for world.
         delegate.generateBiomes(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome));
         return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkGenerator.BukkitChunkData(createChunkData(world))).getHandle();

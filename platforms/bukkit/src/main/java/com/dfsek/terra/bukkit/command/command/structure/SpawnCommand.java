@@ -8,7 +8,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import com.dfsek.terra.bukkit.command.WorldCommand;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -31,7 +31,7 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         int y = p.getBlockY();
         int z = p.getBlockZ();
         Position dummy = new Position(0, 0);
-        com.dfsek.terra.api.platform.world.World w = new BukkitWorld(world);
+        com.dfsek.terra.api.platform.world.World w = BukkitAdapter.adapt(world);
         String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), getMain().getWorld(w).getConfig().getCheckCache(), dummy).apply(new StructureBuffer(
                 new com.dfsek.terra.api.math.vector.Location(w, x, y, z)
         ), Rotation.NONE, new FastRandom(), 0);

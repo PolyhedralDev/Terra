@@ -1,12 +1,12 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.items.TerraStructure;
 import net.md_5.bungee.api.ChatColor;
@@ -25,13 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LocateCommand extends WorldCommand {
-    private final boolean tp;
 
-    public LocateCommand(com.dfsek.terra.bukkit.command.Command parent, boolean tp) {
+    public LocateCommand(com.dfsek.terra.bukkit.command.Command parent) {
         super(parent);
-        this.tp = tp;
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -48,12 +47,12 @@ public class LocateCommand extends WorldCommand {
         }
         TerraStructure s;
         try {
-            s = Objects.requireNonNull(getMain().getWorld(new BukkitWorld(world)).getConfig().getStructure(id));
+            s = Objects.requireNonNull(getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getStructure(id));
         } catch(IllegalArgumentException | NullPointerException e) {
-            //LangUtil.send("command.structure.invalid", sender, id);
+            LangUtil.send("command.structure.invalid", new BukkitCommandSender(sender), id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(new BukkitWorld(world)).getGrid(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getGrid(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
@@ -74,7 +73,7 @@ public class LocateCommand extends WorldCommand {
 
     @Override
     public String getName() {
-        return tp ? "teleport" : "locate";
+        return "locate";
     }
 
     @Override
@@ -89,15 +88,13 @@ public class LocateCommand extends WorldCommand {
 
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        /*
-        if(!(sender instanceof Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
+        if(!(sender instanceof Player) || !(TerraWorld.isTerraWorld(BukkitAdapter.adapt(((Player) sender).getWorld()))))
             return Collections.emptyList();
 
-        List<String> ids = ((TerraBukkitPlugin) getMain()).getWorld(((Player) sender).getWorld()).getConfig().getStructureIDs();
+        List<String> ids = getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getStructureIDs();
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
 
-         */
         return Collections.emptyList();
     }
 }

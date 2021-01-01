@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit.command.command.biome;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.WorldCommand;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -27,7 +27,7 @@ public class BiomeInfoCommand extends WorldCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         String id = args[0];
-        ConfigPack cfg = getMain().getWorld(new BukkitWorld(world)).getConfig();
+        ConfigPack cfg = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig();
         UserDefinedBiome b;
         try {
             b = cfg.getBiome(id);

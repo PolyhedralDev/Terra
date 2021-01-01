@@ -6,7 +6,6 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitChunk;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.util.PopulationUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,12 +27,12 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        TerraWorld terraWorld = getMain().getWorld(new BukkitWorld(sender.getWorld()));
+        TerraWorld terraWorld = getMain().getWorld(BukkitAdapter.adapt(sender.getWorld()));
         long t = System.nanoTime();
         FastRandom chunk = PopulationUtil.getRandom(new BukkitChunk(sender.getLocation().getChunk()));
 
         if(this.chunk) {
-            terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(BukkitAdapter.adapt(sender.getLocation()), new BukkitChunk(sender.getLocation().getChunk()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
+            terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(BukkitAdapter.adapt(sender.getLocation()), BukkitAdapter.adapt(sender.getLocation().getChunk()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
         } else {
             terraWorld.getConfig().getScriptRegistry().get(args[0]).execute(BukkitAdapter.adapt(sender.getLocation()), chunk, Rotation.fromDegrees(90 * chunk.nextInt(4)));
         }

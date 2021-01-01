@@ -31,7 +31,7 @@ public class StructureCommand extends PlayerCommand {
 
     @Override
     public List<com.dfsek.terra.bukkit.command.Command> getSubCommands() {
-        return Arrays.asList(new ExportCommand(this), new LoadCommand(this), new LocateCommand(this, false), new LocateCommand(this, true), new SpawnCommand(this));
+        return Arrays.asList(new ExportCommand(this), new LoadCommand(this), new LocateCommand(this), new SpawnCommand(this));
     }
 
     @Override

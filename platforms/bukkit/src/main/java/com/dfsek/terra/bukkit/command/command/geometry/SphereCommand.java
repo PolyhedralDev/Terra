@@ -4,7 +4,7 @@ import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.Sphere;
 import org.bukkit.command.Command;
@@ -31,7 +31,7 @@ public class SphereCommand extends PlayerCommand {
         }
         Sphere sphere = new Sphere(new BukkitPlayer(sender).getLocation().toVector(), radius);
         for(Vector3 v : sphere.getGeometry()) {
-            v.toLocation(new BukkitWorld(sender.getWorld())).getBlock().setBlockData(getMain().getWorldHandle().createBlockData("minecraft:stone"), false);
+            v.toLocation(BukkitAdapter.adapt(sender.getWorld())).getBlock().setBlockData(getMain().getWorldHandle().createBlockData("minecraft:stone"), false);
         }
         return true;
     }

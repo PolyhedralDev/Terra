@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit.command.command.profile;
 import com.dfsek.terra.api.profiler.WorldProfiler;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.WorldCommand;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -21,7 +21,7 @@ public class StartCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
-        WorldProfiler profile = getMain().getWorld(new BukkitWorld(world)).getProfiler();
+        WorldProfiler profile = getMain().getWorld(BukkitAdapter.adapt(world)).getProfiler();
         profile.setProfiling(true);
         LangUtil.send("command.profile.start", new BukkitCommandSender(sender));
         return true;

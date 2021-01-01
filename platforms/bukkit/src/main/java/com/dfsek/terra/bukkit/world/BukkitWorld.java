@@ -55,7 +55,7 @@ public class BukkitWorld implements World {
 
     @Override
     public Chunk getChunkAt(int x, int z) {
-        return new BukkitChunk(delegate.getChunkAt(x, z));
+        return BukkitAdapter.adapt(delegate.getChunkAt(x, z));
     }
 
     @Override

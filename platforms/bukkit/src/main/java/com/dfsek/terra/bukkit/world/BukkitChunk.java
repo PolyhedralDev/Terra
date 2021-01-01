@@ -24,7 +24,7 @@ public class BukkitChunk implements Chunk {
 
     @Override
     public World getWorld() {
-        return new BukkitWorld(delegate.getWorld());
+        return BukkitAdapter.adapt(delegate.getWorld());
     }
 
     @Override

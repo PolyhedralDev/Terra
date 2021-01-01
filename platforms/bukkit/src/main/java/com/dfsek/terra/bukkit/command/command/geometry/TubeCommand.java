@@ -5,7 +5,7 @@ import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
 import com.dfsek.terra.bukkit.structure.WorldEditUtil;
 import com.dfsek.terra.bukkit.util.BukkitConversions;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.Tube;
 import org.bukkit.Location;
@@ -35,7 +35,7 @@ public class TubeCommand extends PlayerCommand {
         }
         Tube tube = new Tube(BukkitConversions.toTerraVector(l[0].toVector()), BukkitConversions.toTerraVector(l[1].toVector()), radius);
         for(Vector3 v : tube.getGeometry()) {
-            v.toLocation(new BukkitWorld(sender.getWorld())).getBlock().setBlockData(getMain().getWorldHandle().createBlockData("minecraft:stone"), false);
+            v.toLocation(BukkitAdapter.adapt(sender.getWorld())).getBlock().setBlockData(getMain().getWorldHandle().createBlockData("minecraft:stone"), false);
         }
         return true;
     }
