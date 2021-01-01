@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.fabric.world.FabricAdapters;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +26,11 @@ public class FabricBlock implements Block {
     @Override
     public BlockData getBlockData() {
         return new FabricBlockData(delegate.worldAccess.getBlockState(delegate.position));
+    }
+
+    @Override
+    public BlockState getState() {
+        return null;
     }
 
     @Override

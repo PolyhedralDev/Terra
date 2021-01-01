@@ -1,4 +1,19 @@
 package com.dfsek.terra.api.platform.block.state;
 
-public interface BlockState {
+import com.dfsek.terra.api.platform.Handle;
+import com.dfsek.terra.api.platform.block.Block;
+import com.dfsek.terra.api.platform.block.BlockData;
+
+public interface BlockState extends Handle {
+    Block getBlock();
+
+    int getX();
+
+    int getY();
+
+    int getZ();
+
+    BlockData getBlockData();
+
+    boolean update(boolean applyPhysics);
 }
