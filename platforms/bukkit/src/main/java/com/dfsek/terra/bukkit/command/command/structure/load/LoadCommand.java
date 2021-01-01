@@ -23,9 +23,7 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
         List<String> names = new ArrayList<>();
         TerraWorld terraWorld = getMain().getWorld(world);
 
-        terraWorld.getConfig().getScriptRegistry().forEach(script -> {
-            names.add(script.getId());
-        });
+        terraWorld.getConfig().getScriptRegistry().forEach(script -> names.add(script.getId()));
 
         return names;
     }

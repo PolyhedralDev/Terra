@@ -6,9 +6,9 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
-import com.dfsek.terra.bukkit.world.block.data.BukkitEnumAdapter;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;
 
 public class BukkitBlock implements Block {
@@ -35,12 +35,12 @@ public class BukkitBlock implements Block {
 
     @Override
     public Block getRelative(BlockFace face) {
-        return new BukkitBlock(delegate.getRelative(BukkitEnumAdapter.adapt(face)));
+        return new BukkitBlock(delegate.getRelative(BukkitAdapter.adapt(face)));
     }
 
     @Override
     public Block getRelative(BlockFace face, int len) {
-        return new BukkitBlock(delegate.getRelative(BukkitEnumAdapter.adapt(face), len));
+        return new BukkitBlock(delegate.getRelative(BukkitAdapter.adapt(face), len));
     }
 
     @Override

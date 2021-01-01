@@ -7,7 +7,6 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.api.platform.handle.EntityHandle;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
@@ -72,11 +71,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public ItemHandle getItemHandle() {
         return itemHandle;
-    }
-
-    @Override
-    public EntityHandle getEntityHandle() {
-        return null;
     }
 
     public void setHandle(WorldHandle handle) {

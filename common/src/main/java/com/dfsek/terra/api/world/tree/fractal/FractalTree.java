@@ -1,9 +1,10 @@
 package com.dfsek.terra.api.world.tree.fractal;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.Entity;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.world.entity.Entity;
+import com.dfsek.terra.api.platform.world.entity.EntityType;
 import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
@@ -41,7 +42,7 @@ public abstract class FractalTree {
      */
     public abstract void grow(Location origin, Random random);
 
-    public void spawnEntity(Location spawn, Class<Entity> clazz, Consumer<Entity> consumer) {
-        spawn.getWorld().spawn(spawn, clazz, consumer);
+    public void spawnEntity(Location spawn, EntityType type, Consumer<Entity> consumer) {
+        consumer.accept(spawn.getWorld().spawnEntity(spawn, type));
     }
 }

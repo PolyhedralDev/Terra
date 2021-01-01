@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Stairs;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitStairs extends BukkitBlockData implements Stairs {
 
@@ -11,32 +12,32 @@ public class BukkitStairs extends BukkitBlockData implements Stairs {
 
     @Override
     public Shape getShape() {
-        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getShape());
+        return BukkitAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getShape());
     }
 
     @Override
     public void setShape(Shape shape) {
-        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setShape(BukkitEnumAdapter.adapt(shape));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setShape(BukkitAdapter.adapt(shape));
     }
 
     @Override
     public Half getHalf() {
-        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getHalf());
+        return BukkitAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getHalf());
     }
 
     @Override
     public void setHalf(Half half) {
-        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setHalf(BukkitEnumAdapter.adapt(half));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setHalf(BukkitAdapter.adapt(half));
     }
 
     @Override
     public BlockFace getFacing() {
-        return BukkitEnumAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getFacing());
+        return BukkitAdapter.adapt(((org.bukkit.block.data.type.Stairs) super.getHandle()).getFacing());
     }
 
     @Override
     public void setFacing(BlockFace facing) {
-        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setFacing(BukkitEnumAdapter.adapt(facing));
+        ((org.bukkit.block.data.type.Stairs) super.getHandle()).setFacing(BukkitAdapter.adapt(facing));
     }
 
     @Override

@@ -1,12 +1,13 @@
 package com.dfsek.terra.fabric.world.handles;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.Entity;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.entity.Entity;
+import com.dfsek.terra.api.platform.world.entity.EntityType;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.handles.chunk.FabricChunk;
 import net.minecraft.server.world.ServerWorld;
@@ -14,7 +15,6 @@ import net.minecraft.util.math.BlockPos;
 
 import java.io.File;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class FabricWorld implements World {
 
@@ -92,8 +92,8 @@ public class FabricWorld implements World {
     }
 
     @Override
-    public void spawn(Location location, Class<Entity> entity, Consumer<Entity> consumer) {
-
+    public Entity spawnEntity(Location location, EntityType entityType) {
+        return null;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class FabricWorld implements World {
         return null;
     }
 
-    private final class Handle {
+    private static final class Handle {
         private final ServerWorld world;
         private final ChunkGenerator generator;
 

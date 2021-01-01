@@ -6,8 +6,12 @@ import com.dfsek.terra.api.platform.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.entity.Entity;
+import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
+import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 import java.io.File;
 import java.util.UUID;
@@ -75,7 +79,8 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public void spawn(Location l, Class<com.dfsek.terra.api.platform.Entity> entity, java.util.function.Consumer<com.dfsek.terra.api.platform.Entity> consumer) {
+    public Entity spawnEntity(Location location, EntityType entityType) {
+        return new BukkitEntity(delegate.spawnEntity(BukkitAdapter.adapt(location), ((BukkitEntityType) entityType).getHandle()));
     }
 
     @Override

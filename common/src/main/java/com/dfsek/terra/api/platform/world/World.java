@@ -1,14 +1,14 @@
 package com.dfsek.terra.api.platform.world;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.Entity;
 import com.dfsek.terra.api.platform.Handle;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.entity.Entity;
+import com.dfsek.terra.api.platform.world.entity.EntityType;
 
 import java.io.File;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public interface World extends Handle {
     long getSeed();
@@ -31,7 +31,7 @@ public interface World extends Handle {
 
     Block getBlockAt(Location l);
 
-    boolean generateTree(Location l, Tree vanillaTreeType); // TODO: Bukkit treetype is bad
+    boolean generateTree(Location l, Tree vanillaTreeType);
 
-    void spawn(Location location, Class<Entity> entity, Consumer<Entity> consumer); // TODO: Bukkit Entity is bad
+    Entity spawnEntity(Location location, EntityType entityType);
 }

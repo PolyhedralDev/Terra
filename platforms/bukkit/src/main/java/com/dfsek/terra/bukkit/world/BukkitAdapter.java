@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.world.block.data;
+package com.dfsek.terra.bukkit.world;
 
 
 import com.dfsek.terra.api.platform.block.Axis;
@@ -8,12 +8,13 @@ import com.dfsek.terra.api.platform.block.data.Rail;
 import com.dfsek.terra.api.platform.block.data.RedstoneWire;
 import com.dfsek.terra.api.platform.block.data.Slab;
 import com.dfsek.terra.api.platform.block.data.Stairs;
+import org.bukkit.Location;
 import org.bukkit.block.data.type.Wall;
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.
  */
-public final class BukkitEnumAdapter {
+public final class BukkitAdapter {
     public static Stairs.Shape adapt(org.bukkit.block.data.type.Stairs.Shape shape) {
         switch(shape) {
             case STRAIGHT:
@@ -317,5 +318,13 @@ public final class BukkitEnumAdapter {
             default:
                 throw new IllegalStateException();
         }
+    }
+
+    public static Location adapt(com.dfsek.terra.api.math.vector.Location location) {
+        return new Location(((BukkitWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
+    }
+
+    public static com.dfsek.terra.api.math.vector.Location adapt(Location location) {
+        return new com.dfsek.terra.api.math.vector.Location(new BukkitWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
     }
 }

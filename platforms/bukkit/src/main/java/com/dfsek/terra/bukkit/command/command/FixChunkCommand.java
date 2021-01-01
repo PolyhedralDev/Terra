@@ -17,7 +17,7 @@ public class FixChunkCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player player, @NotNull Command command, @NotNull String s, @NotNull String[] strings, World world) {
-        //TerraChunkGenerator.fixChunk(player.getLocation().getChunk());
+        //MasterChunkGenerator.fixChunk(player.getLocation().getChunk());
         return true;
     }
 

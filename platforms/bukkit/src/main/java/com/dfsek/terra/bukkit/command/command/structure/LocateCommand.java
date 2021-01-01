@@ -1,11 +1,11 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.generation.items.TerraStructure;
@@ -53,7 +53,7 @@ public class LocateCommand extends WorldCommand {
             //LangUtil.send("command.structure.invalid", sender, id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(new BukkitWorld(world)).getGrid(), s, new Location(new BukkitWorld(sender.getWorld()), sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(new BukkitWorld(world)).getGrid(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
