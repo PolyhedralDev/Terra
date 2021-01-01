@@ -33,11 +33,6 @@ public class PullFunction implements Function<Void> {
     }
 
     @Override
-    public String name() {
-        return "pull";
-    }
-
-    @Override
     public Void apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 

@@ -19,11 +19,6 @@ public class PowFunction extends MathFunction {
     }
 
     @Override
-    public String name() {
-        return "pow";
-    }
-
-    @Override
     public Number apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return FastMath.pow(base.apply(buffer, rotation, random, recursions).doubleValue(), power.apply(buffer, rotation, random, recursions).doubleValue());
     }

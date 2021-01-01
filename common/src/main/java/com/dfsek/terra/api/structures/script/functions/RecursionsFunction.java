@@ -15,11 +15,6 @@ public class RecursionsFunction implements Function<Number> {
     }
 
     @Override
-    public String name() {
-        return "recursions";
-    }
-
-    @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;
     }

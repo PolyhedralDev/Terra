@@ -37,11 +37,6 @@ public class StructureFunction implements Function<Boolean> {
     }
 
     @Override
-    public String name() {
-        return "structure";
-    }
-
-    @Override
     public ReturnType returnType() {
         return ReturnType.BOOLEAN;
     }

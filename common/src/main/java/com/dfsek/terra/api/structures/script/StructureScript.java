@@ -8,6 +8,7 @@ import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.EntityFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.GetMarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.LootFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.MarkFunctionBuilder;
@@ -49,7 +50,8 @@ public class StructureScript {
                 .addFunction("setMark", new MarkFunctionBuilder())
                 .addFunction("getMark", new GetMarkFunctionBuilder())
                 .addFunction("pull", new PullFunctionBuilder(main))
-                .addFunction("loot", new LootFunctionBuilder(main, lootRegistry));
+                .addFunction("loot", new LootFunctionBuilder(main, lootRegistry))
+                .addFunction("entity", new EntityFunctionBuilder(main));
 
         try {
             block = parser.parse();

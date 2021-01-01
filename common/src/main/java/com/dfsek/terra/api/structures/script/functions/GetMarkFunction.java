@@ -26,11 +26,6 @@ public class GetMarkFunction implements Function<String> {
     }
 
     @Override
-    public String name() {
-        return "block";
-    }
-
-    @Override
     public String apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
 

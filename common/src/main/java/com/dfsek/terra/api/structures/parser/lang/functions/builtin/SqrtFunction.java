@@ -17,11 +17,6 @@ public class SqrtFunction extends MathFunction {
     }
 
     @Override
-    public String name() {
-        return "sqrt";
-    }
-
-    @Override
     public Number apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return FastMath.sqrt(returnable.apply(buffer, rotation, random, recursions).doubleValue());
     }

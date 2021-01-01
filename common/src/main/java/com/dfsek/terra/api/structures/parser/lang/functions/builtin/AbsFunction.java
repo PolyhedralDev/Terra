@@ -17,11 +17,6 @@ public class AbsFunction extends MathFunction {
     }
 
     @Override
-    public String name() {
-        return "abs";
-    }
-
-    @Override
     public Number apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return FastMath.abs(returnable.apply(buffer, rotation, random, recursions).doubleValue());
     }

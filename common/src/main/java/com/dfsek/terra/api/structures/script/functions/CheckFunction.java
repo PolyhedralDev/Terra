@@ -36,11 +36,6 @@ public class CheckFunction implements Function<String> {
         this.cache = cache;
     }
 
-    @Override
-    public String name() {
-        return "check";
-    }
-
 
     @Override
     public String apply(Buffer buffer, Rotation rotation, Random random, int recursions) {

@@ -19,11 +19,6 @@ public class RandomFunction implements Function<Integer> {
 
 
     @Override
-    public String name() {
-        return "randomInt";
-    }
-
-    @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;
     }

@@ -79,11 +79,6 @@ public class ParserTest {
         }
 
         @Override
-        public String name() {
-            return null;
-        }
-
-        @Override
         public ReturnType returnType() {
             return ReturnType.VOID;
         }

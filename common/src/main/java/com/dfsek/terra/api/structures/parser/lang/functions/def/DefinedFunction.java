@@ -19,11 +19,6 @@ public abstract class DefinedFunction<T> implements Function<T> {
     }
 
     @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
     public T apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
         return block.apply(buffer, rotation, random, recursions);
     }
