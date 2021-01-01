@@ -6,7 +6,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
-import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitEnumAdapter;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;

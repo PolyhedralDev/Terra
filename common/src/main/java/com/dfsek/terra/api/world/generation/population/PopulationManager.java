@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.generation.population;
 
-import com.dfsek.terra.api.gaea.Gaea;
+import com.dfsek.terra.api.Gaea;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;

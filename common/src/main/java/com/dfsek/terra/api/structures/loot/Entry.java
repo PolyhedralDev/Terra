@@ -1,11 +1,11 @@
-package com.dfsek.terra.api.loot;
+package com.dfsek.terra.api.structures.loot;
 
-import com.dfsek.terra.api.loot.functions.AmountFunction;
-import com.dfsek.terra.api.loot.functions.DamageFunction;
-import com.dfsek.terra.api.loot.functions.Function;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.structures.loot.functions.AmountFunction;
+import com.dfsek.terra.api.structures.loot.functions.DamageFunction;
+import com.dfsek.terra.api.structures.loot.functions.Function;
 import com.dfsek.terra.api.util.GlueList;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;

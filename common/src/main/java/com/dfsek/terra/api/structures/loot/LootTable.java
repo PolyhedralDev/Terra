@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.loot;
+package com.dfsek.terra.api.structures.loot;
 
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.inventory.Inventory;

@@ -2,10 +2,10 @@ package com.dfsek.terra.bukkit.command.command.geometry;
 
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
-import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
 import com.dfsek.terra.bukkit.structure.WorldEditUtil;
 import com.dfsek.terra.bukkit.util.BukkitConversions;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.procgen.voxel.Tube;
 import org.bukkit.Location;

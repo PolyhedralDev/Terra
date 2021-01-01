@@ -8,7 +8,7 @@ import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.tree.Tree;
-import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.registry.TreeRegistry;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit;
+package com.dfsek.terra.bukkit.world;
 
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.world.Chunk;

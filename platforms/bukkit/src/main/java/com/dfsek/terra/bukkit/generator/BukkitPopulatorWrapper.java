@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.bukkit.BukkitChunk;
-import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitChunk;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;

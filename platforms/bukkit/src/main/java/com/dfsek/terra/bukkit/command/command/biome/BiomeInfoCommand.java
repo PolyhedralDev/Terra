@@ -2,8 +2,8 @@ package com.dfsek.terra.bukkit.command.command.biome;
 
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
-import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.command.WorldCommand;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;

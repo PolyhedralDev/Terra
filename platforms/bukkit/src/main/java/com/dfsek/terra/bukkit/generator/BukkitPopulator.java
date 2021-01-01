@@ -3,8 +3,8 @@ package com.dfsek.terra.bukkit.generator;
 import com.dfsek.terra.api.platform.generator.BlockPopulator;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.bukkit.BukkitChunk;
-import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitChunk;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 
 import java.util.Random;
 

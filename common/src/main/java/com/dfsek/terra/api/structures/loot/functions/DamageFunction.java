@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.loot.functions;
+package com.dfsek.terra.api.structures.loot.functions;
 
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.Damageable;

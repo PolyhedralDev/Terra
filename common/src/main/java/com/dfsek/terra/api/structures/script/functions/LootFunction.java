@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.loot.LootTable;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.structure.Rotation;

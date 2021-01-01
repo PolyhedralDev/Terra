@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.gaea;
+package com.dfsek.terra.api;
 
 
 import com.dfsek.terra.api.platform.world.World;

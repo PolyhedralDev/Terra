@@ -5,23 +5,27 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.Tree;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.handle.EntityHandle;
+import com.dfsek.terra.api.platform.handle.ItemHandle;
+import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.WorldHandle;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
 import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
+import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.listeners.EventListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
+import com.dfsek.terra.bukkit.world.BukkitTree;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -68,6 +72,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public ItemHandle getItemHandle() {
         return itemHandle;
+    }
+
+    @Override
+    public EntityHandle getEntityHandle() {
+        return null;
     }
 
     public void setHandle(WorldHandle handle) {

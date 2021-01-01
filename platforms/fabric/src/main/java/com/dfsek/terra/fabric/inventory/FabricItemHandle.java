@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.inventory;
 
 import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 
 public class FabricItemHandle implements ItemHandle {

@@ -7,9 +7,10 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.handle.EntityHandle;
+import com.dfsek.terra.api.platform.handle.ItemHandle;
+import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.WorldHandle;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
@@ -175,6 +176,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public EntityHandle getEntityHandle() {
+        return null;
     }
 
     Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()

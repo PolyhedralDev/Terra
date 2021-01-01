@@ -1,7 +1,7 @@
-package com.dfsek.terra.bukkit;
+package com.dfsek.terra.bukkit.handles;
 
 import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.api.platform.inventory.ItemHandle;
+import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;

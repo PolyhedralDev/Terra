@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.util;
 
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.bukkit.BukkitWorld;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
