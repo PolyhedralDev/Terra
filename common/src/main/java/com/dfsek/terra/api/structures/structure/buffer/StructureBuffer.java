@@ -7,11 +7,11 @@ import com.dfsek.terra.api.structures.structure.buffer.items.BufferedItem;
 import com.dfsek.terra.api.structures.structure.buffer.items.Mark;
 import net.jafama.FastMath;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StructureBuffer implements Buffer {
-    private final Map<Vector3, Cell> bufferedItemMap = new HashMap<>();
+    private final Map<Vector3, Cell> bufferedItemMap = new LinkedHashMap<>();
     private final Location origin;
     private boolean succeeded;
 

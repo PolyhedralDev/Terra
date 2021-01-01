@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
+import org.bukkit.block.Container;
 
 public class BukkitBlockState implements BlockState {
     private final org.bukkit.block.BlockState delegate;
@@ -14,6 +15,7 @@ public class BukkitBlockState implements BlockState {
     }
 
     public static BukkitBlockState newInstance(org.bukkit.block.BlockState block) {
+        if(block instanceof Container) return new BukkitContainer((Container) block);
         return new BukkitBlockState(block);
     }
 

@@ -155,7 +155,7 @@ public class ConfigPack implements LoaderRegistrar {
         }
 
         loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
-            StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, checkCache);
+            StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, lootRegistry, checkCache);
             scriptRegistry.add(structureScript.getId(), structureScript);
         })).close().open("structures/loot", ".json").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {

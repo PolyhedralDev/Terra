@@ -1,26 +1,21 @@
 package com.dfsek.terra.generation.items;
 
-import com.dfsek.terra.api.loot.LootTable;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.procgen.GridSpawn;
 
-import java.util.Map;
-
 public class TerraStructure {
     private final ProbabilityCollection<StructureScript> structure;
     private final Range spawnStart;
     private final GridSpawn spawn;
-    private final Map<String, LootTable> loot;
     private final StructureTemplate template;
 
-    public TerraStructure(ProbabilityCollection<StructureScript> structures, Range spawnStart, GridSpawn spawn, Map<String, LootTable> loot, StructureTemplate template) {
+    public TerraStructure(ProbabilityCollection<StructureScript> structures, Range spawnStart, GridSpawn spawn, StructureTemplate template) {
         this.structure = structures;
         this.spawnStart = spawnStart;
         this.spawn = spawn;
-        this.loot = loot;
         this.template = template;
     }
 
@@ -38,9 +33,5 @@ public class TerraStructure {
 
     public GridSpawn getSpawn() {
         return spawn;
-    }
-
-    public Map<String, LootTable> getLoot() {
-        return loot;
     }
 }

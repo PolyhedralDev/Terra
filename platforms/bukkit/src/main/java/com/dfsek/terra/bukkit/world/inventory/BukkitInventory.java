@@ -17,7 +17,8 @@ public class BukkitInventory implements Inventory {
 
     @Override
     public ItemStack getItem(int slot) {
-        return new BukkitItemStack(delegate.getItem(slot));
+        org.bukkit.inventory.ItemStack itemStack = delegate.getItem(slot);
+        return itemStack == null ? null : new BukkitItemStack(itemStack);
     }
 
     @Override

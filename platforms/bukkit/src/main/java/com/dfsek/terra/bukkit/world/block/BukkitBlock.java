@@ -9,6 +9,7 @@ import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.bukkit.BukkitWorld;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitEnumAdapter;
+import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;
 
 public class BukkitBlock implements Block {
     private final org.bukkit.block.Block delegate;
@@ -29,7 +30,7 @@ public class BukkitBlock implements Block {
 
     @Override
     public BlockState getState() {
-        return null;
+        return BukkitBlockState.newInstance(delegate.getState());
     }
 
     @Override

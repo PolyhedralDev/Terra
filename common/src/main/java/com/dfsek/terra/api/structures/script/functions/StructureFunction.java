@@ -53,9 +53,10 @@ public class StructureFunction implements Function<Boolean> {
 
         RotationUtil.rotateVector(xz, rotation);
 
-        StructureScript script = registry.get(id.apply(buffer, rotation, random, recursions));
+        String app = id.apply(buffer, rotation, random, recursions);
+        StructureScript script = registry.get(app);
         if(script == null) {
-            main.getLogger().severe("No such structure " + id.apply(buffer, rotation, random, recursions));
+            main.getLogger().severe("No such structure " + app);
             return null;
         }
 

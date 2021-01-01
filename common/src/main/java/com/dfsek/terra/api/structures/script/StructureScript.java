@@ -9,6 +9,7 @@ import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.GetMarkFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.LootFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.MarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.PullFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
@@ -18,6 +19,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.api.structures.world.CheckCache;
+import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
 import org.apache.commons.io.IOUtils;
 
@@ -32,7 +34,7 @@ public class StructureScript {
     private final String id;
     private final LinkedHashMap<Location, StructureBuffer> cache;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, CheckCache cache) {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, CheckCache cache) {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -46,7 +48,8 @@ public class StructureScript {
                 .addFunction("recursions", new RecursionsFunctionBuilder())
                 .addFunction("setMark", new MarkFunctionBuilder())
                 .addFunction("getMark", new GetMarkFunctionBuilder())
-                .addFunction("pull", new PullFunctionBuilder(main));
+                .addFunction("pull", new PullFunctionBuilder(main))
+                .addFunction("loot", new LootFunctionBuilder(main, lootRegistry));
 
         try {
             block = parser.parse();
