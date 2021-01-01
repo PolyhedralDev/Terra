@@ -33,14 +33,14 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
 
     @Value("loot")
     @Abstractable
-    private Map<Integer, LootTable> loot;
+    private Map<String, LootTable> loot;
 
     @Value("features")
     @Abstractable
     @Default
     private List<Void> features = new GlueList<>();
 
-    public Map<Integer, LootTable> getLoot() {
+    public Map<String, LootTable> getLoot() {
         return loot;
     }
 

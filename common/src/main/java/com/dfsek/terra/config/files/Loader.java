@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Set;
 
 public abstract class Loader {
     protected final Map<String, InputStream> streams = new HashMap<>();
@@ -23,8 +23,13 @@ public abstract class Loader {
         return this;
     }
 
-    public Loader thenNames(Consumer<List<String>> consumer) {
+    public Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException {
         consumer.accept(new GlueList<>(streams.keySet()));
+        return this;
+    }
+
+    public Loader thenEntries(ExceptionalConsumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException {
+        consumer.accept(streams.entrySet());
         return this;
     }
 

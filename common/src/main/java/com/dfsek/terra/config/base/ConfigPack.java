@@ -32,7 +32,6 @@ import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.loaders.LootTableLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -48,12 +47,15 @@ import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.CarverRegistry;
 import com.dfsek.terra.registry.FloraRegistry;
+import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.OreRegistry;
 import com.dfsek.terra.registry.PaletteRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
 import com.dfsek.terra.registry.StructureRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.TreeRegistry;
+import org.apache.commons.io.IOUtils;
+import org.json.simple.parser.ParseException;
 import parsii.eval.Scope;
 
 import java.io.File;
@@ -61,6 +63,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -86,6 +89,7 @@ public class ConfigPack implements LoaderRegistrar {
     private final OreRegistry oreRegistry = new OreRegistry();
     private final TreeRegistry treeRegistry;
     private final ScriptRegistry scriptRegistry = new ScriptRegistry();
+    private final LootRegistry lootRegistry = new LootRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -149,13 +153,19 @@ public class ConfigPack implements LoaderRegistrar {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
-        abstractConfigLoader
-                .registerLoader(LootTable.class, new LootTableLoader(loader, main)); // These loaders need access to the Loader instance to get files.
 
         loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
             StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, checkCache);
             scriptRegistry.add(structureScript.getId(), structureScript);
-        })).close();
+        })).close().open("structures/loot", ".json").thenEntries(entries -> {
+            for(Map.Entry<String, InputStream> entry : entries) {
+                try {
+                    lootRegistry.add(entry.getKey(), new LootTable(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
+                } catch(ParseException | IOException | NullPointerException e) {
+                    throw new LoadException("Unable to load loot", e);
+                }
+            }
+        }).close();
 
         loader
                 .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
@@ -250,7 +260,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry)
                 .registerLoader(StructureScript.class, scriptRegistry)
-                .registerLoader(TerraStructure.class, structureRegistry);
+                .registerLoader(TerraStructure.class, structureRegistry)
+                .registerLoader(LootTable.class, lootRegistry);
     }
 
     public ScriptRegistry getScriptRegistry() {

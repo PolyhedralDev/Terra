@@ -9,15 +9,14 @@ import com.dfsek.terra.procgen.GridSpawn;
 
 import java.util.Map;
 
-// TODO: implementation
 public class TerraStructure {
     private final ProbabilityCollection<StructureScript> structure;
     private final Range spawnStart;
     private final GridSpawn spawn;
-    private final Map<Integer, LootTable> loot;
+    private final Map<String, LootTable> loot;
     private final StructureTemplate template;
 
-    public TerraStructure(ProbabilityCollection<StructureScript> structures, Range spawnStart, GridSpawn spawn, Map<Integer, LootTable> loot, StructureTemplate template) {
+    public TerraStructure(ProbabilityCollection<StructureScript> structures, Range spawnStart, GridSpawn spawn, Map<String, LootTable> loot, StructureTemplate template) {
         this.structure = structures;
         this.spawnStart = spawnStart;
         this.spawn = spawn;
@@ -41,7 +40,7 @@ public class TerraStructure {
         return spawn;
     }
 
-    public Map<Integer, LootTable> getLoot() {
+    public Map<String, LootTable> getLoot() {
         return loot;
     }
 }
