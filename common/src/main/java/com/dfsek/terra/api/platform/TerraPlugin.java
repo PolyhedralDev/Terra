@@ -36,4 +36,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     ItemHandle getItemHandle();
 
     void saveDefaultConfig();
+
+    String platformName();
 }

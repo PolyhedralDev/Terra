@@ -177,6 +177,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         }
     }
 
+    @Override
+    public String platformName() {
+        return "Fabric";
+    }
+
     Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();

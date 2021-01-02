@@ -73,6 +73,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         return itemHandle;
     }
 
+    @Override
+    public String platformName() {
+        return "Bukkit";
+    }
+
     public void setHandle(WorldHandle handle) {
         getLogger().warning("|-------------------------------------------------------|");
         getLogger().warning("A third-party addon has injected a custom WorldHandle!");

@@ -28,7 +28,7 @@ public class VersionCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         String terraVersion = ((TerraBukkitPlugin) getMain()).getDescription().getVersion();
-        LangUtil.send("command.version", new BukkitCommandSender(sender), terraVersion);
+        LangUtil.send("command.version", new BukkitCommandSender(sender), terraVersion, getMain().platformName());
         return true;
     }
 
