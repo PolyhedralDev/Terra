@@ -1,14 +1,11 @@
 package com.dfsek.terra.api.structures.parser.lang.keywords.looplike;
 
 import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-
-import java.util.Random;
 
 public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
@@ -26,9 +23,9 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public Block.ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        for(initializer.apply(buffer, rotation, random, recursions); statement.apply(buffer, rotation, random, recursions); incrementer.apply(buffer, rotation, random, recursions)) {
-            Block.ReturnInfo<?> level = conditional.apply(buffer, rotation, random, recursions);
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
+        for(initializer.apply(implementationArguments); statement.apply(implementationArguments); incrementer.apply(implementationArguments)) {
+            Block.ReturnInfo<?> level = conditional.apply(implementationArguments);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

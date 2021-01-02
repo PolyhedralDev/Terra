@@ -11,9 +11,6 @@ import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.api.structures.parser.lang.constants.StringConstant;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.api.structures.parser.lang.functions.builtin.AbsFunction;
-import com.dfsek.terra.api.structures.parser.lang.functions.builtin.PowFunction;
-import com.dfsek.terra.api.structures.parser.lang.functions.builtin.SqrtFunction;
 import com.dfsek.terra.api.structures.parser.lang.keywords.flow.BreakKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.flow.ContinueKeyword;
 import com.dfsek.terra.api.structures.parser.lang.keywords.flow.FailKeyword;
@@ -47,19 +44,16 @@ import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
 import com.dfsek.terra.api.util.GlueList;
-import com.google.common.collect.Sets;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
-    private final Set<String> builtinFunctions = Sets.newHashSet("abs", "sqrt", "pow");
 
     private String id;
 
@@ -67,7 +61,7 @@ public class Parser {
         this.data = data;
     }
 
-    public Parser addFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
+    public Parser registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
         functions.put(name, functionBuilder);
         return this;
     }
@@ -197,7 +191,7 @@ public class Parser {
             ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
             Token name = tokens.get();
 
-            if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
+            if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
 
             initializer = parseAssignment(forVar, tokens, variableMap);
@@ -237,7 +231,7 @@ public class Parser {
         } else if(id.getType().equals(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
             expression = parseGroup(tokens, variableMap);
         } else {
-            if(functions.containsKey(id.getContent()) || builtinFunctions.contains(id.getContent()))
+            if(functions.containsKey(id.getContent()))
                 expression = parseFunction(tokens, false, variableMap);
             else if(variableMap.containsKey(id.getContent())) {
                 ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
@@ -382,7 +376,7 @@ public class Parser {
             Token name = tokens.get();
             ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
 
-            if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()) || builtinFunctions.contains(name.getContent()))
+            if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
 
             variableMap.put(name.getContent(), temp);
@@ -414,7 +408,7 @@ public class Parser {
         Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
-        if(!functions.containsKey(identifier.getContent()) && !builtinFunctions.contains(identifier.getContent()))
+        if(!functions.containsKey(identifier.getContent()))
             throw new ParseException("No such function \"" + identifier.getContent() + "\"", identifier.getPosition());
 
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN); // Second is body begin
@@ -439,28 +433,8 @@ public class Parser {
                 ParserUtil.checkReturnType(argument, builder.getArgument(i));
             }
             return builder.build(args, identifier.getPosition());
-        } else {
-            switch(identifier.getContent()) {
-                case "abs":
-                    ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
-                    if(args.size() != 1)
-                        throw new ParseException("Expected 1 argument; found " + args.size(), identifier.getPosition());
-                    return new AbsFunction(identifier.getPosition(), (Returnable<Number>) args.get(0));
-                case "sqrt":
-                    ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
-                    if(args.size() != 1)
-                        throw new ParseException("Expected 1 argument; found " + args.size(), identifier.getPosition());
-                    return new SqrtFunction(identifier.getPosition(), (Returnable<Number>) args.get(0));
-                case "pow":
-                    ParserUtil.checkReturnType(args.get(0), Returnable.ReturnType.NUMBER);
-                    ParserUtil.checkReturnType(args.get(1), Returnable.ReturnType.NUMBER);
-                    if(args.size() != 2)
-                        throw new ParseException("Expected 1 argument; found " + args.size(), identifier.getPosition());
-                    return new PowFunction(identifier.getPosition(), (Returnable<Number>) args.get(0), (Returnable<Number>) args.get(1));
-                default:
-                    throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());
-            }
         }
+        throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());
     }
 
 

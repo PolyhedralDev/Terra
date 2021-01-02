@@ -1,13 +1,11 @@
 package com.dfsek.terra.api.structures.parser.lang.functions.def;
 
 import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Item;
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
-import java.util.Random;
 
 public class FunctionBlock<T> implements Item<T> {
     private final List<Item<?>> items;
@@ -26,9 +24,9 @@ public class FunctionBlock<T> implements Item<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public synchronized T apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public synchronized T apply(ImplementationArguments implementationArguments) {
         for(Item<?> item : items) {
-            Object result = item.apply(buffer, rotation, random, recursions);
+            Object result = item.apply(implementationArguments);
             if(result instanceof Block.ReturnInfo) {
                 Block.ReturnInfo<T> level = (Block.ReturnInfo<T>) result;
                 if(level.getLevel().equals(Block.ReturnLevel.RETURN)) return level.getData();

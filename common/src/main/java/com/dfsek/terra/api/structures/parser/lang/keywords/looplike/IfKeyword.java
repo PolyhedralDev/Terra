@@ -1,15 +1,13 @@
 package com.dfsek.terra.api.structures.parser.lang.keywords.looplike;
 
 import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Random;
 
 public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
@@ -27,15 +25,15 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public Block.ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        if(statement.apply(buffer, rotation, random, recursions)) return conditional.apply(buffer, rotation, random, recursions);
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
+        if(statement.apply(implementationArguments)) return conditional.apply(implementationArguments);
         else {
             for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().apply(buffer, rotation, random, recursions)) {
-                    return pair.getRight().apply(buffer, rotation, random, recursions);
+                if(pair.getLeft().apply(implementationArguments)) {
+                    return pair.getRight().apply(implementationArguments);
                 }
             }
-            if(elseBlock != null) return elseBlock.apply(buffer, rotation, random, recursions);
+            if(elseBlock != null) return elseBlock.apply(implementationArguments);
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }

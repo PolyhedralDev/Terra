@@ -3,16 +3,14 @@ package com.dfsek.terra.api.structures.script.functions;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
-import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.items.Mark;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
-
-import java.util.Random;
 
 public class MarkFunction implements Function<Void> {
     private final Returnable<Number> x, y, z;
@@ -28,12 +26,13 @@ public class MarkFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
+    public Void apply(ImplementationArguments implementationArguments) {
+        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
+        Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
 
-        RotationUtil.rotateVector(xz, rotation);
+        RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        buffer.setMark(new Mark(mark.apply(buffer, rotation, random, recursions)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().setMark(new Mark(mark.apply(implementationArguments)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

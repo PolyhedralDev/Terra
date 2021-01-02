@@ -3,19 +3,19 @@ package com.dfsek.terra.api.structures.script.functions;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.IntermediateBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.registry.ScriptRegistry;
 import net.jafama.FastMath;
 
 import java.util.List;
-import java.util.Random;
 
 public class StructureFunction implements Function<Boolean> {
     private final ScriptRegistry registry;
@@ -42,13 +42,14 @@ public class StructureFunction implements Function<Boolean> {
     }
 
     @Override
-    public Boolean apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public Boolean apply(ImplementationArguments implementationArguments) {
+        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
+        Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
 
-        RotationUtil.rotateVector(xz, rotation);
+        RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        String app = id.apply(buffer, rotation, random, recursions);
+        String app = id.apply(implementationArguments);
         StructureScript script = registry.get(app);
         if(script == null) {
             main.getLogger().severe("No such structure " + app);
@@ -56,7 +57,7 @@ public class StructureFunction implements Function<Boolean> {
         }
 
         Rotation rotation1;
-        String rotString = rotations.get(random.nextInt(rotations.size())).apply(buffer, rotation, random, recursions);
+        String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments);
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
@@ -64,9 +65,9 @@ public class StructureFunction implements Function<Boolean> {
             return null;
         }
 
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ()));
 
-        return script.executeInBuffer(new IntermediateBuffer(buffer, offset), random, rotation.rotate(rotation1), recursions + 1);
+        return script.executeInBuffer(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }
 
     @Override

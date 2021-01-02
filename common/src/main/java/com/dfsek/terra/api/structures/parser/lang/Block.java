@@ -1,11 +1,8 @@
 package com.dfsek.terra.api.structures.parser.lang;
 
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
-import java.util.Random;
 
 public class Block implements Item<Block.ReturnInfo<?>> {
     private final List<Item<?>> items;
@@ -21,9 +18,9 @@ public class Block implements Item<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public synchronized ReturnInfo<?> apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public synchronized ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
         for(Item<?> item : items) {
-            Object result = item.apply(buffer, rotation, random, recursions);
+            Object result = item.apply(implementationArguments);
             if(result instanceof ReturnInfo) {
                 ReturnInfo<?> level = (ReturnInfo<?>) result;
                 if(!level.getLevel().equals(ReturnLevel.NONE)) return level;

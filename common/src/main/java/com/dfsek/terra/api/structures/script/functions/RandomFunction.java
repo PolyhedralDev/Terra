@@ -1,12 +1,10 @@
 package com.dfsek.terra.api.structures.script.functions;
 
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-
-import java.util.Random;
 
 public class RandomFunction implements Function<Integer> {
     private final Returnable<Number> numberReturnable;
@@ -24,8 +22,8 @@ public class RandomFunction implements Function<Integer> {
     }
 
     @Override
-    public Integer apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
-        return random.nextInt(numberReturnable.apply(buffer, rotation, random, recursions).intValue()); // TODO: deterministic random
+    public Integer apply(ImplementationArguments implementationArguments) {
+        return ((TerraImplementationArguments) implementationArguments).getRandom().nextInt(numberReturnable.apply(implementationArguments).intValue());
     }
 
     @Override

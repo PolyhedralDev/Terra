@@ -6,11 +6,11 @@ import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
-import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.world.CheckCache;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
@@ -18,8 +18,6 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import net.jafama.FastMath;
-
-import java.util.Random;
 
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;
@@ -38,15 +36,16 @@ public class CheckFunction implements Function<String> {
 
 
     @Override
-    public String apply(Buffer buffer, Rotation rotation, Random random, int recursions) {
+    public String apply(ImplementationArguments implementationArguments) {
+        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
-        Vector2 xz = new Vector2(x.apply(buffer, rotation, random, recursions).doubleValue(), z.apply(buffer, rotation, random, recursions).doubleValue());
+        Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
 
-        RotationUtil.rotateVector(xz, rotation);
+        RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Location location = buffer.getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(buffer, rotation, random, recursions).intValue(), FastMath.roundToInt(xz.getZ())));
+        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
 
-        return apply(location, buffer.getOrigin().getWorld());
+        return apply(location, arguments.getBuffer().getOrigin().getWorld());
     }
 
     private String apply(Location vector, World world) {

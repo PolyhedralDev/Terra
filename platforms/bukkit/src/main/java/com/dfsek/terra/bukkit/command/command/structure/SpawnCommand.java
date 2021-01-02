@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
 import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
+import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
@@ -32,9 +33,9 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         int z = p.getBlockZ();
         Position dummy = new Position(0, 0);
         com.dfsek.terra.api.platform.world.World w = BukkitAdapter.adapt(world);
-        String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), getMain().getWorld(w).getConfig().getCheckCache(), dummy).apply(new StructureBuffer(
+        String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), getMain().getWorld(w).getConfig().getCheckCache(), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
                 new com.dfsek.terra.api.math.vector.Location(w, x, y, z)
-        ), Rotation.NONE, new FastRandom(), 0);
+        ), Rotation.NONE, new FastRandom(), 0));
 
         sender.sendMessage("Found: " + check);
         return true;
