@@ -1,6 +1,8 @@
 package com.dfsek.terra.bukkit.command.command;
 
 import com.dfsek.terra.bukkit.command.WorldCommand;
+import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,7 +19,7 @@ public class FixChunkCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player player, @NotNull Command command, @NotNull String s, @NotNull String[] strings, World world) {
-        //MasterChunkGenerator.fixChunk(player.getLocation().getChunk());
+        BukkitChunkGeneratorWrapper.fixChunk(BukkitAdapter.adapt(player.getLocation().getChunk()));
         return true;
     }
 

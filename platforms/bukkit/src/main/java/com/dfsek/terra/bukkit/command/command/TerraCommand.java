@@ -19,7 +19,6 @@ import java.util.List;
 public class TerraCommand extends Command {
     private final List<Command> commands = Arrays.asList(new ReloadCommand(this),
             new BiomeCommand(this),
-            new OreCommand(this),
             new ProfileCommand(this),
             new SaveDataCommand(this),
             new StructureCommand(this),

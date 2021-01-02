@@ -3,6 +3,7 @@ package com.dfsek.terra.bukkit.command.command;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.Command;
 import com.dfsek.terra.bukkit.command.WorldCommand;
+import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,7 @@ public class SaveDataCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        //TerraChunkGenerator.saveAll();
+        BukkitChunkGeneratorWrapper.saveAll();
         LangUtil.send("debug.data-save", new BukkitCommandSender(sender), w.getName());
         return true;
     }
