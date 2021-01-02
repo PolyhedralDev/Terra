@@ -6,6 +6,7 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.script.builders.BinaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.EntityFunctionBuilder;
@@ -16,12 +17,14 @@ import com.dfsek.terra.api.structures.script.builders.PullFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.api.structures.world.CheckCache;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
+import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -42,16 +45,25 @@ public class StructureScript {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
-        parser.addFunction("block", new BlockFunctionBuilder(main))
-                .addFunction("check", new CheckFunctionBuilder(main, cache))
-                .addFunction("structure", new StructureFunctionBuilder(registry, main))
-                .addFunction("randomInt", new RandomFunctionBuilder())
-                .addFunction("recursions", new RecursionsFunctionBuilder())
-                .addFunction("setMark", new MarkFunctionBuilder())
-                .addFunction("getMark", new GetMarkFunctionBuilder())
-                .addFunction("pull", new PullFunctionBuilder(main))
-                .addFunction("loot", new LootFunctionBuilder(main, lootRegistry))
-                .addFunction("entity", new EntityFunctionBuilder(main));
+        parser.registerFunction("block", new BlockFunctionBuilder(main))
+                .registerFunction("check", new CheckFunctionBuilder(main, cache))
+                .registerFunction("structure", new StructureFunctionBuilder(registry, main))
+                .registerFunction("randomInt", new RandomFunctionBuilder())
+                .registerFunction("recursions", new RecursionsFunctionBuilder())
+                .registerFunction("setMark", new MarkFunctionBuilder())
+                .registerFunction("getMark", new GetMarkFunctionBuilder())
+                .registerFunction("pull", new PullFunctionBuilder(main))
+                .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry))
+                .registerFunction("entity", new EntityFunctionBuilder(main))
+                .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
+                .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
+                .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
+                .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> FastMath.floor(number.doubleValue())))
+                .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> FastMath.ceil(number.doubleValue())))
+                .registerFunction("log", new UnaryNumberFunctionBuilder(number -> FastMath.log(number.doubleValue())))
+                .registerFunction("round", new UnaryNumberFunctionBuilder(number -> FastMath.round(number.doubleValue())))
+                .registerFunction("max", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
+                .registerFunction("min", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
 
         block = parser.parse();
         this.id = parser.getID();
@@ -72,7 +84,7 @@ public class StructureScript {
      */
     public boolean execute(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        Block.ReturnInfo<?> level = block.apply(buffer, rotation, random, 0);
+        Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buffer, rotation, random, 0));
         buffer.paste();
         return !level.getLevel().equals(Block.ReturnLevel.FAIL);
     }
@@ -80,7 +92,7 @@ public class StructureScript {
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
         StructureBuffer buffer = cache.computeIfAbsent(location, loc -> {
             StructureBuffer buf = new StructureBuffer(loc);
-            Block.ReturnInfo<?> level = block.apply(buf, rotation, random, 0);
+            Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buf, rotation, random, 0));
             buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
             return buf;
         });
@@ -90,11 +102,11 @@ public class StructureScript {
 
     public boolean test(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        return !block.apply(buffer, rotation, random, 0).equals(Block.ReturnLevel.FAIL);
+        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, 0)).equals(Block.ReturnLevel.FAIL);
     }
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
-        return !block.apply(buffer, rotation, random, recursions).equals(Block.ReturnLevel.FAIL);
+        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, recursions)).equals(Block.ReturnLevel.FAIL);
     }
 
     public String getId() {
