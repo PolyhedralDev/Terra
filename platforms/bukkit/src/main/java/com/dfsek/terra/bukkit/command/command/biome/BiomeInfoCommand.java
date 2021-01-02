@@ -1,5 +1,6 @@
 package com.dfsek.terra.bukkit.command.command.biome;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.WorldCommand;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BiomeInfoCommand extends WorldCommand {
     public BiomeInfoCommand(com.dfsek.terra.bukkit.command.Command parent) {
@@ -84,14 +86,11 @@ public class BiomeInfoCommand extends WorldCommand {
 
     @Override
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        /*
-        if(!(sender instanceof Player) || !(((Player) sender).getWorld().getGenerator() instanceof TerraChunkGenerator))
+        if(!(sender instanceof Player) || !TerraWorld.isTerraWorld(BukkitAdapter.adapt(((Player) sender).getWorld())))
             return Collections.emptyList();
-        List<String> ids = ((TerraBukkitPlugin) getMain()).getWorld(((Player) sender).getWorld()).getConfig().getBiomeIDs();
+        List<String> ids = getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getBiomeIDs();
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
-
-         */
         return Collections.emptyList();
     }
 }

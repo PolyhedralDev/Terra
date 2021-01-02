@@ -1,6 +1,8 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.Axis;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Bisected;
@@ -10,8 +12,10 @@ import com.dfsek.terra.api.platform.block.data.Slab;
 import com.dfsek.terra.api.platform.block.data.Stairs;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.bukkit.BukkitCommandSender;
 import org.bukkit.Location;
 import org.bukkit.block.data.type.Wall;
+import org.bukkit.util.Vector;
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.
@@ -328,6 +332,22 @@ public final class BukkitAdapter {
 
     public static com.dfsek.terra.api.math.vector.Location adapt(Location location) {
         return new com.dfsek.terra.api.math.vector.Location(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+    }
+
+    public static Vector adapt(Vector3 vector3) {
+        return new Vector(vector3.getX(), vector3.getY(), vector3.getZ());
+    }
+
+    public static Vector3 adapt(Vector vector) {
+        return new Vector3(vector.getX(), vector.getY(), vector.getZ());
+    }
+
+    public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
+        return new BukkitCommandSender(sender);
+    }
+
+    public static org.bukkit.command.CommandSender adapt(CommandSender sender) {
+        return ((BukkitCommandSender) sender).getHandle();
     }
 
     public static World adapt(org.bukkit.World world) {

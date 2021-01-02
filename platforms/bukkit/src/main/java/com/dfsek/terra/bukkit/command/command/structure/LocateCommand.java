@@ -3,7 +3,6 @@ package com.dfsek.terra.bukkit.command.command.structure;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.async.AsyncStructureFinder;
-import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -42,14 +41,14 @@ public class LocateCommand extends WorldCommand {
         try {
             maxRadius = Integer.parseInt(args[1]);
         } catch(NumberFormatException e) {
-            LangUtil.send("command.structure.invalid-radius", new BukkitCommandSender(sender), args[1]);
+            LangUtil.send("command.structure.invalid-radius", BukkitAdapter.adapt(sender), args[1]);
             return true;
         }
         TerraStructure s;
         try {
             s = Objects.requireNonNull(getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getStructure(id));
         } catch(IllegalArgumentException | NullPointerException e) {
-            LangUtil.send("command.structure.invalid", new BukkitCommandSender(sender), id);
+            LangUtil.send("command.structure.invalid", BukkitAdapter.adapt(sender), id);
             return true;
         }
         Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getGrid(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
@@ -61,7 +60,7 @@ public class LocateCommand extends WorldCommand {
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {new TextComponent("Click to teleport")}))
                             .color(ChatColor.GREEN)
                             .append(String.format(" (%.1f blocks away)", location.add(new Vector3(0, sender.getLocation().getY(), 0)).distance(
-                                    new Vector3(sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ()))), ComponentBuilder.FormatRetention.NONE);
+                                    BukkitAdapter.adapt(sender.getLocation().toVector()))), ComponentBuilder.FormatRetention.NONE);
                     sender.spigot().sendMessage(cm.create());
                 } else
                     sender.sendMessage("Unable to locate structure. ");
