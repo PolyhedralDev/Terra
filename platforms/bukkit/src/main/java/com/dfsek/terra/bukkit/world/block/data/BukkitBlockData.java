@@ -7,6 +7,7 @@ import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.RedstoneWire;
@@ -22,6 +23,8 @@ public class BukkitBlockData implements BlockData {
     }
 
     public static BukkitBlockData newInstance(org.bukkit.block.data.BlockData bukkitData) {
+
+        if(bukkitData instanceof Rail) return new BukkitRail((Rail) bukkitData);
         if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
         if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
         if(bukkitData instanceof Wall) return new BukkitWall((Wall) bukkitData);
