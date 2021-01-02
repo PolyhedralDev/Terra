@@ -148,13 +148,11 @@ public class Tokenizer {
 
     private boolean isNumberLike() {
         return reader.current().isDigit()
-                || reader.current().is('_', '.', '-', 'E');
+                || reader.current().is('_', '.', 'E');
     }
 
     private boolean isNumberStart() {
         return reader.current().isDigit()
-                || reader.current().is('-') && reader.next(1).isDigit()
-                || reader.current().is('-') && reader.next(1).is('.') && reader.next(2).isDigit()
                 || reader.current().is('.') && reader.next(1).isDigit();
     }
 

@@ -26,6 +26,7 @@ import com.dfsek.terra.api.structures.parser.lang.operations.ConcatenationOperat
 import com.dfsek.terra.api.structures.parser.lang.operations.DivisionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.ModuloOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.MultiplicationOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.NegationOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.NumberAdditionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.SubtractionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.statements.EqualsStatement;
@@ -217,8 +218,12 @@ public class Parser {
 
     private Returnable<?> parseExpression(TokenHolder tokens, boolean full, Map<String, Variable<?>> variableMap) throws ParseException {
         boolean booleanInverted = false; // Check for boolean not operator
+        boolean negate = false;
         if(tokens.get().getType().equals(Token.Type.BOOLEAN_NOT)) {
             booleanInverted = true;
+            tokens.consume();
+        } else if(tokens.get().getType().equals(Token.Type.SUBTRACTION_OPERATOR)) {
+            negate = true;
             tokens.consume();
         }
 
@@ -243,6 +248,9 @@ public class Parser {
         if(booleanInverted) { // Invert operation if boolean not detected
             ParserUtil.checkReturnType(expression, Returnable.ReturnType.BOOLEAN);
             expression = new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
+        } else if(negate) {
+            ParserUtil.checkReturnType(expression, Returnable.ReturnType.NUMBER);
+            expression = new NegationOperation((Returnable<Number>) expression, expression.getPosition());
         }
 
         if(full && tokens.get().isBinaryOperator()) { // Parse binary operations

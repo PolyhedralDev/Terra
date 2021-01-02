@@ -1,5 +1,11 @@
 id "testScript";
 
+bool thing1 = 2 > (2+2) || false;
+
+if(2 > 2 || 3 + 4 <= 2 && 4 + 5 > 2 / 3) {
+    test("ok", 2);
+}
+
 test("minecraft:green_w" + "ool", (2 * (3+1) * (2 * (1+1))));
 //
 
@@ -7,7 +13,7 @@ num testVar = 3.4;
 bool boolean = true;
 str stringVar = "hello!";
 
-num precedence = (3 + 2) * 2 + 3;
+num precedence = 3 + 2 * 2 + 3;
 test("precedence: " + precedence, 2);
 num precedence2 = 3 * 2 + 2 * 3;
 test("precedence 2: " + precedence2, 2);
@@ -17,6 +23,13 @@ bool iftest = false;
 bool truetest = false;
 
 num iterator = 0;
+num thing = 4 - 2-2+2-2+2;
+test("4 - 2 = " + thing, 2);
+
+thing = -2;
+test("-2 = " + thing, 2);
+thing = -thing;
+test("--2 = " + thing, 2);
 
 
 
