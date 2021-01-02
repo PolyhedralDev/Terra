@@ -35,7 +35,7 @@ public class StructureScript {
     private final String id;
     private final LinkedHashMap<Location, StructureBuffer> cache;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, CheckCache cache) {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, CheckCache cache) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -53,11 +53,7 @@ public class StructureScript {
                 .addFunction("loot", new LootFunctionBuilder(main, lootRegistry))
                 .addFunction("entity", new EntityFunctionBuilder(main));
 
-        try {
-            block = parser.parse();
-        } catch(ParseException e) {
-            throw new RuntimeException(e);
-        }
+        block = parser.parse();
         this.id = parser.getID();
         this.cache = new LinkedHashMap<Location, StructureBuffer>() {
             @Override

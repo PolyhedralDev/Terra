@@ -31,7 +31,8 @@ public class FolderLoader extends Loader {
         try(Stream<Path> paths = Files.walk(newPath.toPath())) {
             paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(extension)).forEach(file -> {
                 try {
-                    streams.put(newPath.toURI().relativize(file.toUri()).getPath(), new FileInputStream(file.toFile()));
+                    String rel = newPath.toPath().relativize(file).toString();
+                    streams.put(rel, new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {
                     e.printStackTrace();
                 }

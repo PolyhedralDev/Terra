@@ -154,15 +154,21 @@ public class ConfigPack implements LoaderRegistrar {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
 
-        loader.open("structures/data", ".tesf").then(streams -> streams.forEach(stream -> {
-            StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, lootRegistry, checkCache);
-            scriptRegistry.add(structureScript.getId(), structureScript);
-        })).close().open("structures/loot", ".json").thenEntries(entries -> {
+        loader.open("structures/data", ".tesf").thenEntries(entries -> {
+            for(Map.Entry<String, InputStream> entry : entries) {
+                try {
+                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, checkCache);
+                    scriptRegistry.add(structureScript.getId(), structureScript);
+                } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException e) {
+                    throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
+                }
+            }
+        }).close().open("structures/loot", ".json").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
                     lootRegistry.add(entry.getKey(), new LootTable(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
                 } catch(ParseException | IOException | NullPointerException e) {
-                    throw new LoadException("Unable to load loot", e);
+                    throw new LoadException("Unable to load loot table \"" + entry.getKey() + "\"", e);
                 }
             }
         }).close();

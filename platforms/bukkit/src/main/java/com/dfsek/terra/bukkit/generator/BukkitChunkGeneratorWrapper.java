@@ -1,5 +1,6 @@
 package com.dfsek.terra.bukkit.generator;
 
+import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
 import com.dfsek.terra.api.platform.world.Chunk;
@@ -9,7 +10,6 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
@@ -64,7 +64,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(!(c.getWorld().getGenerator() instanceof MasterChunkGenerator)) throw new IllegalArgumentException();
+        if(!TerraWorld.isTerraWorld(c.getWorld())) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
