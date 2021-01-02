@@ -60,26 +60,22 @@ public class ExportCommand extends PlayerCommand {
         for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
-                    String data;
+
                     Block block = new Location(l1.getWorld(), x, y, z).getBlock();
+                    BlockData data = block.getBlockData();
                     if(block.getType().equals(Material.STRUCTURE_VOID)) continue;
-                    scriptBuilder.append("block(").append(x - l1.getBlockX() - centerX).append(", y + ").append(y - l1.getBlockY() - centerY).append(", ").append(z - l1.getBlockZ() - centerZ).append(", ")
-                            .append("\"");
                     BlockState state = block.getState();
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]")) {
-                            data = sign.getLine(2) + sign.getLine(3);
-                            BlockData data1 = Bukkit.createBlockData(sign.getLine(2) + sign.getLine(3));
-                            if(data1.getMaterial().equals(Material.STRUCTURE_VOID)) continue;
-                            scriptBuilder.append(data1.getAsString(false));
-                        } else {
-                            data = block.getBlockData().getAsString(false);
+                            data = Bukkit.createBlockData(sign.getLine(2) + sign.getLine(3));
                         }
-                    } else {
-                        data = block.getBlockData().getAsString(false);
                     }
-                    scriptBuilder.append(data).append("\");\n");
+                    if(!data.getMaterial().equals(Material.STRUCTURE_VOID)) {
+                        scriptBuilder.append("block(").append(x - l1.getBlockX() - centerX).append(", y + ").append(y - l1.getBlockY() - centerY).append(", ").append(z - l1.getBlockZ() - centerZ).append(", ")
+                                .append("\"");
+                        scriptBuilder.append(data.getAsString(false)).append("\");\n");
+                    }
                 }
             }
         }
