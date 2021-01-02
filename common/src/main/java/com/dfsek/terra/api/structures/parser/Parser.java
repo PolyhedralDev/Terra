@@ -24,6 +24,7 @@ import com.dfsek.terra.api.structures.parser.lang.operations.BooleanNotOperation
 import com.dfsek.terra.api.structures.parser.lang.operations.BooleanOrOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.ConcatenationOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.DivisionOperation;
+import com.dfsek.terra.api.structures.parser.lang.operations.ModuloOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.MultiplicationOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.NumberAdditionOperation;
 import com.dfsek.terra.api.structures.parser.lang.operations.SubtractionOperation;
@@ -321,6 +322,8 @@ public class Parser {
                 return new BooleanAndOperation((Returnable<Boolean>) left, (Returnable<Boolean>) right, binaryOperator.getPosition());
             case BOOLEAN_OR:
                 return new BooleanOrOperation((Returnable<Boolean>) left, (Returnable<Boolean>) right, binaryOperator.getPosition());
+            case MODULO_OPERATOR:
+                return new ModuloOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
             default:
                 throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
         }

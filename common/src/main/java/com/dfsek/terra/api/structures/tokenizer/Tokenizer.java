@@ -96,6 +96,8 @@ public class Tokenizer {
             return new Token(reader.consume().toString(), Token.Type.MULTIPLICATION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is('/'))
             return new Token(reader.consume().toString(), Token.Type.DIVISION_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
+        if(reader.current().is('%'))
+            return new Token(reader.consume().toString(), Token.Type.MODULO_OPERATOR, new Position(reader.getLine(), reader.getIndex()));
         if(reader.current().is('!'))
             return new Token(reader.consume().toString(), Token.Type.BOOLEAN_NOT, new Position(reader.getLine(), reader.getIndex()));
 

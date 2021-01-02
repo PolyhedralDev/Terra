@@ -19,8 +19,9 @@ public class BlockFunction implements Function<Void> {
     private final BlockData data;
     private final Returnable<Number> x, y, z;
     private final Position position;
+    private final Returnable<Boolean> overwrite;
 
-    public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, TerraPlugin main, Position position) throws ParseException {
+    public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Returnable<Boolean> overwrite, TerraPlugin main, Position position) throws ParseException {
         this.position = position;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant", data.getPosition());
 
@@ -28,6 +29,7 @@ public class BlockFunction implements Function<Void> {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.overwrite = overwrite;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class BlockFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         BlockData rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(implementationArguments)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

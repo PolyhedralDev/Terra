@@ -44,7 +44,8 @@ public class Token {
                 || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
                 || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
                 || type.equals(Type.BOOLEAN_OR)
-                || type.equals(Type.BOOLEAN_AND);
+                || type.equals(Type.BOOLEAN_AND)
+                || type.equals(Type.MODULO_OPERATOR);
     }
 
     public boolean isStrictNumericOperator() {
@@ -54,7 +55,8 @@ public class Token {
                 || type.equals(Type.GREATER_THAN_OPERATOR)
                 || type.equals(Type.LESS_THAN_OPERATOR)
                 || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
-                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR);
+                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
+                || type.equals(Type.MODULO_OPERATOR);
     }
 
     public boolean isStrictBooleanOperator() {
@@ -164,6 +166,10 @@ public class Token {
          * Division operator
          */
         DIVISION_OPERATOR,
+        /**
+         * Modulo operator.
+         */
+        MODULO_OPERATOR,
         /**
          * Boolean not operator
          */
