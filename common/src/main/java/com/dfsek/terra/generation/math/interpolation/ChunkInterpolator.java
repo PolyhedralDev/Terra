@@ -10,7 +10,7 @@ import net.jafama.FastMath;
  * Class to abstract away the 16 Interpolators needed to generate a chunk.<br>
  * Contains method to get interpolated noise at a coordinate within the chunk.
  */
-public class ChunkInterpolator3 {
+public class ChunkInterpolator {
     private final Interpolator3[][][] interpGrid = new Interpolator3[4][64][4];
     private final Generator[][] gens = new Generator[7][7];
     private final boolean[][] needsBiomeInterp = new boolean[5][5];
@@ -24,7 +24,7 @@ public class ChunkInterpolator3 {
      * @param chunkZ Z coordinate of the chunk.
      * @param grid   BiomeGrid to use for noise fetching.
      */
-    public ChunkInterpolator3(World w, int chunkX, int chunkZ, TerraBiomeGrid grid, int smooth) {
+    public ChunkInterpolator(World w, int chunkX, int chunkZ, TerraBiomeGrid grid, int smooth) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         this.smooth = smooth;
@@ -43,8 +43,16 @@ public class ChunkInterpolator3 {
 
         for(byte x = -1; x < 6; x++) {
             for(byte z = -1; z < 6; z++) {
-                for(int y = 0; y < 65; y++) {
-                    noiseStorage[x + 1][z + 1][y] = gens[x + 1][z + 1].getNoise((x * smooth) + xOrigin, y << 2, (z * smooth) + zOrigin);
+                Generator generator = gens[x + 1][z + 1];
+                if(generator.is2d()) {
+                    double n = generator.getNoise((x * smooth) + xOrigin, 0, (z * smooth) + zOrigin);
+                    for(int y = 0; y < 65; y++) {
+                        noiseStorage[x + 1][z + 1][y] = n + noise2dExtrude(y << 2, generator.get2dBase());
+                    }
+                } else {
+                    for(int y = 0; y < 65; y++) {
+                        noiseStorage[x + 1][z + 1][y] = generator.getNoise((x * smooth) + xOrigin, y << 2, (z * smooth) + zOrigin);
+                    }
                 }
             }
         }
@@ -112,5 +120,9 @@ public class ChunkInterpolator3 {
      */
     public double getNoise(double x, double y, double z) {
         return interpGrid[reRange(((int) x) / smooth, 3)][reRange(((int) y) / 4, 63)][reRange(((int) z) / smooth, 3)].trilerp((x % smooth) / smooth, (y % 4) / 4, (z % smooth) / smooth);
+    }
+
+    private static double noise2dExtrude(double y, double base) {
+        return ((-FastMath.pow2((y / base))) + 1);
     }
 }

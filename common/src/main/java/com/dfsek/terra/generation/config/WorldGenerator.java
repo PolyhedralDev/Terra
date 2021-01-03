@@ -29,8 +29,17 @@ public class WorldGenerator implements Generator {
     private final Variable elevationXVar;
     private final Variable elevationZVar;
     private final boolean elevationInterpolation;
+    private final boolean noise2d;
+    private final double base;
 
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation, boolean noise2d, double base) {
+        this.palettes = palettes;
+        this.slantPalettes = slantPalettes;
+
+        this.elevationInterpolation = elevationInterpolation;
+        this.noise2d = noise2d;
+        this.base = base;
+
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
         Parser ep = new Parser();
@@ -38,14 +47,11 @@ public class WorldGenerator implements Generator {
 
         Scope s = new Scope().withParent(vScope);
         xVar = s.create("x");
-        yVar = s.create("y");
+        if(!noise2d) yVar = s.create("y");
+        else yVar = null;
         zVar = s.create("z");
         s.create("seed").setValue(seed);
 
-        this.palettes = palettes;
-        this.slantPalettes = slantPalettes;
-
-        this.elevationInterpolation = elevationInterpolation;
 
         for(Map.Entry<String, NoiseBuilder> e : noiseBuilders.entrySet()) {
             switch(e.getValue().getDimensions()) {
@@ -86,7 +92,7 @@ public class WorldGenerator implements Generator {
     @Override
     public synchronized double getNoise(int x, int y, int z) {
         xVar.setValue(x);
-        yVar.setValue(y);
+        if(!noise2d) yVar.setValue(y);
         zVar.setValue(z);
         return noiseExp.evaluate();
     }
@@ -99,6 +105,16 @@ public class WorldGenerator implements Generator {
     @Override
     public Palette<BlockData> getPalette(int y) {
         return palettes.getPalette(y);
+    }
+
+    @Override
+    public boolean is2d() {
+        return noise2d;
+    }
+
+    @Override
+    public double get2dBase() {
+        return base;
     }
 
     public Palette<BlockData> getSlantPalette(int y) {

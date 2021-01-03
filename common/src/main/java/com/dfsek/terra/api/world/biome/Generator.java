@@ -21,4 +21,7 @@ public interface Generator {
      */
     Palette<BlockData> getPalette(int y);
 
+    boolean is2d();
+
+    double get2dBase();
 }

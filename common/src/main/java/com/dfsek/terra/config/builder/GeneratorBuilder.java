@@ -27,9 +27,29 @@ public class GeneratorBuilder {
 
     private boolean interpolateElevation;
 
+    private boolean noise2d;
+
+    private double base;
+
 
     public WorldGenerator build(long seed) {
-        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation));
+        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base));
+    }
+
+    public boolean isNoise2d() {
+        return noise2d;
+    }
+
+    public void setNoise2d(boolean noise2d) {
+        this.noise2d = noise2d;
+    }
+
+    public double getBase() {
+        return base;
+    }
+
+    public void setBase(double base) {
+        this.base = base;
     }
 
     public String getNoiseEquation() {
