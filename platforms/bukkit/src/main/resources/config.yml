@@ -5,6 +5,6 @@ dump-default: true
 biome-search-resolution: 4
 cache:
   carver: 512
-  structure: 1024
+  structure: 128
 master-disable:
   caves: false
