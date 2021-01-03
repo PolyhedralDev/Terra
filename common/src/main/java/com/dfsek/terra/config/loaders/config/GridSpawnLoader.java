@@ -12,6 +12,6 @@ public class GridSpawnLoader implements TypeLoader<GridSpawn> {
     @Override
     public GridSpawn load(Type type, Object o, ConfigLoader configLoader) {
         Map<String, Integer> map = (Map<String, Integer>) o;
-        return new GridSpawn(map.get("width"), map.get("padding"), map.getOrDefault("seed", 0));
+        return new GridSpawn(map.get("width"), map.get("padding"), map.getOrDefault("salt", 0));
     }
 }

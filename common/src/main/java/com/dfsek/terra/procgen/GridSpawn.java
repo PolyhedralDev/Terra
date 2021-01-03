@@ -14,12 +14,12 @@ import java.util.Random;
 public class GridSpawn {
     private final int separation;
     private final int width;
-    private final int seedOffset;
+    private final int salt;
 
-    public GridSpawn(int width, int separation, int seedOffset) {
+    public GridSpawn(int width, int separation, int salt) {
         this.separation = separation;
         this.width = width;
-        this.seedOffset = seedOffset;
+        this.salt = salt;
     }
 
     /**
@@ -36,7 +36,7 @@ public class GridSpawn {
         List<Vector3> zones = new GlueList<>();
         for(int xi = structureChunkX - 1; xi <= structureChunkX + 1; xi++) {
             for(int zi = structureChunkZ - 1; zi <= structureChunkZ + 1; zi++) {
-                zones.add(getChunkSpawn(xi, zi, seed + seedOffset));
+                zones.add(getChunkSpawn(xi, zi, seed));
             }
         }
         Vector3 shortest = zones.get(0);
@@ -56,7 +56,7 @@ public class GridSpawn {
      * @return Vector representing spawnpoint
      */
     public Vector3 getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
-        Random r = new FastRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed + seedOffset));
+        Random r = new FastRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed + salt));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;
