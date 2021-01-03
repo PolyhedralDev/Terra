@@ -6,15 +6,15 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.api.structures.world.CheckCache;
+import com.dfsek.terra.generation.math.SamplerCache;
 
 import java.util.List;
 
 public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
     private final TerraPlugin main;
-    private final CheckCache cache;
+    private final SamplerCache cache;
 
-    public CheckFunctionBuilder(TerraPlugin main, CheckCache cache) {
+    public CheckFunctionBuilder(TerraPlugin main, SamplerCache cache) {
         this.main = main;
         this.cache = cache;
     }

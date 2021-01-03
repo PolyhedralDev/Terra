@@ -12,20 +12,20 @@ import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.api.structures.world.CheckCache;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.generation.math.SamplerCache;
 import net.jafama.FastMath;
 
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final CheckCache cache;
+    private final SamplerCache cache;
 
-    public CheckFunction(TerraPlugin main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, CheckCache cache, Position position) {
+    public CheckFunction(TerraPlugin main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, SamplerCache cache, Position position) {
         this.main = main;
         this.x = x;
         this.y = y;

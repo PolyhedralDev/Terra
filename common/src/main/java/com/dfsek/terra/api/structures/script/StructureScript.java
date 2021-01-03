@@ -21,7 +21,7 @@ import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.api.structures.world.CheckCache;
+import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
 import net.jafama.FastMath;
@@ -38,7 +38,7 @@ public class StructureScript {
     private final String id;
     private final LinkedHashMap<Location, StructureBuffer> cache;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, CheckCache cache) throws ParseException {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));

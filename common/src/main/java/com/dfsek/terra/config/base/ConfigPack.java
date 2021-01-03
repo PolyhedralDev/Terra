@@ -9,7 +9,6 @@ import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.structures.world.CheckCache;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -43,6 +42,7 @@ import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.generation.items.TerraStructure;
 import com.dfsek.terra.generation.items.ores.Ore;
+import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.CarverRegistry;
@@ -95,12 +95,12 @@ public class ConfigPack implements LoaderRegistrar {
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
 
-    private final CheckCache checkCache;
+    private final SamplerCache samplerCache;
 
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
-        this.checkCache = new CheckCache(main);
+        this.samplerCache = new SamplerCache(main);
         floraRegistry = new FloraRegistry(main);
         paletteRegistry = new PaletteRegistry(main);
         treeRegistry = new TreeRegistry(main);
@@ -122,7 +122,7 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         long l = System.nanoTime();
-        this.checkCache = new CheckCache(main);
+        this.samplerCache = new SamplerCache(main);
         floraRegistry = new FloraRegistry(main);
         paletteRegistry = new PaletteRegistry(main);
         treeRegistry = new TreeRegistry(main);
@@ -157,7 +157,7 @@ public class ConfigPack implements LoaderRegistrar {
         loader.open("structures/data", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
-                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, checkCache);
+                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, samplerCache);
                     scriptRegistry.add(structureScript.getId(), structureScript);
                 } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
@@ -278,7 +278,7 @@ public class ConfigPack implements LoaderRegistrar {
         return biomeRegistry;
     }
 
-    public CheckCache getCheckCache() {
-        return checkCache;
+    public SamplerCache getSamplerCache() {
+        return samplerCache;
     }
 }
