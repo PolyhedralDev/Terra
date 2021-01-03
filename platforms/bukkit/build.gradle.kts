@@ -98,7 +98,8 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
             "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
             "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
             "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear")
-    maxHeapSize = "2G"
+    maxHeapSize = "3G"
+    minHeapSize = "3G"
     args = listOf("nogui")
     workingDir = file("${testDir}/")
     classpath = files("${testDir}/paper.jar")
