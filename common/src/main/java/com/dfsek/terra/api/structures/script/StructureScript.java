@@ -102,11 +102,11 @@ public class StructureScript {
 
     public boolean test(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, 0)).equals(Block.ReturnLevel.FAIL);
+        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, 0)).getLevel().equals(Block.ReturnLevel.FAIL);
     }
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
-        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, recursions)).equals(Block.ReturnLevel.FAIL);
+        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, recursions)).getLevel().equals(Block.ReturnLevel.FAIL);
     }
 
     public String getId() {
