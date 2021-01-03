@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.factories;
 
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -12,7 +13,7 @@ import java.util.List;
 public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, BiomeGridBuilder> {
 
     @Override
-    public UserDefinedGridBuilder build(BiomeGridTemplate config, TerraPlugin main) {
+    public UserDefinedGridBuilder build(BiomeGridTemplate config, TerraPlugin main) throws LoadException {
 
         UserDefinedGridBuilder holder = new UserDefinedGridBuilder();
         holder.setXFreq(config.getXFreq());
@@ -25,7 +26,7 @@ public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, BiomeGr
 
         for(int x = 0; x < xSize; x++) {
             List<Biome> layer = config.getGrid().get(x);
-            if(!(layer.size() == zSize)) throw new IllegalArgumentException();
+            if(!(layer.size() == zSize)) throw new LoadException("Expected " + zSize + " biomes in row " + x + ", found " + layer.size());
             for(int z = 0; z < zSize; z++) {
                 biomes[x][z] = layer.get(z);
             }
