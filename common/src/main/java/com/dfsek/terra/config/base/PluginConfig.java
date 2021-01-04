@@ -38,13 +38,14 @@ public class PluginConfig implements ConfigTemplate {
     @Value("cache.carver")
     @Default
     private int carverCache = 512;
+
     @Value("cache.structure")
     @Default
     private int structureCache = 128;
 
-    @Value("cache.checks")
+    @Value("cache.sampler")
     @Default
-    private int checkCache = 128;
+    private int samplerCache = 512;
 
     @Value("dump-default")
     @Default
@@ -95,7 +96,7 @@ public class PluginConfig implements ConfigTemplate {
         return structureCache;
     }
 
-    public int getCheckCache() {
-        return checkCache;
+    public int getSamplerCache() {
+        return samplerCache;
     }
 }

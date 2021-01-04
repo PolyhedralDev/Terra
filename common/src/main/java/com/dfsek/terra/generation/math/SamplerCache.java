@@ -5,45 +5,42 @@ import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
 import net.jafama.FastMath;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SamplerCache {
-    private final Map<Long, Container> cache;
+    private final Map<Long, Container> containerMap;
     private final TerraPlugin main;
 
     public SamplerCache(TerraPlugin main) {
-        cache = new HashMap<>();
+        containerMap = new HashMap<>();
         this.main = main;
     }
 
     public Sampler get(World world, int x, int z) {
-        return cache.computeIfAbsent(world.getSeed(), seed -> new Container(world, new LinkedHashMap<Long, Sampler>() {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<Long, Sampler> eldest) {
-                return size() > main.getTerraConfig().getCheckCache();
-            }
-        })).get(x, z);
+        return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).get(x, z);
     }
 
     public Sampler getChunk(World world, int chunkX, int chunkZ) {
-        return cache.computeIfAbsent(world.getSeed(), seed -> new Container(world, new LinkedHashMap<Long, Sampler>() {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<Long, Sampler> eldest) {
-                return size() > main.getTerraConfig().getCheckCache();
-            }
-        })).getChunk(chunkX, chunkZ);
+        return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).getChunk(chunkX, chunkZ);
     }
 
 
     private class Container {
         private final World world;
-        private final Map<Long, Sampler> cache;
+        private final TerraWorld terraWorld;
+        private final Map<Long, Sampler> cache = Collections.synchronizedMap(new LinkedHashMap<Long, Sampler>() {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<Long, Sampler> eldest) {
+                return this.size() > main.getTerraConfig().getSamplerCache();
+            }
+        });
 
-        private Container(World world, Map<Long, Sampler> cache) {
+        private Container(World world) {
             this.world = world;
-            this.cache = cache;
+            terraWorld = main.getWorld(world);
         }
 
         public Sampler get(int x, int z) {
@@ -54,8 +51,9 @@ public class SamplerCache {
 
         public Sampler getChunk(int cx, int cz) {
             long key = (((long) cx) << 32) | (cz & 0xffffffffL);
-            TerraWorld tw = main.getWorld(world);
-            return cache.computeIfAbsent(key, k -> new Sampler(cx, cz, tw.getGrid(), world, tw.getConfig().getTemplate().getBaseBlend(), tw.getConfig().getTemplate().getElevationBlend()));
+            synchronized(cache) {
+                return cache.computeIfAbsent(key, k -> new Sampler(cx, cz, terraWorld.getGrid(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend()));
+            }
         }
     }
 }
