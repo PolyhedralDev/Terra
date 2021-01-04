@@ -10,8 +10,19 @@ public class Data implements BlockData, MaterialData {
 
     public Data(String data) {
         this.data = new CompoundTag();
-        if(data.contains("[")) noProp = data.substring(0, data.indexOf('[')); // Strip properties for now TODO: actually do properties lol
-        else noProp = data;
+        if(data.contains("[")) {
+            noProp = data.substring(0, data.indexOf('[')); // Strip properties
+            String properties = data.substring(data.indexOf('[') + 1, data.indexOf(']'));
+            String[] props = properties.split(",");
+            CompoundTag pTag = new CompoundTag();
+            for(String property : props) {
+                String name = property.substring(0, property.indexOf('='));
+                String val = property.substring(property.indexOf('=') + 1);
+
+                pTag.putString(name, val);
+            }
+            this.data.put("Properties", pTag);
+        } else noProp = data;
         this.data.putString("Name", noProp);
     }
 
@@ -23,9 +34,9 @@ public class Data implements BlockData, MaterialData {
             this.data = tag;
         }
         String id = data.getString("Name");
-        if(id.contains("[")) noProp = id.substring(0, id.indexOf('[')); // Strip properties for now TODO: actually do properties lol
-        else noProp = id;
+        noProp = id;
     }
+
 
     @Override
     public MaterialData getMaterial() {

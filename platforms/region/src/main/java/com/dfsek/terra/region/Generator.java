@@ -83,6 +83,7 @@ public class Generator {
         }
 
         for(Map.Entry<Long, MCAFile> entry : world.getFiles().entrySet()) {
+            if(entry.getValue() == null) continue;
             entry.getValue().cleanupPalettesAndBlockStates();
             int x = (int) (entry.getKey() >> 32);
             int z = (int) (long) entry.getKey();

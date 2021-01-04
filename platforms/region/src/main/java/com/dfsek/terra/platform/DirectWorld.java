@@ -64,7 +64,10 @@ public class DirectWorld implements World {
     public Chunk getChunkAt(int x, int z) {
         MCAFile file = compute(x, z);
         net.querz.mca.Chunk chunk = file.getChunk(x, z);
-        if(chunk == null) chunk = net.querz.mca.Chunk.newChunk();
+        if(chunk == null) {
+            chunk = net.querz.mca.Chunk.newChunk();
+            file.setChunk(x, z, chunk);
+        }
         return new DirectChunkData(chunk, this, x, z);
     }
 
