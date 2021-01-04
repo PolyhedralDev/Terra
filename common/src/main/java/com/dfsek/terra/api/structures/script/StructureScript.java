@@ -7,6 +7,7 @@ import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.script.builders.BinaryNumberFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.BiomeFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.EntityFunctionBuilder;
@@ -55,6 +56,7 @@ public class StructureScript {
                 .registerFunction("pull", new PullFunctionBuilder(main))
                 .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry))
                 .registerFunction("entity", new EntityFunctionBuilder(main))
+                .registerFunction("biome", new BiomeFunctionBuilder(main))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
