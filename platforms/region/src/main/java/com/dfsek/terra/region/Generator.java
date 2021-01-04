@@ -1,11 +1,11 @@
 package com.dfsek.terra.region;
 
 import com.dfsek.terra.StandalonePlugin;
-import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.async.Counter;
-import com.dfsek.terra.async.GenerationWorker;
+import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.generation.math.SamplerCache;
+import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
 import com.dfsek.terra.platform.GenWrapper;
 import com.dfsek.terra.population.CavePopulator;
@@ -18,10 +18,7 @@ import net.querz.mca.MCAUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Generator {
     private final long seed;
@@ -52,33 +49,32 @@ public class Generator {
         GenWrapper wrapper = new GenWrapper(generator);
         DirectWorld world = new DirectWorld(seed, wrapper);
 
-        AtomicLong l = new AtomicLong(System.nanoTime());
+        long l = System.nanoTime();
+        int count = 0;
 
-        Counter counter = new Counter((id) -> {
-            if(id % 200 == 0) {
-                long c = System.nanoTime();
+        for(int cx = -rad; cx <= rad; cx++) {
+            for(int cz = -rad; cz <= rad; cz++) {
+                DirectChunkData chunkData = (DirectChunkData) world.getChunkAt(cx, cz);
+                generator.generateChunkData(world, null, cx, cz, chunkData);
 
-                long diff = c - l.get();
+                cavePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
+                structurePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
+                orePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
+                floraPopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
+                treePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
+                count++;
 
-                double ms = (double) diff / 1000000;
+                if(count % 200 == 0) {
+                    long n = System.nanoTime();
 
-                System.out.println("[" + Thread.currentThread().getName() + "] Generated " + id + " chunks. " + (200d / ms) * 1000 + " cps. " + world.getFiles().size() + " Regions loaded.");
-                l.set(System.nanoTime());
-            }
-        });
+                    System.out.println("Generated " + count + " chunks. " + 200 / ((double) (n - l) / 1000000) * 1000 + "cps.");
 
+                    l = System.nanoTime();
 
-        List<GenerationWorker> workers = new GlueList<>();
-
-
-        for(int x = -rad / 32; x <= rad / 32; x++) {
-            for(int z = -rad / 32; z <= rad / 32; z++) {
-                workers.add(new GenerationWorker(x, z, world, this, counter));
+                }
             }
         }
 
-
-        ForkJoinTask.invokeAll(workers);
 
 
         System.out.println("Saving...");
@@ -93,34 +89,6 @@ public class Generator {
             MCAUtil.write(entry.getValue(), file);
         }
 
-        System.out.println("Done in " + (System.nanoTime() - l.get()) / 1000000000 + "s");
-    }
-
-    public StructurePopulator getStructurePopulator() {
-        return structurePopulator;
-    }
-
-    public OrePopulator getOrePopulator() {
-        return orePopulator;
-    }
-
-    public CavePopulator getCavePopulator() {
-        return cavePopulator;
-    }
-
-    public TreePopulator getTreePopulator() {
-        return treePopulator;
-    }
-
-    public FloraPopulator getFloraPopulator() {
-        return floraPopulator;
-    }
-
-    public long getSeed() {
-        return seed;
-    }
-
-    public MasterChunkGenerator getGenerator() {
-        return generator;
+        System.out.println("Done in " + (System.nanoTime() - l) / 1000000000 + "s");
     }
 }
