@@ -16,7 +16,6 @@ import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
 import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
-import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
@@ -61,6 +60,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     public void reload() {
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
+            ((MasterChunkGenerator) ((BukkitChunkGeneratorWrapper) world.getGenerator().getHandle()).getHandle()).getCache().clear();
             String packID = tw.getConfig().getTemplate().getID();
             newMap.put(world, new TerraWorld(world, registry.get(packID), this));
         });
@@ -167,7 +167,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     public TerraWorld getWorld(World w) {
-        if(!(w.getGenerator() instanceof BukkitChunkGenerator))
+        if(!TerraWorld.isTerraWorld(w))
             throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");

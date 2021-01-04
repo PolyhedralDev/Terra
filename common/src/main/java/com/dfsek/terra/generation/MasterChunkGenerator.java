@@ -221,4 +221,8 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
             }
         }
     }
+
+    public SamplerCache getCache() {
+        return cache;
+    }
 }

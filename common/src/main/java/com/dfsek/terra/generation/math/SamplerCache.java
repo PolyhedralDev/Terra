@@ -27,6 +27,9 @@ public class SamplerCache {
         return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).getChunk(chunkX, chunkZ);
     }
 
+    public void clear() {
+        containerMap.clear();
+    }
 
     private class Container {
         private final World world;
