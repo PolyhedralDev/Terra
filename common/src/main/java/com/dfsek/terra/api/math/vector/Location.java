@@ -160,4 +160,9 @@ public class Location implements Cloneable {
     public Vector3 toVector() {
         return vector.clone();
     }
+
+    @Override
+    public String toString() {
+        return "(" + getX() + ", " + getY() + ", " + getZ() + ")";
+    }
 }

@@ -15,6 +15,18 @@ public class Data implements BlockData, MaterialData {
         this.data.putString("Name", noProp);
     }
 
+    public Data(CompoundTag tag) {
+        if(tag == null) {
+            this.data = new CompoundTag();
+            data.putString("Name", "minecraft:air");
+        } else {
+            this.data = tag;
+        }
+        String id = data.getString("Name");
+        if(id.contains("[")) noProp = id.substring(0, id.indexOf('[')); // Strip properties for now TODO: actually do properties lol
+        else noProp = id;
+    }
+
     @Override
     public MaterialData getMaterial() {
         return this;
@@ -67,5 +79,16 @@ public class Data implements BlockData, MaterialData {
     @Override
     public CompoundTag getHandle() {
         return data;
+    }
+
+    @Override
+    public int hashCode() {
+        return noProp.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Data)) return false;
+        return ((Data) obj).noProp.equals(noProp);
     }
 }

@@ -152,8 +152,10 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
-                    Stairs stairNew = (Stairs) stair;
-                    if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
+                    if(stair instanceof Stairs) {
+                        Stairs stairNew = (Stairs) stair;
+                        if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
+                    }
                 }
             }
             BlockData slab = slabs.getOrDefault(down.getMaterial(), blank).get(0, block.getBlockX(), block.getBlockZ());
@@ -171,9 +173,11 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                 Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
-                    Stairs stairNew = (Stairs) stair.clone();
-                    stairNew.setHalf(Bisected.Half.TOP);
-                    if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
+                    if(stair instanceof Stairs) {
+                        Stairs stairNew = (Stairs) stair.clone();
+                        stairNew.setHalf(Bisected.Half.TOP);
+                        if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
+                    }
                 }
             }
             BlockData slab = slabs.getOrDefault(up.getMaterial(), blank).get(0, block.getBlockX(), block.getBlockZ()).clone();

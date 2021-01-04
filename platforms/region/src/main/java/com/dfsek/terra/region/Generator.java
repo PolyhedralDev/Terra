@@ -1,26 +1,28 @@
 package com.dfsek.terra.region;
 
 import com.dfsek.terra.StandalonePlugin;
-import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
 import com.dfsek.terra.platform.GenWrapper;
-import net.querz.mca.Chunk;
+import com.dfsek.terra.population.CavePopulator;
+import com.dfsek.terra.population.FloraPopulator;
+import com.dfsek.terra.population.OrePopulator;
+import com.dfsek.terra.population.StructurePopulator;
+import com.dfsek.terra.population.TreePopulator;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Generator {
-    private final Map<Long, MCAFile> files = new HashMap<>();
-
     private final long seed;
 
     public Generator(long seed) {
@@ -29,7 +31,7 @@ public class Generator {
 
     public void generate() throws IOException {
 
-        int rad = 50;
+        int rad = 25;
 
         StandalonePlugin plugin = new StandalonePlugin();
         plugin.load();
@@ -38,26 +40,31 @@ public class Generator {
         MasterChunkGenerator generator = new MasterChunkGenerator(plugin.getRegistry().get("DEFAULT"), plugin, new SamplerCache(plugin));
         GenWrapper wrapper = new GenWrapper(generator);
 
+        FloraPopulator floraPopulator = new FloraPopulator(plugin);
+        StructurePopulator structurePopulator = new StructurePopulator(plugin);
+        TreePopulator treePopulator = new TreePopulator(plugin);
+        OrePopulator orePopulator = new OrePopulator(plugin);
+        CavePopulator cavePopulator = new CavePopulator(plugin);
+
         int count = 0;
 
         List<Double> times = new GlueList<>();
+
+        DirectWorld world = new DirectWorld(seed, wrapper);
 
         for(int cx = -rad; cx <= rad; cx++) {
             for(int cz = -rad; cz <= rad; cz++) {
                 long start = System.nanoTime();
 
-                long key = (((long) MCAUtil.chunkToRegion(cx)) << 32) | (MCAUtil.chunkToRegion(cz) & 0xffffffffL);
+                DirectChunkData chunkData = (DirectChunkData) world.getChunkAt(cx, cz);
+                generator.generateChunkData(world, null, cx, cz, chunkData);
 
-                int finalCx = cx;
-                int finalCz = cz;
-                MCAFile file = files.computeIfAbsent(key, k -> new MCAFile(MCAUtil.chunkToRegion(finalCx), MCAUtil.chunkToRegion(finalCz)));
+                cavePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, seed)), chunkData);
+                structurePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, seed)), chunkData);
+                orePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, seed)), chunkData);
+                floraPopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, seed)), chunkData);
+                treePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, seed)), chunkData);
 
-                Chunk chunk = Chunk.newChunk();
-
-                ChunkGenerator.ChunkData chunkData = new DirectChunkData(chunk, cx, cz);
-                generator.generateChunkData(new DirectWorld(seed, wrapper), null, cx, cz, chunkData);
-
-                file.setChunk(cx, cz, chunk);
 
                 long end = System.nanoTime() - start;
                 count++;
@@ -75,7 +82,7 @@ public class Generator {
             }
         }
 
-        for(Map.Entry<Long, MCAFile> entry : files.entrySet()) {
+        for(Map.Entry<Long, MCAFile> entry : world.getFiles().entrySet()) {
             entry.getValue().cleanupPalettesAndBlockStates();
             int x = (int) (entry.getKey() >> 32);
             int z = (int) (long) entry.getKey();
