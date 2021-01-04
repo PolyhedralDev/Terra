@@ -139,3 +139,6 @@ build
 .idea/Terra.iml
 /run/
 .idea/**.iml
+/lang/
+/packs/
+/config.yml
