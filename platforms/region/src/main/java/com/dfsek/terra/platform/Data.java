@@ -33,8 +33,7 @@ public class Data implements BlockData, MaterialData {
         } else {
             this.data = tag;
         }
-        String id = data.getString("Name");
-        noProp = id;
+        noProp = data.getString("Name");
     }
 
 

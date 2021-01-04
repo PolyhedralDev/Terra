@@ -20,7 +20,9 @@ public class DirectBlock implements Block {
 
     @Override
     public void setBlockData(BlockData data, boolean physics) {
-        world.compute(FastMath.floorDiv(pos.getBlockX(), 16), FastMath.floorDiv(pos.getBlockZ(), 16)).setBlockStateAt(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ(), ((Data) data).getHandle(), false);
+        synchronized(world) {
+            world.compute(FastMath.floorDiv(pos.getBlockX(), 16), FastMath.floorDiv(pos.getBlockZ(), 16)).setBlockStateAt(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ(), ((Data) data).getHandle(), false);
+        }
     }
 
     @Override

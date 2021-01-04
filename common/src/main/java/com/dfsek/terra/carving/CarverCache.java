@@ -12,7 +12,8 @@ import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -20,35 +21,42 @@ import java.util.Random;
 public class CarverCache {
 
     private final World w;
-    private final Map<Long, List<Worm.WormPoint>> carvers = new HashMap<>();
+    private final Map<Long, List<Worm.WormPoint>> carvers;
     private final TerraPlugin main;
 
     public CarverCache(World w, TerraPlugin main) {
         this.w = w;
         this.main = main;
+        carvers = Collections.synchronizedMap(new LinkedHashMap<Long, List<Worm.WormPoint>>() {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry eldest) {
+                return this.size() > main.getTerraConfig().getCarverCacheSize();
+            }
+        });
     }
 
     public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, UserDefinedCarver carver) {
-        if(carvers.size() > main.getTerraConfig().getCarverCacheSize()) carvers.clear();
-        return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL), key -> {
-            TerraBiomeGrid grid = main.getWorld(w).getGrid();
-            if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + carver.hashCode())))) {
-                long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
-                carver.getSeedVar().setValue(seed);
-                Random r = new FastRandom(seed);
-                Worm carving = carver.getWorm(seed, new Vector3((chunkX << 4) + r.nextInt(16), carver.getConfig().getHeight().get(r), (chunkZ << 4) + r.nextInt(16)));
-                List<Worm.WormPoint> points = new GlueList<>();
-                for(int i = 0; i < carving.getLength(); i++) {
-                    carving.step();
-                    Biome biome = grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE);
-                    if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(carver)) { // Stop if we enter a biome this carver is not present in
-                        return new GlueList<>();
+        synchronized(carvers) {
+            return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL), key -> {
+                TerraBiomeGrid grid = main.getWorld(w).getGrid();
+                if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + carver.hashCode())))) {
+                    long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
+                    carver.getSeedVar().setValue(seed);
+                    Random r = new FastRandom(seed);
+                    Worm carving = carver.getWorm(seed, new Vector3((chunkX << 4) + r.nextInt(16), carver.getConfig().getHeight().get(r), (chunkZ << 4) + r.nextInt(16)));
+                    List<Worm.WormPoint> points = new GlueList<>();
+                    for(int i = 0; i < carving.getLength(); i++) {
+                        carving.step();
+                        Biome biome = grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE);
+                        if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(carver)) { // Stop if we enter a biome this carver is not present in
+                            return new GlueList<>();
+                        }
+                        points.add(carving.getPoint());
                     }
-                    points.add(carving.getPoint());
+                    return points;
                 }
-                return points;
-            }
-            return new GlueList<>();
-        });
+                return new GlueList<>();
+            });
+        }
     }
 }
