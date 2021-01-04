@@ -31,6 +31,11 @@ public class FabricBlockData implements BlockData {
     }
 
     @Override
+    public String getAsString() {
+        return delegate.toString();
+    }
+
+    @Override
     public BlockState getHandle() {
         return delegate;
     }

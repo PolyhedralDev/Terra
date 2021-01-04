@@ -68,4 +68,9 @@ public class BukkitBlockData implements BlockData {
             throw new Error(e);
         }
     }
+
+    @Override
+    public String getAsString() {
+        return delegate.getAsString(false);
+    }
 }

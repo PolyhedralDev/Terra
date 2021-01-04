@@ -8,4 +8,6 @@ public interface BlockData extends Cloneable, Handle {
     boolean matches(MaterialData materialData);
 
     BlockData clone();
+
+    String getAsString();
 }
