@@ -86,7 +86,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
     @Override
     @SuppressWarnings({"try"})
-    public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, ChunkGenerator.ChunkData chunk) {
+    public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkGenerator.ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.world.biome.BiomeGrid grid = tw.getGrid();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {

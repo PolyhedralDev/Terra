@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public interface TerraChunkGenerator {
-    ChunkGenerator.ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, ChunkGenerator.ChunkData original);
+    ChunkGenerator.ChunkData generateChunkData(@NotNull World world, Random random, int x, int z, ChunkGenerator.ChunkData original);
 
     void generateBiomes(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome);
 

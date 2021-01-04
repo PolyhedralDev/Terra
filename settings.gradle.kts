@@ -11,7 +11,7 @@ rootProject.name = "Terra"
 include("common")
 include("platforms:bukkit")
 include("platforms:fabric")
-
+include("platforms:region")
 
 pluginManagement {
     repositories {
