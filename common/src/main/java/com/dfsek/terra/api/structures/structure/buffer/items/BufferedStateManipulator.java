@@ -19,7 +19,7 @@ public class BufferedStateManipulator implements BufferedItem {
         try {
             state.applyState(data);
             state.update(false);
-        } catch(ClassCastException e) {
+        } catch(Exception e) {
             main.getLogger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
         }
     }
