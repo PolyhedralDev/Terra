@@ -108,16 +108,16 @@ public class BukkitMobSpawner extends BukkitBlockState implements MobSpawner {
                 case "max_delay":
                     setMaxSpawnDelay(Integer.parseInt(v));
                     return;
-                case "count":
+                case "spawn_count":
                     setSpawnCount(Integer.parseInt(v));
                     return;
-                case "range":
+                case "spawn_range":
                     setSpawnRange(Integer.parseInt(v));
                     return;
                 case "max_nearby":
                     setMaxNearbyEntities(Integer.parseInt(v));
                     return;
-                case "activate":
+                case "required_player_range":
                     setRequiredPlayerRange(Integer.parseInt(v));
                     return;
                 default:

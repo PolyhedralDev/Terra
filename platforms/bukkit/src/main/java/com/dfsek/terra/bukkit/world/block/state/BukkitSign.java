@@ -27,6 +27,9 @@ public class BukkitSign extends BukkitBlockState implements Sign {
 
     @Override
     public void applyState(String state) {
-        SerialState.parse(state).forEach((k, v) -> setLine(Integer.parseInt(k), v));
+        SerialState.parse(state).forEach((k, v) -> {
+            if(!v.startsWith("text")) throw new IllegalArgumentException("Invalid property: " + k);
+            setLine(Integer.parseInt(k), v.substring(4));
+        });
     }
 }
