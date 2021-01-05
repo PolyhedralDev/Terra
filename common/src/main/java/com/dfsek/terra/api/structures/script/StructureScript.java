@@ -102,20 +102,23 @@ public class StructureScript {
     }
 
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
-        StructureBuffer buffer = cache.computeIfAbsent(location, loc -> {
-            StructureBuffer buf = new StructureBuffer(loc);
-            Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buf, rotation, random, 0));
-            buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
-            return buf;
-        });
+        StructureBuffer buffer = computeBuffer(location, random, rotation);
         buffer.paste(chunk);
         return buffer.succeeded();
     }
 
     public boolean test(Location location, Random random, Rotation rotation) {
-        StructureBuffer buffer = new StructureBuffer(location);
-        block.apply(new TerraImplementationArguments(buffer, rotation, random, 0));
+        StructureBuffer buffer = computeBuffer(location, random, rotation);
         return buffer.succeeded();
+    }
+
+    private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
+        return cache.computeIfAbsent(location, loc -> {
+            StructureBuffer buf = new StructureBuffer(loc);
+            Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buf, rotation, random, 0));
+            buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
+            return buf;
+        });
     }
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
