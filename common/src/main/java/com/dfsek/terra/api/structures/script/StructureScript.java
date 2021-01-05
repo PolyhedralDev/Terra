@@ -20,9 +20,11 @@ import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
+import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
@@ -38,6 +40,7 @@ import java.util.Random;
 public class StructureScript {
     private final Block block;
     private final String id;
+    String tempID;
     private final LinkedHashMap<Location, StructureBuffer> cache;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
@@ -47,6 +50,7 @@ public class StructureScript {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
+
         parser.registerFunction("block", new BlockFunctionBuilder(main))
                 .registerFunction("check", new CheckFunctionBuilder(main, cache))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
@@ -59,6 +63,7 @@ public class StructureScript {
                 .registerFunction("entity", new EntityFunctionBuilder(main))
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
+                .registerFunction("print", new UnaryStringFunctionBuilder(string -> Debug.info("[" + tempID + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
@@ -71,6 +76,7 @@ public class StructureScript {
 
         block = parser.parse();
         this.id = parser.getID();
+        tempID = id;
         this.cache = new LinkedHashMap<Location, StructureBuffer>() {
             @Override
             protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
@@ -106,7 +112,8 @@ public class StructureScript {
 
     public boolean test(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, 0)).getLevel().equals(Block.ReturnLevel.FAIL);
+        block.apply(new TerraImplementationArguments(buffer, rotation, random, 0));
+        return buffer.succeeded();
     }
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
