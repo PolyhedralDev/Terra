@@ -6,6 +6,7 @@ import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import org.bukkit.block.Container;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 
 public class BukkitBlockState implements BlockState {
@@ -18,6 +19,7 @@ public class BukkitBlockState implements BlockState {
     public static BukkitBlockState newInstance(org.bukkit.block.BlockState block) {
         if(block instanceof Container) return new BukkitContainer((Container) block);
         if(block instanceof Sign) return new BukkitSign((Sign) block);
+        if(block instanceof CreatureSpawner) return new BukkitMobSpawner((CreatureSpawner) block);
         return new BukkitBlockState(block);
     }
 
