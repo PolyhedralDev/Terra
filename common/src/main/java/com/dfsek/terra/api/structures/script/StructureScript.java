@@ -18,6 +18,7 @@ import com.dfsek.terra.api.structures.script.builders.MarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.PullFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.StateFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
@@ -63,6 +64,7 @@ public class StructureScript {
                 .registerFunction("entity", new EntityFunctionBuilder(main))
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
+                .registerFunction("state", new StateFunctionBuilder(main))
                 .registerFunction("print", new UnaryStringFunctionBuilder(string -> Debug.info("[" + tempID + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))

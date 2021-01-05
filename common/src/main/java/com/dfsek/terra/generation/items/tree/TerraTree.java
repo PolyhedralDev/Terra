@@ -22,13 +22,11 @@ public class TerraTree implements Tree {
 
     @Override
     public synchronized boolean plant(Location location, Random random) {
-        structure.get(random).execute(location.clone().add(0, yOffset, 0), random, Rotation.fromDegrees(90 * random.nextInt(4)));
-        return true;
+        return structure.get(random).execute(location.clone().add(0, yOffset, 0), random, Rotation.fromDegrees(90 * random.nextInt(4)));
     }
 
     @Override
     public MaterialSet getSpawnable() {
         return spawnable;
     }
-
 }

@@ -16,4 +16,8 @@ public interface BlockState extends Handle {
     BlockData getBlockData();
 
     boolean update(boolean applyPhysics);
+
+    default void applyState(String state) {
+        // Do nothing by default.
+    }
 }

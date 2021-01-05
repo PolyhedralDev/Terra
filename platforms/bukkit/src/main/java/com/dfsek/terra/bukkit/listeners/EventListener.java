@@ -55,8 +55,7 @@ public class EventListener implements Listener {
         TreeRegistry registry = c.getTreeRegistry();
         Tree tree = registry.get(TREE_TYPE_STRING_TRANSFORMER.translate(e.getSpecies()));
         Debug.info("Overrode tree type: " + e.getSpecies());
-        org.bukkit.Location location = e.getLocation().subtract(0, 1, 0);
+        org.bukkit.Location location = e.getLocation();
         if(!tree.plant(new Location(bukkit, location.getX(), location.getY(), location.getZ()), new FastRandom())) block.setBlockData(data);
-
     }
 }
