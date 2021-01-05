@@ -1,0 +1,121 @@
+enable:
+  - "Se ti piace Terra, per favore considera di sostenere il progetto su Patreon!"
+  - "Avrai accesso a funzionalità sperimentali prima che vengano rilasciate!"
+  - "Sostieni il progetto qui: https://www.patreon.com/dfsek"
+disable:
+  - "Grazie per aver usato Terra!"
+command:
+  debug-only: "Questo comando deve essere usato con la modalità debug attivata!"
+  player-only: "Solo i giocatori possono eseguire questo comando!"
+  invalid: "Comando invalido. (%1$s argomenti previsti, %2$s trovati)."
+  players-only: "Solo i giocatori possono eseguire questo comando!"
+  world: "Questo comando può solo essere eseguito in un mondo creato da Terra!"
+  reload: "Configurazione Terra ricaricata."
+  reload-error: "Si sono verificati errori durante il ricaricamento delle configurazioni Terra. Vedere i log per ulteriori informazioni."
+  version: "Questo server sta usando la versione \"%1$s\" Terra, sulla piattaforma \"%2$s\""
+  main-menu:
+    - "--------------------Terra--------------------"
+    - "reload    - Ricarica i dati di configurazione"
+    - "biome     - Ottieni il bioma attuale"
+    - "ore       - Genera una vena minerale davanti a te (per fare debug)"
+    - "save-data - Salva i dati sulla popolazione"
+    - "structure - Carica ed esporta strutture"
+    - "profile   - Opzioni dell'analizzatore"
+    - "image     - Opzioni immagine / menu"
+  biome:
+    biome-found: "Trovato un bioma alle coordinate (%1$s, %2$s)"
+    unable-to-locate: "Ricerca bioma fallita."
+    invalid-radius: "Raggio invalido: \"%s\""
+    invalid: "ID bioma invalido: \"%s\""
+    in: "Tu sei nel bioma \"%s\""
+  packs:
+    main: "Pacchetti di configurazione installati:"
+    pack: " - %1$s v%3$s (autore: %2$s)"
+    none: "Nessun pacchetto di configurazione è installato."
+  ore:
+    main-menu:
+      - "---------------Terra/ore---------------"
+      - "Genera una vena di minerale nel blocco che stai guardando."
+    out-of-range: "Blocco fuori portata"
+    invalid-ore: "Ricerca minerale \"%s\" fallita!"
+  geometry:
+    main-menu:
+      - "---------------Terra/geometry----------------"
+      - "Vari comandi di debug della geometria voxel"
+      - "sphere       - Genera una sfera"
+      - "deformsphere - Genera una sfera deformata"
+      - "tube         - Genera un tubo"
+    deform:
+      invalid-radius: "Raggio non valido: \"%s\""
+      invalid-deform: "Deformazione non valida: \"%s\""
+      invalid-frequency: "Frequenza non valida: \"%s\""
+    sphere:
+      invalid-radius: "Raggio non valido: \"%s\""
+    tube:
+      invalid-radius: "Raggio non valido: \"%s\""
+  image:
+    main-menu:
+      - "---------------Terra/image---------------"
+      - "render - Renderizza un'immagine con una data larghezza e altezza, che può essere successivamente importata come mondo."
+      - "gui    - Apri il menu di debug (deve essere abilitato nella configurazione)"
+    gui:
+      main-menu:
+        - "-------------Terra/image/gui-------------"
+        - "raw  - Apri il menu con dati grezzi sui biomi"
+        - "step - Riesegui il rendering dei dati per mostrare i bordi più chiaramente"
+      debug: "La modalità di debug deve essere abilitata per utilizzare la GUI di debug! La GUI di debug NON È SICURA PER LA PRODUZIONE!"
+    render:
+      save: "Immagine salvata come \"%s\""
+      error: "Si è verificato un errore durante la generazione dell'immagine!"
+  profile:
+    main-menu:
+      - "---------------Terra/profile---------------"
+      - "start - Inizia il profiler"
+      - "stop  - Ferma il profiler"
+      - "query - Recupera i dati del profiler"
+      - "reset - Resetta i dati del profiler"
+    reset: "Il profiler è stato resettato."
+    start: "Il profiler è stato avviato."
+    stop: "Il profiler è stato fermato."
+  structure:
+    main-menu:
+      - "---------------Terra/structure---------------"
+      - "export - Esporta la tua selezione attuale di WorldEdit come struttura Terra."
+      - "load   - Carica una struttura Terra"
+    invalid-radius: "Raggio invalido: \"%s\""
+    invalid-rotation: "Rotazione invalida: \"%s\""
+    invalid: "ID struttura invalido: \"%s\""
+    export: "Struttura salvata come \"%s\""
+world-config:
+  load: "Caricamento dei valori di configurazione per il mondo \"%s\"..."
+  not-found: "Configurazione per il mondo \"%s\" non trovata. La configurazione predefinita sarà utilizzata."
+  using-image: "Caricamento mondo da immagine."
+  error: "Impossibile caricare la configurazione per il mondo \"%s\""
+  done: "Caricamento del mondo \"%1$s\" completato. Tempo trascorso: %2$sms"
+config-pack:
+  loaded: "Pacchetto di configurazione %1$s v%4$s (autore: %3$s) caricato in %2$sms."
+config:
+  loaded: "Caricato %1$s dal file %2$s"
+  loaded-all: "Caricato %1$s %2$s(s) in %3$sms."
+  error:
+    invalid-failover: "Tipo di failover non valido: \"%s\""
+    duplicate: "ID duplicato trovato nel file: %s"
+    file:
+      - "Errore di configurazione Terra nel file: %1$s"
+      - "%2$s"
+      - "Correggilo prima di procedere!"
+    generic:
+      - "Si è verificato un errore durante il caricamento delle configurazioni."
+      - "Per favore, segnalatelo a Terra."
+warning:
+  no-population: "Non sono stati caricati chunk preesistenti. Se è la prima volta che avvii il tuo server con Terra, o se stai creando un nuovo mondo, è normale."
+error:
+  severe-config: "Un grave errore di configurazione ha impedito a Terra di generare correttamente il terreno alle coordinate: %1$s, %2$s. Controlla la tua configurazione per errori. Eventuali errori di configurazione saranno stati segnalati sopra."
+debug:
+  data-save: "Dati sulla popolazione salvati per il mondo \"%s\""
+use-paper:
+  - "Sembra che tu stia usando Spigot/CraftBukkit."
+  - "Nonostante Terra &ofunzioni&r su Spigot, delle funzionalità verranno perse. (Terra non è testato su CraftBukkit; nessun supporto verrà dato per la piattaforma CraftBukkit)."
+  - "Inoltre, Paper offre enormi miglioramenti delle prestazioni rispetto a Spigot e tutti i plug-in di Spigot dovrebbero funzionare con Paper!"
+  - "Per avere la migliore esperienza con Terra e tutti i tuoi plugin, usa Paper."
+  - "Scopri di più sul sito web di Paper: https://papermc.io/"
