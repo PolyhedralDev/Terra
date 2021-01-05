@@ -57,11 +57,13 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Default
     private int baseBlend = 4;
 
+    @Value("structures.locatable")
+    @Default
+    private Map<String, String> locatable = new HashMap<>();
 
     @Value("blend.terrain.elevation")
     @Default
     private int elevationBlend = 4;
-
 
     @Value("erode.enable")
     @Default
@@ -261,6 +263,10 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
 
     public int getElevationBlend() {
         return elevationBlend;
+    }
+
+    public Map<String, String> getLocatable() {
+        return locatable;
     }
 
     @Override

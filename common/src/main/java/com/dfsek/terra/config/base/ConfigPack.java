@@ -80,6 +80,7 @@ import java.util.zip.ZipFile;
  */
 public class ConfigPack implements LoaderRegistrar {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
+
     private final BiomeRegistry biomeRegistry = new BiomeRegistry();
     private final BiomeGridRegistry biomeGridRegistry = new BiomeGridRegistry(biomeRegistry);
     private final StructureRegistry structureRegistry = new StructureRegistry();
