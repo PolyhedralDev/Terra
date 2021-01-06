@@ -29,14 +29,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Value("grids")
     private List<String> grids;
 
-    @Value("frequencies.grid-x")
-    @Default
-    private int gridFreqX = 4096;
-
-    @Value("frequencies.grid-z")
-    @Default
-    private int gridFreqZ = 4096;
-
     @Value("frequencies.zone")
     @Default
     private int zoneFreq = 2048;
@@ -183,14 +175,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
 
     public List<String> getGrids() {
         return grids;
-    }
-
-    public int getGridFreqX() {
-        return gridFreqX;
-    }
-
-    public int getGridFreqZ() {
-        return gridFreqZ;
     }
 
     public int getZoneFreq() {

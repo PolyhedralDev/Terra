@@ -8,18 +8,26 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class BiomeGridTemplate extends AbstractableTemplate {
+    @Value("id")
+    private String id;
 
+    /**
+     * A 2D array of {@link Biome} IDs that make up this grid.
+     */
     @Value("grid")
     @Abstractable
     private List<List<Biome>> grid;
 
-    @Value("id")
-    private String id;
-
+    /**
+     * X frequency of noise function
+     */
     @Value("frequency.x")
     @Abstractable
     private double xFreq;
 
+    /**
+     * Z frequency of noise function
+     */
     @Value("frequency.z")
     @Abstractable
     private double zFreq;

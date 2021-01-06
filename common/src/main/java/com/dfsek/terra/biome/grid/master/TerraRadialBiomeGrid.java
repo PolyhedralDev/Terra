@@ -20,8 +20,8 @@ public class TerraRadialBiomeGrid extends TerraBiomeGrid {
     private CoordinatePerturb perturb;
     private ErosionNoise erode;
 
-    public TerraRadialBiomeGrid(long seed, double freq1, double freq2, BiomeZone zone, ConfigPack c, double radius, BiomeGrid internal) {
-        super(seed, freq1, freq2, 0, 0, zone);
+    public TerraRadialBiomeGrid(long seed, BiomeZone zone, ConfigPack c, double radius, BiomeGrid internal) {
+        super(seed, 0, 0, zone);
         ConfigPackTemplate t = c.getTemplate();
         if(c.getTemplate().isBlend()) {
             perturb = new CoordinatePerturb(t.getBlendFreq(), t.getBlendAmp(), seed);

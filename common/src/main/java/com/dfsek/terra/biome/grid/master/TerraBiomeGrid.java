@@ -12,8 +12,8 @@ import com.dfsek.terra.debug.Debug;
 public abstract class TerraBiomeGrid extends BiomeGrid {
     protected final BiomeZone zone;
 
-    public TerraBiomeGrid(long seed, double freq1, double freq2, int sizeX, int sizeZ, BiomeZone zone) {
-        super(seed, freq1, freq2, sizeX, sizeZ);
+    public TerraBiomeGrid(long seed, int sizeX, int sizeZ, BiomeZone zone) {
+        super(seed, 0, 0, sizeX, sizeZ);
         this.zone = zone;
     }
 
@@ -64,8 +64,8 @@ public abstract class TerraBiomeGrid extends BiomeGrid {
 
             if(template.getGridType().equals(TerraBiomeGrid.Type.RADIAL)) {
                 BiomeGrid internal = config.getBiomeGrid(template.getRadialInternalGrid()).build(seed, config);
-                return new TerraRadialBiomeGrid(seed, template.getGridFreqX(), template.getGridFreqZ(), zone, config, template.getRadialGridRadius(), internal);
-            } else return new TerraStandardBiomeGrid(seed, template.getGridFreqX(), template.getGridFreqZ(), zone, config);
+                return new TerraRadialBiomeGrid(seed, zone, config, template.getRadialGridRadius(), internal);
+            } else return new TerraStandardBiomeGrid(seed, zone, config);
         }
     }
 }

@@ -33,7 +33,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     private final ConfigPack pack;
 
-
     @Value("id")
     private String id;
 
