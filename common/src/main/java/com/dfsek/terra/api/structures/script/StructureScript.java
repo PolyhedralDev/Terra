@@ -24,6 +24,7 @@ import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.math.SamplerCache;
@@ -126,6 +127,11 @@ public class StructureScript {
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
         return !block.apply(new TerraImplementationArguments(buffer, rotation, random, recursions)).getLevel().equals(Block.ReturnLevel.FAIL);
+    }
+
+    public boolean executeDirect(Location location, Random random, Rotation rotation) {
+        DirectBuffer buffer = new DirectBuffer(location);
+        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, 0)).getLevel().equals(Block.ReturnLevel.FAIL);
     }
 
     public String getId() {
