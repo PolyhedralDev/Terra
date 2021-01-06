@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
 import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Directional;
@@ -27,7 +28,9 @@ public class BukkitBlockData implements BlockData {
         if(bukkitData instanceof Rail) return new BukkitRail((Rail) bukkitData);
         if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
         if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
-        if(bukkitData instanceof Wall) return new BukkitWall((Wall) bukkitData);
+        if(TerraBukkitPlugin.BUKKIT_VERSION.above(TerraBukkitPlugin.Version.V1_16) && bukkitData instanceof Wall) { // Wall only exists on 1.16 and up.
+            return new BukkitWall((Wall) bukkitData);
+        }
 
         if(bukkitData instanceof RedstoneWire) return new BukkitRedstoneWire((RedstoneWire) bukkitData);
         if(bukkitData instanceof AnaloguePowerable) return new BukkitAnaloguePowerable((AnaloguePowerable) bukkitData);

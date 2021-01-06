@@ -55,6 +55,17 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private WorldHandle handle = new BukkitWorldHandle(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
 
+    public static final Version BUKKIT_VERSION;
+
+    static {
+        String ver = Bukkit.getServer().getClass().getPackage().getName();
+        if(ver.contains("1_16")) BUKKIT_VERSION = Version.V1_16;
+        else if(ver.contains("1_15")) BUKKIT_VERSION = Version.V1_15;
+        else if(ver.contains("1_14")) BUKKIT_VERSION = Version.V1_14;
+        else if(ver.contains("1_13")) BUKKIT_VERSION = Version.V1_13;
+        else BUKKIT_VERSION = Version.UNKNOWN;
+    }
+
 
     public void reload() {
         Map<World, TerraWorld> newMap = new HashMap<>();
@@ -95,6 +106,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public void onEnable() {
         Debug.setLogger(getLogger()); // Set debug logger.
+
+        getLogger().info("Running on version " + BUKKIT_VERSION);
+        if(BUKKIT_VERSION.equals(Version.UNKNOWN)) {
+            getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
+        }
 
         ((BukkitWorldHandle) handle).setTreeTransformer(new Transformer.Builder<String, Tree>()
                 .addTransform(id -> new BukkitTree(TreeType.valueOf(id), this)) // First try getting directly from enum
@@ -195,5 +211,33 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
                 .registerLoader(Biome.class, (t, o, l) -> new BukkitBiome(org.bukkit.block.Biome.valueOf((String) o)))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         genericLoaders.register(registry);
+    }
+
+    public enum Version {
+        V1_13(13),
+
+        V1_14(14),
+
+        V1_15(15),
+
+        V1_16(16),
+
+        UNKNOWN(Integer.MAX_VALUE); // Assume unknown version is latest.
+
+        private final int index;
+
+        Version(int index) {
+            this.index = index;
+        }
+
+        /**
+         * Gets if this version is above or equal to another.
+         *
+         * @param other Other version
+         * @return Whether this version is equal to or later than other.
+         */
+        public boolean above(Version other) {
+            return this.index >= other.index;
+        }
     }
 }

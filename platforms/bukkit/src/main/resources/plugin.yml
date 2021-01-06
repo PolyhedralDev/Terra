@@ -3,7 +3,7 @@ main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
 version: "@VERSION@"
 load: "STARTUP"
 author: dfsek
-api-version: "1.16"
+api-version: "1.13"
 description: "An insanely powerful free & open-source data-driven world generator."
 softdepend: [ "WorldEdit" ]
 commands:

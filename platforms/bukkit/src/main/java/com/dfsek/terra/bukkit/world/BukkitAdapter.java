@@ -14,7 +14,6 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import org.bukkit.Location;
-import org.bukkit.block.data.type.Wall;
 import org.bukkit.util.Vector;
 
 /**
@@ -295,32 +294,6 @@ public final class BukkitAdapter {
                 return org.bukkit.block.data.type.Slab.Type.DOUBLE;
             case BOTTOM:
                 return org.bukkit.block.data.type.Slab.Type.BOTTOM;
-            default:
-                throw new IllegalStateException();
-        }
-    }
-
-    public static Wall.Height adapt(com.dfsek.terra.api.platform.block.data.Wall.Height height) {
-        switch(height) {
-            case NONE:
-                return Wall.Height.NONE;
-            case LOW:
-                return Wall.Height.LOW;
-            case TALL:
-                return Wall.Height.TALL;
-            default:
-                throw new IllegalStateException();
-        }
-    }
-
-    public static com.dfsek.terra.api.platform.block.data.Wall.Height adapt(Wall.Height height) {
-        switch(height) {
-            case TALL:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.TALL;
-            case LOW:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.LOW;
-            case NONE:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.NONE;
             default:
                 throw new IllegalStateException();
         }

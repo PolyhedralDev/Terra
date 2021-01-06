@@ -25,7 +25,11 @@ public class BlockFunction implements Function<Void> {
         this.position = position;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant", data.getPosition());
 
-        this.data = main.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
+        try {
+            this.data = main.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
+        } catch(IllegalArgumentException e) {
+            throw new ParseException("Could not parse block data", data.getPosition(), e);
+        }
         this.x = x;
         this.y = y;
         this.z = z;
