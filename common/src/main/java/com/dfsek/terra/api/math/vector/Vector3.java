@@ -1,15 +1,12 @@
 package com.dfsek.terra.api.math.vector;
 
+import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.world.World;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 public class Vector3 implements Cloneable {
 
-    /**
-     * Threshold for fuzzy equals().
-     */
-    private static final double epsilon = 0.000001;
 
     private double x;
     private double y;
@@ -19,15 +16,6 @@ public class Vector3 implements Cloneable {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    /**
-     * Get the threshold used for equals().
-     *
-     * @return The epsilon.
-     */
-    public static double getEpsilon() {
-        return epsilon;
     }
 
     public double getZ() {
@@ -119,7 +107,7 @@ public class Vector3 implements Cloneable {
      * @return whether the vector is normalised
      */
     public boolean isNormalized() {
-        return Math.abs(this.lengthSquared() - 1) < getEpsilon();
+        return MathUtil.equals(this.lengthSquared(), 1);
     }
 
     /**
@@ -333,12 +321,14 @@ public class Vector3 implements Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Vector3)) {
-            return false;
-        }
-
+        if(!(obj instanceof Vector3)) return false;
         Vector3 other = (Vector3) obj;
-
-        return Math.abs(x - other.x) < epsilon && Math.abs(y - other.y) < epsilon && Math.abs(z - other.z) < epsilon && (this.getClass().equals(obj.getClass()));
+        return MathUtil.equals(x, other.x) && MathUtil.equals(y, other.y) && MathUtil.equals(x, other.z);
     }
+
+    @Override
+    public String toString() {
+        return "(" + getX() + ", " + getY() + ", " + getZ() + ")";
+    }
+
 }

@@ -21,10 +21,6 @@ public class MaterialSet extends HashSet<MaterialData> {
         return set;
     }
 
-    public void addTag(String tag) {
-        this.addAll(TagUtil.getTag(tag));
-    }
-
     private void add(BlockData data) {
         add(data.getMaterial());
     }

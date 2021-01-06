@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.math;
 
+import com.dfsek.terra.api.math.noise.FastNoiseLite;
 import com.dfsek.terra.api.world.biome.NormalizationUtil;
 
 import java.util.HashSet;

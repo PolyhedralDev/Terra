@@ -6,6 +6,6 @@ biome-search-resolution: 4
 cache:
   carver: 512
   structure: 32
-  sampler: 512
+  sampler: 128
 master-disable:
   caves: false

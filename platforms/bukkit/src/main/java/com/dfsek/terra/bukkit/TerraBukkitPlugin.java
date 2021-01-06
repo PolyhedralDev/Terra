@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
-import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.language.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
@@ -30,7 +30,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.registry.ConfigRegistry;
-import com.dfsek.terra.util.StringUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.TreeType;
@@ -107,7 +106,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
                         .add("OAK", new BukkitTree(TreeType.TREE, this))
                         .add("MEGA_SPRUCE", new BukkitTree(TreeType.MEGA_REDWOOD, this))
                         .add("SWAMP_OAK", new BukkitTree(TreeType.SWAMP, this)))
-                .addTransform(id -> new BukkitTree(TreeType.valueOf(StringUtils.stripMinecraftNamespace(id)), this)) // Finally, try stripping minecraft namespace.
+                .addTransform(id -> new BukkitTree(TreeType.valueOf(id), this)) // Finally, try stripping minecraft namespace.
                 .build());
 
         saveDefaultConfig();

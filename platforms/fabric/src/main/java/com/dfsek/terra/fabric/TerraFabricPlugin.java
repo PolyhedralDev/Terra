@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.GenericLoaders;
-import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.language.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
@@ -25,7 +25,6 @@ import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.ConfigRegistry;
-import com.dfsek.terra.util.StringUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -82,7 +81,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private File config;
     private static final Transformer<String, ConfiguredFeature<?, ?>> TREE_TRANSFORMER = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
             .addTransform(TerraFabricPlugin::getFeature)
-            .addTransform(id -> getFeature(StringUtils.stripMinecraftNamespace(id)))
             .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
                     .add("BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT)
                     .add("RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT)

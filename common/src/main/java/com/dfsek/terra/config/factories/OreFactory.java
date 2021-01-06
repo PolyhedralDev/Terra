@@ -3,9 +3,9 @@ package com.dfsek.terra.config.factories;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.config.templates.OreTemplate;
-import com.dfsek.terra.generation.items.ores.DeformedSphereOre;
-import com.dfsek.terra.generation.items.ores.Ore;
-import com.dfsek.terra.generation.items.ores.VanillaOre;
+import com.dfsek.terra.population.items.ores.DeformedSphereOre;
+import com.dfsek.terra.population.items.ores.Ore;
+import com.dfsek.terra.population.items.ores.VanillaOre;
 
 public class OreFactory implements TerraFactory<OreTemplate, Ore> {
     @Override

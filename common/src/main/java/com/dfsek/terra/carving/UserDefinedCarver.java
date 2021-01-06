@@ -1,6 +1,7 @@
 package com.dfsek.terra.carving;
 
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.parsii.RandomFunction;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
@@ -11,7 +12,6 @@ import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.math.RandomFunction;
 import net.jafama.FastMath;
 import parsii.eval.Expression;
 import parsii.eval.Parser;

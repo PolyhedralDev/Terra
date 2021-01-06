@@ -1,12 +1,12 @@
 package com.dfsek.terra.generation.config;
 
+import com.dfsek.terra.api.math.noise.NoiseFunction2;
+import com.dfsek.terra.api.math.noise.NoiseFunction3;
+import com.dfsek.terra.api.math.parsii.RandomFunction;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
-import com.dfsek.terra.math.NoiseFunction2;
-import com.dfsek.terra.math.NoiseFunction3;
-import com.dfsek.terra.math.RandomFunction;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;

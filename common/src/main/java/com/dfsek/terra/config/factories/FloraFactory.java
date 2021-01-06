@@ -8,7 +8,7 @@ import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.RandomPalette;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.config.templates.FloraTemplate;
-import com.dfsek.terra.generation.items.flora.TerraFlora;
+import com.dfsek.terra.population.items.flora.TerraFlora;
 
 public class FloraFactory implements TerraFactory<FloraTemplate, Flora> {
     @Override

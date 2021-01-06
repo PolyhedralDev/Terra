@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.math.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.FastNoiseLite;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.util.FastRandom;

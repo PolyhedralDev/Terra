@@ -90,7 +90,6 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         TerraWorld tw = main.getWorld(world);
         com.dfsek.terra.api.world.biome.BiomeGrid grid = tw.getGrid();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
-            try(ProfileFuture ignored = tw.getProfiler().measure("ChunkBaseGenTime")) {
                 if(!tw.isSafe()) return chunk;
                 int xOrig = (chunkX << 4);
                 int zOrig = (chunkZ << 4);
@@ -139,8 +138,6 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                         }
                     }
                 }
-            }
-
             return chunk;
         }
     }

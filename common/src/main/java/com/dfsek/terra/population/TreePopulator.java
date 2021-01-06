@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.generation.items.tree.TreeLayer;
+import com.dfsek.terra.population.items.tree.TreeLayer;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

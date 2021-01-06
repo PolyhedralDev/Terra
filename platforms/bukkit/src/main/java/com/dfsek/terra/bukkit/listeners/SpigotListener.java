@@ -5,7 +5,7 @@ import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.population.items.TerraStructure;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

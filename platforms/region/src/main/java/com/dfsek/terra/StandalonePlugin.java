@@ -2,7 +2,7 @@ package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.GenericLoaders;
-import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.language.Language;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;

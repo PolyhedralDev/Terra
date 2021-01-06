@@ -9,7 +9,7 @@ import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.population.items.TerraStructure;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

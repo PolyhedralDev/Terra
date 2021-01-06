@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.math.vector;
 
+import com.dfsek.terra.api.math.MathUtil;
 import net.jafama.FastMath;
 
 /**
@@ -157,11 +158,9 @@ public class Vector2 implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Vector2)) {
-            return false;
-        }
+        if(!(obj instanceof Vector2)) return false;
         Vector2 other = (Vector2) obj;
-        return other.x == this.x && other.z == this.z;
+        return MathUtil.equals(this.x, other.x) && MathUtil.equals(this.z, other.z);
     }
 
     @Override

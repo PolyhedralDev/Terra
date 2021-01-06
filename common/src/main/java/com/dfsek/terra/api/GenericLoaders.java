@@ -1,6 +1,7 @@
 package com.dfsek.terra.api;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.TerraPlugin;
@@ -22,14 +23,13 @@ import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.generation.items.flora.FloraLayer;
-import com.dfsek.terra.generation.items.flora.TerraFlora;
-import com.dfsek.terra.generation.items.ores.Ore;
-import com.dfsek.terra.generation.items.ores.OreConfig;
-import com.dfsek.terra.generation.items.ores.OreHolder;
-import com.dfsek.terra.generation.items.tree.TreeLayer;
 import com.dfsek.terra.image.ImageLoader;
-import com.dfsek.terra.procgen.GridSpawn;
+import com.dfsek.terra.population.items.flora.FloraLayer;
+import com.dfsek.terra.population.items.flora.TerraFlora;
+import com.dfsek.terra.population.items.ores.Ore;
+import com.dfsek.terra.population.items.ores.OreConfig;
+import com.dfsek.terra.population.items.ores.OreHolder;
+import com.dfsek.terra.population.items.tree.TreeLayer;
 import com.dfsek.terra.util.MaterialSet;
 
 public class GenericLoaders implements LoaderRegistrar {
@@ -51,7 +51,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf((String) o))
                 .registerLoader(OreConfig.class, new OreConfigLoader())
                 .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
-                .registerLoader(TreeLayer.class, new TreeLayerLoader(main))
+                .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
                 .registerLoader(ImageLoader.class, new ImageLoaderLoader())

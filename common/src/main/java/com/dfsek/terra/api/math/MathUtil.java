@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.math;
 
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.generation.math.Sampler;
 import net.jafama.FastMath;
 
 import java.util.Random;
@@ -9,7 +10,14 @@ import java.util.Random;
  * Utility class for mathematical functions.
  */
 public final class MathUtil {
-    private static final double EPSILON = 0.1E-5;
+    /**
+     * Epsilon for fuzzy floating point comparisons.
+     */
+    public static final double EPSILON = 1.0E-5;
+    /**
+     * Derivative constant.
+     */
+    private static final double DERIVATIVE_DIST = 0.55;
 
     /**
      * Gets the standard deviation of an array of doubles.
@@ -67,5 +75,18 @@ public final class MathUtil {
      */
     public static boolean equals(double a, double b) {
         return a == b || FastMath.abs(a - b) < EPSILON;
+    }
+
+    public static double derivative(Sampler sampler, double x, double y, double z) {
+        double baseSample = sampler.sample(x, y, z);
+
+        double xVal1 = (sampler.sample(x + DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
+        double xVal2 = (sampler.sample(x - DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
+        double zVal1 = (sampler.sample(x, y, z + DERIVATIVE_DIST) - baseSample) / DERIVATIVE_DIST;
+        double zVal2 = (sampler.sample(x, y, z - DERIVATIVE_DIST) - baseSample) / DERIVATIVE_DIST;
+        double yVal1 = (sampler.sample(x, y + DERIVATIVE_DIST, z) - baseSample) / DERIVATIVE_DIST;
+        double yVal2 = (sampler.sample(x, y - DERIVATIVE_DIST, z) - baseSample) / DERIVATIVE_DIST;
+
+        return Math.sqrt(((xVal2 - xVal1) * (xVal2 - xVal1)) + ((zVal2 - zVal1) * (zVal2 - zVal1)) + ((yVal2 - yVal1) * (yVal2 - yVal1)));
     }
 }

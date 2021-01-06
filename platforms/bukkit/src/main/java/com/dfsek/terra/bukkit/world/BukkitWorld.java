@@ -99,4 +99,9 @@ public class BukkitWorld implements World {
     public int hashCode() {
         return delegate.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return delegate.toString();
+    }
 }

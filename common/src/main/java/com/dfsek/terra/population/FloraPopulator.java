@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.generation.items.flora.FloraLayer;
+import com.dfsek.terra.population.items.flora.FloraLayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

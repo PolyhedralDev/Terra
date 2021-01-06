@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.biome.palette.PaletteLayer;
-import com.dfsek.terra.generation.items.flora.TerraFlora;
+import com.dfsek.terra.population.items.flora.TerraFlora;
 import com.dfsek.terra.util.MaterialSet;
 
 import java.util.List;

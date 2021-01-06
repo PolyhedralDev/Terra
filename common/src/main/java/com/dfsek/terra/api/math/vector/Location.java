@@ -163,6 +163,6 @@ public class Location implements Cloneable {
 
     @Override
     public String toString() {
-        return "(" + getX() + ", " + getY() + ", " + getZ() + ")";
+        return "[" + world + ": (" + getX() + ", " + getY() + ", " + getZ() + ")]";
     }
 }

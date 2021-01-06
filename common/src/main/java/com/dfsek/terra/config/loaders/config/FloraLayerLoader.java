@@ -3,12 +3,12 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.FastNoiseLite;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.noise.FastNoiseLite;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.generation.items.flora.FloraLayer;
+import com.dfsek.terra.population.items.flora.FloraLayer;
 
 import java.lang.reflect.Type;
 import java.util.Map;

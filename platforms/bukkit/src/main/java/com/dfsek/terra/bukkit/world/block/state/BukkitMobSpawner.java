@@ -97,7 +97,7 @@ public class BukkitMobSpawner extends BukkitBlockState implements MobSpawner {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
                 case "type":
-                    setSpawnedType(new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(v)));
+                    setSpawnedType(new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(v.toUpperCase())));
                     return;
                 case "delay":
                     setDelay(Integer.parseInt(v));

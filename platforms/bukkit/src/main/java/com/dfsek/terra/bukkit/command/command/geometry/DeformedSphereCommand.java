@@ -1,13 +1,13 @@
 package com.dfsek.terra.bukkit.command.command.geometry;
 
-import com.dfsek.terra.api.math.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.FastNoiseLite;
 import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.math.voxel.DeformedSphere;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.procgen.voxel.DeformedSphere;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

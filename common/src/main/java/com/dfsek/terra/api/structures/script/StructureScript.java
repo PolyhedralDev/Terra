@@ -34,6 +34,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -42,7 +43,7 @@ public class StructureScript {
     private final Block block;
     private final String id;
     String tempID;
-    private final LinkedHashMap<Location, StructureBuffer> cache;
+    private final Map<Location, StructureBuffer> cache;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
         Parser parser;
@@ -79,12 +80,12 @@ public class StructureScript {
         block = parser.parse();
         this.id = parser.getID();
         tempID = id;
-        this.cache = new LinkedHashMap<Location, StructureBuffer>() {
+        this.cache = Collections.synchronizedMap(new LinkedHashMap<Location, StructureBuffer>() {
             @Override
             protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
                 return this.size() > main.getTerraConfig().getStructureCache();
             }
-        };
+        });
     }
 
     /**
@@ -113,12 +114,14 @@ public class StructureScript {
     }
 
     private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
-        return cache.computeIfAbsent(location, loc -> {
-            StructureBuffer buf = new StructureBuffer(loc);
-            Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buf, rotation, random, 0));
-            buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
-            return buf;
-        });
+        synchronized(cache) {
+            return cache.computeIfAbsent(location, loc -> {
+                StructureBuffer buf = new StructureBuffer(loc);
+                Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buf, rotation, random, 0));
+                buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
+                return buf;
+            });
+        }
     }
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {

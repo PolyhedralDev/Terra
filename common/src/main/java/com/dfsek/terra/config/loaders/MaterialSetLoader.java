@@ -18,8 +18,7 @@ public class MaterialSetLoader implements TypeLoader<MaterialSet> {
 
         for(String string : stringData) {
             try {
-                if(string.startsWith("#")) set.addTag(string.substring(1));
-                else set.add((MaterialData) configLoader.loadType(MaterialData.class, string));
+                set.add((MaterialData) configLoader.loadType(MaterialData.class, string));
             } catch(NullPointerException e) {
                 throw new LoadException("Invalid data identifier \"" + string + "\"", e);
             }

@@ -8,7 +8,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
-import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.population.items.TerraStructure;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

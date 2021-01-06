@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.math.FastNoiseLite;
 import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.noise.FastNoiseLite;
 import com.dfsek.terra.api.util.GlueList;
 
 import java.util.List;

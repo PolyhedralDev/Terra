@@ -3,23 +3,20 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.FastNoiseLite;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.math.noise.FastNoiseLite;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.generation.items.tree.TreeLayer;
+import com.dfsek.terra.population.items.tree.TreeLayer;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class TreeLayerLoader implements TypeLoader<TreeLayer> {
-    private final TerraPlugin main;
 
-    public TreeLayerLoader(TerraPlugin main) {
-        this.main = main;
+    public TreeLayerLoader() {
     }
 
     @Override

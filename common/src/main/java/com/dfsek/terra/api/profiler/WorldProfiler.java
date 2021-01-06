@@ -15,10 +15,7 @@ public class WorldProfiler {
     public WorldProfiler(World w) {
         if(w.getGenerator().getTerraGenerator() == null)
             throw new IllegalArgumentException("Attempted to instantiate profiler on non-Gaea managed world!");
-        this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime")
-                .addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "ChunkBaseGenTime")
-                .addMeasurement(new Measurement(2000000, DataType.PERIOD_MILLISECONDS), "BiomeApplyTime")
-                .addMeasurement(new Measurement(2000000, DataType.PERIOD_MILLISECONDS), "PopulationManagerTime");
+        this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime");
         isProfiling = false;
         this.world = w;
     }

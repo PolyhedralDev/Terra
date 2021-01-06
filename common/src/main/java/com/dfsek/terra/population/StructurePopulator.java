@@ -13,7 +13,7 @@ import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.generation.items.TerraStructure;
+import com.dfsek.terra.population.items.TerraStructure;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
