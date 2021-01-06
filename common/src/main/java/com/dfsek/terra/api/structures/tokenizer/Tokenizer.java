@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.structures.tokenizer;
 
+import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.EOFException;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.FormatException;
 import com.dfsek.terra.api.structures.tokenizer.exceptions.TokenizerException;
@@ -7,18 +8,67 @@ import com.google.common.collect.Sets;
 
 import java.io.StringReader;
 import java.util.Set;
+import java.util.Stack;
 
 public class Tokenizer {
-    private final Lookahead reader;
-
     public static final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/', '>', '<', '!'); // Reserved chars
+    private final Lookahead reader;
+    private final Stack<Token> brackets = new Stack<>();
+    private Token current;
 
-
-    public Tokenizer(String data) {
+    public Tokenizer(String data) throws ParseException {
         reader = new Lookahead(new StringReader(data + '\0'));
+        current = fetchCheck();
     }
 
-    public Token fetch() throws TokenizerException {
+    /**
+     * Get the first token.
+     *
+     * @return First token
+     * @throws ParseException If token does not exist
+     */
+    public Token get() throws ParseException {
+        if(!hasNext()) throw new ParseException("Unexpected end of input", current.getPosition());
+        return current;
+    }
+
+    /**
+     * Consume (get and remove) the first token.
+     *
+     * @return First token
+     * @throws ParseException If token does not exist
+     */
+    public Token consume() throws ParseException {
+        if(!hasNext()) throw new ParseException("Unexpected end of input", current.getPosition());
+        Token temp = current;
+        current = fetchCheck();
+        return temp;
+    }
+
+    /**
+     * Whether this {@code Tokenizer} contains additional tokens.
+     *
+     * @return {@code true} if more tokens are present, otherwise {@code false}
+     */
+    public boolean hasNext() {
+        return !(current == null);
+    }
+
+    private Token fetchCheck() throws ParseException {
+        Token fetch = fetch();
+        if(fetch != null) {
+            if(fetch.getType().equals(Token.Type.BLOCK_BEGIN)) brackets.push(fetch); // Opening bracket
+            else if(fetch.getType().equals(Token.Type.BLOCK_END)) {
+                if(!brackets.isEmpty()) brackets.pop();
+                else throw new ParseException("Dangling opening brace", new Position(0, 0));
+            }
+        } else if(!brackets.isEmpty()) {
+            throw new ParseException("Dangling closing brace", brackets.peek().getPosition());
+        }
+        return fetch;
+    }
+
+    private Token fetch() throws TokenizerException {
         while(!reader.current().isEOF() && reader.current().isWhitespace()) reader.consume();
 
         while(reader.matches("//", true)) skipLine(); // Skip line if comment
@@ -66,7 +116,7 @@ public class Tokenizer {
                     continue;
                 } else ignoreNext = false;
                 if(reader.current().isEOF())
-                    throw new FormatException("No end of string literal found. " + reader.getLine() + ":" + reader.getIndex());
+                    throw new FormatException("No end of string literal found. ", new Position(reader.getLine(), reader.getIndex()));
                 string.append(reader.consume());
             }
             reader.consume(); // Consume last quote
@@ -166,6 +216,7 @@ public class Tokenizer {
     }
 
     private void skipTo(String s) throws EOFException {
+        Position begin = new Position(reader.getLine(), reader.getIndex());
         while(!reader.current().isEOF()) {
             if(reader.matches(s, true)) {
                 consumeWhitespace();
@@ -173,7 +224,7 @@ public class Tokenizer {
             }
             reader.consume();
         }
-        throw new EOFException("No end of expression found.");
+        throw new EOFException("No end of expression found.", begin);
     }
 
     public boolean isSyntaxSignificant(char c) {

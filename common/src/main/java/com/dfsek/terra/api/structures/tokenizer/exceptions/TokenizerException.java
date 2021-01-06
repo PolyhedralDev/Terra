@@ -1,19 +1,15 @@
 package com.dfsek.terra.api.structures.tokenizer.exceptions;
 
-public abstract class TokenizerException extends Exception {
-    public TokenizerException(String s) {
-        super(s);
+import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.api.structures.tokenizer.Position;
+
+public abstract class TokenizerException extends ParseException {
+
+    public TokenizerException(String message, Position position) {
+        super(message, position);
     }
 
-    public TokenizerException() {
-        super();
-    }
-
-    public TokenizerException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public TokenizerException(Throwable cause) {
-        super(cause);
+    public TokenizerException(String message, Position position, Throwable cause) {
+        super(message, position, cause);
     }
 }

@@ -1,20 +1,14 @@
 package com.dfsek.terra.api.structures.tokenizer.exceptions;
 
+import com.dfsek.terra.api.structures.tokenizer.Position;
+
 public class FormatException extends TokenizerException {
 
-    public FormatException(String s) {
-        super(s);
+    public FormatException(String message, Position position) {
+        super(message, position);
     }
 
-    public FormatException() {
-        super();
-    }
-
-    public FormatException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public FormatException(Throwable cause) {
-        super(cause);
+    public FormatException(String message, Position position, Throwable cause) {
+        super(message, position, cause);
     }
 }

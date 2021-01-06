@@ -1,20 +1,14 @@
 package com.dfsek.terra.api.structures.tokenizer.exceptions;
 
+import com.dfsek.terra.api.structures.tokenizer.Position;
+
 public class EOFException extends TokenizerException {
 
-    public EOFException(String s) {
-        super(s);
+    public EOFException(String message, Position position) {
+        super(message, position);
     }
 
-    public EOFException() {
-        super();
-    }
-
-    public EOFException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public EOFException(Throwable cause) {
-        super(cause);
+    public EOFException(String message, Position position, Throwable cause) {
+        super(message, position, cause);
     }
 }
