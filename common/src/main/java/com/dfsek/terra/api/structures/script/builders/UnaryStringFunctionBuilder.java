@@ -45,7 +45,7 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
 
     @Override
     public Returnable.ReturnType getArgument(int position) {
-        if(position == 0) return Returnable.ReturnType.NUMBER;
+        if(position == 0) return Returnable.ReturnType.STRING;
         return null;
     }
 }

@@ -1,17 +1,15 @@
 package com.dfsek.terra.api.structures.structure.buffer;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedItem;
-import com.dfsek.terra.api.structures.structure.buffer.items.Mark;
 import net.jafama.FastMath;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StructureBuffer implements Buffer {
-    private final Map<Vector3, Cell> bufferedItemMap = new LinkedHashMap<>();
+    private final Map<Location, Cell> bufferedItemMap = new LinkedHashMap<>();
     private final Location origin;
     private boolean succeeded;
 
@@ -33,13 +31,13 @@ public class StructureBuffer implements Buffer {
     }
 
     @Override
-    public Buffer addItem(BufferedItem item, Vector3 location) {
+    public Buffer addItem(BufferedItem item, Location location) {
         bufferedItemMap.computeIfAbsent(location, l -> new Cell()).add(item);
         return this;
     }
 
     @Override
-    public Mark getMark(Vector3 location) {
+    public String getMark(Location location) {
         Cell cell = bufferedItemMap.get(location);
         if(cell != null) {
             return cell.getMark();
@@ -48,7 +46,7 @@ public class StructureBuffer implements Buffer {
     }
 
     @Override
-    public Buffer setMark(Mark mark, Vector3 location) {
+    public Buffer setMark(String mark, Location location) {
         bufferedItemMap.computeIfAbsent(location, l -> new Cell()).setMark(mark);
         return this;
     }

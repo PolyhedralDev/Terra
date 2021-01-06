@@ -106,6 +106,11 @@ public class Location implements Cloneable {
         return this;
     }
 
+    public Location add(Location add) {
+        vector.add(add.toVector());
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Location)) {

@@ -46,7 +46,7 @@ public class LootFunction implements Function<Void> {
             return null;
         }
 
-        arguments.getBuffer().addItem(new BufferedLootApplication(table, main), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedLootApplication(table, main), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
         return null;
     }
 

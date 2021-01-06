@@ -43,7 +43,7 @@ public class CheckFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
+        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getBuffer().getOrigin().getWorld());
     }

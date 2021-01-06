@@ -65,7 +65,7 @@ public class StructureFunction implements Function<Boolean> {
             return null;
         }
 
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ()));
 
         return script.executeInBuffer(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }

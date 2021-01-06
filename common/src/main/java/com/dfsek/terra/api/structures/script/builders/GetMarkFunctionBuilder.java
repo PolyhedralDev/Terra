@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.structures.script.builders;
 
-import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.functions.GetMarkFunction;
@@ -15,7 +14,7 @@ public class GetMarkFunctionBuilder implements FunctionBuilder<GetMarkFunction> 
 
     @SuppressWarnings("unchecked")
     @Override
-    public GetMarkFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public GetMarkFunction build(List<Returnable<?>> argumentList, Position position) {
         return new GetMarkFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1), (Returnable<Number>) argumentList.get(2), position);
     }
 

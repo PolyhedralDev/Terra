@@ -14,10 +14,10 @@ import com.dfsek.terra.api.structures.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.EntityFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.GetMarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.LootFunctionBuilder;
-import com.dfsek.terra.api.structures.script.builders.MarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.PullFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.SetMarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StateFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
@@ -58,7 +58,7 @@ public class StructureScript {
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())
-                .registerFunction("setMark", new MarkFunctionBuilder())
+                .registerFunction("setMark", new SetMarkFunctionBuilder())
                 .registerFunction("getMark", new GetMarkFunctionBuilder())
                 .registerFunction("pull", new PullFunctionBuilder(main))
                 .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry))

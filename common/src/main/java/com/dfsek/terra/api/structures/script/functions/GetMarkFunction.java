@@ -7,7 +7,6 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
-import com.dfsek.terra.api.structures.structure.buffer.items.Mark;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
 
@@ -28,8 +27,8 @@ public class GetMarkFunction implements Function<String> {
         Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
-        Mark mark = arguments.getBuffer().getMark(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
-        return mark == null ? "" : mark.getContent();
+        String mark = arguments.getBuffer().getMark(new Vector3(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments).doubleValue()), FastMath.floorToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
+        return mark == null ? "" : mark;
     }
 
     @Override
@@ -39,6 +38,6 @@ public class GetMarkFunction implements Function<String> {
 
     @Override
     public ReturnType returnType() {
-        return ReturnType.VOID;
+        return ReturnType.STRING;
     }
 }

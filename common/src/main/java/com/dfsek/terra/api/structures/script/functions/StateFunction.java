@@ -33,7 +33,7 @@ public class StateFunction implements Function<Void> {
         Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().addItem(new BufferedStateManipulator(main, data.apply(implementationArguments)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedStateManipulator(main, data.apply(implementationArguments)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
         return null;
     }
 

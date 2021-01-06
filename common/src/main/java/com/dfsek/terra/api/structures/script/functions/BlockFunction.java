@@ -35,12 +35,14 @@ public class BlockFunction implements Function<Void> {
     @Override
     public Void apply(ImplementationArguments implementationArguments) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
+        BlockData rot = data.clone();
+
         Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
-        BlockData rot = data.clone();
+
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(implementationArguments)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(implementationArguments)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
         return null;
     }
 

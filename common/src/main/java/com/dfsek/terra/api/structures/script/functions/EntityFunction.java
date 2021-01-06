@@ -37,7 +37,7 @@ public class EntityFunction implements Function<Void> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().addItem(new BufferedEntity(data), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedEntity(data), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
         return null;
     }
 
