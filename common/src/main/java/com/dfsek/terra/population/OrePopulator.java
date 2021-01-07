@@ -26,7 +26,7 @@ public class OrePopulator implements TerraBlockPopulator {
 
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("OreTime")) {
             if(!tw.isSafe()) return;

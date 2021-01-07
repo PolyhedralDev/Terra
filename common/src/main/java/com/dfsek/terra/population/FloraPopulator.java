@@ -11,6 +11,7 @@ import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.population.items.flora.FloraLayer;
+import com.dfsek.terra.util.PopulationUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class FloraPopulator implements TerraBlockPopulator {
 
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("FloraTime")) {
             if(!tw.isSafe()) return;
@@ -43,6 +44,9 @@ public class FloraPopulator implements TerraBlockPopulator {
                     layers.put(l, biome.getConfig().getFlora());
                 }
             }
+
+            Random random = PopulationUtil.getRandom(chunk);
+
             int iter = 0;
             boolean finished = false;
             while(!finished) {

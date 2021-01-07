@@ -30,9 +30,7 @@ public interface ChunkGenerator extends Handle {
     @Nullable
     TerraChunkGenerator getTerraGenerator();
 
-    interface ChunkData {
-        Object getHandle();
-
+    interface ChunkData extends Handle {
         /**
          * Get the maximum height for the chunk.
          * <p>

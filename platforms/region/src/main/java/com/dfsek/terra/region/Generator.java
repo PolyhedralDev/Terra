@@ -1,8 +1,6 @@
 package com.dfsek.terra.region;
 
 import com.dfsek.terra.StandalonePlugin;
-import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.platform.DirectChunkData;
@@ -57,11 +55,11 @@ public class Generator {
                 DirectChunkData chunkData = (DirectChunkData) world.getChunkAt(cx, cz);
                 generator.generateChunkData(world, null, cx, cz, chunkData);
 
-                cavePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
-                structurePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
-                orePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
-                floraPopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
-                treePopulator.populate(world, new FastRandom(MathUtil.getCarverChunkSeed(cx, cz, world.getSeed())), chunkData);
+                cavePopulator.populate(world, chunkData);
+                structurePopulator.populate(world, chunkData);
+                orePopulator.populate(world, chunkData);
+                floraPopulator.populate(world, chunkData);
+                treePopulator.populate(world, chunkData);
                 count++;
 
                 if(count % 200 == 0) {

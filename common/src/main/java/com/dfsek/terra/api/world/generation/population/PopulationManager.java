@@ -34,14 +34,14 @@ public class PopulationManager implements TerraBlockPopulator {
 
     @Override
     @SuppressWarnings("try")
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Chunk chunk) {
         try(ProfileFuture ignored = measure()) {
             needsPop.add(new ChunkCoordinate(chunk));
             int x = chunk.getX();
             int z = chunk.getZ();
             if(main.isEnabled()) {
-                for(int xi = - 1; xi <= 1; xi++) {
-                    for(int zi = - 1; zi <= 1; zi++) {
+                for(int xi = -1; xi <= 1; xi++) {
+                    for(int zi = -1; zi <= 1; zi++) {
                         if(xi == 0 && zi == 0) continue;
                         if(world.isChunkGenerated(xi + x, zi + z)) checkNeighbors(xi + x, zi + z, world);
                     }
@@ -86,7 +86,7 @@ public class PopulationManager implements TerraBlockPopulator {
             random.setSeed((long) x * xRand + (long) z * zRand ^ w.getSeed());
             Chunk currentChunk = w.getChunkAt(x, z);
             for(TerraBlockPopulator r : attachedPopulators) {
-                r.populate(w, random, currentChunk);
+                r.populate(w, currentChunk);
             }
             needsPop.remove(c);
         }

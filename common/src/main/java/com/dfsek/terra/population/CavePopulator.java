@@ -33,7 +33,7 @@ public class CavePopulator implements TerraBlockPopulator {
 
     @SuppressWarnings("try")
     @Override
-    public void populate(@NotNull World world, @NotNull Random r, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         WorldHandle handle = main.getWorldHandle();
         BlockData AIR = handle.createBlockData("minecraft:air");

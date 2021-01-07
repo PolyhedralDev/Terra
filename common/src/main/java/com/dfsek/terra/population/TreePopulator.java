@@ -11,6 +11,7 @@ import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.population.items.tree.TreeLayer;
+import com.dfsek.terra.util.PopulationUtil;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,11 +31,12 @@ public class TreePopulator implements TerraBlockPopulator {
 
     @Override
     @SuppressWarnings("try")
-    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+    public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("TreeTime")) {
             if(!tw.isSafe()) return;
             TerraBiomeGrid grid = tw.getGrid();
+            Random random = PopulationUtil.getRandom(chunk);
             for(int x = 0; x < 16; x += 2) {
                 for(int z = 0; z < 16; z += 2) {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);

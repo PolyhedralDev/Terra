@@ -18,6 +18,6 @@ public class BukkitPopulatorWrapper extends BlockPopulator {
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk source) {
-        delegate.populate(BukkitAdapter.adapt(world), random, BukkitAdapter.adapt(source));
+        delegate.populate(BukkitAdapter.adapt(world), BukkitAdapter.adapt(source));
     }
 }
