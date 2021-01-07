@@ -45,6 +45,9 @@ public class StructureFunction implements Function<Boolean> {
     public Boolean apply(ImplementationArguments implementationArguments) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
+        if(arguments.getRecursions() > main.getTerraConfig().getMaxRecursion())
+            throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
+
         Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());

@@ -45,6 +45,7 @@ public class StructureScript {
     private final String id;
     String tempID;
     private final Map<Location, StructureBuffer> cache;
+    private final TerraPlugin main;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
         Parser parser;
@@ -81,6 +82,7 @@ public class StructureScript {
         block = parser.parse();
         this.id = parser.getID();
         tempID = id;
+        this.main = main;
         this.cache = Collections.synchronizedMap(new LinkedHashMap<Location, StructureBuffer>() {
             @Override
             protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
@@ -98,9 +100,9 @@ public class StructureScript {
      */
     public boolean execute(Location location, Random random, Rotation rotation) {
         StructureBuffer buffer = new StructureBuffer(location);
-        Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buffer, rotation, random, 0));
+        boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
         buffer.paste();
-        return !level.getLevel().equals(Block.ReturnLevel.FAIL);
+        return level;
     }
 
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
@@ -118,23 +120,31 @@ public class StructureScript {
         synchronized(cache) {
             return cache.computeIfAbsent(location, loc -> {
                 StructureBuffer buf = new StructureBuffer(loc);
-                Block.ReturnInfo<?> level = block.apply(new TerraImplementationArguments(buf, rotation, random, 0));
-                buf.setSucceeded(!level.getLevel().equals(Block.ReturnLevel.FAIL));
+                buf.setSucceeded(applyBlock(new TerraImplementationArguments(buf, rotation, random, 0)));
                 return buf;
             });
         }
     }
 
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
-        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, recursions)).getLevel().equals(Block.ReturnLevel.FAIL);
+        return applyBlock(new TerraImplementationArguments(buffer, rotation, random, recursions));
     }
 
     public boolean executeDirect(Location location, Random random, Rotation rotation) {
         DirectBuffer buffer = new DirectBuffer(location);
-        return !block.apply(new TerraImplementationArguments(buffer, rotation, random, 0)).getLevel().equals(Block.ReturnLevel.FAIL);
+        return applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
     }
 
     public String getId() {
         return id;
+    }
+
+    private boolean applyBlock(TerraImplementationArguments arguments) {
+        try {
+            return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
+        } catch(RuntimeException e) {
+            main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
+            return false;
+        }
     }
 }

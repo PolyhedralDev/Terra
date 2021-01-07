@@ -9,3 +9,5 @@ cache:
   sampler: 128
 master-disable:
   caves: false
+script:
+  max-recursion: 1000

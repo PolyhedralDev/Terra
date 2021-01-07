@@ -51,6 +51,10 @@ public class PluginConfig implements ConfigTemplate {
     @Default
     private boolean dumpDefaultConfig = true;
 
+    @Value("script.max-recursion")
+    @Default
+    private int maxRecursion = 1000;
+
     public void load(TerraPlugin main) {
         Logger logger = main.getLogger();
         logger.info("Loading config values");
@@ -98,5 +102,9 @@ public class PluginConfig implements ConfigTemplate {
 
     public int getSamplerCache() {
         return samplerCache;
+    }
+
+    public int getMaxRecursion() {
+        return maxRecursion;
     }
 }
