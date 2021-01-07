@@ -16,11 +16,12 @@ public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, BiomeGr
     public UserDefinedGridBuilder build(BiomeGridTemplate config, TerraPlugin main) throws LoadException {
 
         UserDefinedGridBuilder holder = new UserDefinedGridBuilder();
-        holder.setXFreq(config.getXFreq());
-        holder.setZFreq(config.getZFreq());
 
         int xSize = config.getGrid().size();
         int zSize = config.getGrid().get(0).size();
+
+        holder.setXFreq(config.getXFreq() / xSize);
+        holder.setZFreq(config.getZFreq() / zSize);
 
         Biome[][] biomes = new UserDefinedBiome[xSize][zSize];
 

@@ -186,7 +186,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorld(w, ((MasterChunkGenerator) w.getGenerator()).getConfigPack(), this);
+            return new TerraWorld(w, ((MasterChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
         }
         return worldMap.computeIfAbsent(w, world -> new TerraWorld(w, worlds.get(w.getName()), this));
     }

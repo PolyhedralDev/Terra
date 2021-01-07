@@ -29,7 +29,7 @@ public class BukkitSign extends BukkitBlockState implements Sign {
     public void applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             if(!v.startsWith("text")) throw new IllegalArgumentException("Invalid property: " + k);
-            setLine(Integer.parseInt(k), v.substring(4));
+            setLine(Integer.parseInt(k) + 1, v.substring(4));
         });
     }
 }
