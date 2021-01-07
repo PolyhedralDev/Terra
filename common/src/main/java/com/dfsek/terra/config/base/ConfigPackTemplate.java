@@ -31,7 +31,7 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
 
     @Value("frequencies.zone")
     @Default
-    private int zoneFreq = 2048;
+    private int zoneFreq = 256;
 
     @Value("blend.enable")
     @Default

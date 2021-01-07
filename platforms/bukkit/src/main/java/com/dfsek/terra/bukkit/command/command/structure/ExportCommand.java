@@ -95,27 +95,7 @@ public class ExportCommand extends PlayerCommand {
 
 
 
-        /*
-        Structure structure;
-        try {
-            structure = new Structure(l1, l2, args[0]);
-        } catch(InitializationException e) {
-            sender.sendMessage(e.getMessage());
-            return true;
-        }
-        try {
-            File file = new File(getMain().getDataFolder() + File.separator + "export" + File.separator + "structures", args[0] + ".tstructure");
-            //noinspection ResultOfMethodCallIgnored
-            file.getParentFile().mkdirs();
-            //noinspection ResultOfMethodCallIgnored
-            file.createNewFile();
-            structure.save(file);
-            LangUtil.send("command.structure.export", sender, file.getAbsolutePath());
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-         */
+        sender.sendMessage("Exported structure to " + file.getAbsolutePath());
         return true;
     }
 

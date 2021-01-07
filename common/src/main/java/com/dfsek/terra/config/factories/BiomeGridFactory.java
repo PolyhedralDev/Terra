@@ -20,8 +20,8 @@ public class BiomeGridFactory implements TerraFactory<BiomeGridTemplate, BiomeGr
         int xSize = config.getGrid().size();
         int zSize = config.getGrid().get(0).size();
 
-        holder.setXFreq(config.getXFreq() / xSize);
-        holder.setZFreq(config.getZFreq() / zSize);
+        holder.setXFreq(config.getXFreq() * xSize);
+        holder.setZFreq(config.getZFreq() * zSize);
 
         Biome[][] biomes = new UserDefinedBiome[xSize][zSize];
 
