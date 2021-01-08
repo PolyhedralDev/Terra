@@ -6,6 +6,7 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
+import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.script.builders.BinaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BiomeFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
@@ -22,6 +23,7 @@ import com.dfsek.terra.api.structures.script.builders.StateFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.ZeroArgFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
@@ -68,6 +70,9 @@ public class StructureScript {
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
                 .registerFunction("state", new StateFunctionBuilder(main))
+                .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(), Returnable.ReturnType.NUMBER))
+                .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(), Returnable.ReturnType.NUMBER))
+                .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(), Returnable.ReturnType.NUMBER))
                 .registerFunction("print", new UnaryStringFunctionBuilder(string -> Debug.info("[" + tempID + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
