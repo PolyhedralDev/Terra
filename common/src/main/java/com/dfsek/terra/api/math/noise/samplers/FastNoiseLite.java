@@ -777,6 +777,8 @@ public class FastNoiseLite implements NoiseSampler {
                 return singleValueCubic(seed, x, y);
             case Value:
                 return singleValue(seed, x, y);
+            case WhiteNoise:
+                return singleWhiteNoise(seed, x, y);
             default:
                 return 0;
         }
@@ -796,6 +798,8 @@ public class FastNoiseLite implements NoiseSampler {
                 return singleValueCubic(seed, x, y, z);
             case Value:
                 return singleValue(seed, x, y, z);
+            case WhiteNoise:
+                return singleWhiteNoise(seed, x, y, z);
             default:
                 return 0;
         }
@@ -1609,6 +1613,27 @@ public class FastNoiseLite implements NoiseSampler {
         double xf1 = lerp(gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1), xs);
 
         return lerp(xf0, xf1, ys) * 1.4247691104677813f;
+    }
+
+    private int doubleCast2Int(double f) {
+        int i = Float.floatToRawIntBits((float) f);
+
+        return i ^ (i >> 16);
+    }
+
+    private double singleWhiteNoise(int seed, double x, double y, double z) {
+        int xi = doubleCast2Int(x);
+        int yi = doubleCast2Int(y);
+        int zi = doubleCast2Int(z);
+
+        return valCoord(seed, xi, yi, zi);
+    }
+
+    private double singleWhiteNoise(int seed, double x, double y) {
+        int xi = doubleCast2Int(x);
+        int yi = doubleCast2Int(y);
+
+        return valCoord(seed, xi, yi);
     }
 
     // Simplex/OpenSimplex2 Noise
@@ -2482,7 +2507,8 @@ public class FastNoiseLite implements NoiseSampler {
         Cellular,
         Perlin,
         ValueCubic,
-        Value
+        Value,
+        WhiteNoise
     }
 
 
