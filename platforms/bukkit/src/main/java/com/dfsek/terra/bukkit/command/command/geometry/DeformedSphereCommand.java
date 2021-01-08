@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command.command.geometry;
 
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.math.voxel.DeformedSphere;
 import com.dfsek.terra.bukkit.BukkitCommandSender;

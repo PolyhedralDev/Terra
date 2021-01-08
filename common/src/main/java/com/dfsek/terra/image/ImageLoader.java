@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImageLoader {
-    private static final double INVERSE_ROOT_2 = 0.7071067811865475;
     private final BufferedImage image;
     private final Align align;
 
@@ -35,7 +34,7 @@ public class ImageLoader {
     private static BufferedImage redrawStepped(BufferedImage original, World w, Align align, TerraPlugin main) {
         BufferedImage newImg = copyImage(original);
         TerraBiomeGrid tb = main.getWorld(w).getGrid();
-        BiomeZone z = main.getWorld(w).getZone();
+        BiomeZone zone = main.getWorld(w).getZone();
         for(int x = 0; x < newImg.getWidth(); x++) {
             for(int y = 0; y < newImg.getHeight(); y++) {
                 double[] noise;
@@ -44,11 +43,15 @@ public class ImageLoader {
                 else noise = tb.getGrid(x, y).getRawNoise(x, y);
                 newImg.setRGB(x, y, new Color((int) (NormalizationUtil.normalize(noise[0], tb.getGrid(x, y).getSizeX(), 4) * ((double) 255 / tb.getGrid(x, y).getSizeX())),
                         (int) (NormalizationUtil.normalize(noise[1], tb.getGrid(x, y).getSizeZ(), 4) * ((double) 255 / tb.getGrid(x, y).getSizeZ())),
-                        (int) (NormalizationUtil.normalize(z.getNoise(x, y), z.getSize(), 4) * ((double) 255 / z.getSize())))
+                        (int) (NormalizationUtil.normalize(zone.getNoise(x, y), zone.getSize(), 4) * ((double) 255 / zone.getSize())))
                         .getRGB());
             }
         }
         return newImg;
+    }
+
+    private static int normal(double val) {
+        return FastMath.floorToInt(FastMath.min(FastMath.max(val, 255), 0));
     }
 
     private static BufferedImage copyImage(BufferedImage source) {
@@ -69,8 +72,8 @@ public class ImageLoader {
         debugGUI.start();
     }
 
-    public double getNoiseVal(int x, int y, Channel channel) {
-        return ((double) (getChannel(x, y, channel) - 128) / 128) * INVERSE_ROOT_2;
+    public int getNoiseVal(int x, int y, int size, Channel channel) {
+        return (size * getChannel(x, y, channel)) / 255;
     }
 
     public int getChannel(int x, int y, Channel channel) {

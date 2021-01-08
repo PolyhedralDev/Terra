@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.math.noise;
 
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.util.hash.HashMapDoubleDouble;
 import parsii.eval.Expression;
@@ -7,7 +8,7 @@ import parsii.eval.Expression;
 import java.util.List;
 
 public class NoiseFunction2 implements NoiseFunction {
-    private final FastNoiseLite gen;
+    private final NoiseSampler gen;
     private final Cache cache = new Cache();
 
     public NoiseFunction2(long seed, NoiseBuilder builder) {
@@ -43,7 +44,7 @@ public class NoiseFunction2 implements NoiseFunction {
         private static final long serialVersionUID = 8915092734723467010L;
         private static final int cacheSize = 384;
 
-        public double get(FastNoiseLite noise, double x, double z) {
+        public double get(NoiseSampler noise, double x, double z) {
             double xx = x >= 0 ? x * 2 : x * -2 - 1;
             double zz = z >= 0 ? z * 2 : z * -2 - 1;
             double key = (xx >= zz) ? (xx * xx + xx + zz) : (zz * zz + xx);

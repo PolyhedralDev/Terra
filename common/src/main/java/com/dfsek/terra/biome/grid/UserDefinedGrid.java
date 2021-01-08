@@ -3,7 +3,6 @@ package com.dfsek.terra.biome.grid;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
-import com.dfsek.terra.api.world.biome.NormalizationUtil;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
@@ -28,9 +27,9 @@ public class UserDefinedGrid extends BiomeGrid {
     @Override
     public Biome getBiome(int x, int z, GenerationPhase phase) {
         if(fromImage) {
-            double xi = imageLoader.getNoiseVal(x, z, channelX);
-            double zi = imageLoader.getNoiseVal(x, z, channelZ);
-            return super.getGrid()[NormalizationUtil.normalize(xi, getSizeX(), 4)][NormalizationUtil.normalize(zi, getSizeZ(), 4)];
+            int xi = imageLoader.getNoiseVal(x, z, getSizeX() - 1, channelX);
+            int zi = imageLoader.getNoiseVal(x, z, getSizeZ() - 1, channelZ);
+            return super.getGrid()[xi][zi];
         }
         return super.getBiome(x, z, phase);
     }

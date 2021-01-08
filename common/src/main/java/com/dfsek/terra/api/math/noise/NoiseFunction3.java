@@ -1,12 +1,13 @@
 package com.dfsek.terra.api.math.noise;
 
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import parsii.eval.Expression;
 
 import java.util.List;
 
 public class NoiseFunction3 implements NoiseFunction {
-    private final FastNoiseLite gen;
+    private final NoiseSampler gen;
 
     public NoiseFunction3(long seed, NoiseBuilder builder) {
         this.gen = builder.build((int) seed);

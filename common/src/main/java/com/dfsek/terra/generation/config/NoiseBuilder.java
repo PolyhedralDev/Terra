@@ -3,7 +3,8 @@ package com.dfsek.terra.generation.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 
 public class NoiseBuilder implements ConfigTemplate {
     @Value("type")
@@ -70,7 +71,7 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private int dimensions = 2;
 
-    public FastNoiseLite build(int seed) {
+    public NoiseSampler build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
             noise.setFractalType(fractalType);

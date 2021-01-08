@@ -2,7 +2,7 @@ package com.dfsek.terra.population.items.flora;
 
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.world.flora.Flora;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class FloraLayer extends PlaceableLayer<Flora> {
 
-    public FloraLayer(double density, Range level, ProbabilityCollection<Flora> layer, FastNoiseLite noise) {
+    public FloraLayer(double density, Range level, ProbabilityCollection<Flora> layer, NoiseSampler noise) {
         super(density, level, layer, noise);
     }
 

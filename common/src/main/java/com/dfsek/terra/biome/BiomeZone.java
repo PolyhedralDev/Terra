@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.api.world.biome.NormalizationUtil;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -42,7 +42,7 @@ public class BiomeZone {
      * @return BiomeGrid at coordinates.
      */
     public BiomeGrid getGrid(int x, int z) {
-        return grids[NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length, 4)];
+        return grids[getNoise(x, z)];
     }
 
     /**
@@ -62,7 +62,7 @@ public class BiomeZone {
      * @return Normalized noise at coordinates
      */
     public int getNoise(int x, int z) {
-        return NormalizationUtil.normalize(useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z), grids.length, 4);
+        return useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, getSize() - 1, channel) : NormalizationUtil.normalize(noise.getNoise(x, z), grids.length, 4);
     }
 
     /**
@@ -73,6 +73,6 @@ public class BiomeZone {
      * @return Raw noise at coordinates
      */
     public double getRawNoise(int x, int z) {
-        return useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, channel) : noise.getNoise(x, z);
+        return useImage ? Objects.requireNonNull(imageLoader).getNoiseVal(x, z, getSize() - 1, channel) : noise.getNoise(x, z);
     }
 }

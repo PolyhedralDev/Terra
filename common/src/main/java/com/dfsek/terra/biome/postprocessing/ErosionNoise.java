@@ -1,6 +1,7 @@
 package com.dfsek.terra.biome.postprocessing;
 
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import net.jafama.FastMath;
 
 /**
@@ -8,7 +9,7 @@ import net.jafama.FastMath;
  */
 public class ErosionNoise {
     private final double thresh;
-    private final FastNoiseLite noise;
+    private final NoiseSampler noise;
 
     public ErosionNoise(double freq1, double thresh, int octaves, long seed) {
         FastNoiseLite main = new FastNoiseLite((int) (seed + 1));

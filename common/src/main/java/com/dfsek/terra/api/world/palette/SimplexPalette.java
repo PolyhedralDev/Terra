@@ -1,13 +1,13 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 
 import java.util.List;
 
 public class SimplexPalette<E> extends Palette<E> {
-    private final FastNoiseLite r;
+    private final NoiseSampler r;
 
-    public SimplexPalette(FastNoiseLite r) {
+    public SimplexPalette(NoiseSampler r) {
         this.r = r;
     }
 

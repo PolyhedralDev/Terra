@@ -5,7 +5,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.population.items.tree.TreeLayer;

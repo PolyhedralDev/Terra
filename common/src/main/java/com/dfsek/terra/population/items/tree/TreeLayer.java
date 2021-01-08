@@ -2,7 +2,7 @@ package com.dfsek.terra.population.items.tree;
 
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockFace;
@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class TreeLayer extends PlaceableLayer<Tree> {
 
-    public TreeLayer(double density, Range level, ProbabilityCollection<Tree> layer, FastNoiseLite noise) {
+    public TreeLayer(double density, Range level, ProbabilityCollection<Tree> layer, NoiseSampler noise) {
         super(density, level, layer, noise);
     }
 

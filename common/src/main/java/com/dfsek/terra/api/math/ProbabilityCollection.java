@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.math;
 
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.world.biome.NormalizationUtil;
 
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class ProbabilityCollection<E> {
         return (E) array[r.nextInt(array.length)];
     }
 
-    public E get(FastNoiseLite n, double x, double z) {
+    public E get(NoiseSampler n, double x, double z) {
         if(array.length == 0) return null;
         return (E) array[NormalizationUtil.normalize(n.getNoise(x, z), array.length, 1)];
     }

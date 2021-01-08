@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.palette;
 
 import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.util.GlueList;
 
 import java.util.List;
@@ -104,7 +104,7 @@ public abstract class Palette<E> {
             return m;
         }
 
-        public E get(FastNoiseLite random, int x, int z) {
+        public E get(NoiseSampler random, int x, int z) {
             if(col) return this.collection.get(random, x, z);
             return m;
         }

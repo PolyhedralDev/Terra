@@ -1,7 +1,7 @@
 package com.dfsek.terra.population.items.ores;
 
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.Block;

@@ -172,6 +172,12 @@ public class Vector2 implements Cloneable {
         }
     }
 
+    public Vector2 add(double x, double z) {
+        this.x += x;
+        this.z += z;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "(" + x + ", " + z + ")";
