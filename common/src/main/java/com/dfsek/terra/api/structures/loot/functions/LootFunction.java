@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Interface for mutating items in Loot Tables.
  */
-public interface Function {
+public interface LootFunction {
     /**
      * Applies the function to an ItemStack.
      *

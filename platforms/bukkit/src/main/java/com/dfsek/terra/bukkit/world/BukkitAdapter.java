@@ -10,9 +10,11 @@ import com.dfsek.terra.api.platform.block.data.Rail;
 import com.dfsek.terra.api.platform.block.data.RedstoneWire;
 import com.dfsek.terra.api.platform.block.data.Slab;
 import com.dfsek.terra.api.platform.block.data.Stairs;
+import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
+import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -337,5 +339,13 @@ public final class BukkitAdapter {
 
     public static org.bukkit.Chunk adapt(Chunk chunk) {
         return (org.bukkit.Chunk) chunk.getHandle();
+    }
+
+    public static Enchantment adapt(org.bukkit.enchantments.Enchantment enchantment) {
+        return new BukkitEnchantment(enchantment);
+    }
+
+    public static org.bukkit.enchantments.Enchantment adapt(Enchantment enchantment) {
+        return ((BukkitEnchantment) enchantment).getHandle();
     }
 }

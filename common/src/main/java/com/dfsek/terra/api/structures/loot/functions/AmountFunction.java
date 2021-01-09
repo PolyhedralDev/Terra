@@ -6,9 +6,9 @@ import com.dfsek.terra.api.platform.inventory.ItemStack;
 import java.util.Random;
 
 /**
- * Loot Function fot setting the amount of an item.
+ * Loot LootFunction fot setting the amount of an item.
  */
-public class AmountFunction implements Function {
+public class AmountFunction implements LootFunction {
     private final int max;
     private final int min;
 

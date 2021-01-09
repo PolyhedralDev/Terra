@@ -5,7 +5,8 @@ import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.structures.loot.functions.AmountFunction;
 import com.dfsek.terra.api.structures.loot.functions.DamageFunction;
-import com.dfsek.terra.api.structures.loot.functions.Function;
+import com.dfsek.terra.api.structures.loot.functions.EnchantFunction;
+import com.dfsek.terra.api.structures.loot.functions.LootFunction;
 import com.dfsek.terra.api.util.GlueList;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
@@ -20,7 +21,7 @@ import java.util.Random;
 public class Entry {
     private final MaterialData item;
     private final long weight;
-    private final List<Function> functions = new GlueList<>();
+    private final List<LootFunction> functions = new GlueList<>();
     private final TerraPlugin main;
 
     /**
@@ -63,6 +64,15 @@ public class Entry {
                         long minDamage = (long) ((JSONObject) ((JSONObject) function).get("damage")).get("min");
                         functions.add(new DamageFunction(FastMath.toIntExact(minDamage), FastMath.toIntExact(maxDamage)));
                         break;
+                    case "minecraft:enchant_with_levels":
+                    case "enchant_with_levels":
+                        long maxEnchant = (long) ((JSONObject) ((JSONObject) function).get("levels")).get("max");
+                        long minEnchant = (long) ((JSONObject) ((JSONObject) function).get("levels")).get("min");
+                        JSONArray disabled = null;
+                        if(((JSONObject) function).containsKey("disabled_enchants"))
+                            disabled = (JSONArray) ((JSONObject) function).get("disabled_enchants");
+                        functions.add(new EnchantFunction(FastMath.toIntExact(minEnchant), FastMath.toIntExact(maxEnchant), disabled, main));
+                        break;
                 }
             }
         }
@@ -76,7 +86,7 @@ public class Entry {
      */
     public ItemStack getItem(Random r) {
         ItemStack item = main.getItemHandle().newItemStack(this.item, 1);
-        for(Function f : functions) {
+        for(LootFunction f : functions) {
             item = f.apply(item, r);
         }
         return item;

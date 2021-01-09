@@ -7,9 +7,9 @@ import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 import java.util.Random;
 
 /**
- * Loot Function for setting the damage on items in Loot Tables
+ * Loot LootFunction for setting the damage on items in Loot Tables
  */
-public class DamageFunction implements Function {
+public class DamageFunction implements LootFunction {
     private final int max;
     private final int min;
 
