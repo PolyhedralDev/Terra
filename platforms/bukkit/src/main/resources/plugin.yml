@@ -1,0 +1,18 @@
+name: "Terra"
+main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
+version: "@VERSION@"
+load: "STARTUP"
+author: dfsek
+api-version: "1.13"
+description: "An insanely powerful free & open-source data-driven world generator."
+softdepend: [ "WorldEdit" ]
+commands:
+  terra:
+    description: "Terra base command"
+    usage: "/terra "
+    aliases: [ "te" ]
+    permission: "terra.command"
+  locate:
+    description: "Locate a Terra Structure"
+    usage: "/locate <STRUCTURE_ID> <radius>"
+    permission: "terra.locate"

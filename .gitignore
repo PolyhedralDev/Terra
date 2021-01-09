@@ -137,3 +137,9 @@ build
 
 !lib/*.jar
 .idea/Terra.iml
+/run/
+.idea/**.iml
+/lang/
+/packs/
+/config.yml
+/region/
