@@ -43,7 +43,7 @@ public class ChunkCoordinate implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof com.dfsek.terra.api.world.generation.population.ChunkCoordinate)) return false;
+        if(!(obj instanceof ChunkCoordinate)) return false;
         com.dfsek.terra.api.world.generation.population.ChunkCoordinate other = (com.dfsek.terra.api.world.generation.population.ChunkCoordinate) obj;
         return other.getX() == x && other.getZ() == z;
     }

@@ -1,6 +1,7 @@
 package com.dfsek.terra.generation.math;
 
 import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
 import net.jafama.FastMath;
@@ -53,7 +54,7 @@ public class SamplerCache {
         }
 
         public Sampler getChunk(int cx, int cz) {
-            long key = (((long) cx) << 32) | (cz & 0xffffffffL);
+            long key = MathUtil.squash(cx, cz);
             synchronized(cache) {
                 return cache.computeIfAbsent(key, k -> new Sampler(cx, cz, terraWorld.getGrid(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend()));
             }

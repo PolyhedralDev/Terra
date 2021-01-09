@@ -37,7 +37,7 @@ public class CarverCache {
 
     public List<Worm.WormPoint> getPoints(int chunkX, int chunkZ, UserDefinedCarver carver) {
         synchronized(carvers) {
-            return carvers.computeIfAbsent((((long) chunkX) << 32) | (chunkZ & 0xffffffffL), key -> {
+            return carvers.computeIfAbsent(MathUtil.squash(chunkX, chunkZ), key -> {
                 TerraBiomeGrid grid = main.getWorld(w).getGrid();
                 if(carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + carver.hashCode())))) {
                     long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());

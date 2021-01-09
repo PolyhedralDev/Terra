@@ -1,5 +1,6 @@
 package com.dfsek.terra;
 
+import com.dfsek.terra.api.math.MathUtil;
 import net.querz.mca.MCAUtil;
 
 public final class DirectUtils {
@@ -12,6 +13,6 @@ public final class DirectUtils {
      * @return Region IS
      */
     public static long regionID(int x, int z) {
-        return (((long) MCAUtil.chunkToRegion(x)) << 32) | (MCAUtil.chunkToRegion(z) & 0xffffffffL);
+        return MathUtil.squash(MCAUtil.chunkToRegion(x), MCAUtil.chunkToRegion(z));
     }
 }
