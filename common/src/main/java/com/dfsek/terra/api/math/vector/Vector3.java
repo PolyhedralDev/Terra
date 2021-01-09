@@ -101,6 +101,10 @@ public class Vector3 implements Cloneable {
         return FastMath.sqrt(lengthSquared());
     }
 
+    public double inverseLength() {
+        return FastMath.invSqrtQuick(lengthSquared());
+    }
+
     /**
      * Returns if a vector is normalized
      *
@@ -280,7 +284,7 @@ public class Vector3 implements Cloneable {
     }
 
     public Vector3 normalize() {
-        return this.multiply(1D / this.length());
+        return this.multiply(this.inverseLength());
     }
 
     public Vector3 subtract(int x, int y, int z) {

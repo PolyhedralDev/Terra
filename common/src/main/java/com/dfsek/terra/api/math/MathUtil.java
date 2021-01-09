@@ -4,6 +4,7 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.generation.math.Sampler;
 import net.jafama.FastMath;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,18 +26,18 @@ public final class MathUtil {
      * @param numArray The array of numbers to calculate the standard deviation of.
      * @return double - The standard deviation.
      */
-    public static double standardDeviation(double[] numArray) {
+    public static double standardDeviation(List<Number> numArray) {
         double sum = 0.0, standardDeviation = 0.0;
-        int length = numArray.length;
+        int length = numArray.size();
 
-        for(double num : numArray) {
-            sum += num;
+        for(Number num : numArray) {
+            sum += num.doubleValue();
         }
 
         double mean = sum / length;
 
-        for(double num : numArray) {
-            standardDeviation += FastMath.pow(num - mean, 2);
+        for(Number num : numArray) {
+            standardDeviation += FastMath.pow2(num.doubleValue() - mean);
         }
 
         return FastMath.sqrt(standardDeviation / length);

@@ -5,13 +5,14 @@ import com.dfsek.terra.api.util.GlueList;
 import net.jafama.FastMath;
 
 import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Class to record and hold all data for a single type of measurement performed by the profiler.
  */
 public class Measurement {
-    private final List<Long> measurements;
+    private final List<Long> measurements = new LinkedList<>();
     private final long desirable;
     private final DataType type;
     private long min = Long.MAX_VALUE;
@@ -26,7 +27,6 @@ public class Measurement {
     public Measurement(long desirable, DataType type) {
         this.desirable = desirable;
         this.type = type;
-        measurements = new GlueList<>();
     }
 
     public void record(long value) {
@@ -67,7 +67,7 @@ public class Measurement {
     }
 
     public long average() {
-        BigInteger running = new BigInteger("0");
+        BigInteger running = BigInteger.valueOf(0);
         List<Long> mTemp = new GlueList<>(measurements);
         for(Long l : mTemp) {
             running = running.add(BigInteger.valueOf(l));
@@ -77,12 +77,7 @@ public class Measurement {
     }
 
     public double getStdDev() {
-        List<Long> mTemp = new GlueList<>(measurements);
-        double[] vals = new double[mTemp.size()];
-        for(int i = 0; i < mTemp.size(); i++) {
-            vals[i] = mTemp.get(i);
-        }
-        return MathUtil.standardDeviation(vals);
+        return MathUtil.standardDeviation(new GlueList<>(measurements));
     }
 
     public int entries() {

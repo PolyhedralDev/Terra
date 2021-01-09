@@ -5,7 +5,6 @@ import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Tree;
-import com.dfsek.terra.bukkit.util.BukkitConversions;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.TreeType;
 
@@ -49,7 +48,7 @@ public class BukkitTree implements Tree {
 
     @Override
     public boolean plant(Location l, Random r) {
-        return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitConversions.toBukkitLocation(l), delegate);
+        return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
     }
 
     @Override
