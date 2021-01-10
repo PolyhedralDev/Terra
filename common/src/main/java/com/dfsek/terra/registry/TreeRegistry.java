@@ -50,6 +50,8 @@ public class TreeRegistry extends TerraRegistry<Tree> {
         tryAdd("SMALL_SHATTERED_PILLAR", SmallShatteredPillar.class);
         tryAdd("ICE_SPIKE", IceSpike.class);
         addTree("TALL_BIRCH");
+        addTree("WARPED_FUNGUS");
+        addTree("CRIMSON_FUNGUS");
     }
 
     private void addTree(String id) {
