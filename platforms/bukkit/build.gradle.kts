@@ -84,7 +84,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
     // Copy Terra into dir
     doFirst {
         copy {
-            from("${buildDir}/libs/bukkit-${version}-shaded.jar")
+            from("${buildDir}/libs/Terra-bukkit-${version}-shaded.jar")
             into("${testDir}/plugins/")
         }
     }

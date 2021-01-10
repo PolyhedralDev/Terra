@@ -76,7 +76,7 @@ public class LoadFullCommand extends LoadCommand implements DebugCommand {
         if(!TerraWorld.isTerraWorld(w)) return Collections.emptyList();
         switch(args.length) {
             case 1:
-                return getMain().getWorld(w).getConfig().getScriptRegistry().entries().stream().map(StructureScript::getId).collect(Collectors.toList());
+                return getMain().getWorld(w).getConfig().getScriptRegistry().entries().stream().map(StructureScript::getId).filter(id -> id.startsWith(args[0])).sorted().collect(Collectors.toList());
             case 2:
                 return Stream.of("0", "90", "180", "270").filter(string -> string.toUpperCase().startsWith(args[1].toUpperCase())).collect(Collectors.toList());
         }
