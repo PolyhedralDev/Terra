@@ -57,7 +57,7 @@ public class TreeRegistry extends TerraRegistry<Tree> {
     private void addTree(String id) {
         try {
             add(id, main.getWorldHandle().getTree(id));
-        } catch(IllegalArgumentException e) {
+        } catch(Exception e) {
             main.getLogger().warning("Unable to load tree " + id + ": " + e.getMessage());
         }
     }
