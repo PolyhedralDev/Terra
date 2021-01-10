@@ -67,7 +67,7 @@ fun Project.configureDistribution() {
         configurations = listOf(project.configurations["shaded"])
 
         archiveClassifier.set("shaded")
-        version = project.version
+        setVersion(project.version)
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("parsii", "com.dfsek.terra.lib.parsii")
         relocate("net.jafama", "com.dfsek.terra.lib.jafama")
