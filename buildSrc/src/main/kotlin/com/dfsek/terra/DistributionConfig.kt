@@ -45,12 +45,13 @@ fun Project.configureDistribution() {
     }
     tasks["processResources"].dependsOn(downloadDefaultPacks)
 
-    tasks.register<Jar>("sourcesJar") {
-        archiveClassifier.set("sources")
+    tasks.withType<Jar> {
+        archiveBaseName.set("Terra-${archiveBaseName.get()}")
+        from("../LICENSE", "../../LICENSE")
     }
 
-    tasks.withType<Jar> {
-        from("../LICENSE", "../../LICENSE")
+    tasks.register<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
     }
 
     tasks.register<Jar>("javadocJar") {
@@ -66,7 +67,7 @@ fun Project.configureDistribution() {
         configurations = listOf(project.configurations["shaded"])
 
         archiveClassifier.set("shaded")
-        setVersion(project.version)
+        version = project.version
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("parsii", "com.dfsek.terra.lib.parsii")
         relocate("net.jafama", "com.dfsek.terra.lib.jafama")
