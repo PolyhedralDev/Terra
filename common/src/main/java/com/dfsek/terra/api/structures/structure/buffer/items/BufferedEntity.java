@@ -13,6 +13,6 @@ public class BufferedEntity implements BufferedItem {
 
     @Override
     public void paste(Location origin) {
-        origin.getWorld().spawnEntity(origin, type);
+        origin.clone().add(0.5, 0, 0.5).getWorld().spawnEntity(origin, type);
     }
 }

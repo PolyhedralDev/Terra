@@ -13,7 +13,6 @@ import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedEntity;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import net.jafama.FastMath;
 
 public class EntityFunction implements Function<Void> {
     private final EntityType data;
@@ -37,7 +36,7 @@ public class EntityFunction implements Function<Void> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().addItem(new BufferedEntity(data), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
+        arguments.getBuffer().addItem(new BufferedEntity(data), new Vector3(xz.getX(), y.apply(implementationArguments).doubleValue(), xz.getZ()).toLocation(arguments.getBuffer().getOrigin().getWorld()));
         return null;
     }
 

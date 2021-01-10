@@ -40,7 +40,7 @@ public class LoadCommand extends PlayerCommand implements DebugCommand {
 
     @Override
     public List<com.dfsek.terra.bukkit.command.Command> getSubCommands() {
-        return Arrays.asList(new LoadRawCommand(this), new LoadFullCommand(this, true), new LoadFullCommand(this, false));
+        return Arrays.asList(new LoadFullCommand(this, true), new LoadFullCommand(this, false));
     }
 
     @Override
