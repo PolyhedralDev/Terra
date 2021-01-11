@@ -3,7 +3,6 @@ package com.dfsek.terra.biome.grid.master;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.biome.BiomeZone;
-import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
 import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
@@ -21,7 +20,7 @@ public abstract class TerraBiomeGrid extends BiomeGrid {
         return zone;
     }
 
-    public abstract UserDefinedGrid getGrid(int x, int z);
+    public abstract BiomeGrid getGrid(int x, int z);
 
     public enum Type {
         RADIAL, STANDARD

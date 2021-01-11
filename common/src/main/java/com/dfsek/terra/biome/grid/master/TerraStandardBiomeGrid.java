@@ -3,10 +3,10 @@ package com.dfsek.terra.biome.grid.master;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.BiomeGrid;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.biome.postprocessing.CoordinatePerturb;
 import com.dfsek.terra.biome.postprocessing.ErosionNoise;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -28,8 +28,8 @@ public class TerraStandardBiomeGrid extends TerraBiomeGrid {
     }
 
     @Override
-    public UserDefinedGrid getGrid(int x, int z) {
-        return (UserDefinedGrid) zone.getGrid(x, z);
+    public BiomeGrid getGrid(int x, int z) {
+        return zone.getGrid(x, z);
     }
 
     @Override
