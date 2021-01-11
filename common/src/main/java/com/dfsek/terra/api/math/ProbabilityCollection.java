@@ -1,12 +1,11 @@
 package com.dfsek.terra.api.math;
 
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.api.world.biome.NormalizationUtil;
+import net.jafama.FastMath;
 
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings("unchecked")
 public class ProbabilityCollection<E> {
@@ -25,19 +24,19 @@ public class ProbabilityCollection<E> {
         return this;
     }
 
-    public E get() {
-        if(array.length == 0) return null;
-        return (E) array[ThreadLocalRandom.current().nextInt(array.length)];
-    }
-
     public E get(Random r) {
         if(array.length == 0) return null;
         return (E) array[r.nextInt(array.length)];
     }
 
+    private static double getNoise(double x, double z, NoiseSampler sampler) {
+        double n = sampler.getNoise(x, z);
+        return FastMath.min(FastMath.max(n, -1), 1);
+    }
+
     public E get(NoiseSampler n, double x, double z) {
         if(array.length == 0) return null;
-        return (E) array[NormalizationUtil.normalize(n.getNoise(x, z), array.length, 1)];
+        return (E) array[FastMath.min(FastMath.floorToInt(((getNoise(x, z, n) + 1D) / 2D) * array.length), array.length - 1)];
     }
 
     public int getTotalProbability() {

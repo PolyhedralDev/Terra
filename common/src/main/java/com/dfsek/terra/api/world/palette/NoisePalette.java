@@ -4,10 +4,10 @@ import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 
 import java.util.List;
 
-public class SimplexPalette<E> extends Palette<E> {
+public class NoisePalette<E> extends Palette<E> {
     private final NoiseSampler r;
 
-    public SimplexPalette(NoiseSampler r) {
+    public NoisePalette(NoiseSampler r) {
         this.r = r;
     }
 

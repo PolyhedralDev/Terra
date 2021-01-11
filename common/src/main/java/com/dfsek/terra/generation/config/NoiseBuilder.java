@@ -6,6 +6,7 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class NoiseBuilder implements ConfigTemplate {
     @Value("type")
     @Default
@@ -39,7 +40,7 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private double weightedStrength = 0.0D;
 
-    @Value("offset")
+    @Value("salt")
     @Default
     private int seedOffset = 0;
 
@@ -71,6 +72,10 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private int dimensions = 2;
 
+    @Value("cellular.lookup")
+    @Default
+    private NoiseBuilder lookup = new NoiseBuilder();
+
     public NoiseSampler build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
@@ -85,6 +90,7 @@ public class NoiseBuilder implements ConfigTemplate {
             noise.setCellularDistanceFunction(cellularDistanceFunction);
             noise.setCellularReturnType(cellularReturnType);
             noise.setCellularJitter(cellularJitter);
+            noise.setCellularNoiseLookup(lookup.build(seed));
         }
 
         noise.setNoiseType(type);

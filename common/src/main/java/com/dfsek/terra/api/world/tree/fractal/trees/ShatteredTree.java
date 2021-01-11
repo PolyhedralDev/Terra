@@ -50,13 +50,13 @@ public class ShatteredTree extends FractalTree {
 
     private void growBranch(Location l1, Vector3 diff, double d1, int recursions, Random r) {
         if(recursions > 2) {
-            geo.generateSphere(l1, leaves, 1 + r.nextInt(2), false);
+            geo.generateSphere(l1, leaves, 1 + r.nextInt(2), false, r);
             return;
         }
         if(diff.getY() < 0) diff.rotateAroundAxis(TreeGeometry.getPerpendicular(diff.clone()).normalize(), FastMath.PI);
         int d = (int) diff.length();
         for(int i = 0; i < d; i++) {
-            geo.generateSphere(l1.clone().add(diff.clone().multiply((double) i / d)), bark, FastMath.max((int) d1, 0), true);
+            geo.generateSphere(l1.clone().add(diff.clone().multiply((double) i / d)), bark, FastMath.max((int) d1, 0), true, r);
         }
         double runningAngle = (double) 45 / (recursions + 1);
         growBranch(l1.clone().add(diff), diff.clone().multiply(0.9).rotateAroundX(FastMath.toRadians(runningAngle + getNoise(r))).rotateAroundZ(FastMath.toRadians(getNoise(r))),

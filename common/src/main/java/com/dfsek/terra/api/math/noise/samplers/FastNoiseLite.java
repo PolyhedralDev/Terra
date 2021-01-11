@@ -1615,25 +1615,32 @@ public class FastNoiseLite implements NoiseSampler {
         return lerp(xf0, xf1, ys) * 1.4247691104677813f;
     }
 
-    private int doubleCast2Int(double f) {
-        int i = Float.floatToRawIntBits((float) f);
-
-        return i ^ (i >> 16);
+    private static long hash(long in) {
+        in = (in + 0x7ed55d16) + (in << 12);
+        in = (in ^ 0xc761c23c) ^ (in >> 19);
+        in = (in + 0x165667b1) + (in << 5);
+        in = (in + 0xd3a2646c) ^ (in << 9);
+        in = (in + 0xfd7046c5) + (in << 3);
+        in = (in ^ 0xb55a4f09) ^ (in >> 16);
+        return in;
     }
 
     private double singleWhiteNoise(int seed, double x, double y, double z) {
-        int xi = doubleCast2Int(x);
-        int yi = doubleCast2Int(y);
-        int zi = doubleCast2Int(z);
-
-        return valCoord(seed, xi, yi, zi);
+        long hashX = hash(Double.doubleToRawLongBits(x) ^ seed);
+        long hashZ = hash(Double.doubleToRawLongBits(y) ^ seed);
+        long hash = (((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed) + Double.doubleToRawLongBits(z);
+        long base = ((hash(hash)) & 0x000fffffffffffffL)
+                + (0b01111111111L << 52); // Sign and exponent
+        return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
     private double singleWhiteNoise(int seed, double x, double y) {
-        int xi = doubleCast2Int(x);
-        int yi = doubleCast2Int(y);
-
-        return valCoord(seed, xi, yi);
+        long hashX = hash(Double.doubleToRawLongBits(x) ^ seed);
+        long hashZ = hash(Double.doubleToRawLongBits(y) ^ seed);
+        long hash = ((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed;
+        long base = (hash(hash) & 0x000fffffffffffffL)
+                + (0b01111111111L << 52); // Sign and exponent
+        return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
     // Simplex/OpenSimplex2 Noise
