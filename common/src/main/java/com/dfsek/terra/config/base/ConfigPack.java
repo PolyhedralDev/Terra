@@ -154,6 +154,9 @@ public class ConfigPack implements LoaderRegistrar {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
+        loader.open("structures/data", ".tstructure")
+                .thenNames(ids -> ids.forEach(id -> main.getLogger().severe("Found .tstructure file \"" + id + "\". This file must be updated to the newer .tesf format to work properly. See version 3.0 release notes for instructions.")))
+                .close();
 
         loader.open("structures/data", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
