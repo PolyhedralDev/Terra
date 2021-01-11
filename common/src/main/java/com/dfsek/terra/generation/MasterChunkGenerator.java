@@ -114,7 +114,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                         for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
                             if(sampler.sample(x, y, z) > 0) {
                                 justSet = true;
-                                data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, cz);
+                                data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, y, cz);
                                 chunk.setBlock(x, y, z, data);
                                 if(paletteLevel == 0 && c.doSlabs() && y < 255) {
                                     prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector3(x, y + 1, z), c.getSlabPalettes(),
@@ -122,7 +122,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                                 }
                                 paletteLevel++;
                             } else if(y <= sea) {
-                                chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, z + zOrig));
+                                chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig));
                                 if(justSet && c.doSlabs()) {
                                     prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                                 }
@@ -144,18 +144,18 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
     private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
                                        Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
-        if(sampler.sample(block.getBlockX(), block.getBlockY() - 0.4, block.getBlockZ()) > thresh) {
+        if(sampler.sample(block.getX(), block.getY() - 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(down.getMaterial());
                 if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
+                    BlockData stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
                     if(stair instanceof Stairs) {
                         Stairs stairNew = (Stairs) stair;
                         if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
                     }
                 }
             }
-            BlockData slab = slabs.getOrDefault(down.getMaterial(), blank).get(0, block.getBlockX(), block.getBlockZ());
+            BlockData slab = slabs.getOrDefault(down.getMaterial(), blank).get(0, block.getX(), block.getY(), block.getZ());
             if(slab instanceof Waterlogged) {
                 ((Waterlogged) slab).setWaterlogged(orig.matches(water));
             } else if(orig.matches(water)) return;
@@ -165,11 +165,11 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
     private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
                                          Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
-        if(sampler.sample(block.getBlockX(), block.getBlockY() + 0.4, block.getBlockZ()) > thresh) {
+        if(sampler.sample(block.getX(), block.getY() + 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
                 Palette<BlockData> stairPalette = stairs.get(up.getMaterial());
                 if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getBlockX(), block.getBlockZ()).clone();
+                    BlockData stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
                     if(stair instanceof Stairs) {
                         Stairs stairNew = (Stairs) stair.clone();
                         stairNew.setHalf(Bisected.Half.TOP);
@@ -177,7 +177,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                     }
                 }
             }
-            BlockData slab = slabs.getOrDefault(up.getMaterial(), blank).get(0, block.getBlockX(), block.getBlockZ()).clone();
+            BlockData slab = slabs.getOrDefault(up.getMaterial(), blank).get(0, block.getX(), block.getY(), block.getZ()).clone();
             if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
             if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
             if(slab instanceof Waterlogged) {
@@ -189,14 +189,14 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
     private boolean placeStair(BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
 
-        if(sampler.sample(block.getBlockX() - 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+        if(sampler.sample(block.getBlockX() - 0.55, block.getY(), block.getZ()) > thresh) {
 
             stairNew.setFacing(BlockFace.WEST);
-        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() - 0.55) > thresh) {
+        } else if(sampler.sample(block.getBlockX(), block.getY(), block.getZ() - 0.55) > thresh) {
             stairNew.setFacing(BlockFace.NORTH);
-        } else if(sampler.sample(block.getBlockX(), block.getBlockY(), block.getBlockZ() + 0.55) > thresh) {
+        } else if(sampler.sample(block.getBlockX(), block.getY(), block.getZ() + 0.55) > thresh) {
             stairNew.setFacing(BlockFace.SOUTH);
-        } else if(sampler.sample(block.getBlockX() + 0.55, block.getBlockY(), block.getBlockZ()) > thresh) {
+        } else if(sampler.sample(block.getX() + 0.55, block.getY(), block.getZ()) > thresh) {
             stairNew.setFacing(BlockFace.EAST);
         } else stairNew = null;
         if(stairNew != null) {

@@ -106,7 +106,7 @@ public class TerraFlora implements Flora {
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
-            BlockData data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getBlockX(), location.getBlockZ()).clone();
+            BlockData data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
             if(doRotation) {
                 if(data instanceof Directional) {
                     ((Directional) data).setFacing(oneFace);

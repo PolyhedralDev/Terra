@@ -25,6 +25,7 @@ public class PaletteTemplate extends AbstractableTemplate {
 
     public PaletteTemplate() {
         noise.setType(FastNoiseLite.NoiseType.WhiteNoise);
+        noise.setDimensions(3);
     }
 
     public String getID() {
