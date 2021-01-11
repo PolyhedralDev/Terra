@@ -74,7 +74,7 @@ public class NoiseBuilder implements ConfigTemplate {
 
     @Value("cellular.lookup")
     @Default
-    private NoiseBuilder lookup = new NoiseBuilder();
+    private NoiseBuilder lookup;
 
     public NoiseSampler build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
@@ -90,7 +90,7 @@ public class NoiseBuilder implements ConfigTemplate {
             noise.setCellularDistanceFunction(cellularDistanceFunction);
             noise.setCellularReturnType(cellularReturnType);
             noise.setCellularJitter(cellularJitter);
-            noise.setCellularNoiseLookup(lookup.build(seed));
+            if(lookup != null) noise.setCellularNoiseLookup(lookup.build(seed));
         }
 
         noise.setNoiseType(type);
