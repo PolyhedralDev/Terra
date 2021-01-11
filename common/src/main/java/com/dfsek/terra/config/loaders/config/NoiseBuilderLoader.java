@@ -22,6 +22,7 @@ public class NoiseBuilderLoader implements TypeLoader<NoiseBuilder> {
         LOADER.registerLoader(FastNoiseLite.RotationType3D.class, (t, object, cf) -> FastNoiseLite.RotationType3D.valueOf((String) object));
         LOADER.registerLoader(FastNoiseLite.CellularReturnType.class, (t, object, cf) -> FastNoiseLite.CellularReturnType.valueOf((String) object));
         LOADER.registerLoader(FastNoiseLite.CellularDistanceFunction.class, (t, object, cf) -> FastNoiseLite.CellularDistanceFunction.valueOf((String) object));
+        LOADER.registerLoader(NoiseBuilder.class, new NoiseBuilderLoader());
     }
 
     @Override
