@@ -11,7 +11,7 @@ public class RandomPalette<E> extends Palette<E> {
     }
 
     @Override
-    public E get(int layer, int x, int z) {
+    public E get(int layer, double x, double y, double z) {
         if(layer > this.getSize()) return this.getLayers().get(this.getLayers().size() - 1).get(r);
         List<PaletteLayer<E>> pl = getLayers();
         if(layer >= pl.size()) return pl.get(pl.size() - 1).get(r);

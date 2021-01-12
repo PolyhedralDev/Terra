@@ -41,13 +41,13 @@ public class OakTree extends FractalTree {
         BlockData wood = getMain().getWorldHandle().createBlockData("minecraft:oak_wood");
         BlockData leaves = getMain().getWorldHandle().createBlockData("minecraft:oak_leave");
         if(recursions > 1) {
-            geo.generateSphere(l1, leaves, 1 + r.nextInt(2) + (3 - recursions), false);
+            geo.generateSphere(l1, leaves, 1 + r.nextInt(2) + (3 - recursions), false, r);
             if(recursions > 2) return;
         }
         if(diff.getY() < 0) diff.rotateAroundAxis(TreeGeometry.getPerpendicular(diff.clone()).normalize(), FastMath.PI);
         int d = (int) diff.length();
         for(int i = 0; i < d; i++) {
-            geo.generateSphere(l1.clone().add(diff.clone().multiply((double) i / d)), wood, FastMath.max((int) d1, 0), true);
+            geo.generateSphere(l1.clone().add(diff.clone().multiply((double) i / d)), wood, FastMath.max((int) d1, 0), true, r);
         }
         double runningAngle = (double) 45 / (recursions + 1);
         growBranch(l1.clone().add(diff), diff.clone().multiply(0.75).rotateAroundX(FastMath.toRadians(runningAngle + getNoise(r))).rotateAroundZ(FastMath.toRadians(getNoise(r))),

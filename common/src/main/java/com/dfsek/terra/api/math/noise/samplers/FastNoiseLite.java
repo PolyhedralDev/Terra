@@ -278,6 +278,7 @@ public class FastNoiseLite implements NoiseSampler {
     private static final int PRIME_Y = 1136930381;
     private static final int PRIME_Z = 1720413743;
     private static final NoiseSampler CELLULAR_LOOKUP_DEFAULT = new FastNoiseLite();
+    private static final long POSITIVE_POW1 = 0b01111111111L << 52; // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
     private int mSeed = 1337;
     private double mFrequency = 0.01f;
     private NoiseType mNoiseType = NoiseType.OpenSimplex2;
@@ -288,7 +289,7 @@ public class FastNoiseLite implements NoiseSampler {
     private double mLacunarity = 2.0f;
     private double mGain = 0.5f;
     private double mWeightedStrength = 0.0f;
-    private double mPingPongStength = 2.0f;
+    private double mPingPongStrength = 2.0f;
     private double mFractalBounding = 1 / 1.75f;
     private CellularDistanceFunction mCellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
     private CellularReturnType mCellularReturnType = CellularReturnType.Distance;
@@ -569,7 +570,7 @@ public class FastNoiseLite implements NoiseSampler {
      * Default: 2.0
      */
     public void setFractalPingPongStrength(double pingPongStrength) {
-        mPingPongStength = pingPongStrength;
+        mPingPongStrength = pingPongStrength;
     }
 
     /**
@@ -886,7 +887,7 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((genNoiseSingle(seed++, x, y) + 1) * mPingPongStength);
+            double noise = pingPong((genNoiseSingle(seed++, x, y) + 1) * mPingPongStrength);
             sum += (noise - 0.5f) * 2 * amp;
             amp *= lerp(1.0f, noise, mWeightedStrength);
 
@@ -905,7 +906,7 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((genNoiseSingle(seed++, x, y, z) + 1) * mPingPongStength);
+            double noise = pingPong((genNoiseSingle(seed++, x, y, z) + 1) * mPingPongStrength);
             sum += (noise - 0.5f) * 2 * amp;
             amp *= lerp(1.0f, noise, mWeightedStrength);
 
@@ -1615,25 +1616,32 @@ public class FastNoiseLite implements NoiseSampler {
         return lerp(xf0, xf1, ys) * 1.4247691104677813f;
     }
 
-    private int doubleCast2Int(double f) {
-        int i = Float.floatToRawIntBits((float) f);
-
-        return i ^ (i >> 16);
+    private static long hash(long in) {
+        in = (in + 0x7ed55d16) + (in << 12);
+        in = (in ^ 0xc761c23c) ^ (in >> 19);
+        in = (in + 0x165667b1) + (in << 5);
+        in = (in + 0xd3a2646c) ^ (in << 9);
+        in = (in + 0xfd7046c5) + (in << 3);
+        in = (in ^ 0xb55a4f09) ^ (in >> 16);
+        return in;
     }
 
     private double singleWhiteNoise(int seed, double x, double y, double z) {
-        int xi = doubleCast2Int(x);
-        int yi = doubleCast2Int(y);
-        int zi = doubleCast2Int(z);
-
-        return valCoord(seed, xi, yi, zi);
+        long hashX = hash(Double.doubleToRawLongBits(x) ^ seed);
+        long hashZ = hash(Double.doubleToRawLongBits(y) ^ seed);
+        long hash = (((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed) + Double.doubleToRawLongBits(z);
+        long base = ((hash(hash)) & 0x000fffffffffffffL)
+                + POSITIVE_POW1; // Sign and exponent
+        return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
     private double singleWhiteNoise(int seed, double x, double y) {
-        int xi = doubleCast2Int(x);
-        int yi = doubleCast2Int(y);
-
-        return valCoord(seed, xi, yi);
+        long hashX = hash(Double.doubleToRawLongBits(x) ^ seed);
+        long hashZ = hash(Double.doubleToRawLongBits(y) ^ seed);
+        long hash = ((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed;
+        long base = (hash(hash) & 0x000fffffffffffffL)
+                + POSITIVE_POW1; // Sign and exponent
+        return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
     // Simplex/OpenSimplex2 Noise

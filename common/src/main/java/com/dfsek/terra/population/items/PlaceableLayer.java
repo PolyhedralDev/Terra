@@ -6,8 +6,6 @@ import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.world.Chunk;
 
-import java.util.Random;
-
 public abstract class PlaceableLayer<T> {
     protected final double density;
     protected final Range level;
@@ -37,5 +35,5 @@ public abstract class PlaceableLayer<T> {
         return layer;
     }
 
-    public abstract void place(Chunk chunk, Vector2 coords, Random random);
+    public abstract void place(Chunk chunk, Vector2 coords);
 }

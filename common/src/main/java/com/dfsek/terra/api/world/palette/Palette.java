@@ -55,7 +55,7 @@ public abstract class Palette<E> {
      * @param layer - The layer at which to fetch the material.
      * @return BlockData - The material fetched.
      */
-    public abstract E get(int layer, int x, int z);
+    public abstract E get(int layer, double x, double y, double z);
 
 
     public int getSize() {
@@ -104,8 +104,9 @@ public abstract class Palette<E> {
             return m;
         }
 
-        public E get(NoiseSampler random, int x, int z) {
-            if(col) return this.collection.get(random, x, z);
+        public E get(NoiseSampler random, double x, double y, double z, boolean is2D) {
+            if(col && is2D) return this.collection.get(random, x, z);
+            else if(col) return this.collection.get(random, x, y, z);
             return m;
         }
 

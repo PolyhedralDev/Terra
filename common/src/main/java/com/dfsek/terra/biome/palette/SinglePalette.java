@@ -10,7 +10,7 @@ public class SinglePalette<E> extends Palette<E> {
     }
 
     @Override
-    public E get(int i, int i1, int i2) {
+    public E get(int layer, double x, double y, double z) {
         return item;
     }
 }

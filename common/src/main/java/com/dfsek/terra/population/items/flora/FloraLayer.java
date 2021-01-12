@@ -8,8 +8,6 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.population.items.PlaceableLayer;
 
-import java.util.Random;
-
 public class FloraLayer extends PlaceableLayer<Flora> {
 
     public FloraLayer(double density, Range level, ProbabilityCollection<Flora> layer, NoiseSampler noise) {
@@ -21,8 +19,8 @@ public class FloraLayer extends PlaceableLayer<Flora> {
     }
 
     @Override
-    public void place(Chunk chunk, Vector2 coords, Random random) {
-        Flora item = noise == null ? layer.get(random) : layer.get(noise, (chunk.getX() << 4) + coords.getX(), (chunk.getZ() << 4) + coords.getZ());
+    public void place(Chunk chunk, Vector2 coords) {
+        Flora item = layer.get(noise, (chunk.getX() << 4) + coords.getX(), (chunk.getZ() << 4) + coords.getZ());
         item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block.getLocation()));
     }
 }
