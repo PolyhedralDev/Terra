@@ -17,6 +17,7 @@ public class UserDefinedBiome implements Biome {
     private final BiomeTemplate config;
     private final ConfigPack pack;
     private UserDefinedBiome erode;
+    private int color;
 
 
     public UserDefinedBiome(com.dfsek.terra.api.platform.world.Biome vanilla, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
@@ -25,6 +26,7 @@ public class UserDefinedBiome implements Biome {
         this.id = config.getID();
         this.config = config;
         this.pack = pack;
+        this.color = config.getColor();
     }
 
     /**
@@ -57,5 +59,10 @@ public class UserDefinedBiome implements Biome {
     @Override
     public Generator getGenerator(World w) {
         return gen.build(w.getSeed());
+    }
+
+    @Override
+    public int getColor() {
+        return color;
     }
 }

@@ -91,6 +91,10 @@ public final class MathUtil {
         return Math.sqrt(((xVal2 - xVal1) * (xVal2 - xVal1)) + ((zVal2 - zVal1) * (zVal2 - zVal1)) + ((yVal2 - yVal1) * (yVal2 - yVal1)));
     }
 
+    public static int normalizeIndex(double val, int size) {
+        return FastMath.max(FastMath.min(FastMath.floorToInt(((val + 1D) / 2D) * size), size - 1), 0);
+    }
+
     public static long squash(int first, int last) {
         return (((long) first) << 32) | (last & 0xffffffffL);
     }

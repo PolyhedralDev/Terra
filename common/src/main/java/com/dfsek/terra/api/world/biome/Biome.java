@@ -22,4 +22,6 @@ public interface Biome {
      * @return BiomeTerrain - The terrain generation instance.
      */
     Generator getGenerator(World w);
+
+    int getColor();
 }

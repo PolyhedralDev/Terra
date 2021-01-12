@@ -133,6 +133,14 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private boolean interpolateElevation = true;
 
+    @Value("color")
+    @Default
+    private int color = 0;
+
+    public int getColor() {
+        return color;
+    }
+
     public boolean interpolateElevation() {
         return interpolateElevation;
     }
