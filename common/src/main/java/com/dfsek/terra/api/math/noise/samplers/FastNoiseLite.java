@@ -278,6 +278,7 @@ public class FastNoiseLite implements NoiseSampler {
     private static final int PRIME_Y = 1136930381;
     private static final int PRIME_Z = 1720413743;
     private static final NoiseSampler CELLULAR_LOOKUP_DEFAULT = new FastNoiseLite();
+    private static final long POSITIVE_POW1 = 0b01111111111L << 52; // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
     private int mSeed = 1337;
     private double mFrequency = 0.01f;
     private NoiseType mNoiseType = NoiseType.OpenSimplex2;
@@ -288,7 +289,7 @@ public class FastNoiseLite implements NoiseSampler {
     private double mLacunarity = 2.0f;
     private double mGain = 0.5f;
     private double mWeightedStrength = 0.0f;
-    private double mPingPongStength = 2.0f;
+    private double mPingPongStrength = 2.0f;
     private double mFractalBounding = 1 / 1.75f;
     private CellularDistanceFunction mCellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
     private CellularReturnType mCellularReturnType = CellularReturnType.Distance;
@@ -569,7 +570,7 @@ public class FastNoiseLite implements NoiseSampler {
      * Default: 2.0
      */
     public void setFractalPingPongStrength(double pingPongStrength) {
-        mPingPongStength = pingPongStrength;
+        mPingPongStrength = pingPongStrength;
     }
 
     /**
@@ -886,7 +887,7 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((genNoiseSingle(seed++, x, y) + 1) * mPingPongStength);
+            double noise = pingPong((genNoiseSingle(seed++, x, y) + 1) * mPingPongStrength);
             sum += (noise - 0.5f) * 2 * amp;
             amp *= lerp(1.0f, noise, mWeightedStrength);
 
@@ -905,7 +906,7 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((genNoiseSingle(seed++, x, y, z) + 1) * mPingPongStength);
+            double noise = pingPong((genNoiseSingle(seed++, x, y, z) + 1) * mPingPongStrength);
             sum += (noise - 0.5f) * 2 * amp;
             amp *= lerp(1.0f, noise, mWeightedStrength);
 
@@ -1630,7 +1631,7 @@ public class FastNoiseLite implements NoiseSampler {
         long hashZ = hash(Double.doubleToRawLongBits(y) ^ seed);
         long hash = (((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed) + Double.doubleToRawLongBits(z);
         long base = ((hash(hash)) & 0x000fffffffffffffL)
-                + (0b01111111111L << 52); // Sign and exponent
+                + POSITIVE_POW1; // Sign and exponent
         return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
@@ -1639,7 +1640,7 @@ public class FastNoiseLite implements NoiseSampler {
         long hashZ = hash(Double.doubleToRawLongBits(y) ^ seed);
         long hash = ((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed;
         long base = (hash(hash) & 0x000fffffffffffffL)
-                + (0b01111111111L << 52); // Sign and exponent
+                + POSITIVE_POW1; // Sign and exponent
         return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
