@@ -4,6 +4,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.noise.samplers.Normalizer;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.palette.PaletteHolder;
@@ -48,16 +49,17 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayer.class, new PaletteLayerLoader())
                 .registerLoader(FloraLayer.class, new FloraLayerLoader())
-                .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf((String) o))
+                .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf(o.toString()))
                 .registerLoader(OreConfig.class, new OreConfigLoader())
                 .registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
                 .registerLoader(ImageLoader.class, new ImageLoaderLoader())
-                .registerLoader(TerraBiomeGrid.Type.class, (t, o, l) -> TerraBiomeGrid.Type.valueOf((String) o))
-                .registerLoader(ImageLoader.Channel.class, (t, o, l) -> ImageLoader.Channel.valueOf((String) o))
-                .registerLoader(ImageLoader.Align.class, (t, o, l) -> ImageLoader.Align.valueOf((String) o))
-                .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf((String) o));
+                .registerLoader(TerraBiomeGrid.Type.class, (t, o, l) -> TerraBiomeGrid.Type.valueOf(o.toString()))
+                .registerLoader(ImageLoader.Channel.class, (t, o, l) -> ImageLoader.Channel.valueOf(o.toString()))
+                .registerLoader(ImageLoader.Align.class, (t, o, l) -> ImageLoader.Align.valueOf(o.toString()))
+                .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()))
+                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()));
     }
 }

@@ -4,7 +4,9 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.LinearNormalizer;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.Normalizer;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class NoiseBuilder implements ConfigTemplate {
@@ -76,6 +78,18 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private NoiseBuilder lookup;
 
+    @Value("normalize.type")
+    @Default
+    private Normalizer.NormalType normalType = Normalizer.NormalType.NONE;
+
+    @Value("normalize.linear.min")
+    @Default
+    private double linearMin = -1D;
+
+    @Value("normalize.linear.max")
+    @Default
+    private double linearMax = 1D;
+
     public NoiseSampler build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
@@ -101,6 +115,7 @@ public class NoiseBuilder implements ConfigTemplate {
         noise.setRotationType3D(rotationType3D);
 
         noise.setFrequency(frequency);
+        if(!normalType.equals(Normalizer.NormalType.NONE)) return new LinearNormalizer(noise, linearMin, linearMax);
         return noise;
     }
 
