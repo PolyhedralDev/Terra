@@ -55,7 +55,7 @@ public class FloraPopulator implements TerraBlockPopulator {
                     if(entry.getValue().size() <= iter) continue;
                     finished = false;
                     FloraLayer layer = entry.getValue().get(iter);
-                    if(layer.getDensity() >= random.nextDouble() * 100D) layer.place(chunk, entry.getKey(), random);
+                    if(layer.getDensity() >= random.nextDouble() * 100D) layer.place(chunk, entry.getKey());
                 }
                 iter++;
             }

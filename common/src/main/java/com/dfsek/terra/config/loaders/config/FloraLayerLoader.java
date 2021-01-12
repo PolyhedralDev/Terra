@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.loaders.config;
 
+import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
@@ -8,6 +9,7 @@ import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.config.loaders.Types;
+import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.population.items.flora.FloraLayer;
 
 import java.lang.reflect.Type;
@@ -23,12 +25,19 @@ public class FloraLayerLoader implements TypeLoader<FloraLayer> {
         if(range == null) throw new LoadException("Flora range unspecified");
         ProbabilityCollection<Flora> items = (ProbabilityCollection<Flora>) configLoader.loadType(Types.FLORA_PROBABILITY_COLLECTION_TYPE, map.get("items"));
 
-        if(map.containsKey("simplex-frequency")) {
-            FastNoiseLite noiseLite = new FastNoiseLite();
-            noiseLite.setFrequency((Double) map.get("simplex-frequency"));
-            return new FloraLayer(density, range, items, noiseLite);
+        NoiseBuilder sampler;
+        if(map.containsKey("distribution")) {
+            try {
+                sampler = new NoiseBuilderLoader().load(NoiseBuilder.class, map.get("distribution"), configLoader);
+            } catch(ConfigException e) {
+                throw new LoadException("Unable to load noise", e);
+            }
+            return new FloraLayer(density, range, items, sampler.build(2403));
         }
+        sampler = new NoiseBuilder();
+        sampler.setType(FastNoiseLite.NoiseType.WhiteNoise);
+        sampler.setDimensions(3);
 
-        return new FloraLayer(density, range, items, null);
+        return new FloraLayer(density, range, items, sampler.build(2403));
     }
 }

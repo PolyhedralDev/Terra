@@ -42,7 +42,7 @@ public class TreePopulator implements TerraBlockPopulator {
                     UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
                     for(TreeLayer layer : biome.getConfig().getTrees()) {
                         if(layer.getDensity() >= random.nextDouble() * 100)
-                            layer.place(chunk, new Vector2(offset(random, x), offset(random, z)), random);
+                            layer.place(chunk, new Vector2(offset(random, x), offset(random, z)));
                     }
                 }
             }
