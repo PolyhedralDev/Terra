@@ -30,8 +30,6 @@ public class TerraBiomeHolder implements BiomeHolder {
 
         biomes = new TerraBiome[newWidth][newWidth];
 
-        System.out.println(biomes.length);
-
         for(int x = 0; x < width; x++) {
             for(int z = 0; z < width; z++) {
                 biomes[x * 2][z * 2] = old[x][z];

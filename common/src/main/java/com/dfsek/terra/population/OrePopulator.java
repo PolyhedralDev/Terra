@@ -9,7 +9,6 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -35,7 +34,7 @@ public class OrePopulator implements TerraBlockPopulator {
                     Random random = new FastRandom(MathUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
                     int originX = ((chunk.getX() + cx) << 4);
                     int originZ = ((chunk.getZ() + cz) << 4);
-                    TerraBiome b = tw.getGrid().getBiome(originX + 8, originZ + 8, GenerationPhase.POPULATE);
+                    TerraBiome b = tw.getBiomeProvider().getBiome(originX + 8, originZ + 8);
                     BiomeTemplate config = ((UserDefinedBiome) b).getConfig();
                     int finalCx = cx;
                     int finalCz = cz;

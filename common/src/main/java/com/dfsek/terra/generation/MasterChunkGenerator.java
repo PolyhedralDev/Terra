@@ -15,9 +15,9 @@ import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.config.base.ConfigPack;
@@ -88,7 +88,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
     @SuppressWarnings({"try"})
     public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkGenerator.ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
-        com.dfsek.terra.api.world.biome.BiomeGrid grid = tw.getGrid();
+        BiomeProvider grid = tw.getBiomeProvider();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
                 if(!tw.isSafe()) return chunk;
                 int xOrig = (chunkX << 4);
@@ -103,7 +103,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                         int cx = xOrig + x;
                         int cz = zOrig + z;
 
-                        TerraBiome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
+                        TerraBiome b = grid.getBiome(xOrig + x, zOrig + z);
                         BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
                         int sea = c.getSeaLevel();
@@ -211,12 +211,12 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
     public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
-        com.dfsek.terra.api.world.biome.BiomeGrid grid = main.getWorld(world).getGrid();
+        BiomeProvider grid = main.getWorld(world).getBiomeProvider();
         for(int x = 0; x < 4; x++) {
             for(byte z = 0; z < 4; z++) {
                 int cx = xOrig + (x << 2);
                 int cz = zOrig + (z << 2);
-                TerraBiome b = grid.getBiome(cx, cz, GenerationPhase.PALETTE_APPLY);
+                TerraBiome b = grid.getBiome(cx, cz);
 
                 biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
             }

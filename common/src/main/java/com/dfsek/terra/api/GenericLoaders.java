@@ -6,11 +6,9 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.Normalizer;
 import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.PaletteLayer;
 import com.dfsek.terra.carving.CarverPalette;
-import com.dfsek.terra.config.loaders.ImageLoaderLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
@@ -24,7 +22,6 @@ import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.image.ImageLoader;
 import com.dfsek.terra.population.items.flora.FloraLayer;
 import com.dfsek.terra.population.items.flora.TerraFlora;
 import com.dfsek.terra.population.items.ores.Ore;
@@ -55,10 +52,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
-                .registerLoader(ImageLoader.class, new ImageLoaderLoader())
-                .registerLoader(TerraBiomeGrid.Type.class, (t, o, l) -> TerraBiomeGrid.Type.valueOf(o.toString()))
-                .registerLoader(ImageLoader.Channel.class, (t, o, l) -> ImageLoader.Channel.valueOf(o.toString()))
-                .registerLoader(ImageLoader.Align.class, (t, o, l) -> ImageLoader.Align.valueOf(o.toString()))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()))
                 .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()));
     }

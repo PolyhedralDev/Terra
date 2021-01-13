@@ -2,8 +2,7 @@ package com.dfsek.terra.generation.math.interpolation;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.api.world.generation.GenerationPhase;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
+import com.dfsek.terra.biome.BiomeProvider;
 import net.jafama.FastMath;
 
 /**
@@ -20,18 +19,18 @@ public class ChunkInterpolator {
     /**
      * Instantiates a 3D ChunkInterpolator at a pair of chunk coordinates.
      *
-     * @param chunkX X coordinate of the chunk.
-     * @param chunkZ Z coordinate of the chunk.
-     * @param grid   BiomeGrid to use for noise fetching.
+     * @param chunkX   X coordinate of the chunk.
+     * @param chunkZ   Z coordinate of the chunk.
+     * @param provider BiomeGrid to use for noise fetching.
      */
-    public ChunkInterpolator(World w, int chunkX, int chunkZ, TerraBiomeGrid grid, int smooth) {
+    public ChunkInterpolator(World w, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         this.smooth = smooth;
 
         for(int x = -1; x < 6; x++) {
             for(int z = -1; z < 6; z++) {
-                gens[x + 1][z + 1] = grid.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth), GenerationPhase.BASE).getGenerator(w);
+                gens[x + 1][z + 1] = provider.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth)).getGenerator(w);
             }
         }
 

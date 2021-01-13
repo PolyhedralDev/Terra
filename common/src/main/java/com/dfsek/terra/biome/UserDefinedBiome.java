@@ -7,6 +7,7 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,7 +31,7 @@ public class UserDefinedBiome implements TerraBiome {
         this.config = config;
         this.pack = pack;
         this.color = config.getColor();
-        this.tags = config.getTags();
+        this.tags = config.getTags() == null ? new HashSet<>() : config.getTags();
         tags.add("BIOME:" + id);
     }
 

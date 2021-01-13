@@ -51,7 +51,7 @@ public class LocateCommand extends WorldCommand {
             LangUtil.send("command.structure.invalid", BukkitAdapter.adapt(sender), id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getGrid(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getBiomeProvider(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))

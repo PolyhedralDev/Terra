@@ -6,10 +6,9 @@ import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.profiler.ProfileFuture;
-import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.population.items.flora.FloraLayer;
 import com.dfsek.terra.util.PopulationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -35,11 +34,11 @@ public class FloraPopulator implements TerraBlockPopulator {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("FloraTime")) {
             if(!tw.isSafe()) return;
-            TerraBiomeGrid grid = tw.getGrid();
+            BiomeProvider provider = tw.getBiomeProvider();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, GenerationPhase.POPULATE);
+                    UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     Vector2 l = new Vector2(x, z);
                     layers.put(l, biome.getConfig().getFlora());
                 }

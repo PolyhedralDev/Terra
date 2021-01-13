@@ -12,9 +12,8 @@ import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.api.world.generation.GenerationPhase;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.math.SamplerCache;
 import net.jafama.FastMath;
@@ -54,8 +53,8 @@ public class CheckFunction implements Function<String> {
 
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
 
-        TerraBiomeGrid grid = tw.getGrid();
-        UserDefinedBiome b = (UserDefinedBiome) grid.getBiome(vector.getBlockX(), vector.getBlockZ(), GenerationPhase.POPULATE);
+        BiomeProvider provider = tw.getBiomeProvider();
+        UserDefinedBiome b = (UserDefinedBiome) provider.getBiome(vector.getBlockX(), vector.getBlockZ());
         BiomeTemplate c = b.getConfig();
 
         if(vector.getY() > c.getSeaLevel()) return "AIR"; // Above sea level

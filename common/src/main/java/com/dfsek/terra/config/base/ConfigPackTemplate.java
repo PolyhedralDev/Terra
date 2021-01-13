@@ -5,9 +5,8 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.image.ImageLoader;
 import net.jafama.FastMath;
 
 import java.util.HashMap;
@@ -101,36 +100,12 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Default
     private String version = "0.1.0";
 
-    @Value("grid-options.type")
-    @Default
-    private TerraBiomeGrid.Type gridType = TerraBiomeGrid.Type.STANDARD;
+    @Value("biome-pipeline")
+    private BiomeProvider.BiomeProviderBuilder providerBuilder;
 
-    @Value("grid-options.radial.radius")
-    @Default
-    private double radius = 1000D;
-
-    @Value("grid-options.radial.internal-grid")
-    @Default
-    private String internalGrid = null;
-
-    @Value("image.enable")
-    @Default
-    private boolean fromImage = false;
-
-    @Value("image.channels.biome-x")
-    @Default
-    private ImageLoader.Channel biomeXChannel = ImageLoader.Channel.RED;
-    @Value("image.channels.biome-z")
-    @Default
-    private ImageLoader.Channel biomeZChannel = ImageLoader.Channel.GREEN;
-    @Value("image.channels.zone")
-    @Default
-    private ImageLoader.Channel zoneChannel = ImageLoader.Channel.BLUE;
-
-    @Value("image")
-    @Default
-    private ImageLoader imageLoader = null;
-
+    public BiomeProvider.BiomeProviderBuilder getProviderBuilder() {
+        return providerBuilder;
+    }
 
     public String getVersion() {
         return version;
@@ -172,7 +147,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
         return variables;
     }
 
-
     public List<String> getGrids() {
         return grids;
     }
@@ -209,38 +183,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
         return erodeOctaves;
     }
 
-    public double getRadialGridRadius() {
-        return radius;
-    }
-
-    public String getRadialInternalGrid() {
-        return internalGrid;
-    }
-
-    public TerraBiomeGrid.Type getGridType() {
-        return gridType;
-    }
-
-    public ImageLoader.Channel getBiomeXChannel() {
-        return biomeXChannel;
-    }
-
-    public ImageLoader.Channel getBiomeZChannel() {
-        return biomeZChannel;
-    }
-
-    public boolean isFromImage() {
-        return fromImage;
-    }
-
-    public ImageLoader.Channel getZoneChannel() {
-        return zoneChannel;
-    }
-
-    public ImageLoader getImageLoader() {
-        return imageLoader;
-    }
-
     public int getBaseBlend() {
         return baseBlend;
     }
@@ -255,11 +197,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
 
     @Override
     public boolean validate() throws ValidationException {
-        if(gridType.equals(TerraBiomeGrid.Type.RADIAL) && internalGrid == null)
-            throw new ValidationException("No internal BiomeGrid specified");
-        if(biomeZChannel.equals(biomeXChannel) || zoneChannel.equals(biomeXChannel) || zoneChannel.equals(biomeZChannel))
-            throw new ValidationException("2 objects share the same image channels: biome-x and biome-z");
-
         if(!MathUtil.equals(FastMath.log(baseBlend) / FastMath.log(2d), FastMath.round(FastMath.log(baseBlend) / FastMath.log(2d)))) {
             throw new ValidationException("TerraBiome base blend value \"" + baseBlend + "\" is not a power of 2.");
         }

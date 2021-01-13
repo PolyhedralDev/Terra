@@ -1,8 +1,7 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.api.world.generation.GenerationPhase;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
@@ -28,14 +27,14 @@ public class TerraBiomeSource extends BiomeSource {
 
     private final Registry<Biome> biomeRegistry;
     private final long seed;
-    private final TerraBiomeGrid grid;
+    private final BiomeProvider grid;
     private final ConfigPack pack;
 
     public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream().collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.grid = new TerraBiomeGrid.TerraBiomeGridBuilder(seed, pack, TerraFabricPlugin.getInstance()).build();
+        this.grid = pack.getTemplate().getProviderBuilder().build(seed);
         this.pack = pack;
     }
 
@@ -51,7 +50,7 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX * 4, biomeZ * 4, GenerationPhase.BASE);
+        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX * 4, biomeZ * 4);
         return biomeRegistry.get(new Identifier("terra", TerraFabricPlugin.createBiomeID(pack, biome)));
     }
 

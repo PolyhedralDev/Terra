@@ -56,7 +56,7 @@ public class SamplerCache {
         public Sampler getChunk(int cx, int cz) {
             long key = MathUtil.squash(cx, cz);
             synchronized(cache) {
-                return cache.computeIfAbsent(key, k -> new Sampler(cx, cz, terraWorld.getGrid(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend()));
+                return cache.computeIfAbsent(key, k -> new Sampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend()));
             }
         }
     }

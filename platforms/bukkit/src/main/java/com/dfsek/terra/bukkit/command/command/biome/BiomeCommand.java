@@ -1,8 +1,7 @@
 package com.dfsek.terra.bukkit.command.command.biome;
 
-import com.dfsek.terra.api.world.generation.GenerationPhase;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -23,8 +22,8 @@ public class BiomeCommand extends WorldCommand {
 
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World w) {
-        TerraBiomeGrid grid = getMain().getWorld(BukkitAdapter.adapt(sender.getWorld())).getGrid();
-        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(BukkitAdapter.adapt(sender.getLocation()), GenerationPhase.POPULATE);
+        BiomeProvider grid = getMain().getWorld(BukkitAdapter.adapt(sender.getWorld())).getBiomeProvider();
+        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(BukkitAdapter.adapt(sender.getLocation()));
         LangUtil.send("command.biome.in", BukkitAdapter.adapt(sender), biome.getID());
         return true;
     }

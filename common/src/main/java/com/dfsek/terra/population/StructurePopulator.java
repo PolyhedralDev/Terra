@@ -10,8 +10,8 @@ import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.population.items.TerraStructure;
 import net.jafama.FastMath;
@@ -34,12 +34,12 @@ public class StructurePopulator implements TerraBlockPopulator {
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             if(!tw.isSafe()) return;
-            TerraBiomeGrid grid = tw.getGrid();
+            BiomeProvider provider = tw.getBiomeProvider();
             ConfigPack config = tw.getConfig();
             for(TerraStructure conf : config.getStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
 
-                if(!((UserDefinedBiome) grid.getBiome(spawn)).getConfig().getStructures().contains(conf))
+                if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))
                     continue;
                 Random random = new FastRandom(MathUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
                 conf.getStructure().get(random).execute(spawn.setY(conf.getSpawnStart().get(random)), chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));

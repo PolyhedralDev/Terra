@@ -48,7 +48,7 @@ public class BiomeLocateCommand extends WorldCommand {
             LangUtil.send("command.biome.invalid", BukkitAdapter.adapt(sender), id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncBiomeFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getGrid(), b, BukkitAdapter.adapt(sender.getLocation().clone().multiply((1D / ((TerraBukkitPlugin) getMain()).getTerraConfig().getBiomeSearchResolution()))), 0, maxRadius, location -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncBiomeFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getBiomeProvider(), b, BukkitAdapter.adapt(sender.getLocation().clone().multiply((1D / ((TerraBukkitPlugin) getMain()).getTerraConfig().getBiomeSearchResolution()))), 0, maxRadius, location -> {
             if(location != null) {
                 ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
                         .append(String.format("[%d, ~, %d]", location.getBlockX(), location.getBlockZ()), ComponentBuilder.FormatRetention.NONE)

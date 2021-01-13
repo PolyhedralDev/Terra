@@ -4,13 +4,13 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
+import com.dfsek.terra.biome.BiomeProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 public abstract class AsyncFeatureFinder<T> implements Runnable {
-    protected final TerraBiomeGrid grid;
+    protected final BiomeProvider provider;
     protected final T target;
     protected final int startRadius;
     protected final int maxRadius;
@@ -21,8 +21,8 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
     protected int searchSize = 1;
     protected final TerraPlugin main;
 
-    public AsyncFeatureFinder(TerraBiomeGrid grid, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
-        this.grid = grid;
+    public AsyncFeatureFinder(BiomeProvider provider, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
+        this.provider = provider;
         this.target = target;
         this.main = main;
         this.startRadius = startRadius;
@@ -83,8 +83,8 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
         return world;
     }
 
-    public TerraBiomeGrid getGrid() {
-        return grid;
+    public BiomeProvider getProvider() {
+        return provider;
     }
 
     public int getSearchSize() {

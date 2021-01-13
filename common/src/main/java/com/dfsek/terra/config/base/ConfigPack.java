@@ -13,13 +13,11 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.builder.biomegrid.BiomeGridBuilder;
 import com.dfsek.terra.config.exception.FileMissingException;
 import com.dfsek.terra.config.factories.BiomeFactory;
-import com.dfsek.terra.config.factories.BiomeGridFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
@@ -31,8 +29,8 @@ import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.loaders.config.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
-import com.dfsek.terra.config.templates.BiomeGridTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.FloraTemplate;
@@ -43,7 +41,6 @@ import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.population.items.TerraStructure;
 import com.dfsek.terra.population.items.ores.Ore;
-import com.dfsek.terra.registry.BiomeGridRegistry;
 import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.CarverRegistry;
 import com.dfsek.terra.registry.FloraRegistry;
@@ -82,7 +79,6 @@ public class ConfigPack implements LoaderRegistrar {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
 
     private final BiomeRegistry biomeRegistry = new BiomeRegistry();
-    private final BiomeGridRegistry biomeGridRegistry = new BiomeGridRegistry(biomeRegistry);
     private final StructureRegistry structureRegistry = new StructureRegistry();
     private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry;
@@ -106,6 +102,7 @@ public class ConfigPack implements LoaderRegistrar {
         paletteRegistry = new PaletteRegistry(main);
         treeRegistry = new TreeRegistry(main);
         register(abstractConfigLoader);
+        register(selfLoader);
 
         main.register(selfLoader);
         main.register(abstractConfigLoader);
@@ -128,6 +125,7 @@ public class ConfigPack implements LoaderRegistrar {
         paletteRegistry = new PaletteRegistry(main);
         treeRegistry = new TreeRegistry(main);
         register(abstractConfigLoader);
+        register(selfLoader);
 
         main.register(selfLoader);
         main.register(abstractConfigLoader);
@@ -184,8 +182,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
                 .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
                 .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close()
-                .open("grids", ".yml").then(streams -> buildAll(new BiomeGridFactory(), biomeGridRegistry, abstractConfigLoader.load(streams, BiomeGridTemplate::new), main)).close();
+                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
 
 
         for(UserDefinedBiome b : biomeRegistry.entries()) {
@@ -194,14 +191,6 @@ public class ConfigPack implements LoaderRegistrar {
             } catch(NullPointerException e) {
                 throw new LoadException("Invalid erosion biome defined in biome \"" + b.getID() + "\"", e);
             }
-        }
-
-        for(String gridName : template.getGrids()) {
-            if(!biomeGridRegistry.contains(gridName)) throw new LoadException("No such BiomeGrid \"" + gridName + "\"");
-        }
-
-        if(template.getGridType().equals(TerraBiomeGrid.Type.RADIAL) && !biomeGridRegistry.contains(template.getRadialInternalGrid())) {
-            throw new LoadException("No such BiomeGrid \"" + template.getRadialInternalGrid() + "\"");
         }
 
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
@@ -213,10 +202,6 @@ public class ConfigPack implements LoaderRegistrar {
 
     public UserDefinedBiome getBiome(String id) {
         return biomeRegistry.get(id);
-    }
-
-    public BiomeGridBuilder getBiomeGrid(String id) {
-        return biomeGridRegistry.get(id);
     }
 
     public List<String> getBiomeIDs() {
@@ -271,7 +256,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Tree.class, treeRegistry)
                 .registerLoader(StructureScript.class, scriptRegistry)
                 .registerLoader(TerraStructure.class, structureRegistry)
-                .registerLoader(LootTable.class, lootRegistry);
+                .registerLoader(LootTable.class, lootRegistry)
+                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(this));
     }
 
     public ScriptRegistry getScriptRegistry() {

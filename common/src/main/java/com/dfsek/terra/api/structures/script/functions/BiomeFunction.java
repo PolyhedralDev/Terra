@@ -9,8 +9,8 @@ import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.grid.master.TerraBiomeGrid;
 import net.jafama.FastMath;
 
 public class BiomeFunction implements Function<String> {
@@ -36,7 +36,7 @@ public class BiomeFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        TerraBiomeGrid grid = main.getWorld(arguments.getBuffer().getOrigin().getWorld()).getGrid();
+        BiomeProvider grid = main.getWorld(arguments.getBuffer().getOrigin().getWorld()).getBiomeProvider();
 
         return ((UserDefinedBiome) grid.getBiome(arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).intValue(), FastMath.roundToInt(xz.getZ()))))).getID();
     }
