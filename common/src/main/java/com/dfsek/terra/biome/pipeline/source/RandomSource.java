@@ -14,7 +14,7 @@ public class RandomSource implements BiomeSource {
     }
 
     @Override
-    public TerraBiome getBiome(int x, int z) {
+    public TerraBiome getBiome(double x, double z) {
         return biomes.get(sampler, x, z);
     }
 }

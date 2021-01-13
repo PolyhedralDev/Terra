@@ -3,18 +3,15 @@ package biome;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.Position;
+import com.dfsek.terra.biome.pipeline.BiomeHolder;
 import com.dfsek.terra.biome.pipeline.TerraBiomeHolder;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
-import com.dfsek.terra.biome.pipeline.mutator.BorderMutator;
-import com.dfsek.terra.biome.pipeline.mutator.ReplaceMutator;
-import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -58,38 +55,52 @@ public class BiomeTest {
 
         BiomeSource source = new RandomSource(climate, sourceSampler);
 
-        int size = 20;
+        int size = 25;
         int expand = 6;
 
-        TerraBiomeHolder holder = new TerraBiomeHolder(size, new Position(0, 0));
+        BiomeHolder holder = new TerraBiomeHolder(size, new Vector2(0, 0));
+        BiomeHolder holder2 = new TerraBiomeHolder(size, new Vector2(24, 0));
+        BiomeHolder holder3 = new TerraBiomeHolder(size, new Vector2(0, 24));
+        BiomeHolder holder4 = new TerraBiomeHolder(size, new Vector2(24, 24));
 
         long s = System.nanoTime();
         holder.fill(source);
-        holder.expand(new FractalExpander(whiteNoise(4)));
+        holder2.fill(source);
+        holder3.fill(source);
+        holder4.fill(source);
 
-        holder.mutate(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(234)));
-        holder.mutate(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(235)));
+        for(int i = 0; i < 5; i++) {
+            holder = holder.expand(new FractalExpander(whiteNoise(i)));
+            holder2 = holder2.expand(new FractalExpander(whiteNoise(i)));
+            holder3 = holder3.expand(new FractalExpander(whiteNoise(i)));
+            holder4 = holder4.expand(new FractalExpander(whiteNoise(i)));
+            size = size * 2 - 1;
+        }
+        int og = size;
+        size *= 2;
+        //holder = holder.expand(new FractalExpander(whiteNoise(4)));
 
-        holder.expand(new FractalExpander(whiteNoise(3)));
-        holder.expand(new FractalExpander(whiteNoise(2)));
+        //holder.mutate(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(234)));
+        //holder.mutate(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(235)));
 
-        holder.mutate(new SmoothMutator(whiteNoise(34)));
+        //holder = holder.expand(new FractalExpander(whiteNoise(3)));
+        //holder = holder.expand(new FractalExpander(whiteNoise(2)));
 
-        holder.expand(new FractalExpander(whiteNoise(5)));
-        holder.expand(new FractalExpander(whiteNoise(7)));
+        //holder.mutate(new SmoothMutator(whiteNoise(34)));
 
-        holder.mutate(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(2356), beachBiomes));
+        //holder = holder.expand(new FractalExpander(whiteNoise(5)));
+        //holder = holder.expand(new FractalExpander(whiteNoise(7)));
 
-        holder.expand(new FractalExpander(whiteNoise(6)));
+        //holder.mutate(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(2356), beachBiomes));
 
-        holder.mutate(new SmoothMutator(whiteNoise(35)));
+        //holder = holder.expand(new FractalExpander(whiteNoise(6)));
+
+        //holder.mutate(new SmoothMutator(whiteNoise(35)));
 
         long e = System.nanoTime();
 
         double time = e - s;
         time /= 1000000;
-
-        for(int i = 0; i < expand; i++) size = size * 2 - 1;
         System.out.println(time + "ms for " + size + "x" + size);
 
 
@@ -100,7 +111,13 @@ public class BiomeTest {
 
         for(int x = 0; x < size; x++) {
             for(int z = 0; z < size; z++) {
-                image.setRGB(x, z, holder.getBiome(x, z).getColor());
+                if(x < og) {
+                    if(z < og) image.setRGB(x, z, holder.getBiome(x, z).getColor());
+                    else image.setRGB(x, z, holder3.getBiome(x, z - og).getColor());
+                } else {
+                    if(z < og) image.setRGB(x, z, holder2.getBiome(x - og, z).getColor());
+                    else image.setRGB(x, z, holder4.getBiome(x - og, z - og).getColor());
+                }
             }
         }
 

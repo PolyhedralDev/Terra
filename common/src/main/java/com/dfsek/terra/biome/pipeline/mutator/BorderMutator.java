@@ -3,7 +3,6 @@ package com.dfsek.terra.biome.pipeline.mutator;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.Position;
 
 import java.util.Set;
 
@@ -21,16 +20,16 @@ public class BorderMutator implements BiomeMutator {
     }
 
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, Position position) {
+    public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
         TerraBiome origin = viewPoint.getBiome(0, 0);
         if(origin.getTags().contains(tag)) {
-            for(int x = -1; x <= 1; x++) {
-                for(int z = -1; z <= 1; z++) {
-                    if(x == 0 && z == 0) continue;
-                    TerraBiome current = viewPoint.getBiome(x, z);
+            for(int xi = -1; xi <= 1; xi++) {
+                for(int zi = -1; zi <= 1; zi++) {
+                    if(xi == 0 && zi == 0) continue;
+                    TerraBiome current = viewPoint.getBiome(xi, zi);
                     if(current == null) continue;
                     if(borders.stream().anyMatch(current.getTags()::contains))
-                        return replace.get(noiseSampler, position.getX(), position.getY());
+                        return replace.get(noiseSampler, x, z);
                 }
             }
         }

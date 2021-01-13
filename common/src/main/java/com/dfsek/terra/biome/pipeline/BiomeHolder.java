@@ -6,7 +6,7 @@ import com.dfsek.terra.biome.pipeline.mutator.BiomeMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 
 public interface BiomeHolder {
-    void expand(BiomeExpander expander);
+    BiomeHolder expand(BiomeExpander expander);
 
     void mutate(BiomeMutator mutator);
 

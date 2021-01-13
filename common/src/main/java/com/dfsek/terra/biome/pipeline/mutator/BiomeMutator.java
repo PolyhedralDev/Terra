@@ -1,10 +1,9 @@
 package com.dfsek.terra.biome.pipeline.mutator;
 
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.Position;
 
 public interface BiomeMutator {
-    TerraBiome mutate(ViewPoint viewPoint, Position position);
+    TerraBiome mutate(ViewPoint viewPoint, double x, double z);
 
     class ViewPoint {
         private final TerraBiome[][] biomes;

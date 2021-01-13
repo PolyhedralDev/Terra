@@ -3,7 +3,6 @@ package com.dfsek.terra.biome.pipeline.mutator;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.Position;
 
 public class ReplaceMutator implements BiomeMutator {
     private final String replaceableTag;
@@ -17,7 +16,7 @@ public class ReplaceMutator implements BiomeMutator {
     }
 
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, Position position) {
-        return viewPoint.getBiome(0, 0).getTags().contains(replaceableTag) ? replace.get(sampler, position.getX(), position.getY()) : viewPoint.getBiome(0, 0);
+    public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
+        return viewPoint.getBiome(0, 0).getTags().contains(replaceableTag) ? replace.get(sampler, x, z) : viewPoint.getBiome(0, 0);
     }
 }
