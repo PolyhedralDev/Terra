@@ -3,6 +3,7 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
@@ -21,6 +22,7 @@ public final class Types {
     public static final Type BLOCK_DATA_PROBABILITY_COLLECTION_TYPE;
     public static final Type FLORA_PROBABILITY_COLLECTION_TYPE;
     public static final Type TREE_PROBABILITY_COLLECTION_TYPE;
+    public static final Type TERRA_BIOME_PROBABILITY_COLLECTION_TYPE;
 
     static {
         MATERIAL_SET_TYPE = getType("materialSet");
@@ -29,6 +31,7 @@ public final class Types {
         BLOCK_DATA_PROBABILITY_COLLECTION_TYPE = getType("blockDataProbabilityCollection");
         FLORA_PROBABILITY_COLLECTION_TYPE = getType("floraProbabilityCollection");
         TREE_PROBABILITY_COLLECTION_TYPE = getType("treeProbabilityCollection");
+        TERRA_BIOME_PROBABILITY_COLLECTION_TYPE = getType("terraBiomeProbabilityCollection");
     }
 
     private Set<MaterialData> materialSet;
@@ -37,6 +40,7 @@ public final class Types {
     private ProbabilityCollection<BlockData> blockDataProbabilityCollection;
     private ProbabilityCollection<Flora> floraProbabilityCollection;
     private ProbabilityCollection<Tree> treeProbabilityCollection;
+    private ProbabilityCollection<TerraBiome> terraBiomeProbabilityCollection;
 
     private static Type getType(String dummyFieldName) {
         try {

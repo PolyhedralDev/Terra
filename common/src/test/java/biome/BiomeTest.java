@@ -9,11 +9,14 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomeHolder;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.BorderMutator;
+import com.dfsek.terra.biome.pipeline.mutator.ReplaceMutator;
 import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
+import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -41,7 +44,7 @@ public class BiomeTest {
 
         ProbabilityCollection<TerraBiome> climate = new ProbabilityCollection<>();
         climate.add(ocean, 1);
-        climate.add(land, 3);
+        climate.add(land, 2);
 
 
         oceanBiomes.add(new TestBiome(Color.BLUE, "OCEAN"), 10);
@@ -61,9 +64,13 @@ public class BiomeTest {
 
         BiomePipeline pipeline = new BiomePipeline.BiomePipelineBuilder(20)
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(1))))
+                .addStage(new MutatorStage(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(243))))
+                .addStage(new MutatorStage(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(243))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(3))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new MutatorStage(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(1234), beachBiomes)))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
                 .build(source);
@@ -72,25 +79,6 @@ public class BiomeTest {
         BiomeHolder holder2 = pipeline.getBiomes(1, 0);
         BiomeHolder holder3 = pipeline.getBiomes(0, 1);
         BiomeHolder holder4 = pipeline.getBiomes(1, 1);
-
-        //holder = holder.expand(new FractalExpander(whiteNoise(4)));
-
-        //holder.mutate(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(234)));
-        //holder.mutate(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(235)));
-
-        //holder = holder.expand(new FractalExpander(whiteNoise(3)));
-        //holder = holder.expand(new FractalExpander(whiteNoise(2)));
-
-        //holder.mutate(new SmoothMutator(whiteNoise(34)));
-
-        //holder = holder.expand(new FractalExpander(whiteNoise(5)));
-        //holder = holder.expand(new FractalExpander(whiteNoise(7)));
-
-        //holder.mutate(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(2356), beachBiomes));
-
-        //holder = holder.expand(new FractalExpander(whiteNoise(6)));
-
-        //holder.mutate(new SmoothMutator(whiteNoise(35)));
 
         long e = System.nanoTime();
 

@@ -29,7 +29,7 @@ import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.loaders.config.BiomeProviderBuilderLoader;
+import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
