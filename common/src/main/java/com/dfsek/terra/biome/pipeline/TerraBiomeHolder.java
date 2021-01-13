@@ -30,7 +30,7 @@ public class TerraBiomeHolder implements BiomeHolder {
                 if(z != oldWidth - 1) biomes[x * 2][z * 2 + 1] = expander.getBetween(new Position(x, z + 1), old[x][z], old[x][z + 1]);
                 if(x != oldWidth - 1) biomes[x * 2 + 1][z * 2] = expander.getBetween(new Position(x + 1, z), old[x][z], old[x + 1][z]);
                 if(x != oldWidth - 1 && z != oldWidth - 1)
-                    biomes[x * 2 + 1][z * 2 + 1] = expander.getBetween(new Position(x + 1, z + 1), old[x][z], old[x + 1][z + 1]);
+                    biomes[x * 2 + 1][z * 2 + 1] = expander.getBetween(new Position(x + 1, z + 1), old[x][z], old[x + 1][z + 1], old[x][z + 1], old[x + 1][z]);
             }
         }
 
@@ -38,7 +38,16 @@ public class TerraBiomeHolder implements BiomeHolder {
 
     @Override
     public void mutate(BiomeMutator mutator) {
-
+        for(int x = 0; x < width; x++) {
+            for(int z = 0; z < width; z++) {
+                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(new Biome[][] {
+                        {getBiome(x - 1, z + 1), getBiome(x, z + 1), getBiome(x + 1, z + 1)},
+                        {getBiome(x - 1, z), getBiome(x, z), getBiome(x + 1, z)},
+                        {getBiome(x - 1, z - 1), getBiome(x, z - 1), getBiome(x + 1, z - 1)}
+                });
+                biomes[x][z] = mutator.mutate(viewPoint, new Position(x, z));
+            }
+        }
     }
 
     @Override
@@ -52,6 +61,7 @@ public class TerraBiomeHolder implements BiomeHolder {
 
     @Override
     public Biome getBiome(int x, int z) {
+        if(x >= width || z >= width || x < 0 || z < 0) return null;
         return biomes[x][z];
     }
 }

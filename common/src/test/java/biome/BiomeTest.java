@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.biome.pipeline.Position;
 import com.dfsek.terra.biome.pipeline.TerraBiomeHolder;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import org.junit.jupiter.api.Test;
@@ -37,15 +38,28 @@ public class BiomeTest {
 
         TerraBiomeHolder holder = new TerraBiomeHolder(size, new Position(0, 0));
 
+        long s = System.nanoTime();
         holder.fill(source);
         holder.expand(new FractalExpander(whiteNoise(4)));
         holder.expand(new FractalExpander(whiteNoise(3)));
         holder.expand(new FractalExpander(whiteNoise(2)));
+
+        holder.mutate(new SmoothMutator(whiteNoise(34)));
+
         holder.expand(new FractalExpander(whiteNoise(5)));
         holder.expand(new FractalExpander(whiteNoise(7)));
         holder.expand(new FractalExpander(whiteNoise(6)));
 
+        holder.mutate(new SmoothMutator(whiteNoise(35)));
+
+        long e = System.nanoTime();
+
+        double time = e - s;
+        time /= 1000000;
+
         for(int i = 0; i < expand; i++) size = size * 2 - 1;
+        System.out.println(time + "ms for " + size + "x" + size);
+
 
         BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 
