@@ -8,7 +8,7 @@ import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class ProbabilityCollection<E> {
-    private final Set<Object> cont = new HashSet<>();
+    private final Set<E> cont = new HashSet<>();
     private Object[] array = new Object[0];
     private int size;
 
@@ -44,5 +44,9 @@ public class ProbabilityCollection<E> {
 
     public int size() {
         return size;
+    }
+
+    public Set<E> getContents() {
+        return new HashSet<>(cont);
     }
 }

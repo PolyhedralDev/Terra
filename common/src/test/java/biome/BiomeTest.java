@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.Position;
 import com.dfsek.terra.biome.pipeline.TerraBiomeHolder;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.BorderMutator;
 import com.dfsek.terra.biome.pipeline.mutator.ReplaceMutator;
 import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
@@ -19,6 +20,9 @@ import org.junit.jupiter.api.Test;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BiomeTest {
     @Test
@@ -26,21 +30,28 @@ public class BiomeTest {
         ProbabilityCollection<TerraBiome> oceanBiomes = new ProbabilityCollection<>();
         ProbabilityCollection<TerraBiome> landBiomes = new ProbabilityCollection<>();
 
-        TestBiome ocean = new TestBiome(Color.BLUE);
-        TestBiome land = new TestBiome(Color.GREEN);
+
+        ProbabilityCollection<TerraBiome> beachBiomes = new ProbabilityCollection<>();
+
+        TestBiome ocean = new TestBiome(Color.BLUE, "OCEAN_TEMP");
+        TestBiome land = new TestBiome(Color.GREEN, "LAND_TEMP");
+
+        TestBiome beach = new TestBiome(Color.YELLOW, "BEACH");
+        beachBiomes.add(beach, 1);
+
 
         ProbabilityCollection<TerraBiome> climate = new ProbabilityCollection<>();
         climate.add(ocean, 1);
         climate.add(land, 3);
 
 
-        oceanBiomes.add(new TestBiome(Color.BLUE), 10);
-        oceanBiomes.add(new TestBiome(Color.CYAN), 1);
+        oceanBiomes.add(new TestBiome(Color.BLUE, "OCEAN"), 10);
+        oceanBiomes.add(new TestBiome(Color.CYAN, "OCEAN"), 1);
 
-        landBiomes.add(new TestBiome(Color.GREEN), 5);
-        landBiomes.add(new TestBiome(Color.ORANGE), 5);
-        landBiomes.add(new TestBiome(Color.YELLOW), 5);
-        landBiomes.add(new TestBiome(Color.MAGENTA), 1);
+        landBiomes.add(new TestBiome(Color.GREEN, "LAND"), 20);
+        landBiomes.add(new TestBiome(Color.ORANGE, "LAND"), 5);
+        landBiomes.add(new TestBiome(Color.RED, "LAND"), 1);
+        landBiomes.add(new TestBiome(Color.GRAY, "LAND"), 1);
 
         FastNoiseLite sourceSampler = new FastNoiseLite(123);
         sourceSampler.setNoiseType(FastNoiseLite.NoiseType.WhiteNoise);
@@ -56,8 +67,8 @@ public class BiomeTest {
         holder.fill(source);
         holder.expand(new FractalExpander(whiteNoise(4)));
 
-        holder.mutate(new ReplaceMutator(Sets.newHashSet(ocean), oceanBiomes, whiteNoise(234)));
-        holder.mutate(new ReplaceMutator(Sets.newHashSet(land), landBiomes, whiteNoise(235)));
+        holder.mutate(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(234)));
+        holder.mutate(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(235)));
 
         holder.expand(new FractalExpander(whiteNoise(3)));
         holder.expand(new FractalExpander(whiteNoise(2)));
@@ -66,6 +77,9 @@ public class BiomeTest {
 
         holder.expand(new FractalExpander(whiteNoise(5)));
         holder.expand(new FractalExpander(whiteNoise(7)));
+
+        holder.mutate(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(2356), beachBiomes));
+
         holder.expand(new FractalExpander(whiteNoise(6)));
 
         holder.mutate(new SmoothMutator(whiteNoise(35)));
@@ -114,9 +128,12 @@ public class BiomeTest {
 
     private final static class TestBiome implements TerraBiome {
         private final Color color;
+        private final Set<String> tags;
 
-        private TestBiome(Color color) {
+
+        private TestBiome(Color color, String... tags) {
             this.color = color;
+            this.tags = Arrays.stream(tags).collect(Collectors.toSet());
         }
 
         @Override
@@ -132,6 +149,11 @@ public class BiomeTest {
         @Override
         public int getColor() {
             return color.getRGB();
+        }
+
+        @Override
+        public Set<String> getTags() {
+            return tags;
         }
     }
 }

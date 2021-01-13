@@ -27,6 +27,7 @@ import parsii.tokenizer.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
@@ -136,6 +137,15 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("color")
     @Default
     private int color = 0;
+
+    @Value("tags")
+    @Default
+    @Abstractable
+    private Set<String> tags;
+
+    public Set<String> getTags() {
+        return tags;
+    }
 
     public int getColor() {
         return color;

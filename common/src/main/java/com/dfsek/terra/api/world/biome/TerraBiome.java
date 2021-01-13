@@ -1,7 +1,10 @@
 package com.dfsek.terra.api.world.biome;
 
 
+import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
+
+import java.util.Set;
 
 /**
  * Interface to be implemented by a custom generator's TerraBiome enum.<br>
@@ -14,7 +17,7 @@ public interface TerraBiome {
      *
      * @return TerraBiome - The Vanilla biome.
      */
-    com.dfsek.terra.api.platform.world.Biome getVanillaBiome();
+    Biome getVanillaBiome();
 
     /**
      * Gets the BiomeTerrain instance used to generate the biome.
@@ -24,4 +27,6 @@ public interface TerraBiome {
     Generator getGenerator(World w);
 
     int getColor();
+
+    Set<String> getTags();
 }

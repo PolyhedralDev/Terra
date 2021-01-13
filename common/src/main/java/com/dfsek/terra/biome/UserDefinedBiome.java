@@ -7,6 +7,8 @@ import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 
+import java.util.Set;
+
 /**
  * Class representing a config-defined biome
  */
@@ -17,7 +19,8 @@ public class UserDefinedBiome implements TerraBiome {
     private final BiomeTemplate config;
     private final ConfigPack pack;
     private UserDefinedBiome erode;
-    private int color;
+    private final int color;
+    private final Set<String> tags;
 
 
     public UserDefinedBiome(com.dfsek.terra.api.platform.world.Biome vanilla, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
@@ -27,6 +30,8 @@ public class UserDefinedBiome implements TerraBiome {
         this.config = config;
         this.pack = pack;
         this.color = config.getColor();
+        this.tags = config.getTags();
+        tags.add("BIOME:" + id);
     }
 
     /**
@@ -64,5 +69,10 @@ public class UserDefinedBiome implements TerraBiome {
     @Override
     public int getColor() {
         return color;
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return tags;
     }
 }
