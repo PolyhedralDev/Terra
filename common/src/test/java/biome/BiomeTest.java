@@ -3,15 +3,17 @@ package biome;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomeHolder;
-import com.dfsek.terra.biome.pipeline.TerraBiomeHolder;
+import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
+import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
+import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -55,29 +57,22 @@ public class BiomeTest {
 
         BiomeSource source = new RandomSource(climate, sourceSampler);
 
-        int size = 25;
-        int expand = 6;
-
-        BiomeHolder holder = new TerraBiomeHolder(size, new Vector2(0, 0));
-        BiomeHolder holder2 = new TerraBiomeHolder(size, new Vector2(24, 0));
-        BiomeHolder holder3 = new TerraBiomeHolder(size, new Vector2(0, 24));
-        BiomeHolder holder4 = new TerraBiomeHolder(size, new Vector2(24, 24));
-
         long s = System.nanoTime();
-        holder.fill(source);
-        holder2.fill(source);
-        holder3.fill(source);
-        holder4.fill(source);
 
-        for(int i = 0; i < 5; i++) {
-            holder = holder.expand(new FractalExpander(whiteNoise(i)));
-            holder2 = holder2.expand(new FractalExpander(whiteNoise(i)));
-            holder3 = holder3.expand(new FractalExpander(whiteNoise(i)));
-            holder4 = holder4.expand(new FractalExpander(whiteNoise(i)));
-            size = size * 2 - 1;
-        }
-        int og = size;
-        size *= 2;
+        BiomePipeline pipeline = new BiomePipeline.BiomePipelineBuilder(20)
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(1))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
+                .addStage(new MutatorStage(new SmoothMutator(whiteNoise(3))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
+                .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
+                .build(source);
+
+        BiomeHolder holder = pipeline.getBiomes(0, 0);
+        BiomeHolder holder2 = pipeline.getBiomes(1, 0);
+        BiomeHolder holder3 = pipeline.getBiomes(0, 1);
+        BiomeHolder holder4 = pipeline.getBiomes(1, 1);
+
         //holder = holder.expand(new FractalExpander(whiteNoise(4)));
 
         //holder.mutate(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(234)));
@@ -99,6 +94,9 @@ public class BiomeTest {
 
         long e = System.nanoTime();
 
+        int size = pipeline.getSize();
+        int og = size;
+        size *= 2;
         double time = e - s;
         time /= 1000000;
         System.out.println(time + "ms for " + size + "x" + size);
