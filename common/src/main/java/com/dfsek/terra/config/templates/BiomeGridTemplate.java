@@ -2,7 +2,7 @@ package com.dfsek.terra.config.templates;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ public class BiomeGridTemplate extends AbstractableTemplate {
     private String id;
 
     /**
-     * A 2D array of {@link Biome} IDs that make up this grid.
+     * A 2D array of {@link TerraBiome} IDs that make up this grid.
      */
     @Value("grid")
     @Abstractable
-    private List<List<Biome>> grid;
+    private List<List<TerraBiome>> grid;
 
     /**
      * X frequency of noise function
@@ -36,7 +36,7 @@ public class BiomeGridTemplate extends AbstractableTemplate {
         return id;
     }
 
-    public List<List<Biome>> getGrid() {
+    public List<List<TerraBiome>> getGrid() {
         return grid;
     }
 

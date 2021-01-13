@@ -9,7 +9,7 @@ public abstract class BiomeGrid {
     private final FastNoiseLite noiseZ;
     private final int sizeX;
     private final int sizeZ;
-    private Biome[][] grid;
+    private TerraBiome[][] grid;
 
 
     public BiomeGrid(long seed, double freq1, double freq2, int sizeX, int sizeZ) {
@@ -33,9 +33,9 @@ public abstract class BiomeGrid {
      *
      * @param x - X-coordinate at which to fetch biome
      * @param z - Z-coordinate at which to fetch biome
-     * @return Biome - Biome at the given coordinates.
+     * @return TerraBiome - TerraBiome at the given coordinates.
      */
-    public Biome getBiome(int x, int z, GenerationPhase phase) {
+    public TerraBiome getBiome(int x, int z, GenerationPhase phase) {
         return grid[getBiomeNoiseX(x, z)][getBiomeNoiseZ(x, z)];
     }
 
@@ -43,9 +43,9 @@ public abstract class BiomeGrid {
      * Gets the biome at a location.
      *
      * @param l - The location at which to fetch the biome.
-     * @return Biome - Biome at the given coordinates.
+     * @return TerraBiome - TerraBiome at the given coordinates.
      */
-    public Biome getBiome(Location l) {
+    public TerraBiome getBiome(Location l) {
         return getBiome(l, GenerationPhase.POST_GEN);
     }
 
@@ -75,19 +75,20 @@ public abstract class BiomeGrid {
         return normalize(noiseZ.getNoise(x, z), sizeZ);
     }
 
-    public Biome[][] getGrid() {
+    public TerraBiome[][] getGrid() {
         return grid;
     }
 
-    public void setGrid(Biome[][] grid) {
+    public void setGrid(TerraBiome[][] grid) {
         if(grid.length != sizeX) throw new IllegalArgumentException("Invalid length for grid, expected " + sizeX + ", got " + grid.length);
-        for(Biome[] gridLayer : grid) {
-            if(gridLayer.length != sizeZ) throw new IllegalArgumentException("Invalid length for grid layer, expected " + sizeZ + ", got " + gridLayer.length);
+        for(TerraBiome[] gridLayer : grid) {
+            if(gridLayer.length != sizeZ)
+                throw new IllegalArgumentException("Invalid length for grid layer, expected " + sizeZ + ", got " + gridLayer.length);
         }
         this.grid = grid;
     }
 
-    public Biome getBiome(Location l, GenerationPhase phase) {
+    public TerraBiome getBiome(Location l, GenerationPhase phase) {
         double biomeNoise = noiseX.getNoise(l.getBlockX(), l.getBlockZ());
         double climateNoise = noiseZ.getNoise(l.getBlockX(), l.getBlockZ());
         return grid[normalize(biomeNoise, sizeX)][normalize(climateNoise, sizeZ)];

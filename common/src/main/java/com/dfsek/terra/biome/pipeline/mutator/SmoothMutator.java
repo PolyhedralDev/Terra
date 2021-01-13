@@ -2,7 +2,7 @@ package com.dfsek.terra.biome.pipeline.mutator;
 
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.Position;
 
 import java.util.Objects;
@@ -16,11 +16,11 @@ public class SmoothMutator implements BiomeMutator {
     }
 
     @Override
-    public Biome mutate(ViewPoint viewPoint, Position position) {
-        Biome top = viewPoint.getBiome(1, 0);
-        Biome bottom = viewPoint.getBiome(-1, 0);
-        Biome left = viewPoint.getBiome(0, 1);
-        Biome right = viewPoint.getBiome(0, -1);
+    public TerraBiome mutate(ViewPoint viewPoint, Position position) {
+        TerraBiome top = viewPoint.getBiome(1, 0);
+        TerraBiome bottom = viewPoint.getBiome(-1, 0);
+        TerraBiome left = viewPoint.getBiome(0, 1);
+        TerraBiome right = viewPoint.getBiome(0, -1);
 
 
         boolean vert = Objects.equals(top, bottom) && top != null;

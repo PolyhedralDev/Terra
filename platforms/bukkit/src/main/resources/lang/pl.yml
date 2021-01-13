@@ -25,7 +25,7 @@ command:
     biome-found: "Zlokalizowano biom na (%1$s, %2$s)"
     unable-to-locate: "Nie moglismy zlokalizowac biomu."
     invalid-radius: "Niepoprawny zakres: \"%s\""
-    invalid: "Niepoprawne Biome ID: \"%s\""
+    invalid: "Niepoprawne TerraBiome ID: \"%s\""
     in: "Jestes na \"%s\""
   ore:
     main-menu:

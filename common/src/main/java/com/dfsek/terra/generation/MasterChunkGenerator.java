@@ -14,7 +14,7 @@ import com.dfsek.terra.api.platform.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.profiler.ProfileFuture;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -103,7 +103,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                         int cx = xOrig + x;
                         int cz = zOrig + z;
 
-                        Biome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
+                        TerraBiome b = grid.getBiome(xOrig + x, zOrig + z, GenerationPhase.PALETTE_APPLY);
                         BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
                         int sea = c.getSeaLevel();
@@ -216,7 +216,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
             for(byte z = 0; z < 4; z++) {
                 int cx = xOrig + (x << 2);
                 int cz = zOrig + (z << 2);
-                Biome b = grid.getBiome(cx, cz, GenerationPhase.PALETTE_APPLY);
+                TerraBiome b = grid.getBiome(cx, cz, GenerationPhase.PALETTE_APPLY);
 
                 biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
             }

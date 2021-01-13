@@ -2,19 +2,19 @@ package com.dfsek.terra.biome.pipeline.source;
 
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public class RandomSource implements BiomeSource {
-    private final ProbabilityCollection<Biome> biomes;
+    private final ProbabilityCollection<TerraBiome> biomes;
     private final NoiseSampler sampler;
 
-    public RandomSource(ProbabilityCollection<Biome> biomes, NoiseSampler sampler) {
+    public RandomSource(ProbabilityCollection<TerraBiome> biomes, NoiseSampler sampler) {
         this.biomes = biomes;
         this.sampler = sampler;
     }
 
     @Override
-    public Biome getBiome(int x, int z) {
+    public TerraBiome getBiome(int x, int z) {
         return biomes.get(sampler, x, z);
     }
 }

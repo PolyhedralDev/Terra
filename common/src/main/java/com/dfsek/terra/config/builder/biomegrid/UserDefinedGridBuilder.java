@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.builder.biomegrid;
 
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.grid.UserDefinedGrid;
 import com.dfsek.terra.config.base.ConfigPack;
 
@@ -8,7 +8,7 @@ public class UserDefinedGridBuilder implements BiomeGridBuilder {
     private double xFreq;
     private double zFreq;
 
-    private Biome[][] biomes;
+    private TerraBiome[][] biomes;
 
     @Override
     public UserDefinedGrid build(long seed, ConfigPack config) {
@@ -31,11 +31,11 @@ public class UserDefinedGridBuilder implements BiomeGridBuilder {
         this.zFreq = zFreq;
     }
 
-    public Biome[][] getBiomes() {
+    public TerraBiome[][] getBiomes() {
         return biomes;
     }
 
-    public void setBiomes(Biome[][] biomes) {
+    public void setBiomes(TerraBiome[][] biomes) {
         this.biomes = biomes;
     }
 }

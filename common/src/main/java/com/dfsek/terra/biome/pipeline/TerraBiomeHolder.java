@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.pipeline;
 
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.expand.BiomeExpander;
 import com.dfsek.terra.biome.pipeline.mutator.BiomeMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
@@ -8,22 +8,22 @@ import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 public class TerraBiomeHolder implements BiomeHolder {
     private final Position original;
     private int width;
-    private Biome[][] biomes;
+    private TerraBiome[][] biomes;
 
     public TerraBiomeHolder(int width, Position original) {
         this.width = width;
-        biomes = new Biome[width][width];
+        biomes = new TerraBiome[width][width];
         this.original = original;
     }
 
     @Override
     public void expand(BiomeExpander expander) {
-        Biome[][] old = biomes;
+        TerraBiome[][] old = biomes;
         int oldWidth = width;
 
         width = 2 * width - 1;
 
-        biomes = new Biome[width][width];
+        biomes = new TerraBiome[width][width];
         for(int x = 0; x < oldWidth; x++) {
             for(int z = 0; z < oldWidth; z++) {
                 biomes[x * 2][z * 2] = old[x][z];
@@ -40,7 +40,7 @@ public class TerraBiomeHolder implements BiomeHolder {
     public void mutate(BiomeMutator mutator) {
         for(int x = 0; x < width; x++) {
             for(int z = 0; z < width; z++) {
-                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(new Biome[][] {
+                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(new TerraBiome[][] {
                         {getBiome(x - 1, z + 1), getBiome(x, z + 1), getBiome(x + 1, z + 1)},
                         {getBiome(x - 1, z), getBiome(x, z), getBiome(x + 1, z)},
                         {getBiome(x - 1, z - 1), getBiome(x, z - 1), getBiome(x + 1, z - 1)}
@@ -60,7 +60,7 @@ public class TerraBiomeHolder implements BiomeHolder {
     }
 
     @Override
-    public Biome getBiome(int x, int z) {
+    public TerraBiome getBiome(int x, int z) {
         if(x >= width || z >= width || x < 0 || z < 0) return null;
         return biomes[x][z];
     }

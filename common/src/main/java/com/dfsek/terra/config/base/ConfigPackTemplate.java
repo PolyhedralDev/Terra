@@ -261,10 +261,10 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
             throw new ValidationException("2 objects share the same image channels: biome-x and biome-z");
 
         if(!MathUtil.equals(FastMath.log(baseBlend) / FastMath.log(2d), FastMath.round(FastMath.log(baseBlend) / FastMath.log(2d)))) {
-            throw new ValidationException("Biome base blend value \"" + baseBlend + "\" is not a power of 2.");
+            throw new ValidationException("TerraBiome base blend value \"" + baseBlend + "\" is not a power of 2.");
         }
         if(!MathUtil.equals(FastMath.log(elevationBlend) / FastMath.log(2d), FastMath.round(FastMath.log(elevationBlend) / FastMath.log(2d)))) {
-            throw new ValidationException("Biome elevation blend value \"" + baseBlend + "\" is not a power of 2.");
+            throw new ValidationException("TerraBiome elevation blend value \"" + baseBlend + "\" is not a power of 2.");
         }
         return true;
     }

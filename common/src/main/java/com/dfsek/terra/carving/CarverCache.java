@@ -6,7 +6,7 @@ import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.carving.Worm;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -47,7 +47,7 @@ public class CarverCache {
                     List<Worm.WormPoint> points = new GlueList<>();
                     for(int i = 0; i < carving.getLength(); i++) {
                         carving.step();
-                        Biome biome = grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE);
+                        TerraBiome biome = grid.getBiome(carving.getRunning().toLocation(w), GenerationPhase.POPULATE);
                         if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(carver)) { // Stop if we enter a biome this carver is not present in
                             return new GlueList<>();
                         }

@@ -9,7 +9,7 @@ import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
@@ -264,7 +264,7 @@ public class ConfigPack implements LoaderRegistrar {
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(Palette.class, paletteRegistry)
-                .registerLoader(Biome.class, biomeRegistry)
+                .registerLoader(TerraBiome.class, biomeRegistry)
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry)

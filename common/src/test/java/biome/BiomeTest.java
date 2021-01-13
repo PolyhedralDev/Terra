@@ -4,14 +4,16 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.Position;
 import com.dfsek.terra.biome.pipeline.TerraBiomeHolder;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.ReplaceMutator;
 import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
+import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -21,17 +23,29 @@ import java.awt.image.BufferedImage;
 public class BiomeTest {
     @Test
     public static void main(String... args) {
-        ProbabilityCollection<Biome> testBiomes = new ProbabilityCollection<>();
-        testBiomes.add(new TestBiome(Color.BLUE), 1);
-        testBiomes.add(new TestBiome(Color.GREEN), 1);
-        testBiomes.add(new TestBiome(Color.CYAN), 1);
-        testBiomes.add(new TestBiome(Color.MAGENTA), 1);
-        testBiomes.add(new TestBiome(Color.ORANGE), 1);
+        ProbabilityCollection<TerraBiome> oceanBiomes = new ProbabilityCollection<>();
+        ProbabilityCollection<TerraBiome> landBiomes = new ProbabilityCollection<>();
+
+        TestBiome ocean = new TestBiome(Color.BLUE);
+        TestBiome land = new TestBiome(Color.GREEN);
+
+        ProbabilityCollection<TerraBiome> climate = new ProbabilityCollection<>();
+        climate.add(ocean, 1);
+        climate.add(land, 3);
+
+
+        oceanBiomes.add(new TestBiome(Color.BLUE), 10);
+        oceanBiomes.add(new TestBiome(Color.CYAN), 1);
+
+        landBiomes.add(new TestBiome(Color.GREEN), 5);
+        landBiomes.add(new TestBiome(Color.ORANGE), 5);
+        landBiomes.add(new TestBiome(Color.YELLOW), 5);
+        landBiomes.add(new TestBiome(Color.MAGENTA), 1);
 
         FastNoiseLite sourceSampler = new FastNoiseLite(123);
         sourceSampler.setNoiseType(FastNoiseLite.NoiseType.WhiteNoise);
 
-        BiomeSource source = new RandomSource(testBiomes, sourceSampler);
+        BiomeSource source = new RandomSource(climate, sourceSampler);
 
         int size = 20;
         int expand = 6;
@@ -41,6 +55,10 @@ public class BiomeTest {
         long s = System.nanoTime();
         holder.fill(source);
         holder.expand(new FractalExpander(whiteNoise(4)));
+
+        holder.mutate(new ReplaceMutator(Sets.newHashSet(ocean), oceanBiomes, whiteNoise(234)));
+        holder.mutate(new ReplaceMutator(Sets.newHashSet(land), landBiomes, whiteNoise(235)));
+
         holder.expand(new FractalExpander(whiteNoise(3)));
         holder.expand(new FractalExpander(whiteNoise(2)));
 
@@ -72,7 +90,7 @@ public class BiomeTest {
             }
         }
 
-        JFrame frame = new JFrame("Biome Viewer");
+        JFrame frame = new JFrame("TerraBiome Viewer");
 
 
         frame.setResizable(false);
@@ -94,7 +112,7 @@ public class BiomeTest {
         return noiseLite;
     }
 
-    private final static class TestBiome implements Biome {
+    private final static class TestBiome implements TerraBiome {
         private final Color color;
 
         private TestBiome(Color color) {

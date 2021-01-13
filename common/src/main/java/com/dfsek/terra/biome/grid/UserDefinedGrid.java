@@ -1,8 +1,8 @@
 package com.dfsek.terra.biome.grid;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.ConfigPackTemplate;
@@ -14,7 +14,7 @@ public class UserDefinedGrid extends BiomeGrid {
     private final ImageLoader.Channel channelX;
     private final ImageLoader.Channel channelZ;
 
-    public UserDefinedGrid(long seed, double freq1, double freq2, Biome[][] b, ConfigPack c) {
+    public UserDefinedGrid(long seed, double freq1, double freq2, TerraBiome[][] b, ConfigPack c) {
         super(seed, freq1, freq2, b.length, b[0].length);
         super.setGrid(b);
         ConfigPackTemplate t = c.getTemplate();
@@ -25,7 +25,7 @@ public class UserDefinedGrid extends BiomeGrid {
     }
 
     @Override
-    public Biome getBiome(int x, int z, GenerationPhase phase) {
+    public TerraBiome getBiome(int x, int z, GenerationPhase phase) {
         if(fromImage) {
             int xi = imageLoader.getNoiseVal(x, z, getSizeX() - 1, channelX);
             int zi = imageLoader.getNoiseVal(x, z, getSizeZ() - 1, channelZ);
@@ -35,7 +35,7 @@ public class UserDefinedGrid extends BiomeGrid {
     }
 
     @Override
-    public Biome getBiome(Location l, GenerationPhase phase) {
+    public TerraBiome getBiome(Location l, GenerationPhase phase) {
         return this.getBiome(l.getBlockX(), l.getBlockZ(), phase);
     }
 }

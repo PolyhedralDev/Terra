@@ -37,7 +37,7 @@ public class BiomeInfoCommand extends WorldCommand {
             LangUtil.send("command.biome.invalid", new BukkitCommandSender(sender), id);
             return true;
         }
-        sender.sendMessage("Biome info for \"" + b.getID() + "\".");
+        sender.sendMessage("TerraBiome info for \"" + b.getID() + "\".");
         sender.sendMessage("Vanilla biome: " + b.getVanillaBiome());
         sender.sendMessage("Eroded by: " + b.getErode().getConfig().getID());
 

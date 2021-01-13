@@ -2,8 +2,8 @@ package com.dfsek.terra.biome.grid.master;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.BiomeGrid;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.BiomeZone;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -38,7 +38,7 @@ public class TerraStandardBiomeGrid extends TerraBiomeGrid {
     }
 
     @Override
-    public Biome getBiome(int x, int z, GenerationPhase phase) {
+    public TerraBiome getBiome(int x, int z, GenerationPhase phase) {
         int xp = x, zp = z;
         if(perturb != null && (phase.equals(GenerationPhase.PALETTE_APPLY) || phase.equals(GenerationPhase.POPULATE))) {
             Vector2 perturbCoords = perturb.getShiftedCoords(x, z);
@@ -53,7 +53,7 @@ public class TerraStandardBiomeGrid extends TerraBiomeGrid {
 
 
     @Override
-    public Biome getBiome(Location l, GenerationPhase phase) {
+    public TerraBiome getBiome(Location l, GenerationPhase phase) {
         return getBiome(l.getBlockX(), l.getBlockZ(), phase);
     }
 }

@@ -1,8 +1,8 @@
 package com.dfsek.terra.biome;
 
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -10,7 +10,7 @@ import com.dfsek.terra.config.templates.BiomeTemplate;
 /**
  * Class representing a config-defined biome
  */
-public class UserDefinedBiome implements Biome {
+public class UserDefinedBiome implements TerraBiome {
     private final GeneratorBuilder gen;
     private final com.dfsek.terra.api.platform.world.Biome vanilla;
     private final String id;
@@ -32,7 +32,7 @@ public class UserDefinedBiome implements Biome {
     /**
      * Gets the Vanilla biome to represent the custom biome.
      *
-     * @return Biome - The Vanilla biome.
+     * @return TerraBiome - The Vanilla biome.
      */
     @Override
     public com.dfsek.terra.api.platform.world.Biome getVanillaBiome() {
