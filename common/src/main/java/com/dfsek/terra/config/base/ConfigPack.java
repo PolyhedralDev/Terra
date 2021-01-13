@@ -146,6 +146,8 @@ public class ConfigPack implements LoaderRegistrar {
         selfLoader.load(template, stream);
 
         load(new ZIPLoader(file), l, main);
+
+        template.getProviderBuilder().build(0); // Build dummy provider to catch errors at load time.
     }
 
     private void load(Loader loader, long start, TerraPlugin main) throws ConfigException {

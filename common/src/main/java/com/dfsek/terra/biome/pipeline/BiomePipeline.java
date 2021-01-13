@@ -21,7 +21,7 @@ public class BiomePipeline {
     }
 
     public BiomeHolder getBiomes(int x, int z) {
-        BiomeHolder holder = new TerraBiomeHolder(25, new Vector2(x * (init - 1), z * (init - 1)));
+        BiomeHolder holder = new TerraBiomeHolder(init, new Vector2(x * (init - 1), z * (init - 1)));
         holder.fill(source);
         for(Stage stage : stages) holder = stage.apply(holder);
         return holder;

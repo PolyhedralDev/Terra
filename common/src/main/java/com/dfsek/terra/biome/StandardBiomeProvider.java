@@ -41,7 +41,7 @@ public class StandardBiomeProvider implements BiomeProvider {
                         }
                     }
             );
-    private int resolution = 4;
+    private int resolution = 1;
 
     protected StandardBiomeProvider(BiomePipeline pipeline) {
         this.pipeline = pipeline;

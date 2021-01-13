@@ -12,6 +12,7 @@ public class TerraBiomeHolder implements BiomeHolder {
     private TerraBiome[][] biomes;
 
     public TerraBiomeHolder(int width, Vector2 origin) {
+        if(width % 2 == 0) throw new IllegalArgumentException();
         this.width = width;
         biomes = new TerraBiome[width][width];
         this.origin = origin;
@@ -48,11 +49,7 @@ public class TerraBiomeHolder implements BiomeHolder {
     public void mutate(BiomeMutator mutator) {
         for(int x = 0; x < width; x++) {
             for(int z = 0; z < width; z++) {
-                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(new TerraBiome[][] {
-                        {getBiomeRaw(x - 1, z + 1), getBiomeRaw(x, z + 1), getBiomeRaw(x + 1, z + 1)},
-                        {getBiomeRaw(x - 1, z), getBiomeRaw(x, z), getBiomeRaw(x + 1, z)},
-                        {getBiomeRaw(x - 1, z - 1), getBiomeRaw(x, z - 1), getBiomeRaw(x + 1, z - 1)}
-                });
+                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(this, x, z);
                 biomes[x][z] = mutator.mutate(viewPoint, x + origin.getX(), z + origin.getZ());
             }
         }
@@ -65,11 +62,6 @@ public class TerraBiomeHolder implements BiomeHolder {
                 biomes[x][z] = source.getBiome(origin.getX() + x, origin.getZ() + z);
             }
         }
-    }
-
-    private TerraBiome getBiomeRaw(int x, int z) {
-        if(x >= width || z >= width || x < 0 || z < 0) return null;
-        return biomes[x][z];
     }
 
     @Override

@@ -6,7 +6,8 @@ import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.BiomeHolder;
+import com.dfsek.terra.biome.BiomeProvider;
+import com.dfsek.terra.biome.StandardBiomeProvider;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
 import com.dfsek.terra.biome.pipeline.mutator.BorderMutator;
@@ -60,9 +61,8 @@ public class BiomeTest {
 
         BiomeSource source = new RandomSource(climate, sourceSampler);
 
-        long s = System.nanoTime();
 
-        BiomePipeline pipeline = new BiomePipeline.BiomePipelineBuilder(20)
+        BiomeProvider provider = new StandardBiomeProvider.StandardBiomeProviderBuilder((seed) -> new BiomePipeline.BiomePipelineBuilder(3)
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(1))))
                 .addStage(new MutatorStage(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(243))))
                 .addStage(new MutatorStage(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(243))))
@@ -73,21 +73,10 @@ public class BiomeTest {
                 .addStage(new MutatorStage(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(1234), beachBiomes)))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
-                .build(source);
+                .build(source)).build(0);
 
-        BiomeHolder holder = pipeline.getBiomes(0, 0);
-        BiomeHolder holder2 = pipeline.getBiomes(1, 0);
-        BiomeHolder holder3 = pipeline.getBiomes(0, 1);
-        BiomeHolder holder4 = pipeline.getBiomes(1, 1);
 
-        long e = System.nanoTime();
-
-        int size = pipeline.getSize();
-        int og = size;
-        size *= 2;
-        double time = e - s;
-        time /= 1000000;
-        System.out.println(time + "ms for " + size + "x" + size);
+        int size = 1000;
 
 
         BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
@@ -95,17 +84,17 @@ public class BiomeTest {
 
         System.out.println(size);
 
+        long s = System.nanoTime();
         for(int x = 0; x < size; x++) {
             for(int z = 0; z < size; z++) {
-                if(x < og) {
-                    if(z < og) image.setRGB(x, z, holder.getBiome(x, z).getColor());
-                    else image.setRGB(x, z, holder3.getBiome(x, z - og).getColor());
-                } else {
-                    if(z < og) image.setRGB(x, z, holder2.getBiome(x - og, z).getColor());
-                    else image.setRGB(x, z, holder4.getBiome(x - og, z - og).getColor());
-                }
+                image.setRGB(x, z, provider.getBiome(x, z).getColor());
             }
         }
+        long e = System.nanoTime();
+
+        double time = e - s;
+        time /= 1000000;
+        System.out.println(time + "ms for " + size + "x" + size);
 
         JFrame frame = new JFrame("TerraBiome Viewer");
 
