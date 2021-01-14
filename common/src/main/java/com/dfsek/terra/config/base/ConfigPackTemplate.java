@@ -10,7 +10,6 @@ import com.dfsek.terra.generation.config.NoiseBuilder;
 import net.jafama.FastMath;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
@@ -24,13 +23,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Value("variables")
     @Default
     private Map<String, Double> variables = new HashMap<>();
-
-    @Value("grids")
-    private List<String> grids;
-
-    @Value("frequencies.zone")
-    @Default
-    private int zoneFreq = 256;
 
     @Value("blend.enable")
     @Default
@@ -145,14 +137,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
 
     public Map<String, Double> getVariables() {
         return variables;
-    }
-
-    public List<String> getGrids() {
-        return grids;
-    }
-
-    public int getZoneFreq() {
-        return zoneFreq;
     }
 
     public boolean isBlend() {
