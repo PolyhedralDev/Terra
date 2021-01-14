@@ -4,8 +4,8 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.StandardBiomeProvider;
@@ -17,9 +17,9 @@ import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
+import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import net.jafama.FastMath;
 
@@ -29,16 +29,10 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.BiomeProviderBuilder> {
-    private final ConfigPack pack;
+    private final TerraPlugin main;
 
-    public BiomeProviderBuilderLoader(ConfigPack pack) {
-        this.pack = pack;
-    }
-
-    private static NoiseSampler whiteNoise(int seed) {
-        FastNoiseLite noiseLite = new FastNoiseLite(seed);
-        noiseLite.setNoiseType(FastNoiseLite.NoiseType.WhiteNoise);
-        return noiseLite;
+    public BiomeProviderBuilderLoader(TerraPlugin main) {
+        this.main = main;
     }
 
     @Override
@@ -52,6 +46,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
 
             List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("pipeline");
             BiomePipeline.BiomePipelineBuilder pipelineBuilder = new BiomePipeline.BiomePipelineBuilder(2);
+
             for(Map<String, Object> stage : stages) {
                 for(Map.Entry<String, Object> entry : stage.entrySet()) {
                     Map<String, Object> mutator = (Map<String, Object>) entry.getValue();
@@ -77,7 +72,9 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                     } else throw new LoadException("No such mutator \"" + entry.getKey() + "\"");
                 }
             }
-            return pipelineBuilder.build(new RandomSource(sourceBiomes, sourceNoise));
-        });
+            BiomePipeline pipeline = pipelineBuilder.build(new RandomSource(sourceBiomes, sourceNoise));
+            Debug.info("Biome Pipeline scale factor: " + pipeline.getSize());
+            return pipeline;
+        }, main);
     }
 }

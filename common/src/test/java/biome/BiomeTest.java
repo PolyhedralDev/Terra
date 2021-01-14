@@ -79,7 +79,7 @@ public class BiomeTest {
                     .build(source);
             System.out.println("Size: " + pipeline.getSize());
             return pipeline;
-        }).build(0);
+        }, null).build(0);
 
 
         int size = 1000;

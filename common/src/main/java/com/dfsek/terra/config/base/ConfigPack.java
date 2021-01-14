@@ -13,7 +13,6 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
-import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.exception.FileMissingException;
@@ -29,7 +28,6 @@ import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -258,8 +256,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Tree.class, treeRegistry)
                 .registerLoader(StructureScript.class, scriptRegistry)
                 .registerLoader(TerraStructure.class, structureRegistry)
-                .registerLoader(LootTable.class, lootRegistry)
-                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(this));
+                .registerLoader(LootTable.class, lootRegistry);
     }
 
     public ScriptRegistry getScriptRegistry() {

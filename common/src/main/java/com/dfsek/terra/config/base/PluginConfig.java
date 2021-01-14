@@ -37,15 +37,23 @@ public class PluginConfig implements ConfigTemplate {
 
     @Value("cache.carver")
     @Default
-    private int carverCache = 512;
+    private int carverCache = 256;
 
     @Value("cache.structure")
     @Default
-    private int structureCache = 128;
+    private int structureCache = 32;
 
     @Value("cache.sampler")
     @Default
-    private int samplerCache = 512;
+    private int samplerCache = 64;
+
+    @Value("cache.biome")
+    @Default
+    private int biomeCache = 512;
+
+    @Value("cache.biome-provider")
+    @Default
+    private int providerCache = 32;
 
     @Value("dump-default")
     @Default
@@ -106,5 +114,13 @@ public class PluginConfig implements ConfigTemplate {
 
     public int getMaxRecursion() {
         return maxRecursion;
+    }
+
+    public int getBiomeCache() {
+        return biomeCache;
+    }
+
+    public int getProviderCache() {
+        return providerCache;
     }
 }
