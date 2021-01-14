@@ -4,11 +4,13 @@ import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import net.jafama.FastMath;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SamplerCache {
@@ -35,14 +37,18 @@ public class SamplerCache {
     private class Container {
         private final World world;
         private final TerraWorld terraWorld;
-        private final Map<Long, Sampler> cache = Collections.synchronizedMap(new LinkedHashMap<Long, Sampler>() {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<Long, Sampler> eldest) {
-                return this.size() > main.getTerraConfig().getSamplerCache();
-            }
-        });
+        private final LoadingCache<Long, Sampler> cache;
 
         private Container(World world) {
+            cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getSamplerCache())
+                    .build(new CacheLoader<Long, Sampler>() {
+                        @Override
+                        public Sampler load(@NotNull Long key) {
+                            int cx = (int) (key >> 32);
+                            int cz = (int) key.longValue();
+                            return new Sampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend());
+                        }
+                    });
             this.world = world;
             terraWorld = main.getWorld(world);
         }
@@ -55,9 +61,7 @@ public class SamplerCache {
 
         public Sampler getChunk(int cx, int cz) {
             long key = MathUtil.squash(cx, cz);
-            synchronized(cache) {
-                return cache.computeIfAbsent(key, k -> new Sampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend()));
-            }
+            return cache.getUnchecked(key);
         }
     }
 }

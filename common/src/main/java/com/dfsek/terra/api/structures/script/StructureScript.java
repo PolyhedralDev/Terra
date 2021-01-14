@@ -32,21 +32,21 @@ import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class StructureScript {
     private final Block block;
     private final String id;
     String tempID;
-    private final Map<Location, StructureBuffer> cache;
+    private final Cache<Location, StructureBuffer> cache;
     private final TerraPlugin main;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
@@ -88,12 +88,7 @@ public class StructureScript {
         this.id = parser.getID();
         tempID = id;
         this.main = main;
-        this.cache = Collections.synchronizedMap(new LinkedHashMap<Location, StructureBuffer>() {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
-                return this.size() > main.getTerraConfig().getStructureCache();
-            }
-        });
+        this.cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getStructureCache()).build();
     }
 
     /**
@@ -122,12 +117,14 @@ public class StructureScript {
     }
 
     private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
-        synchronized(cache) {
-            return cache.computeIfAbsent(location, loc -> {
-                StructureBuffer buf = new StructureBuffer(loc);
+        try {
+            return cache.get(location, () -> {
+                StructureBuffer buf = new StructureBuffer(location);
                 buf.setSucceeded(applyBlock(new TerraImplementationArguments(buf, rotation, random, 0)));
                 return buf;
             });
+        } catch(ExecutionException e) {
+            throw new RuntimeException(e);
         }
     }
 

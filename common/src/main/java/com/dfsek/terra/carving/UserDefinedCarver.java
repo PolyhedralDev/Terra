@@ -11,6 +11,7 @@ import com.dfsek.terra.api.world.carving.Worm;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
+import com.dfsek.terra.debug.Debug;
 import net.jafama.FastMath;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
@@ -100,11 +101,12 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
-        CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main));
+        CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main, this));
+        if(cacheMap.size() > 1) Debug.info("Map size: " + cacheMap.size());
         int carvingRadius = getCarvingRadius();
         for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
             for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
-                cache.getPoints(x, z, this).forEach(point -> {
+                cache.getPoints(x, z).forEach(point -> {
                     Vector3 origin = point.getOrigin();
                     if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
                         return;

@@ -61,25 +61,21 @@ public class BiomeTest {
         BiomeSource source = new RandomSource(climate, sourceSampler);
 
 
-        BiomeProvider provider = new StandardBiomeProvider.StandardBiomeProviderBuilder((seed) -> {
-            BiomePipeline pipeline = new BiomePipeline.BiomePipelineBuilder(2)
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(1))))
-                    .addStage(new MutatorStage(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(243))))
-                    .addStage(new MutatorStage(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(243))))
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
-                    .addStage(new MutatorStage(new SmoothMutator(whiteNoise(3))))
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
-                    .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
-                    .addStage(new MutatorStage(new BorderMutator("OCEAN", "LAND", whiteNoise(1234), beachBiomes)))
-                    .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
-                    .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
-                    .build(source);
-            System.out.println("Size: " + pipeline.getSize());
-            return pipeline;
-        }, null).build(0);
+        BiomeProvider provider = new StandardBiomeProvider.StandardBiomeProviderBuilder((seed) -> new BiomePipeline.BiomePipelineBuilder(2)
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(1))))
+                .addStage(new MutatorStage(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(243))))
+                .addStage(new MutatorStage(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(243))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
+                .addStage(new MutatorStage(new SmoothMutator(whiteNoise(3))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new MutatorStage(new BorderMutator("OCEAN", "LAND", whiteNoise(1234), beachBiomes)))
+                .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
+                .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
+                .build(source), null).build(0);
 
 
         int size = 1000;

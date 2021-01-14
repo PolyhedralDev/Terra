@@ -50,11 +50,7 @@ public class StandardBiomeProvider implements BiomeProvider {
 
     @Override
     public TerraBiome getBiome(int x, int z) {
-        try {
-            return biomeCache.get(new Vector2(x, z));
-        } catch(ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+            return biomeCache.getUnchecked(new Vector2(x, z));
     }
 
     public int getResolution() {
