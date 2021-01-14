@@ -17,7 +17,6 @@ import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -70,7 +69,7 @@ public class BiomeTest {
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(3))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
-                .addStage(new MutatorStage(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(1234), beachBiomes)))
+                .addStage(new MutatorStage(new BorderMutator("OCEAN", "LAND", whiteNoise(1234), beachBiomes)))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))

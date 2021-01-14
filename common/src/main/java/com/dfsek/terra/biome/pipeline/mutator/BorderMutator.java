@@ -4,32 +4,29 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
-import java.util.Set;
-
 public class BorderMutator implements BiomeMutator {
-    private final Set<String> borders;
+    private final String border;
     private final NoiseSampler noiseSampler;
     private final ProbabilityCollection<TerraBiome> replace;
-    private final String tag;
+    private final String replaceTag;
 
-    public BorderMutator(Set<String> borders, String tag, NoiseSampler noiseSampler, ProbabilityCollection<TerraBiome> replace) {
-        this.borders = borders;
+    public BorderMutator(String border, String replaceTag, NoiseSampler noiseSampler, ProbabilityCollection<TerraBiome> replace) {
+        this.border = border;
         this.noiseSampler = noiseSampler;
         this.replace = replace;
-        this.tag = tag;
+        this.replaceTag = replaceTag;
     }
 
     @Override
     public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
         TerraBiome origin = viewPoint.getBiome(0, 0);
-        if(origin.getTags().contains(tag)) {
+        if(origin.getTags().contains(replaceTag)) {
             for(int xi = -1; xi <= 1; xi++) {
                 for(int zi = -1; zi <= 1; zi++) {
                     if(xi == 0 && zi == 0) continue;
                     TerraBiome current = viewPoint.getBiome(xi, zi);
                     if(current == null) continue;
-                    if(borders.stream().anyMatch(current.getTags()::contains))
-                        return replace.get(noiseSampler, x, z);
+                    if(current.getTags().contains(border)) return replace.get(noiseSampler, x, z);
                 }
             }
         }

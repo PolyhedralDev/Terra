@@ -11,6 +11,7 @@ import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.StandardBiomeProvider;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.BorderMutator;
 import com.dfsek.terra.biome.pipeline.mutator.ReplaceMutator;
 import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
@@ -67,6 +68,11 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                             String fromTag = mutator.get("from").toString();
                             ProbabilityCollection<TerraBiome> replaceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"));
                             pipelineBuilder.addStage(new MutatorStage(new ReplaceMutator(fromTag, replaceBiomes, mutatorNoise)));
+                        } else if(mutator.get("type").equals("BORDER")) {
+                            String fromTag = mutator.get("from").toString();
+                            String replaceTag = mutator.get("replace").toString();
+                            ProbabilityCollection<TerraBiome> replaceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"));
+                            pipelineBuilder.addStage(new MutatorStage(new BorderMutator(fromTag, replaceTag, mutatorNoise, replaceBiomes)));
                         } else throw new LoadException("No such mutator type \"" + mutator.get("type"));
                     } else throw new LoadException("No such mutator \"" + entry.getKey() + "\"");
                 }
