@@ -72,6 +72,7 @@ public class BiomeTest {
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
                 .addStage(new MutatorStage(new BorderMutator(Sets.newHashSet("OCEAN"), "LAND", whiteNoise(1234), beachBiomes)))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(5))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
                 .build(source)).build(0);
 

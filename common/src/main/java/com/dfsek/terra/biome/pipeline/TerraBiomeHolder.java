@@ -12,7 +12,6 @@ public class TerraBiomeHolder implements BiomeHolder {
     private TerraBiome[][] biomes;
 
     public TerraBiomeHolder(int width, Vector2 origin) {
-        if(width % 2 == 0) throw new IllegalArgumentException();
         this.width = width;
         biomes = new TerraBiome[width][width];
         this.origin = origin;
