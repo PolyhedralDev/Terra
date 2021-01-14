@@ -13,4 +13,6 @@ public interface BiomeHolder {
     void fill(BiomeSource source);
 
     TerraBiome getBiome(int x, int z);
+
+    TerraBiome getBiomeRaw(int x, int z);
 }

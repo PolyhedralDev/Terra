@@ -10,17 +10,21 @@ public class TerraBiomeHolder implements BiomeHolder {
     private final Vector2 origin;
     private final int width;
     private TerraBiome[][] biomes;
+    private final int offset;
 
     public TerraBiomeHolder(int width, Vector2 origin) {
+        width += 2;
         this.width = width;
         biomes = new TerraBiome[width][width];
         this.origin = origin;
+        this.offset = 1;
     }
 
-    private TerraBiomeHolder(TerraBiome[][] biomes, Vector2 origin, int width) {
+    private TerraBiomeHolder(TerraBiome[][] biomes, Vector2 origin, int width, int offset) {
         this.biomes = biomes;
         this.origin = origin;
         this.width = width;
+        this.offset = 2 * offset;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class TerraBiomeHolder implements BiomeHolder {
                     biomes[x * 2 + 1][z * 2 + 1] = expander.getBetween(x + 1 + origin.getX(), z + 1 + origin.getZ(), old[x][z], old[x + 1][z + 1], old[x][z + 1], old[x + 1][z]);
             }
         }
-        return new TerraBiomeHolder(biomes, origin.setX(origin.getX() * 2 - 1).setZ(origin.getZ() * 2 - 1), newWidth);
+        return new TerraBiomeHolder(biomes, origin.setX(origin.getX() * 2 - 1).setZ(origin.getZ() * 2 - 1), newWidth, offset);
     }
 
     @Override
@@ -65,6 +69,13 @@ public class TerraBiomeHolder implements BiomeHolder {
 
     @Override
     public TerraBiome getBiome(int x, int z) {
+        x += offset;
+        z += offset;
+        return getBiomeRaw(x, z);
+    }
+
+    @Override
+    public TerraBiome getBiomeRaw(int x, int z) {
         if(x >= width || z >= width || x < 0 || z < 0) return null;
         return biomes[x][z];
     }

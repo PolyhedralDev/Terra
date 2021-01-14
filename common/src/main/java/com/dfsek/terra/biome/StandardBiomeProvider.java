@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class StandardBiomeProvider implements BiomeProvider {
     private final BiomePipeline pipeline;
     private final LoadingCache<Vector2, BiomeHolder> holderCache = CacheBuilder.newBuilder()
-            .maximumSize(1024)
+            .maximumSize(64)
             .build(
                     new CacheLoader<Vector2, BiomeHolder>() {
                         @Override

@@ -19,7 +19,7 @@ public interface BiomeMutator {
 
 
         public TerraBiome getBiome(int x, int z) {
-            return biomes.getBiome(x + offX, z + offZ);
+            return biomes.getBiomeRaw(x + offX, z + offZ);
         }
     }
 }
