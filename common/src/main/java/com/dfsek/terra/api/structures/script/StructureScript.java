@@ -68,7 +68,7 @@ public class StructureScript {
                 .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry))
                 .registerFunction("entity", new EntityFunctionBuilder(main))
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
-                .registerFunction("getBlock", new CheckBlockFunctionBuilder())
+                .registerFunction("getBlock", new CheckBlockFunctionBuilder(main))
                 .registerFunction("state", new StateFunctionBuilder(main))
                 .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(), Returnable.ReturnType.NUMBER))
