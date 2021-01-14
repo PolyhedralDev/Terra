@@ -1,10 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
@@ -16,14 +13,12 @@ import net.jafama.FastMath;
 public class CheckBlockFunction implements Function<String> {
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final TerraPlugin main;
 
-    public CheckBlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position, TerraPlugin main) {
+    public CheckBlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.position = position;
-        this.main = main;
     }
 
 
@@ -35,11 +30,7 @@ public class CheckBlockFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        TerraWorld world = main.getWorld(arguments.getBuffer().getOrigin().getWorld());
-
-        BlockData blockData = world.getUngeneratedBlock(arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ()))));
-
-        String data = blockData.getAsString();
+        String data = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ()))).getBlock().getBlockData().getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;
     }

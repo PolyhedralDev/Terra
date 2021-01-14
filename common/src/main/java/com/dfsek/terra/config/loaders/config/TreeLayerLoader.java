@@ -8,7 +8,6 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.generation.config.NoiseBuilder;
@@ -19,12 +18,6 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class TreeLayerLoader implements TypeLoader<TreeLayer> {
-    private final TerraPlugin main;
-
-    public TreeLayerLoader(TerraPlugin main) {
-        this.main = main;
-    }
-
     @Override
     public TreeLayer load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
@@ -40,12 +33,12 @@ public class TreeLayerLoader implements TypeLoader<TreeLayer> {
             } catch(ConfigException e) {
                 throw new LoadException("Unable to load noise", e);
             }
-            return new TreeLayer(density, range, items, sampler.build(2403), main);
+            return new TreeLayer(density, range, items, sampler.build(2403));
         }
 
         sampler.setType(FastNoiseLite.NoiseType.WhiteNoise);
         sampler.setDimensions(3);
 
-        return new TreeLayer(density, range, items, sampler.build(2403), main);
+        return new TreeLayer(density, range, items, sampler.build(2403));
     }
 }

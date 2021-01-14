@@ -186,10 +186,6 @@ public class Vector2 implements Cloneable {
         return FastMath.floorToInt(z);
     }
 
-    public Vector3 toVector3(double y) {
-        return new Vector3(x, y, z);
-    }
-
     @Override
     public String toString() {
         return "(" + x + ", " + z + ")";
