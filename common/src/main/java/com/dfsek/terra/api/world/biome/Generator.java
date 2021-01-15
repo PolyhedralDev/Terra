@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.world.biome;
 
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 
@@ -24,4 +25,6 @@ public interface Generator {
     boolean is2d();
 
     double get2dBase();
+
+    NoiseSampler getBiomeNoise();
 }

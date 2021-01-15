@@ -2,6 +2,7 @@ package com.dfsek.terra.generation.config;
 
 import com.dfsek.terra.api.math.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.noise.NoiseFunction3;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.parsii.RandomFunction;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.biome.Generator;
@@ -31,14 +32,16 @@ public class WorldGenerator implements Generator {
     private final boolean elevationInterpolation;
     private final boolean noise2d;
     private final double base;
+    private final NoiseSampler biomeNoise;
 
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation, boolean noise2d, double base) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation, boolean noise2d, double base, NoiseSampler biomeNoise) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
 
         this.elevationInterpolation = elevationInterpolation;
         this.noise2d = noise2d;
         this.base = base;
+        this.biomeNoise = biomeNoise;
 
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
@@ -115,6 +118,11 @@ public class WorldGenerator implements Generator {
     @Override
     public double get2dBase() {
         return base;
+    }
+
+    @Override
+    public NoiseSampler getBiomeNoise() {
+        return biomeNoise;
     }
 
     public Palette<BlockData> getSlantPalette(int y) {

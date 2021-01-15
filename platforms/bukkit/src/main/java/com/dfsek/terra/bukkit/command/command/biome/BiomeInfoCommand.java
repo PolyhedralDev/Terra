@@ -38,7 +38,7 @@ public class BiomeInfoCommand extends WorldCommand {
             return true;
         }
         sender.sendMessage("TerraBiome info for \"" + b.getID() + "\".");
-        sender.sendMessage("Vanilla biome: " + b.getVanillaBiome());
+        sender.sendMessage("Vanilla biome: " + b.getVanillaBiomes());
         sender.sendMessage("Eroded by: " + b.getErode().getConfig().getID());
 
 

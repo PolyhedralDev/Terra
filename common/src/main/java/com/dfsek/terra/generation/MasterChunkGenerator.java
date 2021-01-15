@@ -218,7 +218,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                 int cz = zOrig + (z << 2);
                 TerraBiome b = grid.getBiome(cx, cz);
 
-                biome.setBiome(x << 2, z << 2, b.getVanillaBiome());
+                biome.setBiome(x << 2, z << 2, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
             }
         }
     }

@@ -31,9 +31,15 @@ public class GeneratorBuilder {
 
     private double base;
 
+    private NoiseBuilder biomeNoise;
+
 
     public WorldGenerator build(long seed) {
-        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base));
+        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base, biomeNoise.build((int) seed)));
+    }
+
+    public void setBiomeNoise(NoiseBuilder biomeNoise) {
+        this.biomeNoise = biomeNoise;
     }
 
     public boolean isNoise2d() {

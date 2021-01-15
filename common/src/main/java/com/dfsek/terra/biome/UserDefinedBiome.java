@@ -1,5 +1,7 @@
 package com.dfsek.terra.biome;
 
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -15,7 +17,7 @@ import java.util.Set;
  */
 public class UserDefinedBiome implements TerraBiome {
     private final GeneratorBuilder gen;
-    private final com.dfsek.terra.api.platform.world.Biome vanilla;
+    private final ProbabilityCollection<Biome> vanilla;
     private final String id;
     private final BiomeTemplate config;
     private final ConfigPack pack;
@@ -24,7 +26,7 @@ public class UserDefinedBiome implements TerraBiome {
     private final Set<String> tags;
 
 
-    public UserDefinedBiome(com.dfsek.terra.api.platform.world.Biome vanilla, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
+    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();
@@ -41,7 +43,7 @@ public class UserDefinedBiome implements TerraBiome {
      * @return TerraBiome - The Vanilla biome.
      */
     @Override
-    public com.dfsek.terra.api.platform.world.Biome getVanillaBiome() {
+    public ProbabilityCollection<Biome> getVanillaBiomes() {
         return vanilla;
     }
 

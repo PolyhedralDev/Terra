@@ -3,6 +3,7 @@ package biome;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -50,7 +51,7 @@ public class BiomeTest {
         oceanBiomes.add(new TestBiome(Color.BLUE, "OCEAN"), 10);
         oceanBiomes.add(new TestBiome(Color.CYAN, "OCEAN"), 1);
 
-        landBiomes.add(new TestBiome(Color.GREEN, "LAND"), 20);
+        landBiomes.add(new TestBiome(Color.GREEN, "LAND"), 8);
         landBiomes.add(new TestBiome(Color.ORANGE, "LAND"), 5);
         landBiomes.add(new TestBiome(Color.RED, "LAND"), 1);
         landBiomes.add(new TestBiome(Color.GRAY, "LAND"), 1);
@@ -62,13 +63,14 @@ public class BiomeTest {
 
 
         BiomeProvider provider = new StandardBiomeProvider.StandardBiomeProviderBuilder((seed) -> new BiomePipeline.BiomePipelineBuilder(2)
-                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(1))))
-                .addStage(new MutatorStage(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(243))))
                 .addStage(new MutatorStage(new ReplaceMutator("LAND_TEMP", landBiomes, whiteNoise(243))))
+                .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
+                .addStage(new MutatorStage(new ReplaceMutator("OCEAN_TEMP", oceanBiomes, whiteNoise(243))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(2))))
                 .addStage(new MutatorStage(new SmoothMutator(whiteNoise(3))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
+                .addStage(new MutatorStage(new SmoothMutator(whiteNoise(6))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
                 .addStage(new ExpanderStage(new FractalExpander(whiteNoise(4))))
@@ -131,7 +133,7 @@ public class BiomeTest {
         }
 
         @Override
-        public com.dfsek.terra.api.platform.world.Biome getVanillaBiome() {
+        public ProbabilityCollection<Biome> getVanillaBiomes() {
             return null;
         }
 

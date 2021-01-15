@@ -5,6 +5,8 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.parsii.BlankFunction;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -16,6 +18,7 @@ import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.SinglePalette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.population.items.TerraStructure;
 import com.dfsek.terra.population.items.flora.FloraLayer;
 import com.dfsek.terra.population.items.ores.OreHolder;
@@ -60,7 +63,13 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     private PaletteHolder slantPalette = null;
     @Value("vanilla")
     @Abstractable
-    private Biome vanilla;
+    private ProbabilityCollection<Biome> vanilla;
+
+    @Value("biome-noise")
+    @Default
+    @Abstractable
+    private NoiseBuilder biomeNoise = new NoiseBuilder();
+
     @Value("erode")
     @Abstractable
     @Default
@@ -185,7 +194,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
+        biomeNoise.setType(FastNoiseLite.NoiseType.WhiteNoise);
         oceanPalette = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:water"));
+    }
+
+    public NoiseBuilder getBiomeNoise() {
+        return biomeNoise;
     }
 
     public String getElevationEquation() {
@@ -220,7 +234,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return slantPalette;
     }
 
-    public Biome getVanilla() {
+    public ProbabilityCollection<Biome> getVanilla() {
         return vanilla;
     }
 
