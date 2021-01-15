@@ -10,9 +10,9 @@ import com.dfsek.terra.config.templates.PaletteTemplate;
 public class PaletteFactory implements TerraFactory<PaletteTemplate, Palette<BlockData>> {
     @Override
     public Palette<BlockData> build(PaletteTemplate config, TerraPlugin main) {
-        Palette<BlockData> palette = new NoisePalette<>(config.getNoise().build(2403), config.getNoise().getDimensions() == 2);
+        NoisePalette<BlockData> palette = new NoisePalette<>(config.getNoise().build(2403), config.getNoise().getDimensions() == 2);
         for(PaletteLayer layer : config.getPalette()) {
-            palette.add(layer.getLayer(), layer.getSize());
+            palette.add(layer.getLayer(), layer.getSize(), layer.getSampler());
         }
         return palette;
     }
