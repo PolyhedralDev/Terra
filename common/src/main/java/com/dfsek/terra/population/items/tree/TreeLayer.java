@@ -24,7 +24,7 @@ public class TreeLayer extends PlaceableLayer<Tree> {
         for(int ignored : level) {
             current = current.getRelative(BlockFace.DOWN);
             if(item.getSpawnable().contains(current.getType())) {
-                item.plant(current.getLocation().add(0, 1, 0), PopulationUtil.getRandom(chunk));
+                item.plant(current.getLocation().add(0, 1, 0), PopulationUtil.getRandom(chunk, coords.hashCode()));
             }
         }
     }
