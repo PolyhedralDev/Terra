@@ -36,10 +36,10 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
     }
 
     @Override
-    public BiomeProvider.BiomeProviderBuilder load(Type t, Object c, ConfigLoader loader) {
+    public BiomeProvider.BiomeProviderBuilder load(Type t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
 
-        return new StandardBiomeProvider.StandardBiomeProviderBuilder(seed -> {
+        StandardBiomeProvider.StandardBiomeProviderBuilder builder = new StandardBiomeProvider.StandardBiomeProviderBuilder(seed -> {
             Map<String, Object> source = (Map<String, Object>) map.get("source");
             ProbabilityCollection<TerraBiome> sourceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, source.get("biomes"));
             NoiseSampler sourceNoise = new NoiseBuilderLoader().load(NoiseBuilder.class, source.get("noise"), loader).build(FastMath.toInt(seed));
@@ -76,5 +76,13 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
             Debug.info("Biome Pipeline scale factor: " + pipeline.getSize());
             return pipeline;
         }, main);
+        if(map.containsKey("resolution")) builder.setResolution(Integer.parseInt(map.get("resolution").toString()));
+        if(map.containsKey("blend")) {
+            Map<String, Object> blend = (Map<String, Object>) map.get("blend");
+            if(blend.containsKey("amplitude")) builder.setNoiseAmp(Integer.parseInt(blend.get("amplitude").toString()));
+            if(blend.containsKey("noise"))
+                builder.setBuilder(new NoiseBuilderLoader().load(NoiseBuilder.class, blend.get("noise"), loader));
+        }
+        return builder;
     }
 }

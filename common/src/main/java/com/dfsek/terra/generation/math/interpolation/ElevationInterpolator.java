@@ -6,76 +6,32 @@ import com.dfsek.terra.generation.config.WorldGenerator;
 import net.jafama.FastMath;
 
 public class ElevationInterpolator {
-    private final WorldGenerator[][] gens;
     private final double[][] values = new double[18][18];
-    private final int xOrigin;
-    private final int zOrigin;
-    private final BiomeProvider provider;
-    private final int smooth;
-    private final int pow;
-    private final World world;
 
     public ElevationInterpolator(World world, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
-        this.xOrigin = chunkX << 4;
-        this.zOrigin = chunkZ << 4;
-        this.provider = provider;
-        this.smooth = smooth;
-        this.pow = FastMath.log2(smooth);
-        this.gens = new WorldGenerator[6 + 2 * pow][6 + 2 * pow];
-        this.world = world;
+        int xOrigin = chunkX << 4;
+        int zOrigin = chunkZ << 4;
 
+        WorldGenerator[][] gens = new WorldGenerator[18 + 2 * smooth][18 + 2 * smooth];
 
-        for(int x = -pow; x < 6 + pow; x++) {
-            for(int z = -pow; z < 6 + pow; z++) {
-                gens[x + pow][z + pow] = (WorldGenerator) provider.getBiome(xOrigin + (x * smooth), zOrigin + (z * smooth)).getGenerator(world);
+        // Precompute generators.
+        for(int x = -1 - smooth; x <= 16 + smooth; x++) {
+            for(int z = -1 - smooth; z <= 16 + smooth; z++) {
+                gens[x + 1 + smooth][z + 1 + smooth] = (WorldGenerator) provider.getBiome(xOrigin + x, zOrigin + z).getGenerator(world);
             }
         }
 
-        for(byte x = -1; x <= 16; x++) {
-            for(byte z = -1; z <= 16; z++) {
-                WorldGenerator generator = getGenerator(x, z);
-                if(compareGens((x / smooth), (z / smooth), generator) && generator.interpolateElevation()) {
-                    Interpolator interpolator = new Interpolator(biomeAvg(x / smooth, z / smooth),
-                            biomeAvg((x / smooth) + 1, z / smooth),
-                            biomeAvg(x / smooth, (z / smooth) + 1),
-                            biomeAvg((x / smooth) + 1, (z / smooth) + 1));
-                    values[x + 1][z + 1] = interpolator.bilerp((double) (x % smooth) / smooth, (double) (z % smooth) / smooth);
-                } else values[x + 1][z + 1] = elevate(generator, xOrigin + x, zOrigin + z);
+        for(int x = -1; x <= 16; x++) {
+            for(int z = -1; z <= 16; z++) {
+                double noise = 0;
+                for(int xi = -smooth; xi <= smooth; xi++) {
+                    for(int zi = -smooth; zi <= smooth; zi++) {
+                        noise += gens[x + 1 + smooth + xi][z + 1 + smooth + zi].getElevation(xOrigin + x, zOrigin + z);
+                    }
+                }
+                values[x + 1][z + 1] = noise / FastMath.pow2(smooth * 2 + 1);
             }
         }
-    }
-
-    private WorldGenerator getGenerator(int x, int z) {
-        return (WorldGenerator) provider.getBiome(xOrigin + x, zOrigin + z).getGenerator(world);
-    }
-
-    private WorldGenerator getStoredGen(int x, int z) {
-        return gens[x + pow][z + pow];
-    }
-
-    private boolean compareGens(int x, int z, WorldGenerator comp) {
-        for(int xi = x - pow; xi <= x + pow; xi++) {
-            for(int zi = z - pow; zi <= z + pow; zi++) {
-                if(!comp.equals(getStoredGen(xi, zi))) return true;
-            }
-        }
-        return false;
-    }
-
-    private double biomeAvg(int x, int z) {
-        return (elevate(getStoredGen(x + 1, z), (x * smooth) + smooth + xOrigin, (z * smooth) + zOrigin)
-                + elevate(getStoredGen(x - 1, z), (x * smooth) - smooth + xOrigin, (z * smooth) + zOrigin)
-                + elevate(getStoredGen(x, z + 1), (x * smooth) + xOrigin, (z * smooth) + smooth + zOrigin)
-                + elevate(getStoredGen(x, z - 1), (x * smooth) + xOrigin, (z * smooth) - smooth + zOrigin)
-                + elevate(getStoredGen(x, z), (x * smooth) + xOrigin, (z * smooth) + zOrigin)
-                + elevate(getStoredGen(x - 1, z - 1), (x * smooth) - smooth + xOrigin, (z * smooth) - smooth + zOrigin)
-                + elevate(getStoredGen(x - 1, z + 1), (x * smooth) - smooth + xOrigin, (z * smooth) + smooth + zOrigin)
-                + elevate(getStoredGen(x + 1, z - 1), (x * smooth) + smooth + xOrigin, (z * smooth) - smooth + zOrigin)
-                + elevate(getStoredGen(x + 1, z + 1), (x * smooth) + smooth + xOrigin, (z * smooth) + smooth + zOrigin)) / 9D;
-    }
-
-    private double elevate(WorldGenerator g, int x, int z) {
-        return g.getElevation(x, z);
     }
 
     public double getElevation(int x, int z) {

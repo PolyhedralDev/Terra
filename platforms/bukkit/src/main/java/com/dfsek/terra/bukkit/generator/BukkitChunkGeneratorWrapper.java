@@ -10,7 +10,6 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.population.FloraPopulator;
 import com.dfsek.terra.population.OrePopulator;
 import com.dfsek.terra.population.StructurePopulator;
@@ -90,7 +89,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Stream.of(new CavePopulator(main), new StructurePopulator(main), popMan).map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
+        return Stream.of(new StructurePopulator(main), popMan).map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
     }
 
     @Override

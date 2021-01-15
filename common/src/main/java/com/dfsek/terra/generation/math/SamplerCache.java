@@ -35,7 +35,6 @@ public class SamplerCache {
     }
 
     private class Container {
-        private final World world;
         private final TerraWorld terraWorld;
         private final LoadingCache<Long, Sampler> cache;
 
@@ -46,10 +45,9 @@ public class SamplerCache {
                         public Sampler load(@NotNull Long key) {
                             int cx = (int) (key >> 32);
                             int cz = (int) key.longValue();
-                            return new Sampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getBaseBlend(), terraWorld.getConfig().getTemplate().getElevationBlend());
+                            return new Sampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getElevationBlend(), terraWorld.getConfig().getTemplate().getBaseBlend());
                         }
                     });
-            this.world = world;
             terraWorld = main.getWorld(world);
         }
 

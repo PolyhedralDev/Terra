@@ -2515,7 +2515,8 @@ public class FastNoiseLite implements NoiseSampler {
         Perlin,
         ValueCubic,
         Value,
-        WhiteNoise
+        WhiteNoise,
+        Constant
     }
 
 
