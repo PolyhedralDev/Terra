@@ -10,6 +10,7 @@ import com.google.common.cache.LoadingCache;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,16 +19,20 @@ public class SamplerCache {
     private final TerraPlugin main;
 
     public SamplerCache(TerraPlugin main) {
-        containerMap = new HashMap<>();
+        containerMap = Collections.synchronizedMap(new HashMap<>());
         this.main = main;
     }
 
     public Sampler get(World world, int x, int z) {
-        return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).get(x, z);
+        synchronized(containerMap) {
+            return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).get(x, z);
+        }
     }
 
     public Sampler getChunk(World world, int chunkX, int chunkZ) {
-        return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).getChunk(chunkX, chunkZ);
+        synchronized(containerMap) {
+            return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).getChunk(chunkX, chunkZ);
+        }
     }
 
     public void clear() {

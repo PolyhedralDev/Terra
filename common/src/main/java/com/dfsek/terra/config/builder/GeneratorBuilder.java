@@ -5,11 +5,12 @@ import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import parsii.eval.Scope;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GeneratorBuilder {
-    private final Map<Long, WorldGenerator> gens = new HashMap<>();
+    private final Map<Long, WorldGenerator> gens = Collections.synchronizedMap(new HashMap<>());
 
     private String noiseEquation;
 
@@ -35,7 +36,9 @@ public class GeneratorBuilder {
 
 
     public WorldGenerator build(long seed) {
-        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base, biomeNoise.build((int) seed)));
+        synchronized(gens) {
+            return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base, biomeNoise.build((int) seed)));
+        }
     }
 
     public void setBiomeNoise(NoiseBuilder biomeNoise) {
