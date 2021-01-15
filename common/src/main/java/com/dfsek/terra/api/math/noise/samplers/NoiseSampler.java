@@ -25,4 +25,8 @@ public interface NoiseSampler {
     default double getNoise(Vector2 vector2) {
         return getNoise(vector2.getX(), vector2.getZ());
     }
+
+    double getNoiseSeeded(int seed, double x, double y);
+
+    double getNoiseSeeded(int seed, double x, double y, double z);
 }

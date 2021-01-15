@@ -19,6 +19,16 @@ public abstract class Normalizer implements NoiseSampler {
         return normalize(sampler.getNoise(x, y, z));
     }
 
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y) {
+        return normalize(sampler.getNoiseSeeded(seed, x, y));
+    }
+
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y, double z) {
+        return normalize(sampler.getNoiseSeeded(seed, x, y, z));
+    }
+
     public enum NormalType {
         LINEAR, NONE
     }

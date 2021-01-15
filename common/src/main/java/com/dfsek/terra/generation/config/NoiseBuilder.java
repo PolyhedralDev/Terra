@@ -60,11 +60,15 @@ public class NoiseBuilder implements ConfigTemplate {
 
     @Value("domain-warp.type")
     @Default
-    private FastNoiseLite.DomainWarpType domainWarpType = FastNoiseLite.DomainWarpType.OpenSimplex2;
+    private FastNoiseLite.DomainWarpType domainWarpType = FastNoiseLite.DomainWarpType.None;
 
     @Value("domain-warp.amplitude")
     @Default
     private double domainWarpAmp = 1.0D;
+
+    @Value("domain-warp.function")
+    @Default
+    private NoiseBuilder domainWarp = null;
 
     @Value("rotation-type")
     @Default
@@ -90,6 +94,7 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private double linearMax = 1D;
 
+
     public NoiseSampler build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
@@ -111,6 +116,7 @@ public class NoiseBuilder implements ConfigTemplate {
 
         noise.setDomainWarpType(domainWarpType);
         noise.setDomainWarpAmp(domainWarpAmp);
+        if(domainWarp != null) noise.setDomainWarpFunction(domainWarp.build(seed));
 
         noise.setRotationType3D(rotationType3D);
 

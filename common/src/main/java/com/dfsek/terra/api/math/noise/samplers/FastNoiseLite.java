@@ -278,26 +278,28 @@ public class FastNoiseLite implements NoiseSampler {
     private static final int PRIME_Y = 1136930381;
     private static final int PRIME_Z = 1720413743;
     private static final NoiseSampler CELLULAR_LOOKUP_DEFAULT = new FastNoiseLite();
+    private static final NoiseSampler DOMAIN_WARP_DEFAULT = new FastNoiseLite();
     private static final long POSITIVE_POW1 = 0b01111111111L << 52; // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
     private int mSeed = 1337;
-    private double mFrequency = 0.01f;
+    private double mFrequency = 0.01;
     private NoiseType mNoiseType = NoiseType.OpenSimplex2;
     private RotationType3D mRotationType3D = RotationType3D.None;
     private TransformType3D mTransformType3D = TransformType3D.DefaultOpenSimplex2;
     private FractalType mFractalType = FractalType.None;
     private int mOctaves = 3;
-    private double mLacunarity = 2.0f;
+    private double mLacunarity = 2.0;
     private double mGain = 0.5f;
-    private double mWeightedStrength = 0.0f;
-    private double mPingPongStrength = 2.0f;
-    private double mFractalBounding = 1 / 1.75f;
+    private double mWeightedStrength = 0.0;
+    private double mPingPongStrength = 2.0;
+    private double mFractalBounding = 1 / 1.75;
     private CellularDistanceFunction mCellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
     private CellularReturnType mCellularReturnType = CellularReturnType.Distance;
-    private double mCellularJitterModifier = 1.0f;
-    private DomainWarpType mDomainWarpType = DomainWarpType.OpenSimplex2;
+    private double mCellularJitterModifier = 1.0;
+    private DomainWarpType mDomainWarpType = DomainWarpType.None;
     private TransformType3D mWarpTransformType3D = TransformType3D.DefaultOpenSimplex2;
-    private double mDomainWarpAmp = 1.0f;
+    private double mDomainWarpAmp = 1.0;
     private NoiseSampler cellularNoiseLookup = CELLULAR_LOOKUP_DEFAULT;
+    private NoiseSampler domainWarpFunction = DOMAIN_WARP_DEFAULT;
 
     /**
      * Create new FastNoise object with default seed
@@ -330,7 +332,7 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     private static int fastRound(double f) {
-        return f >= 0 ? (int) (f + 0.5f) : (int) (f - 0.5f);
+        return f >= 0 ? (int) (f + 0.5f) : (int) (f - 0.5);
     }
 
     private static double lerp(double a, double b, double t) {
@@ -374,7 +376,7 @@ public class FastNoiseLite implements NoiseSampler {
 
         hash *= hash;
         hash ^= hash << 19;
-        return hash * (1 / 2147483648.0f);
+        return hash * (1 / 2147483648.0);
     }
 
     private static double valCoord(int seed, int xPrimed, int yPrimed, int zPrimed) {
@@ -382,7 +384,7 @@ public class FastNoiseLite implements NoiseSampler {
 
         hash *= hash;
         hash ^= hash << 19;
-        return hash * (1 / 2147483648.0f);
+        return hash * (1 / 2147483648.0);
     }
 
     private static double gradCoord(int seed, int xPrimed, int yPrimed, double xd, double yd) {
@@ -418,6 +420,14 @@ public class FastNoiseLite implements NoiseSampler {
 
     public void setCellularNoiseLookup(NoiseSampler cellularNoiseLookup) {
         this.cellularNoiseLookup = cellularNoiseLookup;
+    }
+
+    public NoiseSampler getDomainWarpFunction() {
+        return domainWarpFunction;
+    }
+
+    public void setDomainWarpFunction(NoiseSampler domainWarpFunction) {
+        this.domainWarpFunction = domainWarpFunction;
     }
 
     /**
@@ -527,7 +537,7 @@ public class FastNoiseLite implements NoiseSampler {
     private void calculateFractalBounding() {
         double gain = fastAbs(mGain);
         double amp = gain;
-        double ampFractal = 1.0f;
+        double ampFractal = 1.0;
         for(int i = 1; i < mOctaves; i++) {
             ampFractal += amp;
             amp *= gain;
@@ -627,6 +637,12 @@ public class FastNoiseLite implements NoiseSampler {
      */
     @Override
     public double getNoise(double x, double y) {
+        if(!mDomainWarpType.equals(DomainWarpType.None)) {
+            Vector2 dWarp = new Vector2(x, y);
+            domainWarp(dWarp);
+            x = dWarp.getX();
+            y = dWarp.getZ();
+        }
         x *= mFrequency;
         y *= mFrequency;
 
@@ -648,7 +664,7 @@ public class FastNoiseLite implements NoiseSampler {
 
         switch(mFractalType) {
             default:
-                return genNoiseSingle(mSeed, x, y);
+                return getNoiseSeeded(mSeed, x, y);
             case FBm:
                 return genFractalFBm(x, y);
             case Ridged:
@@ -665,6 +681,14 @@ public class FastNoiseLite implements NoiseSampler {
      */
     @Override
     public double getNoise(double x, double y, double z) {
+        if(!mDomainWarpType.equals(DomainWarpType.None)) {
+            Vector3 dWarp = new Vector3(x, y, z);
+            domainWarp(dWarp);
+            x = dWarp.getX();
+            y = dWarp.getY();
+            z = dWarp.getZ();
+        }
+
         x *= mFrequency;
         y *= mFrequency;
         z *= mFrequency;
@@ -712,7 +736,7 @@ public class FastNoiseLite implements NoiseSampler {
 
         switch(mFractalType) {
             default:
-                return genNoiseSingle(mSeed, x, y, z);
+                return getNoiseSeeded(mSeed, x, y, z);
             case FBm:
                 return genFractalFBm(x, y, z);
             case Ridged:
@@ -764,7 +788,8 @@ public class FastNoiseLite implements NoiseSampler {
         }
     }
 
-    private double genNoiseSingle(int seed, double x, double y) {
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y) {
         switch(mNoiseType) {
             case OpenSimplex2:
                 return singleSimplex(seed, x, y);
@@ -785,7 +810,8 @@ public class FastNoiseLite implements NoiseSampler {
         }
     }
 
-    private double genNoiseSingle(int seed, double x, double y, double z) {
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y, double z) {
         switch(mNoiseType) {
             case OpenSimplex2:
                 return singleOpenSimplex2(seed, x, y, z);
@@ -812,9 +838,9 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = genNoiseSingle(seed++, x, y);
+            double noise = getNoiseSeeded(seed++, x, y);
             sum += noise * amp;
-            amp *= lerp(1.0f, fastMin(noise + 1, 2) * 0.5f, mWeightedStrength);
+            amp *= lerp(1.0, fastMin(noise + 1, 2) * 0.5, mWeightedStrength);
 
             x *= mLacunarity;
             y *= mLacunarity;
@@ -830,9 +856,9 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = genNoiseSingle(seed++, x, y, z);
+            double noise = getNoiseSeeded(seed++, x, y, z);
             sum += noise * amp;
-            amp *= lerp(1.0f, (noise + 1) * 0.5f, mWeightedStrength);
+            amp *= lerp(1.0, (noise + 1) * 0.5, mWeightedStrength);
 
             x *= mLacunarity;
             y *= mLacunarity;
@@ -849,9 +875,9 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = fastAbs(genNoiseSingle(seed++, x, y));
+            double noise = fastAbs(getNoiseSeeded(seed++, x, y));
             sum += (noise * -2 + 1) * amp;
-            amp *= lerp(1.0f, 1 - noise, mWeightedStrength);
+            amp *= lerp(1.0, 1 - noise, mWeightedStrength);
 
             x *= mLacunarity;
             y *= mLacunarity;
@@ -868,9 +894,9 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = fastAbs(genNoiseSingle(seed++, x, y, z));
+            double noise = fastAbs(getNoiseSeeded(seed++, x, y, z));
             sum += (noise * -2 + 1) * amp;
-            amp *= lerp(1.0f, 1 - noise, mWeightedStrength);
+            amp *= lerp(1.0, 1 - noise, mWeightedStrength);
 
             x *= mLacunarity;
             y *= mLacunarity;
@@ -887,9 +913,9 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((genNoiseSingle(seed++, x, y) + 1) * mPingPongStrength);
-            sum += (noise - 0.5f) * 2 * amp;
-            amp *= lerp(1.0f, noise, mWeightedStrength);
+            double noise = pingPong((getNoiseSeeded(seed++, x, y) + 1) * mPingPongStrength);
+            sum += (noise - 0.5) * 2 * amp;
+            amp *= lerp(1.0, noise, mWeightedStrength);
 
             x *= mLacunarity;
             y *= mLacunarity;
@@ -906,9 +932,9 @@ public class FastNoiseLite implements NoiseSampler {
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((genNoiseSingle(seed++, x, y, z) + 1) * mPingPongStrength);
-            sum += (noise - 0.5f) * 2 * amp;
-            amp *= lerp(1.0f, noise, mWeightedStrength);
+            double noise = pingPong((getNoiseSeeded(seed++, x, y, z) + 1) * mPingPongStrength);
+            sum += (noise - 0.5) * 2 * amp;
+            amp *= lerp(1.0, noise, mWeightedStrength);
 
             x *= mLacunarity;
             y *= mLacunarity;
@@ -921,7 +947,7 @@ public class FastNoiseLite implements NoiseSampler {
 
     private double singleSimplex(int seed, double x, double y) {
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.
-        final double SQRT3 = 1.7320508075688772935274463415059f;
+        final double SQRT3 = 1.7320508075688772935274463415059;
         final double G2 = (3 - SQRT3) / 6;
 
         /*
@@ -945,7 +971,7 @@ public class FastNoiseLite implements NoiseSampler {
 
         double n0, n1, n2;
 
-        double a = 0.5f - x0 * x0 - y0 * y0;
+        double a = 0.5 - x0 * x0 - y0 * y0;
         if(a <= 0) n0 = 0;
         else {
             n0 = (a * a) * (a * a) * gradCoord(seed, i, j, x0, y0);
@@ -962,7 +988,7 @@ public class FastNoiseLite implements NoiseSampler {
         if(y0 > x0) {
             double x1 = x0 + G2;
             double y1 = y0 + (G2 - 1);
-            double b = 0.5f - x1 * x1 - y1 * y1;
+            double b = 0.5 - x1 * x1 - y1 * y1;
             if(b <= 0) n1 = 0;
             else {
                 n1 = (b * b) * (b * b) * gradCoord(seed, i, j + PRIME_Y, x1, y1);
@@ -970,7 +996,7 @@ public class FastNoiseLite implements NoiseSampler {
         } else {
             double x1 = x0 + (G2 - 1);
             double y1 = y0 + G2;
-            double b = 0.5f - x1 * x1 - y1 * y1;
+            double b = 0.5 - x1 * x1 - y1 * y1;
             if(b <= 0) n1 = 0;
             else {
                 n1 = (b * b) * (b * b) * gradCoord(seed, i + PRIME_X, j, x1, y1);
@@ -997,9 +1023,9 @@ public class FastNoiseLite implements NoiseSampler {
         double y0 = y - j;
         double z0 = z - k;
 
-        int xNSign = (int) (-1.0f - x0) | 1;
-        int yNSign = (int) (-1.0f - y0) | 1;
-        int zNSign = (int) (-1.0f - z0) | 1;
+        int xNSign = (int) (-1.0 - x0) | 1;
+        int yNSign = (int) (-1.0 - y0) | 1;
+        int zNSign = (int) (-1.0 - z0) | 1;
 
         double ax0 = xNSign * -x0;
         double ay0 = yNSign * -y0;
@@ -1039,15 +1065,15 @@ public class FastNoiseLite implements NoiseSampler {
 
             if(l == 1) break;
 
-            ax0 = 0.5f - ax0;
-            ay0 = 0.5f - ay0;
-            az0 = 0.5f - az0;
+            ax0 = 0.5 - ax0;
+            ay0 = 0.5 - ay0;
+            az0 = 0.5 - az0;
 
             x0 = xNSign * ax0;
             y0 = yNSign * ay0;
             z0 = zNSign * az0;
 
-            a += (0.75f - ax0) - (ay0 + az0);
+            a += (0.75 - ax0) - (ay0 + az0);
 
             i += (xNSign >> 1) & PRIME_X;
             j += (yNSign >> 1) & PRIME_Y;
@@ -1060,7 +1086,7 @@ public class FastNoiseLite implements NoiseSampler {
             seed = ~seed;
         }
 
-        return value * 32.69428253173828125f;
+        return value * 32.69428253173828125;
     }
 
     @SuppressWarnings("NumericOverflow")
@@ -1091,7 +1117,7 @@ public class FastNoiseLite implements NoiseSampler {
         double x0 = xi - t;
         double y0 = yi - t;
 
-        double a0 = (2.0f / 3.0f) - x0 * x0 - y0 * y0;
+        double a0 = (2.0 / 3.0) - x0 * x0 - y0 * y0;
         double value = (a0 * a0) * (a0 * a0) * gradCoord(seed, i, j, x0, y0);
 
         double a1 = 2 * (1 - 2 * G2) * (1 / G2 - 2) * t + ((-2 * (1 - 2 * G2) * (1 - 2 * G2)) + a0);
@@ -1105,14 +1131,14 @@ public class FastNoiseLite implements NoiseSampler {
             if(xi + xmyi > 1) {
                 double x2 = x0 + (3 * G2 - 2);
                 double y2 = y0 + (3 * G2 - 1);
-                double a2 = (2.0f / 3.0f) - x2 * x2 - y2 * y2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
                 if(a2 > 0) {
                     value += (a2 * a2) * (a2 * a2) * gradCoord(seed, i + (PRIME_X << 1), j + PRIME_Y, x2, y2);
                 }
             } else {
                 double x2 = x0 + G2;
                 double y2 = y0 + (G2 - 1);
-                double a2 = (2.0f / 3.0f) - x2 * x2 - y2 * y2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
                 if(a2 > 0) {
                     value += (a2 * a2) * (a2 * a2) * gradCoord(seed, i, j + PRIME_Y, x2, y2);
                 }
@@ -1121,14 +1147,14 @@ public class FastNoiseLite implements NoiseSampler {
             if(yi - xmyi > 1) {
                 double x3 = x0 + (3 * G2 - 1);
                 double y3 = y0 + (3 * G2 - 2);
-                double a3 = (2.0f / 3.0f) - x3 * x3 - y3 * y3;
+                double a3 = (2.0 / 3.0) - x3 * x3 - y3 * y3;
                 if(a3 > 0) {
                     value += (a3 * a3) * (a3 * a3) * gradCoord(seed, i + PRIME_X, j + (PRIME_Y << 1), x3, y3);
                 }
             } else {
                 double x3 = x0 + (G2 - 1);
                 double y3 = y0 + G2;
-                double a3 = (2.0f / 3.0f) - x3 * x3 - y3 * y3;
+                double a3 = (2.0 / 3.0) - x3 * x3 - y3 * y3;
                 if(a3 > 0) {
                     value += (a3 * a3) * (a3 * a3) * gradCoord(seed, i + PRIME_X, j, x3, y3);
                 }
@@ -1137,14 +1163,14 @@ public class FastNoiseLite implements NoiseSampler {
             if(xi + xmyi < 0) {
                 double x2 = x0 + (1 - G2);
                 double y2 = y0 - G2;
-                double a2 = (2.0f / 3.0f) - x2 * x2 - y2 * y2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
                 if(a2 > 0) {
                     value += (a2 * a2) * (a2 * a2) * gradCoord(seed, i - PRIME_X, j, x2, y2);
                 }
             } else {
                 double x2 = x0 + (G2 - 1);
                 double y2 = y0 + G2;
-                double a2 = (2.0f / 3.0f) - x2 * x2 - y2 * y2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
                 if(a2 > 0) {
                     value += (a2 * a2) * (a2 * a2) * gradCoord(seed, i + PRIME_X, j, x2, y2);
                 }
@@ -1153,21 +1179,21 @@ public class FastNoiseLite implements NoiseSampler {
             if(yi < xmyi) {
                 double x2 = x0 - G2;
                 double y2 = y0 - (G2 - 1);
-                double a2 = (2.0f / 3.0f) - x2 * x2 - y2 * y2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
                 if(a2 > 0) {
                     value += (a2 * a2) * (a2 * a2) * gradCoord(seed, i, j - PRIME_Y, x2, y2);
                 }
             } else {
                 double x2 = x0 + G2;
                 double y2 = y0 + (G2 - 1);
-                double a2 = (2.0f / 3.0f) - x2 * x2 - y2 * y2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
                 if(a2 > 0) {
                     value += (a2 * a2) * (a2 * a2) * gradCoord(seed, i, j + PRIME_Y, x2, y2);
                 }
             }
         }
 
-        return value * 18.24196194486065f;
+        return value * 18.24196194486065;
     }
 
     // Fractal Ridged
@@ -1193,29 +1219,29 @@ public class FastNoiseLite implements NoiseSampler {
         k *= PRIME_Z;
         int seed2 = seed + 1293373;
 
-        int xNMask = (int) (-0.5f - xi);
-        int yNMask = (int) (-0.5f - yi);
-        int zNMask = (int) (-0.5f - zi);
+        int xNMask = (int) (-0.5 - xi);
+        int yNMask = (int) (-0.5 - yi);
+        int zNMask = (int) (-0.5 - zi);
 
         double x0 = xi + xNMask;
         double y0 = yi + yNMask;
         double z0 = zi + zNMask;
-        double a0 = 0.75f - x0 * x0 - y0 * y0 - z0 * z0;
+        double a0 = 0.75 - x0 * x0 - y0 * y0 - z0 * z0;
         double value = (a0 * a0) * (a0 * a0) * gradCoord(seed, i + (xNMask & PRIME_X), j + (yNMask & PRIME_Y), k + (zNMask & PRIME_Z), x0, y0,
                 z0);
 
-        double x1 = xi - 0.5f;
-        double y1 = yi - 0.5f;
-        double z1 = zi - 0.5f;
-        double a1 = 0.75f - x1 * x1 - y1 * y1 - z1 * z1;
+        double x1 = xi - 0.5;
+        double y1 = yi - 0.5;
+        double z1 = zi - 0.5;
+        double a1 = 0.75 - x1 * x1 - y1 * y1 - z1 * z1;
         value += (a1 * a1) * (a1 * a1) * gradCoord(seed2, i + PRIME_X, j + PRIME_Y, k + PRIME_Z, x1, y1, z1);
 
         double xAFlipMask0 = ((xNMask | 1) << 1) * x1;
         double yAFlipMask0 = ((yNMask | 1) << 1) * y1;
         double zAFlipMask0 = ((zNMask | 1) << 1) * z1;
-        double xAFlipMask1 = (-2 - (xNMask << 2)) * x1 - 1.0f;
-        double yAFlipMask1 = (-2 - (yNMask << 2)) * y1 - 1.0f;
-        double zAFlipMask1 = (-2 - (zNMask << 2)) * z1 - 1.0f;
+        double xAFlipMask1 = (-2 - (xNMask << 2)) * x1 - 1.0;
+        double yAFlipMask1 = (-2 - (yNMask << 2)) * y1 - 1.0;
+        double zAFlipMask1 = (-2 - (zNMask << 2)) * z1 - 1.0;
 
         boolean skip5 = false;
         double a2 = xAFlipMask0 + a0;
@@ -1316,7 +1342,7 @@ public class FastNoiseLite implements NoiseSampler {
             }
         }
 
-        return value * 9.046026385208288f;
+        return value * 9.046026385208288;
     }
 
     private double singleCellular(int seed, double x, double y) {
@@ -1327,7 +1353,7 @@ public class FastNoiseLite implements NoiseSampler {
         double distance1 = Double.MAX_VALUE;
         int closestHash = 0;
 
-        double cellularJitter = 0.43701595f * mCellularJitterModifier;
+        double cellularJitter = 0.43701595 * mCellularJitterModifier;
 
         int xPrimed = (xr - 1) * PRIME_X;
         int yPrimedBase = (yr - 1) * PRIME_Y;
@@ -1423,17 +1449,17 @@ public class FastNoiseLite implements NoiseSampler {
 
         switch(mCellularReturnType) {
             case CellValue:
-                return closestHash * (1 / 2147483648.0f);
+                return closestHash * (1 / 2147483648.0);
             case Distance:
                 return distance0 - 1;
             case Distance2:
                 return distance1 - 1;
             case Distance2Add:
-                return (distance1 + distance0) * 0.5f - 1;
+                return (distance1 + distance0) * 0.5 - 1;
             case Distance2Sub:
                 return distance1 - distance0 - 1;
             case Distance2Mul:
-                return distance1 * distance0 * 0.5f - 1;
+                return distance1 * distance0 * 0.5 - 1;
             case Distance2Div:
                 return distance0 / distance1 - 1;
             case NoiseLookup:
@@ -1453,7 +1479,7 @@ public class FastNoiseLite implements NoiseSampler {
         double distance1 = Double.MAX_VALUE;
         int closestHash = 0;
 
-        double cellularJitter = 0.39614353f * mCellularJitterModifier;
+        double cellularJitter = 0.39614353 * mCellularJitterModifier;
 
         int xPrimed = (xr - 1) * PRIME_X;
         int yPrimedBase = (yr - 1) * PRIME_Y;
@@ -1573,17 +1599,17 @@ public class FastNoiseLite implements NoiseSampler {
 
         switch(mCellularReturnType) {
             case CellValue:
-                return closestHash * (1 / 2147483648.0f);
+                return closestHash * (1 / 2147483648.0);
             case Distance:
                 return distance0 - 1;
             case Distance2:
                 return distance1 - 1;
             case Distance2Add:
-                return (distance1 + distance0) * 0.5f - 1;
+                return (distance1 + distance0) * 0.5 - 1;
             case Distance2Sub:
                 return distance1 - distance0 - 1;
             case Distance2Mul:
-                return distance1 * distance0 * 0.5f - 1;
+                return distance1 * distance0 * 0.5 - 1;
             case Distance2Div:
                 return distance0 / distance1 - 1;
             case NoiseLookup:
@@ -1613,7 +1639,7 @@ public class FastNoiseLite implements NoiseSampler {
         double xf0 = lerp(gradCoord(seed, x0, y0, xd0, yd0), gradCoord(seed, x1, y0, xd1, yd0), xs);
         double xf1 = lerp(gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1), xs);
 
-        return lerp(xf0, xf1, ys) * 1.4247691104677813f;
+        return lerp(xf0, xf1, ys) * 1.4247691104677813;
     }
 
     long murmur64(long h) {
@@ -1675,7 +1701,7 @@ public class FastNoiseLite implements NoiseSampler {
         double yf0 = lerp(xf00, xf10, ys);
         double yf1 = lerp(xf01, xf11, ys);
 
-        return lerp(yf0, yf1, zs) * 0.964921414852142333984375f;
+        return lerp(yf0, yf1, zs) * 0.964921414852142333984375;
     }
 
     private double singleValueCubic(int seed, double x, double y) {
@@ -1703,7 +1729,7 @@ public class FastNoiseLite implements NoiseSampler {
                         xs),
                 cubicLerp(valCoord(seed, x0, y3), valCoord(seed, x1, y3), valCoord(seed, x2, y3), valCoord(seed, x3, y3),
                         xs),
-                ys) * (1 / (1.5f * 1.5f));
+                ys) * (1 / (1.5 * 1.5));
     }
 
     // OpenSimplex2S Noise
@@ -1771,7 +1797,7 @@ public class FastNoiseLite implements NoiseSampler {
                         cubicLerp(valCoord(seed, x0, y3, z3), valCoord(seed, x1, y3, z3), valCoord(seed, x2, y3, z3),
                                 valCoord(seed, x3, y3, z3), xs),
                         ys),
-                zs) * (1 / (1.5f * 1.5f * 1.5f));
+                zs) * (1 / (1.5 * 1.5 * 1.5));
     }
 
     private double singleValue(int seed, double x, double y) {
@@ -1823,13 +1849,16 @@ public class FastNoiseLite implements NoiseSampler {
     private void doSingleDomainWarp(int seed, double amp, double freq, double x, double y, Vector2 coord) {
         switch(mDomainWarpType) {
             case OpenSimplex2:
-                singleDomainWarpSimplexGradient(seed, amp * 38.283687591552734375f, freq, x, y, coord, false);
+                singleDomainWarpSimplexGradient(seed, amp * 38.283687591552734375, freq, x, y, coord, false);
                 break;
             case OpenSimplex2Reduced:
-                singleDomainWarpSimplexGradient(seed, amp * 16.0f, freq, x, y, coord, true);
+                singleDomainWarpSimplexGradient(seed, amp * 16.0, freq, x, y, coord, true);
                 break;
             case BasicGrid:
                 singleDomainWarpBasicGrid(seed, amp, freq, x, y, coord);
+                break;
+            case Function:
+                singleFunctionDomainWarp(seed, amp, x, y, freq, coord);
                 break;
         }
     }
@@ -1840,15 +1869,34 @@ public class FastNoiseLite implements NoiseSampler {
                                     Vector3 coord) {
         switch(mDomainWarpType) {
             case OpenSimplex2:
-                singleDomainWarpOpenSimplex2Gradient(seed, amp * 32.69428253173828125f, freq, x, y, z, coord, false);
+                singleDomainWarpOpenSimplex2Gradient(seed, amp * 32.69428253173828125, freq, x, y, z, coord, false);
                 break;
             case OpenSimplex2Reduced:
-                singleDomainWarpOpenSimplex2Gradient(seed, amp * 7.71604938271605f, freq, x, y, z, coord, true);
+                singleDomainWarpOpenSimplex2Gradient(seed, amp * 7.71604938271605, freq, x, y, z, coord, true);
                 break;
             case BasicGrid:
                 singleDomainWarpBasicGrid(seed, amp, freq, x, y, z, coord);
                 break;
+            case Function:
+                singleFunctionDomainWarp(seed, amp, x, y, z, freq, coord);
+                break;
         }
+    }
+
+    private void singleFunctionDomainWarp(int seed, double amp, double x, double y, double freq, Vector2 coord) {
+        x *= freq;
+        y *= freq;
+        coord.add(domainWarpFunction.getNoiseSeeded(seed + 1, x, y) * amp,
+                domainWarpFunction.getNoiseSeeded(seed + 2, x, y) * amp);
+    }
+
+    private void singleFunctionDomainWarp(int seed, double amp, double x, double y, double z, double freq, Vector3 coord) {
+        x *= freq;
+        y *= freq;
+        z *= freq;
+        coord.add(domainWarpFunction.getNoiseSeeded(seed + 1, x, y, z) * amp,
+                domainWarpFunction.getNoiseSeeded(seed + 3, x, y, z) * amp,
+                domainWarpFunction.getNoiseSeeded(seed + 2, x, y, z) * amp);
     }
 
     private void domainWarpSingle(Vector2 coord) {
@@ -1865,7 +1913,7 @@ public class FastNoiseLite implements NoiseSampler {
             case OpenSimplex2Reduced: {
 
                 final double SQRT3 = 1.7320508075688772935274463415059;
-                final double F2 = 0.5f * (SQRT3 - 1);
+                final double F2 = 0.5 * (SQRT3 - 1);
 
                 double t = (xs + ys) * F2;
                 xs += t;
@@ -1950,7 +1998,7 @@ public class FastNoiseLite implements NoiseSampler {
                 case OpenSimplex2Reduced: {
 
                     final double SQRT3 = 1.7320508075688772935274463415059;
-                    final double F2 = 0.5f * (SQRT3 - 1);
+                    final double F2 = 0.5 * (SQRT3 - 1);
 
                     double t = (xs + ys) * F2;
                     xs += t;
@@ -2042,7 +2090,7 @@ public class FastNoiseLite implements NoiseSampler {
             case OpenSimplex2Reduced: {
 
                 final double SQRT3 = 1.7320508075688772935274463415059;
-                final double F2 = 0.5f * (SQRT3 - 1);
+                final double F2 = 0.5 * (SQRT3 - 1);
 
                 double t = (xs + ys) * F2;
                 xs += t;
@@ -2227,7 +2275,7 @@ public class FastNoiseLite implements NoiseSampler {
     // Domain Warp Simplex/OpenSimplex2
     private void singleDomainWarpSimplexGradient(int seed, double warpAmp, double frequency, double x, double y,
                                                  Vector2 coord, boolean outGradOnly) {
-        final double SQRT3 = 1.7320508075688772935274463415059f;
+        final double SQRT3 = 1.7320508075688772935274463415059;
         final double G2 = (3 - SQRT3) / 6;
 
         x *= frequency;
@@ -2255,7 +2303,7 @@ public class FastNoiseLite implements NoiseSampler {
         double vx, vy;
         vx = vy = 0;
 
-        double a = 0.5f - x0 * x0 - y0 * y0;
+        double a = 0.5 - x0 * x0 - y0 * y0;
         if(a > 0) {
             double aaaa = (a * a) * (a * a);
             double xo, yo;
@@ -2308,7 +2356,7 @@ public class FastNoiseLite implements NoiseSampler {
         if(y0 > x0) {
             double x1 = x0 + G2;
             double y1 = y0 + (G2 - 1);
-            double b = 0.5f - x1 * x1 - y1 * y1;
+            double b = 0.5 - x1 * x1 - y1 * y1;
             if(b > 0) {
                 double bbbb = (b * b) * (b * b);
                 double xo, yo;
@@ -2334,7 +2382,7 @@ public class FastNoiseLite implements NoiseSampler {
         } else {
             double x1 = x0 + (G2 - 1);
             double y1 = y0 + G2;
-            double b = 0.5f - x1 * x1 - y1 * y1;
+            double b = 0.5 - x1 * x1 - y1 * y1;
             if(b > 0) {
                 double bbbb = (b * b) * (b * b);
                 double xo, yo;
@@ -2384,9 +2432,9 @@ public class FastNoiseLite implements NoiseSampler {
         double y0 = y - j;
         double z0 = z - k;
 
-        int xNSign = (int) (-x0 - 1.0f) | 1;
-        int yNSign = (int) (-y0 - 1.0f) | 1;
-        int zNSign = (int) (-z0 - 1.0f) | 1;
+        int xNSign = (int) (-x0 - 1.0) | 1;
+        int yNSign = (int) (-y0 - 1.0) | 1;
+        int zNSign = (int) (-z0 - 1.0) | 1;
 
         double ax0 = xNSign * -x0;
         double ay0 = yNSign * -y0;
@@ -2399,7 +2447,7 @@ public class FastNoiseLite implements NoiseSampler {
         double vx, vy, vz;
         vx = vy = vz = 0;
 
-        double a = (0.6f - x0 * x0) - (y0 * y0 + z0 * z0);
+        double a = (0.6 - x0 * x0) - (y0 * y0 + z0 * z0);
         for(int l = 0; ; l++) {
             if(a > 0) {
                 double aaaa = (a * a) * (a * a);
@@ -2482,15 +2530,15 @@ public class FastNoiseLite implements NoiseSampler {
 
             if(l == 1) break;
 
-            ax0 = 0.5f - ax0;
-            ay0 = 0.5f - ay0;
-            az0 = 0.5f - az0;
+            ax0 = 0.5 - ax0;
+            ay0 = 0.5 - ay0;
+            az0 = 0.5 - az0;
 
             x0 = xNSign * ax0;
             y0 = yNSign * ay0;
             z0 = zNSign * az0;
 
-            a += (0.75f - ax0) - (ay0 + az0);
+            a += (0.75 - ax0) - (ay0 + az0);
 
             i += (xNSign >> 1) & PRIME_X;
             j += (yNSign >> 1) & PRIME_Y;
@@ -2562,7 +2610,9 @@ public class FastNoiseLite implements NoiseSampler {
     public enum DomainWarpType {
         OpenSimplex2,
         OpenSimplex2Reduced,
-        BasicGrid
+        BasicGrid,
+        Function,
+        None
     }
 
 

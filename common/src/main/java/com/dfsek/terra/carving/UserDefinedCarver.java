@@ -19,10 +19,10 @@ import parsii.eval.Scope;
 import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 public class UserDefinedCarver extends Carver {
@@ -39,7 +39,7 @@ public class UserDefinedCarver extends Carver {
     private final Variable lengthVar;
     private final Variable position;
     private final Variable seedVar;
-    private final Map<World, CarverCache> cacheMap = new HashMap<>();
+    private final Map<World, CarverCache> cacheMap = new ConcurrentHashMap<>();
     private double step = 2;
     private Range recalc = new Range(8, 10);
     private double recalcMagnitude = 3;
@@ -101,17 +101,19 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
-        CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main, this));
-        if(cacheMap.size() > 1) Debug.info("Map size: " + cacheMap.size());
-        int carvingRadius = getCarvingRadius();
-        for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
-            for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
-                cache.getPoints(x, z).forEach(point -> {
-                    Vector3 origin = point.getOrigin();
-                    if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
-                        return;
-                    point.carve(chunkX, chunkZ, consumer);
-                });
+        synchronized(cacheMap) {
+            CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main, this));
+            if(cacheMap.size() > 1) Debug.info("Map size: " + cacheMap.size());
+            int carvingRadius = getCarvingRadius();
+            for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
+                for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
+                    cache.getPoints(x, z).forEach(point -> {
+                        Vector3 origin = point.getOrigin();
+                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
+                            return;
+                        point.carve(chunkX, chunkZ, consumer);
+                    });
+                }
             }
         }
     }
