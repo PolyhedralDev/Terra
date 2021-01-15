@@ -142,11 +142,14 @@ public class StructureScript {
     }
 
     private boolean applyBlock(TerraImplementationArguments arguments) {
-        try {
-            return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
-        } catch(RuntimeException e) {
-            main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
-            return false;
+        synchronized(block) {
+            try {
+                return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
+            } catch(RuntimeException e) {
+                main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
+                Debug.stack(e);
+                return false;
+            }
         }
     }
 }
