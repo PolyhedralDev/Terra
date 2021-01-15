@@ -2,7 +2,10 @@ package com.dfsek.terra.api.structures.parser.lang.operations;
 
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+
+import java.util.Map;
 
 public abstract class UnaryOperation<T> implements Returnable<T> {
     private final Returnable<T> input;
@@ -16,8 +19,8 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
     public abstract T apply(T input);
 
     @Override
-    public T apply(ImplementationArguments implementationArguments) {
-        return apply(input.apply(implementationArguments));
+    public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+        return apply(input.apply(implementationArguments, variableMap));
     }
 
     @Override

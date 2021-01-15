@@ -56,6 +56,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -202,7 +203,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
 
-        Biome vanilla = ((FabricBiome) biome.getVanillaBiome()).getHandle();
+        Biome vanilla = ((FabricBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.

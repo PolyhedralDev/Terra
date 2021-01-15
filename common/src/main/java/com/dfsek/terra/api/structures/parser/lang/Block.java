@@ -1,8 +1,11 @@
 package com.dfsek.terra.api.structures.parser.lang;
 
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Block implements Item<Block.ReturnInfo<?>> {
     private final List<Item<?>> items;
@@ -17,10 +20,15 @@ public class Block implements Item<Block.ReturnInfo<?>> {
         return items;
     }
 
+    public ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
+        return apply(implementationArguments, new HashMap<>());
+    }
+
     @Override
-    public synchronized ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
+    public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+        Map<String, Variable<?>> scope = new HashMap<>(variableMap);
         for(Item<?> item : items) {
-            Object result = item.apply(implementationArguments);
+            Object result = item.apply(implementationArguments, scope);
             if(result instanceof ReturnInfo) {
                 ReturnInfo<?> level = (ReturnInfo<?>) result;
                 if(!level.getLevel().equals(ReturnLevel.NONE)) return level;

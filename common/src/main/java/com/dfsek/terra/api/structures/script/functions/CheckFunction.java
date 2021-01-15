@@ -9,6 +9,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
@@ -17,6 +18,8 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.generation.math.SamplerCache;
 import net.jafama.FastMath;
+
+import java.util.Map;
 
 public class CheckFunction implements Function<String> {
     private final TerraPlugin main;
@@ -35,14 +38,14 @@ public class CheckFunction implements Function<String> {
 
 
     @Override
-    public String apply(ImplementationArguments implementationArguments) {
+    public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
-        Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
+        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getBuffer().getOrigin().getWorld());
     }

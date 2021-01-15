@@ -4,9 +4,11 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
+import java.util.Map;
 
 public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Number>> {
 
@@ -26,8 +28,8 @@ public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Numb
 
             @SuppressWarnings("unchecked")
             @Override
-            public Number apply(ImplementationArguments implementationArguments) {
-                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(implementationArguments));
+            public Number apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(implementationArguments, variableMap));
             }
 
             @Override

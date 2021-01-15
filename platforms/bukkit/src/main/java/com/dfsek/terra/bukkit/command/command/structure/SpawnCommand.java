@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class SpawnCommand extends WorldCommand implements DebugCommand {
@@ -35,7 +36,7 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         com.dfsek.terra.api.platform.world.World w = BukkitAdapter.adapt(world);
         String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), getMain().getWorld(w).getConfig().getSamplerCache(), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
                 new com.dfsek.terra.api.math.vector.Location(w, x, y, z)
-        ), Rotation.NONE, new FastRandom(), 0));
+        ), Rotation.NONE, new FastRandom(), 0), new HashMap<>());
 
         sender.sendMessage("Found: " + check);
         return true;
