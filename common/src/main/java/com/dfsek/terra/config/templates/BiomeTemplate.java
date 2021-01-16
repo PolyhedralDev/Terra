@@ -268,6 +268,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     @Override
     public boolean validate() throws ValidationException {
+        color |= 0x1fe00000; // Alpha adjustment
         Parser tester = new Parser();
         Scope testScope = new Scope().withParent(pack.getVarScope());
         testScope.create("x");
