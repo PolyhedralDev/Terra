@@ -19,7 +19,8 @@ import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
-import com.dfsek.terra.bukkit.listeners.EventListener;
+import com.dfsek.terra.bukkit.listeners.CommonListener;
+import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
@@ -30,6 +31,7 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.MasterChunkGenerator;
 import com.dfsek.terra.registry.ConfigRegistry;
+import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.TreeType;
@@ -149,11 +151,41 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         long save = config.getDataSaveInterval();
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, BukkitChunkGeneratorWrapper::saveAll, save, save); // Schedule population data saving
-
-        Bukkit.getPluginManager().registerEvents(new EventListener(this), this); // Register master event listener
-        Bukkit.getPluginManager().registerEvents(new SpigotListener(this), this); // Register Spigot event listener, once Paper accepts StructureLocateEvent PR Spigot and Paper events will be separate.
-
+        Bukkit.getPluginManager().registerEvents(new CommonListener(this), this); // Register master event listener
         PaperUtil.checkPaper(this);
+
+        if(PaperLib.isPaper()) {
+            try {
+                Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
+                Bukkit.getPluginManager().registerEvents(new PaperListener(this), this); // Register Paper events.
+            } catch(ClassNotFoundException e) {
+                registerSpigotEvents(true); // Outdated Paper version.
+            }
+        } else {
+            registerSpigotEvents(false);
+        }
+    }
+
+    private void registerSpigotEvents(boolean outdated) {
+        if(outdated) {
+            getLogger().severe("You are using an outdated version of Paper.");
+            getLogger().severe("This version does not contain StructureLocateEvent.");
+            getLogger().severe("Terra will now fall back to Spigot events.");
+            getLogger().severe("This will prevent cartographer villagers from spawning,");
+            getLogger().severe("and cause structure location to not function.");
+            getLogger().severe("If you want these functionalities, update to the latest build of Paper.");
+            getLogger().severe("If you use a fork, update to the latest version, then if you still");
+            getLogger().severe("receive this message, ask the fork developer to update upstream.");
+        } else {
+            getLogger().severe("Paper is not in use. Falling back to Spigot events.");
+            getLogger().severe("This will prevent cartographer villagers from spawning,");
+            getLogger().severe("and cause structure location to not function.");
+            getLogger().severe("If you want these functionalities (and all the other");
+            getLogger().severe("benefits that Paper offers), upgrade your server to Paper.");
+            getLogger().severe("Find out more at https://papermc.io/");
+        }
+
+        Bukkit.getPluginManager().registerEvents(new SpigotListener(this), this); // Register Spigot event listener
     }
 
     @Override
