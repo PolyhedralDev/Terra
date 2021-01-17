@@ -56,14 +56,21 @@ public class SpigotListener implements Listener {
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
         if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
         if(!(e.getEntity() instanceof Villager)) return;
-        if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER))
+        if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
+            main.getLogger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
+            main.getLogger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
+            main.getLogger().severe("at the source, and doesn't require us to do stupid band-aids.");
             e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
+        }
     }
 
     @EventHandler
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
         if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
+            main.getLogger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
+            main.getLogger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
+            main.getLogger().severe("at the source, and doesn't require us to do stupid band-aids.");
             e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
             e.setCancelled(true);
         }

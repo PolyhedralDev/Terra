@@ -16,7 +16,6 @@ group = "com.dfsek.terra.bukkit"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("http://maven.enginehub.org/repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public") }
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
@@ -25,7 +24,7 @@ repositories {
 dependencies {
     "shadedApi"(project(":common"))
 
-    "compileOnly"("org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT")
+    "compileOnly"("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
     "shadedImplementation"("io.papermc:paperlib:1.0.5")
 
     "shadedImplementation"("org.bstats:bstats-bukkit:1.7")
@@ -100,7 +99,7 @@ val testWithPaper = task<JavaExec>(name = "testWithPaper") {
             "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear")
     maxHeapSize = "3G"
     minHeapSize = "3G"
-    args = listOf("nogui")
+    //args = listOf("nogui")
     workingDir = file("${testDir}/")
     classpath = files("${testDir}/paper.jar")
 }

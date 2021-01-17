@@ -22,10 +22,10 @@ import org.bukkit.event.world.StructureGrowEvent;
 /**
  * Listener for events on all implementations.
  */
-public class EventListener implements Listener {
+public class CommonListener implements Listener {
     private final TerraPlugin main;
 
-    public EventListener(TerraPlugin main) {
+    public CommonListener(TerraPlugin main) {
         this.main = main;
     }
 
