@@ -21,7 +21,6 @@ import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import net.jafama.FastMath;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -42,15 +41,20 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
         StandardBiomeProvider.StandardBiomeProviderBuilder builder = new StandardBiomeProvider.StandardBiomeProviderBuilder(seed -> {
             Map<String, Object> source = (Map<String, Object>) map.get("source");
             ProbabilityCollection<TerraBiome> sourceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, source.get("biomes"));
-            NoiseSampler sourceNoise = new NoiseBuilderLoader().load(NoiseBuilder.class, source.get("noise"), loader).build(FastMath.toInt(seed));
+            NoiseSampler sourceNoise = new NoiseBuilderLoader().load(NoiseBuilder.class, source.get("noise"), loader).build((int) seed.longValue());
 
             List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("pipeline");
-            BiomePipeline.BiomePipelineBuilder pipelineBuilder = new BiomePipeline.BiomePipelineBuilder(2);
+
+            int init;
+            if(map.containsKey("initial-size")) init = Integer.parseInt(map.get("initial-size").toString());
+            else init = 3;
+
+            BiomePipeline.BiomePipelineBuilder pipelineBuilder = new BiomePipeline.BiomePipelineBuilder(init);
 
             for(Map<String, Object> stage : stages) {
                 for(Map.Entry<String, Object> entry : stage.entrySet()) {
                     Map<String, Object> mutator = (Map<String, Object>) entry.getValue();
-                    NoiseSampler mutatorNoise = new NoiseBuilderLoader().load(NoiseBuilder.class, mutator.get("noise"), loader).build(FastMath.toInt(seed));
+                    NoiseSampler mutatorNoise = new NoiseBuilderLoader().load(NoiseBuilder.class, mutator.get("noise"), loader).build((int) seed.longValue());
 
                     if(entry.getKey().equals("expand")) {
                         if(mutator.get("type").equals("FRACTAL"))

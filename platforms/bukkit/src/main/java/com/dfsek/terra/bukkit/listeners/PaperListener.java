@@ -29,7 +29,7 @@ public class PaperListener implements Listener {
         TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getWorld()));
         TerraStructure config = tw.getConfig().getStructure(tw.getConfig().getTemplate().getLocatable().get(name));
         if(config != null) {
-            AsyncStructureFinder finder = new AsyncStructureFinder(tw.getGrid(), config, BukkitAdapter.adapt(e.getOrigin()), 0, 500, location -> {
+            AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin()), 0, 500, location -> {
                 if(location != null)
                     e.setResult(BukkitAdapter.adapt(location.toLocation(BukkitAdapter.adapt(e.getWorld()))));
                 Debug.info("Location: " + location);

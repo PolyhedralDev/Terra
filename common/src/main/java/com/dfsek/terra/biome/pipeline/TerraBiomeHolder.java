@@ -13,11 +13,11 @@ public class TerraBiomeHolder implements BiomeHolder {
     private final int offset;
 
     public TerraBiomeHolder(int width, Vector2 origin) {
-        width += 2;
+        width += 4;
         this.width = width;
         biomes = new TerraBiome[width][width];
         this.origin = origin;
-        this.offset = 1;
+        this.offset = 2;
     }
 
     private TerraBiomeHolder(TerraBiome[][] biomes, Vector2 origin, int width, int offset) {
