@@ -17,6 +17,7 @@ import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
+import com.dfsek.terra.config.loaders.SelfProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.debug.Debug;
@@ -65,7 +66,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                             pipelineBuilder.addStage(new MutatorStage(new SmoothMutator(mutatorNoise)));
                         else if(mutator.get("type").equals("REPLACE")) {
                             String fromTag = mutator.get("from").toString();
-                            ProbabilityCollection<TerraBiome> replaceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"));
+                            ProbabilityCollection<TerraBiome> replaceBiomes = new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"), loader);
                             pipelineBuilder.addStage(new MutatorStage(new ReplaceMutator(fromTag, replaceBiomes, mutatorNoise)));
                         } else if(mutator.get("type").equals("BORDER")) {
                             String fromTag = mutator.get("from").toString();

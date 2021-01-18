@@ -33,8 +33,9 @@ public class WorldGenerator implements Generator {
     private final boolean noise2d;
     private final double base;
     private final NoiseSampler biomeNoise;
+    private final double elevationWeight;
 
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation, boolean noise2d, double base, NoiseSampler biomeNoise) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
 
@@ -42,6 +43,7 @@ public class WorldGenerator implements Generator {
         this.noise2d = noise2d;
         this.base = base;
         this.biomeNoise = biomeNoise;
+        this.elevationWeight = elevationWeight;
 
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
@@ -85,6 +87,7 @@ public class WorldGenerator implements Generator {
         }
     }
 
+    @Override
     public synchronized double getElevation(int x, int z) {
         if(elevationExp == null) return 0;
         elevationXVar.setValue(x);
@@ -125,13 +128,12 @@ public class WorldGenerator implements Generator {
         return biomeNoise;
     }
 
+    @Override
+    public double getElevationWeight() {
+        return elevationWeight;
+    }
+
     public Palette<BlockData> getSlantPalette(int y) {
         return slantPalettes.getPalette(y);
     }
-
-
-    public boolean interpolateElevation() {
-        return elevationInterpolation;
-    }
-
 }

@@ -15,6 +15,8 @@ public interface Generator {
      */
     double getNoise(int x, int y, int z);
 
+    double getElevation(int x, int z);
+
     /**
      * Gets the BlocPalette to generate the biome with.
      *
@@ -27,4 +29,6 @@ public interface Generator {
     double get2dBase();
 
     NoiseSampler getBiomeNoise();
+
+    double getElevationWeight();
 }

@@ -34,10 +34,12 @@ public class GeneratorBuilder {
 
     private NoiseBuilder biomeNoise;
 
+    private double elevationWeight;
+
 
     public WorldGenerator build(long seed) {
         synchronized(gens) {
-            return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base, biomeNoise.build((int) seed)));
+            return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base, biomeNoise.build((int) seed), elevationWeight));
         }
     }
 
@@ -59,6 +61,10 @@ public class GeneratorBuilder {
 
     public void setBase(double base) {
         this.base = base;
+    }
+
+    public void setElevationWeight(double elevationWeight) {
+        this.elevationWeight = elevationWeight;
     }
 
     public String getNoiseEquation() {

@@ -1,9 +1,9 @@
 package com.dfsek.terra.generation.math.interpolation;
 
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.generation.config.WorldGenerator;
-import net.jafama.FastMath;
 
 public class ElevationInterpolator {
     private final double[][] values = new double[18][18];
@@ -24,12 +24,15 @@ public class ElevationInterpolator {
         for(int x = -1; x <= 16; x++) {
             for(int z = -1; z <= 16; z++) {
                 double noise = 0;
+                double div = 0;
                 for(int xi = -smooth; xi <= smooth; xi++) {
                     for(int zi = -smooth; zi <= smooth; zi++) {
-                        noise += gens[x + 1 + smooth + xi][z + 1 + smooth + zi].getElevation(xOrigin + x, zOrigin + z);
+                        Generator gen = gens[x + 1 + smooth + xi][z + 1 + smooth + zi];
+                        noise += gen.getElevation(xOrigin + x, zOrigin + z) * gen.getElevationWeight();
+                        div += gen.getElevationWeight();
                     }
                 }
-                values[x + 1][z + 1] = noise / FastMath.pow2(smooth * 2 + 1);
+                values[x + 1][z + 1] = noise / div;
             }
         }
     }

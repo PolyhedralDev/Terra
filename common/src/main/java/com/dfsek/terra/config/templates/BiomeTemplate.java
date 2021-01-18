@@ -103,6 +103,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     private String elevationEquation = null;
 
+    @Value("elevation.weight")
+    @Default
+    @Abstractable
+    private double elevationWeight = 1;
+
     @Value("flora")
     @Abstractable
     @Default
@@ -264,6 +269,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public double getNoise2dBase() {
         return noise2dBase;
+    }
+
+    public double getElevationWeight() {
+        return elevationWeight;
     }
 
     @Override
