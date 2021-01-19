@@ -13,7 +13,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
-import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.exception.FileMissingException;
 import com.dfsek.terra.config.factories.BiomeFactory;
@@ -28,6 +28,7 @@ import com.dfsek.terra.config.files.FolderLoader;
 import com.dfsek.terra.config.files.Loader;
 import com.dfsek.terra.config.files.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -59,14 +60,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -92,8 +92,13 @@ public class ConfigPack implements LoaderRegistrar {
 
     private final SamplerCache samplerCache;
 
+    private final TerraPlugin main;
+    private final Loader loader;
+
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
+        this.loader = new FolderLoader(folder.toPath());
+        this.main = main;
         long l = System.nanoTime();
         this.samplerCache = new SamplerCache(main);
         floraRegistry = new FloraRegistry(main);
@@ -112,11 +117,12 @@ public class ConfigPack implements LoaderRegistrar {
         } catch(FileNotFoundException e) {
             throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
         }
-
-        load(new FolderLoader(folder.toPath()), l, main);
+        load(l, main);
     }
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
+        this.loader = new ZIPLoader(file);
+        this.main = main;
         long l = System.nanoTime();
         this.samplerCache = new SamplerCache(main);
         floraRegistry = new FloraRegistry(main);
@@ -143,12 +149,13 @@ public class ConfigPack implements LoaderRegistrar {
 
         selfLoader.load(template, stream);
 
-        load(new ZIPLoader(file), l, main);
+
+        load(l, main);
 
         template.getProviderBuilder().build(0); // Build dummy provider to catch errors at load time.
     }
 
-    private void load(Loader loader, long start, TerraPlugin main) throws ConfigException {
+    private void load(long start, TerraPlugin main) throws ConfigException {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
@@ -185,14 +192,6 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
 
 
-        for(UserDefinedBiome b : biomeRegistry.entries()) {
-            try {
-                Objects.requireNonNull(b.getErode()); // Throws NPE if it cannot load erosion biomes.
-            } catch(NullPointerException e) {
-                throw new LoadException("Invalid erosion biome defined in biome \"" + b.getID() + "\"", e);
-            }
-        }
-
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
     }
 
@@ -200,14 +199,12 @@ public class ConfigPack implements LoaderRegistrar {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 
-    public UserDefinedBiome getBiome(String id) {
+    public TerraBiome getBiome(String id) {
         return biomeRegistry.get(id);
     }
 
     public List<String> getBiomeIDs() {
-        List<String> biomeIDs = new ArrayList<>();
-        biomeRegistry.forEach(biome -> biomeIDs.add(biome.getID()));
-        return biomeIDs;
+        return biomeRegistry.entries().stream().map(TerraBiome::getID).collect(Collectors.toList());
     }
 
     public TerraStructure getStructure(String id) {
@@ -227,9 +224,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     public List<String> getStructureIDs() {
-        List<String> ids = new ArrayList<>();
-        structureRegistry.forEach(structure -> ids.add(structure.getTemplate().getID()));
-        return ids;
+        return structureRegistry.entries().stream().map(terraStructure -> terraStructure.getTemplate().getID()).collect(Collectors.toList());
     }
 
     public TreeRegistry getTreeRegistry() {
@@ -256,7 +251,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(Tree.class, treeRegistry)
                 .registerLoader(StructureScript.class, scriptRegistry)
                 .registerLoader(TerraStructure.class, structureRegistry)
-                .registerLoader(LootTable.class, lootRegistry);
+                .registerLoader(LootTable.class, lootRegistry)
+                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(main, biomeRegistry, loader));
     }
 
     public ScriptRegistry getScriptRegistry() {

@@ -20,6 +20,13 @@ public class BiomePipeline {
         this.init = init;
     }
 
+    /**
+     * Get biomes in a chunk
+     *
+     * @param x Chunk X coord
+     * @param z Chunk Z coord
+     * @return BiomeHolder containing biomes.
+     */
     public BiomeHolder getBiomes(int x, int z) {
         BiomeHolder holder = new TerraBiomeHolder(init, new Vector2(x * (init - 1), z * (init - 1)));
         holder.fill(source);

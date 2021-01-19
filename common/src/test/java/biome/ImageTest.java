@@ -7,23 +7,21 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.BiomeProvider;
+import com.dfsek.terra.biome.ImageBiomeProvider;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.files.FolderLoader;
-import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
-import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.registry.BiomeRegistry;
+import com.dfsek.terra.registry.TerraRegistry;
 import org.junit.jupiter.api.Test;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -40,26 +38,19 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
-public class DistributionTest {
-    private static BiomeProvider getProvider(long seed) throws ConfigException, IOException {
+public class ImageTest {
+    private static ImageBiomeProvider getProvider(long seed) throws ConfigException, IOException {
         System.out.println(seed);
         File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/default/");
         FolderLoader folderLoader = new FolderLoader(pack.toPath());
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
 
-        BiomeRegistry biomeRegistry = new BiomeRegistry();
+        TerraRegistry<TerraBiome> biomeRegistry = new TerraRegistry<TerraBiome>() {
+        };
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), null));
 
-        BiomeProviderTemplate template = new BiomeProviderTemplate();
-        ConfigLoader pipeLoader = new ConfigLoader()
-                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(null, biomeRegistry, folderLoader))
-                .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
-                .registerLoader(TerraBiome.class, biomeRegistry);
-        new GenericLoaders(null).register(pipeLoader);
-
-        pipeLoader.load(template, folderLoader.get("pack.yml"));
-        return template.getBiomeProviderBuilder().build(seed);
+        return new ImageBiomeProvider(biomeRegistry, ImageIO.read(ImageTest.class.getResourceAsStream("/map.jpg")), 1);
     }
 
     @Test

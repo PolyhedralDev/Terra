@@ -30,4 +30,6 @@ public interface TerraBiome {
     int getColor();
 
     Set<String> getTags();
+
+    String getID();
 }

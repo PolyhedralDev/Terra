@@ -2,8 +2,8 @@ package com.dfsek.terra.bukkit.command.command.biome;
 
 import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.async.AsyncBiomeFinder;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -41,7 +41,7 @@ public class BiomeLocateCommand extends WorldCommand {
             LangUtil.send("command.biome.invalid-radius", BukkitAdapter.adapt(sender), args[1]);
             return true;
         }
-        UserDefinedBiome b;
+        TerraBiome b;
         try {
             b = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getBiome(id);
         } catch(IllegalArgumentException | NullPointerException e) {

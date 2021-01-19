@@ -92,7 +92,7 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Default
     private String version = "0.1.0";
 
-    @Value("biome-pipeline")
+    @Value("biomes")
     private BiomeProvider.BiomeProviderBuilder providerBuilder;
 
     public BiomeProvider.BiomeProviderBuilder getProviderBuilder() {

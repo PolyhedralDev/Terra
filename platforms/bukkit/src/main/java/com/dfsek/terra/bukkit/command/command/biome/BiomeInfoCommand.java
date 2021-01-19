@@ -32,15 +32,13 @@ public class BiomeInfoCommand extends WorldCommand {
         ConfigPack cfg = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig();
         UserDefinedBiome b;
         try {
-            b = cfg.getBiome(id);
+            b = (UserDefinedBiome) cfg.getBiome(id);
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.biome.invalid", new BukkitCommandSender(sender), id);
             return true;
         }
         sender.sendMessage("TerraBiome info for \"" + b.getID() + "\".");
         sender.sendMessage("Vanilla biome: " + b.getVanillaBiomes());
-        sender.sendMessage("Eroded by: " + b.getErode().getConfig().getID());
-
 
         BiomeTemplate bio = b.getConfig();
 

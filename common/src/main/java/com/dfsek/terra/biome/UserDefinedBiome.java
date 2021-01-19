@@ -5,7 +5,6 @@ import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 
@@ -20,18 +19,15 @@ public class UserDefinedBiome implements TerraBiome {
     private final ProbabilityCollection<Biome> vanilla;
     private final String id;
     private final BiomeTemplate config;
-    private final ConfigPack pack;
-    private UserDefinedBiome erode;
     private final int color;
     private final Set<String> tags;
 
 
-    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, GeneratorBuilder gen, BiomeTemplate config, ConfigPack pack) {
+    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, GeneratorBuilder gen, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();
         this.config = config;
-        this.pack = pack;
         this.color = config.getColor();
         this.tags = config.getTags() == null ? new HashSet<>() : config.getTags();
         tags.add("BIOME:" + id);
@@ -47,18 +43,10 @@ public class UserDefinedBiome implements TerraBiome {
         return vanilla;
     }
 
-
+    @Override
     public String getID() {
         return id;
     }
-
-    public UserDefinedBiome getErode() {
-        if(erode == null) {
-            erode = (config.getErode() == null) ? this : pack.getBiome(config.getErode());
-        }
-        return erode;
-    }
-
 
     public BiomeTemplate getConfig() {
         return config;
