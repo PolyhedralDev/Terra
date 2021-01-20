@@ -151,5 +151,10 @@ public class BiomeTest {
         public Set<String> getTags() {
             return tags;
         }
+
+        @Override
+        public String getID() {
+            return null;
+        }
     }
 }
