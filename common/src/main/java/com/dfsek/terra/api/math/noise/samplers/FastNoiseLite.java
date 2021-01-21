@@ -1642,7 +1642,7 @@ public class FastNoiseLite implements NoiseSampler {
         return lerp(xf0, xf1, ys) * 1.4247691104677813;
     }
 
-    long murmur64(long h) {
+    private long murmur64(long h) {
         h ^= h >>> 33;
         h *= 0xff51afd7ed558ccdL;
         h ^= h >>> 33;

@@ -13,7 +13,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
-import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -194,11 +194,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
     }
 
-    public static String createBiomeID(ConfigPack pack, UserDefinedBiome biome) {
+    public static String createBiomeID(ConfigPack pack, TerraBiome biome) {
         return pack.getTemplate().getID().toLowerCase() + "/" + biome.getID().toLowerCase();
     }
 
-    private Biome createBiome(UserDefinedBiome biome) {
+    private Biome createBiome(TerraBiome biome) {
         SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);

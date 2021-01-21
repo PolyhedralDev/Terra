@@ -27,7 +27,6 @@ public class ImageBiomeProvider implements BiomeProvider {
     @Override
     public TerraBiome getBiome(int x, int z) {
         Color color = new Color(image.getRGB(FastMath.floorMod(x / resolution, image.getWidth()), FastMath.floorMod(z / resolution, image.getHeight())));
-
         return colorBiomeMap.get(colorBiomeMap.keySet().stream().reduce(colorBiomeMap.keySet().stream().findAny().orElseThrow(IllegalStateException::new), (running, element) -> {
             int d1 = distance(color, running);
             int d2 = distance(color, element);

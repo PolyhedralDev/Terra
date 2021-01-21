@@ -168,7 +168,7 @@ public class DistributionTest {
     }
 
     private static final class BiomeProviderTemplate implements ConfigTemplate {
-        @Value("biome-pipeline")
+        @Value("biomes")
         BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
         public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
