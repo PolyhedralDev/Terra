@@ -3,9 +3,11 @@ package com.dfsek.terra.biome.pipeline;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
 import com.dfsek.terra.biome.pipeline.stages.Stage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BiomePipeline {
     private final BiomeSource source;
@@ -40,7 +42,7 @@ public class BiomePipeline {
 
     public static final class BiomePipelineBuilder {
         private final int init;
-        List<Stage> stages = new GlueList<>();
+        List<SeededBuilder<Stage>> stages = new GlueList<>();
         private int expand;
 
         public BiomePipelineBuilder(int init) {
@@ -48,13 +50,18 @@ public class BiomePipeline {
             expand = init;
         }
 
-        public BiomePipeline build(BiomeSource source) {
-            return new BiomePipeline(source, stages, expand, init);
+        public BiomePipeline build(BiomeSource source, long seed) {
+            List<Stage> stagesBuilt = stages.stream().map(stageBuilder -> stageBuilder.build(seed)).collect(Collectors.toList());
+
+            for(Stage stage : stagesBuilt) {
+                if(stage.isExpansion()) expand = expand * 2 - 1;
+            }
+
+            return new BiomePipeline(source, stagesBuilt, expand, init);
         }
 
-        public BiomePipelineBuilder addStage(Stage stage) {
+        public BiomePipelineBuilder addStage(SeededBuilder<Stage> stage) {
             stages.add(stage);
-            if(stage.isExpansion()) expand = expand * 2 - 1;
             return this;
         }
     }

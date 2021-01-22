@@ -6,4 +6,5 @@ public interface Stage {
     boolean isExpansion();
 
     BiomeHolder apply(BiomeHolder in);
+
 }
