@@ -12,7 +12,9 @@ import com.dfsek.terra.biome.ImageBiomeProvider;
 import com.dfsek.terra.biome.StandardBiomeProvider;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
+import com.dfsek.terra.biome.pipeline.mutator.BorderListMutator;
 import com.dfsek.terra.biome.pipeline.mutator.BorderMutator;
+import com.dfsek.terra.biome.pipeline.mutator.ReplaceListMutator;
 import com.dfsek.terra.biome.pipeline.mutator.ReplaceMutator;
 import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
@@ -30,6 +32,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +49,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
     }
 
     @Override
-    public BiomeProvider.BiomeProviderBuilder load(Type t, Object c, ConfigLoader loader) throws LoadException {
+    public BiomeProvider.BiomeProviderBuilder load(Type t, Object c, ConfigLoader loader) throws LoadException { // TODO: clean this up
         Map<String, Object> map = (Map<String, Object>) c;
 
         int resolution = 1;
@@ -79,17 +82,40 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                                 pipelineBuilder.addStage(new ExpanderStage(new FractalExpander(mutatorNoise)));
                             else throw new LoadException("No such expander \"" + mutator.get("type"));
                         } else if(entry.getKey().equals("mutate")) {
-                            if(mutator.get("type").equals("SMOOTH"))
+                            if(mutator.get("type").equals("SMOOTH")) {
                                 pipelineBuilder.addStage(new MutatorStage(new SmoothMutator(mutatorNoise)));
-                            else if(mutator.get("type").equals("REPLACE")) {
+                            } else if(mutator.get("type").equals("REPLACE")) {
                                 String fromTag = mutator.get("from").toString();
                                 ProbabilityCollection<TerraBiome> replaceBiomes = new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"), loader);
+
                                 pipelineBuilder.addStage(new MutatorStage(new ReplaceMutator(fromTag, replaceBiomes, mutatorNoise)));
+                            } else if(mutator.get("type").equals("REPLACE_LIST")) {
+                                String fromTag = mutator.get("default-from").toString();
+                                ProbabilityCollection<TerraBiome> replaceBiomes = new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("default-to"), loader);
+
+                                Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace = new HashMap<>();
+                                for(Map.Entry<String, Object> e : ((Map<String, Object>) mutator.get("to")).entrySet()) {
+                                    replace.put((TerraBiome) loader.loadType(TerraBiome.class, e.getKey()), new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, e.getValue(), loader));
+                                }
+
+                                pipelineBuilder.addStage(new MutatorStage(new ReplaceListMutator(replace, fromTag, replaceBiomes, mutatorNoise)));
                             } else if(mutator.get("type").equals("BORDER")) {
                                 String fromTag = mutator.get("from").toString();
                                 String replaceTag = mutator.get("replace").toString();
-                                ProbabilityCollection<TerraBiome> replaceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"));
+                                ProbabilityCollection<TerraBiome> replaceBiomes = new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("to"), loader);
+
                                 pipelineBuilder.addStage(new MutatorStage(new BorderMutator(fromTag, replaceTag, mutatorNoise, replaceBiomes)));
+                            } else if(mutator.get("type").equals("BORDER_LIST")) {
+                                String fromTag = mutator.get("from").toString();
+                                String replaceTag = mutator.get("default-replace").toString();
+                                ProbabilityCollection<TerraBiome> replaceBiomes = new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, mutator.get("default-to"), loader);
+
+                                Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace = new HashMap<>();
+                                for(Map.Entry<String, Object> e : ((Map<String, Object>) mutator.get("replace")).entrySet()) {
+                                    replace.put((TerraBiome) loader.loadType(TerraBiome.class, e.getKey()), new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, e.getValue(), loader));
+                                }
+
+                                pipelineBuilder.addStage(new MutatorStage(new BorderListMutator(replace, fromTag, replaceTag, mutatorNoise, replaceBiomes)));
                             } else throw new LoadException("No such mutator type \"" + mutator.get("type"));
                         } else throw new LoadException("No such mutator \"" + entry.getKey() + "\"");
                     }
@@ -103,7 +129,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                 Map<String, Object> blend = (Map<String, Object>) map.get("blend");
                 if(blend.containsKey("amplitude")) builder.setNoiseAmp(Integer.parseInt(blend.get("amplitude").toString()));
                 if(blend.containsKey("noise"))
-                    builder.setBuilder(new NoiseBuilderLoader().load(NoiseBuilder.class, blend.get("noise"), loader));
+                    builder.setBlender(new NoiseBuilderLoader().load(NoiseBuilder.class, blend.get("noise"), loader));
             }
             return builder;
         } else if(map.get("type").equals("IMAGE")) {

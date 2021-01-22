@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class to abstract away the 16 Interpolators needed to generate a chunk.<br>
+ * Class to abstract away the Interpolators needed to generate a chunk.<br>
  * Contains method to get interpolated noise at a coordinate within the chunk.
  */
 public class ChunkInterpolator {
@@ -21,30 +21,25 @@ public class ChunkInterpolator {
      *
      * @param chunkX   X coordinate of the chunk.
      * @param chunkZ   Z coordinate of the chunk.
-     * @param provider BiomeGrid to use for noise fetching.
+     * @param provider Biome Provider to use for biome fetching.
      */
     public ChunkInterpolator(World w, int chunkX, int chunkZ, BiomeProvider provider) {
-        Generator[][] gens = new Generator[5][5];
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
-
-        for(int x = 0; x < 5; x++) {
-            for(int z = 0; z < 5; z++) {
-                gens[x][z] = provider.getBiome(xOrigin + (x * 4), zOrigin + (z * 4)).getGenerator(w);
-            }
-        }
 
         double[][][] noiseStorage = new double[5][5][65];
 
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                Generator generator = gens[x][z];
+                Generator generator = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2)).getGenerator(w);
                 Map<Generator, MutableInteger> genMap = new HashMap<>();
 
+                int step = generator.getBlendStep();
                 int blend = generator.getBlendDistance();
+
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
-                        genMap.computeIfAbsent(provider.getBiome(xOrigin + ((x + xi) << 2), zOrigin + ((z + zi) << 2)).getGenerator(w), g -> new MutableInteger(0)).add(); // Increment by 1
+                        genMap.computeIfAbsent(provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step)).getGenerator(w), g -> new MutableInteger(0)).increment(); // Increment by 1
                     }
                 }
 

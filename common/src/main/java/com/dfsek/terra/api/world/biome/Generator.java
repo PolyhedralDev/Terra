@@ -35,4 +35,6 @@ public interface Generator {
     NoiseSampler getBiomeNoise();
 
     double getElevationWeight();
+
+    int getBlendStep();
 }

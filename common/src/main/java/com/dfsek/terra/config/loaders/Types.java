@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,6 +24,7 @@ public final class Types {
     public static final Type FLORA_PROBABILITY_COLLECTION_TYPE;
     public static final Type TREE_PROBABILITY_COLLECTION_TYPE;
     public static final Type TERRA_BIOME_PROBABILITY_COLLECTION_TYPE;
+    public static final Type TERRA_BIOME_TERRA_BIOME_PROBABILITY_COLLECTION_MAP;
 
     static {
         MATERIAL_SET_TYPE = getType("materialSet");
@@ -32,6 +34,7 @@ public final class Types {
         FLORA_PROBABILITY_COLLECTION_TYPE = getType("floraProbabilityCollection");
         TREE_PROBABILITY_COLLECTION_TYPE = getType("treeProbabilityCollection");
         TERRA_BIOME_PROBABILITY_COLLECTION_TYPE = getType("terraBiomeProbabilityCollection");
+        TERRA_BIOME_TERRA_BIOME_PROBABILITY_COLLECTION_MAP = getType("terraBiomeProbabilityCollectionMap");
     }
 
     private Set<MaterialData> materialSet;
@@ -41,6 +44,7 @@ public final class Types {
     private ProbabilityCollection<Flora> floraProbabilityCollection;
     private ProbabilityCollection<Tree> treeProbabilityCollection;
     private ProbabilityCollection<TerraBiome> terraBiomeProbabilityCollection;
+    private Map<TerraBiome, ProbabilityCollection<TerraBiome>> terraBiomeProbabilityCollectionMap;
 
     private static Type getType(String dummyFieldName) {
         try {

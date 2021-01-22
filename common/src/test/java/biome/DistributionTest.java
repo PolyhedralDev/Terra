@@ -22,7 +22,6 @@ import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.registry.BiomeRegistry;
-import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +61,6 @@ public class DistributionTest {
         return template.getBiomeProviderBuilder().build(seed);
     }
 
-    @Test
     public static void main(String... args) throws ConfigException, IOException {
         Debug.setLogger(Logger.getLogger("Terra"));
         Debug.setDebug(true);

@@ -29,6 +29,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
         generatorBuilder.setElevationWeight(template.getElevationWeight());
         generatorBuilder.setBiomeNoise(template.getBiomeNoise());
         generatorBuilder.setBlendDistance(template.getBlendDistance());
+        generatorBuilder.setBlendStep(template.getBlendStep());
 
 
         return new UserDefinedBiome(template.getVanilla(), generatorBuilder, template);

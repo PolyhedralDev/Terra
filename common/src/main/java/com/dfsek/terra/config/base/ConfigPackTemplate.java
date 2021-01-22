@@ -21,18 +21,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private Map<String, Double> variables = new HashMap<>();
 
-    @Value("blend.enable")
-    @Default
-    private boolean blend = false;
-
-    @Value("blend.frequency")
-    @Default
-    private double blendFreq = 0.1;
-
-    @Value("blend.amplitude")
-    @Default
-    private double blendAmp = 4.0D;
-
     @Value("structures.locatable")
     @Default
     private Map<String, String> locatable = new HashMap<>();
@@ -132,18 +120,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
         return variables;
     }
 
-    public boolean isBlend() {
-        return blend;
-    }
-
-    public double getBlendFreq() {
-        return blendFreq;
-    }
-
-    public double getBlendAmp() {
-        return blendAmp;
-    }
-
     public boolean isErode() {
         return erode;
     }
@@ -159,7 +135,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     public int getErodeOctaves() {
         return erodeOctaves;
     }
-
 
     public int getElevationBlend() {
         return elevationBlend;

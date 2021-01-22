@@ -75,6 +75,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private int blendDistance = 3;
 
+    @Value("blend.step")
+    @Default
+    private int blendStep = 4;
+
     @Value("erode")
     @Abstractable
     @Default
@@ -282,6 +286,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public double getElevationWeight() {
         return elevationWeight;
+    }
+
+    public int getBlendStep() {
+        return blendStep;
     }
 
     @Override

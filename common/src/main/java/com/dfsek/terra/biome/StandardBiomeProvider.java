@@ -76,7 +76,7 @@ public class StandardBiomeProvider implements BiomeProvider {
             this.resolution = resolution;
         }
 
-        public void setBuilder(NoiseBuilder builder) {
+        public void setBlender(NoiseBuilder builder) {
             this.builder = builder;
         }
 

@@ -1,51 +1,39 @@
 package com.dfsek.terra.api.util.mutable;
 
-public class MutableInteger extends Number implements MutablePrimitive<Integer> {
-    private int value;
-
-    public MutableInteger() {
-
+public class MutableInteger extends MutableNumber<Integer> {
+    public MutableInteger(Integer value) {
+        super(value);
     }
 
-    public MutableInteger(int init) {
-        this.value = init;
-    }
-
-    @Override
-    public int intValue() {
-        return value;
-    }
-
-    @Override
-    public long longValue() {
-        return value;
-    }
-
-    @Override
-    public float floatValue() {
-        return value;
-    }
-
-    @Override
-    public double doubleValue() {
-        return value;
-    }
-
-    @Override
-    public Integer get() {
-        return value;
-    }
-
-    @Override
-    public void set(Integer value) {
-        this.value = value;
-    }
-
-    public void add() {
+    public void increment() {
         add(1);
     }
 
+    public void decrement() {
+        add(-1);
+    }
+
+    @Override
+    public void add(Integer add) {
+        value += add;
+    }
+
+    @Override
+    public void multiply(Integer mul) {
+        value *= mul;
+    }
+
+    @Override
+    public void subtract(Integer sub) {
+        value -= sub;
+    }
+
+    @Override
+    public void divide(Integer divide) {
+        value /= divide;
+    }
+
     public void add(int add) {
-        this.value += add;
+        value += add;
     }
 }
