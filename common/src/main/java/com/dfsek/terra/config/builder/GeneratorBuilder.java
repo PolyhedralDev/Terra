@@ -36,11 +36,17 @@ public class GeneratorBuilder {
 
     private double elevationWeight;
 
+    private int blendDistance;
+
 
     public WorldGenerator build(long seed) {
         synchronized(gens) {
-            return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base, biomeNoise.build((int) seed), elevationWeight));
+            return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance));
         }
+    }
+
+    public void setBlendDistance(int blendDistance) {
+        this.blendDistance = blendDistance;
     }
 
     public void setBiomeNoise(NoiseBuilder biomeNoise) {

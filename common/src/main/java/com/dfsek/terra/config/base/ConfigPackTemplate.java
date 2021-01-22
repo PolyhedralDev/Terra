@@ -2,18 +2,15 @@ package com.dfsek.terra.config.base;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ValidatedConfigTemplate;
-import com.dfsek.tectonic.exception.ValidationException;
-import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.generation.config.NoiseBuilder;
-import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ConfigPackTemplate implements ValidatedConfigTemplate {
+public class ConfigPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
 
@@ -35,10 +32,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
     @Value("blend.amplitude")
     @Default
     private double blendAmp = 4.0D;
-
-    @Value("blend.terrain.base")
-    @Default
-    private int baseBlend = 4;
 
     @Value("structures.locatable")
     @Default
@@ -167,9 +160,6 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
         return erodeOctaves;
     }
 
-    public int getBaseBlend() {
-        return baseBlend;
-    }
 
     public int getElevationBlend() {
         return elevationBlend;
@@ -177,13 +167,5 @@ public class ConfigPackTemplate implements ValidatedConfigTemplate {
 
     public Map<String, String> getLocatable() {
         return locatable;
-    }
-
-    @Override
-    public boolean validate() throws ValidationException {
-        if(!MathUtil.equals(FastMath.log(baseBlend) / FastMath.log(2d), FastMath.round(FastMath.log(baseBlend) / FastMath.log(2d)))) {
-            throw new ValidationException("Biome base blend value \"" + baseBlend + "\" is not a power of 2.");
-        }
-        return true;
     }
 }

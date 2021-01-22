@@ -70,6 +70,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     private NoiseBuilder biomeNoise = new NoiseBuilder();
 
+    @Value("blend.distance")
+    @Abstractable
+    @Default
+    private int blendDistance = 3;
+
     @Value("erode")
     @Abstractable
     @Default
@@ -163,6 +168,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public int getColor() {
         return color;
+    }
+
+    public int getBlendDistance() {
+        return blendDistance;
     }
 
     public boolean interpolateElevation() {

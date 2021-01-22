@@ -10,8 +10,8 @@ public class Sampler {
     private final ChunkInterpolator interpolator;
     private final ElevationInterpolator elevationInterpolator;
 
-    public Sampler(int x, int z, BiomeProvider provider, World world, int elevationSmooth, int generationSmooth) {
-        this.interpolator = new ChunkInterpolator(world, x, z, provider, generationSmooth);
+    public Sampler(int x, int z, BiomeProvider provider, World world, int elevationSmooth) {
+        this.interpolator = new ChunkInterpolator(world, x, z, provider);
         this.elevationInterpolator = new ElevationInterpolator(world, x, z, provider, elevationSmooth);
     }
 

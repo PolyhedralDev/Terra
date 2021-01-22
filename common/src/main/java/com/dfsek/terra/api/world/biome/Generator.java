@@ -13,9 +13,13 @@ public interface Generator {
      * @param z - The z coordinate.
      * @return double - Noise value at the specified coordinates.
      */
-    double getNoise(int x, int y, int z);
+    double getNoise(double x, double y, double z);
 
     double getElevation(int x, int z);
+
+    int getBlendDistance();
+
+    double getWeight();
 
     /**
      * Gets the BlocPalette to generate the biome with.

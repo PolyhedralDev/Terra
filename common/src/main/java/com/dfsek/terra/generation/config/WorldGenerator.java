@@ -29,21 +29,21 @@ public class WorldGenerator implements Generator {
     private final Variable zVar;
     private final Variable elevationXVar;
     private final Variable elevationZVar;
-    private final boolean elevationInterpolation;
     private final boolean noise2d;
     private final double base;
     private final NoiseSampler biomeNoise;
     private final double elevationWeight;
+    private final int blendDistance;
 
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean elevationInterpolation, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight, int blendDistance) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
 
-        this.elevationInterpolation = elevationInterpolation;
         this.noise2d = noise2d;
         this.base = base;
         this.biomeNoise = biomeNoise;
         this.elevationWeight = elevationWeight;
+        this.blendDistance = blendDistance;
 
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
@@ -96,7 +96,17 @@ public class WorldGenerator implements Generator {
     }
 
     @Override
-    public synchronized double getNoise(int x, int y, int z) {
+    public int getBlendDistance() {
+        return blendDistance;
+    }
+
+    @Override
+    public double getWeight() {
+        return 1;
+    }
+
+    @Override
+    public synchronized double getNoise(double x, double y, double z) {
         xVar.setValue(x);
         if(!noise2d) yVar.setValue(y);
         zVar.setValue(z);
