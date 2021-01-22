@@ -10,7 +10,7 @@ public class MutableInteger extends MutableNumber<Integer> {
     }
 
     public void decrement() {
-        add(-1);
+        subtract(1);
     }
 
     @Override

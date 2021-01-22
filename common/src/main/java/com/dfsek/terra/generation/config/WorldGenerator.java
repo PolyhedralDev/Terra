@@ -35,8 +35,9 @@ public class WorldGenerator implements Generator {
     private final double elevationWeight;
     private final int blendDistance;
     private final int blendStep;
+    private final double blendWeight;
 
-    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep) {
+    public WorldGenerator(long seed, String equation, String elevateEquation, Scope vScope, Map<String, NoiseBuilder> noiseBuilders, PaletteHolder palettes, PaletteHolder slantPalettes, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
 
@@ -46,6 +47,7 @@ public class WorldGenerator implements Generator {
         this.elevationWeight = elevationWeight;
         this.blendDistance = blendDistance;
         this.blendStep = blendStep;
+        this.blendWeight = blendWeight;
 
         Parser p = new Parser();
         p.registerFunction("rand", new RandomFunction());
@@ -104,7 +106,7 @@ public class WorldGenerator implements Generator {
 
     @Override
     public double getWeight() {
-        return 1;
+        return blendWeight;
     }
 
     @Override

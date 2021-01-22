@@ -75,7 +75,13 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private int blendDistance = 3;
 
+    @Value("blend.weight")
+    @Abstractable
+    @Default
+    private double blendWeight = 1;
+
     @Value("blend.step")
+    @Abstractable
     @Default
     private int blendStep = 4;
 
@@ -168,6 +174,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public Set<String> getTags() {
         return tags;
+    }
+
+    public double getBlendWeight() {
+        return blendWeight;
     }
 
     public int getColor() {
