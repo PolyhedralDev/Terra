@@ -6,7 +6,6 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
@@ -14,6 +13,7 @@ import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.population.items.TerraStructure;
+import com.dfsek.terra.profiler.ProfileFuture;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

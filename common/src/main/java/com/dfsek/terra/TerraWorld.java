@@ -4,27 +4,28 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.math.Sampler;
+import com.dfsek.terra.profiler.WorldProfiler;
 import net.jafama.FastMath;
 
 public class TerraWorld {
     private final BiomeProvider provider;
     private final ConfigPack config;
     private final boolean safe;
-    private final TerraProfiler profiler;
+    private final WorldProfiler profiler;
     private final World world;
     private final BlockData air;
 
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
         config = c;
-        profiler = new TerraProfiler(w);
+        profiler = new WorldProfiler(w);
         this.provider = config.getTemplate().getProviderBuilder().build(w.getSeed());
         this.world = w;
         air = main.getWorldHandle().createBlockData("minecraft:air");
@@ -51,7 +52,7 @@ public class TerraWorld {
         return safe;
     }
 
-    public TerraProfiler getProfiler() {
+    public WorldProfiler getProfiler() {
         return profiler;
     }
 

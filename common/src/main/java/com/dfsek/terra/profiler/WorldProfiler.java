@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.profiler;
+package com.dfsek.terra.profiler;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.google.common.collect.BiMap;
@@ -14,8 +14,14 @@ public class WorldProfiler {
 
     public WorldProfiler(World w) {
         if(w.getGenerator().getTerraGenerator() == null)
-            throw new IllegalArgumentException("Attempted to instantiate profiler on non-Gaea managed world!");
-        this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime");
+            throw new IllegalArgumentException("Attempted to instantiate profiler on non-Terra managed world!");
+        this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime")
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "FloraTime")
+                .addMeasurement(new Measurement(10000000, DataType.PERIOD_MILLISECONDS), "TreeTime")
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "OreTime")
+                .addMeasurement(new Measurement(5000000, DataType.PERIOD_MILLISECONDS), "CaveTime")
+                .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "StructureTime");
+        ;
         isProfiling = false;
         this.world = w;
     }
@@ -46,7 +52,7 @@ public class WorldProfiler {
         }
     }
 
-    public com.dfsek.terra.api.profiler.WorldProfiler addMeasurement(Measurement m, String name) {
+    public com.dfsek.terra.profiler.WorldProfiler addMeasurement(Measurement m, String name) {
         measures.put(name, m);
         return this;
     }

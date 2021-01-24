@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.platform.world.entity;
+package com.dfsek.terra.api.platform.entity;
 
 import com.dfsek.terra.api.platform.Handle;
 

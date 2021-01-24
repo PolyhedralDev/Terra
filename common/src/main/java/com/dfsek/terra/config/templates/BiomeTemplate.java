@@ -16,7 +16,6 @@ import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.SinglePalette;
-import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.population.items.TerraStructure;
@@ -27,7 +26,6 @@ import parsii.eval.Parser;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,10 +55,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("palette")
     @Abstractable
     private PaletteHolder palette;
+
     @Value("slant.palette")
     @Abstractable
     @Default
     private PaletteHolder slantPalette = null;
+
     @Value("vanilla")
     @Abstractable
     private ProbabilityCollection<Biome> vanilla;
@@ -89,25 +89,26 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     @Default
     private String erode = null;
+
     @Value("structures")
     @Abstractable
     @Default
     private List<TerraStructure> structures = new GlueList<>();
-    @Value("carving")
-    @Abstractable
-    @Default
-    private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();
+
     @Value("noise-equation")
     @Abstractable
     private String noiseEquation;
+
     @Value("ores")
     @Abstractable
     @Default
     private OreHolder oreHolder = new OreHolder();
+
     @Value("ocean.level")
     @Abstractable
     @Default
     private int seaLevel = 62;
+
     @Value("ocean.palette")
     @Abstractable
     @Default
@@ -272,10 +273,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public List<TerraStructure> getStructures() {
         return structures;
-    }
-
-    public Map<UserDefinedCarver, Integer> getCarvers() {
-        return carvers;
     }
 
     public String getNoiseEquation() {

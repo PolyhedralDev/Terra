@@ -251,8 +251,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         logger.setLevel(Level.INFO);
         instance = this;
 
-        ((FabricWorldHandle) worldHandle).setTreeTransformer(TREE_TRANSFORMER);
-
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();
         plugin.load(this);

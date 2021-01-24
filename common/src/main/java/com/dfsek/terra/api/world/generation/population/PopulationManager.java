@@ -4,12 +4,12 @@ import com.dfsek.terra.api.Gaea;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.profiler.ProfileFuture;
-import com.dfsek.terra.api.profiler.WorldProfiler;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.SerializationUtil;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
+import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.WorldProfiler;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

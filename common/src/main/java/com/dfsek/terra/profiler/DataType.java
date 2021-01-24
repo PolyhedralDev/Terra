@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.profiler;
+package com.dfsek.terra.profiler;
 
 import net.jafama.FastMath;
 

@@ -8,7 +8,6 @@ import com.dfsek.terra.api.math.noise.samplers.Normalizer;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.biome.palette.PaletteLayer;
-import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
@@ -18,7 +17,6 @@ import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.config.loaders.config.OreConfigLoader;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
-import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.generation.config.NoiseBuilder;
@@ -41,7 +39,6 @@ public class GenericLoaders implements LoaderRegistrar {
     public void register(TypeRegistry registry) {
         registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(Range.class, new RangeLoader())
-                .registerLoader(CarverPalette.class, new CarverPaletteLoader())
                 .registerLoader(GridSpawn.class, new GridSpawnLoader())
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayer.class, new PaletteLayerLoader())

@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.platform.block.state;
 
-import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.api.platform.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 public interface MobSpawner extends BlockState {

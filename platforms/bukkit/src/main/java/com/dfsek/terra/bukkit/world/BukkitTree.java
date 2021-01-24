@@ -4,7 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.Tree;
+import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.util.MaterialSet;
 import org.bukkit.TreeType;
 
@@ -39,11 +39,6 @@ public class BukkitTree implements Tree {
                 return MaterialSet.get(handle.createMaterialData("minecraft:grass_block"), handle.createMaterialData("minecraft:dirt"),
                         handle.createMaterialData("minecraft:podzol"));
         }
-    }
-
-    @Override
-    public TreeType getHandle() {
-        return delegate;
     }
 
     @Override

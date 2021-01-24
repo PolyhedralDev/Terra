@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.profiler;
+package com.dfsek.terra.profiler;
 
 /**
  * Class to hold a profiler data value. Contains formatting method to highlight value based on desired range.

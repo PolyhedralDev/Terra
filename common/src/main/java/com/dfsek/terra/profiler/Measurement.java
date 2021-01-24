@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.profiler;
+package com.dfsek.terra.profiler;
 
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.util.GlueList;

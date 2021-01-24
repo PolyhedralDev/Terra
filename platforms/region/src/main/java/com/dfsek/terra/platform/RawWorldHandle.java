@@ -3,9 +3,8 @@ package com.dfsek.terra.platform;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.Tree;
-import com.dfsek.terra.api.platform.world.entity.EntityType;
 
 public class RawWorldHandle implements WorldHandle {
     @Override
@@ -31,11 +30,6 @@ public class RawWorldHandle implements WorldHandle {
     @Override
     public MaterialData createMaterialData(String data) {
         return new Data(data);
-    }
-
-    @Override
-    public Tree getTree(String id) {
-        return new RawTree();
     }
 
     @Override

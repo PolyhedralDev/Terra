@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.platform.generator;
+package com.dfsek.terra.api.platform.world.generator;
 
 import com.dfsek.terra.api.platform.Handle;
 

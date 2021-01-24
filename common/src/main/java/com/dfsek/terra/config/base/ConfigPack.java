@@ -14,10 +14,8 @@ import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.biome.BiomeProvider;
-import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.exception.FileMissingException;
 import com.dfsek.terra.config.factories.BiomeFactory;
-import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
@@ -31,7 +29,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
@@ -41,7 +38,6 @@ import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.population.items.TerraStructure;
 import com.dfsek.terra.population.items.ores.Ore;
 import com.dfsek.terra.registry.BiomeRegistry;
-import com.dfsek.terra.registry.CarverRegistry;
 import com.dfsek.terra.registry.FloraRegistry;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.OreRegistry;
@@ -60,7 +56,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +73,6 @@ public class ConfigPack implements LoaderRegistrar {
 
     private final BiomeRegistry biomeRegistry = new BiomeRegistry();
     private final StructureRegistry structureRegistry = new StructureRegistry();
-    private final CarverRegistry carverRegistry = new CarverRegistry();
     private final PaletteRegistry paletteRegistry;
     private final FloraRegistry floraRegistry;
     private final OreRegistry oreRegistry = new OreRegistry();
@@ -156,6 +150,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     private void load(long start, TerraPlugin main) throws ConfigException {
+        main.packPreLoadCallback(this);
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey()).setValue(var.getValue());
         }
@@ -188,10 +183,10 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("structures/trees", ".yml").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
                 .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
                 .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
-                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
 
 
+        main.packPostLoadCallback(this);
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
     }
 
@@ -213,14 +208,6 @@ public class ConfigPack implements LoaderRegistrar {
 
     public Set<TerraStructure> getStructures() {
         return structureRegistry.entries();
-    }
-
-    public Collection<UserDefinedCarver> getCarvers() {
-        return carverRegistry.entries();
-    }
-
-    public UserDefinedCarver getCarver(String id) {
-        return carverRegistry.get(id);
     }
 
     public List<String> getStructureIDs() {
@@ -245,7 +232,6 @@ public class ConfigPack implements LoaderRegistrar {
         registry
                 .registerLoader(Palette.class, paletteRegistry)
                 .registerLoader(TerraBiome.class, biomeRegistry)
-                .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry)

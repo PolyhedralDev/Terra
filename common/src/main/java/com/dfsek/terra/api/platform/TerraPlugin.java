@@ -6,6 +6,7 @@ import com.dfsek.terra.api.language.Language;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.base.PluginConfig;
 import com.dfsek.terra.registry.ConfigRegistry;
 
@@ -38,4 +39,12 @@ public interface TerraPlugin extends LoaderRegistrar {
     void saveDefaultConfig();
 
     String platformName();
+
+    default void packPreLoadCallback(ConfigPack pack) {
+
+    }
+
+    default void packPostLoadCallback(ConfigPack pack) {
+
+    }
 }

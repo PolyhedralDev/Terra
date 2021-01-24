@@ -6,12 +6,12 @@ import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.profiler.ProfileFuture;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;

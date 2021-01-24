@@ -13,15 +13,31 @@ import com.dfsek.terra.api.platform.block.data.Stairs;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.transform.MapTransform;
+import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import org.bukkit.Location;
+import org.bukkit.TreeType;
 import org.bukkit.util.Vector;
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.
  */
 public final class BukkitAdapter {
+    public static Transformer<TreeType, String> TREE_TRANSFORMER = new Transformer.Builder<TreeType, String>()
+            .addTransform(new MapTransform<TreeType, String>()
+                    .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
+                    .add(TreeType.BIG_TREE, "LARGE_OAK")
+                    .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
+                    .add(TreeType.REDWOOD, "SPRUCE")
+                    .add(TreeType.TREE, "OAK")
+                    .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
+                    .add(TreeType.SWAMP, "SWAMP_OAK"))
+            .addTransform(TreeType::toString)
+            .build();
+
+
     public static Stairs.Shape adapt(org.bukkit.block.data.type.Stairs.Shape shape) {
         switch(shape) {
             case STRAIGHT:

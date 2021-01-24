@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.command.command.profile;
 
-import com.dfsek.terra.api.profiler.WorldProfiler;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.dfsek.terra.profiler.WorldProfiler;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

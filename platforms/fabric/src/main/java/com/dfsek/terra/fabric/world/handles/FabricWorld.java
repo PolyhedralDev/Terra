@@ -2,12 +2,11 @@ package com.dfsek.terra.fabric.world.handles;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.entity.Entity;
-import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.handles.chunk.FabricChunk;
 import net.minecraft.server.world.ServerWorld;
@@ -84,11 +83,6 @@ public class FabricWorld implements World {
     @Override
     public Block getBlockAt(Location l) {
         return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
-    }
-
-    @Override
-    public boolean generateTree(Location l, Tree vanillaTreeType) {
-        return false;
     }
 
     @Override

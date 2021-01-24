@@ -1,8 +1,9 @@
-package com.dfsek.terra.api.platform.generator;
+package com.dfsek.terra.api.platform.world.generator;
 
 import com.dfsek.terra.api.platform.Handle;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
+import com.dfsek.terra.api.platform.world.ChunkAccess;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,7 @@ public interface ChunkGenerator extends Handle {
     @Nullable
     TerraChunkGenerator getTerraGenerator();
 
-    interface ChunkData extends Handle {
+    interface ChunkData extends ChunkAccess {
         /**
          * Get the maximum height for the chunk.
          * <p>
