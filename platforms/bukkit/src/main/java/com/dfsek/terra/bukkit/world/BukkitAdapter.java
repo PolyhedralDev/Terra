@@ -4,6 +4,7 @@ package com.dfsek.terra.bukkit.world;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.Axis;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Bisected;
 import com.dfsek.terra.api.platform.block.data.Rail;
@@ -16,6 +17,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import org.bukkit.Location;
 import org.bukkit.TreeType;
@@ -53,6 +55,14 @@ public final class BukkitAdapter {
             default:
                 throw new IllegalStateException();
         }
+    }
+
+    public static BlockData adapt(org.bukkit.block.data.BlockData data) {
+        return BukkitBlockData.newInstance(data);
+    }
+
+    public static org.bukkit.block.data.BlockData adapt(BlockData data) {
+        return ((BukkitBlockData) data).getHandle();
     }
 
     public static Axis adapt(org.bukkit.Axis axis) {
