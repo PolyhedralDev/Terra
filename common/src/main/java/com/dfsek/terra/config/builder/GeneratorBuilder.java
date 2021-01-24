@@ -1,9 +1,13 @@
 package com.dfsek.terra.config.builder;
 
+import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
+import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.biome.palette.PaletteHolder;
 import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.generation.config.WorldGenerator;
 import parsii.eval.Scope;
+import parsii.tokenizer.ParseException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +48,17 @@ public class GeneratorBuilder {
 
     public WorldGenerator build(long seed) {
         synchronized(gens) {
-            return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight));
+            return gens.computeIfAbsent(seed, k -> {
+                NoiseSampler noise;
+                NoiseSampler elevation;
+                try {
+                    noise = new ExpressionSampler(noiseEquation, varScope, seed, noiseBuilderMap);
+                    elevation = elevationEquation == null ? new ConstantSampler(0) : new ExpressionSampler(elevationEquation, varScope, seed, noiseBuilderMap);
+                } catch(ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                return new WorldGenerator(palettes, slantPalettes, noise, elevation, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
+            });
         }
     }
 
