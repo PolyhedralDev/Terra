@@ -41,6 +41,7 @@ public class SelfProbabilityCollectionLoader<T> implements TypeLoader<Probabilit
 
     private void addItems(ConfigLoader loader, ProbabilityCollection<T> collection, Type generic, Map<Object, Integer> l) throws LoadException {
         for(Map.Entry<Object, Integer> entry : l.entrySet()) {
+            if(entry.getValue() == null) throw new LoadException("No probability defined for entry \"" + entry.getKey() + "\"");
             if(entry.getKey().toString().equals("SELF")) {
                 collection.add(null, entry.getValue()); // hmm maybe replace this with something better later
                 continue;

@@ -28,6 +28,7 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                 List<Map<Object, Integer>> map = (List<Map<Object, Integer>>) o;
                 for(Map<Object, Integer> l : map) {
                     for(Map.Entry<Object, Integer> entry : l.entrySet()) {
+                        if(entry.getValue() == null) throw new LoadException("No probability defined for entry \"" + entry.getKey() + "\"");
                         Object val = configLoader.loadType(generic, entry.getKey());
                         collection.add(val, entry.getValue());
                     }

@@ -68,7 +68,7 @@ public class NoiseBuilder implements ConfigTemplate {
 
     @Value("domain-warp.function")
     @Default
-    private NoiseBuilder domainWarp = null;
+    private NoiseBuilder domainWarp;
 
     @Value("rotation-type")
     @Default

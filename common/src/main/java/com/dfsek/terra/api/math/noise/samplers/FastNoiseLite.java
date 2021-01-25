@@ -637,6 +637,21 @@ public class FastNoiseLite implements NoiseSampler {
      */
     @Override
     public double getNoise(double x, double y) {
+        return getNoiseSeeded(mSeed, x, y);
+    }
+
+    /**
+     * 3D noise at given position using current settings
+     * <p>
+     * Noise output bounded between -1...1
+     */
+    @Override
+    public double getNoise(double x, double y, double z) {
+        return getNoiseSeeded(mSeed, x, y, z);
+    }
+
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y) {
         if(!mDomainWarpType.equals(DomainWarpType.None)) {
             Vector2 dWarp = new Vector2(x, y);
             domainWarp(dWarp);
@@ -664,23 +679,18 @@ public class FastNoiseLite implements NoiseSampler {
 
         switch(mFractalType) {
             default:
-                return getNoiseSeeded(mSeed, x, y);
+                return getNoiseRaw(seed, x, y);
             case FBm:
-                return genFractalFBm(x, y);
+                return genFractalFBm(seed, x, y);
             case Ridged:
-                return genFractalRidged(x, y);
+                return genFractalRidged(seed, x, y);
             case PingPong:
-                return genFractalPingPong(x, y);
+                return genFractalPingPong(seed, x, y);
         }
     }
 
-    /**
-     * 3D noise at given position using current settings
-     * <p>
-     * Noise output bounded between -1...1
-     */
     @Override
-    public double getNoise(double x, double y, double z) {
+    public double getNoiseSeeded(int seed, double x, double y, double z) {
         if(!mDomainWarpType.equals(DomainWarpType.None)) {
             Vector3 dWarp = new Vector3(x, y, z);
             domainWarp(dWarp);
@@ -736,60 +746,17 @@ public class FastNoiseLite implements NoiseSampler {
 
         switch(mFractalType) {
             default:
-                return getNoiseSeeded(mSeed, x, y, z);
+                return getNoiseRaw(seed, x, y, z);
             case FBm:
-                return genFractalFBm(x, y, z);
+                return genFractalFBm(seed, x, y, z);
             case Ridged:
-                return genFractalRidged(x, y, z);
+                return genFractalRidged(seed, x, y, z);
             case PingPong:
-                return genFractalPingPong(x, y, z);
+                return genFractalPingPong(seed, x, y, z);
         }
     }
 
-    /**
-     * 2D warps the input position using current domain warp settings
-     * <p>
-     * Example usage with GetNoise
-     * <code>DomainWarp(coord)
-     * noise = GetNoise(x, y)</code>
-     */
-    public void domainWarp(Vector2 coord) {
-        switch(mFractalType) {
-            default:
-                domainWarpSingle(coord);
-                break;
-            case DomainWarpProgressive:
-                domainWarpFractalProgressive(coord);
-                break;
-            case DomainWarpIndependent:
-                domainWarpFractalIndependent(coord);
-                break;
-        }
-    }
-
-    /**
-     * 3D warps the input position using current domain warp settings
-     * <p>
-     * Example usage with GetNoise
-     * <code>DomainWarp(coord)
-     * noise = GetNoise(x, y, z)</code>
-     */
-    public void domainWarp(Vector3 coord) {
-        switch(mFractalType) {
-            default:
-                domainWarpSingle(coord);
-                break;
-            case DomainWarpProgressive:
-                domainWarpFractalProgressive(coord);
-                break;
-            case DomainWarpIndependent:
-                domainWarpFractalIndependent(coord);
-                break;
-        }
-    }
-
-    @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         switch(mNoiseType) {
             case OpenSimplex2:
                 return singleSimplex(seed, x, y);
@@ -810,8 +777,7 @@ public class FastNoiseLite implements NoiseSampler {
         }
     }
 
-    @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         switch(mNoiseType) {
             case OpenSimplex2:
                 return singleOpenSimplex2(seed, x, y, z);
@@ -832,13 +798,54 @@ public class FastNoiseLite implements NoiseSampler {
         }
     }
 
-    private double genFractalFBm(double x, double y) {
-        int seed = mSeed;
+    /**
+     * 2D warps the input position using current domain warp settings
+     * <p>
+     * Example usage with GetNoise
+     * <code>DomainWarp(coord)
+     * noise = GetNoise(x, y)</code>
+     */
+    public void domainWarp(Vector2 coord) {
+        switch(mFractalType) {
+            default:
+                domainWarpSingle(mSeed, coord);
+                break;
+            case DomainWarpProgressive:
+                domainWarpFractalProgressive(mSeed, coord);
+                break;
+            case DomainWarpIndependent:
+                domainWarpFractalIndependent(mSeed, coord);
+                break;
+        }
+    }
+
+    /**
+     * 3D warps the input position using current domain warp settings
+     * <p>
+     * Example usage with GetNoise
+     * <code>DomainWarp(coord)
+     * noise = GetNoise(x, y, z)</code>
+     */
+    public void domainWarp(Vector3 coord) {
+        switch(mFractalType) {
+            default:
+                domainWarpSingle(mSeed, coord);
+                break;
+            case DomainWarpProgressive:
+                domainWarpFractalProgressive(mSeed, coord);
+                break;
+            case DomainWarpIndependent:
+                domainWarpFractalIndependent(mSeed, coord);
+                break;
+        }
+    }
+
+    private double genFractalFBm(int seed, double x, double y) {
         double sum = 0;
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = getNoiseSeeded(seed++, x, y);
+            double noise = getNoiseRaw(seed++, x, y);
             sum += noise * amp;
             amp *= lerp(1.0, fastMin(noise + 1, 2) * 0.5, mWeightedStrength);
 
@@ -850,13 +857,12 @@ public class FastNoiseLite implements NoiseSampler {
         return sum;
     }
 
-    private double genFractalFBm(double x, double y, double z) {
-        int seed = mSeed;
+    private double genFractalFBm(int seed, double x, double y, double z) {
         double sum = 0;
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = getNoiseSeeded(seed++, x, y, z);
+            double noise = getNoiseRaw(seed++, x, y, z);
             sum += noise * amp;
             amp *= lerp(1.0, (noise + 1) * 0.5, mWeightedStrength);
 
@@ -869,13 +875,12 @@ public class FastNoiseLite implements NoiseSampler {
         return sum;
     }
 
-    private double genFractalRidged(double x, double y) {
-        int seed = mSeed;
+    private double genFractalRidged(int seed, double x, double y) {
         double sum = 0;
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = fastAbs(getNoiseSeeded(seed++, x, y));
+            double noise = fastAbs(getNoiseRaw(seed++, x, y));
             sum += (noise * -2 + 1) * amp;
             amp *= lerp(1.0, 1 - noise, mWeightedStrength);
 
@@ -888,13 +893,12 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     // Generic noise gen
-    private double genFractalRidged(double x, double y, double z) {
-        int seed = mSeed;
+    private double genFractalRidged(int seed, double x, double y, double z) {
         double sum = 0;
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = fastAbs(getNoiseSeeded(seed++, x, y, z));
+            double noise = fastAbs(getNoiseRaw(seed++, x, y, z));
             sum += (noise * -2 + 1) * amp;
             amp *= lerp(1.0, 1 - noise, mWeightedStrength);
 
@@ -907,13 +911,12 @@ public class FastNoiseLite implements NoiseSampler {
         return sum;
     }
 
-    private double genFractalPingPong(double x, double y) {
-        int seed = mSeed;
+    private double genFractalPingPong(int seed, double x, double y) {
         double sum = 0;
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((getNoiseSeeded(seed++, x, y) + 1) * mPingPongStrength);
+            double noise = pingPong((getNoiseRaw(seed++, x, y) + 1) * mPingPongStrength);
             sum += (noise - 0.5) * 2 * amp;
             amp *= lerp(1.0, noise, mWeightedStrength);
 
@@ -926,13 +929,12 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     // Noise Coordinate Transforms (frequency, and possible skew or rotation)
-    private double genFractalPingPong(double x, double y, double z) {
-        int seed = mSeed;
+    private double genFractalPingPong(int seed, double x, double y, double z) {
         double sum = 0;
         double amp = mFractalBounding;
 
         for(int i = 0; i < mOctaves; i++) {
-            double noise = pingPong((getNoiseSeeded(seed++, x, y, z) + 1) * mPingPongStrength);
+            double noise = pingPong((getNoiseRaw(seed++, x, y, z) + 1) * mPingPongStrength);
             sum += (noise - 0.5) * 2 * amp;
             amp *= lerp(1.0, noise, mWeightedStrength);
 
@@ -1919,23 +1921,17 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     private void singleFunctionDomainWarp(int seed, double amp, double x, double y, double freq, Vector2 coord) {
-        x *= freq;
-        y *= freq;
         coord.add(domainWarpFunction.getNoiseSeeded(seed + 1, x, y) * amp,
                 domainWarpFunction.getNoiseSeeded(seed + 2, x, y) * amp);
     }
 
     private void singleFunctionDomainWarp(int seed, double amp, double x, double y, double z, double freq, Vector3 coord) {
-        x *= freq;
-        y *= freq;
-        z *= freq;
         coord.add(domainWarpFunction.getNoiseSeeded(seed + 1, x, y, z) * amp,
                 domainWarpFunction.getNoiseSeeded(seed + 3, x, y, z) * amp,
                 domainWarpFunction.getNoiseSeeded(seed + 2, x, y, z) * amp);
     }
 
-    private void domainWarpSingle(Vector2 coord) {
-        int seed = mSeed;
+    private void domainWarpSingle(int seed, Vector2 coord) {
         double amp = mDomainWarpAmp * mFractalBounding;
         double freq = mFrequency;
 
@@ -1963,8 +1959,7 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     // Value Cubic Noise
-    private void domainWarpSingle(Vector3 coord) {
-        int seed = mSeed;
+    private void domainWarpSingle(int seed, Vector3 coord) {
         double amp = mDomainWarpAmp * mFractalBounding;
         double freq = mFrequency;
 
@@ -2018,8 +2013,7 @@ public class FastNoiseLite implements NoiseSampler {
         doSingleDomainWarp(seed, amp, freq, xs, ys, zs, coord);
     }
 
-    private void domainWarpFractalProgressive(Vector2 coord) {
-        int seed = mSeed;
+    private void domainWarpFractalProgressive(int seed, Vector2 coord) {
         double amp = mDomainWarpAmp * mFractalBounding;
         double freq = mFrequency;
 
@@ -2053,8 +2047,7 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     // Value Noise
-    private void domainWarpFractalProgressive(Vector3 coord) {
-        int seed = mSeed;
+    private void domainWarpFractalProgressive(int seed, Vector3 coord) {
         double amp = mDomainWarpAmp * mFractalBounding;
         double freq = mFrequency;
 
@@ -2115,7 +2108,7 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     // Domain Warp Fractal Independant
-    private void domainWarpFractalIndependent(Vector2 coord) {
+    private void domainWarpFractalIndependent(int seed, Vector2 coord) {
 
         double xs = coord.getX();
 
@@ -2136,7 +2129,6 @@ public class FastNoiseLite implements NoiseSampler {
                 break;
         }
 
-        int seed = mSeed;
         double amp = mDomainWarpAmp * mFractalBounding;
         double freq = mFrequency;
 
@@ -2150,7 +2142,7 @@ public class FastNoiseLite implements NoiseSampler {
     }
 
     // Domain Warp
-    private void domainWarpFractalIndependent(Vector3 coord) {
+    private void domainWarpFractalIndependent(int seed, Vector3 coord) {
 
         double xs = coord.getX();
 
@@ -2198,7 +2190,6 @@ public class FastNoiseLite implements NoiseSampler {
                 break;
         }
 
-        int seed = mSeed;
         double amp = mDomainWarpAmp * mFractalBounding;
         double freq = mFrequency;
 
