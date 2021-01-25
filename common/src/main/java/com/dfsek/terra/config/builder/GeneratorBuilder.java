@@ -20,6 +20,8 @@ public class GeneratorBuilder {
 
     private String elevationEquation;
 
+    private String carvingEquation;
+
     private Scope varScope;
 
     private Map<String, NoiseBuilder> noiseBuilderMap;
@@ -51,13 +53,15 @@ public class GeneratorBuilder {
             return gens.computeIfAbsent(seed, k -> {
                 NoiseSampler noise;
                 NoiseSampler elevation;
+                NoiseSampler carving;
                 try {
                     noise = new ExpressionSampler(noiseEquation, varScope, seed, noiseBuilderMap);
                     elevation = elevationEquation == null ? new ConstantSampler(0) : new ExpressionSampler(elevationEquation, varScope, seed, noiseBuilderMap);
+                    carving = new ExpressionSampler(carvingEquation, varScope, seed, noiseBuilderMap);
                 } catch(ParseException e) {
                     throw new RuntimeException(e);
                 }
-                return new WorldGenerator(palettes, slantPalettes, noise, elevation, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
+                return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
             });
         }
     }
@@ -112,6 +116,10 @@ public class GeneratorBuilder {
 
     public void setElevationEquation(String elevationEquation) {
         this.elevationEquation = elevationEquation;
+    }
+
+    public void setCarvingEquation(String carvingEquation) {
+        this.carvingEquation = carvingEquation;
     }
 
     public Scope getVarScope() {

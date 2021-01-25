@@ -42,6 +42,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private String extend = null;
 
+    @Value("carving.equation")
+    @Abstractable
+    @Default
+    private String carvingEquation = "0";
+
     @Value("noise-2d.enable")
     @Default
     @Abstractable
@@ -235,6 +240,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return elevationEquation;
     }
 
+    public String getCarvingEquation() {
+        return carvingEquation;
+    }
+
     public ConfigPack getPack() {
         return pack;
     }
@@ -315,6 +324,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
             tester.parse(noiseEquation, testScope);
         } catch(ParseException e) {
             throw new ValidationException("Invalid noise equation: ", e);
+        }
+
+        try {
+            tester.parse(carvingEquation, testScope);
+        } catch(ParseException e) {
+            throw new ValidationException("Invalid carving equation: ", e);
         }
 
         try {

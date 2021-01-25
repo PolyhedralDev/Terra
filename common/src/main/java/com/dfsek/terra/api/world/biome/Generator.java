@@ -6,16 +6,25 @@ import com.dfsek.terra.api.world.palette.Palette;
 
 public interface Generator {
     /**
-     * Gets the 3D noise at a pair of coordinates using the provided FastNoiseLite instance.
+     * Gets the noise sampler instance to use for base terrain.
      *
-     * @param x - The x coordinate.
-     * @param y - The y coordinate.
-     * @param z - The z coordinate.
-     * @return double - Noise value at the specified coordinates.
+     * @return NoiseSampler for terrain
      */
-    double getNoise(double x, double y, double z);
+    NoiseSampler getBaseSampler();
 
-    double getElevation(int x, int z);
+    /**
+     * Gets the noise sampler to use for elevation
+     *
+     * @return NoiseSampler for elevation.
+     */
+    NoiseSampler getElevationSampler();
+
+    /**
+     * Gets the noise sampler to use for carving.
+     *
+     * @return NoiseSampler for carving.
+     */
+    NoiseSampler getCarver();
 
     int getBlendDistance();
 

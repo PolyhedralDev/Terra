@@ -14,6 +14,7 @@ public class WorldGenerator implements Generator {
 
     private final NoiseSampler noise;
     private final NoiseSampler elevation;
+    private final NoiseSampler carving;
 
     private final boolean noise2d;
     private final double base;
@@ -23,11 +24,12 @@ public class WorldGenerator implements Generator {
     private final int blendStep;
     private final double blendWeight;
 
-    public WorldGenerator(PaletteHolder palettes, PaletteHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
+    public WorldGenerator(PaletteHolder palettes, PaletteHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
         this.noise = noise;
         this.elevation = elevation;
+        this.carving = carving;
 
         this.noise2d = noise2d;
         this.base = base;
@@ -39,8 +41,18 @@ public class WorldGenerator implements Generator {
     }
 
     @Override
-    public synchronized double getElevation(int x, int z) {
-        return elevation.getNoise(x, z);
+    public NoiseSampler getBaseSampler() {
+        return noise;
+    }
+
+    @Override
+    public NoiseSampler getElevationSampler() {
+        return elevation;
+    }
+
+    @Override
+    public NoiseSampler getCarver() {
+        return carving;
     }
 
     @Override
@@ -51,11 +63,6 @@ public class WorldGenerator implements Generator {
     @Override
     public double getWeight() {
         return blendWeight;
-    }
-
-    @Override
-    public synchronized double getNoise(double x, double y, double z) {
-        return noise.getNoise(x, y, z);
     }
 
     /**

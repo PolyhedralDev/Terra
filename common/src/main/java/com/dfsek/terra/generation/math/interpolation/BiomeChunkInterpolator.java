@@ -1,5 +1,6 @@
 package com.dfsek.terra.generation.math.interpolation;
 
+import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.api.world.biome.Generator;
@@ -8,6 +9,7 @@ import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Class to abstract away the Interpolators needed to generate a chunk.<br>
@@ -15,6 +17,7 @@ import java.util.Map;
  */
 public class BiomeChunkInterpolator implements ChunkInterpolator {
     private final Interpolator3[][][] interpGrid = new Interpolator3[4][64][4];
+    private final BiFunction<Generator, Vector3, Double> noiseGetter;
 
     /**
      * Instantiates a 3D BiomeChunkInterpolator at a pair of chunk coordinates.
@@ -23,7 +26,8 @@ public class BiomeChunkInterpolator implements ChunkInterpolator {
      * @param chunkZ   Z coordinate of the chunk.
      * @param provider Biome Provider to use for biome fetching.
      */
-    public BiomeChunkInterpolator(World w, int chunkX, int chunkZ, BiomeProvider provider) {
+    public BiomeChunkInterpolator(World w, int chunkX, int chunkZ, BiomeProvider provider, BiFunction<Generator, Vector3, Double> noiseGetter) {
+        this.noiseGetter = noiseGetter;
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
 
@@ -66,7 +70,7 @@ public class BiomeChunkInterpolator implements ChunkInterpolator {
         }
     }
 
-    private static double computeNoise(Map<Generator, MutableInteger> gens, double x, double y, double z) {
+    private double computeNoise(Map<Generator, MutableInteger> gens, double x, double y, double z) {
         double n = 0;
         double div = 0;
         for(Map.Entry<Generator, MutableInteger> entry : gens.entrySet()) {
@@ -80,17 +84,12 @@ public class BiomeChunkInterpolator implements ChunkInterpolator {
         return n / div;
     }
 
-    private static double computeNoise(Generator generator, double x, double y, double z) {
-        if(generator.is2d()) return generator.getNoise(x, 0, z) + noise2dExtrude(y, generator.get2dBase());
-        else return generator.getNoise(x, y, z);
+    private double computeNoise(Generator generator, double x, double y, double z) {
+        return noiseGetter.apply(generator, new Vector3(x, y, z));
     }
 
     private static int reRange(int value, int high) {
         return FastMath.max(FastMath.min(value, high), 0);
-    }
-
-    private static double noise2dExtrude(double y, double base) {
-        return ((-FastMath.pow2((y / base))) + 1);
     }
 
     /**

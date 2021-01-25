@@ -19,6 +19,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
         GeneratorBuilder generatorBuilder = new GeneratorBuilder();
         generatorBuilder.setElevationEquation(template.getElevationEquation());
         generatorBuilder.setNoiseEquation(template.getNoiseEquation());
+        generatorBuilder.setCarvingEquation(template.getCarvingEquation());
         generatorBuilder.setNoiseBuilderMap(template.getPack().getTemplate().getNoiseBuilderMap());
         generatorBuilder.setPalettes(template.getPalette());
         generatorBuilder.setSlantPalettes(template.getSlantPalette());

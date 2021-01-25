@@ -1351,6 +1351,8 @@ public class FastNoiseLite implements NoiseSampler {
 
         double distance0 = Double.MAX_VALUE;
         double distance1 = Double.MAX_VALUE;
+        double distance2 = Double.MAX_VALUE;
+
         int closestHash = 0;
 
         double cellularJitter = 0.43701595 * mCellularJitterModifier;
@@ -1382,6 +1384,11 @@ public class FastNoiseLite implements NoiseSampler {
                             closestHash = hash;
                             center.setX((xi + RAND_VECS_2D[idx] * cellularJitter) / mFrequency);
                             center.setZ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / mFrequency);
+                        } else if(newDistance < distance1) {
+                            distance2 = distance1;
+                            distance1 = newDistance;
+                        } else if(newDistance < distance2) {
+                            distance2 = newDistance;
                         }
                         yPrimed += PRIME_Y;
                     }
@@ -1407,6 +1414,11 @@ public class FastNoiseLite implements NoiseSampler {
                             closestHash = hash;
                             center.setX((xi + RAND_VECS_2D[idx] * cellularJitter) / mFrequency);
                             center.setZ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / mFrequency);
+                        } else if(newDistance < distance1) {
+                            distance2 = distance1;
+                            distance1 = newDistance;
+                        } else if(newDistance < distance2) {
+                            distance2 = newDistance;
                         }
                         yPrimed += PRIME_Y;
                     }
@@ -1432,6 +1444,11 @@ public class FastNoiseLite implements NoiseSampler {
                             closestHash = hash;
                             center.setX((xi + RAND_VECS_2D[idx] * cellularJitter) / mFrequency);
                             center.setZ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / mFrequency);
+                        } else if(newDistance < distance1) {
+                            distance2 = distance1;
+                            distance1 = newDistance;
+                        } else if(newDistance < distance2) {
+                            distance2 = newDistance;
                         }
                         yPrimed += PRIME_Y;
                     }
@@ -1464,6 +1481,8 @@ public class FastNoiseLite implements NoiseSampler {
                 return distance0 / distance1 - 1;
             case NoiseLookup:
                 return cellularNoiseLookup.getNoise(center.getX(), center.getZ());
+            case Distance3Div:
+                return distance0 / distance2 - 1;
             default:
                 return 0;
         }
@@ -1477,6 +1496,7 @@ public class FastNoiseLite implements NoiseSampler {
 
         double distance0 = Double.MAX_VALUE;
         double distance1 = Double.MAX_VALUE;
+        double distance2 = Double.MAX_VALUE;
         int closestHash = 0;
 
         double cellularJitter = 0.39614353 * mCellularJitterModifier;
@@ -1506,13 +1526,17 @@ public class FastNoiseLite implements NoiseSampler {
 
                             double newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
 
-                            distance1 = fastMax(fastMin(distance1, newDistance), distance0);
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
                                 center.setX((xi + RAND_VECS_3D[idx] * cellularJitter) / mFrequency);
                                 center.setY((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / mFrequency);
                                 center.setZ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / mFrequency);
+                            } else if(newDistance < distance1) {
+                                distance2 = distance1;
+                                distance1 = newDistance;
+                            } else if(newDistance < distance2) {
+                                distance2 = newDistance;
                             }
                             zPrimed += PRIME_Z;
                         }
@@ -1538,13 +1562,17 @@ public class FastNoiseLite implements NoiseSampler {
 
                             double newDistance = fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ);
 
-                            distance1 = fastMax(fastMin(distance1, newDistance), distance0);
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
                                 center.setX((xi + RAND_VECS_3D[idx] * cellularJitter) / mFrequency);
                                 center.setY((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / mFrequency);
                                 center.setZ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / mFrequency);
+                            } else if(newDistance < distance1) {
+                                distance2 = distance1;
+                                distance1 = newDistance;
+                            } else if(newDistance < distance2) {
+                                distance2 = newDistance;
                             }
                             zPrimed += PRIME_Z;
                         }
@@ -1578,6 +1606,11 @@ public class FastNoiseLite implements NoiseSampler {
                                 center.setX((xi + RAND_VECS_3D[idx] * cellularJitter) / mFrequency);
                                 center.setY((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / mFrequency);
                                 center.setZ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / mFrequency);
+                            } else if(newDistance < distance1) {
+                                distance2 = distance1;
+                                distance1 = newDistance;
+                            } else if(newDistance < distance2) {
+                                distance2 = newDistance;
                             }
                             zPrimed += PRIME_Z;
                         }
@@ -1614,6 +1647,8 @@ public class FastNoiseLite implements NoiseSampler {
                 return distance0 / distance1 - 1;
             case NoiseLookup:
                 return cellularNoiseLookup.getNoise(center.getX(), center.getY(), center.getZ());
+            case Distance3Div:
+                return distance0 / distance2 - 1;
             default:
                 return 0;
         }
@@ -2603,7 +2638,8 @@ public class FastNoiseLite implements NoiseSampler {
         Distance2Sub,
         Distance2Mul,
         Distance2Div,
-        NoiseLookup
+        NoiseLookup,
+        Distance3Div
     }
 
 
