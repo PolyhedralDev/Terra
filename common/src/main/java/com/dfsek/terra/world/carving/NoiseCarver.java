@@ -22,11 +22,11 @@ public class NoiseCarver implements Carver {
 
     @Override
     public void carve(World world, int chunkX, int chunkZ, ChunkAccess chunk) {
-        ChunkInterpolator interpolator = new BiomeChunkInterpolator(world, chunkX, chunkZ, main.getWorld(world).getBiomeProvider(), (gen, coord) -> gen.getCarver().getNoise(coord.setY(coord.getY() / 2)));
+        ChunkInterpolator interpolator = new BiomeChunkInterpolator(world, chunkX, chunkZ, main.getWorld(world).getBiomeProvider(), (gen, coord) -> gen.getCarver().getNoise(coord.setY(coord.getY())));
         for(int y : range) {
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-                    double n = interpolator.getNoise(x, y * 2d, z);
+                    double n = interpolator.getNoise(x, y, z);
                     if(n > 0) chunk.setBlock(x, y, z, data);
                 }
             }

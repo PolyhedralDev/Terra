@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.language;
+package com.dfsek.terra.config.lang;
 
 
 import com.dfsek.terra.api.platform.CommandSender;

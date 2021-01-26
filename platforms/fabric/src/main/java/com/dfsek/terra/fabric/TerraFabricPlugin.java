@@ -2,7 +2,6 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.language.Language;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -15,6 +14,7 @@ import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
