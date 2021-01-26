@@ -5,12 +5,14 @@ enable:
 disable:
   - "Terraをご利用いただきありがとうございます！"
 command:
+  debug-only: "このコマンドは、デバッグモードを有効にして使用する必要があります。"
   player-only: "このコマンドはプレイヤー専用です！"
-  terra-world: "このコマンドはTerraのワールドで実行する必要があります!"
-  invalid: "無効なコマンド(期待される %1$s 引数、%2$s が見つかりました。)"
+  invalid: "Invalid command. (Expected %1$s arguments, found %2$s)."
   players-only: "コマンドはプレイヤー専用です。"
   world: "このコマンドはTerraのワールドで実行する必要があります!"
   reload: "Terraの設定を再読み込みしました。"
+  reload-error: "Terraの設定の再ロード中にエラーが発生しました。詳細はログを参照してください。"
+  version: "このサーバーでは Terraバージョン\"%1$s\" が実行されており、プラットフォームは \"%2$s\" です。"
   main-menu:
     - "--------------------Terra--------------------"
     - "reload    - 設定データを再読み込み"
@@ -26,6 +28,10 @@ command:
     invalid-radius: "無効な半径: \"%s\""
     invalid: "無効なバイオームID: \"%s\""
     in: "あなたは \"%s\" にいます。"
+  packs:
+    main: "現在インストールされているコンフィグパック:"
+    pack: " - %1$s v%3$s by %2$s"
+    none: "コンフィグパックはインストールされていません。"
   ore:
     main-menu:
       - "---------------Terra/ore---------------"
@@ -77,10 +83,11 @@ command:
       - "export - 現在のWorldEditの選択範囲をTerraストラクチャーとしてエクスポート"
       - "load   - Terraストラクチャーを読み込む"
     invalid-radius: "無効な半径: \"%s\""
+    invalid-rotation: "無効な回転: \"%s\""
     invalid: "無効なストラクチャーID: \"%s\""
     export: "\"%s\" にストラクチャーを保存"
 world-config:
-  loading: "ワールド %s のワールド設定を読込中..."
+  load: "ワールド \"%s\" のワールド設定値を読み込み中..."
   not-found: "ワールド \"%s\" の設定が見つかりませんでした。デフォルトの設定をコピーします。"
   using-image: "画像からワールドを読み込みます。"
   error: "ワールド %s の設定を読み込めませんでした"
@@ -91,6 +98,7 @@ config:
   loaded: "ファイル %2$s から %1$s を読み込まれました。"
   loaded-all: "%3$sms で %1$s %2$s で読み込まれました。"
   error:
+    invalid-failover: "無効なフェイルオーバータイプ: \"%s\""
     duplicate: "ファイルに重複したIDが見つかりました: %s"
     file:
       - "Terraオブジェクトに設定エラーがあります。ファイル: %1$s"
@@ -105,3 +113,10 @@ error:
   severe-config: "重大な設定エラーによりTerraが正しく地形を生成できません。座標: %1$s, %2$s エラーがないか設定をチェックしてください。設定エラーは上記で報告されています。"
 debug:
   data-save: "ワールド \"%s\" のデータを保存"
+use-paper:
+  - "Spigot/CraftBukkitを使用していています。"
+  - "TerraはSpigot上で&o動作します&rが、いくつかの機能は使用できません。(TerraはCraftBukkitではテストされていません。CraftBukkitはサポートされません)。"
+  - "Terraを最大限活用するにはPaperに切り替えてください。"
+  - "さらに、PaperはSpigotよりもパフォーマンスが大幅に向上しており、すべてのSpigotプラグインはPaperで動作するはずです。"
+  - "Terraとすべてのプラグインで最高の体験をするためには、Paperをご利用ください。"
+  - "詳細については、Paperのウェブサイトをご覧ください: https://papermc.io/"
