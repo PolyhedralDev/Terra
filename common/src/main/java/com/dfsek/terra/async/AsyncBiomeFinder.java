@@ -1,10 +1,10 @@
 package com.dfsek.terra.async;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.BiomeProvider;
+import com.dfsek.terra.biome.TerraBiome;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;

@@ -1,20 +1,22 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.api.GenericLoaders;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.language.Language;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.config.base.PluginConfig;
+import com.dfsek.terra.config.GenericLoaders;
+import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.world.TerraWorld;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,6 +94,11 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public String platformName() {
         return "Standalone";
+    }
+
+    @Override
+    public DebugLogger getDebugLogger() {
+        return new DebugLogger(Logger.getLogger("Terra"));
     }
 
     @Override

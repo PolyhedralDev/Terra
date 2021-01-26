@@ -62,7 +62,7 @@ public abstract class Palette<E> {
         private E m;
 
         /**
-         * Constructs a PaletteLayer with a ProbabilityCollection of materials and a number of layers.
+         * Constructs a PaletteLayerHolder with a ProbabilityCollection of materials and a number of layers.
          *
          * @param type    The collection of materials to choose from.
          * @param sampler Noise sampler to use
@@ -74,7 +74,7 @@ public abstract class Palette<E> {
         }
 
         /**
-         * Constructs a PaletteLayer with a single Material and a number of layers.
+         * Constructs a PaletteLayerHolder with a single Material and a number of layers.
          *
          * @param type    The material to use.
          * @param sampler Noise sampler to use

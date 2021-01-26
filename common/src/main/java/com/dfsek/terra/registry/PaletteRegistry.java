@@ -1,9 +1,9 @@
 package com.dfsek.terra.registry;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.biome.palette.SinglePalette;
+import com.dfsek.terra.api.world.palette.SinglePalette;
 
 public class PaletteRegistry extends TerraRegistry<Palette<BlockData>> {
     private final TerraPlugin main;

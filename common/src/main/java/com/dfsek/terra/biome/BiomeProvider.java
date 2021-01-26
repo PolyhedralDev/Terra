@@ -3,7 +3,6 @@ package com.dfsek.terra.biome;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public interface BiomeProvider {
     TerraBiome getBiome(int x, int z);

@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
@@ -28,10 +28,9 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
+import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
@@ -75,7 +74,7 @@ public class StructureScript {
                 .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(), Returnable.ReturnType.NUMBER))
                 .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(), Returnable.ReturnType.STRING))
                 .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(), Returnable.ReturnType.NUMBER))
-                .registerFunction("print", new UnaryStringFunctionBuilder(string -> Debug.info("[" + tempID + "] " + string)))
+                .registerFunction("print", new UnaryStringFunctionBuilder(string -> main.getDebugLogger().info("[" + tempID + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
@@ -149,7 +148,7 @@ public class StructureScript {
                 return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
             } catch(RuntimeException e) {
                 main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
-                Debug.stack(e);
+                main.getDebugLogger().stack(e);
                 return false;
             }
         }

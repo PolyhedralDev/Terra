@@ -11,13 +11,12 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.ImageBiomeProvider;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.files.FolderLoader;
+import com.dfsek.terra.biome.TerraBiome;
+import com.dfsek.terra.config.fileloaders.FolderLoader;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
-import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.registry.TerraRegistry;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +35,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 public class ImageTest {
     private static ImageBiomeProvider getProvider(long seed) throws ConfigException, IOException {
@@ -55,8 +53,6 @@ public class ImageTest {
 
     @Test
     public static void main(String... args) throws ConfigException, IOException {
-        Debug.setLogger(Logger.getLogger("Terra"));
-        Debug.setDebug(true);
         JFrame testFrame = new JFrame("Biome Viewer");
 
 

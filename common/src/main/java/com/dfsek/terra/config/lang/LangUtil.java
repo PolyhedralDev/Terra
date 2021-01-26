@@ -1,9 +1,8 @@
 package com.dfsek.terra.config.lang;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.language.Language;
 import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.debug.Debug;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +23,8 @@ public final class LangUtil {
         try(JarFile jar = new JarFile(new File(TerraPlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
             copyResourcesToDirectory(jar, "lang", file.toString());
         } catch(IOException | URISyntaxException e) {
-            Debug.error("Failed to dump language files!");
-            e.printStackTrace();
-            Debug.error("Report this to Terra!");
+            main.getDebugLogger().error("Failed to dump language files!");
+            main.getDebugLogger().stack(e);
         }
         try {
             File file1 = new File(file, langID + ".yml");

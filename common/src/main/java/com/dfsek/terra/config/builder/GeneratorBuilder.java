@@ -3,9 +3,9 @@ package com.dfsek.terra.config.builder;
 import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
 import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.biome.palette.PaletteHolder;
-import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.generation.config.WorldGenerator;
+import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.world.generation.WorldGenerator;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
 

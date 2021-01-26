@@ -1,14 +1,14 @@
 package com.dfsek.terra.async;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.population.items.TerraStructure;
+import com.dfsek.terra.world.population.items.TerraStructure;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

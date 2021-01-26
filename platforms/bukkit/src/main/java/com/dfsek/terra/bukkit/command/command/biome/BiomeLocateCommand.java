@@ -1,13 +1,13 @@
 package com.dfsek.terra.bukkit.command.command.biome;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.async.AsyncBiomeFinder;
+import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.world.TerraWorld;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

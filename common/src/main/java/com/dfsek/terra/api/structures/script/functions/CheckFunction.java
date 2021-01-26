@@ -1,10 +1,9 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
@@ -16,7 +15,8 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.generation.math.SamplerCache;
+import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.generation.math.SamplerCache;
 import net.jafama.FastMath;
 
 import java.util.Map;

@@ -17,10 +17,12 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
+import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import org.bukkit.Location;
 import org.bukkit.TreeType;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
@@ -373,5 +375,13 @@ public final class BukkitAdapter {
 
     public static org.bukkit.enchantments.Enchantment adapt(Enchantment enchantment) {
         return ((BukkitEnchantment) enchantment).getHandle();
+    }
+
+    public static Player adapt(com.dfsek.terra.api.platform.Player player) {
+        return ((BukkitPlayer) player).getHandle();
+    }
+
+    public static com.dfsek.terra.api.platform.Player adapt(Player player) {
+        return new BukkitPlayer(player);
     }
 }

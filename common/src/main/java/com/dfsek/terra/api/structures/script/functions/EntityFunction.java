@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.script.functions;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;

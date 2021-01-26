@@ -1,19 +1,18 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.api.world.generation.population.PopulationManager;
+import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.population.FloraPopulator;
-import com.dfsek.terra.population.OrePopulator;
-import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.population.TreePopulator;
+import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.population.FloraPopulator;
+import com.dfsek.terra.world.population.OrePopulator;
+import com.dfsek.terra.world.population.StructurePopulator;
+import com.dfsek.terra.world.population.TreePopulator;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -55,7 +54,6 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
         for(Map.Entry<com.dfsek.terra.api.platform.world.World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());
-                Debug.info("Saved data for world " + e.getKey().getName());
             } catch(IOException ioException) {
                 ioException.printStackTrace();
             }

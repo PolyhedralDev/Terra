@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.math.noise;
 
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.util.hash.HashMapDoubleDouble;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import parsii.eval.Expression;
 
 import java.util.List;

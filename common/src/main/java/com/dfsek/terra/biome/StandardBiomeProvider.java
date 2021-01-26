@@ -1,13 +1,12 @@
 package com.dfsek.terra.biome;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomeHolder;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
-import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;

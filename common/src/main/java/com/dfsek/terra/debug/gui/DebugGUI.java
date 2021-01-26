@@ -1,6 +1,6 @@
 package com.dfsek.terra.debug.gui;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class DebugGUI extends Thread {
 
     @Override
     public void run() {
-        DebugFrame frame = new DebugFrame(img, "Image2Map Debug GUI", main);
+        DebugFrame frame = new DebugFrame(img, "Image2Map DebugLogger GUI", main);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1000);
         frame.setResizable(false);

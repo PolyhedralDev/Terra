@@ -3,7 +3,7 @@ package com.dfsek.terra.api.math.noise.samplers;
 import com.dfsek.terra.api.math.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.noise.NoiseFunction3;
 import com.dfsek.terra.api.math.parsii.RandomFunction;
-import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;

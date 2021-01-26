@@ -1,6 +1,5 @@
 package com.dfsek.terra.biome;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.registry.TerraRegistry;
 import net.jafama.FastMath;
 

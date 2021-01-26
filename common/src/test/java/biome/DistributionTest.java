@@ -8,19 +8,18 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.GenericLoaders;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.biome.BiomeProvider;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.files.FolderLoader;
+import com.dfsek.terra.biome.TerraBiome;
+import com.dfsek.terra.config.GenericLoaders;
+import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
-import com.dfsek.terra.debug.Debug;
 import com.dfsek.terra.registry.BiomeRegistry;
 
 import javax.swing.*;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 public class DistributionTest {
     private static BiomeProvider getProvider(long seed) throws ConfigException, IOException {
@@ -62,8 +60,6 @@ public class DistributionTest {
     }
 
     public static void main(String... args) throws ConfigException, IOException {
-        Debug.setLogger(Logger.getLogger("Terra"));
-        Debug.setDebug(true);
         JFrame testFrame = new JFrame("Biome Viewer");
 
 

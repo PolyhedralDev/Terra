@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.command.command.structure.load;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.command.DebugCommand;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
+import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

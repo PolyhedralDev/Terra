@@ -10,8 +10,8 @@ import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.population.items.tree.TreeLayer;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
 import java.lang.reflect.Type;
 import java.util.Map;

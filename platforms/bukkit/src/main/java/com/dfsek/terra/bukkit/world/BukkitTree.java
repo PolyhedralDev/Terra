@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.world.tree.Tree;

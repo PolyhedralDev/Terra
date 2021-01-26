@@ -4,7 +4,6 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 

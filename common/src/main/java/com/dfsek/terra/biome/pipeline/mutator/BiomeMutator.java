@@ -1,6 +1,6 @@
 package com.dfsek.terra.biome.pipeline.mutator;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomeHolder;
 
 public interface BiomeMutator {

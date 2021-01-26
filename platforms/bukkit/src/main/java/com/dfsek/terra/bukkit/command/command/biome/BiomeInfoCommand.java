@@ -1,14 +1,14 @@
 package com.dfsek.terra.bukkit.command.command.biome;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.config.base.ConfigPack;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.population.items.TerraStructure;
+import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.population.items.TerraStructure;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

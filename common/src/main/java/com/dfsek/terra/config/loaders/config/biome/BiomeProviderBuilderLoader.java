@@ -3,19 +3,18 @@ package com.dfsek.terra.config.loaders.config.biome;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.ImageBiomeProvider;
 import com.dfsek.terra.biome.StandardBiomeProvider;
+import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
-import com.dfsek.terra.config.files.Loader;
+import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.config.NoiseBuilder;
 import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -66,7 +65,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                 SeededBuilder<BiomeSource> source = new SourceBuilderLoader().load(BiomeSource.class, pipeline.get("source"), loader);
 
                 BiomePipeline biomePipeline = pipelineBuilder.build(source.build(seed), seed);
-                Debug.info("Biome Pipeline scale factor: " + biomePipeline.getSize());
+                main.getDebugLogger().info("Biome Pipeline scale factor: " + biomePipeline.getSize());
                 return biomePipeline;
             }, main);
 

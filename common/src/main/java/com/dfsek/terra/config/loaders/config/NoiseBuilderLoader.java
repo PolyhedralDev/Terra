@@ -7,7 +7,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.Normalizer;
-import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import java.lang.reflect.Type;
 import java.util.Map;

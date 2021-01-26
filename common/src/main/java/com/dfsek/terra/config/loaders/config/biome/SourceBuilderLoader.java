@@ -4,13 +4,13 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
-import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import java.lang.reflect.Type;
 import java.util.Map;
