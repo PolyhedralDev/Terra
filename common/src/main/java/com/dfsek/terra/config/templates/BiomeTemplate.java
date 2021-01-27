@@ -26,6 +26,7 @@ import parsii.eval.Parser;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,6 +42,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("extends")
     @Default
     private String extend = null;
+
+    @Value("variables")
+    @Abstractable
+    @Default
+    private Map<String, Double> variables = new HashMap<>();
 
     @Value("carving.equation")
     @Abstractable
@@ -308,11 +314,18 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return blendStep;
     }
 
+    public Map<String, Double> getVariables() {
+        return variables;
+    }
+
     @Override
     public boolean validate() throws ValidationException {
         color |= 0x1fe00000; // Alpha adjustment
         Parser tester = new Parser();
         Scope testScope = new Scope().withParent(pack.getVarScope());
+
+        variables.forEach((id, val) -> testScope.create(id).setValue(val));
+
         testScope.create("x");
         testScope.create("y");
         testScope.create("z");

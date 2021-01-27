@@ -48,12 +48,16 @@ public class GeneratorBuilder {
 
     private double blendWeight;
 
+    private Map<String, Double> variables = new HashMap<>();
+
     public WorldGenerator build(long seed) {
         synchronized(gens) {
             return gens.computeIfAbsent(seed, k -> {
                 NoiseSampler noise;
                 NoiseSampler elevation;
                 NoiseSampler carving;
+                Scope biomeScope = new Scope().withParent(varScope);
+                variables.forEach((id, val) -> biomeScope.create(id).setValue(val));
                 try {
                     noise = new ExpressionSampler(noiseEquation, varScope, seed, noiseBuilderMap);
                     elevation = elevationEquation == null ? new ConstantSampler(0) : new ExpressionSampler(elevationEquation, varScope, seed, noiseBuilderMap);
@@ -64,6 +68,10 @@ public class GeneratorBuilder {
                 return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
             });
         }
+    }
+
+    public void setVariables(Map<String, Double> variables) {
+        this.variables = variables;
     }
 
     public void setBlendWeight(double blendWeight) {
