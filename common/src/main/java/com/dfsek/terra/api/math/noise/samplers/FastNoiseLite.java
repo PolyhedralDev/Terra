@@ -1483,6 +1483,14 @@ public class FastNoiseLite implements NoiseSampler {
                 return distance0 / distance1 - 1;
             case NoiseLookup:
                 return cellularNoiseLookup.getNoise(center.getX(), center.getZ());
+            case Distance3:
+                return distance2 - 1;
+            case Distance3Add:
+                return (distance2 + distance0) * 0.5 - 1;
+            case Distance3Sub:
+                return distance2 - distance0 - 1;
+            case Distance3Mul:
+                return distance2 * distance0 - 1;
             case Distance3Div:
                 return distance0 / distance2 - 1;
             default:
@@ -1649,6 +1657,14 @@ public class FastNoiseLite implements NoiseSampler {
                 return distance0 / distance1 - 1;
             case NoiseLookup:
                 return cellularNoiseLookup.getNoise(center.getX(), center.getY(), center.getZ());
+            case Distance3:
+                return distance2 - 1;
+            case Distance3Add:
+                return (distance2 + distance0) * 0.5 - 1;
+            case Distance3Sub:
+                return distance2 - distance0 - 1;
+            case Distance3Mul:
+                return distance2 * distance0 - 1;
             case Distance3Div:
                 return distance0 / distance2 - 1;
             default:
@@ -2630,6 +2646,10 @@ public class FastNoiseLite implements NoiseSampler {
         Distance2Mul,
         Distance2Div,
         NoiseLookup,
+        Distance3,
+        Distance3Add,
+        Distance3Sub,
+        Distance3Mul,
         Distance3Div
     }
 

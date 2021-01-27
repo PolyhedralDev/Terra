@@ -4,13 +4,14 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.biome.BiomeProvider;
-import com.dfsek.terra.biome.ImageBiomeProvider;
-import com.dfsek.terra.biome.StandardBiomeProvider;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
+import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.biome.provider.ImageBiomeProvider;
+import com.dfsek.terra.biome.provider.SingleBiomeProvider;
+import com.dfsek.terra.biome.provider.StandardBiomeProvider;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.registry.TerraRegistry;
@@ -86,6 +87,14 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
             } catch(IOException e) {
                 throw new LoadException("Failed to load image", e);
             }
+        } else if(map.get("type").equals("SINGLE")) {
+            return seed -> {
+                try {
+                    return new SingleBiomeProvider((TerraBiome) loader.loadType(TerraBiome.class, map.get("biome")));
+                } catch(LoadException e) {
+                    throw new RuntimeException(e);
+                }
+            };
         }
 
         throw new LoadException("No such biome provider type: " + map.get("type"));

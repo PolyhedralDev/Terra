@@ -3,7 +3,7 @@ package com.dfsek.terra.config.pack;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.biome.BiomeProvider;
+import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import java.util.HashMap;

@@ -6,8 +6,6 @@ import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.biome.BiomeProvider;
-import com.dfsek.terra.biome.StandardBiomeProvider;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.expand.FractalExpander;
@@ -19,6 +17,8 @@ import com.dfsek.terra.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
+import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.biome.provider.StandardBiomeProvider;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;

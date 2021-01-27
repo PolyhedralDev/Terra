@@ -10,8 +10,8 @@ import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.provider.BiomeProvider;
 import net.jafama.FastMath;
 
 import java.util.Map;

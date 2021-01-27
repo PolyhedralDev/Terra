@@ -2,7 +2,7 @@ package com.dfsek.terra.world.generation.math.interpolation;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.biome.BiomeProvider;
+import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
 public class ElevationInterpolator {

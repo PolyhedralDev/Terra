@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.biome.BiomeProvider;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
