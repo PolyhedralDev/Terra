@@ -6,6 +6,7 @@ import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import parsii.eval.Scope;
 
 public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
     private final ConfigPack pack;
@@ -23,7 +24,11 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
         generatorBuilder.setNoiseBuilderMap(template.getPack().getTemplate().getNoiseBuilderMap());
         generatorBuilder.setPalettes(template.getPalette());
         generatorBuilder.setSlantPalettes(template.getSlantPalette());
-        generatorBuilder.setVarScope(pack.getVarScope());
+
+        Scope vars = new Scope().withParent(pack.getVarScope());
+        template.getVariables().forEach((id, val) -> vars.create(id).setValue(val));
+        generatorBuilder.setVarScope(vars);
+
         generatorBuilder.setInterpolateElevation(template.interpolateElevation());
         generatorBuilder.setNoise2d(template.isNoise2d());
         generatorBuilder.setBase(template.getNoise2dBase());
