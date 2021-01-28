@@ -6,7 +6,7 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.Normalizer;
+import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;

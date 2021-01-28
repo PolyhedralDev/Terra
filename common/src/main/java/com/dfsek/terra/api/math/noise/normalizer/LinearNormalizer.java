@@ -1,4 +1,6 @@
-package com.dfsek.terra.api.math.noise.samplers;
+package com.dfsek.terra.api.math.noise.normalizer;
+
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 
 public class LinearNormalizer extends Normalizer {
     private final double min;

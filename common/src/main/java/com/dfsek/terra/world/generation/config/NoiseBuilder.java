@@ -3,10 +3,11 @@ package com.dfsek.terra.world.generation.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.terra.api.math.noise.normalizer.LinearNormalizer;
+import com.dfsek.terra.api.math.noise.normalizer.NormalNormalizer;
+import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
-import com.dfsek.terra.api.math.noise.samplers.LinearNormalizer;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.api.math.noise.samplers.Normalizer;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class NoiseBuilder implements ConfigTemplate {
@@ -94,6 +95,14 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private double linearMax = 1D;
 
+    @Value("normalize.normal.mean")
+    @Default
+    private double mean = 0D;
+
+    @Value("normalize.normal.standard-deviation")
+    @Default
+    private double stdDev = 0.75D;
+
 
     public NoiseSampler build(int seed) {
         FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
@@ -121,7 +130,8 @@ public class NoiseBuilder implements ConfigTemplate {
         noise.setRotationType3D(rotationType3D);
 
         noise.setFrequency(frequency);
-        if(!normalType.equals(Normalizer.NormalType.NONE)) return new LinearNormalizer(noise, linearMin, linearMax);
+        if(normalType.equals(Normalizer.NormalType.LINEAR)) return new LinearNormalizer(noise, linearMin, linearMax);
+        else if(normalType.equals(Normalizer.NormalType.NORMAL)) return new NormalNormalizer(noise, 16384, mean, stdDev);
         return noise;
     }
 

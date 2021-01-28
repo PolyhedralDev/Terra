@@ -1,4 +1,6 @@
-package com.dfsek.terra.api.math.noise.samplers;
+package com.dfsek.terra.api.math.noise.normalizer;
+
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 
 public abstract class Normalizer implements NoiseSampler {
     private final NoiseSampler sampler;
@@ -30,6 +32,6 @@ public abstract class Normalizer implements NoiseSampler {
     }
 
     public enum NormalType {
-        LINEAR, NONE
+        LINEAR, NONE, NORMAL
     }
 }
