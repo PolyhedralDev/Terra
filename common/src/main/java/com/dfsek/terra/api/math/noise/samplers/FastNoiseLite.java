@@ -295,7 +295,7 @@ public class FastNoiseLite implements NoiseSampler {
     private CellularDistanceFunction mCellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
     private CellularReturnType mCellularReturnType = CellularReturnType.Distance;
     private double mCellularJitterModifier = 1.0;
-    private DomainWarpType mDomainWarpType = DomainWarpType.None;
+    private DomainWarpType mDomainWarpType = DomainWarpType.OpenSimplex2;
     private TransformType3D mWarpTransformType3D = TransformType3D.DefaultOpenSimplex2;
     private double mDomainWarpAmp = 1.0;
     private NoiseSampler cellularNoiseLookup = CELLULAR_LOOKUP_DEFAULT;
@@ -652,12 +652,6 @@ public class FastNoiseLite implements NoiseSampler {
 
     @Override
     public double getNoiseSeeded(int seed, double x, double y) {
-        if(!mDomainWarpType.equals(DomainWarpType.None)) {
-            Vector2 dWarp = new Vector2(x, y);
-            domainWarp(dWarp);
-            x = dWarp.getX();
-            y = dWarp.getZ();
-        }
         x *= mFrequency;
         y *= mFrequency;
 
@@ -691,14 +685,6 @@ public class FastNoiseLite implements NoiseSampler {
 
     @Override
     public double getNoiseSeeded(int seed, double x, double y, double z) {
-        if(!mDomainWarpType.equals(DomainWarpType.None)) {
-            Vector3 dWarp = new Vector3(x, y, z);
-            domainWarp(dWarp);
-            x = dWarp.getX();
-            y = dWarp.getY();
-            z = dWarp.getZ();
-        }
-
         x *= mFrequency;
         y *= mFrequency;
         z *= mFrequency;
@@ -2658,8 +2644,7 @@ public class FastNoiseLite implements NoiseSampler {
         OpenSimplex2,
         OpenSimplex2Reduced,
         BasicGrid,
-        Function,
-        None
+        Function
     }
 
 

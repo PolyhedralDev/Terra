@@ -8,15 +8,26 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.noise.normalizer.LinearNormalizer;
 import com.dfsek.terra.api.math.noise.normalizer.NormalNormalizer;
 import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
+import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
+    private final Loader fileAccess;
+
+    public NoiseSamplerBuilderLoader(Loader fileAccess) {
+        this.fileAccess = fileAccess;
+    }
+
     @Override
     public NoiseSeeded load(Type t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
@@ -99,6 +110,25 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
                         }
                     };
                 }
+            }
+        } else if(samplerType.equals("IMAGE")) {
+            try {
+                BufferedImage image = ImageIO.read(fileAccess.get(map.get("image").toString()));
+                ImageSampler.Channel channel = ImageSampler.Channel.valueOf(map.get("channel").toString());
+                double frequency = Double.parseDouble(map.get("frequency").toString());
+                return new NoiseSeeded() {
+                    @Override
+                    public NoiseSampler apply(Long seed) {
+                        return new ImageSampler(image, channel, frequency);
+                    }
+
+                    @Override
+                    public int getDimensions() {
+                        return dimensions;
+                    }
+                };
+            } catch(IOException | NullPointerException e) {
+                throw new LoadException("Failed to load image", e);
             }
         }
 

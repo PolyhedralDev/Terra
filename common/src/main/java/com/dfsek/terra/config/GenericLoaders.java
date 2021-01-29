@@ -8,7 +8,6 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
@@ -19,7 +18,6 @@ import com.dfsek.terra.config.loaders.config.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.config.OreConfigLoader;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
-import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.util.MaterialSet;
@@ -58,7 +56,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(FastNoiseLite.CellularDistanceFunction.class, (t, object, cf) -> FastNoiseLite.CellularDistanceFunction.valueOf((String) object))
                 .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()))
-                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()))
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader());
+                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()));
     }
 }

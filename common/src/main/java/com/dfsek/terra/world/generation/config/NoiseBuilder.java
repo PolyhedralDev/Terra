@@ -57,18 +57,6 @@ public class NoiseBuilder implements ConfigTemplate {
     @Default
     private double cellularJitter = 1.0D;
 
-    @Value("domain-warp.type")
-    @Default
-    private FastNoiseLite.DomainWarpType domainWarpType = FastNoiseLite.DomainWarpType.None;
-
-    @Value("domain-warp.amplitude")
-    @Default
-    private double domainWarpAmp = 1.0D;
-
-    @Value("domain-warp.function")
-    @Default
-    private NoiseSeeded domainWarp;
-
     @Value("rotation-type")
     @Default
     private FastNoiseLite.RotationType3D rotationType3D = FastNoiseLite.RotationType3D.None;
@@ -100,10 +88,6 @@ public class NoiseBuilder implements ConfigTemplate {
         }
 
         noise.setNoiseType(type);
-
-        noise.setDomainWarpType(domainWarpType);
-        noise.setDomainWarpAmp(domainWarpAmp);
-        if(domainWarp != null) noise.setDomainWarpFunction(domainWarp.apply(seed));
 
         noise.setRotationType3D(rotationType3D);
 
@@ -146,30 +130,12 @@ public class NoiseBuilder implements ConfigTemplate {
         return this;
     }
 
-    public FastNoiseLite.DomainWarpType getDomainWarpType() {
-        return domainWarpType;
-    }
-
-    public NoiseBuilder setDomainWarpType(FastNoiseLite.DomainWarpType domainWarpType) {
-        this.domainWarpType = domainWarpType;
-        return this;
-    }
-
     public double getCellularJitter() {
         return cellularJitter;
     }
 
     public NoiseBuilder setCellularJitter(double cellularJitter) {
         this.cellularJitter = cellularJitter;
-        return this;
-    }
-
-    public double getDomainWarpAmp() {
-        return domainWarpAmp;
-    }
-
-    public NoiseBuilder setDomainWarpAmp(double domainWarpAmp) {
-        this.domainWarpAmp = domainWarpAmp;
         return this;
     }
 
