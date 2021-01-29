@@ -8,6 +8,7 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.noise.normalizer.LinearNormalizer;
 import com.dfsek.terra.api.math.noise.normalizer.NormalNormalizer;
 import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
+import com.dfsek.terra.api.math.noise.samplers.DomainWarpedSampler;
 import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
@@ -63,12 +64,7 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
         } else if(samplerType.equals("NORMALIZER")) {
             Normalizer.NormalType normalType = (Normalizer.NormalType) loader.loadType(Normalizer.NormalType.class, map.get("type"));
 
-            NoiseBuilder builder = new NoiseBuilder();
-            try {
-                loader.load(builder, new Configuration((Map<String, Object>) map.get("function")));
-            } catch(ConfigException e) {
-                throw new LoadException("Failed to load noise function", e);
-            }
+            NoiseSeeded noise = (NoiseSeeded) loader.loadType(NoiseSeeded.class, map.get("function"));
 
             switch(normalType) {
                 case LINEAR: {
@@ -81,7 +77,7 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
                     return new NoiseSeeded() {
                         @Override
                         public NoiseSampler apply(Long seed) {
-                            return new LinearNormalizer(builder.build(seed), min, max);
+                            return new LinearNormalizer(noise.apply(seed), min, max);
                         }
 
                         @Override
@@ -101,7 +97,7 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
                     return new NoiseSeeded() {
                         @Override
                         public NoiseSampler apply(Long seed) {
-                            return new NormalNormalizer(builder.build(seed), groups, mean, stdDev);
+                            return new NormalNormalizer(noise.apply(seed), groups, mean, stdDev);
                         }
 
                         @Override
@@ -130,6 +126,26 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
             } catch(IOException | NullPointerException e) {
                 throw new LoadException("Failed to load image", e);
             }
+        } else if(samplerType.equals("DOMAIN_WARP")) {
+            NoiseSeeded warp = (NoiseSeeded) loader.loadType(NoiseSeeded.class, map.get("warp"));
+            NoiseSeeded target = (NoiseSeeded) loader.loadType(NoiseSeeded.class, map.get("function"));
+            double amplitude = map.containsKey("amplitude")
+                    ? Double.parseDouble(map.get("amplitude").toString())
+                    : 0;
+            int salt = map.containsKey("salt")
+                    ? Integer.parseInt(map.get("salt").toString())
+                    : 0;
+            return new NoiseSeeded() {
+                @Override
+                public NoiseSampler apply(Long seed) {
+                    return new DomainWarpedSampler(target.apply(seed), warp.apply(seed), (int) (seed + salt), amplitude);
+                }
+
+                @Override
+                public int getDimensions() {
+                    return dimensions;
+                }
+            };
         }
 
         throw new LoadException("No such noise sampler type \"" + samplerType + "\"");
