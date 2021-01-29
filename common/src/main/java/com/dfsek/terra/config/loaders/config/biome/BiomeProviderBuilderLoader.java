@@ -4,18 +4,17 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
 import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.biome.provider.SingleBiomeProvider;
 import com.dfsek.terra.biome.provider.StandardBiomeProvider;
 import com.dfsek.terra.config.fileloaders.Loader;
-import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
 import com.dfsek.terra.registry.TerraRegistry;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -65,7 +64,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                 if(!pipeline.containsKey("source")) throw new LoadException("Biome Source not defined!");
                 SeededBuilder<BiomeSource> source = new SourceBuilderLoader().load(BiomeSource.class, pipeline.get("source"), loader);
 
-                BiomePipeline biomePipeline = pipelineBuilder.build(source.build(seed), seed);
+                BiomePipeline biomePipeline = pipelineBuilder.build(source.apply(seed), seed);
                 main.getDebugLogger().info("Biome Pipeline scale factor: " + biomePipeline.getSize());
                 return biomePipeline;
             }, main);
@@ -75,7 +74,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                 Map<String, Object> blend = (Map<String, Object>) map.get("blend");
                 if(blend.containsKey("amplitude")) builder.setNoiseAmp(Integer.parseInt(blend.get("amplitude").toString()));
                 if(blend.containsKey("noise"))
-                    builder.setBlender(new NoiseBuilderLoader().load(NoiseBuilder.class, blend.get("noise"), loader));
+                    builder.setBlender((NoiseSeeded) loader.loadType(NoiseSeeded.class, blend.get("noise")));
             }
             return builder;
         } else if(map.get("type").equals("IMAGE")) {

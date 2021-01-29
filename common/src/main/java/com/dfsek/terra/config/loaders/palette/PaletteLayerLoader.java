@@ -6,10 +6,9 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -23,7 +22,7 @@ public class PaletteLayerLoader implements TypeLoader<PaletteLayerHolder> {
 
         NoiseSampler sampler = null;
         if(map.containsKey("noise")) {
-            sampler = new NoiseBuilderLoader().load(NoiseBuilder.class, map.get("noise"), configLoader).build(2403);
+            sampler = ((NoiseSeeded) configLoader.loadType(NoiseSeeded.class, map.get("noise"))).apply(2403L);
         }
 
         if(collection == null) throw new LoadException("Collection is null: " + map.get("materials"));

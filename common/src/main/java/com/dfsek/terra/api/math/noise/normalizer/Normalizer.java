@@ -32,6 +32,6 @@ public abstract class Normalizer implements NoiseSampler {
     }
 
     public enum NormalType {
-        LINEAR, NONE, NORMAL
+        LINEAR, NORMAL
     }
 }

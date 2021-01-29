@@ -9,14 +9,14 @@ public interface NoiseSampler {
      * <p>
      * Noise output bounded between -1...1
      */
-    double getNoise(/*FNLdouble*/ double x, /*FNLdouble*/ double y);
+    double getNoise(double x, double y);
 
     /**
      * 3D noise at given position using current settings
      * <p>
      * Noise output bounded between -1...1
      */
-    double getNoise(/*FNLdouble*/ double x, /*FNLdouble*/ double y, /*FNLdouble*/ double z);
+    double getNoise(double x, double y, double z);
 
     default double getNoise(Vector3 vector3) {
         return getNoise(vector3.getX(), vector3.getY(), vector3.getZ());

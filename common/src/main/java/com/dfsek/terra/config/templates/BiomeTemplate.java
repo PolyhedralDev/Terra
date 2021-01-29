@@ -8,11 +8,13 @@ import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.parsii.BlankFunction;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
@@ -69,7 +71,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("biome-noise")
     @Default
     @Abstractable
-    private NoiseBuilder biomeNoise = new NoiseBuilder();
+    private NoiseSeeded biomeNoise;
 
     @Value("blend.distance")
     @Abstractable
@@ -224,11 +226,23 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
-        biomeNoise.setType(FastNoiseLite.NoiseType.WhiteNoise);
+        NoiseBuilder builder = new NoiseBuilder();
+        builder.setType(FastNoiseLite.NoiseType.Constant);
+        biomeNoise = new NoiseSeeded() {
+            @Override
+            public NoiseSampler apply(Long seed) {
+                return builder.build(seed);
+            }
+
+            @Override
+            public int getDimensions() {
+                return 2;
+            }
+        };
         oceanPalette = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:water"));
     }
 
-    public NoiseBuilder getBiomeNoise() {
+    public NoiseSeeded getBiomeNoise() {
         return biomeNoise;
     }
 

@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.math.noise;
 
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import parsii.eval.Expression;
 
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.List;
 public class NoiseFunction3 implements NoiseFunction {
     private final NoiseSampler gen;
 
-    public NoiseFunction3(long seed, NoiseBuilder builder) {
-        this.gen = builder.build((int) seed);
+    public NoiseFunction3(long seed, NoiseSeeded builder) {
+        this.gen = builder.apply(seed);
     }
 
     @Override

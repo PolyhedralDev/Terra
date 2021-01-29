@@ -4,9 +4,10 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
-import com.dfsek.terra.config.loaders.config.NoiseBuilderLoader;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -90,8 +91,10 @@ public class NoiseTool {
         long s = System.nanoTime();
 
         ConfigLoader loader = new ConfigLoader();
-        loader.registerLoader(NoiseBuilder.class, new NoiseBuilderLoader())
+        loader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader())
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader());
+        
+        new GenericLoaders(null).register(loader);
         NoiseConfigTemplate template = new NoiseConfigTemplate();
 
         File file = new File("./config.yml");
@@ -117,7 +120,7 @@ public class NoiseTool {
         ProbabilityCollection<Integer> colorCollection = color.getColors();
 
         loader.load(template, new FileInputStream(file));
-        NoiseSampler noise = template.getBuilder().build(seed);
+        NoiseSampler noise = template.getBuilder().apply((long) seed);
 
         int size = 1024;
 
@@ -132,7 +135,7 @@ public class NoiseTool {
 
         for(int x = 0; x < noiseVals.length; x++) {
             for(int z = 0; z < noiseVals[x].length; z++) {
-                double n = template.getBuilder().getDimensions() == 2 ? noise.getNoise(x, z) : noise.getNoise(x, 0, z);
+                double n = noise.getNoise(x, z);
                 noiseVals[x][z] = n;
                 max = Math.max(n, max);
                 min = Math.min(n, min);

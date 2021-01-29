@@ -3,11 +3,9 @@ package com.dfsek.terra.world.generation.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.api.math.noise.normalizer.LinearNormalizer;
-import com.dfsek.terra.api.math.noise.normalizer.NormalNormalizer;
-import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class NoiseBuilder implements ConfigTemplate {
@@ -69,7 +67,7 @@ public class NoiseBuilder implements ConfigTemplate {
 
     @Value("domain-warp.function")
     @Default
-    private NoiseBuilder domainWarp;
+    private NoiseSeeded domainWarp;
 
     @Value("rotation-type")
     @Default
@@ -81,31 +79,11 @@ public class NoiseBuilder implements ConfigTemplate {
 
     @Value("cellular.lookup")
     @Default
-    private NoiseBuilder lookup;
-
-    @Value("normalize.type")
-    @Default
-    private Normalizer.NormalType normalType = Normalizer.NormalType.NONE;
-
-    @Value("normalize.linear.min")
-    @Default
-    private double linearMin = -1D;
-
-    @Value("normalize.linear.max")
-    @Default
-    private double linearMax = 1D;
-
-    @Value("normalize.normal.mean")
-    @Default
-    private double mean = 0D;
-
-    @Value("normalize.normal.standard-deviation")
-    @Default
-    private double stdDev = 0.75D;
+    private NoiseSeeded lookup;
 
 
-    public NoiseSampler build(int seed) {
-        FastNoiseLite noise = new FastNoiseLite(seed + seedOffset);
+    public NoiseSampler build(long seed) {
+        FastNoiseLite noise = new FastNoiseLite((int) (seed + seedOffset));
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
             noise.setFractalType(fractalType);
             noise.setFractalOctaves(octaves);
@@ -118,20 +96,18 @@ public class NoiseBuilder implements ConfigTemplate {
             noise.setCellularDistanceFunction(cellularDistanceFunction);
             noise.setCellularReturnType(cellularReturnType);
             noise.setCellularJitter(cellularJitter);
-            if(lookup != null) noise.setCellularNoiseLookup(lookup.build(seed));
+            if(lookup != null) noise.setCellularNoiseLookup(lookup.apply(seed));
         }
 
         noise.setNoiseType(type);
 
         noise.setDomainWarpType(domainWarpType);
         noise.setDomainWarpAmp(domainWarpAmp);
-        if(domainWarp != null) noise.setDomainWarpFunction(domainWarp.build(seed));
+        if(domainWarp != null) noise.setDomainWarpFunction(domainWarp.apply(seed));
 
         noise.setRotationType3D(rotationType3D);
 
         noise.setFrequency(frequency);
-        if(normalType.equals(Normalizer.NormalType.LINEAR)) return new LinearNormalizer(noise, linearMin, linearMax);
-        else if(normalType.equals(Normalizer.NormalType.NORMAL)) return new NormalNormalizer(noise, 16384, mean, stdDev);
         return noise;
     }
 

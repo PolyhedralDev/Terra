@@ -4,10 +4,10 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.pipeline.BiomeHolder;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -65,7 +65,7 @@ public class StandardBiomeProvider implements BiomeProvider {
         private final TerraPlugin main;
         private int resolution = 1;
         private int noiseAmp = 2;
-        private NoiseBuilder builder = new NoiseBuilder();
+        private NoiseSeeded builder;
 
         public StandardBiomeProviderBuilder(ExceptionalFunction<Long, BiomePipeline> pipelineBuilder, TerraPlugin main) {
             this.pipelineBuilder = pipelineBuilder;
@@ -76,7 +76,7 @@ public class StandardBiomeProvider implements BiomeProvider {
             this.resolution = resolution;
         }
 
-        public void setBlender(NoiseBuilder builder) {
+        public void setBlender(NoiseSeeded builder) {
             this.builder = builder;
         }
 
@@ -87,7 +87,7 @@ public class StandardBiomeProvider implements BiomeProvider {
         @Override
         public StandardBiomeProvider build(long seed) {
             try {
-                StandardBiomeProvider provider = new StandardBiomeProvider(pipelineBuilder.apply(seed), main, builder.build((int) seed), builder.build((int) (seed + 1)), noiseAmp);
+                StandardBiomeProvider provider = new StandardBiomeProvider(pipelineBuilder.apply(seed), main, builder.apply(seed), builder.apply((seed + 1)), noiseAmp);
                 provider.setResolution(resolution);
                 return provider;
             } catch(ConfigException e) {

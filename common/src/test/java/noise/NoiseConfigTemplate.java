@@ -2,15 +2,15 @@ package noise;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 
 @SuppressWarnings("unused")
 public class NoiseConfigTemplate implements ConfigTemplate {
     @Value(".")
-    private NoiseBuilder builder;
+    private NoiseSeeded builder;
 
-    public NoiseBuilder getBuilder() {
+    public NoiseSeeded getBuilder() {
         return builder;
     }
 }

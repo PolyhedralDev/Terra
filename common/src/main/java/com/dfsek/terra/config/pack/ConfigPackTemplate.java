@@ -3,8 +3,8 @@ package com.dfsek.terra.config.pack;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.biome.provider.BiomeProvider;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     private String id;
 
     @Value("noise")
-    private Map<String, NoiseBuilder> noiseBuilderMap;
+    private Map<String, NoiseSeeded> noiseBuilderMap;
 
     @Value("variables")
     @Default
@@ -112,7 +112,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
         return vanillaStructures;
     }
 
-    public Map<String, NoiseBuilder> getNoiseBuilderMap() {
+    public Map<String, NoiseSeeded> getNoiseBuilderMap() {
         return noiseBuilderMap;
     }
 

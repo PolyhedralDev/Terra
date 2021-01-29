@@ -3,9 +3,9 @@ package com.dfsek.terra.config.builder;
 import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
 import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
 import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.world.generation.WorldGenerator;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
 
@@ -24,7 +24,7 @@ public class GeneratorBuilder {
 
     private Scope varScope;
 
-    private Map<String, NoiseBuilder> noiseBuilderMap;
+    private Map<String, NoiseSeeded> noiseBuilderMap;
 
     private PaletteHolder palettes;
 
@@ -34,7 +34,7 @@ public class GeneratorBuilder {
 
     private boolean interpolateElevation;
 
-    private NoiseBuilder biomeNoise;
+    private NoiseSeeded biomeNoise;
 
     private double elevationWeight;
 
@@ -57,7 +57,7 @@ public class GeneratorBuilder {
                 } catch(ParseException e) {
                     throw new RuntimeException(e);
                 }
-                return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
+                return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, biomeNoise.apply(seed), elevationWeight, blendDistance, blendStep, blendWeight);
             });
         }
     }
@@ -74,7 +74,7 @@ public class GeneratorBuilder {
         this.blendDistance = blendDistance;
     }
 
-    public void setBiomeNoise(NoiseBuilder biomeNoise) {
+    public void setBiomeNoise(NoiseSeeded biomeNoise) {
         this.biomeNoise = biomeNoise;
     }
 
@@ -102,11 +102,7 @@ public class GeneratorBuilder {
         this.varScope = varScope;
     }
 
-    public Map<String, NoiseBuilder> getNoiseBuilderMap() {
-        return noiseBuilderMap;
-    }
-
-    public void setNoiseBuilderMap(Map<String, NoiseBuilder> noiseBuilderMap) {
+    public void setNoiseBuilderMap(Map<String, NoiseSeeded> noiseBuilderMap) {
         this.noiseBuilderMap = noiseBuilderMap;
     }
 

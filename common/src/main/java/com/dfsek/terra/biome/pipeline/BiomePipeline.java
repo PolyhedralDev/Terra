@@ -2,8 +2,8 @@ package com.dfsek.terra.biome.pipeline;
 
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.biome.pipeline.stages.SeededBuilder;
 import com.dfsek.terra.biome.pipeline.stages.Stage;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class BiomePipeline {
         }
 
         public BiomePipeline build(BiomeSource source, long seed) {
-            List<Stage> stagesBuilt = stages.stream().map(stageBuilder -> stageBuilder.build(seed)).collect(Collectors.toList());
+            List<Stage> stagesBuilt = stages.stream().map(stageBuilder -> stageBuilder.apply(seed)).collect(Collectors.toList());
 
             for(Stage stage : stagesBuilt) {
                 if(stage.isExpansion()) expand = expand * 2 - 1;

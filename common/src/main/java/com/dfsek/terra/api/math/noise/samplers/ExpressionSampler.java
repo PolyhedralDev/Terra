@@ -3,7 +3,7 @@ package com.dfsek.terra.api.math.noise.samplers;
 import com.dfsek.terra.api.math.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.noise.NoiseFunction3;
 import com.dfsek.terra.api.math.parsii.RandomFunction;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import parsii.eval.Expression;
 import parsii.eval.Parser;
 import parsii.eval.Scope;
@@ -21,7 +21,7 @@ public class ExpressionSampler implements NoiseSampler {
     private final Variable y;
     private final Variable z;
 
-    public ExpressionSampler(String equation, Scope parent, long seed, Map<String, NoiseBuilder> functions) throws ParseException {
+    public ExpressionSampler(String equation, Scope parent, long seed, Map<String, NoiseSeeded> functions) throws ParseException {
         Parser parser = new Parser();
         Scope scope = new Scope().withParent(parent);
 
