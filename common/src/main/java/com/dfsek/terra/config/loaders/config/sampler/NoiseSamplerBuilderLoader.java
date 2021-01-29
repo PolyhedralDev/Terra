@@ -129,12 +129,8 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
         } else if(samplerType.equals("DOMAIN_WARP")) {
             NoiseSeeded warp = (NoiseSeeded) loader.loadType(NoiseSeeded.class, map.get("warp"));
             NoiseSeeded target = (NoiseSeeded) loader.loadType(NoiseSeeded.class, map.get("function"));
-            double amplitude = map.containsKey("amplitude")
-                    ? Double.parseDouble(map.get("amplitude").toString())
-                    : 0;
-            int salt = map.containsKey("salt")
-                    ? Integer.parseInt(map.get("salt").toString())
-                    : 0;
+            double amplitude = ((Number) map.getOrDefault("amplitude", 1)).doubleValue();
+            int salt = (Integer) map.getOrDefault("salt", 0);
             return new NoiseSeeded() {
                 @Override
                 public NoiseSampler apply(Long seed) {

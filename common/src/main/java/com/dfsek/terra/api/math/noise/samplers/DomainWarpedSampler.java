@@ -15,19 +15,12 @@ public class DomainWarpedSampler implements NoiseSampler {
 
     @Override
     public double getNoise(double x, double y) {
-        return function.getNoise(
-                x + warp.getNoiseSeeded(seed, x, y) * amplitude,
-                y + warp.getNoiseSeeded(seed + 1, x, y) * amplitude
-        );
+        return getNoiseSeeded(seed, x, y);
     }
 
     @Override
     public double getNoise(double x, double y, double z) {
-        return function.getNoise(
-                x + warp.getNoiseSeeded(seed, x, y, z) * amplitude,
-                y + warp.getNoiseSeeded(seed + 1, x, y, z) * amplitude,
-                z + warp.getNoiseSeeded(seed + 2, x, y, z) * amplitude
-        );
+        return getNoiseSeeded(seed, x, y, z);
     }
 
     @Override
@@ -36,7 +29,6 @@ public class DomainWarpedSampler implements NoiseSampler {
                 x + warp.getNoiseSeeded(seed, x, y) * amplitude,
                 y + warp.getNoiseSeeded(seed + 1, x, y) * amplitude
         );
-
     }
 
     @Override
@@ -46,6 +38,5 @@ public class DomainWarpedSampler implements NoiseSampler {
                 y + warp.getNoiseSeeded(seed + 1, x, y, z) * amplitude,
                 z + warp.getNoiseSeeded(seed + 2, x, y, z) * amplitude
         );
-
     }
 }

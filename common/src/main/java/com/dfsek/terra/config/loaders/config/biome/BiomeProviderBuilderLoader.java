@@ -38,8 +38,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
     @Override
     public BiomeProvider.BiomeProviderBuilder load(Type t, Object c, ConfigLoader loader) throws LoadException { // TODO: clean this up
         Map<String, Object> map = (Map<String, Object>) c;
-        int resolution = 1;
-        if(map.containsKey("resolution")) resolution = Integer.parseInt(map.get("resolution").toString());
+        int resolution = (Integer) map.getOrDefault("resolution", 1);
 
         if(map.get("type").equals("PIPELINE")) {
             Map<String, Object> pipeline = (Map<String, Object>) map.get("pipeline");
@@ -48,9 +47,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
 
             if(stages == null) throw new LoadException("No pipeline stages defined!");
 
-            int init;
-            if(pipeline.containsKey("initial-size")) init = Integer.parseInt(pipeline.get("initial-size").toString());
-            else init = 3;
+            int init = (Integer) pipeline.getOrDefault("initial-size", 2);
 
             StandardBiomeProvider.StandardBiomeProviderBuilder builder = new StandardBiomeProvider.StandardBiomeProviderBuilder(seed -> {
                 BiomePipeline.BiomePipelineBuilder pipelineBuilder = new BiomePipeline.BiomePipelineBuilder(init);
