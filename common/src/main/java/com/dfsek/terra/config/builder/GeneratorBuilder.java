@@ -34,10 +34,6 @@ public class GeneratorBuilder {
 
     private boolean interpolateElevation;
 
-    private boolean noise2d;
-
-    private double base;
-
     private NoiseBuilder biomeNoise;
 
     private double elevationWeight;
@@ -61,7 +57,7 @@ public class GeneratorBuilder {
                 } catch(ParseException e) {
                     throw new RuntimeException(e);
                 }
-                return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, noise2d, base, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
+                return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, biomeNoise.build((int) seed), elevationWeight, blendDistance, blendStep, blendWeight);
             });
         }
     }
@@ -82,36 +78,12 @@ public class GeneratorBuilder {
         this.biomeNoise = biomeNoise;
     }
 
-    public boolean isNoise2d() {
-        return noise2d;
-    }
-
-    public void setNoise2d(boolean noise2d) {
-        this.noise2d = noise2d;
-    }
-
-    public double getBase() {
-        return base;
-    }
-
-    public void setBase(double base) {
-        this.base = base;
-    }
-
     public void setElevationWeight(double elevationWeight) {
         this.elevationWeight = elevationWeight;
     }
 
-    public String getNoiseEquation() {
-        return noiseEquation;
-    }
-
     public void setNoiseEquation(String noiseEquation) {
         this.noiseEquation = noiseEquation;
-    }
-
-    public String getElevationEquation() {
-        return elevationEquation;
     }
 
     public void setElevationEquation(String elevationEquation) {

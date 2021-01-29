@@ -53,16 +53,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private String carvingEquation = "0";
 
-    @Value("noise-2d.enable")
-    @Default
-    @Abstractable
-    private boolean noise2d = false;
-
-    @Value("noise-2d.base")
-    @Default
-    @Abstractable
-    private double noise2dBase = 64;
-
     @Value("palette")
     @Abstractable
     private PaletteHolder palette;
@@ -296,14 +286,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public OreHolder getOreHolder() {
         return oreHolder;
-    }
-
-    public boolean isNoise2d() {
-        return noise2d;
-    }
-
-    public double getNoise2dBase() {
-        return noise2dBase;
     }
 
     public double getElevationWeight() {

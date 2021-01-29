@@ -109,7 +109,15 @@ public final class MathUtil {
         return FastMath.min(FastMath.max(in, -1), 1);
     }
 
-    public static double compute(double p, double mu, double sigma) {
+    /**
+     * Compute the value in a normally distributed data set that has probability p.
+     *
+     * @param p     Probability of value
+     * @param mu    Mean of data
+     * @param sigma Standard deviation of data
+     * @return Value corresponding to input probability
+     */
+    public static double normalInverse(double p, double mu, double sigma) {
         if(p < 0 || p > 1)
             throw new IllegalArgumentException("Probability must be in range [0, 1]");
         if(sigma < 0)
@@ -159,7 +167,7 @@ public final class MathUtil {
                         .14810397642748007459) * r + .68976733498510000455) *
                         r + 1.6763848301838038494) * r +
                         2.05319162663775882187) * r + 1);
-            } else { /* very close to  0 or 1 */
+            } else {
                 r += -5;
                 val = (((((((r * 2.01033439929228813265e-7 +
                         2.71155556874348757815e-5) * r +

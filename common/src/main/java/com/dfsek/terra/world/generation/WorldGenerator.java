@@ -16,23 +16,19 @@ public class WorldGenerator implements Generator {
     private final NoiseSampler elevation;
     private final NoiseSampler carving;
 
-    private final boolean noise2d;
-    private final double base;
     private final NoiseSampler biomeNoise;
     private final double elevationWeight;
     private final int blendDistance;
     private final int blendStep;
     private final double blendWeight;
 
-    public WorldGenerator(PaletteHolder palettes, PaletteHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, boolean noise2d, double base, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
+    public WorldGenerator(PaletteHolder palettes, PaletteHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
         this.noise = noise;
         this.elevation = elevation;
         this.carving = carving;
 
-        this.noise2d = noise2d;
-        this.base = base;
         this.biomeNoise = biomeNoise;
         this.elevationWeight = elevationWeight;
         this.blendDistance = blendDistance;
@@ -73,16 +69,6 @@ public class WorldGenerator implements Generator {
     @Override
     public Palette<BlockData> getPalette(int y) {
         return palettes.getPalette(y);
-    }
-
-    @Override
-    public boolean is2d() {
-        return noise2d;
-    }
-
-    @Override
-    public double get2dBase() {
-        return base;
     }
 
     @Override

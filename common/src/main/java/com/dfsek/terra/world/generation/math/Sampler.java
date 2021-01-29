@@ -11,11 +11,7 @@ public class Sampler {
     private final ElevationInterpolator elevationInterpolator;
 
     public Sampler(int x, int z, BiomeProvider provider, World world, int elevationSmooth) {
-        this.interpolator = new BiomeChunkInterpolator(world, x, z, provider, (generator, coord) -> {
-            if(generator.is2d())
-                return generator.getBaseSampler().getNoise(coord.getX(), 0, coord.getZ()) + noise2dExtrude(coord.getY(), generator.get2dBase());
-            else return generator.getBaseSampler().getNoise(coord);
-        });
+        this.interpolator = new BiomeChunkInterpolator(world, x, z, provider, (generator, coord) -> generator.getBaseSampler().getNoise(coord));
         this.elevationInterpolator = new ElevationInterpolator(world, x, z, provider, elevationSmooth);
     }
 

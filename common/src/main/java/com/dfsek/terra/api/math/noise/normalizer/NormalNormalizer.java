@@ -13,9 +13,8 @@ public class NormalNormalizer extends Normalizer {
         this.lookup = new double[buckets];
 
         for(int i = 0; i < buckets; i++) {
-            lookup[i] = MathUtil.compute((double) i / buckets, mean, standardDeviation);
+            lookup[i] = MathUtil.normalInverse((double) i / buckets, mean, standardDeviation);
         }
-
     }
 
     @Override
