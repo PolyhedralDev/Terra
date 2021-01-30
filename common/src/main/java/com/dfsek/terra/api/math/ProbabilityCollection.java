@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.math;
 
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 
 import java.util.Collections;
 import java.util.HashSet;

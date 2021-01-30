@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.math.noise.samplers;
 
+import com.dfsek.terra.api.math.noise.NoiseSampler;
+
 public class DomainWarpedSampler implements NoiseSampler {
     private final NoiseSampler function;
     private final NoiseSampler warp;

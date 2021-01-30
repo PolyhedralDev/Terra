@@ -2,7 +2,7 @@ package com.dfsek.terra.biome.provider;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.biome.TerraBiome;

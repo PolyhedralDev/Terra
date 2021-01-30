@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.math.noise.samplers;
 
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import net.jafama.FastMath;
 
 import java.awt.image.BufferedImage;

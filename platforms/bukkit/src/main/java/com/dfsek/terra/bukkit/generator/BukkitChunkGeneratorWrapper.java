@@ -8,6 +8,8 @@ import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.profiler.DataType;
+import com.dfsek.terra.profiler.Measurement;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.FloraPopulator;
 import com.dfsek.terra.world.population.OrePopulator;
@@ -74,6 +76,8 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
             e.printStackTrace();
         }
         popMap.put(w, popMan);
+        main.getWorld(w).getProfiler().addMeasurement(new Measurement(15000000, DataType.PERIOD_MILLISECONDS), "PopulationManagerTime");
+        popMan.attachProfiler(main.getWorld(w).getProfiler());
         needsLoad = false;
     }
 

@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math.noise.samplers;
+package com.dfsek.terra.api.math.noise;
 
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;

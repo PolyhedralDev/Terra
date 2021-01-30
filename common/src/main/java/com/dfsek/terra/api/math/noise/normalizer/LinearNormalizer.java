@@ -1,7 +1,10 @@
 package com.dfsek.terra.api.math.noise.normalizer;
 
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 
+/**
+ * Normalizer to linearly scale data's range.
+ */
 public class LinearNormalizer extends Normalizer {
     private final double min;
     private final double max;

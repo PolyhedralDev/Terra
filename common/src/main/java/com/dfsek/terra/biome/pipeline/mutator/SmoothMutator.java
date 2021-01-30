@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.pipeline.mutator;
 
 import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.biome.TerraBiome;
 
 import java.util.Objects;

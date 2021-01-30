@@ -1,8 +1,9 @@
 package com.dfsek.terra.api.math.noise.samplers;
 
-import com.dfsek.terra.api.math.noise.NoiseFunction2;
-import com.dfsek.terra.api.math.noise.NoiseFunction3;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.parsii.RandomFunction;
+import com.dfsek.terra.api.math.parsii.noise.NoiseFunction2;
+import com.dfsek.terra.api.math.parsii.noise.NoiseFunction3;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import parsii.eval.Expression;
 import parsii.eval.Parser;

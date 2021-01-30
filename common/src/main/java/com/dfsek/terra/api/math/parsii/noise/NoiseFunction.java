@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math.noise;
+package com.dfsek.terra.api.math.parsii.noise;
 
 import parsii.eval.Function;
 

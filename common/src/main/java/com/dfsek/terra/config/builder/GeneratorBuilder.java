@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.builder;
 
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
 import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.world.generation.WorldGenerator;

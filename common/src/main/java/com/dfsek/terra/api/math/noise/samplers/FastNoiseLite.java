@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.math.noise.samplers;// MIT License
 
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import net.jafama.FastMath;

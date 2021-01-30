@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.generation.math.interpolation;
 
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import net.jafama.FastMath;
 
 public class NoiseChunkInterpolator implements ChunkInterpolator {

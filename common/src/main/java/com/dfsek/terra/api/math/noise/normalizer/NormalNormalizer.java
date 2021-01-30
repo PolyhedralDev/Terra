@@ -1,9 +1,12 @@
 package com.dfsek.terra.api.math.noise.normalizer;
 
 import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import net.jafama.FastMath;
 
+/**
+ * Normalizer to redistribute normally distributed data to a continuous distribution via an automatically generated lookup table.
+ */
 public class NormalNormalizer extends Normalizer {
 
     private final double[] lookup;

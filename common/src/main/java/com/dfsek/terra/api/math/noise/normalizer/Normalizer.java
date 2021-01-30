@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.math.noise.normalizer;
 
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 
 public abstract class Normalizer implements NoiseSampler {
     private final NoiseSampler sampler;

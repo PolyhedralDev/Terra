@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.math.noise.samplers;
 
+import com.dfsek.terra.api.math.noise.NoiseSampler;
+
 /**
  * Sampler implementation that returns a constant.
  */

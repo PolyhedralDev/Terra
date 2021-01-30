@@ -1,7 +1,7 @@
 package com.dfsek.terra.biome.pipeline.expand;
 
 import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.biome.TerraBiome;
 
 public class FractalExpander implements BiomeExpander {

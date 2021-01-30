@@ -15,6 +15,7 @@ import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.provider.BiomeProvider;
@@ -24,6 +25,7 @@ import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
+import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
@@ -133,6 +135,7 @@ public class DistributionTest {
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
 
+
         BiomeRegistry biomeRegistry = new BiomeRegistry();
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), MAIN));
 
@@ -142,6 +145,7 @@ public class DistributionTest {
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(TerraBiome.class, biomeRegistry);
         new GenericLoaders(null).register(pipeLoader);
+        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(folderLoader));
 
         pipeLoader.load(template, folderLoader.get("pack.yml"));
         return template.getBiomeProviderBuilder().build(seed);
