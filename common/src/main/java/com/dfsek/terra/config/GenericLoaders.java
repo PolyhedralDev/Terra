@@ -21,8 +21,11 @@ import com.dfsek.terra.config.loaders.config.OreConfigLoader;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
+import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.util.MaterialSet;
@@ -55,6 +58,10 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(OreHolder.class, new OreHolderLoader())
                 .registerLoader(FastNoiseTemplate.class, FastNoiseTemplate::new)
                 .registerLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
+                .registerLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
+                .registerLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
+                .registerLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
+                .registerLoader(FastNoiseTemplate.class, FastNoiseTemplate::new)
                 .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader())
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(FastNoiseLite.NoiseType.class, (t, object, cf) -> FastNoiseLite.NoiseType.valueOf((String) object))

@@ -6,7 +6,7 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
-@SuppressWarnings("FieldMayBeFinal")
+@SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class FastNoiseTemplate extends SamplerTemplate<FastNoiseLite> implements NoiseSeeded {
     @Value("type")
     @Default

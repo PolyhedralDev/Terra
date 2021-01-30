@@ -6,6 +6,7 @@ import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
 
 import java.awt.image.BufferedImage;
 
+@SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class ImageSamplerTemplate extends SamplerTemplate<ImageSampler> {
 
     @Value("image")
