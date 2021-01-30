@@ -1,14 +1,13 @@
-package com.dfsek.terra.world.generation.config;
+package com.dfsek.terra.config.loaders.config.sampler.templates;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings("FieldMayBeFinal")
-public class NoiseBuilder implements ConfigTemplate {
+public class FastNoiseTemplate extends SamplerTemplate<FastNoiseLite> implements NoiseSeeded {
     @Value("type")
     @Default
     private FastNoiseLite.NoiseType type = FastNoiseLite.NoiseType.OpenSimplex2;
@@ -70,7 +69,8 @@ public class NoiseBuilder implements ConfigTemplate {
     private NoiseSeeded lookup;
 
 
-    public NoiseSampler build(long seed) {
+    @Override
+    public NoiseSampler apply(Long seed) {
         FastNoiseLite noise = new FastNoiseLite((int) (seed + seedOffset));
         if(!fractalType.equals(FastNoiseLite.FractalType.None)) {
             noise.setFractalType(fractalType);
@@ -99,7 +99,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return type;
     }
 
-    public NoiseBuilder setType(FastNoiseLite.NoiseType type) {
+    public FastNoiseTemplate setType(FastNoiseLite.NoiseType type) {
         this.type = type;
         return this;
     }
@@ -116,7 +116,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return cellularDistanceFunction;
     }
 
-    public NoiseBuilder setCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction cellularDistanceFunction) {
+    public FastNoiseTemplate setCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction cellularDistanceFunction) {
         this.cellularDistanceFunction = cellularDistanceFunction;
         return this;
     }
@@ -125,7 +125,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return cellularReturnType;
     }
 
-    public NoiseBuilder setCellularReturnType(FastNoiseLite.CellularReturnType cellularReturnType) {
+    public FastNoiseTemplate setCellularReturnType(FastNoiseLite.CellularReturnType cellularReturnType) {
         this.cellularReturnType = cellularReturnType;
         return this;
     }
@@ -134,7 +134,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return cellularJitter;
     }
 
-    public NoiseBuilder setCellularJitter(double cellularJitter) {
+    public FastNoiseTemplate setCellularJitter(double cellularJitter) {
         this.cellularJitter = cellularJitter;
         return this;
     }
@@ -143,7 +143,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return fractalGain;
     }
 
-    public NoiseBuilder setFractalGain(double fractalGain) {
+    public FastNoiseTemplate setFractalGain(double fractalGain) {
         this.fractalGain = fractalGain;
         return this;
     }
@@ -152,7 +152,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return fractalLacunarity;
     }
 
-    public NoiseBuilder setFractalLacunarity(double fractalLacunarity) {
+    public FastNoiseTemplate setFractalLacunarity(double fractalLacunarity) {
         this.fractalLacunarity = fractalLacunarity;
         return this;
     }
@@ -161,7 +161,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return frequency;
     }
 
-    public NoiseBuilder setFrequency(double frequency) {
+    public FastNoiseTemplate setFrequency(double frequency) {
         this.frequency = frequency;
         return this;
     }
@@ -170,7 +170,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return pingPong;
     }
 
-    public NoiseBuilder setPingPong(double pingPong) {
+    public FastNoiseTemplate setPingPong(double pingPong) {
         this.pingPong = pingPong;
         return this;
     }
@@ -179,7 +179,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return weightedStrength;
     }
 
-    public NoiseBuilder setWeightedStrength(double weightedStrength) {
+    public FastNoiseTemplate setWeightedStrength(double weightedStrength) {
         this.weightedStrength = weightedStrength;
         return this;
     }
@@ -188,7 +188,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return octaves;
     }
 
-    public NoiseBuilder setOctaves(int octaves) {
+    public FastNoiseTemplate setOctaves(int octaves) {
         this.octaves = octaves;
         return this;
     }
@@ -197,7 +197,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return fractalType;
     }
 
-    public NoiseBuilder setFractalType(FastNoiseLite.FractalType fractalType) {
+    public FastNoiseTemplate setFractalType(FastNoiseLite.FractalType fractalType) {
         this.fractalType = fractalType;
         return this;
     }
@@ -206,7 +206,7 @@ public class NoiseBuilder implements ConfigTemplate {
         return rotationType3D;
     }
 
-    public NoiseBuilder setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
+    public FastNoiseTemplate setRotationType3D(FastNoiseLite.RotationType3D rotationType3D) {
         this.rotationType3D = rotationType3D;
         return this;
     }
@@ -217,6 +217,11 @@ public class NoiseBuilder implements ConfigTemplate {
 
     public void setDimensions(int dimensions) {
         this.dimensions = dimensions;
+    }
+
+    @Override
+    public NoiseSeeded get() {
+        return this;
     }
 }
 

@@ -30,7 +30,7 @@ public class StageBuilderLoader implements TypeLoader<SeededBuilder<Stage>> {
         Map.Entry<String, Object> entry = (Map.Entry<String, Object>) c;
 
         Map<String, Object> mutator = (Map<String, Object>) entry.getValue();
-        NoiseSeeded mutatorNoise = (NoiseSeeded) loader.loadType(NoiseSeeded.class, mutator.get("noise"));
+        NoiseSeeded mutatorNoise = loader.loadClass(NoiseSeeded.class, mutator.get("noise"));
 
         if(entry.getKey().equals("expand")) {
             if(mutator.get("type").equals("FRACTAL"))
@@ -54,7 +54,7 @@ public class StageBuilderLoader implements TypeLoader<SeededBuilder<Stage>> {
 
                     Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace = new HashMap<>();
                     for(Map.Entry<String, Object> e : ((Map<String, Object>) mutator.get("to")).entrySet()) {
-                        replace.put((TerraBiome) loader.loadType(TerraBiome.class, e.getKey()), new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, e.getValue(), loader));
+                        replace.put(loader.loadClass(TerraBiome.class, e.getKey()), new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, e.getValue(), loader));
                     }
 
                     return seed -> new MutatorStage(new ReplaceListMutator(replace, fromTag, replaceBiomes, mutatorNoise.apply(seed)));
@@ -73,7 +73,7 @@ public class StageBuilderLoader implements TypeLoader<SeededBuilder<Stage>> {
 
                     Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace = new HashMap<>();
                     for(Map.Entry<String, Object> e : ((Map<String, Object>) mutator.get("replace")).entrySet()) {
-                        replace.put((TerraBiome) loader.loadType(TerraBiome.class, e.getKey()), new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, e.getValue(), loader));
+                        replace.put(loader.loadClass(TerraBiome.class, e.getKey()), new SelfProbabilityCollectionLoader<TerraBiome>().load(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, e.getValue(), loader));
                     }
 
                     return seed -> new MutatorStage(new BorderListMutator(replace, fromTag, replaceTag, mutatorNoise.apply(seed), replaceBiomes));

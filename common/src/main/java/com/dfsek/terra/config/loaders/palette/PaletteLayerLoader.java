@@ -22,7 +22,7 @@ public class PaletteLayerLoader implements TypeLoader<PaletteLayerHolder> {
 
         NoiseSampler sampler = null;
         if(map.containsKey("noise")) {
-            sampler = ((NoiseSeeded) configLoader.loadType(NoiseSeeded.class, map.get("noise"))).apply(2403L);
+            sampler = configLoader.loadClass(NoiseSeeded.class, map.get("noise")).apply(2403L);
         }
 
         if(collection == null) throw new LoadException("Collection is null: " + map.get("materials"));

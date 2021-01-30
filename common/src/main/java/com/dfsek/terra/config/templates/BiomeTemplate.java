@@ -18,8 +18,8 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
@@ -226,12 +226,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
-        NoiseBuilder builder = new NoiseBuilder();
+        FastNoiseTemplate builder = new FastNoiseTemplate();
         builder.setType(FastNoiseLite.NoiseType.Constant);
         biomeNoise = new NoiseSeeded() {
             @Override
             public NoiseSampler apply(Long seed) {
-                return builder.build(seed);
+                return builder.apply(seed);
             }
 
             @Override

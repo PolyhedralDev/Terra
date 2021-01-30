@@ -8,6 +8,8 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
@@ -18,6 +20,9 @@ import com.dfsek.terra.config.loaders.config.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.config.OreConfigLoader;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
+import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
+import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.util.MaterialSet;
@@ -48,6 +53,10 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
+                .registerLoader(FastNoiseTemplate.class, FastNoiseTemplate::new)
+                .registerLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
+                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader())
+                .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(FastNoiseLite.NoiseType.class, (t, object, cf) -> FastNoiseLite.NoiseType.valueOf((String) object))
                 .registerLoader(FastNoiseLite.FractalType.class, (t, object, cf) -> FastNoiseLite.FractalType.valueOf((String) object))
                 .registerLoader(FastNoiseLite.DomainWarpType.class, (t, object, cf) -> FastNoiseLite.DomainWarpType.valueOf((String) object))

@@ -145,7 +145,7 @@ public class DistributionTest {
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(TerraBiome.class, biomeRegistry);
         new GenericLoaders(null).register(pipeLoader);
-        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(folderLoader));
+        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader());
 
         pipeLoader.load(template, folderLoader.get("pack.yml"));
         return template.getBiomeProviderBuilder().build(seed);
@@ -214,6 +214,7 @@ public class DistributionTest {
             @Override
             public void keyTyped(KeyEvent e) {
                 if(e.getKeyChar() == 's') {
+                    long l = System.nanoTime();
                     try {
                         provider[0] = getProvider(ThreadLocalRandom.current().nextLong());
                     } catch(ConfigException | IOException configException) {
@@ -225,6 +226,9 @@ public class DistributionTest {
                             image[0].setRGB(x, z, provider[0].getBiome(x, z).getColor());
                         }
                     }
+                    long n = System.nanoTime();
+                    double t = n - l;
+                    System.out.println("Time: " + t / 1000000 + "ms");
                     img.setIcon(new ImageIcon(image[0]));
                 }
             }

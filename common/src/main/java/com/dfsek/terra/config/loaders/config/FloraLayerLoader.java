@@ -10,7 +10,7 @@ import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 
 import java.lang.reflect.Type;
@@ -22,23 +22,23 @@ public class FloraLayerLoader implements TypeLoader<FloraLayer> {
     public FloraLayer load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
         double density = ((Number) map.get("density")).doubleValue();
-        Range range = (Range) configLoader.loadType(Range.class, map.get("y"));
+        Range range = configLoader.loadClass(Range.class, map.get("y"));
         if(range == null) throw new LoadException("Flora range unspecified");
         ProbabilityCollection<Flora> items = (ProbabilityCollection<Flora>) configLoader.loadType(Types.FLORA_PROBABILITY_COLLECTION_TYPE, map.get("items"));
 
         NoiseSeeded sampler;
         if(map.containsKey("distribution")) {
             try {
-                sampler = (NoiseSeeded) configLoader.loadType(NoiseSeeded.class, map.get("distribution"));
+                sampler = configLoader.loadClass(NoiseSeeded.class, map.get("distribution"));
             } catch(ConfigException e) {
                 throw new LoadException("Unable to load noise", e);
             }
             return new FloraLayer(density, range, items, sampler.apply(2403L));
         }
-        NoiseBuilder def = new NoiseBuilder();
+        FastNoiseTemplate def = new FastNoiseTemplate();
         def.setType(FastNoiseLite.NoiseType.WhiteNoise);
         def.setDimensions(3);
 
-        return new FloraLayer(density, range, items, def.build(2403));
+        return new FloraLayer(density, range, items, def.apply(2403L));
     }
 }

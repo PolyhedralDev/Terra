@@ -7,7 +7,7 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
-import com.dfsek.terra.world.generation.config.NoiseBuilder;
+import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 
 import java.util.List;
 
@@ -26,13 +26,13 @@ public class PaletteTemplate extends AbstractableTemplate {
     private List<PaletteLayerHolder> palette;
 
     public PaletteTemplate() {
-        NoiseBuilder builder = new NoiseBuilder();
+        FastNoiseTemplate builder = new FastNoiseTemplate();
         builder.setType(FastNoiseLite.NoiseType.WhiteNoise);
         builder.setDimensions(3);
         this.noise = new NoiseSeeded() {
             @Override
             public NoiseSampler apply(Long seed) {
-                return builder.build(seed);
+                return builder.apply(seed);
             }
 
             @Override

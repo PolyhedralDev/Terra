@@ -9,7 +9,6 @@ import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
@@ -27,8 +26,8 @@ import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
-import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.FloraTemplate;
@@ -52,6 +51,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
 import parsii.eval.Scope;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -240,8 +240,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(StructureScript.class, scriptRegistry)
                 .registerLoader(TerraStructure.class, structureRegistry)
                 .registerLoader(LootTable.class, lootRegistry)
-                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(main, biomeRegistry, loader))
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(loader));
+                .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
+                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(main, biomeRegistry, loader));
     }
 
     public ScriptRegistry getScriptRegistry() {

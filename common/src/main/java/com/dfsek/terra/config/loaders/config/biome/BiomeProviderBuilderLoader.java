@@ -71,7 +71,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
                 Map<String, Object> blend = (Map<String, Object>) map.get("blend");
                 if(blend.containsKey("amplitude")) builder.setNoiseAmp(Integer.parseInt(blend.get("amplitude").toString()));
                 if(blend.containsKey("noise"))
-                    builder.setBlender((NoiseSeeded) loader.loadType(NoiseSeeded.class, blend.get("noise")));
+                    builder.setBlender(loader.loadClass(NoiseSeeded.class, blend.get("noise")));
             }
             return builder;
         } else if(map.get("type").equals("IMAGE")) {
@@ -86,7 +86,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
         } else if(map.get("type").equals("SINGLE")) {
             return seed -> {
                 try {
-                    return new SingleBiomeProvider((TerraBiome) loader.loadType(TerraBiome.class, map.get("biome")));
+                    return new SingleBiomeProvider(loader.loadClass(TerraBiome.class, map.get("biome")));
                 } catch(LoadException e) {
                     throw new RuntimeException(e);
                 }

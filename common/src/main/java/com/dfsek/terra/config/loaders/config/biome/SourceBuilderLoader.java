@@ -24,7 +24,7 @@ public class SourceBuilderLoader implements TypeLoader<SeededBuilder<BiomeSource
 
         if("NOISE".equals(type)) {
             ProbabilityCollection<TerraBiome> sourceBiomes = (ProbabilityCollection<TerraBiome>) loader.loadType(Types.TERRA_BIOME_PROBABILITY_COLLECTION_TYPE, source.get("biomes"));
-            NoiseSeeded sourceNoise = (NoiseSeeded) loader.loadType(NoiseSeeded.class, source.get("noise"));
+            NoiseSeeded sourceNoise = loader.loadClass(NoiseSeeded.class, source.get("noise"));
             return seed -> new RandomSource(sourceBiomes, sourceNoise.apply(seed));
         }
         throw new LoadException("No such loader type: " + type);
