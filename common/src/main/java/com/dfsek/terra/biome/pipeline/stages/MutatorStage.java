@@ -20,4 +20,8 @@ public class MutatorStage implements Stage {
         in.mutate(mutator);
         return in;
     }
+
+    public enum Type {
+        REPLACE, REPLACE_LIST, BORDER, BORDER_LIST, SMOOTH
+    }
 }

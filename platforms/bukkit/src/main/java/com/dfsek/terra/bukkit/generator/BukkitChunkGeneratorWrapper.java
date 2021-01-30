@@ -3,6 +3,7 @@ package com.dfsek.terra.bukkit.generator;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -23,12 +24,12 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
 
@@ -40,6 +41,8 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     private final TerraPlugin main;
 
+    private final List<TerraBlockPopulator> populators = new LinkedList<>();
+
     private boolean needsLoad = true;
 
     public BukkitChunkGeneratorWrapper(TerraChunkGenerator delegate) {
@@ -49,6 +52,8 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
         popMan.attach(new OrePopulator(main));
         popMan.attach(new TreePopulator(main));
         popMan.attach(new FloraPopulator(main));
+        populators.add(new StructurePopulator(main));
+        populators.add(popMan);
     }
 
 
@@ -91,7 +96,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Stream.of(new StructurePopulator(main), popMan).map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
+        return populators.stream().map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
     }
 
     @Override

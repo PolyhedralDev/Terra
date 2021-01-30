@@ -19,4 +19,8 @@ public class ExpanderStage implements Stage {
     public BiomeHolder apply(BiomeHolder in) {
         return in.expand(expander);
     }
+
+    public enum Type {
+        FRACTAL
+    }
 }

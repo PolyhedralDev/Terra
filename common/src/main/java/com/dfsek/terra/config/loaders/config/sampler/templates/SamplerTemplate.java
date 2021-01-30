@@ -8,6 +8,7 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
+@SuppressWarnings("FieldMayBeFinal")
 public abstract class SamplerTemplate<T extends NoiseSampler> implements ValidatedConfigTemplate, ObjectTemplate<NoiseSeeded>, NoiseSeeded {
     @Value("dimensions")
     @Default

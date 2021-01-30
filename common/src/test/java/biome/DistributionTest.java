@@ -134,7 +134,7 @@ public class DistributionTest {
         FolderLoader folderLoader = new FolderLoader(pack.toPath());
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
-
+        new GenericLoaders(null).register(loader);
 
         BiomeRegistry biomeRegistry = new BiomeRegistry();
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), MAIN));
@@ -145,6 +145,7 @@ public class DistributionTest {
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(TerraBiome.class, biomeRegistry);
         new GenericLoaders(null).register(pipeLoader);
+
         pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader());
 
         pipeLoader.load(template, folderLoader.get("pack.yml"));
