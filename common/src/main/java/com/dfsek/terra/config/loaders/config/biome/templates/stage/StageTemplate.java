@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome.templates;
+package com.dfsek.terra.config.loaders.config.biome.templates.stage;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;

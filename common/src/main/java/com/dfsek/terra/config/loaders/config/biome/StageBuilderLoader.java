@@ -7,12 +7,12 @@ import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.biome.pipeline.stages.Stage;
-import com.dfsek.terra.config.loaders.config.biome.templates.ExpanderStageTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.mutator.BorderListMutatorTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.mutator.BorderMutatorTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.mutator.ReplaceListMutatorTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.mutator.ReplaceMutatorTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.mutator.SmoothMutatorTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.stage.expander.ExpanderStageTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.BorderListMutatorTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.BorderMutatorTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceListMutatorTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceMutatorTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.SmoothMutatorTemplate;
 
 import java.lang.reflect.Type;
 import java.util.Map;

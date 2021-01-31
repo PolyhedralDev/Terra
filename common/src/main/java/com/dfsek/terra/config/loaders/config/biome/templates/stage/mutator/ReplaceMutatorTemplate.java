@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome.templates.mutator;
+package com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.ProbabilityCollection;

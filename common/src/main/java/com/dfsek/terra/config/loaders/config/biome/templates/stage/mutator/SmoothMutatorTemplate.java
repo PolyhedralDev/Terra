@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome.templates.mutator;
+package com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator;
 
 import com.dfsek.terra.biome.pipeline.mutator.BiomeMutator;
 import com.dfsek.terra.biome.pipeline.mutator.SmoothMutator;
