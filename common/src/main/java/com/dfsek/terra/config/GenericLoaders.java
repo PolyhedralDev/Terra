@@ -28,6 +28,7 @@ import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.Borde
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceListMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.SmoothMutatorTemplate;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
@@ -77,6 +78,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(ReplaceListMutatorTemplate.class, ReplaceListMutatorTemplate::new)
                 .registerLoader(BorderMutatorTemplate.class, BorderMutatorTemplate::new)
                 .registerLoader(BorderListMutatorTemplate.class, BorderListMutatorTemplate::new)
+                .registerLoader(FunctionTemplate.class, FunctionTemplate::new)
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(ExpanderStage.Type.class, (t, object, cf) -> ExpanderStage.Type.valueOf((String) object))
                 .registerLoader(MutatorStage.Type.class, (t, object, cf) -> MutatorStage.Type.valueOf((String) object))

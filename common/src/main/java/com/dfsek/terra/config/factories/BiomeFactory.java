@@ -4,9 +4,13 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import parsii.eval.Scope;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
     private final ConfigPack pack;
@@ -21,7 +25,12 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
         generatorBuilder.setElevationEquation(template.getElevationEquation());
         generatorBuilder.setNoiseEquation(template.getNoiseEquation());
         generatorBuilder.setCarvingEquation(template.getCarvingEquation());
-        generatorBuilder.setNoiseBuilderMap(template.getPack().getTemplate().getNoiseBuilderMap());
+        generatorBuilder.setNoiseBuilderMap(pack.getTemplate().getNoiseBuilderMap());
+
+        Map<String, FunctionTemplate> functions = new HashMap<>(pack.getTemplate().getFunctions());
+        functions.putAll(template.getFunctions());
+        generatorBuilder.setFunctionTemplateMap(functions);
+
         generatorBuilder.setPalettes(template.getPalette());
         generatorBuilder.setSlantPalettes(template.getSlantPalette());
 

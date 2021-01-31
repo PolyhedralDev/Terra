@@ -5,6 +5,7 @@ import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
 import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
 import parsii.eval.Scope;
 import parsii.tokenizer.ParseException;
@@ -25,6 +26,8 @@ public class GeneratorBuilder {
     private Scope varScope;
 
     private Map<String, NoiseSeeded> noiseBuilderMap;
+
+    private Map<String, FunctionTemplate> functionTemplateMap;
 
     private PaletteHolder palettes;
 
@@ -51,9 +54,9 @@ public class GeneratorBuilder {
                 NoiseSampler elevation;
                 NoiseSampler carving;
                 try {
-                    noise = new ExpressionSampler(noiseEquation, varScope, seed, noiseBuilderMap);
-                    elevation = elevationEquation == null ? new ConstantSampler(0) : new ExpressionSampler(elevationEquation, varScope, seed, noiseBuilderMap);
-                    carving = new ExpressionSampler(carvingEquation, varScope, seed, noiseBuilderMap);
+                    noise = new ExpressionSampler(noiseEquation, varScope, seed, noiseBuilderMap, functionTemplateMap);
+                    elevation = elevationEquation == null ? new ConstantSampler(0) : new ExpressionSampler(elevationEquation, varScope, seed, noiseBuilderMap, functionTemplateMap);
+                    carving = new ExpressionSampler(carvingEquation, varScope, seed, noiseBuilderMap, functionTemplateMap);
                 } catch(ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -64,6 +67,10 @@ public class GeneratorBuilder {
 
     public void setBlendWeight(double blendWeight) {
         this.blendWeight = blendWeight;
+    }
+
+    public void setFunctionTemplateMap(Map<String, FunctionTemplate> functionTemplateMap) {
+        this.functionTemplateMap = functionTemplateMap;
     }
 
     public void setBlendStep(int blendStep) {

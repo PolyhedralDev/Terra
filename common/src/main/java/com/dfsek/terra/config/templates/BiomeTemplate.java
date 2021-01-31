@@ -10,6 +10,7 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.parsii.BlankFunction;
+import com.dfsek.terra.api.math.parsii.defined.UserDefinedFunction;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.world.Biome;
@@ -18,6 +19,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -26,12 +28,14 @@ import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 import parsii.eval.Parser;
 import parsii.eval.Scope;
+import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
@@ -49,6 +53,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     @Default
     private Map<String, Double> variables = new HashMap<>();
+
+    @Value("functions")
+    @Default
+    @Abstractable
+    private Map<String, FunctionTemplate> functions = new HashMap<>();
 
     @Value("carving.equation")
     @Abstractable
@@ -178,6 +187,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public Set<String> getTags() {
         return tags;
+    }
+
+    public Map<String, FunctionTemplate> getFunctions() {
+        return functions;
     }
 
     public double getBlendWeight() {
@@ -316,7 +329,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     @Override
     public boolean validate() throws ValidationException {
-        color |= 0x1fe00000; // Alpha adjustment
+        color |= 0xff000000; // Alpha adjustment
         Parser tester = new Parser();
         Scope testScope = new Scope().withParent(pack.getVarScope());
 
@@ -328,6 +341,22 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         testScope.create("seed");
 
         pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
+
+        Map<String, FunctionTemplate> testFunctions = new HashMap<>(pack.getTemplate().getFunctions());
+        testFunctions.putAll(functions);
+        for(Map.Entry<String, FunctionTemplate> entry : testFunctions.entrySet()) {
+            String id = entry.getKey();
+            FunctionTemplate fun = entry.getValue();
+
+            Scope functionScope = new Scope().withParent(testScope);
+            List<Variable> variables = fun.getArgs().stream().map(functionScope::create).collect(Collectors.toList());
+
+            try {
+                tester.registerFunction(id, new UserDefinedFunction(tester.parse(fun.getFunction(), functionScope), variables));
+            } catch(ParseException e) {
+                throw new ValidationException("Invalid function: ", e);
+            }
+        }
 
         try {
             tester.parse(noiseEquation, testScope);

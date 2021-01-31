@@ -5,6 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,10 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("variables")
     @Default
     private Map<String, Double> variables = new HashMap<>();
+
+    @Value("functions")
+    @Default
+    private Map<String, FunctionTemplate> functions = new HashMap<>();
 
     @Value("structures.locatable")
     @Default
@@ -78,6 +83,10 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public BiomeProvider.BiomeProviderBuilder getProviderBuilder() {
         return providerBuilder;
+    }
+
+    public Map<String, FunctionTemplate> getFunctions() {
+        return functions;
     }
 
     public String getVersion() {
