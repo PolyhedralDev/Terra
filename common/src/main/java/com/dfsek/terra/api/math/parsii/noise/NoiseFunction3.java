@@ -2,9 +2,6 @@ package com.dfsek.terra.api.math.parsii.noise;
 
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import parsii.eval.Expression;
-
-import java.util.List;
 
 public class NoiseFunction3 implements NoiseFunction {
     private final NoiseSampler gen;
@@ -14,17 +11,17 @@ public class NoiseFunction3 implements NoiseFunction {
     }
 
     @Override
-    public int getNumberOfArguments() {
+    public int getArgNumber() {
         return 3;
     }
 
     @Override
-    public double eval(List<Expression> list) {
-        return gen.getNoise(list.get(0).evaluate(), list.get(1).evaluate(), list.get(2).evaluate());
+    public double eval(double... args) {
+        return gen.getNoise(args[0], args[1], args[2]);
     }
 
     @Override
-    public boolean isNaturalFunction() {
+    public boolean isStateless() {
         return true;
     }
 }

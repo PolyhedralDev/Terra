@@ -1,5 +1,8 @@
 package com.dfsek.terra.config.templates;
 
+import com.dfsek.paralithic.eval.parser.Parser;
+import com.dfsek.paralithic.eval.parser.Scope;
+import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
@@ -26,16 +29,11 @@ import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
-import parsii.eval.Parser;
-import parsii.eval.Scope;
-import parsii.eval.Variable;
-import parsii.tokenizer.ParseException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
@@ -333,12 +331,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         Parser tester = new Parser();
         Scope testScope = new Scope().withParent(pack.getVarScope());
 
-        variables.forEach((id, val) -> testScope.create(id).setValue(val));
+        variables.forEach(testScope::create);
 
-        testScope.create("x");
-        testScope.create("y");
-        testScope.create("z");
-        testScope.create("seed");
+        testScope.addInvocationVariable("x");
+        testScope.addInvocationVariable("y");
+        testScope.addInvocationVariable("z");
+
 
         pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
 
@@ -349,16 +347,17 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
             FunctionTemplate fun = entry.getValue();
 
             Scope functionScope = new Scope().withParent(testScope);
-            List<Variable> variables = fun.getArgs().stream().map(functionScope::create).collect(Collectors.toList());
+            fun.getArgs().forEach(functionScope::addInvocationVariable);
 
             try {
-                tester.registerFunction(id, new UserDefinedFunction(tester.parse(fun.getFunction(), functionScope), variables));
+                tester.registerFunction(id, new UserDefinedFunction(tester.parse(fun.getFunction(), functionScope), fun.getArgs().size()));
             } catch(ParseException e) {
                 throw new ValidationException("Invalid function: ", e);
             }
         }
 
         try {
+            System.out.println("Testing " + id);
             tester.parse(noiseEquation, testScope);
         } catch(ParseException e) {
             throw new ValidationException("Invalid noise equation: ", e);

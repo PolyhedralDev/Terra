@@ -24,6 +24,7 @@ public class TerraWorld {
 
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
+        c.getBiomeRegistry().forEach(biome -> biome.getGenerator(w)); // Load all gens to cache
         config = c;
         profiler = new WorldProfiler(w);
         this.provider = config.getTemplate().getProviderBuilder().build(w.getSeed());

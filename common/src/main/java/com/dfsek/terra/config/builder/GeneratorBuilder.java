@@ -1,5 +1,7 @@
 package com.dfsek.terra.config.builder;
 
+import com.dfsek.paralithic.eval.parser.Scope;
+import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
 import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
@@ -7,8 +9,6 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
-import parsii.eval.Scope;
-import parsii.tokenizer.ParseException;
 
 import java.util.Collections;
 import java.util.HashMap;

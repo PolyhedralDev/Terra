@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.pack;
 
+import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
@@ -49,7 +50,6 @@ import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.ores.Ore;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
-import parsii.eval.Scope;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -154,7 +154,7 @@ public class ConfigPack implements LoaderRegistrar {
     private void load(long start, TerraPlugin main) throws ConfigException {
         main.packPreLoadCallback(this);
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
-            varScope.create(var.getKey()).setValue(var.getValue());
+            varScope.create(var.getKey(), var.getValue());
         }
         loader.open("structures/data", ".tstructure")
                 .thenNames(ids -> ids.forEach(id -> main.getLogger().severe("Found .tstructure file \"" + id + "\". This file must be updated to the newer .tesf format to work properly. See version 3.0 release notes for instructions.")))

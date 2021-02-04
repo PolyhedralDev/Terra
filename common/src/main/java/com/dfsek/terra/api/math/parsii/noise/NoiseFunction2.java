@@ -3,9 +3,8 @@ package com.dfsek.terra.api.math.parsii.noise;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.util.hash.HashMapDoubleDouble;
-import parsii.eval.Expression;
 
-import java.util.List;
+
 
 public class NoiseFunction2 implements NoiseFunction {
     private final NoiseSampler gen;
@@ -16,27 +15,17 @@ public class NoiseFunction2 implements NoiseFunction {
     }
 
     @Override
-    public int getNumberOfArguments() {
+    public int getArgNumber() {
         return 2;
     }
 
     @Override
-    public double eval(List<Expression> list) {
-        return cache.get(gen, list.get(0).evaluate(), list.get(1).evaluate());
-    }
-
-    /**
-     * Evaluate without cache. For testing.
-     *
-     * @param list Parameters.
-     * @return Result.
-     */
-    public double evalNoCache(List<Expression> list) {
-        return gen.getNoise(list.get(0).evaluate(), list.get(1).evaluate());
+    public double eval(double... args) {
+        return cache.get(gen, args[0], args[1]);
     }
 
     @Override
-    public boolean isNaturalFunction() {
+    public boolean isStateless() {
         return true;
     }
 
@@ -55,7 +44,7 @@ public class NoiseFunction2 implements NoiseFunction {
             return (value == 4.9E-324D ? addAndReturn(noise.getNoise(x, z), key) : value);
         }
 
-        private double addAndReturn(double value, double key) {
+        private synchronized double addAndReturn(double value, double key) {
             this.put(key, value);
             return value;
         }

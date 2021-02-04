@@ -1,35 +1,31 @@
 package com.dfsek.terra.api.math.parsii.defined;
 
-import parsii.eval.Expression;
-import parsii.eval.Function;
-import parsii.eval.Variable;
+import com.dfsek.paralithic.Expression;
+import com.dfsek.paralithic.function.dynamic.DynamicFunction;
 
-import java.util.List;
 
-public class UserDefinedFunction implements Function {
+public class UserDefinedFunction implements DynamicFunction {
     private final Expression expression;
-    private final List<Variable> variables;
+    private final int args;
 
-    public UserDefinedFunction(Expression expression, List<Variable> variables) {
+    public UserDefinedFunction(Expression expression, int args) {
         this.expression = expression;
-        this.variables = variables;
+        this.args = args;
+    }
+
+
+    @Override
+    public double eval(double... args) {
+        return expression.evaluate(args);
     }
 
     @Override
-    public int getNumberOfArguments() {
-        return variables.size();
-    }
-
-    @Override
-    public synchronized double eval(List<Expression> args) {
-        for(int i = 0; i < variables.size(); i++) {
-            variables.get(i).setValue(args.get(i).evaluate());
-        }
-        return expression.evaluate();
-    }
-
-    @Override
-    public boolean isNaturalFunction() {
+    public boolean isStateless() {
         return true;
+    }
+
+    @Override
+    public int getArgNumber() {
+        return args;
     }
 }

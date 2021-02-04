@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.factories;
 
+import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.UserDefinedBiome;
@@ -7,7 +8,6 @@ import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import parsii.eval.Scope;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
         generatorBuilder.setSlantPalettes(template.getSlantPalette());
 
         Scope vars = new Scope().withParent(pack.getVarScope());
-        template.getVariables().forEach((id, val) -> vars.create(id).setValue(val));
+        template.getVariables().forEach(vars::create);
         generatorBuilder.setVarScope(vars);
 
         generatorBuilder.setInterpolateElevation(template.interpolateElevation());

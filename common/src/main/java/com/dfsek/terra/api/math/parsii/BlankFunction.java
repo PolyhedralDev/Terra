@@ -1,11 +1,8 @@
 package com.dfsek.terra.api.math.parsii;
 
-import parsii.eval.Expression;
-import parsii.eval.Function;
+import com.dfsek.paralithic.function.dynamic.DynamicFunction;
 
-import java.util.List;
-
-public class BlankFunction implements Function {
+public class BlankFunction implements DynamicFunction {
     private final int args;
 
     public BlankFunction(int args) {
@@ -13,17 +10,17 @@ public class BlankFunction implements Function {
     }
 
     @Override
-    public int getNumberOfArguments() {
+    public int getArgNumber() {
         return args;
     }
 
     @Override
-    public double eval(List<Expression> list) {
+    public double eval(double... d) {
         return 0;
     }
 
     @Override
-    public boolean isNaturalFunction() {
+    public boolean isStateless() {
         return true;
     }
 }
