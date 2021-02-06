@@ -32,6 +32,7 @@ import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,7 +58,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("functions")
     @Default
     @Abstractable
-    private Map<String, FunctionTemplate> functions = new HashMap<>();
+    private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
 
     @Value("carving.equation")
     @Abstractable
@@ -342,7 +343,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
         pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
 
-        Map<String, FunctionTemplate> testFunctions = new HashMap<>(pack.getTemplate().getFunctions());
+        Map<String, FunctionTemplate> testFunctions = new LinkedHashMap<>(pack.getTemplate().getFunctions());
         testFunctions.putAll(functions);
         for(Map.Entry<String, FunctionTemplate> entry : testFunctions.entrySet()) {
             String id = entry.getKey();

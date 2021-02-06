@@ -8,6 +8,7 @@ import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
@@ -24,7 +25,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("functions")
     @Default
-    private Map<String, FunctionTemplate> functions = new HashMap<>();
+    private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
 
     @Value("structures.locatable")
     @Default
@@ -33,22 +34,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("blend.terrain.elevation")
     @Default
     private int elevationBlend = 4;
-
-    @Value("erode.enable")
-    @Default
-    private boolean erode = false;
-
-    @Value("erode.frequency")
-    @Default
-    private double erodeFreq = 0.001D;
-
-    @Value("erode.threshold")
-    @Default
-    private double erodeThresh = 0.0015D;
-
-    @Value("erode.octaves")
-    @Default
-    private int erodeOctaves = 5;
 
     @Value("vanilla.mobs")
     @Default
@@ -127,22 +112,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public Map<String, Double> getVariables() {
         return variables;
-    }
-
-    public boolean isErode() {
-        return erode;
-    }
-
-    public double getErodeFreq() {
-        return erodeFreq;
-    }
-
-    public double getErodeThresh() {
-        return erodeThresh;
-    }
-
-    public int getErodeOctaves() {
-        return erodeOctaves;
     }
 
     public int getElevationBlend() {
