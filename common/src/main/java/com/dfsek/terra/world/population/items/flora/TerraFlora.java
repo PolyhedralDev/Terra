@@ -102,14 +102,14 @@ public class TerraFlora implements Flora {
 
         List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0).getBlock()) : new GlueList<>();
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
-        BlockFace oneFace = doRotation ? faces.get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())) : null; // Get random face.
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
             BlockData data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
             if(doRotation) {
+                BlockFace oneFace = faces.get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
                 if(data instanceof Directional) {
-                    ((Directional) data).setFacing(oneFace);
+                    ((Directional) data).setFacing(oneFace.getOppositeFace());
                 } else if(data instanceof MultipleFacing) {
                     MultipleFacing o = (MultipleFacing) data;
                     for(BlockFace face : o.getFaces()) o.setFace(face, false);

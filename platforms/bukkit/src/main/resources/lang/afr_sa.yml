@@ -11,6 +11,7 @@ command:
   players-only: "Hierdie opdrag is slegs vir spelers."
   world: "This command must be executed in a Terra world!"
   reload: "Terra instel herlaai"
+  reload-error: "Foute het voorgekom tydens die herlaai van Terra-konfigurasies. Gaan sien logboeke vir meer inligting."
   version: "Hierdie bediener gebruik die Terra-weergawe \"%s\""
   main-menu:
     - "--------------------Terra--------------------"
@@ -27,6 +28,10 @@ command:
     invalid-radius: "Ongeldige radius: \"%s\""
     invalid: "Ongeldige Biome-ID: \"%s\""
     in: "Jy is in \"%s\""
+  packs:
+    main: "Tans geïnstalleerde konfigurasiepakkette:"
+    pack: " - %1$s v%3$s by %2$s"
+    none: "Geen konfigurasiepakkette is geïnstalleer nie."
   ore:
     main-menu:
       - "---------------Terra/erts---------------"
