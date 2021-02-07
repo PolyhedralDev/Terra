@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.math.parsii.defined;
 
 import com.dfsek.paralithic.Expression;
-import com.dfsek.paralithic.function.dynamic.DynamicFunction;
+import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 
 
 public class UserDefinedFunction implements DynamicFunction {

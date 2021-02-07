@@ -1,5 +1,9 @@
 package com.dfsek.terra.carving;
 
+import com.dfsek.paralithic.Expression;
+import com.dfsek.paralithic.eval.parser.Parser;
+import com.dfsek.paralithic.eval.parser.Scope;
+import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.parsii.defined.UserDefinedFunction;
@@ -16,18 +20,12 @@ import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
-import parsii.eval.Expression;
-import parsii.eval.Parser;
-import parsii.eval.Scope;
-import parsii.eval.Variable;
-import parsii.tokenizer.ParseException;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public class UserDefinedCarver extends Carver {
     private final double[] start; // 0, 1, 2 = x, y, z.
@@ -40,13 +38,6 @@ public class UserDefinedCarver extends Carver {
     private final Expression xRad;
     private final Expression yRad;
     private final Expression zRad;
-    private final Variable lengthVar;
-    private final Variable position;
-    private final Variable seedVar;
-
-    private final Variable xOrigin;
-    private final Variable yOrigin;
-    private final Variable zOrigin;
 
     private final Map<World, CarverCache> cacheMap = new ConcurrentHashMap<>();
     private final TerraPlugin main;
@@ -83,20 +74,20 @@ public class UserDefinedCarver extends Carver {
             FunctionTemplate fun = entry.getValue();
 
             Scope functionScope = new Scope().withParent(parent);
-            List<Variable> variables = fun.getArgs().stream().map(functionScope::create).collect(Collectors.toList());
 
-            p.registerFunction(id, new UserDefinedFunction(p.parse(fun.getFunction(), functionScope), variables));
+            p.registerFunction(id, new UserDefinedFunction(p.parse(fun.getFunction(), functionScope), fun.getArgs().size()));
         }
 
         Scope s = new Scope().withParent(parent);
 
-        lengthVar = s.create("length");
-        position = s.create("position");
-        seedVar = s.create("seed");
 
-        xOrigin = s.create("x");
-        yOrigin = s.create("y");
-        zOrigin = s.create("z");
+        s.addInvocationVariable("x");
+        s.addInvocationVariable("y");
+        s.addInvocationVariable("z");
+
+        s.addInvocationVariable("length");
+        s.addInvocationVariable("position");
+        s.addInvocationVariable("seed");
 
 
         xRad = p.parse(radii.get(0), s);
@@ -108,19 +99,7 @@ public class UserDefinedCarver extends Carver {
     @Override
     public Worm getWorm(long l, Vector3 vector) {
         Random r = new FastRandom(l + hash);
-        return new UserDefinedWorm(length.get(r) / 2, r, vector, topCut, bottomCut);
-    }
-
-    protected Variable getSeedVar() {
-        return seedVar;
-    }
-
-    protected Variable getLengthVar() {
-        return lengthVar;
-    }
-
-    protected Variable getPosition() {
-        return position;
+        return new UserDefinedWorm(length.get(r) / 2, r, vector, topCut, bottomCut, l);
     }
 
     public void setStep(double step) {
@@ -168,21 +147,21 @@ public class UserDefinedCarver extends Carver {
 
     private class UserDefinedWorm extends Worm {
         private final Vector3 direction;
+        private final Vector3 origin;
         private int steps;
         private int nextDirection = 0;
         private double[] currentRotation = new double[3];
+        private final long seed;
 
-        public UserDefinedWorm(int length, Random r, Vector3 origin, int topCut, int bottomCut) {
+        public UserDefinedWorm(int length, Random r, Vector3 origin, int topCut, int bottomCut, long seed) {
             super(length, r, origin);
+            this.origin = origin;
+            this.seed = seed;
             super.setTopCut(topCut);
             super.setBottomCut(bottomCut);
             direction = new Vector3((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
-            position.setValue(0);
-            lengthVar.setValue(length);
-            xOrigin.setValue(origin.getX());
-            yOrigin.setValue(origin.getY());
-            zOrigin.setValue(origin.getZ());
-            setRadius(new int[] {(int) (xRad.evaluate()), (int) (yRad.evaluate()), (int) (zRad.evaluate())});
+            double[] args = {origin.getX(), origin.getY(), origin.getZ(), length, 0, seed};
+            setRadius(new int[] {(int) (xRad.evaluate(args)), (int) (yRad.evaluate(args)), (int) (zRad.evaluate(args))});
         }
 
         @Override
@@ -191,7 +170,7 @@ public class UserDefinedCarver extends Carver {
         }
 
         @Override
-        public synchronized void step() {
+        public void step() {
             if(steps == nextDirection) {
                 direction.rotateAroundX(FastMath.toRadians((getRandom().nextGaussian()) * mutate[0] * recalcMagnitude));
                 direction.rotateAroundY(FastMath.toRadians((getRandom().nextGaussian()) * mutate[1] * recalcMagnitude));
@@ -202,8 +181,8 @@ public class UserDefinedCarver extends Carver {
                 nextDirection += recalc.get(getRandom());
             }
             steps++;
-            position.setValue(steps);
-            setRadius(new int[] {(int) (xRad.evaluate()), (int) (yRad.evaluate()), (int) (zRad.evaluate())});
+            double[] args = {origin.getX(), origin.getY(), origin.getZ(), getLength(), steps, seed};
+            setRadius(new int[] {(int) (xRad.evaluate(args)), (int) (yRad.evaluate(args)), (int) (zRad.evaluate(args))});
             direction.rotateAroundX(FastMath.toRadians(currentRotation[0] * mutate[0]));
             direction.rotateAroundY(FastMath.toRadians(currentRotation[1] * mutate[1]));
             direction.rotateAroundZ(FastMath.toRadians(currentRotation[2] * mutate[2]));

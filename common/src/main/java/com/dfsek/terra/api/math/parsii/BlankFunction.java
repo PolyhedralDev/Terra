@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.math.parsii;
 
-import com.dfsek.paralithic.function.dynamic.DynamicFunction;
+
+import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 
 public class BlankFunction implements DynamicFunction {
     private final int args;
