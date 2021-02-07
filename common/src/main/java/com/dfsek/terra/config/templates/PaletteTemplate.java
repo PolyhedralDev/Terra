@@ -3,9 +3,11 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
-import com.dfsek.terra.biome.palette.PaletteLayer;
-import com.dfsek.terra.generation.config.NoiseBuilder;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
+import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 
 import java.util.List;
 
@@ -14,29 +16,41 @@ public class PaletteTemplate extends AbstractableTemplate {
     @Value("noise")
     @Abstractable
     @Default
-    private NoiseBuilder noise = new NoiseBuilder();
+    private NoiseSeeded noise;
 
     @Value("id")
     private String id;
 
     @Value("layers")
     @Abstractable
-    private List<PaletteLayer> palette;
+    private List<PaletteLayerHolder> palette;
 
     public PaletteTemplate() {
-        noise.setType(FastNoiseLite.NoiseType.WhiteNoise);
-        noise.setDimensions(3);
+        FastNoiseTemplate builder = new FastNoiseTemplate();
+        builder.setType(FastNoiseLite.NoiseType.WhiteNoise);
+        builder.setDimensions(3);
+        this.noise = new NoiseSeeded() {
+            @Override
+            public NoiseSampler apply(Long seed) {
+                return builder.apply(seed);
+            }
+
+            @Override
+            public int getDimensions() {
+                return 3;
+            }
+        };
     }
 
     public String getID() {
         return id;
     }
 
-    public List<PaletteLayer> getPalette() {
+    public List<PaletteLayerHolder> getPalette() {
         return palette;
     }
 
-    public NoiseBuilder getNoise() {
+    public NoiseSeeded getNoise() {
         return noise;
     }
 }

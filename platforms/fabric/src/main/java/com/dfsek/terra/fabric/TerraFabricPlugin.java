@@ -1,10 +1,7 @@
 package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.GenericLoaders;
-import com.dfsek.terra.api.language.Language;
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -13,10 +10,13 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.base.PluginConfig;
+import com.dfsek.terra.biome.TerraBiome;
+import com.dfsek.terra.config.GenericLoaders;
+import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.lang.Language;
+import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
@@ -25,6 +25,7 @@ import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.world.TerraWorld;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -56,6 +57,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -75,6 +77,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = Logger.getLogger("Terra");
+    private final DebugLogger debugLogger = new DebugLogger(logger);
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
@@ -180,6 +183,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return "Fabric";
     }
 
+    @Override
+    public DebugLogger getDebugLogger() {
+        return debugLogger;
+    }
+
     Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
@@ -193,16 +201,16 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
     }
 
-    public static String createBiomeID(ConfigPack pack, UserDefinedBiome biome) {
+    public static String createBiomeID(ConfigPack pack, TerraBiome biome) {
         return pack.getTemplate().getID().toLowerCase() + "/" + biome.getID().toLowerCase();
     }
 
-    private Biome createBiome(UserDefinedBiome biome) {
+    private Biome createBiome(TerraBiome biome) {
         SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
 
-        Biome vanilla = ((FabricBiome) biome.getVanillaBiome()).getHandle();
+        Biome vanilla = ((FabricBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
@@ -249,8 +257,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public void onInitialize() {
         logger.setLevel(Level.INFO);
         instance = this;
-
-        ((FabricWorldHandle) worldHandle).setTreeTransformer(TREE_TRANSFORMER);
 
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();

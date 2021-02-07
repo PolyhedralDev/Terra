@@ -1,7 +1,5 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.debug.Debug;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,7 +19,6 @@ public class JarUtil {
                 if(parent != null) {
                     parent.mkdirs();
                 }
-                Debug.info("Output does not already exist. Creating... ");
                 try(FileOutputStream out = new FileOutputStream(dest); InputStream in = fromJar.getInputStream(entry)) {
                     byte[] buffer = new byte[(8192)];
 

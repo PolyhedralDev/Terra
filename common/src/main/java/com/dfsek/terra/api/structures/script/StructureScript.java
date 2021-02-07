@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
@@ -28,26 +28,25 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.math.SamplerCache;
 import com.dfsek.terra.registry.LootRegistry;
 import com.dfsek.terra.registry.ScriptRegistry;
+import com.dfsek.terra.world.generation.math.SamplerCache;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class StructureScript {
     private final Block block;
     private final String id;
-    String tempID;
-    private final Map<Location, StructureBuffer> cache;
+    private final Cache<Location, StructureBuffer> cache;
     private final TerraPlugin main;
+    String tempID;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
         Parser parser;
@@ -73,7 +72,9 @@ public class StructureScript {
                 .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(), Returnable.ReturnType.NUMBER))
-                .registerFunction("print", new UnaryStringFunctionBuilder(string -> Debug.info("[" + tempID + "] " + string)))
+                .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(), Returnable.ReturnType.STRING))
+                .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(), Returnable.ReturnType.NUMBER))
+                .registerFunction("print", new UnaryStringFunctionBuilder(string -> main.getDebugLogger().info("[" + tempID + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
@@ -88,12 +89,7 @@ public class StructureScript {
         this.id = parser.getID();
         tempID = id;
         this.main = main;
-        this.cache = Collections.synchronizedMap(new LinkedHashMap<Location, StructureBuffer>() {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<Location, StructureBuffer> eldest) {
-                return this.size() > main.getTerraConfig().getStructureCache();
-            }
-        });
+        this.cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getStructureCache()).build();
     }
 
     /**
@@ -122,12 +118,14 @@ public class StructureScript {
     }
 
     private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
-        synchronized(cache) {
-            return cache.computeIfAbsent(location, loc -> {
-                StructureBuffer buf = new StructureBuffer(loc);
+        try {
+            return cache.get(location, () -> {
+                StructureBuffer buf = new StructureBuffer(location);
                 buf.setSucceeded(applyBlock(new TerraImplementationArguments(buf, rotation, random, 0)));
                 return buf;
             });
+        } catch(ExecutionException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -149,6 +147,7 @@ public class StructureScript {
             return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
         } catch(RuntimeException e) {
             main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
+            main.getDebugLogger().stack(e);
             return false;
         }
     }

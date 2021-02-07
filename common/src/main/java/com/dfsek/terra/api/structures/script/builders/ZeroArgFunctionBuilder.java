@@ -4,10 +4,12 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
+import java.util.Map;
 
 public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
     private final java.util.function.Function<TerraImplementationArguments, T> function;
@@ -27,7 +29,7 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
             }
 
             @Override
-            public T apply(ImplementationArguments implementationArguments) {
+            public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
                 return function.apply((TerraImplementationArguments) implementationArguments);
             }
 

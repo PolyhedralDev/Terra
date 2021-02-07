@@ -1,11 +1,11 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.platform.generator.BlockPopulator;
-import com.dfsek.terra.api.platform.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.generator.BlockPopulator;
+import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.generation.MasterChunkGenerator;
+import com.dfsek.terra.world.generation.MasterChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

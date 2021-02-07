@@ -1,9 +1,8 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.debug.Debug;
+import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.config.pack.ConfigPack;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
         }
         for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".jar") || file.getName().endsWith(".com.dfsek.terra"))) {
             try {
-                Debug.info("Loading ZIP archive: " + zip.getName());
+                main.getDebugLogger().info("Loading ZIP archive: " + zip.getName());
                 load(new ZipFile(zip), main);
             } catch(IOException | ConfigException e) {
                 e.printStackTrace();

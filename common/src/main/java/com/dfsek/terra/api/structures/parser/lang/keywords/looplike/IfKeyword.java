@@ -4,10 +4,12 @@ import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
@@ -25,15 +27,15 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
-        if(statement.apply(implementationArguments)) return conditional.apply(implementationArguments);
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+        if(statement.apply(implementationArguments, variableMap)) return conditional.apply(implementationArguments, variableMap);
         else {
             for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().apply(implementationArguments)) {
-                    return pair.getRight().apply(implementationArguments);
+                if(pair.getLeft().apply(implementationArguments, variableMap)) {
+                    return pair.getRight().apply(implementationArguments, variableMap);
                 }
             }
-            if(elseBlock != null) return elseBlock.apply(implementationArguments);
+            if(elseBlock != null) return elseBlock.apply(implementationArguments, variableMap);
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }

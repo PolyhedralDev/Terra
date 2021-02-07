@@ -1,18 +1,34 @@
 package com.dfsek.terra.api.world.biome;
 
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 
 public interface Generator {
     /**
-     * Gets the 3D noise at a pair of coordinates using the provided FastNoiseLite instance.
+     * Gets the noise sampler instance to use for base terrain.
      *
-     * @param x - The x coordinate.
-     * @param y - The y coordinate.
-     * @param z - The z coordinate.
-     * @return double - Noise value at the specified coordinates.
+     * @return NoiseSampler for terrain
      */
-    double getNoise(int x, int y, int z);
+    NoiseSampler getBaseSampler();
+
+    /**
+     * Gets the noise sampler to use for elevation
+     *
+     * @return NoiseSampler for elevation.
+     */
+    NoiseSampler getElevationSampler();
+
+    /**
+     * Gets the noise sampler to use for carving.
+     *
+     * @return NoiseSampler for carving.
+     */
+    NoiseSampler getCarver();
+
+    int getBlendDistance();
+
+    double getWeight();
 
     /**
      * Gets the BlocPalette to generate the biome with.
@@ -21,7 +37,9 @@ public interface Generator {
      */
     Palette<BlockData> getPalette(int y);
 
-    boolean is2d();
+    NoiseSampler getBiomeNoise();
 
-    double get2dBase();
+    double getElevationWeight();
+
+    int getBlendStep();
 }

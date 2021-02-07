@@ -1,13 +1,13 @@
 package com.dfsek.terra.bukkit.command.command.biome;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.async.AsyncBiomeFinder;
-import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.world.TerraWorld;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -41,14 +41,14 @@ public class BiomeLocateCommand extends WorldCommand {
             LangUtil.send("command.biome.invalid-radius", BukkitAdapter.adapt(sender), args[1]);
             return true;
         }
-        UserDefinedBiome b;
+        TerraBiome b;
         try {
             b = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getBiome(id);
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.biome.invalid", BukkitAdapter.adapt(sender), id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncBiomeFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getGrid(), b, BukkitAdapter.adapt(sender.getLocation().clone().multiply((1D / ((TerraBukkitPlugin) getMain()).getTerraConfig().getBiomeSearchResolution()))), 0, maxRadius, location -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncBiomeFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getBiomeProvider(), b, BukkitAdapter.adapt(sender.getLocation().clone().multiply((1D / ((TerraBukkitPlugin) getMain()).getTerraConfig().getBiomeSearchResolution()))), 0, maxRadius, location -> {
             if(location != null) {
                 ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))
                         .append(String.format("[%d, ~, %d]", location.getBlockX(), location.getBlockZ()), ComponentBuilder.FormatRetention.NONE)

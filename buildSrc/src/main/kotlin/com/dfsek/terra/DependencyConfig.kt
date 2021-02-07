@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.repositories
 fun Project.configureDependencies() {
 
     repositories {
-        maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
         maven { url = uri("http://maven.enginehub.org/repo/") }
         maven { url = uri("https://repo.codemc.org/repository/maven-public") }
         maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
@@ -19,6 +18,8 @@ fun Project.configureDependencies() {
 
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.7.0")
+        "testImplementation"("org.yaml:snakeyaml:1.27")
+        "testImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.7.0")
         "compileOnly"("org.jetbrains:annotations:20.1.0")
     }

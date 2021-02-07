@@ -1,17 +1,16 @@
 package com.dfsek.terra.fabric.world.generator;
 
-import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
-import com.dfsek.terra.generation.MasterChunkGenerator;
-import com.dfsek.terra.population.CavePopulator;
-import com.dfsek.terra.population.FloraPopulator;
-import com.dfsek.terra.population.OrePopulator;
-import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.population.TreePopulator;
+import com.dfsek.terra.world.generation.MasterChunkGenerator;
+import com.dfsek.terra.world.population.FloraPopulator;
+import com.dfsek.terra.world.population.OrePopulator;
+import com.dfsek.terra.world.population.StructurePopulator;
+import com.dfsek.terra.world.population.TreePopulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -46,7 +45,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     private final ConfigPack pack;
 
 
-    private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
     private final TreePopulator treePopulator = new TreePopulator(TerraFabricPlugin.getInstance());
@@ -54,10 +52,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     public TreePopulator getTreePopulator() {
         return treePopulator;
-    }
-
-    public CavePopulator getCavePopulator() {
-        return cavePopulator;
     }
 
     public OrePopulator getOrePopulator() {

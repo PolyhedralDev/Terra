@@ -1,6 +1,5 @@
 package com.dfsek.terra.bukkit.command.command.structure.load;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.structure.Rotation;
@@ -9,6 +8,7 @@ import com.dfsek.terra.bukkit.command.DebugCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitChunk;
 import com.dfsek.terra.util.PopulationUtil;
+import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

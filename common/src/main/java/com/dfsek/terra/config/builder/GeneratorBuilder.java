@@ -1,23 +1,33 @@
 package com.dfsek.terra.config.builder;
 
-import com.dfsek.terra.biome.palette.PaletteHolder;
-import com.dfsek.terra.generation.config.NoiseBuilder;
-import com.dfsek.terra.generation.config.WorldGenerator;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
+import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
+import com.dfsek.terra.world.generation.WorldGenerator;
 import parsii.eval.Scope;
+import parsii.tokenizer.ParseException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GeneratorBuilder {
-    private final Map<Long, WorldGenerator> gens = new HashMap<>();
+    private final Map<Long, WorldGenerator> gens = Collections.synchronizedMap(new HashMap<>());
 
     private String noiseEquation;
 
     private String elevationEquation;
 
+    private String carvingEquation;
+
     private Scope varScope;
 
-    private Map<String, NoiseBuilder> noiseBuilderMap;
+    private Map<String, NoiseSeeded> noiseBuilderMap;
+
+    private Map<String, FunctionTemplate> functionTemplateMap;
 
     private PaletteHolder palettes;
 
@@ -27,45 +37,68 @@ public class GeneratorBuilder {
 
     private boolean interpolateElevation;
 
-    private boolean noise2d;
+    private NoiseSeeded biomeNoise;
 
-    private double base;
+    private double elevationWeight;
 
+    private int blendDistance;
+
+    private int blendStep;
+
+    private double blendWeight;
 
     public WorldGenerator build(long seed) {
-        return gens.computeIfAbsent(seed, k -> new WorldGenerator(seed, noiseEquation, elevationEquation, varScope, noiseBuilderMap, palettes, slantPalettes, interpolateElevation, noise2d, base));
+        synchronized(gens) {
+            return gens.computeIfAbsent(seed, k -> {
+                NoiseSampler noise;
+                NoiseSampler elevation;
+                NoiseSampler carving;
+                try {
+                    noise = new ExpressionSampler(noiseEquation, varScope, seed, noiseBuilderMap, functionTemplateMap);
+                    elevation = elevationEquation == null ? new ConstantSampler(0) : new ExpressionSampler(elevationEquation, varScope, seed, noiseBuilderMap, functionTemplateMap);
+                    carving = new ExpressionSampler(carvingEquation, varScope, seed, noiseBuilderMap, functionTemplateMap);
+                } catch(ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                return new WorldGenerator(palettes, slantPalettes, noise, elevation, carving, biomeNoise.apply(seed), elevationWeight, blendDistance, blendStep, blendWeight);
+            });
+        }
     }
 
-    public boolean isNoise2d() {
-        return noise2d;
+    public void setBlendWeight(double blendWeight) {
+        this.blendWeight = blendWeight;
     }
 
-    public void setNoise2d(boolean noise2d) {
-        this.noise2d = noise2d;
+    public void setFunctionTemplateMap(Map<String, FunctionTemplate> functionTemplateMap) {
+        this.functionTemplateMap = functionTemplateMap;
     }
 
-    public double getBase() {
-        return base;
+    public void setBlendStep(int blendStep) {
+        this.blendStep = blendStep;
     }
 
-    public void setBase(double base) {
-        this.base = base;
+    public void setBlendDistance(int blendDistance) {
+        this.blendDistance = blendDistance;
     }
 
-    public String getNoiseEquation() {
-        return noiseEquation;
+    public void setBiomeNoise(NoiseSeeded biomeNoise) {
+        this.biomeNoise = biomeNoise;
+    }
+
+    public void setElevationWeight(double elevationWeight) {
+        this.elevationWeight = elevationWeight;
     }
 
     public void setNoiseEquation(String noiseEquation) {
         this.noiseEquation = noiseEquation;
     }
 
-    public String getElevationEquation() {
-        return elevationEquation;
-    }
-
     public void setElevationEquation(String elevationEquation) {
         this.elevationEquation = elevationEquation;
+    }
+
+    public void setCarvingEquation(String carvingEquation) {
+        this.carvingEquation = carvingEquation;
     }
 
     public Scope getVarScope() {
@@ -76,11 +109,7 @@ public class GeneratorBuilder {
         this.varScope = varScope;
     }
 
-    public Map<String, NoiseBuilder> getNoiseBuilderMap() {
-        return noiseBuilderMap;
-    }
-
-    public void setNoiseBuilderMap(Map<String, NoiseBuilder> noiseBuilderMap) {
+    public void setNoiseBuilderMap(Map<String, NoiseSeeded> noiseBuilderMap) {
         this.noiseBuilderMap = noiseBuilderMap;
     }
 

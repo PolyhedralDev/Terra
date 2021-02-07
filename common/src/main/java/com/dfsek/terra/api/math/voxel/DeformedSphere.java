@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.math.voxel;
 
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.vector.Vector3;
 
 public class DeformedSphere extends VoxelGeometry {

@@ -178,6 +178,14 @@ public class Vector2 implements Cloneable {
         return this;
     }
 
+    public int getBlockX() {
+        return FastMath.floorToInt(x);
+    }
+
+    public int getBlockZ() {
+        return FastMath.floorToInt(z);
+    }
+
     @Override
     public String toString() {
         return "(" + x + ", " + z + ")";

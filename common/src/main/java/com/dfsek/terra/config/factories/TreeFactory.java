@@ -1,9 +1,9 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.templates.TreeTemplate;
-import com.dfsek.terra.population.items.tree.TerraTree;
+import com.dfsek.terra.world.population.items.tree.TerraTree;
 
 public class TreeFactory implements TerraFactory<TreeTemplate, Tree> {
     @Override

@@ -1,13 +1,13 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
-import com.dfsek.terra.TerraWorld;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.async.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.population.items.TerraStructure;
+import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.population.items.TerraStructure;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -51,7 +51,7 @@ public class LocateCommand extends WorldCommand {
             LangUtil.send("command.structure.invalid", BukkitAdapter.adapt(sender), id);
             return true;
         }
-        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getGrid(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
+        Bukkit.getScheduler().runTaskAsynchronously((TerraBukkitPlugin) getMain(), new AsyncStructureFinder(getMain().getWorld(BukkitAdapter.adapt(world)).getBiomeProvider(), s, BukkitAdapter.adapt(sender.getLocation()), 0, maxRadius, (location) -> {
             if(sender.isOnline()) {
                 if(location != null) {
                     ComponentBuilder cm = new ComponentBuilder(String.format("The nearest %s is at ", id.toLowerCase()))

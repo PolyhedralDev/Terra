@@ -1,20 +1,20 @@
 package com.dfsek.terra.population;
 
-import com.dfsek.terra.TerraWorld;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.profiler.ProfileFuture;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.CarverTemplate;
+import com.dfsek.terra.profiler.ProfileFuture;
 import com.dfsek.terra.util.PopulationUtil;
+import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -24,8 +24,8 @@ import java.util.Random;
 import java.util.Set;
 
 public class CavePopulator implements TerraBlockPopulator {
-    private final TerraPlugin main;
     private static final Map<MaterialData, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
+    private final TerraPlugin main;
 
     public CavePopulator(TerraPlugin main) {
         this.main = main;

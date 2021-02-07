@@ -1,15 +1,18 @@
 package com.dfsek.terra.carving;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.parsii.RandomFunction;
+import com.dfsek.terra.api.math.parsii.defined.UserDefinedFunction;
+import com.dfsek.terra.api.math.parsii.noise.NoiseFunction2;
+import com.dfsek.terra.api.math.parsii.noise.NoiseFunction3;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.carving.Carver;
 import com.dfsek.terra.api.world.carving.Worm;
-import com.dfsek.terra.api.world.generation.GenerationPhase;
 import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import net.jafama.FastMath;
@@ -19,11 +22,12 @@ import parsii.eval.Scope;
 import parsii.eval.Variable;
 import parsii.tokenizer.ParseException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class UserDefinedCarver extends Carver {
     private final double[] start; // 0, 1, 2 = x, y, z.
@@ -39,13 +43,18 @@ public class UserDefinedCarver extends Carver {
     private final Variable lengthVar;
     private final Variable position;
     private final Variable seedVar;
-    private final Map<World, CarverCache> cacheMap = new HashMap<>();
+
+    private final Variable xOrigin;
+    private final Variable yOrigin;
+    private final Variable zOrigin;
+
+    private final Map<World, CarverCache> cacheMap = new ConcurrentHashMap<>();
+    private final TerraPlugin main;
     private double step = 2;
     private Range recalc = new Range(8, 10);
     private double recalcMagnitude = 3;
-    private final TerraPlugin main;
 
-    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraPlugin main) throws ParseException {
+    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraPlugin main, Map<String, NoiseSeeded> functions, Map<String, FunctionTemplate> definedFunctions) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;
@@ -58,13 +67,36 @@ public class UserDefinedCarver extends Carver {
 
         Parser p = new Parser();
 
-        p.registerFunction("rand", new RandomFunction());
+        functions.forEach((id, noise) -> {
+            switch(noise.getDimensions()) {
+                case 2:
+                    p.registerFunction(id, new NoiseFunction2(hash, noise));
+                    break;
+                case 3:
+                    p.registerFunction(id, new NoiseFunction3(hash, noise));
+                    break;
+            }
+        });
+
+        for(Map.Entry<String, FunctionTemplate> entry : definedFunctions.entrySet()) {
+            String id = entry.getKey();
+            FunctionTemplate fun = entry.getValue();
+
+            Scope functionScope = new Scope().withParent(parent);
+            List<Variable> variables = fun.getArgs().stream().map(functionScope::create).collect(Collectors.toList());
+
+            p.registerFunction(id, new UserDefinedFunction(p.parse(fun.getFunction(), functionScope), variables));
+        }
 
         Scope s = new Scope().withParent(parent);
 
         lengthVar = s.create("length");
         position = s.create("position");
         seedVar = s.create("seed");
+
+        xOrigin = s.create("x");
+        yOrigin = s.create("y");
+        zOrigin = s.create("z");
 
 
         xRad = p.parse(radii.get(0), s);
@@ -101,16 +133,18 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
-        CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main));
-        int carvingRadius = getCarvingRadius();
-        for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
-            for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
-                cache.getPoints(x, z, this).forEach(point -> {
-                    Vector3 origin = point.getOrigin();
-                    if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
-                        return;
-                    point.carve(chunkX, chunkZ, consumer);
-                });
+        synchronized(cacheMap) {
+            CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main, this));
+            int carvingRadius = getCarvingRadius();
+            for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
+                for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
+                    cache.getPoints(x, z).forEach(point -> {
+                        Vector3 origin = point.getOrigin();
+                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
+                            return;
+                        point.carve(chunkX, chunkZ, consumer);
+                    });
+                }
             }
         }
     }
@@ -121,7 +155,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        BiomeTemplate conf = ((UserDefinedBiome) main.getWorld(w).getGrid().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8, GenerationPhase.POPULATE)).getConfig();
+        BiomeTemplate conf = ((UserDefinedBiome) main.getWorld(w).getBiomeProvider().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8)).getConfig();
         if(conf.getCarvers().get(this) != null) {
             return new FastRandom(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
         }
@@ -145,6 +179,9 @@ public class UserDefinedCarver extends Carver {
             direction = new Vector3((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
             position.setValue(0);
             lengthVar.setValue(length);
+            xOrigin.setValue(origin.getX());
+            yOrigin.setValue(origin.getY());
+            zOrigin.setValue(origin.getZ());
             setRadius(new int[] {(int) (xRad.evaluate()), (int) (yRad.evaluate()), (int) (zRad.evaluate())});
         }
 

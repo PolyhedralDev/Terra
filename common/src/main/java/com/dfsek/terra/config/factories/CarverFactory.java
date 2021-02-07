@@ -1,10 +1,10 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.base.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import parsii.tokenizer.ParseException;
 
@@ -26,7 +26,7 @@ public class CarverFactory implements TerraFactory<CarverTemplate, UserDefinedCa
         long hash = MathUtil.hashToLong(config.getID());
         UserDefinedCarver carver;
         try {
-            carver = new UserDefinedCarver(config.getHeight(), config.getLength(), start, mutate, radius, pack.getVarScope(), hash, config.getCutTop(), config.getCutBottom(), config, main);
+            carver = new UserDefinedCarver(config.getHeight(), config.getLength(), start, mutate, radius, pack.getVarScope(), hash, config.getCutTop(), config.getCutBottom(), config, main, pack.getTemplate().getNoiseBuilderMap(), pack.getTemplate().getFunctions());
         } catch(ParseException e) {
             throw new LoadException("Unable to parse radius equations", e);
         }

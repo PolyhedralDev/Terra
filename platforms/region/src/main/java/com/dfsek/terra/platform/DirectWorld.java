@@ -4,12 +4,11 @@ import com.dfsek.terra.DirectUtils;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.entity.Entity;
-import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
@@ -86,11 +85,6 @@ public class DirectWorld implements World {
     @Override
     public Block getBlockAt(Location l) {
         return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
-    }
-
-    @Override
-    public boolean generateTree(Location l, Tree vanillaTreeType) {
-        return false;
     }
 
     @Override

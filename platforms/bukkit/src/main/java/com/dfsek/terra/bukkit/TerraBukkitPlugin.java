@@ -1,19 +1,13 @@
 package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.GenericLoaders;
-import com.dfsek.terra.api.language.Language;
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
-import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.transform.MapTransform;
-import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
 import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
@@ -23,14 +17,18 @@ import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
 import com.dfsek.terra.bukkit.world.BukkitTree;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.base.PluginConfig;
+import com.dfsek.terra.config.GenericLoaders;
+import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.generation.MasterChunkGenerator;
+import com.dfsek.terra.config.lang.Language;
+import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.generation.MasterChunkGenerator;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -54,8 +52,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
     private final ItemHandle itemHandle = new BukkitItemHandle();
-    private WorldHandle handle = new BukkitWorldHandle(this);
+    private WorldHandle handle = new BukkitWorldHandle();
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
+    private DebugLogger debugLogger;
 
     public static final Version BUKKIT_VERSION;
 
@@ -101,31 +100,30 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     @Override
+    public void packPreLoadCallback(ConfigPack pack) {
+        for(TreeType value : TreeType.values()) {
+            pack.getTreeRegistry().add(BukkitAdapter.TREE_TRANSFORMER.translate(value), new BukkitTree(value, this));
+        }
+    }
+
+    @Override
+    public DebugLogger getDebugLogger() {
+        return debugLogger;
+    }
+
+    @Override
     public void onDisable() {
         BukkitChunkGeneratorWrapper.saveAll();
     }
 
     @Override
     public void onEnable() {
-        Debug.setLogger(getLogger()); // Set debug logger.
+        debugLogger = new DebugLogger(getLogger());
 
         getLogger().info("Running on version " + BUKKIT_VERSION);
         if(BUKKIT_VERSION.equals(Version.UNKNOWN)) {
             getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
         }
-
-        ((BukkitWorldHandle) handle).setTreeTransformer(new Transformer.Builder<String, Tree>()
-                .addTransform(id -> new BukkitTree(TreeType.valueOf(id), this)) // First try getting directly from enum
-                .addTransform(new MapTransform<String, Tree>() // Then try map of less stupid names
-                        .add("JUNGLE_COCOA", new BukkitTree(TreeType.COCOA_TREE, this))
-                        .add("LARGE_OAK", new BukkitTree(TreeType.BIG_TREE, this))
-                        .add("LARGE_SPRUCE", new BukkitTree(TreeType.TALL_REDWOOD, this))
-                        .add("SPRUCE", new BukkitTree(TreeType.REDWOOD, this))
-                        .add("OAK", new BukkitTree(TreeType.TREE, this))
-                        .add("MEGA_SPRUCE", new BukkitTree(TreeType.MEGA_REDWOOD, this))
-                        .add("SWAMP_OAK", new BukkitTree(TreeType.SWAMP, this)))
-                .addTransform(id -> new BukkitTree(TreeType.valueOf(id), this)) // Finally, try stripping minecraft namespace.
-                .build());
 
         saveDefaultConfig();
 
@@ -134,7 +132,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         config.load(this); // Load master config.yml
         LangUtil.load(config.getLanguage(), this); // Load language.
-        Debug.setDebug(isDebug());
+        debugLogger.setDebug(isDebug());
 
         registry.loadAll(this); // Load all config packs.
 

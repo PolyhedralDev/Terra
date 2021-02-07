@@ -14,8 +14,6 @@ import java.util.Map;
 public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollection<Object>> {
     @Override
     public ProbabilityCollection<Object> load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
-
-
         ProbabilityCollection<Object> collection = new ProbabilityCollection<>();
 
         if(type instanceof ParameterizedType) {
@@ -30,13 +28,20 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                 List<Map<Object, Integer>> map = (List<Map<Object, Integer>>) o;
                 for(Map<Object, Integer> l : map) {
                     for(Map.Entry<Object, Integer> entry : l.entrySet()) {
-                        collection.add(configLoader.loadType(generic, entry.getKey()), entry.getValue());
+                        if(entry.getValue() == null) throw new LoadException("No probability defined for entry \"" + entry.getKey() + "\"");
+                        Object val = configLoader.loadType(generic, entry.getKey());
+                        collection.add(val, entry.getValue());
                     }
                 }
-            } else throw new LoadException("Malformed Probability Collection: " + o);
+            } else if(o instanceof String) {
+                return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, o));
+            } else {
+                throw new LoadException("Malformed Probability Collection: " + o);
+            }
         } else throw new LoadException("Unable to load config! Could not retrieve parameterized type: " + type);
 
 
         return collection;
     }
+
 }

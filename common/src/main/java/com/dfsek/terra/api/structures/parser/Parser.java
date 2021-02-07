@@ -36,11 +36,8 @@ import com.dfsek.terra.api.structures.parser.lang.operations.statements.LessThan
 import com.dfsek.terra.api.structures.parser.lang.operations.statements.LessThanStatement;
 import com.dfsek.terra.api.structures.parser.lang.operations.statements.NotEqualsStatement;
 import com.dfsek.terra.api.structures.parser.lang.variables.Assignment;
-import com.dfsek.terra.api.structures.parser.lang.variables.BooleanVariable;
+import com.dfsek.terra.api.structures.parser.lang.variables.Declaration;
 import com.dfsek.terra.api.structures.parser.lang.variables.Getter;
-import com.dfsek.terra.api.structures.parser.lang.variables.NumberVariable;
-import com.dfsek.terra.api.structures.parser.lang.variables.StringVariable;
-import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.structures.tokenizer.Token;
 import com.dfsek.terra.api.structures.tokenizer.Tokenizer;
@@ -92,7 +89,7 @@ public class Parser {
     }
 
 
-    private Keyword<?> parseLoopLike(Tokenizer tokens, Map<String, Variable<?>> variableMap, boolean loop) throws ParseException {
+    private Keyword<?> parseLoopLike(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) throws ParseException {
 
         Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP);
@@ -111,7 +108,7 @@ public class Parser {
         }
     }
 
-    private WhileKeyword parseWhileLoop(Tokenizer tokens, Map<String, Variable<?>> variableMap, Position start) throws ParseException {
+    private WhileKeyword parseWhileLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start) throws ParseException {
         Returnable<?> first = parseExpression(tokens, true, variableMap);
         ParserUtil.checkReturnType(first, Returnable.ReturnType.BOOLEAN);
 
@@ -120,7 +117,7 @@ public class Parser {
         return new WhileKeyword(parseStatementBlock(tokens, variableMap, true), (Returnable<Boolean>) first, start); // While loop
     }
 
-    private IfKeyword parseIfStatement(Tokenizer tokens, Map<String, Variable<?>> variableMap, Position start, boolean loop) throws ParseException {
+    private IfKeyword parseIfStatement(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start, boolean loop) throws ParseException {
         Returnable<?> condition = parseExpression(tokens, true, variableMap);
         ParserUtil.checkReturnType(condition, Returnable.ReturnType.BOOLEAN);
 
@@ -147,7 +144,7 @@ public class Parser {
         return new IfKeyword(statement, (Returnable<Boolean>) condition, elseIf, elseBlock, start); // If statement
     }
 
-    private Block parseStatementBlock(Tokenizer tokens, Map<String, Variable<?>> variableMap, boolean loop) throws ParseException {
+    private Block parseStatementBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) throws ParseException {
 
         if(tokens.get().getType().equals(Token.Type.BLOCK_BEGIN)) {
             ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
@@ -162,21 +159,17 @@ public class Parser {
         }
     }
 
-    private ForKeyword parseForLoop(Tokenizer tokens, Map<String, Variable<?>> old, Position start) throws ParseException {
-        Map<String, Variable<?>> variableMap = new HashMap<>(old); // New scope
+    private ForKeyword parseForLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> old, Position start) throws ParseException {
+        Map<String, Returnable.ReturnType> variableMap = new HashMap<>(old); // New scope
         Token f = tokens.get();
         ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
         Item<?> initializer;
         if(f.isVariableDeclaration()) {
-            Variable<?> forVar = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(f));
-            ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+            Declaration<?> forVar = parseVariableDeclaration(tokens, variableMap);
             Token name = tokens.get();
-
             if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
-
-            initializer = parseAssignment(forVar, tokens, variableMap);
-            variableMap.put(name.getContent(), forVar);
+            initializer = forVar;
         } else initializer = parseExpression(tokens, true, variableMap);
         ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
         Returnable<?> conditional = parseExpression(tokens, true, variableMap);
@@ -186,8 +179,7 @@ public class Parser {
         Item<?> incrementer;
         Token token = tokens.get();
         if(variableMap.containsKey(token.getContent())) { // Assume variable assignment
-            Variable<?> variable = variableMap.get(token.getContent());
-            incrementer = parseAssignment(variable, tokens, variableMap);
+            incrementer = parseAssignment(tokens, variableMap);
         } else incrementer = parseFunction(tokens, true, variableMap);
 
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
@@ -195,7 +187,7 @@ public class Parser {
         return new ForKeyword(parseStatementBlock(tokens, variableMap, true), initializer, (Returnable<Boolean>) conditional, incrementer, start);
     }
 
-    private Returnable<?> parseExpression(Tokenizer tokens, boolean full, Map<String, Variable<?>> variableMap) throws ParseException {
+    private Returnable<?> parseExpression(Tokenizer tokens, boolean full, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
         boolean booleanInverted = false; // Check for boolean not operator
         boolean negate = false;
         if(tokens.get().getType().equals(Token.Type.BOOLEAN_NOT)) {
@@ -220,7 +212,7 @@ public class Parser {
                 expression = parseFunction(tokens, false, variableMap);
             else if(variableMap.containsKey(id.getContent())) {
                 ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
-                expression = new Getter(variableMap.get(id.getContent()));
+                expression = new Getter(id.getContent(), id.getPosition(), variableMap.get(id.getContent()));
             } else throw new ParseException("Unexpected token \" " + id.getContent() + "\"", id.getPosition());
         }
 
@@ -254,7 +246,7 @@ public class Parser {
         }
     }
 
-    private Returnable<?> parseGroup(Tokenizer tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+    private Returnable<?> parseGroup(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
         Returnable<?> expression = parseExpression(tokens, true, variableMap); // Parse inside of group as a separate expression
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
@@ -262,7 +254,7 @@ public class Parser {
     }
 
 
-    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
         Token binaryOperator = tokens.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
 
@@ -316,23 +308,31 @@ public class Parser {
         }
     }
 
-    private Variable<?> parseVariableDeclaration(Tokenizer tokens, Returnable.ReturnType type) throws ParseException {
-        ParserUtil.checkVarType(tokens.get(), type); // Check for type mismatch
-        switch(type) {
-            case NUMBER:
-                return new NumberVariable(0d, tokens.get().getPosition());
-            case STRING:
-                return new StringVariable("", tokens.get().getPosition());
-            case BOOLEAN:
-                return new BooleanVariable(false, tokens.get().getPosition());
-        }
-        throw new UnsupportedOperationException("Unsupported variable type: " + type);
+    private Declaration<?> parseVariableDeclaration(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
+        Token type = tokens.consume();
+        ParserUtil.checkType(type, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
+
+        Returnable.ReturnType returnType = ParserUtil.getVariableReturnType(type);
+
+        ParserUtil.checkVarType(type, returnType); // Check for type mismatch
+        Token identifier = tokens.consume();
+        ParserUtil.checkType(identifier, Token.Type.IDENTIFIER);
+        if(functions.containsKey(identifier.getContent()) || variableMap.containsKey(identifier.getContent()))
+            throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
+        ParserUtil.checkType(tokens.consume(), Token.Type.ASSIGNMENT);
+
+        Returnable<?> value = parseExpression(tokens, true, variableMap);
+        ParserUtil.checkReturnType(value, returnType);
+
+        variableMap.put(identifier.getContent(), returnType);
+
+        return new Declaration<>(tokens.get().getPosition(), identifier.getContent(), value, returnType);
     }
 
-    private Block parseBlock(Tokenizer tokens, Map<String, Variable<?>> superVars, boolean loop) throws ParseException {
+    private Block parseBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> superVars, boolean loop) throws ParseException {
         List<Item<?>> parsedItems = new GlueList<>();
 
-        Map<String, Variable<?>> parsedVariables = new HashMap<>(superVars); // New hashmap as to not mutate parent scope's declarations.
+        Map<String, Returnable.ReturnType> parsedVariables = new HashMap<>(superVars); // New hashmap as to not mutate parent scope's declarations.
 
         Token first = tokens.get();
 
@@ -345,7 +345,7 @@ public class Parser {
         return new Block(parsedItems, first.getPosition());
     }
 
-    private Item<?> parseItem(Tokenizer tokens, Map<String, Variable<?>> variableMap, boolean loop) throws ParseException {
+    private Item<?> parseItem(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) throws ParseException {
         Token token = tokens.get();
         if(loop) ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
                 Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE, Token.Type.FAIL);
@@ -356,23 +356,12 @@ public class Parser {
             return parseLoopLike(tokens, variableMap, loop);
         } else if(token.isIdentifier()) { // Parse identifiers
             if(variableMap.containsKey(token.getContent())) { // Assume variable assignment
-                Variable<?> variable = variableMap.get(token.getContent());
-                return parseAssignment(variable, tokens, variableMap);
+                return parseAssignment(tokens, variableMap);
             } else return parseFunction(tokens, true, variableMap);
         } else if(token.isVariableDeclaration()) {
-            Variable<?> temp = parseVariableDeclaration(tokens, ParserUtil.getVariableReturnType(token));
 
-            ParserUtil.checkType(tokens.consume(), Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
-            Token name = tokens.get();
-            ParserUtil.checkType(name, Token.Type.IDENTIFIER); // Name must be an identifier.
+            return parseVariableDeclaration(tokens, variableMap);
 
-            if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()))
-                throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
-
-            variableMap.put(name.getContent(), temp);
-
-
-            return parseAssignment(temp, tokens, variableMap);
         } else if(token.getType().equals(Token.Type.RETURN)) return new ReturnKeyword(tokens.consume().getPosition());
         else if(token.getType().equals(Token.Type.BREAK)) return new BreakKeyword(tokens.consume().getPosition());
         else if(token.getType().equals(Token.Type.CONTINUE)) return new ContinueKeyword(tokens.consume().getPosition());
@@ -380,21 +369,21 @@ public class Parser {
         else throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
     }
 
-    private Assignment<?> parseAssignment(Variable<?> variable, Tokenizer tokens, Map<String, Variable<?>> variableMap) throws ParseException {
-        Token name = tokens.get();
+    private Assignment<?> parseAssignment(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
+        Token identifier = tokens.consume();
 
-        ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
+        ParserUtil.checkType(identifier, Token.Type.IDENTIFIER);
 
         ParserUtil.checkType(tokens.consume(), Token.Type.ASSIGNMENT);
 
-        Returnable<?> expression = parseExpression(tokens, true, variableMap);
+        Returnable<?> value = parseExpression(tokens, true, variableMap);
 
-        ParserUtil.checkReturnType(expression, variable.getType());
+        ParserUtil.checkReturnType(value, variableMap.get(identifier.getContent()));
 
-        return new Assignment<>((Variable<Object>) variable, (Returnable<Object>) expression, name.getPosition());
+        return new Assignment<>(value, identifier.getContent(), identifier.getPosition());
     }
 
-    private Function<?> parseFunction(Tokenizer tokens, boolean fullStatement, Map<String, Variable<?>> variableMap) throws ParseException {
+    private Function<?> parseFunction(Tokenizer tokens, boolean fullStatement, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
         Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
 
@@ -428,7 +417,7 @@ public class Parser {
     }
 
 
-    private List<Returnable<?>> getArgs(Tokenizer tokens, Map<String, Variable<?>> variableMap) throws ParseException {
+    private List<Returnable<?>> getArgs(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
         List<Returnable<?>> args = new GlueList<>();
 
         while(!tokens.get().getType().equals(Token.Type.GROUP_END)) {

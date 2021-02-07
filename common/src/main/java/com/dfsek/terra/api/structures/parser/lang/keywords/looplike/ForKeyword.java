@@ -5,7 +5,10 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Item;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+
+import java.util.Map;
 
 public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
@@ -23,9 +26,9 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
-        for(initializer.apply(implementationArguments); statement.apply(implementationArguments); incrementer.apply(implementationArguments)) {
-            Block.ReturnInfo<?> level = conditional.apply(implementationArguments);
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+        for(initializer.apply(implementationArguments, variableMap); statement.apply(implementationArguments, variableMap); incrementer.apply(implementationArguments, variableMap)) {
+            Block.ReturnInfo<?> level = conditional.apply(implementationArguments, variableMap);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

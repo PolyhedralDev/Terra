@@ -26,7 +26,7 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
      * Add an object to the registry with a name.
      *
      * @param name  Name of the tree.
-     * @param value Object to add
+     * @param value Object to increment
      * @return True if tree was overwritten.
      */
     public boolean add(String name, T value) {

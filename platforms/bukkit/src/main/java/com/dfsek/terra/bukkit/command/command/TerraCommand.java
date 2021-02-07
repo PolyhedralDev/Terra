@@ -1,11 +1,10 @@
 package com.dfsek.terra.bukkit.command.command;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.Command;
 import com.dfsek.terra.bukkit.command.command.biome.BiomeCommand;
 import com.dfsek.terra.bukkit.command.command.geometry.GeometryCommand;
-import com.dfsek.terra.bukkit.command.command.image.ImageCommand;
 import com.dfsek.terra.bukkit.command.command.profile.ProfileCommand;
 import com.dfsek.terra.bukkit.command.command.structure.StructureCommand;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -22,10 +21,10 @@ public class TerraCommand extends Command {
             new ProfileCommand(this),
             new SaveDataCommand(this),
             new StructureCommand(this),
-            new ImageCommand(this),
             new GeometryCommand(this),
             new FixChunkCommand(this),
             new VersionCommand(this),
+            new GetBlockCommand(this),
             new PacksCommand(this));
 
     public TerraCommand(TerraPlugin main) {

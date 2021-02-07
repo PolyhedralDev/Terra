@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 
 public class BufferedStateManipulator implements BufferedItem {

@@ -1,7 +1,7 @@
 package com.dfsek.terra.registry;
 
+import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.world.tree.Tree;
@@ -25,41 +25,14 @@ public class TreeRegistry extends TerraRegistry<Tree> {
 
     public TreeRegistry(TerraPlugin main) {
         this.main = main;
-        addTree("ACACIA");
-        addTree("BIRCH");
-        addTree("BROWN_MUSHROOM");
         tryAdd("CACTUS", Cactus.class);
-        addTree("CHORUS_PLANT");
-        addTree("DARK_OAK");
         tryAdd("GIANT_OAK", OakTree.class);
         tryAdd("GIANT_SPRUCE", SpruceTree.class);
-        addTree("JUNGLE");
-        addTree("JUNGLE_COCOA");
-        addTree("JUNGLE_BUSH");
-        addTree("LARGE_OAK");
         tryAdd("LARGE_SHATTERED_PILLAR", ShatteredPillar.class);
-        addTree("LARGE_SPRUCE");
-        addTree("MEGA_SPRUCE");
-        addTree("OAK");
-        addTree("RED_MUSHROOM");
         tryAdd("SHATTERED_LARGE", ShatteredTree.class);
         tryAdd("SHATTERED_SMALL", SmallShatteredTree.class);
-        addTree("SMALL_JUNGLE");
-        addTree("SPRUCE");
-        addTree("SWAMP_OAK");
         tryAdd("SMALL_SHATTERED_PILLAR", SmallShatteredPillar.class);
         tryAdd("ICE_SPIKE", IceSpike.class);
-        addTree("TALL_BIRCH");
-        addTree("WARPED_FUNGUS");
-        addTree("CRIMSON_FUNGUS");
-    }
-
-    private void addTree(String id) {
-        try {
-            add(id, main.getWorldHandle().getTree(id));
-        } catch(Exception e) {
-            main.getLogger().warning("Unable to load tree " + id + ": " + e.getMessage());
-        }
     }
 
     private void tryAdd(String id, Class<? extends FractalTree> value) {

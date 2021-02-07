@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.palette;
 
 import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.GlueList;
 
 import java.util.List;
@@ -21,30 +21,16 @@ public abstract class Palette<E> {
 
     }
 
-    /**
-     * Adds a material to the palette, for a number of layers.
-     *
-     * @param m      - The material to add to the palette.
-     * @param layers - The number of layers the material occupies.
-     * @return - BlockPalette instance for chaining.
-     */
-    public com.dfsek.terra.api.world.palette.Palette<E> add(E m, int layers) {
+    public com.dfsek.terra.api.world.palette.Palette<E> add(E m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
-            pallet.add(new PaletteLayer<>(m));
+            pallet.add(new PaletteLayer<>(m, sampler));
         }
         return this;
     }
 
-    /**
-     * Adds a ProbabilityCollection to the palette, for a number of layers.
-     *
-     * @param m      - The ProbabilityCollection to add to the palette.
-     * @param layers - The number of layers the material occupies.
-     * @return - BlockPalette instance for chaining.
-     */
-    public com.dfsek.terra.api.world.palette.Palette<E> add(ProbabilityCollection<E> m, int layers) {
+    public com.dfsek.terra.api.world.palette.Palette<E> add(ProbabilityCollection<E> m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
-            pallet.add(new PaletteLayer<>(m));
+            pallet.add(new PaletteLayer<>(m, sampler));
         }
         return this;
     }
@@ -72,26 +58,35 @@ public abstract class Palette<E> {
     public static class PaletteLayer<E> {
         private final boolean col; // Is layer using a collection?
         private ProbabilityCollection<E> collection;
+        private final NoiseSampler sampler;
         private E m;
 
         /**
-         * Constructs a PaletteLayer with a ProbabilityCollection of materials and a number of layers.
+         * Constructs a PaletteLayerHolder with a ProbabilityCollection of materials and a number of layers.
          *
-         * @param type - The collection of materials to choose from.
+         * @param type    The collection of materials to choose from.
+         * @param sampler Noise sampler to use
          */
-        public PaletteLayer(ProbabilityCollection<E> type) {
+        public PaletteLayer(ProbabilityCollection<E> type, NoiseSampler sampler) {
+            this.sampler = sampler;
             this.col = true;
             this.collection = type;
         }
 
         /**
-         * Constructs a PaletteLayer with a single Material and a number of layers.
+         * Constructs a PaletteLayerHolder with a single Material and a number of layers.
          *
-         * @param type - The material to use.
+         * @param type    The material to use.
+         * @param sampler Noise sampler to use
          */
-        public PaletteLayer(E type) {
+        public PaletteLayer(E type, NoiseSampler sampler) {
+            this.sampler = sampler;
             this.col = false;
             this.m = type;
+        }
+
+        public NoiseSampler getSampler() {
+            return sampler;
         }
 
         /**

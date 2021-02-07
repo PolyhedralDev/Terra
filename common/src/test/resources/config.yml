@@ -1,0 +1,10 @@
+dimensions: 2
+type: Cellular
+frequency: 0.01
+cellular:
+  return: Distance3Div
+normalize:
+  type: LINEAR
+  linear:
+    min: -1
+    max: 0

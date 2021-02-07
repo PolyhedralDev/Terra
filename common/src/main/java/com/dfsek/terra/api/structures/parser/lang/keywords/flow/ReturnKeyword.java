@@ -3,7 +3,10 @@ package com.dfsek.terra.api.structures.parser.lang.keywords.flow;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Keyword;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+
+import java.util.Map;
 
 public class ReturnKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Position position;
@@ -13,7 +16,7 @@ public class ReturnKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         return new Block.ReturnInfo<>(Block.ReturnLevel.RETURN, null);
     }
 

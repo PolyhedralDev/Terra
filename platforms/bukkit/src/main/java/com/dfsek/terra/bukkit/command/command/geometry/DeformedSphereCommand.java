@@ -4,7 +4,6 @@ import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.math.voxel.DeformedSphere;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
-import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -48,7 +47,7 @@ public class DeformedSphereCommand extends PlayerCommand {
         FastNoiseLite n = new FastNoiseLite((int) sender.getWorld().getSeed());
         n.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         n.setFrequency(freq);
-        DeformedSphere sphere = new DeformedSphere(new BukkitPlayer(sender).getLocation().toVector(), radius, deform, n);
+        DeformedSphere sphere = new DeformedSphere(BukkitAdapter.adapt(sender).getLocation().toVector(), radius, deform, n);
         for(Vector3 v : sphere.getGeometry()) {
             v.toLocation(BukkitAdapter.adapt(sender.getWorld())).getBlock().setBlockData(getMain().getWorldHandle().createBlockData("minecraft:stone"), false);
         }

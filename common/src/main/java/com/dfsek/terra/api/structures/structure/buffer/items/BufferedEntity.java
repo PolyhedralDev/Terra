@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.api.platform.entity.EntityType;
 
 public class BufferedEntity implements BufferedItem {
 
