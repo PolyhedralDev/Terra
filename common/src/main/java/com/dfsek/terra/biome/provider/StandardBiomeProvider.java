@@ -18,14 +18,14 @@ public class StandardBiomeProvider implements BiomeProvider {
     private final LoadingCache<Vector2, BiomeHolder> holderCache;
     private final BiomePipeline pipeline;
     private int resolution = 1;
-    private final NoiseSampler xSampler;
-    private final NoiseSampler zSampler;
-    private final int noiseAmp;
+    private final NoiseSampler mutator;
+    private final double noiseAmp;
+    private final int seed;
 
-    protected StandardBiomeProvider(BiomePipeline pipeline, TerraPlugin main, NoiseSampler xSampler, NoiseSampler zSampler, int noiseAmp) {
-        this.xSampler = xSampler;
-        this.zSampler = zSampler;
+    protected StandardBiomeProvider(BiomePipeline pipeline, TerraPlugin main, NoiseSampler mutator, double noiseAmp, int seed) {
+        this.mutator = mutator;
         this.noiseAmp = noiseAmp;
+        this.seed = seed;
         holderCache = CacheBuilder.newBuilder()
                 .maximumSize(main == null ? 32 : main.getTerraConfig().getProviderCache())
                 .build(
@@ -41,8 +41,14 @@ public class StandardBiomeProvider implements BiomeProvider {
 
     @Override
     public TerraBiome getBiome(int x, int z) {
-        x = FastMath.floorToInt(FastMath.floorDiv(x, resolution) + xSampler.getNoise(x, z) * noiseAmp);
-        z = FastMath.floorToInt(FastMath.floorDiv(z, resolution) + zSampler.getNoise(x, z) * noiseAmp);
+        x += mutator.getNoiseSeeded(seed, x, z) * noiseAmp;
+        z += mutator.getNoiseSeeded(1 + seed, x, z) * noiseAmp;
+
+
+        x = FastMath.floorToInt(FastMath.floorDiv(x, resolution));
+
+        z = FastMath.floorToInt(FastMath.floorDiv(z, resolution));
+
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
         return holderCache.getUnchecked(new Vector2(fdX, fdZ)).getBiome(x - fdX * pipeline.getSize(), z - fdZ * pipeline.getSize());
@@ -64,7 +70,7 @@ public class StandardBiomeProvider implements BiomeProvider {
         private final ExceptionalFunction<Long, BiomePipeline> pipelineBuilder;
         private final TerraPlugin main;
         private int resolution = 1;
-        private int noiseAmp = 2;
+        private double noiseAmp = 2;
         private NoiseSeeded builder;
 
         public StandardBiomeProviderBuilder(ExceptionalFunction<Long, BiomePipeline> pipelineBuilder, TerraPlugin main) {
@@ -80,14 +86,14 @@ public class StandardBiomeProvider implements BiomeProvider {
             this.builder = builder;
         }
 
-        public void setNoiseAmp(int noiseAmp) {
+        public void setNoiseAmp(double noiseAmp) {
             this.noiseAmp = noiseAmp;
         }
 
         @Override
         public StandardBiomeProvider build(long seed) {
             try {
-                StandardBiomeProvider provider = new StandardBiomeProvider(pipelineBuilder.apply(seed), main, builder.apply(seed), builder.apply((seed + 1)), noiseAmp);
+                StandardBiomeProvider provider = new StandardBiomeProvider(pipelineBuilder.apply(seed), main, builder.apply(seed), noiseAmp, (int) seed);
                 provider.setResolution(resolution);
                 return provider;
             } catch(ConfigException e) {

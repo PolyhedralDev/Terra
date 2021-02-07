@@ -9,7 +9,7 @@ import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
@@ -27,7 +27,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, TerraBiome> {
         generatorBuilder.setCarvingEquation(template.getCarvingEquation());
         generatorBuilder.setNoiseBuilderMap(pack.getTemplate().getNoiseBuilderMap());
 
-        Map<String, FunctionTemplate> functions = new HashMap<>(pack.getTemplate().getFunctions());
+        Map<String, FunctionTemplate> functions = new LinkedHashMap<>(pack.getTemplate().getFunctions()); // linked map to preserve order.
         functions.putAll(template.getFunctions());
         generatorBuilder.setFunctionTemplateMap(functions);
 

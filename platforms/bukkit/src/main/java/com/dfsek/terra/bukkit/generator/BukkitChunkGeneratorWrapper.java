@@ -9,6 +9,7 @@ import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.population.CavePopulator;
 import com.dfsek.terra.profiler.DataType;
 import com.dfsek.terra.profiler.Measurement;
 import com.dfsek.terra.world.TerraWorld;
@@ -52,6 +53,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
         popMan.attach(new OrePopulator(main));
         popMan.attach(new TreePopulator(main));
         popMan.attach(new FloraPopulator(main));
+        populators.add(new CavePopulator(main));
         populators.add(new StructurePopulator(main));
         populators.add(popMan);
     }

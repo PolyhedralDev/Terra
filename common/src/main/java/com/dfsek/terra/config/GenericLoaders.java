@@ -14,6 +14,8 @@ import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
+import com.dfsek.terra.carving.CarverPalette;
+import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
@@ -35,6 +37,7 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
+import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.util.MaterialSet;
@@ -44,6 +47,8 @@ import com.dfsek.terra.world.population.items.ores.Ore;
 import com.dfsek.terra.world.population.items.ores.OreConfig;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
+
+import java.util.LinkedHashMap;
 
 public class GenericLoaders implements LoaderRegistrar {
     private final TerraPlugin main;
@@ -79,6 +84,8 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(BorderMutatorTemplate.class, BorderMutatorTemplate::new)
                 .registerLoader(BorderListMutatorTemplate.class, BorderListMutatorTemplate::new)
                 .registerLoader(FunctionTemplate.class, FunctionTemplate::new)
+                .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
+                .registerLoader(CarverPalette.class, new CarverPaletteLoader())
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(ExpanderStage.Type.class, (t, object, cf) -> ExpanderStage.Type.valueOf((String) object))
                 .registerLoader(MutatorStage.Type.class, (t, object, cf) -> MutatorStage.Type.valueOf((String) object))

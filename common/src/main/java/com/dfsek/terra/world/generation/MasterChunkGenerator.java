@@ -144,7 +144,9 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
                     }
                 }
             }
-            carver.carve(world, chunkX, chunkZ, chunk);
+            if(configPack.getTemplate().doBetaCarvers()) {
+                carver.carve(world, chunkX, chunkZ, chunk);
+            }
             return chunk;
         }
     }

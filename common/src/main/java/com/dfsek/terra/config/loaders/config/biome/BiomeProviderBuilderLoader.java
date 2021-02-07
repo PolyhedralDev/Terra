@@ -69,7 +69,7 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
             builder.setResolution(resolution);
             if(map.containsKey("blend")) {
                 Map<String, Object> blend = (Map<String, Object>) map.get("blend");
-                if(blend.containsKey("amplitude")) builder.setNoiseAmp(Integer.parseInt(blend.get("amplitude").toString()));
+                if(blend.containsKey("amplitude")) builder.setNoiseAmp(Double.parseDouble(blend.get("amplitude").toString()));
                 if(blend.containsKey("noise"))
                     builder.setBlender(loader.loadClass(NoiseSeeded.class, blend.get("noise")));
             }

@@ -22,6 +22,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -31,6 +32,7 @@ import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,9 +57,9 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("functions")
     @Default
     @Abstractable
-    private Map<String, FunctionTemplate> functions = new HashMap<>();
+    private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
 
-    @Value("carving.equation")
+    @Value("beta.carving.equation")
     @Abstractable
     @Default
     private String carvingEquation = "0";
@@ -183,8 +185,17 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     private Set<String> tags;
 
+    @Value("carving")
+    @Abstractable
+    @Default
+    private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();
+
     public Set<String> getTags() {
         return tags;
+    }
+
+    public Map<UserDefinedCarver, Integer> getCarvers() {
+        return carvers;
     }
 
     public Map<String, FunctionTemplate> getFunctions() {
@@ -340,7 +351,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
         pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
 
-        Map<String, FunctionTemplate> testFunctions = new HashMap<>(pack.getTemplate().getFunctions());
+        Map<String, FunctionTemplate> testFunctions = new LinkedHashMap<>(pack.getTemplate().getFunctions());
         testFunctions.putAll(functions);
         for(Map.Entry<String, FunctionTemplate> entry : testFunctions.entrySet()) {
             String id = entry.getKey();
