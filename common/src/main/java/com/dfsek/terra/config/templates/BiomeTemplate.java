@@ -368,7 +368,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         }
 
         try {
-            System.out.println("Testing " + id);
             tester.parse(noiseEquation, testScope);
         } catch(ParseException e) {
             throw new ValidationException("Invalid noise equation: ", e);
