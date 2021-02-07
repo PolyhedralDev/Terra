@@ -9,9 +9,6 @@ import io.papermc.paper.event.world.StructureLocateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-/**
- * Placeholder, will be used once Paper accepts StructureLocateEvent PR.
- */
 public class PaperListener implements Listener {
     private final TerraPlugin main;
 

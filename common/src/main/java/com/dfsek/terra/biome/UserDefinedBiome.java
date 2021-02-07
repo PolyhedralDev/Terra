@@ -33,9 +33,9 @@ public class UserDefinedBiome implements TerraBiome {
     }
 
     /**
-     * Gets the Vanilla biome to represent the custom biome.
+     * Gets the Vanilla biomes to represent the custom biome.
      *
-     * @return TerraBiome - The Vanilla biome.
+     * @return Collection of biomes to represent the custom biome.
      */
     @Override
     public ProbabilityCollection<Biome> getVanillaBiomes() {
