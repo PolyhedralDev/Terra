@@ -26,7 +26,7 @@ command:
     biome-found: "Located biome at (%1$s, %2$s)"
     unable-to-locate: "Unable to locate biome."
     invalid-radius: "Invalid radius: \"%s\""
-    invalid: "Invalid TerraBiome ID: \"%s\""
+    invalid: "Invalid Biome ID: \"%s\""
     in: "You are in \"%s\""
   packs:
     main: "Currently installed config packs:"
@@ -61,7 +61,7 @@ command:
     gui:
       main-menu:
         - "-------------Terra/image/gui-------------"
-        - "raw  - Open GUI with raw TerraBiome data"
+        - "raw  - Open GUI with raw Biome data"
         - "step - Re-render data to show borders more clearly"
       debug: "Debug mode must be enabled to use the debug GUI! The debug GUI is NOT PRODUCTION SAFE!"
     render:

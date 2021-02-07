@@ -25,7 +25,7 @@ command:
     biome-found: "Bioom geleë te (%1$s, %2$s)"
     unable-to-locate: "Kan bioom nie opspoor nie."
     invalid-radius: "Ongeldige radius: \"%s\""
-    invalid: "Ongeldige TerraBiome-ID: \"%s\""
+    invalid: "Ongeldige Biome-ID: \"%s\""
     in: "Jy is in \"%s\""
   ore:
     main-menu:

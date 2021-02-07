@@ -44,9 +44,9 @@ import java.util.concurrent.ExecutionException;
 public class StructureScript {
     private final Block block;
     private final String id;
-    String tempID;
     private final Cache<Location, StructureBuffer> cache;
     private final TerraPlugin main;
+    String tempID;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
         Parser parser;
@@ -143,14 +143,12 @@ public class StructureScript {
     }
 
     private boolean applyBlock(TerraImplementationArguments arguments) {
-        synchronized(block) {
-            try {
-                return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
-            } catch(RuntimeException e) {
-                main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
-                main.getDebugLogger().stack(e);
-                return false;
-            }
+        try {
+            return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
+        } catch(RuntimeException e) {
+            main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
+            main.getDebugLogger().stack(e);
+            return false;
         }
     }
 }

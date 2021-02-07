@@ -9,7 +9,7 @@ public interface BiomeGrid extends Handle {
      *
      * @param x - 0-15
      * @param z - 0-15
-     * @return TerraBiome value
+     * @return Biome value
      */
     @NotNull
     Biome getBiome(int x, int z);
@@ -20,7 +20,7 @@ public interface BiomeGrid extends Handle {
      * @param x - 0-15
      * @param y - 0-255
      * @param z - 0-15
-     * @return TerraBiome value
+     * @return Biome value
      */
     @NotNull
     Biome getBiome(int x, int y, int z);
@@ -30,7 +30,7 @@ public interface BiomeGrid extends Handle {
      *
      * @param x   - 0-15
      * @param z   - 0-15
-     * @param bio - TerraBiome value
+     * @param bio - Biome value
      */
     void setBiome(int x, int z, @NotNull Biome bio);
 
@@ -40,7 +40,7 @@ public interface BiomeGrid extends Handle {
      * @param x   - 0-15
      * @param y   - 0-255
      * @param z   - 0-15
-     * @param bio - TerraBiome value
+     * @param bio - Biome value
      */
     void setBiome(int x, int y, int z, @NotNull Biome bio);
 }

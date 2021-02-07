@@ -65,7 +65,7 @@ public class Vector2 implements Cloneable {
     /**
      * Add this vector to another.
      *
-     * @param other Vector to increment
+     * @param other Vector to add
      * @return Mutated vector, for chaining.
      */
     public Vector2 add(Vector2 other) {

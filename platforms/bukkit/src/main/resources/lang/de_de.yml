@@ -56,7 +56,7 @@ command:
     gui:
       main-menu:
         - "-------------Terra/image/gui-------------"
-        - "raw  - Öffnet eine GUI mit TerraBiome-Rohdaten"
+        - "raw  - Öffnet eine GUI mit Biome-Rohdaten"
         - "step - Daten erneut rendern, um Ränder deutlicher darzustellen"
       debug: "Der Debug-Modus muss aktiviert sein, um die Debug-GUI verwenden zu können! Die Debug-GUI ist NICHT PRODUKTIONSSICHER!"
     render:
