@@ -23,6 +23,10 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private Map<String, Double> variables = new HashMap<>();
 
+    @Value("beta.carving")
+    @Default
+    private boolean betaCarvers = false;
+
     @Value("functions")
     @Default
     private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
@@ -120,5 +124,9 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public Map<String, String> getLocatable() {
         return locatable;
+    }
+
+    public boolean doBetaCarvers() {
+        return betaCarvers;
     }
 }

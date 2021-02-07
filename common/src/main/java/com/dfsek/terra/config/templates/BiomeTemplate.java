@@ -19,6 +19,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -60,7 +61,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
 
-    @Value("carving.equation")
+    @Value("beta.carving.equation")
     @Abstractable
     @Default
     private String carvingEquation = "0";
@@ -186,8 +187,17 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     private Set<String> tags;
 
+    @Value("carving")
+    @Abstractable
+    @Default
+    private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();
+
     public Set<String> getTags() {
         return tags;
+    }
+
+    public Map<UserDefinedCarver, Integer> getCarvers() {
+        return carvers;
     }
 
     public Map<String, FunctionTemplate> getFunctions() {
