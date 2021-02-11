@@ -70,12 +70,7 @@ public class UserDefinedCarver extends Carver {
         });
 
         for(Map.Entry<String, FunctionTemplate> entry : definedFunctions.entrySet()) {
-            String id = entry.getKey();
-            FunctionTemplate fun = entry.getValue();
-
-            Scope functionScope = new Scope().withParent(parent);
-
-            p.registerFunction(id, new UserDefinedFunction(p.parse(fun.getFunction(), functionScope), fun.getArgs().size()));
+            p.registerFunction(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), p, parent));
         }
 
         Scope s = new Scope().withParent(parent);

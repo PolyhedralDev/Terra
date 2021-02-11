@@ -354,14 +354,8 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         Map<String, FunctionTemplate> testFunctions = new LinkedHashMap<>(pack.getTemplate().getFunctions());
         testFunctions.putAll(functions);
         for(Map.Entry<String, FunctionTemplate> entry : testFunctions.entrySet()) {
-            String id = entry.getKey();
-            FunctionTemplate fun = entry.getValue();
-
-            Scope functionScope = new Scope().withParent(testScope);
-            fun.getArgs().forEach(functionScope::addInvocationVariable);
-
             try {
-                tester.registerFunction(id, new UserDefinedFunction(tester.parse(fun.getFunction(), functionScope), fun.getArgs().size()));
+                tester.registerFunction(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), tester, testScope));
             } catch(ParseException e) {
                 throw new ValidationException("Invalid function: ", e);
             }
