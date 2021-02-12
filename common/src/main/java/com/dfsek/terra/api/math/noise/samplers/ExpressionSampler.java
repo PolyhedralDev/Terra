@@ -39,12 +39,7 @@ public class ExpressionSampler implements NoiseSampler {
         });
 
         for(Map.Entry<String, FunctionTemplate> entry : definedFunctions.entrySet()) {
-            String id = entry.getKey();
-            FunctionTemplate fun = entry.getValue();
-
-            Scope functionScope = new Scope().withParent(parent);
-
-            parser.registerFunction(id, new UserDefinedFunction(parser.parse(fun.getFunction(), functionScope), fun.getArgs().size()));
+            parser.registerFunction(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), parser, parent));
         }
 
         this.expression = parser.parse(equation, scope);
