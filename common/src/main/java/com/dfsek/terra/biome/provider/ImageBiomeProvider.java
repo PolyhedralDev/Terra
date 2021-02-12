@@ -9,14 +9,16 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImageBiomeProvider implements BiomeProvider {
+public class ImageBiomeProvider implements BiomeProvider, BiomeProvider.BiomeProviderBuilder { // This provider does not need a seed, so it is its own builder.
     private final Map<Color, TerraBiome> colorBiomeMap = new HashMap<>();
     private final BufferedImage image;
     private final int resolution;
+    private final Align align;
 
-    public ImageBiomeProvider(TerraRegistry<TerraBiome> registry, BufferedImage image, int resolution) {
+    public ImageBiomeProvider(TerraRegistry<TerraBiome> registry, BufferedImage image, int resolution, Align align) {
         this.image = image;
         this.resolution = resolution;
+        this.align = align;
         registry.forEach(biome -> colorBiomeMap.put(new Color(biome.getColor()), biome));
     }
 
@@ -26,7 +28,9 @@ public class ImageBiomeProvider implements BiomeProvider {
 
     @Override
     public TerraBiome getBiome(int x, int z) {
-        Color color = new Color(image.getRGB(FastMath.floorMod(x / resolution, image.getWidth()), FastMath.floorMod(z / resolution, image.getHeight())));
+        x /= resolution;
+        z /= resolution;
+        Color color = align.getColor(image, x, z);
         return colorBiomeMap.get(colorBiomeMap.keySet().stream().reduce(colorBiomeMap.keySet().stream().findAny().orElseThrow(IllegalStateException::new), (running, element) -> {
             int d1 = distance(color, running);
             int d2 = distance(color, element);
@@ -34,20 +38,24 @@ public class ImageBiomeProvider implements BiomeProvider {
         }));
     }
 
-    public static class ImageBiomeProviderBuilder implements BiomeProviderBuilder {
-        private final BufferedImage image;
-        private final int resolution;
-        private final TerraRegistry<TerraBiome> registry;
+    @Override
+    public BiomeProvider build(long seed) {
+        return this;
+    }
 
-        public ImageBiomeProviderBuilder(BufferedImage image, int resolution, TerraRegistry<TerraBiome> registry) {
-            this.image = image;
-            this.resolution = resolution;
-            this.registry = registry;
-        }
+    public enum Align {
+        CENTER {
+            @Override
+            public Color getColor(BufferedImage image, int x, int z) {
+                return new Color(image.getRGB(FastMath.floorMod(x - image.getWidth() / 2, image.getWidth()), FastMath.floorMod(z - image.getHeight() / 2, image.getHeight())));
+            }
+        }, NONE {
+            @Override
+            public Color getColor(BufferedImage image, int x, int z) {
+                return new Color(image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(z, image.getHeight())));
+            }
+        };
 
-        @Override
-        public BiomeProvider build(long seed) {
-            return new ImageBiomeProvider(registry, image, resolution);
-        }
+        public abstract Color getColor(BufferedImage image, int x, int z);
     }
 }

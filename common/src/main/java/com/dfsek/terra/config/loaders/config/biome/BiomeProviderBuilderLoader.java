@@ -79,18 +79,12 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
             try {
                 main.getLogger().info("Using image " + imageMap.get("name") + " for biome distribution.");
                 BufferedImage image = ImageIO.read(fileLoader.get(imageMap.get("name").toString()));
-                return new ImageBiomeProvider.ImageBiomeProviderBuilder(image, resolution, biomeRegistry);
+                return new ImageBiomeProvider(biomeRegistry, image, resolution, ImageBiomeProvider.Align.valueOf((String) imageMap.getOrDefault("align", "CENTER")));
             } catch(IOException e) {
                 throw new LoadException("Failed to load image", e);
             }
         } else if(map.get("type").equals("SINGLE")) {
-            return seed -> {
-                try {
-                    return new SingleBiomeProvider(loader.loadClass(TerraBiome.class, map.get("biome")));
-                } catch(LoadException e) {
-                    throw new RuntimeException(e);
-                }
-            };
+            return new SingleBiomeProvider(loader.loadClass(TerraBiome.class, map.get("biome")));
         }
 
         throw new LoadException("No such biome provider type: " + map.get("type"));
