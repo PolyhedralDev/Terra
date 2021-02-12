@@ -16,6 +16,7 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 
@@ -40,7 +41,7 @@ public class CommonListener implements Listener {
                     .add(TreeType.SWAMP, "SWAMP_OAK"))
             .addTransform(TreeType::toString).build();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onSaplingGrow(StructureGrowEvent e) {
         World bukkit = BukkitAdapter.adapt(e.getWorld());
         if(!TerraWorld.isTerraWorld(bukkit)) return;
