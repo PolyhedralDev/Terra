@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.biome.TerraBiome;
 import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.biome.provider.SingleBiomeProvider;
-import com.dfsek.terra.registry.BiomeRegistry;
+import com.dfsek.terra.registry.config.BiomeRegistry;
 
 public class SingleBiomeProviderTemplate extends BiomeProviderTemplate {
     @Value("biome")

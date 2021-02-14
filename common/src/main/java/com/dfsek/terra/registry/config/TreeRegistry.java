@@ -1,4 +1,4 @@
-package com.dfsek.terra.registry;
+package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
@@ -14,6 +14,7 @@ import com.dfsek.terra.api.world.tree.fractal.trees.ShatteredTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredPillar;
 import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.SpruceTree;
+import com.dfsek.terra.registry.TerraRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

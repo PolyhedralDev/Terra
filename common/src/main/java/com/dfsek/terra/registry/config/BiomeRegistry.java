@@ -1,8 +1,9 @@
-package com.dfsek.terra.registry;
+package com.dfsek.terra.registry.config;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.biome.TerraBiome;
+import com.dfsek.terra.registry.TerraRegistry;
 
 import java.lang.reflect.Type;
 

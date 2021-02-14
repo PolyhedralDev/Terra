@@ -13,7 +13,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.IntermediateBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.registry.ScriptRegistry;
+import com.dfsek.terra.registry.config.ScriptRegistry;
 import net.jafama.FastMath;
 
 import java.util.List;

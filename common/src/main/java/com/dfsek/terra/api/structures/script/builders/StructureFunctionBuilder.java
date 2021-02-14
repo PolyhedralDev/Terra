@@ -6,7 +6,7 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.functions.StructureFunction;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.registry.ScriptRegistry;
+import com.dfsek.terra.registry.config.ScriptRegistry;
 
 import java.util.List;
 import java.util.stream.Collectors;

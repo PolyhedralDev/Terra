@@ -9,7 +9,7 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.registry.TreeRegistry;
+import com.dfsek.terra.registry.config.TreeRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.Material;
 import org.bukkit.TreeType;

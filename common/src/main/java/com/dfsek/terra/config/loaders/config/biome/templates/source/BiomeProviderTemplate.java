@@ -7,7 +7,7 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.biome.provider.BiomeProvider;
-import com.dfsek.terra.registry.BiomeRegistry;
+import com.dfsek.terra.registry.config.BiomeRegistry;
 
 public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvider.BiomeProviderBuilder>, BiomeProvider.BiomeProviderBuilder {
     protected final BiomeRegistry registry;

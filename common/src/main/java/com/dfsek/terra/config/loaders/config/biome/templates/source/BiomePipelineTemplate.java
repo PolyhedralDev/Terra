@@ -8,7 +8,7 @@ import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.biome.provider.StandardBiomeProvider;
-import com.dfsek.terra.registry.BiomeRegistry;
+import com.dfsek.terra.registry.config.BiomeRegistry;
 
 import java.util.List;
 
