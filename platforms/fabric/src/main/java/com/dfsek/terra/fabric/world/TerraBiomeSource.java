@@ -34,7 +34,7 @@ public class TerraBiomeSource extends BiomeSource {
         super(biomes.stream().collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.grid = pack.getTemplate().getProviderBuilder().build(seed);
+        this.grid = pack.getBiomeProviderBuilder().build(seed);
         this.pack = pack;
     }
 

@@ -2,7 +2,7 @@ package com.dfsek.terra.biome.pipeline;
 
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
+import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.biome.pipeline.stages.Stage;
 
@@ -42,7 +42,7 @@ public class BiomePipeline {
 
     public static final class BiomePipelineBuilder {
         private final int init;
-        List<SeededBuilder<Stage>> stages = new GlueList<>();
+        List<StageSeeded> stages = new GlueList<>();
         private int expand;
 
         public BiomePipelineBuilder(int init) {
@@ -60,7 +60,7 @@ public class BiomePipeline {
             return new BiomePipeline(source, stagesBuilt, expand, init);
         }
 
-        public BiomePipelineBuilder addStage(SeededBuilder<Stage> stage) {
+        public BiomePipelineBuilder addStage(StageSeeded stage) {
             stages.add(stage);
             return this;
         }
