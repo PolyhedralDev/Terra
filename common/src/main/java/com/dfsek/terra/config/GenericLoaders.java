@@ -42,6 +42,7 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
@@ -82,6 +83,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .registerLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .registerLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
+                .registerLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
                 .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader())
                 .registerLoader(ReplaceMutatorTemplate.class, ReplaceMutatorTemplate::new)
                 .registerLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)

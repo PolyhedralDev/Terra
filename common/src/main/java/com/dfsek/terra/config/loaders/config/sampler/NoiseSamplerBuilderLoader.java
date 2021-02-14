@@ -8,6 +8,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
 
@@ -34,9 +35,11 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
                 Normalizer.NormalType normalType = loader.loadClass(Normalizer.NormalType.class, map.get("type"));
                 switch(normalType) {
                     case LINEAR:
-                        return loader.loadClass(LinearNormalizerTemplate.class, map).get();
+                        return loader.loadClass(LinearNormalizerTemplate.class, map);
                     case NORMAL:
-                        return loader.loadClass(NormalNormalizerTemplate.class, map).get();
+                        return loader.loadClass(NormalNormalizerTemplate.class, map);
+                    case CLAMP:
+                        return loader.loadClass(ClampNormalizerTemplate.class, map);
                 }
             case "IMAGE": {
                 return loader.loadClass(ImageSamplerTemplate.class, map).get();

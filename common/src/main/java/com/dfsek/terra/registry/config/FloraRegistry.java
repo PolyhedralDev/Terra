@@ -38,7 +38,7 @@ public class FloraRegistry extends TerraRegistry<Flora> {
                 create("minecraft:light_gray_terracotta"), create("minecraft:lime_terracotta"), create("minecraft:magenta_terracotta"),
                 create("minecraft:orange_terracotta"), create("minecraft:pink_terracotta"), create("minecraft:purple_terracotta"),
                 create("minecraft:red_terracotta"), create("minecraft:white_terracotta"), create("minecraft:yellow_terracotta"),
-                create("minecraft:red_sand"), create("minecraft:sand")), Collections.singletonList(data("minecraft:dead_bush"))));
+                create("minecraft:red_sand"), create("minecraft:sand"), create("minecraft:coarse_dirt")), Collections.singletonList(data("minecraft:dead_bush"))));
         addItem("RED_TULIP", () -> new ConstantFlora(grassy, Collections.singletonList(data("minecraft:red_tulip"))));
         addItem("ORANGE_TULIP", () -> new ConstantFlora(grassy, Collections.singletonList(data("minecraft:orange_tulip"))));
         addItem("WHITE_TULIP", () -> new ConstantFlora(grassy, Collections.singletonList(data("minecraft:white_tulip"))));
