@@ -61,10 +61,10 @@ public class UserDefinedCarver extends Carver {
         functions.forEach((id, noise) -> {
             switch(noise.getDimensions()) {
                 case 2:
-                    p.registerFunction(id, new NoiseFunction2(hash, noise));
+                    p.registerFunction(id, new NoiseFunction2(noise.apply(hash)));
                     break;
                 case 3:
-                    p.registerFunction(id, new NoiseFunction3(hash, noise));
+                    p.registerFunction(id, new NoiseFunction3(noise.apply(hash)));
                     break;
             }
         });

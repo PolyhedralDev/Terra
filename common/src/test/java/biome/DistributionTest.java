@@ -35,6 +35,7 @@ import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
+import com.dfsek.terra.registry.config.NormalizerRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import javax.swing.*;
@@ -154,7 +155,7 @@ public class DistributionTest {
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
         new GenericLoaders(null).register(pipeLoader);
 
-        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader());
+        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NormalizerRegistry()));
 
         pipeLoader.load(template, folderLoader.get("pack.yml"));
         return template.getBiomeProviderBuilder().build(seed);

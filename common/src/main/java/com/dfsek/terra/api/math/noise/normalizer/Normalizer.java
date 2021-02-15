@@ -30,8 +30,4 @@ public abstract class Normalizer implements NoiseSampler {
     public double getNoiseSeeded(int seed, double x, double y, double z) {
         return normalize(sampler.getNoiseSeeded(seed, x, y, z));
     }
-
-    public enum NormalType {
-        LINEAR, NORMAL, CLAMP
-    }
 }

@@ -6,10 +6,8 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
@@ -38,7 +36,6 @@ import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.Repla
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
@@ -84,7 +81,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .registerLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
                 .registerLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader())
                 .registerLoader(ReplaceMutatorTemplate.class, ReplaceMutatorTemplate::new)
                 .registerLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
                 .registerLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
@@ -108,8 +104,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(FastNoiseLite.RotationType3D.class, (t, object, cf) -> FastNoiseLite.RotationType3D.valueOf((String) object))
                 .registerLoader(FastNoiseLite.CellularReturnType.class, (t, object, cf) -> FastNoiseLite.CellularReturnType.valueOf((String) object))
                 .registerLoader(FastNoiseLite.CellularDistanceFunction.class, (t, object, cf) -> FastNoiseLite.CellularDistanceFunction.valueOf((String) object))
-                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()))
-                .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()))
-                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()));
+                .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()));
     }
 }

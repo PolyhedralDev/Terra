@@ -10,6 +10,7 @@ import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
@@ -33,6 +34,7 @@ import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.source.SingleBiomeProviderTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -47,6 +49,7 @@ import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
 import com.dfsek.terra.registry.config.FloraRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
+import com.dfsek.terra.registry.config.NormalizerRegistry;
 import com.dfsek.terra.registry.config.OreRegistry;
 import com.dfsek.terra.registry.config.PaletteRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
@@ -90,6 +93,8 @@ public class ConfigPack implements LoaderRegistrar {
     private final LootRegistry lootRegistry = new LootRegistry();
 
     private final CarverRegistry carverRegistry = new CarverRegistry();
+
+    private final NormalizerRegistry normalizerRegistry = new NormalizerRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -270,6 +275,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(LootTable.class, lootRegistry)
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
+                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(normalizerRegistry))
                 .registerLoader(SingleBiomeProviderTemplate.class, () -> new SingleBiomeProviderTemplate(biomeRegistry))
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(biomeRegistry, main))
                 .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
