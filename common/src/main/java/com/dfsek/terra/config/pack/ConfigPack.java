@@ -104,69 +104,82 @@ public class ConfigPack implements LoaderRegistrar {
 
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
-        this.loader = new FolderLoader(folder.toPath());
-        this.main = main;
-        long l = System.nanoTime();
-        this.samplerCache = new SamplerCache(main);
-        floraRegistry = new FloraRegistry(main);
-        paletteRegistry = new PaletteRegistry(main);
-        treeRegistry = new TreeRegistry(main);
-        register(abstractConfigLoader);
-        register(selfLoader);
-
-        main.register(selfLoader);
-        main.register(abstractConfigLoader);
-
-        File pack = new File(folder, "pack.yml");
-
         try {
-            selfLoader.load(template, new FileInputStream(pack));
-            load(l, main);
-            ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
-            selfLoader.load(packPostTemplate, new FileInputStream(pack));
-            biomeProviderBuilder = packPostTemplate.getProviderBuilder();
-            biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
-        } catch(FileNotFoundException e) {
-            throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
+            this.loader = new FolderLoader(folder.toPath());
+            this.main = main;
+            long l = System.nanoTime();
+            this.samplerCache = new SamplerCache(main);
+            floraRegistry = new FloraRegistry(main);
+            paletteRegistry = new PaletteRegistry(main);
+            treeRegistry = new TreeRegistry(main);
+            register(abstractConfigLoader);
+            register(selfLoader);
+
+            main.register(selfLoader);
+            main.register(abstractConfigLoader);
+
+            File pack = new File(folder, "pack.yml");
+
+            try {
+                selfLoader.load(template, new FileInputStream(pack));
+
+                main.getLogger().info("Loading config pack \"" + template.getID() + "\"");
+
+                load(l, main);
+                ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
+                selfLoader.load(packPostTemplate, new FileInputStream(pack));
+                biomeProviderBuilder = packPostTemplate.getProviderBuilder();
+                biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+            } catch(FileNotFoundException e) {
+                throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
+            }
+        } catch(Exception e) {
+            main.getLogger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
+            throw e;
         }
     }
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
-        this.loader = new ZIPLoader(file);
-        this.main = main;
-        long l = System.nanoTime();
-        this.samplerCache = new SamplerCache(main);
-        floraRegistry = new FloraRegistry(main);
-        paletteRegistry = new PaletteRegistry(main);
-        treeRegistry = new TreeRegistry(main);
-        register(abstractConfigLoader);
-        register(selfLoader);
-
-        main.register(selfLoader);
-        main.register(abstractConfigLoader);
-
-
         try {
-            ZipEntry pack = null;
-            Enumeration<? extends ZipEntry> entries = file.entries();
-            while(entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                if(entry.getName().equals("pack.yml")) pack = entry;
+            this.loader = new ZIPLoader(file);
+            this.main = main;
+            long l = System.nanoTime();
+            this.samplerCache = new SamplerCache(main);
+            floraRegistry = new FloraRegistry(main);
+            paletteRegistry = new PaletteRegistry(main);
+            treeRegistry = new TreeRegistry(main);
+            register(abstractConfigLoader);
+            register(selfLoader);
+
+            main.register(selfLoader);
+            main.register(abstractConfigLoader);
+
+            try {
+                ZipEntry pack = null;
+                Enumeration<? extends ZipEntry> entries = file.entries();
+                while(entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
+                    if(entry.getName().equals("pack.yml")) pack = entry;
+                }
+
+                if(pack == null) throw new FileMissingException("No pack.yml file found in " + file.getName());
+
+                selfLoader.load(template, file.getInputStream(pack));
+                main.getLogger().info("Loading config pack \"" + template.getID() + "\"");
+
+                load(l, main);
+
+                ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
+
+                selfLoader.load(packPostTemplate, file.getInputStream(pack));
+                biomeProviderBuilder = packPostTemplate.getProviderBuilder();
+                biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+            } catch(IOException e) {
+                throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
-
-            if(pack == null) throw new FileMissingException("No pack.yml file found in " + file.getName());
-
-            selfLoader.load(template, file.getInputStream(pack));
-
-            load(l, main);
-
-            ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
-
-            selfLoader.load(packPostTemplate, file.getInputStream(pack));
-            biomeProviderBuilder = packPostTemplate.getProviderBuilder();
-            biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
-        } catch(IOException e) {
-            throw new LoadException("Unable to load pack.yml from ZIP file", e);
+        } catch(Exception e) {
+            main.getLogger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
+            throw e;
         }
     }
 
