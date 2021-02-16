@@ -311,4 +311,32 @@ public class ConfigPack implements LoaderRegistrar {
     public FunctionRegistry getFunctionRegistry() {
         return functionRegistry;
     }
+
+    public NormalizerRegistry getNormalizerRegistry() {
+        return normalizerRegistry;
+    }
+
+    public CarverRegistry getCarverRegistry() {
+        return carverRegistry;
+    }
+
+    public FloraRegistry getFloraRegistry() {
+        return floraRegistry;
+    }
+
+    public LootRegistry getLootRegistry() {
+        return lootRegistry;
+    }
+
+    public OreRegistry getOreRegistry() {
+        return oreRegistry;
+    }
+
+    public PaletteRegistry getPaletteRegistry() {
+        return paletteRegistry;
+    }
+
+    public StructureRegistry getStructureRegistry() {
+        return structureRegistry;
+    }
 }
