@@ -28,6 +28,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
+import com.dfsek.terra.registry.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
 import com.dfsek.terra.world.generation.math.SamplerCache;
@@ -48,7 +49,7 @@ public class StructureScript {
     private final TerraPlugin main;
     String tempID;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache) throws ParseException {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache, FunctionRegistry functionRegistry) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -84,6 +85,8 @@ public class StructureScript {
                 .registerFunction("round", new UnaryNumberFunctionBuilder(number -> FastMath.round(number.doubleValue())))
                 .registerFunction("max", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("min", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
+
+        functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
         block = parser.parse();
         this.id = parser.getID();

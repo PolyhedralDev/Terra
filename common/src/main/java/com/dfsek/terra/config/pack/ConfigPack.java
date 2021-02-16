@@ -44,6 +44,7 @@ import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
+import com.dfsek.terra.registry.FunctionRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
@@ -95,6 +96,7 @@ public class ConfigPack implements LoaderRegistrar {
     private final CarverRegistry carverRegistry = new CarverRegistry();
 
     private final NormalizerRegistry normalizerRegistry = new NormalizerRegistry();
+    private final FunctionRegistry functionRegistry = new FunctionRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -201,7 +203,7 @@ public class ConfigPack implements LoaderRegistrar {
         loader.open("structures/data", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
-                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, samplerCache);
+                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, samplerCache, functionRegistry);
                     scriptRegistry.add(structureScript.getId(), structureScript);
                 } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
@@ -299,5 +301,9 @@ public class ConfigPack implements LoaderRegistrar {
 
     public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
         return biomeProviderBuilder;
+    }
+
+    public FunctionRegistry getFunctionRegistry() {
+        return functionRegistry;
     }
 }
