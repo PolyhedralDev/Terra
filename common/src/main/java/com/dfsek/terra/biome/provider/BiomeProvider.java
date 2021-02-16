@@ -23,4 +23,8 @@ public interface BiomeProvider {
     interface BiomeProviderBuilder {
         BiomeProvider build(long seed);
     }
+
+    enum Type {
+        IMAGE, PIPELINE, SINGLE
+    }
 }

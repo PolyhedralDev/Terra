@@ -24,9 +24,10 @@ public class TerraWorld {
 
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
+        c.getBiomeRegistry().forEach(biome -> biome.getGenerator(w)); // Load all gens to cache
         config = c;
         profiler = new WorldProfiler(w);
-        this.provider = config.getTemplate().getProviderBuilder().build(w.getSeed());
+        this.provider = config.getBiomeProviderBuilder().build(w.getSeed());
         this.world = w;
         air = main.getWorldHandle().createBlockData("minecraft:air");
         safe = true;

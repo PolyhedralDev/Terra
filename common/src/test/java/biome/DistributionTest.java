@@ -24,13 +24,18 @@ import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
+import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
+import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.source.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
-import com.dfsek.terra.registry.BiomeRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.registry.config.BiomeRegistry;
+import com.dfsek.terra.registry.config.NormalizerRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import javax.swing.*;
@@ -141,12 +146,16 @@ public class DistributionTest {
 
         BiomeProviderTemplate template = new BiomeProviderTemplate();
         ConfigLoader pipeLoader = new ConfigLoader()
-                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader(MAIN, biomeRegistry, folderLoader))
+                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
-                .registerLoader(TerraBiome.class, biomeRegistry);
+                .registerLoader(TerraBiome.class, biomeRegistry)
+                .registerLoader(BufferedImage.class, new BufferedImageLoader(folderLoader))
+                .registerLoader(SingleBiomeProviderTemplate.class, () -> new SingleBiomeProviderTemplate(biomeRegistry))
+                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(biomeRegistry, MAIN))
+                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
         new GenericLoaders(null).register(pipeLoader);
 
-        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader());
+        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NormalizerRegistry()));
 
         pipeLoader.load(template, folderLoader.get("pack.yml"));
         return template.getBiomeProviderBuilder().build(seed);

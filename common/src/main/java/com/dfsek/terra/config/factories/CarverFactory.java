@@ -1,12 +1,12 @@
 package com.dfsek.terra.config.factories;
 
+import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import parsii.tokenizer.ParseException;
 
 import java.util.Arrays;
 import java.util.List;

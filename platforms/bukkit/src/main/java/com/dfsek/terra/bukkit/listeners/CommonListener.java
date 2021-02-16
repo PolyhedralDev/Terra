@@ -9,13 +9,14 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.registry.TreeRegistry;
+import com.dfsek.terra.registry.config.TreeRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 
@@ -40,7 +41,7 @@ public class CommonListener implements Listener {
                     .add(TreeType.SWAMP, "SWAMP_OAK"))
             .addTransform(TreeType::toString).build();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onSaplingGrow(StructureGrowEvent e) {
         if(e.isCancelled()) return;
         World bukkit = BukkitAdapter.adapt(e.getWorld());

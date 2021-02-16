@@ -33,7 +33,7 @@ public class TerraCommand extends Command {
 
     @Override
     public String getName() {
-        return "com/dfsek/terra";
+        return "terra";
     }
 
     @Override

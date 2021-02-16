@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.math.parsii.noise;
 
-import parsii.eval.Function;
 
-public interface NoiseFunction extends Function {
+import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
+
+public interface NoiseFunction extends DynamicFunction {
 }

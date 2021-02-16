@@ -6,14 +6,16 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SourceSeeded;
+import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.biome.pipeline.stages.MutatorStage;
+import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
@@ -24,6 +26,9 @@ import com.dfsek.terra.config.loaders.config.GridSpawnLoader;
 import com.dfsek.terra.config.loaders.config.OreConfigLoader;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
+import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
+import com.dfsek.terra.config.loaders.config.biome.SourceBuilderLoader;
+import com.dfsek.terra.config.loaders.config.biome.StageBuilderLoader;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.expander.ExpanderStageTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.BorderListMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.BorderMutatorTemplate;
@@ -31,10 +36,10 @@ import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.Repla
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
@@ -75,8 +80,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .registerLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .registerLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
-                .registerLoader(FastNoiseTemplate.class, FastNoiseTemplate::new)
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader())
+                .registerLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
                 .registerLoader(ReplaceMutatorTemplate.class, ReplaceMutatorTemplate::new)
                 .registerLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
                 .registerLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
@@ -86,7 +90,12 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(FunctionTemplate.class, FunctionTemplate::new)
                 .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
                 .registerLoader(CarverPalette.class, new CarverPaletteLoader())
+                .registerLoader(SourceSeeded.class, new SourceBuilderLoader())
+                .registerLoader(StageSeeded.class, new StageBuilderLoader())
+                .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
+                .registerLoader(BiomeProvider.Type.class, (t, object, cf) -> BiomeProvider.Type.valueOf((String) object))
+                .registerLoader(ImageBiomeProvider.Align.class, (t, object, cf) -> ImageBiomeProvider.Align.valueOf((String) object))
                 .registerLoader(ExpanderStage.Type.class, (t, object, cf) -> ExpanderStage.Type.valueOf((String) object))
                 .registerLoader(MutatorStage.Type.class, (t, object, cf) -> MutatorStage.Type.valueOf((String) object))
                 .registerLoader(FastNoiseLite.NoiseType.class, (t, object, cf) -> FastNoiseLite.NoiseType.valueOf((String) object))
@@ -95,8 +104,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(FastNoiseLite.RotationType3D.class, (t, object, cf) -> FastNoiseLite.RotationType3D.valueOf((String) object))
                 .registerLoader(FastNoiseLite.CellularReturnType.class, (t, object, cf) -> FastNoiseLite.CellularReturnType.valueOf((String) object))
                 .registerLoader(FastNoiseLite.CellularDistanceFunction.class, (t, object, cf) -> FastNoiseLite.CellularDistanceFunction.valueOf((String) object))
-                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()))
-                .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()))
-                .registerLoader(Normalizer.NormalType.class, (t, o, l) -> Normalizer.NormalType.valueOf(o.toString().toUpperCase()));
+                .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()));
     }
 }

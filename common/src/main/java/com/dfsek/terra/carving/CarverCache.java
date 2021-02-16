@@ -34,7 +34,6 @@ public class CarverCache {
                         BiomeProvider provider = main.getWorld(w).getBiomeProvider();
                         if(CarverCache.this.carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + CarverCache.this.carver.hashCode())))) {
                             long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
-                            CarverCache.this.carver.getSeedVar().setValue(seed);
                             Random r = new FastRandom(seed);
                             Worm carving = CarverCache.this.carver.getWorm(seed, new Vector3((chunkX << 4) + r.nextInt(16), CarverCache.this.carver.getConfig().getHeight().get(r), (chunkZ << 4) + r.nextInt(16)));
                             List<Worm.WormPoint> points = new GlueList<>();
