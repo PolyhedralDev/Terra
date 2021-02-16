@@ -5,6 +5,7 @@ import com.dfsek.terra.api.util.ReflectionUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +24,23 @@ public class TerraEventManager implements EventManager {
     public void callEvent(Event event) {
         if(!listeners.containsKey(event.getClass())) return;
         listeners.get(event.getClass()).forEach((eventListener, methods) -> methods.forEach(method -> {
-            try {
-                method.invoke(eventListener, event);
-            } catch(Exception e) {
-                StringWriter writer = new StringWriter();
-                e.printStackTrace(new PrintWriter(writer));
-                main.getLogger().warning("Exception occurred during event handling:");
-                main.getLogger().warning(writer.toString());
-                main.getLogger().warning("Report this to the maintainers of " + eventListener.getClass().getCanonicalName());
-
-            }
-        }));
+                    try {
+                        method.invoke(eventListener, event);
+                    } catch(InvocationTargetException e) {
+                        StringWriter writer = new StringWriter();
+                        e.getTargetException().printStackTrace(new PrintWriter(writer));
+                        main.getLogger().warning("Exception occurred during event handling:");
+                        main.getLogger().warning(writer.toString());
+                        main.getLogger().warning("Report this to the maintainers of " + eventListener.getClass().getCanonicalName());
+                    } catch(Exception e) {
+                        StringWriter writer = new StringWriter();
+                        e.printStackTrace(new PrintWriter(writer));
+                        main.getLogger().warning("Exception occurred during event handling:");
+                        main.getLogger().warning(writer.toString());
+                        main.getLogger().warning("Report this to the maintainers of " + eventListener.getClass().getCanonicalName());
+                    }
+                })
+        );
     }
 
     @SuppressWarnings("unchecked")

@@ -10,6 +10,7 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
@@ -124,6 +125,11 @@ public class DistributionTest {
         @Override
         public DebugLogger getDebugLogger() {
             return new DebugLogger(Logger.getLogger("Terra"));
+        }
+
+        @Override
+        public EventManager getEventManager() {
+            return null;
         }
 
         @Override

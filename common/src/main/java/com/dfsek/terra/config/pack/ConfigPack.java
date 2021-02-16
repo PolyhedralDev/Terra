@@ -8,6 +8,8 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.events.config.ConfigPackPostLoadEvent;
+import com.dfsek.terra.api.core.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
@@ -195,6 +197,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     private void load(long start, TerraPlugin main) throws ConfigException {
+        main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));
         main.packPreLoadCallback(this);
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey(), var.getValue());
@@ -228,6 +231,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
         main.packPostLoadCallback(this);
+
+        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
     }
 

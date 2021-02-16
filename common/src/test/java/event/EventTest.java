@@ -4,8 +4,8 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.Event;
 import com.dfsek.terra.api.core.event.EventListener;
+import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.core.event.TerraEventManager;
-import com.dfsek.terra.api.core.event.annotations.Listener;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 public class EventTest {
     public TerraPlugin main = new TerraPlugin() {
         private final Logger logger = Logger.getLogger("Terra");
+        private final EventManager eventManager = new TerraEventManager(this);
 
         @Override
         public WorldHandle getWorldHandle() {
@@ -97,11 +98,16 @@ public class EventTest {
         public void register(TypeRegistry registry) {
 
         }
+
+        @Override
+        public EventManager getEventManager() {
+            return eventManager;
+        }
     };
 
     @Test
     public void eventTest() {
-        TerraEventManager eventManager = new TerraEventManager(main);
+        EventManager eventManager = main.getEventManager();
         eventManager.registerListener(new TestListener());
         eventManager.registerListener(new TestListener2());
 
@@ -110,26 +116,23 @@ public class EventTest {
 
         eventManager.registerListener(new TestListenerException());
 
-        TestEvent event2 = new TestEvent(4);
+        TestEvent event2 = new TestEvent(5);
         eventManager.callEvent(event2);
     }
 
     static class TestListener implements EventListener {
-        @Listener
         public void doThing(TestEvent event) {
             System.out.println("Event value: " + event.value);
         }
     }
 
     static class TestListener2 implements EventListener {
-        @Listener
         public void doThing(TestEvent event) {
             System.out.println("Event value 2: " + event.value);
         }
     }
 
     static class TestListenerException implements EventListener {
-        @Listener
         public void doThing(TestEvent event) {
             throw new RuntimeException("bazinga: " + event.value);
         }

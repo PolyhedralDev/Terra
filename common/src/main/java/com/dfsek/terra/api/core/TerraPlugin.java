@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.core;
 
 import com.dfsek.terra.api.LoaderRegistrar;
+import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
@@ -50,4 +51,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     }
 
     DebugLogger getDebugLogger();
+
+    EventManager getEventManager();
 }
