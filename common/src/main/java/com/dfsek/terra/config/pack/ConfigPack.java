@@ -8,6 +8,8 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.events.config.ConfigPackPostLoadEvent;
+import com.dfsek.terra.api.core.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
@@ -44,6 +46,7 @@ import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
+import com.dfsek.terra.registry.FunctionRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
@@ -95,6 +98,7 @@ public class ConfigPack implements LoaderRegistrar {
     private final CarverRegistry carverRegistry = new CarverRegistry();
 
     private final NormalizerRegistry normalizerRegistry = new NormalizerRegistry();
+    private final FunctionRegistry functionRegistry = new FunctionRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -193,6 +197,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     private void load(long start, TerraPlugin main) throws ConfigException {
+        main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));
         main.packPreLoadCallback(this);
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey(), var.getValue());
@@ -201,7 +206,7 @@ public class ConfigPack implements LoaderRegistrar {
         loader.open("structures/data", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
-                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, samplerCache);
+                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, samplerCache, functionRegistry);
                     scriptRegistry.add(structureScript.getId(), structureScript);
                 } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
@@ -226,6 +231,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
         main.packPostLoadCallback(this);
+
+        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
     }
 
@@ -299,5 +306,37 @@ public class ConfigPack implements LoaderRegistrar {
 
     public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
         return biomeProviderBuilder;
+    }
+
+    public FunctionRegistry getFunctionRegistry() {
+        return functionRegistry;
+    }
+
+    public NormalizerRegistry getNormalizerRegistry() {
+        return normalizerRegistry;
+    }
+
+    public CarverRegistry getCarverRegistry() {
+        return carverRegistry;
+    }
+
+    public FloraRegistry getFloraRegistry() {
+        return floraRegistry;
+    }
+
+    public LootRegistry getLootRegistry() {
+        return lootRegistry;
+    }
+
+    public OreRegistry getOreRegistry() {
+        return oreRegistry;
+    }
+
+    public PaletteRegistry getPaletteRegistry() {
+        return paletteRegistry;
+    }
+
+    public StructureRegistry getStructureRegistry() {
+        return structureRegistry;
     }
 }

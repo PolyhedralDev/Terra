@@ -2,6 +2,8 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.EventManager;
+import com.dfsek.terra.api.core.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -67,6 +69,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final Map<Long, TerraWorld> worldMap = new HashMap<>();
     private static TerraFabricPlugin instance;
+
+    private final EventManager eventManager = new TerraEventManager(this);
 
     public static TerraFabricPlugin getInstance() {
         return instance;
@@ -284,5 +288,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             });
         }
 
+    }
+
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }

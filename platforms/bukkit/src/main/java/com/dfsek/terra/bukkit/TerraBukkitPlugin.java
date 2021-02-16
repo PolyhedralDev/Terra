@@ -2,6 +2,8 @@ package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.EventManager;
+import com.dfsek.terra.api.core.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -56,6 +58,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private DebugLogger debugLogger;
 
+    private final EventManager eventManager = new TerraEventManager(this);
+
     public static final Version BUKKIT_VERSION;
 
     static {
@@ -109,6 +113,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public DebugLogger getDebugLogger() {
         return debugLogger;
+    }
+
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.EventManager;
+import com.dfsek.terra.api.core.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -26,6 +28,7 @@ public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final PluginConfig config = new PluginConfig();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
+    private final EventManager eventManager = new TerraEventManager(this);
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -114,5 +117,10 @@ public class StandalonePlugin implements TerraPlugin {
         LangUtil.load("en_us", this);
         registry.loadAll(this);
         config.load(this);
+    }
+
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }
