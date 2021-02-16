@@ -198,7 +198,7 @@ public class ConfigPack implements LoaderRegistrar {
 
     private void load(long start, TerraPlugin main) throws ConfigException {
         main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));
-        main.packPreLoadCallback(this);
+
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey(), var.getValue());
         }
@@ -230,7 +230,6 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
                 .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
-        main.packPostLoadCallback(this);
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
         LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());

@@ -18,10 +18,9 @@ import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
+import com.dfsek.terra.bukkit.listeners.TerraListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
-import com.dfsek.terra.bukkit.world.BukkitTree;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -34,7 +33,6 @@ import com.dfsek.terra.world.generation.MasterChunkGenerator;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.TreeType;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.ChunkGenerator;
@@ -104,13 +102,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     @Override
-    public void packPreLoadCallback(ConfigPack pack) {
-        for(TreeType value : TreeType.values()) {
-            pack.getTreeRegistry().add(BukkitAdapter.TREE_TRANSFORMER.translate(value), new BukkitTree(value, this));
-        }
-    }
-
-    @Override
     public DebugLogger getDebugLogger() {
         return debugLogger;
     }
@@ -128,6 +119,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public void onEnable() {
         debugLogger = new DebugLogger(getLogger());
+
+        eventManager.registerListener(new TerraListener(this)); // Register tree injection event
 
         getLogger().info("Running on version " + BUKKIT_VERSION);
         if(BUKKIT_VERSION.equals(Version.UNKNOWN)) {
