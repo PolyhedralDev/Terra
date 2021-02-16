@@ -452,7 +452,7 @@ public class FastNoiseLite implements NoiseSampler {
     /**
      * Sets noise algorithm used for GetNoise(...)
      * <p>
-     * Default: OpenSimplex2
+     * Default: OpenSimplex2Sampler
      */
     public void setNoiseType(NoiseType noiseType) {
         mNoiseType = noiseType;
@@ -615,7 +615,7 @@ public class FastNoiseLite implements NoiseSampler {
     /**
      * Sets the warp algorithm when using DomainWarp(...)
      * <p>
-     * Default: OpenSimplex2
+     * Default: OpenSimplex2Sampler
      */
     public void setDomainWarpType(DomainWarpType domainWarpType) {
         mDomainWarpType = domainWarpType;
@@ -997,7 +997,7 @@ public class FastNoiseLite implements NoiseSampler {
 
     // Fractal FBm
     private double singleOpenSimplex2(int seed, double x, double y, double z) {
-        // 3D OpenSimplex2 case uses two offset rotated cube grids.
+        // 3D OpenSimplex2Sampler case uses two offset rotated cube grids.
         /*
          * --- Rotation moved to switch statements before fractal evaluation ---
          * final FNLdouble R3 = (FNLdouble)(2.0 / 3.0);
@@ -1709,7 +1709,7 @@ public class FastNoiseLite implements NoiseSampler {
         return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
-    // Simplex/OpenSimplex2 Noise
+    // Simplex/OpenSimplex2Sampler Noise
     private double singlePerlin(int seed, double x, double y, double z) {
         int x0 = fastFloor(x);
         int y0 = fastFloor(y);
@@ -2301,7 +2301,7 @@ public class FastNoiseLite implements NoiseSampler {
                 lerp(lz0y, lerp(lz0x, lz1x, ys), zs) * warpAmp);
     }
 
-    // Domain Warp Simplex/OpenSimplex2
+    // Domain Warp Simplex/OpenSimplex2Sampler
     private void singleDomainWarpSimplexGradient(int seed, double warpAmp, double frequency, double x, double y,
                                                  Vector2 coord, boolean outGradOnly) {
         final double SQRT3 = 1.7320508075688772935274463415059;

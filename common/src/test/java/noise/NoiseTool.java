@@ -3,7 +3,8 @@ package noise;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
+import com.dfsek.terra.api.math.noise.samplers.noise.WhiteNoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
@@ -128,7 +129,9 @@ public class NoiseTool {
 
         loader.load(template, new FileInputStream(file));
         System.out.println(template.getBuilder().getDimensions());
-        NoiseSampler noise = template.getBuilder().apply((long) seed);
+        //NoiseSampler noise = template.getBuilder().apply((long) seed);
+        NoiseFunction noise = new WhiteNoiseSampler();
+        noise.setSeed(seed);
 
         int size = 1024;
 
