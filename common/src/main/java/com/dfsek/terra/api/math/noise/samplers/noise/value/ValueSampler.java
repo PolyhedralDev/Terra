@@ -1,6 +1,10 @@
 package com.dfsek.terra.api.math.noise.samplers.noise.value;
 
 public class ValueSampler extends ValueStyleNoise {
+    public ValueSampler(int seed) {
+        super(seed);
+    }
+
     @Override
     public double getNoiseSeeded(int seed, double x, double y) {
         int x0 = fastFloor(x);

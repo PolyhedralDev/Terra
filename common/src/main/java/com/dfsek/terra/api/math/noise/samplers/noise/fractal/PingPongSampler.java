@@ -5,9 +5,10 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 public class PingPongSampler extends FractalNoiseFunction {
     private double pingPongStrength = 2.0;
 
-    public PingPongSampler(NoiseSampler input) {
-        super(input);
+    public PingPongSampler(int seed, NoiseSampler input) {
+        super(seed, input);
     }
+
 
     private static double pingPong(double t) {
         t -= (int) (t * 0.5f) << 1;

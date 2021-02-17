@@ -1,25 +1,14 @@
-package com.dfsek.terra.api.math.noise.samplers;
-
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+package com.dfsek.terra.api.math.noise.samplers.noise;
 
 /**
  * Sampler implementation that returns a constant.
  */
-public class ConstantSampler implements NoiseSampler {
+public class ConstantSampler extends NoiseFunction {
     private final double constant;
 
     public ConstantSampler(double constant) {
+        super(0);
         this.constant = constant;
-    }
-
-    @Override
-    public double getNoise(double x, double y) {
-        return constant;
-    }
-
-    @Override
-    public double getNoise(double x, double y, double z) {
-        return constant;
     }
 
     @Override

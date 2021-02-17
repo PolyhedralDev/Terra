@@ -187,7 +187,12 @@ public class CellularSampler extends NoiseFunction {
     private ReturnType returnType = ReturnType.Distance;
     private double jitterModifier = 1.0;
 
-    private NoiseSampler noiseLookup = new OpenSimplex2Sampler();
+    private NoiseSampler noiseLookup;
+
+    public CellularSampler(int seed) {
+        super(seed);
+        noiseLookup = new OpenSimplex2Sampler(seed);
+    }
 
     public void setDistanceFunction(DistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;

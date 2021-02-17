@@ -52,7 +52,7 @@ import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
 import com.dfsek.terra.registry.config.FloraRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
-import com.dfsek.terra.registry.config.NormalizerRegistry;
+import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.registry.config.OreRegistry;
 import com.dfsek.terra.registry.config.PaletteRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
@@ -97,7 +97,7 @@ public class ConfigPack implements LoaderRegistrar {
 
     private final CarverRegistry carverRegistry = new CarverRegistry();
 
-    private final NormalizerRegistry normalizerRegistry = new NormalizerRegistry();
+    private final NoiseRegistry noiseRegistry = new NoiseRegistry();
     private final FunctionRegistry functionRegistry = new FunctionRegistry();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
@@ -281,7 +281,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(LootTable.class, lootRegistry)
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(normalizerRegistry))
+                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .registerLoader(SingleBiomeProviderTemplate.class, () -> new SingleBiomeProviderTemplate(biomeRegistry))
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(biomeRegistry, main))
                 .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
@@ -311,8 +311,8 @@ public class ConfigPack implements LoaderRegistrar {
         return functionRegistry;
     }
 
-    public NormalizerRegistry getNormalizerRegistry() {
-        return normalizerRegistry;
+    public NoiseRegistry getNormalizerRegistry() {
+        return noiseRegistry;
     }
 
     public CarverRegistry getCarverRegistry() {

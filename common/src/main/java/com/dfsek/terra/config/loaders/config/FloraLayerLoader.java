@@ -6,11 +6,10 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.noise.WhiteNoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 
 import java.lang.reflect.Type;
@@ -35,10 +34,7 @@ public class FloraLayerLoader implements TypeLoader<FloraLayer> {
             }
             return new FloraLayer(density, range, items, sampler.apply(2403L));
         }
-        FastNoiseTemplate def = new FastNoiseTemplate();
-        def.setType(FastNoiseLite.NoiseType.WhiteNoise);
-        def.setDimensions(3);
 
-        return new FloraLayer(density, range, items, def.apply(2403L));
+        return new FloraLayer(density, range, items, new WhiteNoiseSampler(2403));
     }
 }

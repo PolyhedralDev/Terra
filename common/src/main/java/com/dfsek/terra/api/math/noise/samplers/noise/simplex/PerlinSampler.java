@@ -1,6 +1,10 @@
 package com.dfsek.terra.api.math.noise.samplers.noise.simplex;
 
 public class PerlinSampler extends SimplexStyleSampler {
+    public PerlinSampler(int seed) {
+        super(seed);
+    }
+
     @Override
     public double getNoiseSeeded(int seed, double x, double y) {
         int x0 = fastFloor(x);

@@ -3,8 +3,9 @@ package com.dfsek.terra.api.math.noise.samplers.noise.fractal;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 
 public class RidgedFractalSampler extends FractalNoiseFunction {
-    public RidgedFractalSampler(NoiseSampler input) {
-        super(input);
+
+    public RidgedFractalSampler(int seed, NoiseSampler input) {
+        super(seed, input);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.dfsek.terra.api.math.noise.samplers.noise;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import net.jafama.FastMath;
 
+@SuppressWarnings("ManualMinMaxCalculation")
 public abstract class NoiseFunction implements NoiseSampler {
     // Hashing
     protected static final int PRIME_X = 501125321;
@@ -12,6 +13,10 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     protected double frequency = 0.02d;
     protected int seed = 2403;
+
+    public NoiseFunction(int seed) {
+        this.seed = seed;
+    }
 
     protected static int fastFloor(double f) {
         return f >= 0 ? (int) f : (int) f - 1;

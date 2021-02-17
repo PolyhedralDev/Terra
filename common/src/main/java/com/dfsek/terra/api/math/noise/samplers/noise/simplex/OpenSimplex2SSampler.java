@@ -1,6 +1,10 @@
 package com.dfsek.terra.api.math.noise.samplers.noise.simplex;
 
 public class OpenSimplex2SSampler extends SimplexStyleSampler {
+    public OpenSimplex2SSampler(int seed) {
+        super(seed);
+    }
+
     @Override
     @SuppressWarnings("NumericOverflow")
     public double getNoiseSeeded(int seed, double x, double y) {

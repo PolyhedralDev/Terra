@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command.command.geometry;
 
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.math.voxel.DeformedSphere;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
@@ -44,8 +44,7 @@ public class DeformedSphereCommand extends PlayerCommand {
             LangUtil.send("command.geometry.deform.invalid-frequency", new BukkitCommandSender(sender), args[2]);
             return true;
         }
-        FastNoiseLite n = new FastNoiseLite((int) sender.getWorld().getSeed());
-        n.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        OpenSimplex2Sampler n = new OpenSimplex2Sampler((int) sender.getWorld().getSeed());
         n.setFrequency(freq);
         DeformedSphere sphere = new DeformedSphere(BukkitAdapter.adapt(sender).getLocation().toVector(), radius, deform, n);
         for(Vector3 v : sphere.getGeometry()) {

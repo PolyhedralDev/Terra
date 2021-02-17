@@ -3,6 +3,10 @@ package com.dfsek.terra.api.math.noise.samplers.noise.simplex;
 public class OpenSimplex2Sampler extends SimplexStyleSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
 
+    public OpenSimplex2Sampler(int seed) {
+        super(seed);
+    }
+
     @Override
     public double getNoiseSeeded(int seed, double x, double y) {
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.

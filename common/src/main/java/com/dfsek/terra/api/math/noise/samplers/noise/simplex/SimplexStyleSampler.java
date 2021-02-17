@@ -68,6 +68,10 @@ public abstract class SimplexStyleSampler extends NoiseFunction {
             1, 1, 0, 0, 0, -1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0
     };
 
+    public SimplexStyleSampler(int seed) {
+        super(seed);
+    }
+
     protected static double gradCoord(int seed, int xPrimed, int yPrimed, double xd, double yd) {
         int hash = hash(seed, xPrimed, yPrimed);
         hash ^= hash >> 15;

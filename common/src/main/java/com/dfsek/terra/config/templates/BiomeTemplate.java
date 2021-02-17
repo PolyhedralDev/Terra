@@ -11,7 +11,7 @@ import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.parsii.BlankFunction;
 import com.dfsek.terra.api.math.parsii.defined.UserDefinedFunction;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -24,7 +24,6 @@ import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
@@ -248,12 +247,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
-        FastNoiseTemplate builder = new FastNoiseTemplate();
-        builder.setType(FastNoiseLite.NoiseType.Constant);
         biomeNoise = new NoiseSeeded() {
             @Override
             public NoiseSampler apply(Long seed) {
-                return builder.apply(seed);
+                return new ConstantSampler(0);
             }
 
             @Override
