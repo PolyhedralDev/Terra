@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.core.event.events.world;
 
-import com.dfsek.terra.api.core.event.Event;
+import com.dfsek.terra.api.core.event.events.Event;
 import com.dfsek.terra.world.TerraWorld;
 
 /**
