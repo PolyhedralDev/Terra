@@ -8,7 +8,7 @@ public class WhiteNoiseSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         long hashX = Double.doubleToRawLongBits(x) ^ seed;
         long hashZ = Double.doubleToRawLongBits(y) ^ seed;
         long hash = ((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed;
@@ -18,7 +18,7 @@ public class WhiteNoiseSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         long hashX = Double.doubleToRawLongBits(x) ^ seed;
         long hashZ = Double.doubleToRawLongBits(y) ^ seed;
         long hash = (((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed) + Double.doubleToRawLongBits(z);

@@ -211,7 +211,7 @@ public class CellularSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         int xr = fastRound(x);
         int yr = fastRound(y);
 
@@ -363,7 +363,7 @@ public class CellularSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         int xr = fastRound(x);
         int yr = fastRound(y);
         int zr = fastRound(z);

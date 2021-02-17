@@ -7,7 +7,7 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
 
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         // 2D OpenSimplex2S case is a modified 2D simplex noise.
 
         final double SQRT3 = 1.7320508075688772935274463415059;
@@ -114,7 +114,7 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
 
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         // 3D OpenSimplex2S case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);
         double r = (x + y + z) * R3; // Rotation, not skew

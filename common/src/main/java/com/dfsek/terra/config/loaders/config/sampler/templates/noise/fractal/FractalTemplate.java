@@ -25,4 +25,8 @@ public abstract class FractalTemplate<T extends FractalNoiseFunction> extends No
 
     @Value("function")
     protected NoiseSeeded function;
+
+    public FractalTemplate() {
+        frequency = 1; // Fractal default freq = 1.
+    }
 }

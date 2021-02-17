@@ -12,12 +12,12 @@ public class ConstantSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         return constant;
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         return constant;
     }
 }

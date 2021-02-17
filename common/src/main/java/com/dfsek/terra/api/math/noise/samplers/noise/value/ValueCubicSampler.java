@@ -6,7 +6,7 @@ public class ValueCubicSampler extends ValueStyleNoise {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         int x1 = fastFloor(x);
         int y1 = fastFloor(y);
 
@@ -35,7 +35,7 @@ public class ValueCubicSampler extends ValueStyleNoise {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         int x1 = fastFloor(x);
         int y1 = fastFloor(y);
         int z1 = fastFloor(z);

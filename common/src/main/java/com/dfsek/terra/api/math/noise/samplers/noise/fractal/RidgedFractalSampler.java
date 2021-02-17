@@ -9,7 +9,7 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         double sum = 0;
         double amp = fractalBounding;
 
@@ -27,7 +27,7 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         double sum = 0;
         double amp = fractalBounding;
 

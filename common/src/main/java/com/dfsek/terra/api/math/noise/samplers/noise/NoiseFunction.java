@@ -87,11 +87,25 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     @Override
     public double getNoise(double x, double y) {
-        return getNoiseSeeded(seed, x * frequency, y * frequency);
+        return getNoiseSeeded(seed, x, y);
     }
 
     @Override
     public double getNoise(double x, double y, double z) {
-        return getNoiseSeeded(seed, x * frequency, y * frequency, z * frequency);
+        return getNoiseSeeded(seed, x, y, z);
     }
+
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y) {
+        return getNoiseRaw(seed, x * frequency, y * frequency);
+    }
+
+    @Override
+    public double getNoiseSeeded(int seed, double x, double y, double z) {
+        return getNoiseRaw(seed, x * frequency, y * frequency, z * frequency);
+    }
+
+    public abstract double getNoiseRaw(int seed, double x, double y);
+
+    public abstract double getNoiseRaw(int seed, double x, double y, double z);
 }

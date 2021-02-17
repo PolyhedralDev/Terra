@@ -8,7 +8,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseRaw(int seed, double x, double y) {
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.
         final double G2 = (3 - SQRT3) / 6;
 
@@ -68,7 +68,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseRaw(int seed, double x, double y, double z) {
         // 3D OpenSimplex2Sampler case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);
         double r = (x + y + z) * R3; // Rotation, not skew
