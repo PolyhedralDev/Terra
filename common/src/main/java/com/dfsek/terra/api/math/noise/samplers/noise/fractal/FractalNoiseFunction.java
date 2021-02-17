@@ -11,7 +11,7 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
     protected double lacunarity = 2.0d;
     protected double weightedStrength = 0.0d;
 
-    protected FractalNoiseFunction(NoiseSampler input) {
+    public FractalNoiseFunction(NoiseSampler input) {
         this.input = input;
     }
 

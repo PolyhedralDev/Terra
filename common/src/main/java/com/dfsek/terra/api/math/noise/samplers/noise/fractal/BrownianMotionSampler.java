@@ -3,7 +3,7 @@ package com.dfsek.terra.api.math.noise.samplers.noise.fractal;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 
 public class BrownianMotionSampler extends FractalNoiseFunction {
-    protected BrownianMotionSampler(NoiseSampler input) {
+    public BrownianMotionSampler(NoiseSampler input) {
         super(input);
     }
 

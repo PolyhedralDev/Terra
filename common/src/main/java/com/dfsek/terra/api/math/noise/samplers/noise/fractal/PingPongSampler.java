@@ -5,7 +5,7 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 public class PingPongSampler extends FractalNoiseFunction {
     private double pingPongStrength = 2.0;
 
-    protected PingPongSampler(NoiseSampler input) {
+    public PingPongSampler(NoiseSampler input) {
         super(input);
     }
 
