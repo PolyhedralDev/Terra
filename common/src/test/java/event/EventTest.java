@@ -2,7 +2,8 @@ package event;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.Event;
+import com.dfsek.terra.api.core.event.annotations.Priority;
+import com.dfsek.terra.api.core.event.events.Event;
 import com.dfsek.terra.api.core.event.EventListener;
 import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.core.event.TerraEventManager;
@@ -127,6 +128,7 @@ public class EventTest {
     }
 
     static class TestListener2 implements EventListener {
+        @Priority(Priority.LOWEST)
         public void doThing(TestEvent event) {
             System.out.println("Event value 2: " + event.value);
         }
