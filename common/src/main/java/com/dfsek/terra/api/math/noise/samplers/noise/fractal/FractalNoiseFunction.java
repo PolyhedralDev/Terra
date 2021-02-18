@@ -14,6 +14,7 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
     public FractalNoiseFunction(int seed, NoiseSampler input) {
         super(seed);
         this.input = input;
+        frequency = 1;
     }
 
     public void setWeightedStrength(double weightedStrength) {

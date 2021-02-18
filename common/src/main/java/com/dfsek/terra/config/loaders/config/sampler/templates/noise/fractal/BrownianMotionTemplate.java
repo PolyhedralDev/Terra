@@ -7,7 +7,6 @@ public class BrownianMotionTemplate extends FractalTemplate<BrownianMotionSample
     @Override
     public NoiseSampler apply(Long seed) {
         BrownianMotionSampler sampler = new BrownianMotionSampler((int) (long) seed, function.apply(seed));
-        sampler.setFrequency(frequency);
         sampler.setGain(fractalGain);
         sampler.setLacunarity(fractalLacunarity);
         sampler.setOctaves(octaves);

@@ -25,6 +25,7 @@ public class ExpressionFunction extends NoiseFunction {
         functions.forEach(p::registerFunction);
 
         expression = p.parse(eq, scope);
+        frequency = 1;
     }
 
     @Override

@@ -12,12 +12,14 @@ import com.dfsek.terra.api.math.parsii.BlankFunction;
 import com.dfsek.terra.api.math.parsii.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.parsii.noise.NoiseFunction3;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ExpressionFunctionTemplate extends NoiseTemplate<ExpressionFunction> implements ValidatedConfigTemplate {
+
+@SuppressWarnings({"FieldMayBeFinal", "unused"})
+public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFunction> implements ValidatedConfigTemplate {
     @Value("variables")
     @Default
     private Map<String, Double> vars = new HashMap<>();
@@ -27,10 +29,6 @@ public class ExpressionFunctionTemplate extends NoiseTemplate<ExpressionFunction
 
     @Value("functions")
     private Map<String, NoiseSeeded> functions;
-
-    public ExpressionFunctionTemplate() {
-        frequency = 1;
-    }
 
     @Override
     public NoiseSampler apply(Long seed) {

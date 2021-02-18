@@ -7,7 +7,6 @@ public class RidgedFractalTemplate extends FractalTemplate<RidgedFractalSampler>
     @Override
     public NoiseSampler apply(Long seed) {
         RidgedFractalSampler sampler = new RidgedFractalSampler((int) (long) seed, function.apply(seed));
-        sampler.setFrequency(frequency);
         sampler.setGain(fractalGain);
         sampler.setLacunarity(fractalLacunarity);
         sampler.setOctaves(octaves);

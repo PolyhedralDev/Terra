@@ -4,9 +4,9 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.noise.samplers.noise.fractal.FractalNoiseFunction;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.config.loaders.config.sampler.templates.noise.NoiseTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
 
-public abstract class FractalTemplate<T extends FractalNoiseFunction> extends NoiseTemplate<T> {
+public abstract class FractalTemplate<T extends FractalNoiseFunction> extends SamplerTemplate<T> {
     @Value("octaves")
     @Default
     protected int octaves = 3;
@@ -25,8 +25,4 @@ public abstract class FractalTemplate<T extends FractalNoiseFunction> extends No
 
     @Value("function")
     protected NoiseSeeded function;
-
-    public FractalTemplate() {
-        frequency = 1; // Fractal default freq = 1.
-    }
 }
