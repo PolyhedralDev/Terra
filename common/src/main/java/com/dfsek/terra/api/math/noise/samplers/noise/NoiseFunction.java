@@ -12,7 +12,7 @@ public abstract class NoiseFunction implements NoiseSampler {
 
 
     protected double frequency = 0.02d;
-    protected int seed = 2403;
+    protected int seed;
 
     public NoiseFunction(int seed) {
         this.seed = seed;

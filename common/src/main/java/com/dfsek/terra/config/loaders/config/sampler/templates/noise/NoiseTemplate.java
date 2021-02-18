@@ -5,6 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
 
+@SuppressWarnings({"unused", "FieldMayBeFinal"})
 public abstract class NoiseTemplate<T extends NoiseFunction> extends SamplerTemplate<T> {
     @Value("frequency")
     @Default

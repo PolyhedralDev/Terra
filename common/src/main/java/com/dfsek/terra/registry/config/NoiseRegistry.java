@@ -11,6 +11,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.CellularNoiseTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.noise.ExpressionFunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.SimpleNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.BrownianMotionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.PingPongTemplate;
@@ -27,6 +28,7 @@ public class NoiseRegistry extends TerraRegistry<Supplier<ObjectTemplate<NoiseSe
         add("LINEAR", LinearNormalizerTemplate::new);
         add("NORMAL", NormalNormalizerTemplate::new);
         add("CLAMP", ClampNormalizerTemplate::new);
+        add("EXPRESSION", ExpressionFunctionTemplate::new);
 
         add("IMAGE", ImageSamplerTemplate::new);
 

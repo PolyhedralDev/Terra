@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.fractal.PingPongSampler;
-
+@SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class PingPongTemplate extends FractalTemplate<PingPongSampler> {
     @Value("ping-pong")
     @Default
