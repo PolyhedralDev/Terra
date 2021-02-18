@@ -7,6 +7,7 @@ import com.dfsek.terra.api.math.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("distance")
     @Default

@@ -1,6 +1,8 @@
 package com.dfsek.terra.api.util.mutable;
 
 public class MutableDouble extends MutableNumber<Double> {
+    private static final long serialVersionUID = -2218110876763640053L;
+
     public MutableDouble(Double value) {
         super(value);
     }

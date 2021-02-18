@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("deprecation")
 public class BiomeLocateCommand extends WorldCommand {
     public BiomeLocateCommand(com.dfsek.terra.bukkit.command.Command parent) {
         super(parent);

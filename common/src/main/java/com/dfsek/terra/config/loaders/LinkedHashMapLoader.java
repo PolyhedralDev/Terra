@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class LinkedHashMapLoader implements TypeLoader<LinkedHashMap<Object, Object>> {
     @Override
     public LinkedHashMap<Object, Object> load(Type t, Object c, ConfigLoader loader) throws LoadException {

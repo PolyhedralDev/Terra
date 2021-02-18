@@ -8,6 +8,7 @@ import java.util.SplittableRandom;
 
 public class FastRandom extends Random {
 
+    private static final long serialVersionUID = 4571946470190183260L;
     private XoRoShiRo128PlusPlus random;
 
     public FastRandom() {
