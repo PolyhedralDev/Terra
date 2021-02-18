@@ -141,7 +141,7 @@ public class DistributionTest {
 
     private static BiomeProvider getProvider(long seed) throws ConfigException, IOException {
         System.out.println(seed);
-        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/default/");
+        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/betterend/");
         FolderLoader folderLoader = new FolderLoader(pack.toPath());
 
         AbstractConfigLoader loader = new AbstractConfigLoader();

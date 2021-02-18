@@ -10,6 +10,7 @@ import com.dfsek.terra.api.math.noise.samplers.noise.value.ValueSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.KernelTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.CellularNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.ConstantNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.ExpressionFunctionTemplate;
@@ -52,5 +53,7 @@ public class NoiseRegistry extends TerraRegistry<Supplier<ObjectTemplate<NoiseSe
         add("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
 
         add("CONSTANT", ConstantNoiseTemplate::new);
+
+        add("KERNEL", KernelTemplate::new);
     }
 }

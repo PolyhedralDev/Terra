@@ -28,7 +28,8 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     private String equation;
 
     @Value("functions")
-    private Map<String, NoiseSeeded> functions;
+    @Default
+    private Map<String, NoiseSeeded> functions = new HashMap<>();
 
     @Override
     public NoiseSampler apply(Long seed) {
