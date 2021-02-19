@@ -109,17 +109,12 @@ public class UserDefinedCarver extends Carver {
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
         synchronized(cacheMap) {
             CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main, this));
-            int carvingRadius = getCarvingRadius();
-            for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
-                for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {
-                    cache.getPoints(x, z).forEach(point -> {
-                        Vector3 origin = point.getOrigin();
-                        if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
-                            return;
-                        point.carve(chunkX, chunkZ, consumer);
-                    });
-                }
-            }
+            cache.getPoints(chunkX, chunkZ).forEach(point -> {
+                Vector3 origin = point.getOrigin();
+                if (FastMath.floorDiv(origin.getBlockX(), 16) != chunkX || FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
+                    return;
+                point.carve(chunkX, chunkZ, consumer);
+            });
         }
     }
 
