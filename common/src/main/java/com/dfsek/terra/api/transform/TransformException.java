@@ -1,6 +1,8 @@
 package com.dfsek.terra.api.transform;
 
 public class TransformException extends Exception {
+    private static final long serialVersionUID = -6661338369581162084L;
+
     public TransformException() {
         super();
     }

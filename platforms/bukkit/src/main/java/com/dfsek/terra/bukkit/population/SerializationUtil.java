@@ -11,7 +11,7 @@ import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
-public class SerializationUtil {
+public final class SerializationUtil {
     public static Object fromFile(File f) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new MovedObjectInputStream(new FileInputStream(f), "com.dfsek.terra.api.world.generation.population", "com.dfsek.terra.bukkit.population"); // Backwards compat with old Gaea location
         Object o = ois.readObject();

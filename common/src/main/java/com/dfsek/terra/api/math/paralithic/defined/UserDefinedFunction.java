@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math.parsii.defined;
+package com.dfsek.terra.api.math.paralithic.defined;
 
 import com.dfsek.paralithic.Expression;
 import com.dfsek.paralithic.eval.parser.Parser;

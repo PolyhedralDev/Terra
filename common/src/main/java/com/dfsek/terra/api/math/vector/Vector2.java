@@ -6,7 +6,6 @@ import net.jafama.FastMath;
 /**
  * oh yeah
  */
-@SuppressWarnings("unused")
 public class Vector2 implements Cloneable {
     private double x;
     private double z;

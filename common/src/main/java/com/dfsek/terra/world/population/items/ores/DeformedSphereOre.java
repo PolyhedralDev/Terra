@@ -2,7 +2,7 @@ package com.dfsek.terra.world.population.items.ores;
 
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -28,8 +28,7 @@ public class DeformedSphereOre extends Ore {
     @Override
     public void generate(Vector3 origin, Chunk c, Random r) {
         WorldHandle handle = main.getWorldHandle();
-        FastNoiseLite ore = new FastNoiseLite(r.nextInt());
-        ore.setNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        OpenSimplex2Sampler ore = new OpenSimplex2Sampler(r.nextInt());
         ore.setFrequency(deformFrequency);
         int rad = size.get(r);
         for(int x = -rad; x <= rad; x++) {

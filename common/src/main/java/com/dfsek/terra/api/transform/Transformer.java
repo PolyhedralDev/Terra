@@ -58,7 +58,7 @@ public class Transformer<F, T> {
             return this;
         }
 
-        public final Transformer<F, T> build() {
+        public Transformer<F, T> build() {
             return new Transformer<>(transforms);
         }
     }

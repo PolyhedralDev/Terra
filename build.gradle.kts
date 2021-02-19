@@ -1,6 +1,6 @@
 import com.dfsek.terra.getGitHash
 
-val versionObj = Version("4", "2", "0", true)
+val versionObj = Version("4", "3", "0", true)
 
 allprojects {
     version = versionObj

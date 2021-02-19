@@ -36,7 +36,7 @@ import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
-import com.dfsek.terra.registry.config.NormalizerRegistry;
+import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import javax.swing.*;
@@ -141,7 +141,7 @@ public class DistributionTest {
 
     private static BiomeProvider getProvider(long seed) throws ConfigException, IOException {
         System.out.println(seed);
-        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/default/");
+        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/betterend/");
         FolderLoader folderLoader = new FolderLoader(pack.toPath());
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
@@ -161,7 +161,7 @@ public class DistributionTest {
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
         new GenericLoaders(null).register(pipeLoader);
 
-        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NormalizerRegistry()));
+        pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NoiseRegistry()));
 
         pipeLoader.load(template, folderLoader.get("pack.yml"));
         return template.getBiomeProviderBuilder().build(seed);

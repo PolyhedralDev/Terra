@@ -6,8 +6,8 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
 import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
@@ -37,7 +37,6 @@ import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.Repla
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
@@ -75,7 +74,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
-                .registerLoader(FastNoiseTemplate.class, FastNoiseTemplate::new)
                 .registerLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .registerLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .registerLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
@@ -98,12 +96,8 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(ImageBiomeProvider.Align.class, (t, object, cf) -> ImageBiomeProvider.Align.valueOf((String) object))
                 .registerLoader(ExpanderStage.Type.class, (t, object, cf) -> ExpanderStage.Type.valueOf((String) object))
                 .registerLoader(MutatorStage.Type.class, (t, object, cf) -> MutatorStage.Type.valueOf((String) object))
-                .registerLoader(FastNoiseLite.NoiseType.class, (t, object, cf) -> FastNoiseLite.NoiseType.valueOf((String) object))
-                .registerLoader(FastNoiseLite.FractalType.class, (t, object, cf) -> FastNoiseLite.FractalType.valueOf((String) object))
-                .registerLoader(FastNoiseLite.DomainWarpType.class, (t, object, cf) -> FastNoiseLite.DomainWarpType.valueOf((String) object))
-                .registerLoader(FastNoiseLite.RotationType3D.class, (t, object, cf) -> FastNoiseLite.RotationType3D.valueOf((String) object))
-                .registerLoader(FastNoiseLite.CellularReturnType.class, (t, object, cf) -> FastNoiseLite.CellularReturnType.valueOf((String) object))
-                .registerLoader(FastNoiseLite.CellularDistanceFunction.class, (t, object, cf) -> FastNoiseLite.CellularDistanceFunction.valueOf((String) object))
+                .registerLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
+                .registerLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()));
     }
 }

@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.noise.samplers.ConstantSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.registry.config.BiomeRegistry;

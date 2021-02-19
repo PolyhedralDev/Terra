@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.world.BiomeGrid;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("deprecation")
 public class BukkitBiomeGrid implements BiomeGrid {
     private final ChunkGenerator.BiomeGrid delegate;
 

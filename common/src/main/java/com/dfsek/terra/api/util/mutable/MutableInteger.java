@@ -1,6 +1,8 @@
 package com.dfsek.terra.api.util.mutable;
 
 public class MutableInteger extends MutableNumber<Integer> {
+    private static final long serialVersionUID = -4427935901819632745L;
+
     public MutableInteger(Integer value) {
         super(value);
     }

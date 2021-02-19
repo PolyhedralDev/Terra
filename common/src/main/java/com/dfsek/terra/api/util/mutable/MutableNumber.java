@@ -1,6 +1,8 @@
 package com.dfsek.terra.api.util.mutable;
 
 public abstract class MutableNumber<T extends Number> extends Number implements MutablePrimitive<T> {
+
+    private static final long serialVersionUID = 8619508342781664393L;
     protected T value;
 
     public MutableNumber(T value) {

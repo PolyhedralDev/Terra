@@ -1,16 +1,14 @@
 package com.dfsek.terra.config.loaders.config;
 
-import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.FastNoiseLite;
+import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.config.loaders.config.sampler.templates.FastNoiseTemplate;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
 import java.lang.reflect.Type;
@@ -26,19 +24,11 @@ public class TreeLayerLoader implements TypeLoader<TreeLayer> {
         if(range == null) throw new LoadException("Tree range unspecified");
         ProbabilityCollection<Tree> items = (ProbabilityCollection<Tree>) configLoader.loadType(Types.TREE_PROBABILITY_COLLECTION_TYPE, map.get("items"));
 
-        FastNoiseTemplate sampler = new FastNoiseTemplate();
         if(map.containsKey("distribution")) {
-            try {
-                configLoader.load(sampler, new Configuration((Map<String, Object>) map.get("distribution")));
-            } catch(ConfigException e) {
-                throw new LoadException("Unable to load noise", e);
-            }
-            return new TreeLayer(density, range, items, sampler.apply(2403L));
+            NoiseSeeded noise = configLoader.loadClass(NoiseSeeded.class, map.get("distribution"));
+            return new TreeLayer(density, range, items, noise.apply(2403L));
         }
 
-        sampler.setType(FastNoiseLite.NoiseType.WhiteNoise);
-        sampler.setDimensions(3);
-
-        return new TreeLayer(density, range, items, sampler.apply(2403L));
+        return new TreeLayer(density, range, items, new WhiteNoiseSampler(2403));
     }
 }
