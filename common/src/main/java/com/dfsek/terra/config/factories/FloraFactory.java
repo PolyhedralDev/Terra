@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.math.noise.samplers.noise.WhiteNoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.NoisePalette;

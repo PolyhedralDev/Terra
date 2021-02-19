@@ -1,4 +1,6 @@
-package com.dfsek.terra.api.math.noise.samplers.noise;
+package com.dfsek.terra.api.math.noise.samplers.noise.random;
+
+import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 
 public class WhiteNoiseSampler extends NoiseFunction {
     private static final long POSITIVE_POW1 = 0b01111111111L << 52; // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.

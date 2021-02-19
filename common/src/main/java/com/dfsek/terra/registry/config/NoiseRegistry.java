@@ -1,7 +1,8 @@
 package com.dfsek.terra.registry.config;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
-import com.dfsek.terra.api.math.noise.samplers.noise.WhiteNoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.random.GaussianNoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2SSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.PerlinSampler;
@@ -51,6 +52,7 @@ public class NoiseRegistry extends TerraRegistry<Supplier<ObjectTemplate<NoiseSe
         add("CELLULAR", CellularNoiseTemplate::new);
 
         add("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+        add("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
 
         add("CONSTANT", ConstantNoiseTemplate::new);
 
