@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.math.parsii;
+package com.dfsek.terra.api.math.paralithic;
 
 
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;

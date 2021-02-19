@@ -5,16 +5,16 @@ import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.parsii.defined.UserDefinedFunction;
-import com.dfsek.terra.api.math.parsii.noise.NoiseFunction2;
-import com.dfsek.terra.api.math.parsii.noise.NoiseFunction3;
+import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
+import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
+import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
 import java.util.Map;
 
 /**
- * Sampler implementation using parsii expression
+ * Sampler implementation using Paralithic expression
  */
 public class ExpressionSampler implements NoiseSampler {
     private final Expression expression;

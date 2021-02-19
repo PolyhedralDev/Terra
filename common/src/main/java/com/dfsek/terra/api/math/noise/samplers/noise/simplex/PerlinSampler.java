@@ -1,5 +1,8 @@
 package com.dfsek.terra.api.math.noise.samplers.noise.simplex;
 
+/**
+ * NoiseSampler implementation to provide Perlin Noise.
+ */
 public class PerlinSampler extends SimplexStyleSampler {
     public PerlinSampler(int seed) {
         super(seed);

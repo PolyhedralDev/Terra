@@ -2,6 +2,9 @@ package com.dfsek.terra.api.math.noise.samplers.noise.random;
 
 import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 
+/**
+ * NoiseSampler implementation to produce random, uniformly distributed (white) noise.
+ */
 public class WhiteNoiseSampler extends NoiseFunction {
     private static final long POSITIVE_POW1 = 0b01111111111L << 52; // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
 
@@ -29,7 +32,13 @@ public class WhiteNoiseSampler extends NoiseFunction {
         return (Double.longBitsToDouble(base) - 1.5) * 2;
     }
 
-    private long murmur64(long h) {
+    /**
+     * Murmur64 hashing function
+     *
+     * @param h Input value
+     * @return Hashed value
+     */
+    private static long murmur64(long h) {
         h ^= h >>> 33;
         h *= 0xff51afd7ed558ccdL;
         h ^= h >>> 33;

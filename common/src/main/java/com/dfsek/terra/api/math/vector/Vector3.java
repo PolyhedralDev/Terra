@@ -5,6 +5,9 @@ import com.dfsek.terra.api.platform.world.World;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * 3D Mutable Vector
+ */
 public class Vector3 implements Cloneable {
 
 

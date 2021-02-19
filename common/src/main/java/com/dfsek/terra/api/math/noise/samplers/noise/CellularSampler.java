@@ -5,6 +5,9 @@ import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 
+/**
+ * NoiseSampler implementation for Cellular (Voronoi/Worley) Noise.
+ */
 public class CellularSampler extends NoiseFunction {
     private static final double[] RAND_VECS_3D = {
             -0.7292736885d, -0.6618439697d, 0.1735581948d, 0, 0.790292081d, -0.5480887466d, -0.2739291014d, 0, 0.7217578935d, 0.6226212466d,

@@ -8,9 +8,9 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.ExpressionFunction;
-import com.dfsek.terra.api.math.parsii.BlankFunction;
-import com.dfsek.terra.api.math.parsii.noise.NoiseFunction2;
-import com.dfsek.terra.api.math.parsii.noise.NoiseFunction3;
+import com.dfsek.terra.api.math.paralithic.BlankFunction;
+import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
+import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
 

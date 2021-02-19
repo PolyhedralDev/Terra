@@ -2,6 +2,9 @@ package com.dfsek.terra.api.math.noise.samplers.noise.random;
 
 import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 
+/**
+ * NoiseSampler implementation to provide random, normally distributed (Gaussian) noise.
+ */
 public class GaussianNoiseSampler extends NoiseFunction {
     private final WhiteNoiseSampler whiteNoiseSampler; // Back with a white noise sampler.
 

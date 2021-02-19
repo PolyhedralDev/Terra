@@ -2,6 +2,9 @@ package com.dfsek.terra.api.math.noise.samplers.noise.simplex;
 
 import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 
+/**
+ * Abstract NoiseSampler implementation for simplex-style noise functions.
+ */
 public abstract class SimplexStyleSampler extends NoiseFunction {
     protected static final double[] GRADIENTS_2_D = {
             0.130526192220052d, 0.99144486137381d, 0.38268343236509d, 0.923879532511287d, 0.608761429008721d, 0.793353340291235d,

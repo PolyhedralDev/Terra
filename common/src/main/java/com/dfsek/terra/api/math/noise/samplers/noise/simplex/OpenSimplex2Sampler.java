@@ -1,5 +1,8 @@
 package com.dfsek.terra.api.math.noise.samplers.noise.simplex;
 
+/**
+ * NoiseSampler implementation to provide OpenSimplex2 noise.
+ */
 public class OpenSimplex2Sampler extends SimplexStyleSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
 

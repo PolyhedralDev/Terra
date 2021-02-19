@@ -8,6 +8,9 @@ import com.dfsek.paralithic.functions.Function;
 
 import java.util.Map;
 
+/**
+ * NoiseSampler implementation using a Paralithic expression.
+ */
 public class ExpressionFunction extends NoiseFunction {
     private final Expression expression;
 
