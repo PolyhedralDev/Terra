@@ -1,6 +1,10 @@
 package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.addons.addon.TerraAddon;
+import com.dfsek.terra.addons.annotations.Addon;
+import com.dfsek.terra.addons.annotations.Author;
+import com.dfsek.terra.addons.annotations.Version;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.core.event.TerraEventManager;
@@ -56,20 +60,21 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private WorldHandle handle = new BukkitWorldHandle();
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private DebugLogger debugLogger;
-    private final AddonRegistry addonRegistry = new AddonRegistry();
+
 
     private final EventManager eventManager = new TerraEventManager(this);
-
-    public static final Version BUKKIT_VERSION;
+    public static final BukkitVersion BUKKIT_VERSION;
 
     static {
         String ver = Bukkit.getServer().getClass().getPackage().getName();
-        if(ver.contains("1_16")) BUKKIT_VERSION = Version.V1_16;
-        else if(ver.contains("1_15")) BUKKIT_VERSION = Version.V1_15;
-        else if(ver.contains("1_14")) BUKKIT_VERSION = Version.V1_14;
-        else if(ver.contains("1_13")) BUKKIT_VERSION = Version.V1_13;
-        else BUKKIT_VERSION = Version.UNKNOWN;
+        if(ver.contains("1_16")) BUKKIT_VERSION = BukkitVersion.V1_16;
+        else if(ver.contains("1_15")) BUKKIT_VERSION = BukkitVersion.V1_15;
+        else if(ver.contains("1_14")) BUKKIT_VERSION = BukkitVersion.V1_14;
+        else if(ver.contains("1_13")) BUKKIT_VERSION = BukkitVersion.V1_13;
+        else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
+
+    private final AddonRegistry addonRegistry = new AddonRegistry(new BukkitAddon(this), this);
 
 
     public void reload() {
@@ -122,10 +127,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     public void onEnable() {
         debugLogger = new DebugLogger(getLogger());
 
-        eventManager.registerListener(new TerraListener(this)); // Register tree injection event
-
         getLogger().info("Running on version " + BUKKIT_VERSION);
-        if(BUKKIT_VERSION.equals(Version.UNKNOWN)) {
+        if(BUKKIT_VERSION == BukkitVersion.UNKNOWN) {
             getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
         }
 
@@ -138,7 +141,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         LangUtil.load(config.getLanguage(), this); // Load language.
         debugLogger.setDebug(isDebug());
 
-        addonRegistry.loadAll(this);
+        addonRegistry.loadAll();
         registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
@@ -253,7 +256,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         return addonRegistry;
     }
 
-    public enum Version {
+    public enum BukkitVersion {
         V1_13(13),
 
         V1_14(14),
@@ -266,7 +269,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         private final int index;
 
-        Version(int index) {
+        BukkitVersion(int index) {
             this.index = index;
         }
 
@@ -276,8 +279,24 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
          * @param other Other version
          * @return Whether this version is equal to or later than other.
          */
-        public boolean above(Version other) {
+        public boolean above(BukkitVersion other) {
             return this.index >= other.index;
+        }
+    }
+
+    @Addon("Terra")
+    @Version("1.0.0")
+    @Author("Terra")
+    private static final class BukkitAddon extends TerraAddon {
+        private final TerraPlugin main;
+
+        private BukkitAddon(TerraPlugin main) {
+            this.main = main;
+        }
+
+        @Override
+        public void initialize() {
+            main.getEventManager().registerListener(this, new TerraListener(main));
         }
     }
 }

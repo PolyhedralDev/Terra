@@ -87,7 +87,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
 
-    private final AddonRegistry addonRegistry = new AddonRegistry();
+    private final AddonRegistry addonRegistry = new AddonRegistry(this);
     private File config;
     private static final Transformer<String, ConfiguredFeature<?, ?>> TREE_TRANSFORMER = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
             .addTransform(TerraFabricPlugin::getFeature)

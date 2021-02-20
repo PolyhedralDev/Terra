@@ -1,6 +1,7 @@
 package com.dfsek.terra.config;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.GridSpawn;
@@ -90,6 +91,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(CarverPalette.class, new CarverPaletteLoader())
                 .registerLoader(SourceSeeded.class, new SourceBuilderLoader())
                 .registerLoader(StageSeeded.class, new StageBuilderLoader())
+                .registerLoader(TerraAddon.class, main.getAddons())
                 .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(BiomeProvider.Type.class, (t, object, cf) -> BiomeProvider.Type.valueOf((String) object))

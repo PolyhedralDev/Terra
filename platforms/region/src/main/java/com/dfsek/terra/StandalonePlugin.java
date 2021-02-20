@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
-    private final AddonRegistry addonRegistry = new AddonRegistry();
+    private final AddonRegistry addonRegistry = new AddonRegistry(this);
     private final PluginConfig config = new PluginConfig();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
     private final EventManager eventManager = new TerraEventManager(this);

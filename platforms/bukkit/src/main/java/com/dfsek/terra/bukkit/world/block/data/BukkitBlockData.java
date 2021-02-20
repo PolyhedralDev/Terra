@@ -28,7 +28,7 @@ public class BukkitBlockData implements BlockData {
         if(bukkitData instanceof Rail) return new BukkitRail((Rail) bukkitData);
         if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
         if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
-        if(TerraBukkitPlugin.BUKKIT_VERSION.above(TerraBukkitPlugin.Version.V1_16) && bukkitData instanceof Wall) { // Wall only exists on 1.16 and up.
+        if(TerraBukkitPlugin.BUKKIT_VERSION.above(TerraBukkitPlugin.BukkitVersion.V1_16) && bukkitData instanceof Wall) { // Wall only exists on 1.16 and up.
             return new BukkitWall((Wall) bukkitData);
         }
 

@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.core.event;
 
+import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.core.event.events.Event;
 
 public interface EventManager {
@@ -10,5 +11,5 @@ public interface EventManager {
      */
     boolean callEvent(Event event);
 
-    void registerListener(EventListener listener);
+    void registerListener(TerraAddon addon, EventListener listener);
 }

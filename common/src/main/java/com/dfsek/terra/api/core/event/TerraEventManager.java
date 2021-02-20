@@ -1,9 +1,12 @@
 package com.dfsek.terra.api.core.event;
 
+import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.core.event.annotations.Global;
 import com.dfsek.terra.api.core.event.annotations.Priority;
 import com.dfsek.terra.api.core.event.events.Cancellable;
 import com.dfsek.terra.api.core.event.events.Event;
+import com.dfsek.terra.api.core.event.events.PackEvent;
 import com.dfsek.terra.api.util.ReflectionUtil;
 
 import java.io.PrintWriter;
@@ -29,7 +32,14 @@ public class TerraEventManager implements EventManager {
     public boolean callEvent(Event event) {
         listeners.getOrDefault(event.getClass(), Collections.emptyList()).forEach(listenerHolder -> {
                     try {
-                        listenerHolder.method.invoke(listenerHolder.listener, event);
+                        if(event instanceof PackEvent && !listenerHolder.global) {
+                            PackEvent packEvent = (PackEvent) event;
+                            if(packEvent.getPack().getTemplate().getAddons().contains(listenerHolder.addon)) {
+                                listenerHolder.method.invoke(listenerHolder.listener, event);
+                            }
+                        } else {
+                            listenerHolder.method.invoke(listenerHolder.listener, event);
+                        }
                     } catch(InvocationTargetException e) {
                         StringWriter writer = new StringWriter();
                         e.getTargetException().printStackTrace(new PrintWriter(writer));
@@ -51,7 +61,7 @@ public class TerraEventManager implements EventManager {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void registerListener(EventListener listener) {
+    public void registerListener(TerraAddon addon, EventListener listener) {
         Class<? extends EventListener> listenerClass = listener.getClass();
         Method[] methods = ReflectionUtil.getMethods(listenerClass);
 
@@ -68,7 +78,7 @@ public class TerraEventManager implements EventManager {
 
             List<ListenerHolder> holders = listeners.computeIfAbsent((Class<? extends Event>) eventParam, e -> new ArrayList<>());
 
-            holders.add(new ListenerHolder(method, listener, priority));
+            holders.add(new ListenerHolder(method, listener, priority, addon, method.getAnnotation(Global.class) != null));
 
             holders.sort(Comparator.comparingInt(ListenerHolder::getPriority)); // Sort priorities.
         }
@@ -78,11 +88,15 @@ public class TerraEventManager implements EventManager {
         private final Method method;
         private final EventListener listener;
         private final int priority;
+        private final TerraAddon addon;
+        private final boolean global;
 
-        private ListenerHolder(Method method, EventListener listener, int priority) {
+        private ListenerHolder(Method method, EventListener listener, int priority, TerraAddon addon, boolean global) {
             this.method = method;
             this.listener = listener;
             this.priority = priority;
+            this.addon = addon;
+            this.global = global;
         }
 
         public int getPriority() {

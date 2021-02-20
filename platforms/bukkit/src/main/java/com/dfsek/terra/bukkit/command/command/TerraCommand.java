@@ -25,7 +25,8 @@ public class TerraCommand extends Command {
             new FixChunkCommand(this),
             new VersionCommand(this),
             new GetBlockCommand(this),
-            new PacksCommand(this));
+            new PacksCommand(this),
+            new AddonsCommand(this));
 
     public TerraCommand(TerraPlugin main) {
         super(main);
