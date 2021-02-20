@@ -7,7 +7,7 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.world.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.Random;

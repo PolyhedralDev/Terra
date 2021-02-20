@@ -13,9 +13,9 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.world.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;

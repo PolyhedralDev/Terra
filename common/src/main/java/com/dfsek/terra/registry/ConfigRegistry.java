@@ -29,7 +29,7 @@ public class ConfigRegistry extends TerraRegistry<ConfigPack> {
                 valid = false;
             }
         }
-        for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".jar") || file.getName().endsWith(".com.dfsek.terra"))) {
+        for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra"))) {
             try {
                 main.getDebugLogger().info("Loading ZIP archive: " + zip.getName());
                 load(new ZipFile(zip), main);

@@ -12,7 +12,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
-import com.dfsek.terra.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -26,6 +26,7 @@ import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.registry.AddonRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import net.fabricmc.api.EnvType;
@@ -85,6 +86,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
+
+    private final AddonRegistry addonRegistry = new AddonRegistry();
     private File config;
     private static final Transformer<String, ConfiguredFeature<?, ?>> TREE_TRANSFORMER = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
             .addTransform(TerraFabricPlugin::getFeature)
@@ -160,6 +163,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public ConfigRegistry getRegistry() {
         return registry;
+    }
+
+    @Override
+    public AddonRegistry getAddons() {
+        return addonRegistry;
     }
 
     @Override

@@ -5,9 +5,9 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
-import com.dfsek.terra.biome.pipeline.BiomePipeline;
-import com.dfsek.terra.biome.provider.BiomeProvider;
-import com.dfsek.terra.biome.provider.StandardBiomeProvider;
+import com.dfsek.terra.api.world.biome.pipeline.BiomePipeline;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.provider.StandardBiomeProvider;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 
 import java.util.List;

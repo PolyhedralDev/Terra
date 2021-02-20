@@ -6,8 +6,8 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
-import com.dfsek.terra.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.source.RandomSource;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.config.loaders.Types;
 
 import java.lang.reflect.Type;

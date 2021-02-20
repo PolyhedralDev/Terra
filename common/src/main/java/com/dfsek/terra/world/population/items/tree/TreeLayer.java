@@ -7,8 +7,8 @@ import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.tree.Tree;
-import com.dfsek.terra.util.PopulationUtil;
 import com.dfsek.terra.world.population.items.PlaceableLayer;
 
 public class TreeLayer extends PlaceableLayer<Tree> {

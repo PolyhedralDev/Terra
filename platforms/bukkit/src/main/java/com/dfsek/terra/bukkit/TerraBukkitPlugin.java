@@ -27,6 +27,7 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.registry.AddonRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.MasterChunkGenerator;
@@ -55,6 +56,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private WorldHandle handle = new BukkitWorldHandle();
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private DebugLogger debugLogger;
+    private final AddonRegistry addonRegistry = new AddonRegistry();
 
     private final EventManager eventManager = new TerraEventManager(this);
 
@@ -136,6 +138,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         LangUtil.load(config.getLanguage(), this); // Load language.
         debugLogger.setDebug(isDebug());
 
+        addonRegistry.loadAll(this);
         registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
@@ -243,6 +246,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
                 .registerLoader(Biome.class, (t, o, l) -> new BukkitBiome(org.bukkit.block.Biome.valueOf((String) o)))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         genericLoaders.register(registry);
+    }
+
+    @Override
+    public AddonRegistry getAddons() {
+        return addonRegistry;
     }
 
     public enum Version {

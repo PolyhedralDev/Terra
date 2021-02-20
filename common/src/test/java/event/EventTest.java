@@ -2,17 +2,18 @@ package event;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.annotations.Priority;
-import com.dfsek.terra.api.core.event.events.Event;
 import com.dfsek.terra.api.core.event.EventListener;
 import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.core.event.TerraEventManager;
+import com.dfsek.terra.api.core.event.annotations.Priority;
+import com.dfsek.terra.api.core.event.events.Event;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.registry.AddonRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import org.junit.jupiter.api.Test;
@@ -67,6 +68,11 @@ public class EventTest {
 
         @Override
         public ConfigRegistry getRegistry() {
+            return null;
+        }
+
+        @Override
+        public AddonRegistry getAddons() {
             return null;
         }
 

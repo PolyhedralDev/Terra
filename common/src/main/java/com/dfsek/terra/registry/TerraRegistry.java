@@ -36,6 +36,11 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
         return exists;
     }
 
+    public void addChecked(String name, T value) {
+        if(objects.containsKey(name)) throw new IllegalArgumentException("Value is already defined in registry.");
+        objects.put(name, value);
+    }
+
     /**
      * Check if the registry contains an object.
      *

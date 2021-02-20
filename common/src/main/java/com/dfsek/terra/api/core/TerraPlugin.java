@@ -8,6 +8,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.registry.AddonRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
@@ -33,6 +34,8 @@ public interface TerraPlugin extends LoaderRegistrar {
 
     ConfigRegistry getRegistry();
 
+    AddonRegistry getAddons();
+
     void reload();
 
     ItemHandle getItemHandle();
@@ -40,7 +43,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     void saveDefaultConfig();
 
     String platformName();
-
 
     DebugLogger getDebugLogger();
 

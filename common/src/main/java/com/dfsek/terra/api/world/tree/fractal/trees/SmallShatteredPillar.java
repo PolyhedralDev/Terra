@@ -3,8 +3,8 @@ package com.dfsek.terra.api.world.tree.fractal.trees;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.util.world.MaterialSet;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
-import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
 

@@ -18,8 +18,8 @@ import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.biome.TerraBiome;
-import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
@@ -34,6 +34,7 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.registry.AddonRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
@@ -99,6 +100,11 @@ public class DistributionTest {
 
         @Override
         public ConfigRegistry getRegistry() {
+            return null;
+        }
+
+        @Override
+        public AddonRegistry getAddons() {
             return null;
         }
 

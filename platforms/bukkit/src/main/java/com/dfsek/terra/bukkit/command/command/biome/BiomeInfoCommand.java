@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command.command.biome;
 
-import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;

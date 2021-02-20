@@ -2,8 +2,8 @@ package com.dfsek.terra.config.factories;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.biome.TerraBiome;
-import com.dfsek.terra.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;

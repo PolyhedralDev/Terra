@@ -3,10 +3,10 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
-import com.dfsek.terra.biome.TerraBiome;
 
 import java.lang.reflect.Type;
 import java.util.Map;

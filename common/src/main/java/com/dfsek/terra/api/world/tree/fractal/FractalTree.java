@@ -5,7 +5,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.world.MaterialSet;
 
 import java.util.Random;
 import java.util.function.Consumer;

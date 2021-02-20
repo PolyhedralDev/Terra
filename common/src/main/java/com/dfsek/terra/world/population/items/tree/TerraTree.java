@@ -4,8 +4,8 @@ import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.util.world.MaterialSet;
 import com.dfsek.terra.api.world.tree.Tree;
-import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
 

@@ -17,6 +17,7 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
+import com.dfsek.terra.registry.AddonRegistry;
 import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
@@ -26,6 +27,7 @@ import java.util.logging.Logger;
 
 public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
+    private final AddonRegistry addonRegistry = new AddonRegistry();
     private final PluginConfig config = new PluginConfig();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
     private final EventManager eventManager = new TerraEventManager(this);
@@ -77,6 +79,11 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public ConfigRegistry getRegistry() {
         return registry;
+    }
+
+    @Override
+    public AddonRegistry getAddons() {
+        return addonRegistry;
     }
 
     @Override

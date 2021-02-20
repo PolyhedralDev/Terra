@@ -5,7 +5,7 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
-import com.dfsek.terra.biome.pipeline.stages.Stage;
+import com.dfsek.terra.api.world.biome.pipeline.stages.Stage;
 
 public abstract class StageTemplate implements ObjectTemplate<SeededBuilder<Stage>>, StageSeeded {
     @Value("noise")

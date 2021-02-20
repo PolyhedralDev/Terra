@@ -2,11 +2,11 @@ package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.util.world.MaterialSet;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import com.dfsek.terra.util.MaterialSet;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
