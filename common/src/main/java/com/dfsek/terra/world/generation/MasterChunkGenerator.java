@@ -12,7 +12,7 @@ import com.dfsek.terra.api.platform.block.data.Stairs;
 import com.dfsek.terra.api.platform.block.data.Waterlogged;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.util.world.PaletteUtil;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
@@ -92,7 +92,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
     @Override
     @SuppressWarnings({"try"})
-    public ChunkGenerator.ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkGenerator.ChunkData chunk) {
+    public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         BiomeProvider grid = tw.getBiomeProvider();
         try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
@@ -151,7 +151,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         }
     }
 
-    private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
+    private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
                                        Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getX(), block.getY() - 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
@@ -172,7 +172,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         }
     }
 
-    private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
+    private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkData chunk, Vector3 block, Map<MaterialData, Palette<BlockData>> slabs,
                                          Map<MaterialData, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getX(), block.getY() + 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
@@ -196,7 +196,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         }
     }
 
-    private boolean placeStair(BlockData orig, ChunkGenerator.ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
+    private boolean placeStair(BlockData orig, ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
 
         if(sampler.sample(block.getBlockX() - 0.55, block.getY(), block.getZ()) > thresh) {
 

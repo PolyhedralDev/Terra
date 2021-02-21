@@ -28,7 +28,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.registry.FunctionRegistry;
+import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
 import com.dfsek.terra.world.generation.math.SamplerCache;
@@ -47,7 +47,7 @@ public class StructureScript {
     private final String id;
     private final Cache<Location, StructureBuffer> cache;
     private final TerraPlugin main;
-    String tempID;
+    private String tempID;
 
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache, FunctionRegistry functionRegistry) throws ParseException {
         Parser parser;

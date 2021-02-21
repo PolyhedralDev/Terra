@@ -4,7 +4,7 @@ import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.Command;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.pack.ConfigPackTemplate;
-import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

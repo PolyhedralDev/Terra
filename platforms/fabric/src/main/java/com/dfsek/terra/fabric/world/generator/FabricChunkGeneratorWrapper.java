@@ -1,6 +1,5 @@
 package com.dfsek.terra.fabric.world.generator;
 
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
@@ -30,7 +29,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
-public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
+public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.dfsek.terra.api.platform.world.generator.ChunkGenerator {
     private final long seed;
     private final MasterChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;

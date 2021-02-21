@@ -26,8 +26,8 @@ import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.registry.AddonRegistry;
-import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.registry.master.AddonRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
@@ -200,7 +200,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return debugLogger;
     }
 
-    Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
+    private Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
 
@@ -286,7 +286,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
-        if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)) {
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             GeneratorTypeAccessor.getValues().add(new GeneratorType("terra") {
                 @Override
                 protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {

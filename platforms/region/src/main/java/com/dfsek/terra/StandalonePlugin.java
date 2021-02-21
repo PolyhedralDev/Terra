@@ -17,8 +17,8 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
-import com.dfsek.terra.registry.AddonRegistry;
-import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.registry.master.AddonRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import java.io.File;

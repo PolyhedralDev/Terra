@@ -34,10 +34,10 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
-import com.dfsek.terra.registry.AddonRegistry;
-import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
+import com.dfsek.terra.registry.master.AddonRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import javax.swing.*;

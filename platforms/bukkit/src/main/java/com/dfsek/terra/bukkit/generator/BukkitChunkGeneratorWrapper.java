@@ -2,7 +2,6 @@ package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.population.PopulationManager;
@@ -32,7 +31,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
+public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements com.dfsek.terra.api.platform.world.generator.ChunkGenerator {
 
     private static final Map<com.dfsek.terra.api.platform.world.World, PopulationManager> popMap = new HashMap<>();
 
@@ -123,7 +122,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean shouldGenerateStructures() {
-        return super.shouldGenerateStructures();
+        return delegate.shouldGenerateStructures();
     }
 
     @Override

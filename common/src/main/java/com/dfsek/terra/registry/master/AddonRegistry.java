@@ -1,4 +1,4 @@
-package com.dfsek.terra.registry;
+package com.dfsek.terra.registry.master;
 
 import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.addons.injection.InjectionException;
@@ -8,6 +8,7 @@ import com.dfsek.terra.addons.loading.AddonLoadException;
 import com.dfsek.terra.addons.loading.pre.AddonPool;
 import com.dfsek.terra.addons.loading.pre.PreLoadAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.registry.TerraRegistry;
 
 import java.io.File;
 import java.io.IOException;

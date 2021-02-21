@@ -1,13 +1,13 @@
 package com.dfsek.terra.fabric.world.generator;
 
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.NotNull;
 
-public class FabricChunkData implements ChunkGenerator.ChunkData {
+public class FabricChunkData implements ChunkData {
     private final Chunk handle;
 
     public FabricChunkData(Chunk handle) {

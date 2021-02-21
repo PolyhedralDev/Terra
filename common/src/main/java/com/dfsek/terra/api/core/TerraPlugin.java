@@ -8,8 +8,8 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.debug.DebugLogger;
-import com.dfsek.terra.registry.AddonRegistry;
-import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.registry.master.AddonRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import java.io.File;

@@ -6,7 +6,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -40,7 +40,7 @@ public class TerraWorld {
     }
 
     public static boolean isTerraWorld(World w) {
-        return w.getGenerator().getHandle() instanceof GeneratorWrapper;
+        return w.getGenerator().getHandle() instanceof ChunkGenerator;
     }
 
     public BiomeProvider getBiomeProvider() {

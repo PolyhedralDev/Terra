@@ -3,14 +3,14 @@ package com.dfsek.terra.api.world.generation;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.config.pack.ConfigPack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
 public interface TerraChunkGenerator {
-    ChunkGenerator.ChunkData generateChunkData(@NotNull World world, Random random, int x, int z, ChunkGenerator.ChunkData original);
+    ChunkData generateChunkData(@NotNull World world, Random random, int x, int z, ChunkData original);
 
     void generateBiomes(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome);
 
