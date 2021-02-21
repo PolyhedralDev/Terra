@@ -4,6 +4,8 @@ import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.addons.annotations.Addon;
 import com.dfsek.terra.addons.annotations.Depends;
 import com.dfsek.terra.addons.loading.AddonLoadException;
+import com.dfsek.terra.addons.loading.pre.exception.CircularDependencyException;
+import com.dfsek.terra.addons.loading.pre.exception.DependencyMissingException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +34,8 @@ public class PreLoadAddon {
 
         for(String dependency : dependencies) {
             PreLoadAddon preLoadAddon = pool.get(dependency);
-            if(preLoadAddon == null) throw new DependencyMissingException("Dependency " + dependency + " was not found.");
+            if(preLoadAddon == null)
+                throw new DependencyMissingException("Dependency " + dependency + " was not found. Please install " + dependency + " to use " + id + ".");
             depends.add(preLoadAddon);
             preLoadAddon.rebuildDependencies(pool, origin, false);
         }

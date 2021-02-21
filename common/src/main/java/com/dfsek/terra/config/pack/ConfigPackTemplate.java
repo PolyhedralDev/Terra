@@ -8,6 +8,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("addons")
     @Default
-    private Set<TerraAddon> addons;
+    private Set<TerraAddon> addons = new HashSet<>();
 
     @Value("variables")
     @Default

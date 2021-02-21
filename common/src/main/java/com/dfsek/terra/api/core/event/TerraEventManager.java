@@ -34,7 +34,11 @@ public class TerraEventManager implements EventManager {
                     try {
                         if(event instanceof PackEvent && !listenerHolder.global) {
                             PackEvent packEvent = (PackEvent) event;
-                            if(packEvent.getPack().getTemplate().getAddons().contains(listenerHolder.addon)) {
+                            if(packEvent
+                                    .getPack()
+                                    .getTemplate()
+                                    .getAddons()
+                                    .contains(listenerHolder.addon)) {
                                 listenerHolder.method.invoke(listenerHolder.listener, event);
                             }
                         } else {

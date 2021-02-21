@@ -1,6 +1,8 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.terra.addons.addon.TerraAddon;
+import com.dfsek.terra.addons.injection.InjectionException;
+import com.dfsek.terra.addons.injection.Injector;
 import com.dfsek.terra.addons.loading.AddonClassLoader;
 import com.dfsek.terra.addons.loading.AddonLoadException;
 import com.dfsek.terra.addons.loading.pre.AddonPool;
@@ -11,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class AddonRegistry extends TerraRegistry<TerraAddon> {
     private final TerraPlugin main;
@@ -39,6 +43,9 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
     }
 
     public boolean loadAll() {
+        Injector<TerraPlugin> pluginInjector = new Injector<>(main);
+        pluginInjector.addExplicitTarget(TerraPlugin.class);
+
         boolean valid = true;
         File addonsFolder = new File(main.getDataFolder(), "addons");
         addonsFolder.mkdirs();
@@ -59,6 +66,16 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
                 Class<? extends TerraAddon> addonClass = addon.getAddonClass();
                 Constructor<? extends TerraAddon> constructor;
 
+                String logPrefix = "Terra:" + addon.getId();
+                Logger addonLogger = Logger.getLogger(logPrefix);
+
+                if(!LogManager.getLogManager().addLogger(addonLogger)) {
+                    addonLogger = LogManager.getLogManager().getLogger(logPrefix);
+                }
+
+                Injector<Logger> loggerInjector = new Injector<>(addonLogger);
+                loggerInjector.addExplicitTarget(Logger.class);
+
                 try {
                     constructor = addonClass.getConstructor();
                 } catch(NoSuchMethodException e) {
@@ -67,7 +84,9 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
                 TerraAddon loadedAddon;
                 try {
                     loadedAddon = constructor.newInstance();
-                } catch(InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    pluginInjector.inject(loadedAddon);
+                    loggerInjector.inject(loadedAddon);
+                } catch(InstantiationException | IllegalAccessException | InvocationTargetException | InjectionException e) {
                     throw new AddonLoadException("Failed to load addon \" + " + addon.getId() + "\": ", e);
                 }
                 try {

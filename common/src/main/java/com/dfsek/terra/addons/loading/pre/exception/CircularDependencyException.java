@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.loading.pre;
+package com.dfsek.terra.addons.loading.pre.exception;
 
 import com.dfsek.terra.addons.loading.AddonLoadException;
 
