@@ -200,7 +200,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return debugLogger;
     }
 
-    private Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
+    private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
 

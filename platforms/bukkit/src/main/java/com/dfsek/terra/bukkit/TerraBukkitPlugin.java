@@ -14,6 +14,7 @@ import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
 import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
@@ -34,7 +35,7 @@ import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
-import com.dfsek.terra.world.generation.MasterChunkGenerator;
+import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -51,7 +52,7 @@ import java.util.Objects;
 
 
 public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
-    private final Map<String, MasterChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<String, DefaultChunkGenerator3D> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final ConfigRegistry registry = new ConfigRegistry();
@@ -80,7 +81,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     public void reload() {
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
-            ((MasterChunkGenerator) ((BukkitChunkGeneratorWrapper) world.getGenerator().getHandle()).getHandle()).getCache().clear();
+            ((BukkitChunkGeneratorWrapper) world.getGenerator().getHandle()).getHandle().getCache().clear();
             String packID = tw.getConfig().getTemplate().getID();
             newMap.put(world, new TerraWorld(world, registry.get(packID), this));
         });
@@ -205,7 +206,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             if(!registry.contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
             ConfigPack pack = registry.get(id);
             worlds.put(worldName, pack);
-            return new MasterChunkGenerator(registry.get(id), this, pack.getSamplerCache());
+            return new DefaultChunkGenerator3D(registry.get(id), this, pack.getSamplerCache());
         }));
     }
 
@@ -229,7 +230,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorld(w, ((MasterChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
+            return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
         }
         return worldMap.computeIfAbsent(w, world -> new TerraWorld(w, worlds.get(w.getName()), this));
     }

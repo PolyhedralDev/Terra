@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.generation;
+package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
@@ -33,9 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Random;
 
-public class MasterChunkGenerator implements TerraChunkGenerator {
-
-
+public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
     private final MaterialData water;
@@ -46,7 +44,7 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
     private final SamplerCache cache;
 
 
-    public MasterChunkGenerator(ConfigPack c, TerraPlugin main, SamplerCache cache) {
+    public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main, SamplerCache cache) {
         this.configPack = c;
         this.main = main;
         carver = new NoiseCarver(new Range(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
@@ -102,8 +100,8 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
 
             Sampler sampler = cache.getChunk(world, chunkX, chunkZ);
 
-            for(byte x = 0; x < 16; x++) {
-                for(byte z = 0; z < 16; z++) {
+            for(int x = 0; x < 16; x++) {
+                for(int z = 0; z < 16; z++) {
                     int paletteLevel = 0;
 
                     int cx = xOrig + x;
@@ -222,16 +220,17 @@ public class MasterChunkGenerator implements TerraChunkGenerator {
         int zOrig = (chunkZ << 4);
         BiomeProvider grid = main.getWorld(world).getBiomeProvider();
         for(int x = 0; x < 4; x++) {
-            for(byte z = 0; z < 4; z++) {
+            for(int z = 0; z < 4; z++) {
                 int cx = xOrig + (x << 2);
                 int cz = zOrig + (z << 2);
                 TerraBiome b = grid.getBiome(cx, cz);
 
-                biome.setBiome(x << 2, z << 2, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
+                biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
             }
         }
     }
 
+    @Override
     public SamplerCache getCache() {
         return cache;
     }

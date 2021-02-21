@@ -5,7 +5,7 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
-import com.dfsek.terra.world.generation.MasterChunkGenerator;
+import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.population.FloraPopulator;
 import com.dfsek.terra.world.population.OrePopulator;
 import com.dfsek.terra.world.population.StructurePopulator;
@@ -31,7 +31,7 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.dfsek.terra.api.platform.world.generator.ChunkGenerator {
     private final long seed;
-    private final MasterChunkGenerator delegate;
+    private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
             Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
@@ -69,7 +69,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
 
-        this.delegate = new MasterChunkGenerator(configPack, TerraFabricPlugin.getInstance(), pack.getSamplerCache());
+        this.delegate = new DefaultChunkGenerator3D(configPack, TerraFabricPlugin.getInstance(), pack.getSamplerCache());
         delegate.getMain().getLogger().info("Loading world...");
         this.biomeSource = biomeSource;
 
@@ -77,7 +77,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
     }
 
     @Override
-    public MasterChunkGenerator getHandle() {
+    public DefaultChunkGenerator3D getHandle() {
         return delegate;
     }
 

@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.world.generation.math.SamplerCache;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -27,4 +28,6 @@ public interface TerraChunkGenerator {
     ConfigPack getConfigPack();
 
     TerraPlugin getMain();
+
+    SamplerCache getCache();
 }

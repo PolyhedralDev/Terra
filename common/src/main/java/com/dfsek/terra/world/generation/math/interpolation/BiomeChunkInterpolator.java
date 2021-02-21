@@ -53,8 +53,8 @@ public class BiomeChunkInterpolator implements ChunkInterpolator {
             }
         }
 
-        for(byte x = 0; x < 4; x++) {
-            for(byte z = 0; z < 4; z++) {
+        for(int x = 0; x < 4; x++) {
+            for(int z = 0; z < 4; z++) {
                 for(int y = 0; y < 64; y++) {
                     interpGrid[x][y][z] = new Interpolator3(
                             noiseStorage[x][z][y],

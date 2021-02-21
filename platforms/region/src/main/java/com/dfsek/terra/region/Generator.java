@@ -4,7 +4,7 @@ import com.dfsek.terra.StandalonePlugin;
 import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
 import com.dfsek.terra.platform.GenWrapper;
-import com.dfsek.terra.world.generation.MasterChunkGenerator;
+import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.dfsek.terra.world.population.FloraPopulator;
 import com.dfsek.terra.world.population.OrePopulator;
@@ -23,7 +23,7 @@ public class Generator {
     StructurePopulator structurePopulator;
     TreePopulator treePopulator;
     OrePopulator orePopulator;
-    MasterChunkGenerator generator;
+    DefaultChunkGenerator3D generator;
 
     public Generator(long seed, StandalonePlugin plugin) {
         plugin.load();
@@ -31,7 +31,7 @@ public class Generator {
         structurePopulator = new StructurePopulator(plugin);
         treePopulator = new TreePopulator(plugin);
         orePopulator = new OrePopulator(plugin);
-        generator = new MasterChunkGenerator(plugin.getRegistry().get("DEFAULT"), plugin, new SamplerCache(plugin));
+        generator = new DefaultChunkGenerator3D(plugin.getRegistry().get("DEFAULT"), plugin, new SamplerCache(plugin));
         this.seed = seed;
     }
 

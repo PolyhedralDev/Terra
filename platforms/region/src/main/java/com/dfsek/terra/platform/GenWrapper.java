@@ -1,12 +1,12 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
-import com.dfsek.terra.world.generation.MasterChunkGenerator;
+import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 
 public class GenWrapper implements ChunkGenerator {
-    private final MasterChunkGenerator generator;
+    private final DefaultChunkGenerator3D generator;
 
-    public GenWrapper(MasterChunkGenerator generator) {
+    public GenWrapper(DefaultChunkGenerator3D generator) {
         this.generator = generator;
     }
 

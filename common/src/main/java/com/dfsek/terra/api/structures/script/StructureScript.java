@@ -57,6 +57,8 @@ public class StructureScript {
             throw new RuntimeException(e);
         }
 
+        functionRegistry.forEach(parser::registerFunction); // Register registry functions.
+
         parser.registerFunction("block", new BlockFunctionBuilder(main))
                 .registerFunction("check", new CheckFunctionBuilder(main, cache))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
@@ -85,8 +87,6 @@ public class StructureScript {
                 .registerFunction("round", new UnaryNumberFunctionBuilder(number -> FastMath.round(number.doubleValue())))
                 .registerFunction("max", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("min", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
-
-        functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
         block = parser.parse();
         this.id = parser.getID();
