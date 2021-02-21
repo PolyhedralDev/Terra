@@ -1,25 +1,22 @@
-package com.dfsek.terra.world.generation.math;
+package com.dfsek.terra.world.generation.math.samplers;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
-import com.dfsek.terra.world.generation.math.interpolation.BiomeChunkInterpolator;
+import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator3D;
 import com.dfsek.terra.world.generation.math.interpolation.ElevationInterpolator;
 import net.jafama.FastMath;
 
-public class Sampler {
-    private final BiomeChunkInterpolator interpolator;
+public class Sampler3D implements Sampler {
+    private final ChunkInterpolator3D interpolator;
     private final ElevationInterpolator elevationInterpolator;
 
-    public Sampler(int x, int z, BiomeProvider provider, World world, int elevationSmooth) {
-        this.interpolator = new BiomeChunkInterpolator(world, x, z, provider, (generator, coord) -> generator.getBaseSampler().getNoise(coord));
+    public Sampler3D(int x, int z, BiomeProvider provider, World world, int elevationSmooth) {
+        this.interpolator = new ChunkInterpolator3D(world, x, z, provider, (generator, coord) -> generator.getBaseSampler().getNoise(coord));
         this.elevationInterpolator = new ElevationInterpolator(world, x, z, provider, elevationSmooth);
     }
 
+    @Override
     public double sample(double x, double y, double z) {
         return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
-    }
-
-    public static double noise2dExtrude(double y, double base) {
-        return ((-FastMath.pow2((y / base))) + 1);
     }
 }

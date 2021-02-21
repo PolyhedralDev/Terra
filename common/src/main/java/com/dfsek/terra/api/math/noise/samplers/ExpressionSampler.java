@@ -14,7 +14,7 @@ import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import java.util.Map;
 
 /**
- * Sampler implementation using Paralithic expression
+ * Sampler3D implementation using Paralithic expression
  */
 public class ExpressionSampler implements NoiseSampler {
     private final Expression expression;

@@ -9,10 +9,11 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.profiler.WorldProfiler;
-import com.dfsek.terra.world.generation.math.Sampler;
+import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import net.jafama.FastMath;
 
 public class TerraWorld {
@@ -25,6 +26,7 @@ public class TerraWorld {
 
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
+        if(!isTerraWorld(w)) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         c.getBiomeRegistry().forEach(biome -> biome.getGenerator(w)); // Load all gens to cache
         config = c;
         profiler = new WorldProfiler(w);
@@ -33,6 +35,10 @@ public class TerraWorld {
         air = main.getWorldHandle().createBlockData("minecraft:air");
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this));
         safe = true;
+    }
+
+    public TerraChunkGenerator getGenerator() {
+        return (TerraChunkGenerator) ((ChunkGenerator) world.getGenerator().getHandle()).getHandle();
     }
 
     public World getWorld() {

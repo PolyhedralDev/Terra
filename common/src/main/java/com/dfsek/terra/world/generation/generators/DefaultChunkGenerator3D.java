@@ -26,8 +26,9 @@ import com.dfsek.terra.profiler.ProfileFuture;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
-import com.dfsek.terra.world.generation.math.Sampler;
 import com.dfsek.terra.world.generation.math.SamplerCache;
+import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -214,8 +215,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         return false;
     }
 
-    @Override
-    public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
+    static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, TerraPlugin main) {
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
         BiomeProvider grid = main.getWorld(world).getBiomeProvider();
@@ -231,7 +231,17 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     }
 
     @Override
+    public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
+        biomes(world, chunkX, chunkZ, biome, main);
+    }
+
+    @Override
     public SamplerCache getCache() {
         return cache;
+    }
+
+    @Override
+    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth) {
+        return new Sampler3D(chunkX, chunkZ, provider, world, elevationSmooth);
     }
 }

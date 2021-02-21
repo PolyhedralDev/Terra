@@ -4,6 +4,7 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -39,7 +40,7 @@ public class SamplerCache {
         containerMap.clear();
     }
 
-    private class Container {
+    private final class Container {
         private final TerraWorld terraWorld;
         private final LoadingCache<Long, Sampler> cache;
 
@@ -50,7 +51,7 @@ public class SamplerCache {
                         public Sampler load(@NotNull Long key) {
                             int cx = (int) (key >> 32);
                             int cz = (int) key.longValue();
-                            return new Sampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getElevationBlend());
+                            return terraWorld.getGenerator().createSampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getElevationBlend());
                         }
                     });
             terraWorld = main.getWorld(world);

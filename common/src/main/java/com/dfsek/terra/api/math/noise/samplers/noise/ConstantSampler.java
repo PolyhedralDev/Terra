@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.math.noise.samplers.noise;
 
 /**
- * Sampler implementation that returns a constant.
+ * Sampler3D implementation that returns a constant.
  */
 public class ConstantSampler extends NoiseFunction {
     private final double constant;
