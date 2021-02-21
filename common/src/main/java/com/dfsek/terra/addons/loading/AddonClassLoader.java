@@ -51,7 +51,7 @@ public class AddonClassLoader extends URLClassLoader {
 
                 set.add((Class<? extends TerraAddon>) clazz);
             } catch(ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new IllegalStateException(e); // this should literally never happen, if it does something is very wrong
             }
         }
 

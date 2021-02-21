@@ -1,19 +1,16 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.terra.addons.addon.TerraAddon;
-import com.dfsek.terra.addons.annotations.Addon;
-import com.dfsek.terra.addons.annotations.Depends;
 import com.dfsek.terra.addons.loading.AddonClassLoader;
 import com.dfsek.terra.addons.loading.AddonLoadException;
+import com.dfsek.terra.addons.loading.pre.AddonPool;
+import com.dfsek.terra.addons.loading.pre.PreLoadAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class AddonRegistry extends TerraRegistry<TerraAddon> {
     private final TerraPlugin main;
@@ -30,9 +27,15 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
 
     @Override
     public boolean add(String name, TerraAddon addon) {
+        if(contains(name)) throw new IllegalArgumentException("Addon " + name + " is already registered.");
         addon.initialize();
         main.getLogger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
         return super.add(name, addon);
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException();
     }
 
     public boolean loadAll() {
@@ -40,57 +43,45 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
         File addonsFolder = new File(main.getDataFolder(), "addons");
         addonsFolder.mkdirs();
 
-        Map<String, Class<? extends TerraAddon>> addonIDs = new HashMap<>();
+        AddonPool pool = new AddonPool();
 
         try {
             for(File jar : addonsFolder.listFiles(file -> file.getName().endsWith(".jar"))) {
-
                 main.getLogger().info("Loading Addon(s) from: " + jar.getName());
-
-                Set<Class<? extends TerraAddon>> addonClasses = AddonClassLoader.fetchAddonClasses(jar);
-
-                for(Class<? extends TerraAddon> addonClass : addonClasses) {
-                    String id = addonClass.getAnnotation(Addon.class).value();
-                    if(addonIDs.containsKey(id))
-                        throw new AddonLoadException("Duplicate addon ID: " + id);
-                    addonIDs.put(id, addonClass);
+                for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar)) {
+                    pool.add(new PreLoadAddon(addonClass));
                 }
             }
 
-            for(Map.Entry<String, Class<? extends TerraAddon>> entry : addonIDs.entrySet()) {
-                Class<? extends TerraAddon> addonClass = entry.getValue();
+            pool.buildAll();
 
-                Depends dependencies = addonClass.getAnnotation(Depends.class);
-
-                if(dependencies != null) {
-                    for(String dependency : dependencies.value()) {
-                        if(!addonIDs.containsKey(dependency))
-                            throw new AddonLoadException("Addon " + entry.getKey() + " specifies dependency " + dependency + ", which is not loaded. Please install " + dependency + " to use " + entry.getKey());
-                    }
-                }
-
+            for(PreLoadAddon addon : pool.getAddons()) {
+                Class<? extends TerraAddon> addonClass = addon.getAddonClass();
                 Constructor<? extends TerraAddon> constructor;
+
                 try {
                     constructor = addonClass.getConstructor();
                 } catch(NoSuchMethodException e) {
                     throw new AddonLoadException("Addon class has no valid constructor: " + addonClass.getCanonicalName(), e);
                 }
-                TerraAddon addon;
+                TerraAddon loadedAddon;
                 try {
-                    addon = constructor.newInstance();
+                    loadedAddon = constructor.newInstance();
                 } catch(InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    throw new AddonLoadException("Failed to instantiate addon: " + addonClass.getCanonicalName(), e);
+                    throw new AddonLoadException("Failed to load addon \" + " + addon.getId() + "\": ", e);
                 }
                 try {
-                    addChecked(addon.getName(), addon);
+                    addChecked(loadedAddon.getName(), loadedAddon);
                 } catch(IllegalArgumentException e) {
-                    throw new AddonLoadException("Duplicate addon ID; addon with ID " + addon.getName() + " is already loaded.");
+                    valid = false;
+                    main.getLogger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
+                    main.getLogger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
+                    main.getLogger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
                 }
             }
-        } catch(IOException | AddonLoadException e) {
+        } catch(AddonLoadException | IOException e) {
             e.printStackTrace();
             valid = false;
-            main.getLogger().severe("Addons failed to load. Please ensure all addons are properly installed.");
         }
 
         return valid;

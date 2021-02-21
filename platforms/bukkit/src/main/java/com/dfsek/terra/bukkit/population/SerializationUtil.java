@@ -41,7 +41,7 @@ public final class SerializationUtil {
             try {
                 if(result.getName().contains(oldNameSpace)) {
                     String newClassName = result.getName().replace(oldNameSpace, newNameSpace);
-                    Class localClass = Class.forName(newClassName);
+                    Class<?> localClass = Class.forName(newClassName);
 
                     Field nameField = ObjectStreamClass.class.getDeclaredField("name");
                     nameField.setAccessible(true);

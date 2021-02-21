@@ -141,7 +141,12 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         LangUtil.load(config.getLanguage(), this); // Load language.
         debugLogger.setDebug(isDebug());
 
-        addonRegistry.loadAll();
+        if(!addonRegistry.loadAll()) {
+            getLogger().severe("Failed to load addons. Please correct addon installations to continue.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
