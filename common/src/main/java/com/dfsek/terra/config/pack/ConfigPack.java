@@ -6,11 +6,14 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.core.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.structures.loot.LootTable;
+import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -46,6 +49,7 @@ import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
+import com.dfsek.terra.registry.CheckedRegistry;
 import com.dfsek.terra.registry.TerraRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
@@ -75,6 +79,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -255,10 +260,6 @@ public class ConfigPack implements LoaderRegistrar {
         return structureRegistry.entries().stream().map(terraStructure -> terraStructure.getTemplate().getID()).collect(Collectors.toList());
     }
 
-    public TreeRegistry getTreeRegistry() {
-        return treeRegistry;
-    }
-
     public ConfigPackTemplate getTemplate() {
         return template;
     }
@@ -287,14 +288,6 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
     }
 
-    public ScriptRegistry getScriptRegistry() {
-        return scriptRegistry;
-    }
-
-    public BiomeRegistry getBiomeRegistry() {
-        return biomeRegistry;
-    }
-
     public SamplerCache getSamplerCache() {
         return samplerCache;
     }
@@ -307,35 +300,47 @@ public class ConfigPack implements LoaderRegistrar {
         return biomeProviderBuilder;
     }
 
-    public FunctionRegistry getFunctionRegistry() {
-        return functionRegistry;
+    public CheckedRegistry<StructureScript> getScriptRegistry() {
+        return new CheckedRegistry<>(scriptRegistry);
     }
 
-    public NoiseRegistry getNormalizerRegistry() {
-        return noiseRegistry;
+    public CheckedRegistry<TerraBiome> getBiomeRegistry() {
+        return new CheckedRegistry<>(biomeRegistry);
     }
 
-    public CarverRegistry getCarverRegistry() {
-        return carverRegistry;
+    public CheckedRegistry<Tree> getTreeRegistry() {
+        return new CheckedRegistry<>(treeRegistry);
     }
 
-    public FloraRegistry getFloraRegistry() {
-        return floraRegistry;
+    public CheckedRegistry<FunctionBuilder<?>> getFunctionRegistry() {
+        return new CheckedRegistry<>(functionRegistry);
     }
 
-    public LootRegistry getLootRegistry() {
-        return lootRegistry;
+    public CheckedRegistry<Supplier<ObjectTemplate<NoiseSeeded>>> getNormalizerRegistry() {
+        return new CheckedRegistry<>(noiseRegistry);
     }
 
-    public OreRegistry getOreRegistry() {
-        return oreRegistry;
+    public CheckedRegistry<UserDefinedCarver> getCarverRegistry() {
+        return new CheckedRegistry<>(carverRegistry);
     }
 
-    public PaletteRegistry getPaletteRegistry() {
-        return paletteRegistry;
+    public CheckedRegistry<Flora> getFloraRegistry() {
+        return new CheckedRegistry<>(floraRegistry);
     }
 
-    public StructureRegistry getStructureRegistry() {
-        return structureRegistry;
+    public CheckedRegistry<LootTable> getLootRegistry() {
+        return new CheckedRegistry<>(lootRegistry);
+    }
+
+    public CheckedRegistry<Ore> getOreRegistry() {
+        return new CheckedRegistry<>(oreRegistry);
+    }
+
+    public CheckedRegistry<Palette<BlockData>> getPaletteRegistry() {
+        return new CheckedRegistry<>(paletteRegistry);
+    }
+
+    public CheckedRegistry<TerraStructure> getStructureRegistry() {
+        return new CheckedRegistry<>(structureRegistry);
     }
 }
