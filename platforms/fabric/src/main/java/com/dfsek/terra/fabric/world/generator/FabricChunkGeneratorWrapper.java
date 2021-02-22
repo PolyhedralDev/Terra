@@ -35,7 +35,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
     private final TerraBiomeSource biomeSource;
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
             Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getRegistry()::get))));
+    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
             Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),

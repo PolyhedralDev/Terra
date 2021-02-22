@@ -9,6 +9,7 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.math.ProbabilityCollection;
@@ -34,10 +35,10 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.registry.CheckedRegistry;
+import com.dfsek.terra.registry.LockedRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
-import com.dfsek.terra.registry.master.AddonRegistry;
-import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import javax.swing.*;
@@ -99,18 +100,18 @@ public class DistributionTest {
         }
 
         @Override
-        public ConfigRegistry getRegistry() {
+        public CheckedRegistry<ConfigPack> getConfigRegistry() {
             return null;
         }
 
         @Override
-        public AddonRegistry getAddons() {
+        public LockedRegistry<TerraAddon> getAddons() {
             return null;
         }
 
         @Override
-        public void reload() {
-
+        public boolean reload() {
+            return true;
         }
 
         @Override

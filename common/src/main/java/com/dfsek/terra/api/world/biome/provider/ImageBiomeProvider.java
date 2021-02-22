@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.biome.provider;
 
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 import net.jafama.FastMath;
 
 import java.awt.*;
@@ -15,7 +15,7 @@ public class ImageBiomeProvider implements BiomeProvider, BiomeProvider.BiomePro
     private final int resolution;
     private final Align align;
 
-    public ImageBiomeProvider(TerraRegistry<TerraBiome> registry, BufferedImage image, int resolution, Align align) {
+    public ImageBiomeProvider(OpenRegistry<TerraBiome> registry, BufferedImage image, int resolution, Align align) {
         this.image = image;
         this.resolution = resolution;
         this.align = align;

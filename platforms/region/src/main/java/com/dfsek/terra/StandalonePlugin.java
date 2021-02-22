@@ -1,6 +1,7 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.core.event.TerraEventManager;
@@ -14,9 +15,12 @@ import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.debug.DebugLogger;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
+import com.dfsek.terra.registry.CheckedRegistry;
+import com.dfsek.terra.registry.LockedRegistry;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -28,6 +32,9 @@ import java.util.logging.Logger;
 public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
+
+    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+
     private final PluginConfig config = new PluginConfig();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
     private final EventManager eventManager = new TerraEventManager(this);
@@ -77,17 +84,17 @@ public class StandalonePlugin implements TerraPlugin {
     }
 
     @Override
-    public ConfigRegistry getRegistry() {
-        return registry;
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return new CheckedRegistry<>(registry);
     }
 
     @Override
-    public AddonRegistry getAddons() {
-        return addonRegistry;
+    public LockedRegistry<TerraAddon> getAddons() {
+        return addonLockedRegistry;
     }
 
     @Override
-    public void reload() {
+    public boolean reload() {
         throw new UnsupportedOperationException();
     }
 

@@ -22,11 +22,11 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.Rid
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 
 import java.util.function.Supplier;
 
-public class NoiseRegistry extends TerraRegistry<Supplier<ObjectTemplate<NoiseSeeded>>> {
+public class NoiseRegistry extends OpenRegistry<Supplier<ObjectTemplate<NoiseSeeded>>> {
     public NoiseRegistry() {
         add("LINEAR", LinearNormalizerTemplate::new);
         add("NORMAL", NormalNormalizerTemplate::new);

@@ -8,7 +8,7 @@ import com.dfsek.terra.addons.loading.AddonLoadException;
 import com.dfsek.terra.addons.loading.pre.AddonPool;
 import com.dfsek.terra.addons.loading.pre.PreLoadAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.io.File;
@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class AddonRegistry extends TerraRegistry<TerraAddon> {
+public class AddonRegistry extends OpenRegistry<TerraAddon> {
     private final TerraPlugin main;
 
     public AddonRegistry(TerraPlugin main) {

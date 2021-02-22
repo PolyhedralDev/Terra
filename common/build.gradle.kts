@@ -18,6 +18,7 @@ dependencies {
     "shadedApi"("net.jafama:jafama:2.3.2")
     "shadedApi"("org.yaml:snakeyaml:1.27")
     "shadedApi"("org.ow2.asm:asm:9.0")
+    "shadedApi"("commons-io:commons-io:2.6")
 
     "compileOnly"("com.googlecode.json-simple:json-simple:1.1")
 

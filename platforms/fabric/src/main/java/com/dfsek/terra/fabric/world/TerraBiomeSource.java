@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class TerraBiomeSource extends BiomeSource {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
             Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getRegistry()::get))));
+    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
             Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),

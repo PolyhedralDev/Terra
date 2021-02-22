@@ -5,14 +5,14 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.util.world.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.world.population.items.flora.ConstantFlora;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 
-public class FloraRegistry extends TerraRegistry<Flora> {
+public class FloraRegistry extends OpenRegistry<Flora> {
     private final TerraPlugin main;
 
     public FloraRegistry(TerraPlugin main) {

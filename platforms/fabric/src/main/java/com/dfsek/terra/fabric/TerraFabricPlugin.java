@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.EventManager;
 import com.dfsek.terra.api.core.event.TerraEventManager;
@@ -26,6 +27,8 @@ import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.registry.CheckedRegistry;
+import com.dfsek.terra.registry.LockedRegistry;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -86,8 +89,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
+    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
 
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
+    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+
+
     private File config;
     private static final Transformer<String, ConfiguredFeature<?, ?>> TREE_TRANSFORMER = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
             .addTransform(TerraFabricPlugin::getFeature)
@@ -127,7 +134,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public TerraWorld getWorld(World world) {
         return worldMap.computeIfAbsent(world.getSeed(), w -> {
             logger.info("Loading world " + w);
-            return new TerraWorld(world, getRegistry().get("DEFAULT"), this);
+            return new TerraWorld(world, getConfigRegistry().get("DEFAULT"), this);
         });
     }
 
@@ -161,18 +168,18 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
-    public ConfigRegistry getRegistry() {
-        return registry;
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return checkedRegistry;
     }
 
     @Override
-    public AddonRegistry getAddons() {
-        return addonRegistry;
+    public LockedRegistry<TerraAddon> getAddons() {
+        return addonLockedRegistry;
     }
 
     @Override
-    public void reload() {
-
+    public boolean reload() {
+        return true;
     }
 
     @Override

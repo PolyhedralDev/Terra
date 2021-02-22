@@ -14,14 +14,14 @@ import com.dfsek.terra.api.world.tree.fractal.trees.ShatteredTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredPillar;
 import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.SpruceTree;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import java.util.Set;
 
-public class TreeRegistry extends TerraRegistry<Tree> {
+public class TreeRegistry extends OpenRegistry<Tree> {
     private final TerraPlugin main;
 
     public TreeRegistry(TerraPlugin main) {

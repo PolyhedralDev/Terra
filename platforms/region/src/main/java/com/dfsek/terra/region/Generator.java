@@ -31,7 +31,7 @@ public class Generator {
         structurePopulator = new StructurePopulator(plugin);
         treePopulator = new TreePopulator(plugin);
         orePopulator = new OrePopulator(plugin);
-        generator = new DefaultChunkGenerator3D(plugin.getRegistry().get("DEFAULT"), plugin, new SamplerCache(plugin));
+        generator = new DefaultChunkGenerator3D(plugin.getConfigRegistry().get("DEFAULT"), plugin, new SamplerCache(plugin));
         this.seed = seed;
     }
 

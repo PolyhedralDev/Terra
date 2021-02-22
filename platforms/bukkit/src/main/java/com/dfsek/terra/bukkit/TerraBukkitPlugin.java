@@ -32,6 +32,8 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.registry.CheckedRegistry;
+import com.dfsek.terra.registry.LockedRegistry;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -55,7 +57,10 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final Map<String, DefaultChunkGenerator3D> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
+
     private final ConfigRegistry registry = new ConfigRegistry();
+    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
+
     private final PluginConfig config = new PluginConfig();
     private final ItemHandle itemHandle = new BukkitItemHandle();
     private WorldHandle handle = new BukkitWorldHandle();
@@ -76,9 +81,14 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     private final AddonRegistry addonRegistry = new AddonRegistry(new BukkitAddon(this), this);
+    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
 
-    public void reload() {
+
+    public boolean reload() {
+        config.load(this);
+        LangUtil.load(config.getLanguage(), this); // Load language.
+        boolean succeed = registry.loadAll(this);
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
             ((BukkitChunkGeneratorWrapper) world.getGenerator().getHandle()).getHandle().getCache().clear();
@@ -87,6 +97,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         });
         worldMap.clear();
         worldMap.putAll(newMap);
+        return succeed;
     }
 
     @Override
@@ -221,8 +232,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         return LangUtil.getLanguage();
     }
 
-    public ConfigRegistry getRegistry() {
-        return registry;
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return checkedRegistry;
     }
 
     public TerraWorld getWorld(World w) {
@@ -258,8 +269,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     @Override
-    public AddonRegistry getAddons() {
-        return addonRegistry;
+    public LockedRegistry<TerraAddon> getAddons() {
+        return addonLockedRegistry;
     }
 
     public enum BukkitVersion {

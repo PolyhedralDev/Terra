@@ -13,7 +13,11 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public abstract class TerraRegistry<T> implements TypeLoader<T> {
+/**
+ * Registry implementation with read/write access. For internal use only.
+ * @param <T>
+ */
+public abstract class OpenRegistry<T> implements Registry<T> {
     private final Map<String, T> objects = new HashMap<>();
 
     @Override
@@ -49,34 +53,27 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
         add(identifier, value);
     }
 
-    /**
-     * Check if the registry contains a value.
-     *
-     * @param identifier Identifier of value.
-     * @return Whether the registry contains the value.
-     */
+    @Override
     public boolean contains(String identifier) {
         return objects.containsKey(identifier);
     }
 
-    /**
-     * Get a value from the registry.
-     *
-     * @param identifier Identifier of value.
-     * @return Value matching the identifier, {@code null} if no value is present.
-     */
+    @Override
     public T get(String identifier) {
         return objects.get(identifier);
     }
 
+    @Override
     public void forEach(Consumer<T> consumer) {
         objects.forEach((id, obj) -> consumer.accept(obj));
     }
 
+    @Override
     public void forEach(BiConsumer<String, T> consumer) {
         objects.forEach(consumer);
     }
 
+    @Override
     public Set<T> entries() {
         return new HashSet<>(objects.values());
     }

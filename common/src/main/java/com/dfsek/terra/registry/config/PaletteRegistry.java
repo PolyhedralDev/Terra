@@ -4,9 +4,9 @@ import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 
-public class PaletteRegistry extends TerraRegistry<Palette<BlockData>> {
+public class PaletteRegistry extends OpenRegistry<Palette<BlockData>> {
     private final TerraPlugin main;
     public PaletteRegistry(TerraPlugin main) {
         this.main = main;

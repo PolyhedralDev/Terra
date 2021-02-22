@@ -3,7 +3,9 @@ package com.dfsek.terra.bukkit.command.command;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.Command;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.ConfigPackTemplate;
+import com.dfsek.terra.registry.CheckedRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +31,7 @@ public class PacksCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        ConfigRegistry registry = getMain().getRegistry();
+        CheckedRegistry<ConfigPack> registry = getMain().getConfigRegistry();
 
         if(registry.entries().size() == 0) {
             LangUtil.send("command.packs.none", new BukkitCommandSender(commandSender));

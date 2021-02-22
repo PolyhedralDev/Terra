@@ -50,7 +50,7 @@ import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.registry.CheckedRegistry;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
 import com.dfsek.terra.registry.config.FloraRegistry;
@@ -197,7 +197,7 @@ public class ConfigPack implements LoaderRegistrar {
         }
     }
 
-    public static <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, TerraRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
+    public static <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, OpenRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 

@@ -2,7 +2,6 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.Type;
@@ -11,14 +10,14 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * Wrapper for a registry that ensures checked access.
+ * Wrapper for a registry that ensures checked additions.
  *
  * @param <T> Type in registry
  */
-public class CheckedRegistry<T> implements TypeLoader<T> {
-    private final TerraRegistry<T> registry;
+public class CheckedRegistry<T> implements Registry<T> {
+    private final OpenRegistry<T> registry;
 
-    public CheckedRegistry(TerraRegistry<T> registry) {
+    public CheckedRegistry(OpenRegistry<T> registry) {
         this.registry = registry;
     }
 
@@ -47,49 +46,27 @@ public class CheckedRegistry<T> implements TypeLoader<T> {
         registry.add(identifier, value);
     }
 
-    /**
-     * Get a value from the registry.
-     *
-     * @param identifier Identifier of value.
-     * @return Value matching the identifier, {@code null} if no value is present.
-     */
+    @Override
     public T get(String identifier) {
         return registry.get(identifier);
     }
 
-    /**
-     * Check if the registry contains a value.
-     *
-     * @param identifier Identifier of value.
-     * @return Whether the registry contains the value.
-     */
+    @Override
     public boolean contains(String identifier) {
         return registry.contains(identifier);
     }
 
-    /**
-     * Perform the given action for every value in the registry.
-     *
-     * @param consumer Action to perform on value.
-     */
+    @Override
     public void forEach(Consumer<T> consumer) {
         registry.forEach(consumer);
     }
 
-    /**
-     * Perform an action for every key-value pair in the registry.
-     *
-     * @param consumer Action to perform on pair.
-     */
+    @Override
     public void forEach(BiConsumer<String, T> consumer) {
         registry.forEach(consumer);
     }
 
-    /**
-     * Get the entries of this registry as a {@link Set}.
-     *
-     * @return Set containing all entries.
-     */
+    @Override
     public Set<T> entries() {
         return registry.entries();
     }
