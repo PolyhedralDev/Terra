@@ -290,7 +290,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         }
     }
 
-    @Addon("Terra")
+    @Addon("Terra-Bukkit")
     @Version("1.0.0")
     @Author("Terra")
     private static final class BukkitAddon extends TerraAddon {

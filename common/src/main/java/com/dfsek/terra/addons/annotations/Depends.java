@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.annotations;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,5 +16,5 @@ public @interface Depends {
     /**
      * @return All addons this addon is dependent upon.
      */
-    String[] value();
+    @NotNull String[] value();
 }
