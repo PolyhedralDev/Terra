@@ -1,9 +1,9 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.api.util.world.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 
 import java.util.Map;
 import java.util.TreeMap;

@@ -377,11 +377,11 @@ public final class BukkitAdapter {
         return ((BukkitEnchantment) enchantment).getHandle();
     }
 
-    public static Player adapt(com.dfsek.terra.api.platform.Player player) {
+    public static Player adapt(com.dfsek.terra.api.platform.entity.Player player) {
         return ((BukkitPlayer) player).getHandle();
     }
 
-    public static com.dfsek.terra.api.platform.Player adapt(Player player) {
+    public static com.dfsek.terra.api.platform.entity.Player adapt(Player player) {
         return new BukkitPlayer(player);
     }
 }

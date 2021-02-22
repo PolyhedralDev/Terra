@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.generation;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;

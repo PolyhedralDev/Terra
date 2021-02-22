@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population.items.flora;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
@@ -13,7 +13,7 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.world.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import net.jafama.FastMath;

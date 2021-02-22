@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;

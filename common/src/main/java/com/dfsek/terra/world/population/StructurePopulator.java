@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;

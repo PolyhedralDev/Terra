@@ -1,7 +1,7 @@
 package com.dfsek.terra.world;
 
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.events.world.TerraWorldLoadEvent;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;

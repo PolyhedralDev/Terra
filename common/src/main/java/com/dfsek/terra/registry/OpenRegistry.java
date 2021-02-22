@@ -2,7 +2,7 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.Type;

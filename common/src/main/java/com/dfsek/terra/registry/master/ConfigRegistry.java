@@ -1,7 +1,7 @@
 package com.dfsek.terra.registry.master;
 
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.registry.OpenRegistry;
 

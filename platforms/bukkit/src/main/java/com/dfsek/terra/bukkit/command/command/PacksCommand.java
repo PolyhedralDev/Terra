@@ -1,12 +1,11 @@
 package com.dfsek.terra.bukkit.command.command;
 
+import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.Command;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.ConfigPackTemplate;
-import com.dfsek.terra.registry.CheckedRegistry;
-import com.dfsek.terra.registry.master.ConfigRegistry;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

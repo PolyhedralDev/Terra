@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

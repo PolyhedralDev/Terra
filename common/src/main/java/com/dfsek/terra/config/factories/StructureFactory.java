@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.world.population.items.TerraStructure;
 

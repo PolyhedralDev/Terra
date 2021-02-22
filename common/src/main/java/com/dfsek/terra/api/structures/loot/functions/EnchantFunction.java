@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.loot.functions;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;

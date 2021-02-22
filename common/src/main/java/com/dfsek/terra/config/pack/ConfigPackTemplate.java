@@ -3,7 +3,7 @@ package com.dfsek.terra.config.pack;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.addons.addon.TerraAddon;
+import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 

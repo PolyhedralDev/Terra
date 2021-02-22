@@ -3,7 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.util.world.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
 

@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.generation.math;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.world.TerraWorld;

@@ -8,10 +8,11 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.LoaderRegistrar;
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.events.config.ConfigPackPostLoadEvent;
-import com.dfsek.terra.api.core.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
+import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
@@ -22,7 +23,6 @@ import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.exception.FileMissingException;
 import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
@@ -49,7 +49,6 @@ import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
-import com.dfsek.terra.registry.CheckedRegistry;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
@@ -145,7 +144,7 @@ public class ConfigPack implements LoaderRegistrar {
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
             } catch(FileNotFoundException e) {
-                throw new FileMissingException("No pack.yml file found in " + folder.getAbsolutePath(), e);
+                throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
         } catch(Exception e) {
             main.getLogger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
@@ -176,7 +175,7 @@ public class ConfigPack implements LoaderRegistrar {
                     if(entry.getName().equals("pack.yml")) pack = entry;
                 }
 
-                if(pack == null) throw new FileMissingException("No pack.yml file found in " + file.getName());
+                if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
                 selfLoader.load(template, file.getInputStream(pack));
                 main.getLogger().info("Loading config pack \"" + template.getID() + "\"");

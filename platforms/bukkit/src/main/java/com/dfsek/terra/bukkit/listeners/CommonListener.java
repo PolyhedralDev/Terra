@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.script;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;

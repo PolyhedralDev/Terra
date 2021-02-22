@@ -1,6 +1,6 @@
 package com.dfsek.terra.registry.config;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;

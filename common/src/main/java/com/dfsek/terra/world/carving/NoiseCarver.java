@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.carving;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.ChunkAccess;

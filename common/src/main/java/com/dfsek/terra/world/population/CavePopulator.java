@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -52,28 +52,28 @@ public class CavePopulator implements TerraBlockPopulator {
                     switch(type) {
                         case CENTER:
                             if(template.getInner().canReplace(m)) {
-                                handle.setBlockData(b, template.getInner().get(v.getBlockY()).get(random), false);
+                                b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
                                 if(template.getUpdate().contains(m)) updateNeeded.add(b);
                                 if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case WALL:
                             if(template.getOuter().canReplace(m)) {
-                                handle.setBlockData(b, template.getOuter().get(v.getBlockY()).get(random), false);
+                                b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
                                 if(template.getUpdate().contains(m)) updateNeeded.add(b);
                                 if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case TOP:
                             if(template.getTop().canReplace(m)) {
-                                handle.setBlockData(b, template.getTop().get(v.getBlockY()).get(random), false);
+                                b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
                                 if(template.getUpdate().contains(m)) updateNeeded.add(b);
                                 if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case BOTTOM:
                             if(template.getBottom().canReplace(m)) {
-                                handle.setBlockData(b, template.getBottom().get(v.getBlockY()).get(random), false);
+                                b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
                                 if(template.getUpdate().contains(m)) updateNeeded.add(b);
                                 if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
                             }
@@ -95,8 +95,8 @@ public class CavePopulator implements TerraBlockPopulator {
                 }
                 for(Block b : updateNeeded) {
                     BlockData orig = handle.getBlockData(b);
-                    handle.setBlockData(b, AIR, false);
-                    handle.setBlockData(b, orig, true);
+                    b.setBlockData(AIR, false);
+                    b.setBlockData(orig, true);
                 }
             }
 

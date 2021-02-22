@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.biome.pipeline.mutator;
 
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
 import java.util.Map;

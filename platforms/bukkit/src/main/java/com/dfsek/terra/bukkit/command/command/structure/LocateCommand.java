@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.command.command.structure;
 
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.async.AsyncStructureFinder;
+import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;

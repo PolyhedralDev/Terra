@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.generation.generators;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;

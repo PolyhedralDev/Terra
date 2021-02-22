@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 
 import java.util.List;
 import java.util.Random;

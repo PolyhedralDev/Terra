@@ -7,7 +7,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.world.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
 
 import java.util.List;

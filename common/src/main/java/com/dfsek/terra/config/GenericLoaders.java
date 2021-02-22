@@ -1,17 +1,17 @@
 package com.dfsek.terra.config;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.addons.addon.TerraAddon;
 import com.dfsek.terra.api.LoaderRegistrar;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.CellularSampler;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
-import com.dfsek.terra.api.util.world.MaterialSet;
 import com.dfsek.terra.api.world.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.api.world.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;

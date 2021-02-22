@@ -2,8 +2,8 @@ package noise;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.fileloaders.FolderLoader;

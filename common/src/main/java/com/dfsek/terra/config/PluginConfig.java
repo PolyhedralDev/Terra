@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.JarUtil;
 
 import java.io.File;

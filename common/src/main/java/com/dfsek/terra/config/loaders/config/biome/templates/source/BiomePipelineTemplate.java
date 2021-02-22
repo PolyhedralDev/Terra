@@ -2,7 +2,7 @@ package com.dfsek.terra.config.loaders.config.biome.templates.source;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.world.biome.pipeline.BiomePipeline;

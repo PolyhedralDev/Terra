@@ -4,7 +4,7 @@ import com.dfsek.paralithic.Expression;
 import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;

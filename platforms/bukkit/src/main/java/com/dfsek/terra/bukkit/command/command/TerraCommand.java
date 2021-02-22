@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.command.command;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.Command;
 import com.dfsek.terra.bukkit.command.command.biome.BiomeCommand;

@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.EventListener;
-import com.dfsek.terra.api.core.event.annotations.Global;
-import com.dfsek.terra.api.core.event.annotations.Priority;
-import com.dfsek.terra.api.core.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.event.EventListener;
+import com.dfsek.terra.api.event.annotations.Global;
+import com.dfsek.terra.api.event.annotations.Priority;
+import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitTree;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;

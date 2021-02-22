@@ -1,13 +1,13 @@
 package com.dfsek.terra.registry.master;
 
-import com.dfsek.terra.addons.addon.TerraAddon;
-import com.dfsek.terra.addons.injection.InjectionException;
-import com.dfsek.terra.addons.injection.Injector;
-import com.dfsek.terra.addons.loading.AddonClassLoader;
-import com.dfsek.terra.addons.loading.AddonLoadException;
-import com.dfsek.terra.addons.loading.pre.AddonPool;
-import com.dfsek.terra.addons.loading.pre.PreLoadAddon;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.addon.AddonClassLoader;
+import com.dfsek.terra.addon.AddonPool;
+import com.dfsek.terra.addon.PreLoadAddon;
+import com.dfsek.terra.addon.exception.AddonLoadException;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.injection.Injector;
+import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
