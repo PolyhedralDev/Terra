@@ -3,7 +3,6 @@ package com.dfsek.terra.world.generation.generators;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.world.BiomeGrid;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
@@ -13,7 +12,6 @@ import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.profiler.ProfileFuture;
@@ -31,8 +29,6 @@ import java.util.Random;
 public class DefaultChunkGenerator2D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
-    private final MaterialData water;
-    private final SinglePalette<BlockData> blank;
 
     private final Carver carver;
 
@@ -42,8 +38,6 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
         this.configPack = c;
         this.main = main;
         carver = new NoiseCarver(new Range(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
-        water = main.getWorldHandle().createMaterialData("minecraft:water");
-        blank = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:air"));
         this.cache = cache;
     }
 

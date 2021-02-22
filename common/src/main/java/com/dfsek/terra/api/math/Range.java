@@ -24,7 +24,7 @@ public class Range implements Iterable<Integer> {
         return max;
     }
 
-    public com.dfsek.terra.api.math.Range setMax(int max) {
+    public Range setMax(int max) {
         this.max = max;
         return this;
     }
@@ -33,7 +33,7 @@ public class Range implements Iterable<Integer> {
         return min;
     }
 
-    public com.dfsek.terra.api.math.Range setMin(int min) {
+    public Range setMin(int min) {
         this.min = min;
         return this;
     }
@@ -42,35 +42,35 @@ public class Range implements Iterable<Integer> {
         return max - min;
     }
 
-    public com.dfsek.terra.api.math.Range multiply(int mult) {
+    public Range multiply(int mult) {
         min *= mult;
         max *= mult;
         return this;
     }
 
-    public com.dfsek.terra.api.math.Range reflect(int pt) {
-        return new com.dfsek.terra.api.math.Range(2 * pt - this.getMax(), 2 * pt - this.getMin());
+    public Range reflect(int pt) {
+        return new Range(2 * pt - this.getMax(), 2 * pt - this.getMin());
     }
 
     public int get(Random r) {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    public com.dfsek.terra.api.math.Range intersects(com.dfsek.terra.api.math.Range other) {
+    public Range intersects(com.dfsek.terra.api.math.Range other) {
         try {
-            return new com.dfsek.terra.api.math.Range(FastMath.max(this.getMin(), other.getMin()), FastMath.min(this.getMax(), other.getMax()));
+            return new Range(FastMath.max(this.getMin(), other.getMin()), FastMath.min(this.getMax(), other.getMax()));
         } catch(IllegalArgumentException e) {
             return null;
         }
     }
 
-    public com.dfsek.terra.api.math.Range add(int add) {
+    public Range add(int add) {
         this.min += add;
         this.max += add;
         return this;
     }
 
-    public com.dfsek.terra.api.math.Range sub(int sub) {
+    public Range sub(int sub) {
         this.min -= sub;
         this.max -= sub;
         return this;
@@ -89,7 +89,7 @@ public class Range implements Iterable<Integer> {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof com.dfsek.terra.api.math.Range)) return false;
-        com.dfsek.terra.api.math.Range other = (com.dfsek.terra.api.math.Range) obj;
+        Range other = (com.dfsek.terra.api.math.Range) obj;
         return other.getMin() == this.getMin() && other.getMax() == this.getMax();
     }
 
@@ -100,10 +100,10 @@ public class Range implements Iterable<Integer> {
     }
 
     private static class RangeIterator implements Iterator<Integer> {
-        private final com.dfsek.terra.api.math.Range m;
+        private final Range m;
         private Integer current;
 
-        public RangeIterator(com.dfsek.terra.api.math.Range m) {
+        public RangeIterator(Range m) {
             this.m = m;
             current = m.getMin();
         }
