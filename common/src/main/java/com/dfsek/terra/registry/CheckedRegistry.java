@@ -30,7 +30,6 @@ public class CheckedRegistry<T> implements TypeLoader<T> {
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
     public void add(String identifier, T value) throws DuplicateEntryException {
-        if(registry.contains(identifier)) throw new DuplicateEntryException("Entry \"" + identifier + "\" is already present in registry.");
         registry.addChecked(identifier, value);
     }
 

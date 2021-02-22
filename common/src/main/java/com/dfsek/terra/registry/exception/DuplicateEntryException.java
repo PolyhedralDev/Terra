@@ -1,5 +1,8 @@
 package com.dfsek.terra.registry.exception;
 
+/**
+ * Thrown when a duplicate entry is found in a registry.
+ */
 public class DuplicateEntryException extends Exception {
     private static final long serialVersionUID = -7199021672428288780L;
 

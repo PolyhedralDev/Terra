@@ -3,6 +3,7 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -24,41 +25,48 @@ public abstract class TerraRegistry<T> implements TypeLoader<T> {
     }
 
     /**
-     * Add an object to the registry with a name.
+     * Add a value to this registry.
      *
-     * @param name  Name of the tree.
-     * @param value Object to increment
-     * @return True if tree was overwritten.
+     * @param identifier Identifier to assign value.
+     * @param value      Value to add.
      */
-    public boolean add(String name, T value) {
-        boolean exists = objects.containsKey(name);
-        objects.put(name, value);
+    public boolean add(String identifier, T value) {
+        boolean exists = objects.containsKey(identifier);
+        objects.put(identifier, value);
         return exists;
     }
 
-    public void addChecked(String name, T value) {
-        if(objects.containsKey(name)) throw new IllegalArgumentException("Value is already defined in registry.");
-        add(name, value);
+    /**
+     * Add a value to this registry, checking whether it is present first.
+     *
+     * @param identifier Identifier to assign value.
+     * @param value      Value to add.
+     * @throws DuplicateEntryException If an entry with the same identifier is already present.
+     */
+    public void addChecked(String identifier, T value) throws DuplicateEntryException {
+        if(objects.containsKey(identifier))
+            throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
+        add(identifier, value);
     }
 
     /**
-     * Check if the registry contains an object.
+     * Check if the registry contains a value.
      *
-     * @param name Name of the object.
-     * @return Whether the registry contains the object.
+     * @param identifier Identifier of value.
+     * @return Whether the registry contains the value.
      */
-    public boolean contains(String name) {
-        return objects.containsKey(name);
+    public boolean contains(String identifier) {
+        return objects.containsKey(identifier);
     }
 
     /**
-     * Get an object from the registry,
+     * Get a value from the registry.
      *
-     * @param id ID of object to get
-     * @return Object
+     * @param identifier Identifier of value.
+     * @return Value matching the identifier, {@code null} if no value is present.
      */
-    public T get(String id) {
-        return objects.get(id);
+    public T get(String identifier) {
+        return objects.get(identifier);
     }
 
     public void forEach(Consumer<T> consumer) {

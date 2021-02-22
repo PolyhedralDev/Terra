@@ -14,9 +14,9 @@ public class PaletteRegistry extends TerraRegistry<Palette<BlockData>> {
 
 
     @Override
-    public Palette<BlockData> get(String id) {
-        if(id.startsWith("BLOCK:"))
-            return new SinglePalette<>(main.getWorldHandle().createBlockData(id.substring(6))); // Return single palette for BLOCK: shortcut.
-        return super.get(id);
+    public Palette<BlockData> get(String identifier) {
+        if(identifier.startsWith("BLOCK:"))
+            return new SinglePalette<>(main.getWorldHandle().createBlockData(identifier.substring(6))); // Return single palette for BLOCK: shortcut.
+        return super.get(identifier);
     }
 }

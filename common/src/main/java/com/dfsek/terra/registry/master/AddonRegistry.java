@@ -9,6 +9,7 @@ import com.dfsek.terra.addons.loading.pre.AddonPool;
 import com.dfsek.terra.addons.loading.pre.PreLoadAddon;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +32,11 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
     }
 
     @Override
-    public boolean add(String name, TerraAddon addon) {
-        if(contains(name)) throw new IllegalArgumentException("Addon " + name + " is already registered.");
+    public boolean add(String identifier, TerraAddon addon) {
+        if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
         main.getLogger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
-        return super.add(name, addon);
+        return super.add(identifier, addon);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class AddonRegistry extends TerraRegistry<TerraAddon> {
                 }
                 try {
                     addChecked(loadedAddon.getName(), loadedAddon);
-                } catch(IllegalArgumentException e) {
+                } catch(DuplicateEntryException e) {
                     valid = false;
                     main.getLogger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
                     main.getLogger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());

@@ -45,8 +45,8 @@ public class TreeRegistry extends TerraRegistry<Tree> {
     }
 
     @Override
-    public boolean add(String name, Tree value) {
-        return super.add(name, value);
+    public boolean add(String identifier, Tree value) {
+        return super.add(identifier, value);
     }
 
     private final class FractalTreeHolder implements Tree {

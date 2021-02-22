@@ -70,7 +70,7 @@ public class FloraRegistry extends TerraRegistry<Flora> {
 
 
     @Override
-    public Flora get(String id) {
-        return super.get(id);
+    public Flora get(String identifier) {
+        return super.get(identifier);
     }
 }

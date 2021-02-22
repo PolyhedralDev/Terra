@@ -12,11 +12,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Priority {
     /**
-     * Highest possible priority. Listeners with this priority will always be invoked first.
+     * Highest possible priority. Listeners with this priority will always be invoked last.
      */
     int HIGHEST = Integer.MAX_VALUE;
     /**
-     * Lowest possible priority. Listeners with this priority will always be invoked last.
+     * Lowest possible priority. Listeners with this priority will always be invoked first.
      */
     int LOWEST = Integer.MIN_VALUE;
     /**

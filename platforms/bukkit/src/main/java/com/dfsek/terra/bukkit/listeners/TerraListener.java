@@ -3,9 +3,11 @@ package com.dfsek.terra.bukkit.listeners;
 import com.dfsek.terra.api.core.TerraPlugin;
 import com.dfsek.terra.api.core.event.EventListener;
 import com.dfsek.terra.api.core.event.annotations.Global;
+import com.dfsek.terra.api.core.event.annotations.Priority;
 import com.dfsek.terra.api.core.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitTree;
+import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import org.bukkit.TreeType;
 
 public class TerraListener implements EventListener {
@@ -16,9 +18,13 @@ public class TerraListener implements EventListener {
     }
 
     @Global
+    @Priority(Priority.LOWEST)
     public void injectTrees(ConfigPackPreLoadEvent event) {
         for(TreeType value : TreeType.values()) {
-            event.getPack().getTreeRegistry().add(BukkitAdapter.TREE_TRANSFORMER.translate(value), new BukkitTree(value, main));
+            try {
+                event.getPack().getTreeRegistry().add(BukkitAdapter.TREE_TRANSFORMER.translate(value), new BukkitTree(value, main));
+            } catch(DuplicateEntryException ignore) { // If another addon has already registered trees, do nothing.
+            }
         }
     }
 }
