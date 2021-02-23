@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.platform.inventory;
 
 import com.dfsek.terra.api.platform.Handle;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 
 public interface ItemStack extends Handle, Cloneable {
@@ -9,7 +8,7 @@ public interface ItemStack extends Handle, Cloneable {
 
     void setAmount(int i);
 
-    MaterialData getType();
+    Item getType();
 
     ItemStack clone();
 

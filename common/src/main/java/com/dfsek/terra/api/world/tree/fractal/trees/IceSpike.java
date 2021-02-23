@@ -19,10 +19,10 @@ public class IceSpike extends FractalTree {
 
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:stone"),
-                main.getWorldHandle().createMaterialData("minecraft:gravel"),
-                main.getWorldHandle().createMaterialData("minecraft:snow_block"),
-                main.getWorldHandle().createMaterialData("minecraft:grass_block"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:stone"),
+                main.getWorldHandle().createBlockData("minecraft:gravel"),
+                main.getWorldHandle().createBlockData("minecraft:snow_block"),
+                main.getWorldHandle().createBlockData("minecraft:grass_block"));
     }
 
     /**

@@ -4,7 +4,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
@@ -24,7 +24,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class CavePopulator implements TerraBlockPopulator {
-    private static final Map<MaterialData, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
+    private static final Map<BlockType, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private final TerraPlugin main;
 
     public CavePopulator(TerraPlugin main) {
@@ -44,51 +44,52 @@ public class CavePopulator implements TerraBlockPopulator {
 
             for(UserDefinedCarver c : config.getCarvers()) {
                 CarverTemplate template = c.getConfig();
-                Map<Location, MaterialData> shiftCandidate = new HashMap<>();
+                Map<Location, BlockData> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
-                    MaterialData m = handle.getType(b);
+                    BlockData m = handle.getBlockData(b);
+                    BlockType re = m.getBlockType();
                     switch(type) {
                         case CENTER:
-                            if(template.getInner().canReplace(m)) {
+                            if(template.getInner().canReplace(re)) {
                                 b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
+                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case WALL:
-                            if(template.getOuter().canReplace(m)) {
+                            if(template.getOuter().canReplace(re)) {
                                 b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
+                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case TOP:
-                            if(template.getTop().canReplace(m)) {
+                            if(template.getTop().canReplace(re)) {
                                 b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
+                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                         case BOTTOM:
-                            if(template.getBottom().canReplace(m)) {
+                            if(template.getBottom().canReplace(re)) {
                                 b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(m)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(m)) shiftCandidate.put(b.getLocation(), m);
+                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
                             }
                             break;
                     }
                 });
-                for(Map.Entry<Location, MaterialData> entry : shiftCandidate.entrySet()) {
+                for(Map.Entry<Location, BlockData> entry : shiftCandidate.entrySet()) {
                     Location l = entry.getKey();
                     Location mut = l.clone();
-                    MaterialData orig = handle.getType(l.getBlock());
+                    BlockData orig = handle.getBlockData(l.getBlock());
                     do mut.subtract(0, 1, 0);
-                    while(mut.getY() > 0 && handle.getType(mut.getBlock()).equals(orig));
+                    while(mut.getY() > 0 && handle.getBlockData(mut.getBlock()).matches(orig));
                     try {
-                        if(template.getShift().get(entry.getValue()).contains(mut.getBlock().getType())) {
-                            handle.setBlockData(mut.getBlock(), shiftStorage.computeIfAbsent(entry.getValue(), MaterialData::createBlockData), false);
+                        if(template.getShift().get(entry.getValue().getBlockType()).contains(mut.getBlock().getBlockData().getBlockType())) {
+                            handle.setBlockData(mut.getBlock(), shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
                         }
                     } catch(NullPointerException ignore) {
                     }

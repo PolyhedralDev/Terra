@@ -3,7 +3,7 @@ package com.dfsek.terra.registry.config;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.Cactus;
@@ -19,7 +19,6 @@ import com.dfsek.terra.registry.OpenRegistry;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
-import java.util.Set;
 
 public class TreeRegistry extends OpenRegistry<Tree> {
     private final TerraPlugin main;
@@ -71,7 +70,7 @@ public class TreeRegistry extends OpenRegistry<Tree> {
         }
 
         @Override
-        public Set<MaterialData> getSpawnable() {
+        public MaterialSet getSpawnable() {
             return tree.getSpawnable();
         }
     }

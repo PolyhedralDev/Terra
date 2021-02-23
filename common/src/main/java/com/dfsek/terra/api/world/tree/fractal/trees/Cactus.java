@@ -11,8 +11,8 @@ import java.util.Random;
 public class Cactus extends FractalTree {
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:sand"),
-                main.getWorldHandle().createMaterialData("minecraft:red_sand"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:sand"),
+                main.getWorldHandle().createBlockData("minecraft:red_sand"));
     }
 
 

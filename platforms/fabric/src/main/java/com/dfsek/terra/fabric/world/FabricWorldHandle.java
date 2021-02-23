@@ -2,11 +2,9 @@ package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
-import com.dfsek.terra.fabric.world.block.FabricMaterialData;
 import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
 import com.dfsek.terra.fabric.world.block.data.FabricOrientable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
@@ -32,11 +30,6 @@ public class FabricWorldHandle implements WorldHandle {
     }
 
     @Override
-    public MaterialData getType(Block block) {
-        return block.getType();
-    }
-
-    @Override
     public FabricBlockData createBlockData(String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
@@ -56,11 +49,6 @@ public class FabricWorldHandle implements WorldHandle {
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    @Override
-    public MaterialData createMaterialData(String data) {
-        return new FabricMaterialData(createBlockData(data).getHandle().getBlock());
     }
 
     @Override

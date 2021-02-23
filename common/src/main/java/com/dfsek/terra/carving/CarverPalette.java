@@ -1,7 +1,7 @@
 package com.dfsek.terra.carving;
 
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 
@@ -29,7 +29,7 @@ public class CarverPalette {
         return layers[y];
     }
 
-    public boolean canReplace(MaterialData material) {
+    public boolean canReplace(BlockType material) {
         return blacklist != replace.contains(material);
     }
 

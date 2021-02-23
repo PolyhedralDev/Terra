@@ -12,7 +12,7 @@ public class SmallShatteredPillar extends FractalTree {
 
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:end_stone"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:end_stone"));
     }
 
     /**

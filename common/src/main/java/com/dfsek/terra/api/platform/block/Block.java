@@ -19,7 +19,7 @@ public interface Block extends Handle {
 
     Location getLocation();
 
-    MaterialData getType();
+    BlockType getType();
 
     int getX();
 

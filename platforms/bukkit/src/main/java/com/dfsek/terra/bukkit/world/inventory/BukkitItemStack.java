@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.world.inventory;
 
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
-import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitItemStack implements ItemStack {
     private org.bukkit.inventory.ItemStack delegate;
@@ -23,8 +23,8 @@ public class BukkitItemStack implements ItemStack {
     }
 
     @Override
-    public MaterialData getType() {
-        return new BukkitMaterialData(delegate.getType());
+    public Item getType() {
+        return BukkitAdapter.adapt(delegate.getType());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.world.block;
 
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import net.minecraft.block.BlockState;
 
 public class FabricBlockData implements BlockData {
@@ -12,13 +12,13 @@ public class FabricBlockData implements BlockData {
     }
 
     @Override
-    public MaterialData getMaterial() {
-        return new FabricMaterialData(delegate.getBlock());
+    public BlockType getBlockType() {
+        return null;
     }
 
     @Override
-    public boolean matches(MaterialData materialData) {
-        return ((FabricMaterialData) materialData).getHandle().is(delegate.getBlock());
+    public boolean matches(BlockData other) {
+        return false;
     }
 
     @Override
@@ -33,6 +33,11 @@ public class FabricBlockData implements BlockData {
     @Override
     public String getAsString() {
         return delegate.toString();
+    }
+
+    @Override
+    public boolean isAir() {
+        return false;
     }
 
     @Override

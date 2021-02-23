@@ -2,7 +2,6 @@ package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.registry.OpenRegistry;
@@ -52,8 +51,8 @@ public class FloraRegistry extends OpenRegistry<Flora> {
         addItem("BROWN_MUSHROOM", () -> new ConstantFlora(mushroom, Collections.singletonList(data("minecraft:brown_mushroom"))));
     }
 
-    private MaterialData create(String s) {
-        return main.getWorldHandle().createMaterialData(s);
+    private BlockData create(String s) {
+        return main.getWorldHandle().createBlockData(s);
     }
 
     private void addItem(String id, Callable<ConstantFlora> flora) {

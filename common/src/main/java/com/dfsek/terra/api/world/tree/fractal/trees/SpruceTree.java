@@ -16,8 +16,8 @@ public class SpruceTree extends FractalTree {
 
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:podzol"),
-                main.getWorldHandle().createMaterialData("minecraft:grass_block"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:podzol"),
+                main.getWorldHandle().createBlockData("minecraft:grass_block"));
     }
 
     /**

@@ -6,7 +6,6 @@ import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
@@ -123,7 +122,6 @@ public class StandalonePlugin implements TerraPlugin {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(Biome.class, (t, o, l) -> new RawBiome(o.toString()))
-                .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o));
         new GenericLoaders(this).register(registry);
     }
 

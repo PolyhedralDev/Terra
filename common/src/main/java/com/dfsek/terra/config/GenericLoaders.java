@@ -8,6 +8,7 @@ import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.CellularSampler;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
@@ -92,6 +93,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(SourceSeeded.class, new SourceBuilderLoader())
                 .registerLoader(StageSeeded.class, new StageBuilderLoader())
                 .registerLoader(TerraAddon.class, main.getAddons())
+                .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType())
                 .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(BiomeProvider.Type.class, (t, object, cf) -> BiomeProvider.Type.valueOf((String) object))

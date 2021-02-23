@@ -5,7 +5,7 @@ import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import net.jafama.FastMath;
 
@@ -56,7 +56,7 @@ public class DirectBlock implements Block {
     }
 
     @Override
-    public MaterialData getType() {
+    public BlockType getType() {
         return new Data(world.getData(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()));
     }
 
