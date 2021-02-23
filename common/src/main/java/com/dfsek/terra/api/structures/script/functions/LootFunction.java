@@ -45,7 +45,7 @@ public class LootFunction implements Function<Void> {
         LootTable table = registry.get(id);
 
         if(table == null) {
-            main.getLogger().severe("No such loot table " + id);
+            main.logger().severe("No such loot table " + id);
             return null;
         }
 

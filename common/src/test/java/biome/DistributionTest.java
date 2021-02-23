@@ -18,8 +18,9 @@ import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.util.DebugLogger;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.logging.DebugLogger;
+import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -70,8 +71,8 @@ public class DistributionTest {
         }
 
         @Override
-        public Logger getLogger() {
-            return Logger.getLogger("Terra");
+        public com.dfsek.terra.api.util.logging.Logger logger() {
+            return new JavaLogger(Logger.getLogger("Terra"));
         }
 
         @Override
@@ -126,7 +127,7 @@ public class DistributionTest {
 
         @Override
         public DebugLogger getDebugLogger() {
-            return new DebugLogger(Logger.getLogger("Terra"));
+            return new DebugLogger(new JavaLogger(Logger.getLogger("Terra")));
         }
 
         @Override

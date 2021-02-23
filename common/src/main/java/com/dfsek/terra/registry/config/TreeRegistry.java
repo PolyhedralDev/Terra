@@ -39,7 +39,7 @@ public class TreeRegistry extends OpenRegistry<Tree> {
         try {
             add(id, new FractalTreeHolder(value));
         } catch(Exception e) {
-            main.getLogger().warning("Unable to load tree " + id + ": " + e.getMessage());
+            main.logger().warning("Unable to load tree " + id + ": " + e.getMessage());
         }
     }
 

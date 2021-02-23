@@ -15,7 +15,9 @@ import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.util.DebugLogger;
+import com.dfsek.terra.api.util.logging.DebugLogger;
+import com.dfsek.terra.api.util.logging.JavaLogger;
+import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.command.TerraCommand;
 import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
@@ -136,7 +138,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     @Override
     public void onEnable() {
-        debugLogger = new DebugLogger(getLogger());
+        debugLogger = new DebugLogger(logger());
 
         getLogger().info("Running on version " + BUKKIT_VERSION);
         if(BUKKIT_VERSION == BukkitVersion.UNKNOWN) {
@@ -243,6 +245,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
         }
         return worldMap.computeIfAbsent(w, world -> new TerraWorld(w, worlds.get(w.getName()), this));
+    }
+
+    @Override
+    public Logger logger() {
+        return new JavaLogger(getLogger());
     }
 
     @NotNull

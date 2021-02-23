@@ -1,6 +1,4 @@
-package com.dfsek.terra.api.util;
-
-import java.util.logging.Logger;
+package com.dfsek.terra.api.util.logging;
 
 public class DebugLogger {
     private final Logger logger;

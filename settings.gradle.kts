@@ -12,6 +12,7 @@ include("common")
 include("platforms:bukkit")
 include("platforms:fabric")
 include("platforms:region")
+include("platforms:sponge")
 
 pluginManagement {
     repositories {

@@ -34,7 +34,6 @@ import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
-import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
@@ -79,7 +78,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -136,7 +134,7 @@ public class ConfigPack implements LoaderRegistrar {
             try {
                 selfLoader.load(template, new FileInputStream(pack));
 
-                main.getLogger().info("Loading config pack \"" + template.getID() + "\"");
+                main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
                 load(l, main);
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
@@ -147,7 +145,7 @@ public class ConfigPack implements LoaderRegistrar {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
         } catch(Exception e) {
-            main.getLogger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
+            main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
             throw e;
         }
     }
@@ -178,7 +176,7 @@ public class ConfigPack implements LoaderRegistrar {
                 if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
                 selfLoader.load(template, file.getInputStream(pack));
-                main.getLogger().info("Loading config pack \"" + template.getID() + "\"");
+                main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
                 load(l, main);
 
@@ -191,7 +189,7 @@ public class ConfigPack implements LoaderRegistrar {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
         } catch(Exception e) {
-            main.getLogger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
+            main.logger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
             throw e;
         }
     }
@@ -236,7 +234,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
-        LangUtil.log("config-pack.loaded", Level.INFO, template.getID(), String.valueOf((System.nanoTime() - start) / 1000000D), template.getAuthor(), template.getVersion());
+        main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 
     public TerraBiome getBiome(String id) {

@@ -59,7 +59,7 @@ public class FloraRegistry extends OpenRegistry<Flora> {
         try {
             add(id, flora.call());
         } catch(Exception e) {
-            main.getLogger().warning("Failed to load Flora item: " + id + ": " + e.getMessage());
+            main.logger().warning("Failed to load Flora item: " + id + ": " + e.getMessage());
         }
     }
 

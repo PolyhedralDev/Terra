@@ -7,7 +7,6 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
-import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.profiler.DataType;
 import com.dfsek.terra.profiler.Measurement;
 import com.dfsek.terra.world.TerraWorld;
@@ -28,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements com.dfsek.terra.api.platform.world.generator.ChunkGenerator {
@@ -76,8 +74,8 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements com.d
     private void load(com.dfsek.terra.api.platform.world.World w) {
         try {
             popMan.loadBlocks(w);
-        } catch(FileNotFoundException e) {
-            LangUtil.log("warning.no-population", Level.WARNING);
+        } catch(FileNotFoundException ignore) {
+
         } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

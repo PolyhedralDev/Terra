@@ -35,7 +35,7 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
     public boolean add(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
-        main.getLogger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
+        main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
         return super.add(identifier, addon);
     }
 
@@ -56,7 +56,7 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
 
         try {
             for(File jar : addonsFolder.listFiles(file -> file.getName().endsWith(".jar"))) {
-                main.getLogger().info("Loading Addon(s) from: " + jar.getName());
+                main.logger().info("Loading Addon(s) from: " + jar.getName());
                 for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar)) {
                     pool.add(new PreLoadAddon(addonClass));
                 }
@@ -95,9 +95,9 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
                     addChecked(loadedAddon.getName(), loadedAddon);
                 } catch(DuplicateEntryException e) {
                     valid = false;
-                    main.getLogger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
-                    main.getLogger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
-                    main.getLogger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
+                    main.logger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
+                    main.logger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
+                    main.logger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
                 }
             }
         } catch(AddonLoadException | IOException e) {

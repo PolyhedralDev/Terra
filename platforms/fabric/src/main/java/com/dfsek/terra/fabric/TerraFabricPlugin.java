@@ -20,7 +20,8 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
-import com.dfsek.terra.api.util.DebugLogger;
+import com.dfsek.terra.api.util.logging.DebugLogger;
+import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.GenericLoaders;
@@ -73,9 +74,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
@@ -93,16 +92,24 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
-    private final Logger logger;
-    private final DebugLogger debugLogger;
+    private final Logger logger = new Logger() {
+        @Override
+        public void info(String message) {
 
-    {
-        Logger logger = Logger.getLogger("Terra");
-        LogManager.getLogManager().addLogger(logger);
-        this.logger = logger;
-        debugLogger = new DebugLogger(logger);
-        debugLogger.setDebug(true);
-    }
+        }
+
+        @Override
+        public void warning(String message) {
+
+        }
+
+        @Override
+        public void severe(String message) {
+
+        }
+    };
+    private final DebugLogger debugLogger = new DebugLogger(logger);
+
 
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
@@ -131,7 +138,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
-    public Logger getLogger() {
+    public Logger logger() {
         return logger;
     }
 
@@ -254,8 +261,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public void onInitialize() {
-        logger.setLevel(Level.INFO);
-
         instance = this;
 
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");

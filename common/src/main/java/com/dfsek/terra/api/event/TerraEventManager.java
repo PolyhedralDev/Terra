@@ -47,15 +47,15 @@ public class TerraEventManager implements EventManager {
                     } catch(InvocationTargetException e) {
                         StringWriter writer = new StringWriter();
                         e.getTargetException().printStackTrace(new PrintWriter(writer));
-                        main.getLogger().warning("Exception occurred during event handling:");
-                        main.getLogger().warning(writer.toString());
-                        main.getLogger().warning("Report this to the maintainers of " + listenerHolder.method.getName());
+                        main.logger().warning("Exception occurred during event handling:");
+                        main.logger().warning(writer.toString());
+                        main.logger().warning("Report this to the maintainers of " + listenerHolder.method.getName());
                     } catch(Exception e) {
                         StringWriter writer = new StringWriter();
                         e.printStackTrace(new PrintWriter(writer));
-                        main.getLogger().warning("Exception occurred during event handling:");
-                        main.getLogger().warning(writer.toString());
-                        main.getLogger().warning("Report this to the maintainers of " + listenerHolder.method.getName());
+                        main.logger().warning("Exception occurred during event handling:");
+                        main.logger().warning(writer.toString());
+                        main.logger().warning("Report this to the maintainers of " + listenerHolder.method.getName());
                     }
                 }
         );

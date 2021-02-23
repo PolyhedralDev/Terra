@@ -32,7 +32,7 @@ public class PaperListener implements Listener {
             }, main);
             finder.run(); // Do this synchronously.
         } else {
-            main.getLogger().warning("No overrides are defined for \"" + name + "\"");
+            main.logger().warning("No overrides are defined for \"" + name + "\"");
         }
 
     }

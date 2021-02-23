@@ -20,7 +20,7 @@ public class BufferedLootApplication implements BufferedItem {
     public void paste(Location origin) {
         BlockState data = origin.getBlock().getState();
         if(!(data instanceof Container)) {
-            main.getLogger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
+            main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
             return;
         }
         Container container = (Container) data;

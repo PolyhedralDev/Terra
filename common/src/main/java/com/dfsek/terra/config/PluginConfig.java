@@ -7,6 +7,7 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.JarUtil;
+import com.dfsek.terra.api.util.logging.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.jar.JarFile;
-import java.util.logging.Logger;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PluginConfig implements ConfigTemplate {
@@ -63,7 +63,7 @@ public class PluginConfig implements ConfigTemplate {
     private int maxRecursion = 1000;
 
     public void load(TerraPlugin main) {
-        Logger logger = main.getLogger();
+        Logger logger = main.logger();
         logger.info("Loading config values");
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();

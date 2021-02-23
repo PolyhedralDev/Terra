@@ -149,7 +149,7 @@ public class StructureScript {
         try {
             return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
         } catch(RuntimeException e) {
-            main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
+            main.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
             main.getDebugLogger().stack(e);
             return false;
         }
