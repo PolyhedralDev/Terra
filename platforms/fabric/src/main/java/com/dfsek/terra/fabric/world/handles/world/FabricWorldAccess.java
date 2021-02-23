@@ -17,7 +17,7 @@ import net.minecraft.world.WorldAccess;
 import java.io.File;
 import java.util.UUID;
 
-public class FabricWorldAccess implements World {
+public class FabricWorldAccess implements World, FabricWorldHandle {
     private final WorldAccess delegate;
 
     public FabricWorldAccess(WorldAccess delegate) {
@@ -82,6 +82,11 @@ public class FabricWorldAccess implements World {
 
     @Override
     public WorldAccess getHandle() {
+        return delegate;
+    }
+
+    @Override
+    public WorldAccess getWorld() {
         return delegate;
     }
 }

@@ -3,11 +3,12 @@ package com.dfsek.terra.fabric.world.block.state;
 import com.dfsek.terra.api.platform.block.state.Sign;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.text.LiteralText;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.NotNull;
 
 public class FabricSign extends FabricBlockState implements Sign {
-    public FabricSign(SignBlockEntity blockEntity) {
-        super(blockEntity);
+    public FabricSign(SignBlockEntity blockEntity, WorldAccess worldAccess) {
+        super(blockEntity, worldAccess);
     }
 
     @Override

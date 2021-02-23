@@ -21,7 +21,6 @@ import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.util.DebugLogger;
-import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.GenericLoaders;
@@ -31,7 +30,6 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
-import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
@@ -103,6 +101,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         LogManager.getLogManager().addLogger(logger);
         this.logger = logger;
         debugLogger = new DebugLogger(logger);
+        debugLogger.setDebug(true);
     }
 
     private final ItemHandle itemHandle = new FabricItemHandle();
@@ -148,7 +147,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public boolean isDebug() {
-        return false;
+        return true;
     }
 
     @Override
@@ -256,7 +255,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public void onInitialize() {
         logger.setLevel(Level.INFO);
-        MaterialSet set = MaterialSet.get(FabricAdapter.adapt(Blocks.GRASS_BLOCK), FabricAdapter.adapt(Blocks.STONE));
 
         instance = this;
 

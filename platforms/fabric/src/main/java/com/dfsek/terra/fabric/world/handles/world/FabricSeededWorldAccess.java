@@ -15,7 +15,7 @@ import net.minecraft.world.WorldAccess;
 import java.io.File;
 import java.util.UUID;
 
-public class FabricSeededWorldAccess implements World {
+public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     private final Handle handle;
 
@@ -92,6 +92,11 @@ public class FabricSeededWorldAccess implements World {
     @Override
     public Handle getHandle() {
         return handle;
+    }
+
+    @Override
+    public WorldAccess getWorld() {
+        return handle.worldAccess;
     }
 
     public static class Handle {

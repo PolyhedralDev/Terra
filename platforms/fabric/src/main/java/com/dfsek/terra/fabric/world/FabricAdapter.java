@@ -9,10 +9,12 @@ import com.dfsek.terra.fabric.world.block.data.FabricOrientable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
+import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldAccess;
 
 import java.util.Arrays;
 
@@ -40,6 +42,10 @@ public final class FabricAdapter {
 
     public static BlockType adapt(Block block) {
         return new FabricBlockType(block);
+    }
+
+    public WorldAccess adapt(FabricWorldHandle worldHandle) {
+        return worldHandle.getWorld();
     }
 
 }

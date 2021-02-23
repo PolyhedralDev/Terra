@@ -6,26 +6,27 @@ import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
-import com.dfsek.terra.fabric.world.handles.FabricWorld;
-import net.minecraft.block.ChestBlock;
+import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.SignBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.world.WorldAccess;
 
 public class FabricBlockState implements BlockState {
     protected final BlockEntity blockEntity;
+    private final WorldAccess worldAccess;
 
-    public FabricBlockState(BlockEntity blockEntity) {
+    public FabricBlockState(BlockEntity blockEntity, WorldAccess worldAccess) {
         this.blockEntity = blockEntity;
+        this.worldAccess = worldAccess;
     }
 
     public static FabricBlockState newInstance(Block block) {
         net.minecraft.block.Block block1 = ((FabricBlockData) block.getBlockData()).getHandle().getBlock();
         if(block1 instanceof SignBlock) {
-            return new FabricSign((SignBlockEntity) ((SignBlock) block1).createBlockEntity(((FabricWorld) block.getLocation().getWorld()).getHandle().getWorld()));
-        }
-        if(block1 instanceof ChestBlock) {
-            return new FabricSign((SignBlockEntity) ((SignBlock) block1).createBlockEntity(((FabricWorld) block.getLocation().getWorld()).getHandle().getWorld()));
+            SignBlockEntity signBlockEntity = (SignBlockEntity) ((SignBlock) block1).createBlockEntity(((FabricWorldHandle) block.getLocation().getWorld()).getWorld());
+            signBlockEntity.setLocation(null, FabricAdapter.adapt(block.getLocation().toVector()));
+            return new FabricSign(signBlockEntity, ((FabricWorldHandle) block.getLocation().getWorld()).getWorld());
         }
         return null;
     }
@@ -62,6 +63,7 @@ public class FabricBlockState implements BlockState {
 
     @Override
     public boolean update(boolean applyPhysics) {
+        (worldAccess).getChunk(blockEntity.getPos()).setBlockEntity(blockEntity.getPos(), blockEntity);
         return true;
     }
 }

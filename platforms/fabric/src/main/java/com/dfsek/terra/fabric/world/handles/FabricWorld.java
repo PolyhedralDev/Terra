@@ -9,13 +9,15 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.handles.chunk.FabricChunk;
+import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldAccess;
 
 import java.io.File;
 import java.util.UUID;
 
-public class FabricWorld implements World {
+public class FabricWorld implements World, FabricWorldHandle {
 
     private final Handle delegate;
 
@@ -93,6 +95,11 @@ public class FabricWorld implements World {
     @Override
     public Handle getHandle() {
         return null;
+    }
+
+    @Override
+    public WorldAccess getWorld() {
+        return delegate.getWorld();
     }
 
     public static final class Handle {

@@ -11,11 +11,12 @@ import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.WorldAccess;
 
 import java.io.File;
 import java.util.UUID;
 
-public class FabricWorldChunkRegion implements World {
+public class FabricWorldChunkRegion implements World, FabricWorldHandle {
     private final Handle delegate;
 
     public FabricWorldChunkRegion(ChunkRegion delegate, net.minecraft.world.gen.chunk.ChunkGenerator generator) {
@@ -92,6 +93,11 @@ public class FabricWorldChunkRegion implements World {
     @Override
     public Object getHandle() {
         return null;
+    }
+
+    @Override
+    public WorldAccess getWorld() {
+        return delegate.chunk;
     }
 
     public static final class Handle {
