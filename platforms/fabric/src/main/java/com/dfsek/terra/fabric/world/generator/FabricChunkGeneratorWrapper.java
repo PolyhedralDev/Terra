@@ -6,6 +6,7 @@ import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
+import com.dfsek.terra.world.population.CavePopulator;
 import com.dfsek.terra.world.population.FloraPopulator;
 import com.dfsek.terra.world.population.OrePopulator;
 import com.dfsek.terra.world.population.StructurePopulator;
@@ -48,6 +49,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
     private final TreePopulator treePopulator = new TreePopulator(TerraFabricPlugin.getInstance());
     private final StructurePopulator structurePopulator = new StructurePopulator(TerraFabricPlugin.getInstance());
+    private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
 
     public TreePopulator getTreePopulator() {
         return treePopulator;
@@ -63,6 +65,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
 
     public StructurePopulator getStructurePopulator() {
         return structurePopulator;
+    }
+
+    public CavePopulator getCavePopulator() {
+        return cavePopulator;
     }
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
