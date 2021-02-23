@@ -65,11 +65,6 @@ public class DistributionTest {
         }
 
         @Override
-        public boolean isEnabled() {
-            return false;
-        }
-
-        @Override
         public TerraWorld getWorld(World world) {
             return null;
         }

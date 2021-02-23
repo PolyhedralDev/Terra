@@ -76,6 +76,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -85,6 +86,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final EventManager eventManager = new TerraEventManager(this);
 
+
     public static TerraFabricPlugin getInstance() {
         return instance;
     }
@@ -93,8 +95,16 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
-    private final Logger logger = Logger.getLogger("Terra");
-    private final DebugLogger debugLogger = new DebugLogger(logger);
+    private final Logger logger;
+    private final DebugLogger debugLogger;
+
+    {
+        Logger logger = Logger.getLogger("Terra");
+        LogManager.getLogManager().addLogger(logger);
+        this.logger = logger;
+        debugLogger = new DebugLogger(logger);
+    }
+
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
@@ -111,11 +121,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public WorldHandle getWorldHandle() {
         return worldHandle;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 
     @Override
@@ -252,10 +257,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public void onInitialize() {
         logger.setLevel(Level.INFO);
         MaterialSet set = MaterialSet.get(FabricAdapter.adapt(Blocks.GRASS_BLOCK), FabricAdapter.adapt(Blocks.STONE));
-        logger.info("thing: " + set.contains(FabricAdapter.adapt(Blocks.STONE)));
-        logger.info("thing2: " + set.contains(FabricAdapter.adapt(Blocks.OAK_BUTTON)));
-        logger.info("thing3: " + Blocks.ACACIA_FENCE.getDefaultState().toString());
-        logger.info("thing4: " + Blocks.ACACIA_FENCE.toString());
 
         instance = this;
 

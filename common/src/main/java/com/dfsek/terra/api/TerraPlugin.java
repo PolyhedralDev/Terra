@@ -22,8 +22,6 @@ import java.util.logging.Logger;
 public interface TerraPlugin extends LoaderRegistrar {
     WorldHandle getWorldHandle();
 
-    boolean isEnabled();
-
     TerraWorld getWorld(World world);
 
     Logger getLogger();

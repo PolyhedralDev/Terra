@@ -6,6 +6,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.profiler.ProfileFuture;
 import com.dfsek.terra.profiler.WorldProfiler;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,7 @@ public class PopulationManager implements TerraBlockPopulator {
             needsPop.add(new ChunkCoordinate(chunk));
             int x = chunk.getX();
             int z = chunk.getZ();
-            if(main.isEnabled()) {
+            if(((TerraBukkitPlugin) main).isEnabled()) {
                 for(int xi = -1; xi <= 1; xi++) {
                     for(int zi = -1; zi <= 1; zi++) {
                         if(xi == 0 && zi == 0) continue;

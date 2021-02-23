@@ -44,11 +44,6 @@ public class StandalonePlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
     public TerraWorld getWorld(World world) {
         return new TerraWorld(world, registry.get("DEFAULT"), this);
     }

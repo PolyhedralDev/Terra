@@ -95,13 +95,21 @@ public class FabricWorld implements World {
         return null;
     }
 
-    private static final class Handle {
+    public static final class Handle {
         private final ServerWorld world;
         private final ChunkGenerator generator;
 
         private Handle(ServerWorld world, ChunkGenerator generator) {
             this.world = world;
             this.generator = generator;
+        }
+
+        public ChunkGenerator getGenerator() {
+            return generator;
+        }
+
+        public ServerWorld getWorld() {
+            return world;
         }
     }
 }
