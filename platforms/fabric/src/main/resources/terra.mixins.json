@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "StateAccessor"
+  ],
   "client": [
     "GeneratorTypeAccessor"
   ],

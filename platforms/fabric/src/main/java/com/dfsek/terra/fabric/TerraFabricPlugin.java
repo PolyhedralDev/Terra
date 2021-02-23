@@ -3,19 +3,27 @@ package com.dfsek.terra.fabric;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addons.annotations.Addon;
+import com.dfsek.terra.api.addons.annotations.Author;
+import com.dfsek.terra.api.addons.annotations.Version;
+import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
+import com.dfsek.terra.api.event.annotations.Global;
+import com.dfsek.terra.api.event.annotations.Priority;
+import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.util.DebugLogger;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -23,11 +31,14 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.FabricBiome;
+import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -61,7 +72,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,33 +100,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
 
-    private final AddonRegistry addonRegistry = new AddonRegistry(this);
+    private final AddonRegistry addonRegistry = new AddonRegistry(new FabricAddon(this), this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
 
     private File config;
-    private static final Transformer<String, ConfiguredFeature<?, ?>> TREE_TRANSFORMER = new Transformer.Builder<String, ConfiguredFeature<?, ?>>()
-            .addTransform(TerraFabricPlugin::getFeature)
-            .addTransform(new MapTransform<String, ConfiguredFeature<?, ?>>()
-                    .add("BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT)
-                    .add("RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT)
-                    .add("JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE)
-                    .add("JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE)
-                    .add("LARGE_OAK", ConfiguredFeatures.FANCY_OAK)
-                    .add("LARGE_SPRUCE", ConfiguredFeatures.PINE)
-                    .add("SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE)
-                    .add("SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE)
-                    .add("TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL)
-                    .add("ACACIA", ConfiguredFeatures.ACACIA)
-                    .add("BIRCH", ConfiguredFeatures.BIRCH)
-                    .add("DARK_OAK", ConfiguredFeatures.DARK_OAK)
-                    .add("OAK", ConfiguredFeatures.OAK)
-                    .add("CHORUS_PLANT", ConfiguredFeatures.CHORUS_PLANT)
-                    .add("SPRUCE", ConfiguredFeatures.SPRUCE)
-                    .add("JUNGLE_BUSH", ConfiguredFeatures.JUNGLE_BUSH)
-                    .add("MEGA_SPRUCE", ConfiguredFeatures.MEGA_SPRUCE)
-                    .add("CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI)
-                    .add("WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI)).build();
+
     private final PluginConfig plugin = new PluginConfig();
 
     @Override
@@ -259,20 +248,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .build();
     }
 
-    private static ConfiguredFeature<?, ?> getFeature(String name) {
-        Class<ConfiguredFeatures> featuresClass = ConfiguredFeatures.class;
-        Field feature;
-        try {
-            feature = featuresClass.getField(name);
-            return (ConfiguredFeature<?, ?>) feature.get(null);
-        } catch(NoSuchFieldException | IllegalAccessException e) {
-            throw new IllegalArgumentException("No such feature: " + name);
-        }
-    }
-
     @Override
     public void onInitialize() {
         logger.setLevel(Level.INFO);
+        MaterialSet set = MaterialSet.get(FabricAdapter.adapt(Blocks.GRASS_BLOCK), FabricAdapter.adapt(Blocks.STONE));
+        logger.info("thing: " + set.contains(FabricAdapter.adapt(Blocks.STONE)));
+        logger.info("thing2: " + set.contains(FabricAdapter.adapt(Blocks.OAK_BUTTON)));
+        logger.info("thing3: " + Blocks.ACACIA_FENCE.getDefaultState().toString());
+        logger.info("thing4: " + Blocks.ACACIA_FENCE.toString());
+
         instance = this;
 
         config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
@@ -280,6 +264,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         plugin.load(this);
         LangUtil.load("en_us", this);
         logger.info("Initializing Terra...");
+
+        if(!addonRegistry.loadAll()) {
+            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
+        }
 
         registry.loadAll(this);
 
@@ -306,5 +294,55 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Addon("Terra-Fabric")
+    @Author("Terra")
+    @Version("1.0.0")
+    private static final class FabricAddon extends TerraAddon implements EventListener {
+
+        private final TerraPlugin main;
+
+        private FabricAddon(TerraPlugin main) {
+            this.main = main;
+        }
+
+        @Override
+        public void initialize() {
+            main.getEventManager().registerListener(this, this);
+        }
+
+        @Priority(Priority.LOWEST)
+        @Global
+        public void injectTrees(ConfigPackPreLoadEvent event) {
+            CheckedRegistry<Tree> treeRegistry = event.getPack().getTreeRegistry();
+            injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT);
+            injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT);
+            injectTree(treeRegistry, "JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE);
+            injectTree(treeRegistry, "JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE);
+            injectTree(treeRegistry, "LARGE_OAK", ConfiguredFeatures.FANCY_OAK);
+            injectTree(treeRegistry, "LARGE_SPRUCE", ConfiguredFeatures.PINE);
+            injectTree(treeRegistry, "SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE);
+            injectTree(treeRegistry, "SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE);
+            injectTree(treeRegistry, "TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL);
+            injectTree(treeRegistry, "ACACIA", ConfiguredFeatures.ACACIA);
+            injectTree(treeRegistry, "BIRCH", ConfiguredFeatures.BIRCH);
+            injectTree(treeRegistry, "DARK_OAK", ConfiguredFeatures.DARK_OAK);
+            injectTree(treeRegistry, "OAK", ConfiguredFeatures.OAK);
+            injectTree(treeRegistry, "CHORUS_PLANT", ConfiguredFeatures.CHORUS_PLANT);
+            injectTree(treeRegistry, "SPRUCE", ConfiguredFeatures.SPRUCE);
+            injectTree(treeRegistry, "JUNGLE_BUSH", ConfiguredFeatures.JUNGLE_BUSH);
+            injectTree(treeRegistry, "MEGA_SPRUCE", ConfiguredFeatures.MEGA_SPRUCE);
+            injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
+            injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
+        }
+
+
+        private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
+            try {
+                registry.add(id, new FabricTree(tree));
+            } catch(DuplicateEntryException ignore) {
+            }
+        }
     }
 }

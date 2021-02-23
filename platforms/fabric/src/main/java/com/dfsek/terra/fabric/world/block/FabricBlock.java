@@ -6,7 +6,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
-import com.dfsek.terra.fabric.world.FabricAdapters;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
@@ -46,12 +46,12 @@ public class FabricBlock implements Block {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return getBlockData().isAir();
     }
 
     @Override
     public Location getLocation() {
-        return FabricAdapters.toVector(delegate.position).toLocation(new FabricWorldAccess(delegate.worldAccess));
+        return FabricAdapter.adapt(delegate.position).toLocation(new FabricWorldAccess(delegate.worldAccess));
     }
 
     @Override

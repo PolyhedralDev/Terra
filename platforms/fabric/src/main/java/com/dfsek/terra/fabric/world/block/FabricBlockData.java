@@ -2,7 +2,12 @@ package com.dfsek.terra.fabric.world.block;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.fabric.mixin.StateAccessor;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.registry.Registry;
+
+import java.util.stream.Collectors;
 
 public class FabricBlockData implements BlockData {
     protected BlockState delegate;
@@ -13,12 +18,12 @@ public class FabricBlockData implements BlockData {
 
     @Override
     public BlockType getBlockType() {
-        return null;
+        return FabricAdapter.adapt(delegate.getBlock());
     }
 
     @Override
     public boolean matches(BlockData other) {
-        return false;
+        return delegate.getBlock() == ((FabricBlockData) other).delegate.getBlock();
     }
 
     @Override
@@ -32,12 +37,18 @@ public class FabricBlockData implements BlockData {
 
     @Override
     public String getAsString() {
-        return delegate.toString();
+        StringBuilder data = new StringBuilder(Registry.BLOCK.getId(delegate.getBlock()).toString());
+        if(!delegate.getEntries().isEmpty()) {
+            data.append('[');
+            data.append(delegate.getEntries().entrySet().stream().map(StateAccessor.getPROPERTY_MAP_PRINTER()).collect(Collectors.joining(",")));
+            data.append(']');
+        }
+        return data.toString();
     }
 
     @Override
     public boolean isAir() {
-        return false;
+        return delegate.isAir();
     }
 
     @Override

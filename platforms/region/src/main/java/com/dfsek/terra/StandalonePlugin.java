@@ -121,7 +121,7 @@ public class StandalonePlugin implements TerraPlugin {
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(Biome.class, (t, o, l) -> new RawBiome(o.toString()))
+                .registerLoader(Biome.class, (t, o, l) -> new RawBiome(o.toString()));
         new GenericLoaders(this).register(registry);
     }
 
