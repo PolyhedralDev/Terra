@@ -35,6 +35,8 @@ public class EnchantFunction implements LootFunction {
      */
     @Override
     public ItemStack apply(ItemStack original, Random r) {
+        if(original.getItemMeta() == null) return original;
+
         double enchant = (r.nextDouble() * (max - min)) + min;
         List<Enchantment> possible = new GlueList<>();
         for(Enchantment ench : main.getItemHandle().getEnchantments()) {

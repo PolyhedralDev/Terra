@@ -123,6 +123,7 @@ public class StructureScript {
     private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
         try {
             return cache.get(location, () -> {
+                System.out.println("{" + FastMath.floorDiv(location.getBlockX(), 16) + ", " + FastMath.floorDiv(location.getBlockZ(), 16) + "} : " + cache.size() + " : " + location.hashCode());
                 StructureBuffer buf = new StructureBuffer(location);
                 buf.setSucceeded(applyBlock(new TerraImplementationArguments(buf, rotation, random, 0)));
                 return buf;

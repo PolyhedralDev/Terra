@@ -31,7 +31,7 @@ configure<LoomGradleExtension> {
 }
 
 tasks.register<RemapJarTask>("remapShadedJar") {
-    setProperty("input", file("build/libs/fabric-${version}-shaded.jar"))
+    setProperty("input", file("build/libs/Terra-fabric-${version}-shaded.jar"))
     setProperty("addNestedDependencies", false)
     setProperty("remapAccessWidener", true)
 }

@@ -12,6 +12,7 @@ import com.dfsek.terra.fabric.world.handles.chunk.FabricChunk;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 
 import java.io.File;
@@ -73,13 +74,13 @@ public class FabricWorld implements World, FabricWorldHandle {
 
     @Override
     public int hashCode() {
-        return delegate.generator.hashCode();
+        return ((ServerWorldAccess) delegate.world).toServerWorld().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof FabricWorld)) return false;
-        return ((FabricWorld) obj).delegate.generator.equals(delegate.generator);
+        return ((ServerWorldAccess) ((FabricWorld) obj).delegate.world).toServerWorld().equals(((ServerWorldAccess) delegate.world).toServerWorld());
     }
 
     @Override

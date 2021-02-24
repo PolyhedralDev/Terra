@@ -46,6 +46,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.world.GeneratorType;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -286,16 +287,22 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            GeneratorTypeAccessor.getVALUES().add(new GeneratorType("terra") {
-                @Override
-                protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                    ConfigPack pack = registry.get("DEFAULT");
-                    return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
-                }
+            registry.forEach(pack -> {
+                System.out.println(pack.getTemplate().getID());
+                pack.getBiomeRegistry().forEach(b -> System.out.println(b.getID()));
+                final GeneratorType generatorType = new GeneratorType("terra." + pack.getTemplate().getID()) {
+                    @Override
+                    protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
+                        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
+                    }
+                };
+                ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
+                GeneratorTypeAccessor.getVALUES().add(generatorType);
             });
         }
 
     }
+
 
     @Override
     public EventManager getEventManager() {

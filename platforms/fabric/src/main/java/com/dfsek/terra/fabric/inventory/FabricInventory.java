@@ -31,7 +31,6 @@ public class FabricInventory implements Inventory {
 
     @Override
     public void setItem(int slot, ItemStack newStack) {
-        System.out.println("item @ " + slot + ": " + newStack.getHandle());
         delegate.setStack(slot, FabricAdapter.adapt(newStack));
     }
 }

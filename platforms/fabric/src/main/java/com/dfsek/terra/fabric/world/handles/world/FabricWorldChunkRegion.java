@@ -11,6 +11,7 @@ import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 
 import java.io.File;
@@ -71,13 +72,14 @@ public class FabricWorldChunkRegion implements World, FabricWorldHandle {
 
     @Override
     public int hashCode() {
-        return delegate.generator.hashCode();
+        return ((ServerWorldAccess) delegate.chunk).toServerWorld().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof FabricWorldChunkRegion)) return false;
-        return ((FabricWorldChunkRegion) obj).delegate.generator.equals(delegate.generator);
+        return super.equals(obj);
+        //return ((ServerWorldAccess) ((FabricWorldChunkRegion) obj).delegate.chunk).toServerWorld().equals(((ServerWorldAccess) delegate.chunk).toServerWorld());
     }
 
     @Override
@@ -92,7 +94,7 @@ public class FabricWorldChunkRegion implements World, FabricWorldHandle {
 
     @Override
     public Object getHandle() {
-        return null;
+        return delegate;
     }
 
     @Override

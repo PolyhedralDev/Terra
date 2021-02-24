@@ -10,6 +10,7 @@ import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 
 import java.io.File;
@@ -81,12 +82,13 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     @Override
     public int hashCode() {
-        return handle.worldAccess.hashCode();
+        return ((ServerWorldAccess) handle.worldAccess).toServerWorld().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(!(obj instanceof FabricSeededWorldAccess)) return false;
+        return ((ServerWorldAccess) ((FabricSeededWorldAccess) obj).handle.worldAccess).toServerWorld().equals(((ServerWorldAccess) handle.worldAccess).toServerWorld());
     }
 
     @Override

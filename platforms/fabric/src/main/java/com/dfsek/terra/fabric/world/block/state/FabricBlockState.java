@@ -36,7 +36,6 @@ public class FabricBlockState implements BlockState {
             return new FabricMobSpawner(mobSpawnerBlockEntity, worldAccess);
         } else if(block1 instanceof AbstractChestBlock) {
             BlockEntity abstractChestBlock = worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
-            System.out.println("inventory: " + block1);
             return new FabricContainer(abstractChestBlock, worldAccess);
         }
         return null;

@@ -22,11 +22,11 @@ public class StructureBuffer implements Buffer {
     }
 
     public void paste(Chunk chunk) {
-        bufferedItemMap.forEach(((vector3, item) -> {
-            Location current = origin.clone().add(vector3);
+        bufferedItemMap.forEach(((location, item) -> {
+            Location current = origin.clone().add(location);
             if(FastMath.floorDiv(current.getBlockX(), 16) != chunk.getX() || FastMath.floorDiv(current.getBlockZ(), 16) != chunk.getZ())
                 return;
-            item.paste(origin.clone().add(vector3));
+            item.paste(current);
         }));
     }
 

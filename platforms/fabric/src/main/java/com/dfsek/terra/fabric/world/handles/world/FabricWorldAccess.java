@@ -89,4 +89,15 @@ public class FabricWorldAccess implements World, FabricWorldHandle {
     public WorldAccess getWorld() {
         return delegate;
     }
+
+    @Override
+    public int hashCode() {
+        return ((ServerWorldAccess) delegate).toServerWorld().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof FabricWorldAccess)) return false;
+        return ((ServerWorldAccess) ((FabricWorldAccess) obj).delegate).toServerWorld().equals(((ServerWorldAccess) delegate).toServerWorld());
+    }
 }
