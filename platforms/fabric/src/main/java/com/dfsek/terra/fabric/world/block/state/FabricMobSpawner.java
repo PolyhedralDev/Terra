@@ -4,7 +4,6 @@ import com.dfsek.terra.api.platform.block.state.MobSpawner;
 import com.dfsek.terra.api.platform.block.state.SerialState;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.mixin.MobSpawnerLogicAccessor;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.util.registry.Registry;
@@ -20,7 +19,7 @@ public class FabricMobSpawner extends FabricBlockState implements MobSpawner { /
 
     @Override
     public EntityType getSpawnedType() {
-        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(((MobSpawnerLogicAccessor) ((MobSpawnerBlockEntity) blockEntity).getLogic()).callGetEntityId()));
+        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(((MobSpawnerBlockEntity) blockEntity).getLogic().getEntityId()));
     }
 
     @Override

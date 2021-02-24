@@ -2,5 +2,13 @@ accessWidener v1 named
 
 extendable method net/minecraft/client/world/GeneratorType <init> (Ljava/lang/String;)V
 
+accessible field net/minecraft/client/world/GeneratorType translationKey Lnet/minecraft/text/Text;
+mutable field net/minecraft/client/world/GeneratorType translationKey Lnet/minecraft/text/Text;
+
+accessible field net/minecraft/client/world/GeneratorType VALUES Ljava/util/List;
+
 accessible field net/minecraft/server/world/ServerWorld worldProperties Lnet/minecraft/world/level/ServerWorldProperties;
-mutable field net/minecraft/server/world/ServerWorld worldProperties Lnet/minecraft/world/level/ServerWorldProperties;
+
+accessible method net/minecraft/world/MobSpawnerLogic getEntityId ()Lnet/minecraft/util/Identifier;
+
+accessible field net/minecraft/state/State PROPERTY_MAP_PRINTER Ljava/util/function/Function;

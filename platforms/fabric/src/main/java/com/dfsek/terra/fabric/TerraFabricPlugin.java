@@ -30,7 +30,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
-import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
@@ -299,8 +298,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     }
                 };
                 //noinspection ConstantConditions
-                ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorTypeAccessor.getVALUES().add(generatorType);
+                generatorType.translationKey = (new LiteralText("Terra:" + pack.getTemplate().getID()));
+                GeneratorType.VALUES.add(generatorType);
             });
         }
 

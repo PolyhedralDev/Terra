@@ -4,11 +4,8 @@
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MobSpawnerLogicAccessor",
-    "StateAccessor"
   ],
   "client": [
-    "GeneratorTypeAccessor"
   ],
   "server": [],
   "injectors": {
