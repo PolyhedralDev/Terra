@@ -36,6 +36,7 @@ import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
+import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
@@ -134,9 +135,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
+        if(worldMap.size() > 1) System.out.println(worldMap.size());
         return worldMap.computeIfAbsent(world.getSeed(), w -> {
             logger.info("Loading world " + w);
-            return new TerraWorld(world, getConfigRegistry().get("DEFAULT"), this);
+            return new TerraWorld(world, ((FabricChunkGeneratorWrapper) ((FabricChunkGenerator) world.getGenerator()).getHandle()).getPack(), this);
         });
     }
 

@@ -44,6 +44,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
     private final ConfigPack pack;
 
+    public ConfigPack getPack() {
+        return pack;
+    }
 
     private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
     private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
@@ -75,8 +78,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
 
-        this.delegate = new DefaultChunkGenerator3D(configPack, TerraFabricPlugin.getInstance(), pack.getSamplerCache());
-        delegate.getMain().logger().info("Loading world...");
+        this.delegate = new DefaultChunkGenerator3D(pack, TerraFabricPlugin.getInstance(), pack.getSamplerCache());
+        delegate.getMain().logger().info("Loading world with config pack " + pack.getTemplate().getID());
         this.biomeSource = biomeSource;
 
         this.seed = seed;
