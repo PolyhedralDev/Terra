@@ -67,6 +67,7 @@ import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,19 +94,20 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = new Logger() {
+        private final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
         @Override
         public void info(String message) {
-
+            logger.info(message);
         }
 
         @Override
         public void warning(String message) {
-
+            logger.warn(message);
         }
 
         @Override
         public void severe(String message) {
-
+            logger.error(message);
         }
     };
     private final DebugLogger debugLogger = new DebugLogger(logger);

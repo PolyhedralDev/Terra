@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.world.block.state;
 
+import com.dfsek.terra.api.platform.block.state.SerialState;
 import com.dfsek.terra.api.platform.block.state.Sign;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.text.LiteralText;
@@ -13,7 +14,14 @@ public class FabricSign extends FabricBlockState implements Sign {
 
     @Override
     public @NotNull String[] getLines() {
-        return new String[0];
+        SignBlockEntity sign = (SignBlockEntity) blockEntity;
+
+        return new String[] {
+                sign.getTextOnRow(0).asString(),
+                sign.getTextOnRow(1).asString(),
+                sign.getTextOnRow(2).asString(),
+                sign.getTextOnRow(3).asString()
+        };
     }
 
     @Override
@@ -24,5 +32,13 @@ public class FabricSign extends FabricBlockState implements Sign {
     @Override
     public void setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
         ((SignBlockEntity) blockEntity).setTextOnRow(index, new LiteralText(line));
+    }
+
+    @Override
+    public void applyState(String state) {
+        SerialState.parse(state).forEach((k, v) -> {
+            if(!k.startsWith("text")) throw new IllegalArgumentException("Invalid property: " + k);
+            setLine(Integer.parseInt(k.substring(4)), v);
+        });
     }
 }

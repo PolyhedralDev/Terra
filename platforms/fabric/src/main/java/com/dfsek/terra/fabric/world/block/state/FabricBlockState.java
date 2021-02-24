@@ -7,7 +7,7 @@ import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
-import net.minecraft.block.SignBlock;
+import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.world.WorldAccess;
@@ -23,10 +23,11 @@ public class FabricBlockState implements BlockState {
 
     public static FabricBlockState newInstance(Block block) {
         net.minecraft.block.Block block1 = ((FabricBlockData) block.getBlockData()).getHandle().getBlock();
-        if(block1 instanceof SignBlock) {
-            SignBlockEntity signBlockEntity = (SignBlockEntity) ((SignBlock) block1).createBlockEntity(((FabricWorldHandle) block.getLocation().getWorld()).getWorld());
-            signBlockEntity.setLocation(null, FabricAdapter.adapt(block.getLocation().toVector()));
-            return new FabricSign(signBlockEntity, ((FabricWorldHandle) block.getLocation().getWorld()).getWorld());
+        WorldAccess worldAccess = ((FabricWorldHandle) block.getLocation().getWorld()).getWorld();
+
+        if(block1 instanceof AbstractSignBlock) {
+            SignBlockEntity signBlockEntity = (SignBlockEntity) worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
+            return new FabricSign(signBlockEntity, worldAccess);
         }
         return null;
     }
