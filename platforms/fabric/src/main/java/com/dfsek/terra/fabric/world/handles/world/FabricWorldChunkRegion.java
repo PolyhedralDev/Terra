@@ -78,8 +78,7 @@ public class FabricWorldChunkRegion implements World, FabricWorldHandle {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof FabricWorldChunkRegion)) return false;
-        return delegate.chunk.equals(((FabricWorldChunkRegion) obj).delegate.chunk);
-        //return ((ServerWorldAccess) ((FabricWorldChunkRegion) obj).delegate.chunk).toServerWorld().equals(((ServerWorldAccess) delegate.chunk).toServerWorld());
+        return ((ServerWorldAccess) ((FabricWorldChunkRegion) obj).delegate.chunk).toServerWorld().equals(((ServerWorldAccess) delegate.chunk).toServerWorld());
     }
 
     @Override

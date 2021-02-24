@@ -26,7 +26,7 @@ public class StructureBuffer implements Buffer {
             Location current = origin.clone().add(location);
             if(FastMath.floorDiv(current.getBlockX(), 16) != chunk.getX() || FastMath.floorDiv(current.getBlockZ(), 16) != chunk.getZ())
                 return;
-            item.paste(current);
+            item.paste(chunk, current);
         }));
     }
 
