@@ -62,6 +62,7 @@ public class LootTable {
                 newStack.setAmount(1);
                 int slot = r.nextInt(i.getSize());
                 ItemStack slotItem = i.getItem(slot);
+                System.out.println("attempt: " + (slotItem == null ? null : slotItem.getHandle()));
                 if(slotItem == null) {
                     i.setItem(slot, newStack);
                     stack.setAmount(stack.getAmount() - 1);

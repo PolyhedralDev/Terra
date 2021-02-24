@@ -7,6 +7,7 @@ import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
+import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.SpawnerBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,6 +34,10 @@ public class FabricBlockState implements BlockState {
         } else if(block1 instanceof SpawnerBlock) {
             MobSpawnerBlockEntity mobSpawnerBlockEntity = (MobSpawnerBlockEntity) worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
             return new FabricMobSpawner(mobSpawnerBlockEntity, worldAccess);
+        } else if(block1 instanceof AbstractChestBlock) {
+            BlockEntity abstractChestBlock = worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
+            System.out.println("inventory: " + block1);
+            return new FabricContainer(abstractChestBlock, worldAccess);
         }
         return null;
     }
@@ -69,7 +74,7 @@ public class FabricBlockState implements BlockState {
 
     @Override
     public boolean update(boolean applyPhysics) {
-        (worldAccess).getChunk(blockEntity.getPos()).setBlockEntity(blockEntity.getPos(), blockEntity);
+        worldAccess.getChunk(blockEntity.getPos()).setBlockEntity(blockEntity.getPos(), blockEntity);
         return true;
     }
 }

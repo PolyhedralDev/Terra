@@ -25,5 +25,6 @@ public class BufferedLootApplication implements BufferedItem {
         }
         Container container = (Container) data;
         table.fillInventory(container.getInventory(), new FastRandom(origin.hashCode()));
+        data.update(false);
     }
 }

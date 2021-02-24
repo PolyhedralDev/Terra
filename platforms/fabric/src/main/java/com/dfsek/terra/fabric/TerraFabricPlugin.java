@@ -286,7 +286,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            GeneratorTypeAccessor.getValues().add(new GeneratorType("terra") {
+            GeneratorTypeAccessor.getVALUES().add(new GeneratorType("terra") {
                 @Override
                 protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
                     ConfigPack pack = registry.get("DEFAULT");

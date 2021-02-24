@@ -3,6 +3,8 @@ package com.dfsek.terra.fabric.world;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.entity.EntityType;
+import com.dfsek.terra.fabric.inventory.FabricItem;
+import com.dfsek.terra.fabric.inventory.FabricItemStack;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricBlockType;
 import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
@@ -14,6 +16,8 @@ import com.dfsek.terra.fabric.world.entity.FabricEntityType;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
@@ -58,4 +62,15 @@ public final class FabricAdapter {
         return ((FabricEntityType) entityType).getHandle();
     }
 
+    public static ItemStack adapt(com.dfsek.terra.api.platform.inventory.ItemStack itemStack) {
+        return ((FabricItemStack) itemStack).getHandle();
+    }
+
+    public static com.dfsek.terra.api.platform.inventory.ItemStack adapt(ItemStack itemStack) {
+        return new FabricItemStack(itemStack);
+    }
+
+    public static com.dfsek.terra.api.platform.inventory.Item adapt(Item item) {
+        return new FabricItem(item);
+    }
 }

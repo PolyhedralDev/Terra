@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mixin(GeneratorType.class)
 public interface GeneratorTypeAccessor {
-    @Accessor("VALUES")
-    static List<GeneratorType> getValues() {
+    @Accessor
+    static List<GeneratorType> getVALUES() {
         throw new AssertionError();
     }
 }

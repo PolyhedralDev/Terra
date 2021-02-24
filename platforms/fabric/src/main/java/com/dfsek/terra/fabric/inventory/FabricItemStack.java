@@ -5,7 +5,11 @@ import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 
 public class FabricItemStack implements ItemStack {
-    net.minecraft.item.ItemStack delegate;
+    private net.minecraft.item.ItemStack delegate;
+
+    public FabricItemStack(net.minecraft.item.ItemStack delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     public int getAmount() {
@@ -19,12 +23,18 @@ public class FabricItemStack implements ItemStack {
 
     @Override
     public Item getType() {
-        return null;
+        return new FabricItem(delegate.getItem());
     }
 
     @Override
     public ItemStack clone() {
-        return null;
+        try {
+            FabricItemStack stack = (FabricItemStack) super.clone();
+            stack.delegate = delegate;
+            return stack;
+        } catch(CloneNotSupportedException e) {
+            throw new Error();
+        }
     }
 
     @Override
@@ -38,7 +48,7 @@ public class FabricItemStack implements ItemStack {
     }
 
     @Override
-    public Object getHandle() {
+    public net.minecraft.item.ItemStack getHandle() {
         return delegate;
     }
 }
