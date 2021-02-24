@@ -25,11 +25,7 @@ public class Injector<T> {
         for(Field field : ReflectionUtil.getFields(object.getClass())) {
             Inject inject = field.getAnnotation(Inject.class);
             if(inject == null) continue;
-
-            System.out.println(field);
-            System.out.println("attempting to inject " + value.getClass() + " to " + field.getClass());
             if(value.getClass().equals(field.getType()) || targets.contains(field.getType())) {
-                System.out.println("injecting...");
                 int mod = field.getModifiers();
                 if(Modifier.isFinal(mod)) {
                     throw new InjectionException("Attempted to inject final field: " + field);

@@ -26,7 +26,6 @@ public class FabricInventory implements Inventory {
     @Override
     public ItemStack getItem(int slot) {
         net.minecraft.item.ItemStack itemStack = delegate.getStack(slot);
-        System.out.println("item @ " + slot + " GET: " + itemStack);
         return itemStack.getItem() == Items.AIR ? null : FabricAdapter.adapt(itemStack);
     }
 
@@ -34,6 +33,5 @@ public class FabricInventory implements Inventory {
     public void setItem(int slot, ItemStack newStack) {
         System.out.println("item @ " + slot + ": " + newStack.getHandle());
         delegate.setStack(slot, FabricAdapter.adapt(newStack));
-
     }
 }
