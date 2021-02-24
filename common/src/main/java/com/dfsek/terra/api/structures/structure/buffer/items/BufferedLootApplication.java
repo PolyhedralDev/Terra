@@ -18,13 +18,18 @@ public class BufferedLootApplication implements BufferedItem {
 
     @Override
     public void paste(Location origin) {
-        BlockState data = origin.getBlock().getState();
-        if(!(data instanceof Container)) {
-            main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
-            return;
+        try {
+            BlockState data = origin.getBlock().getState();
+            if(!(data instanceof Container)) {
+                main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
+                return;
+            }
+            Container container = (Container) data;
+            table.fillInventory(container.getInventory(), new FastRandom(origin.hashCode()));
+            data.update(false);
+        } catch(Exception e) {
+            main.logger().warning("Could not apply loot at " + origin + ": " + e.getMessage());
+            main.getDebugLogger().stack(e);
         }
-        Container container = (Container) data;
-        table.fillInventory(container.getInventory(), new FastRandom(origin.hashCode()));
-        data.update(false);
     }
 }

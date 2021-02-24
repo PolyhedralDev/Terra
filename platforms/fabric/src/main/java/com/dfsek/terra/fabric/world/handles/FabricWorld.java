@@ -80,7 +80,7 @@ public class FabricWorld implements World, FabricWorldHandle {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof FabricWorld)) return false;
-        return ((ServerWorldAccess) ((FabricWorld) obj).delegate.world).toServerWorld().equals(((ServerWorldAccess) delegate.world).toServerWorld());
+        return ((ServerWorldAccess) ((FabricWorld) obj).delegate.world).toServerWorld().equals(((ServerWorldAccess) delegate.world).toServerWorld()); // FIXME this method is cursed.
     }
 
     @Override

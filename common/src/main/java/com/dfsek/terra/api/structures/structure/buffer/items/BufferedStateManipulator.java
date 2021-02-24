@@ -15,8 +15,8 @@ public class BufferedStateManipulator implements BufferedItem {
 
     @Override
     public void paste(Location origin) {
-        BlockState state = origin.getBlock().getState();
         try {
+            BlockState state = origin.getBlock().getState();
             state.applyState(data);
             state.update(false);
         } catch(Exception e) {
