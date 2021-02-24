@@ -8,7 +8,9 @@ import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.AbstractSignBlock;
+import net.minecraft.block.SpawnerBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.world.WorldAccess;
 
@@ -28,6 +30,9 @@ public class FabricBlockState implements BlockState {
         if(block1 instanceof AbstractSignBlock) {
             SignBlockEntity signBlockEntity = (SignBlockEntity) worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
             return new FabricSign(signBlockEntity, worldAccess);
+        } else if(block1 instanceof SpawnerBlock) {
+            MobSpawnerBlockEntity mobSpawnerBlockEntity = (MobSpawnerBlockEntity) worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
+            return new FabricMobSpawner(mobSpawnerBlockEntity, worldAccess);
         }
         return null;
     }

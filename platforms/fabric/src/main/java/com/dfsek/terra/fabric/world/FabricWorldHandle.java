@@ -9,6 +9,10 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.argument.BlockArgumentParser;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+
+import java.util.Locale;
 
 public class FabricWorldHandle implements WorldHandle {
     @Override
@@ -35,6 +39,8 @@ public class FabricWorldHandle implements WorldHandle {
 
     @Override
     public EntityType getEntity(String id) {
-        return null;
+        Identifier identifier = Identifier.tryParse(id);
+        if(identifier == null) identifier = Identifier.tryParse("minecraft:" + id.toLowerCase(Locale.ROOT));
+        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(identifier));
     }
 }
