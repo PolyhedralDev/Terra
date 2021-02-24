@@ -163,11 +163,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public Language getLanguage() {
-        try {
-            return new Language(new File(getDataFolder(), "lang/en_us.yml"));
-        } catch(IOException e) {
-            throw new IllegalArgumentException();
-        }
+        return LangUtil.getLanguage();
     }
 
     @Override
@@ -267,10 +263,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public void onInitialize() {
         instance = this;
 
-        config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
+        this.config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();
         plugin.load(this);
-        LangUtil.load("en_us", this);
+        LangUtil.load(plugin.getLanguage(), this);
         logger.info("Initializing Terra...");
 
         if(!addonRegistry.loadAll()) {

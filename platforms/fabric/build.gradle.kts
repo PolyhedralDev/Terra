@@ -1,4 +1,5 @@
 import com.dfsek.terra.configureCommon
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 
@@ -22,6 +23,11 @@ plugins {
 //apply(plugin = "fabric-loom")
 
 configureCommon()
+
+tasks.named<ShadowJar>("shadowJar") {
+    relocate("org.json", "com.dfsek.terra.lib.json")
+    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
+}
 
 group = "com.dfsek.terra.fabric"
 

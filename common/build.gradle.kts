@@ -22,7 +22,7 @@ dependencies {
 
     "compileOnly"("com.googlecode.json-simple:json-simple:1.1")
 
-    "shadedApi"("com.google.guava:guava:30.0-jre")
+    "compileOnly"("com.google.guava:guava:30.0-jre")
 }
 
 publishing {
