@@ -298,6 +298,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                         return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
                     }
                 };
+                //noinspection ConstantConditions
                 ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
                 GeneratorTypeAccessor.getVALUES().add(generatorType);
             });

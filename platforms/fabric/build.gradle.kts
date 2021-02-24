@@ -43,12 +43,12 @@ dependencies {
 
 
     // To change the versions see the gradle.properties file
-    "minecraft"("com.mojang:minecraft:1.16.4")
-    "mappings"("net.fabricmc:yarn:1.16.4+build.6:v2")
-    "modImplementation"("net.fabricmc:fabric-loader:0.10.6+build.214")
+    "minecraft"("com.mojang:minecraft:1.16.5")
+    "mappings"("net.fabricmc:yarn:1.16.5+build.5:v2")
+    "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.25.1+build.416-1.16")
+    "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
 
     "compileOnly"("net.fabricmc:sponge-mixin:+")
     "annotationProcessor"("net.fabricmc:sponge-mixin:+")
