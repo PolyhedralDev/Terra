@@ -30,7 +30,7 @@ public class FabricItemStack implements ItemStack {
 
     @Override
     public ItemMeta getItemMeta() {
-        if(delegate.isDamageable()) return new FabricDamageable(delegate);
+        if(delegate.isDamageable()) return new FabricDamageable(delegate.copy());
         return new FabricItemMeta(delegate.copy());
     }
 
