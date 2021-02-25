@@ -7,7 +7,9 @@ import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
+import com.dfsek.terra.fabric.world.entity.FabricEntity;
 import com.dfsek.terra.fabric.world.handles.chunk.FabricChunk;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.server.world.ServerWorld;
@@ -90,7 +92,10 @@ public class FabricWorld implements World, FabricWorldHandle {
 
     @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
-        return null;
+        net.minecraft.entity.Entity entity = FabricAdapter.adapt(entityType).create(delegate.world);
+        entity.setPos(location.getX(), location.getY(), location.getZ());
+        delegate.world.spawnEntity(entity);
+        return new FabricEntity(entity);
     }
 
     @Override

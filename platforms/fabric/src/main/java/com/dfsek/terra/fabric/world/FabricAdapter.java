@@ -18,6 +18,7 @@ import com.dfsek.terra.fabric.world.entity.FabricEntityType;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
@@ -60,7 +61,7 @@ public final class FabricAdapter {
         return new FabricEntityType(entityType);
     }
 
-    public static net.minecraft.entity.EntityType<?> adapt(EntityType entityType) {
+    public static net.minecraft.entity.EntityType<? extends Entity> adapt(EntityType entityType) {
         return ((FabricEntityType) entityType).getHandle();
     }
 
