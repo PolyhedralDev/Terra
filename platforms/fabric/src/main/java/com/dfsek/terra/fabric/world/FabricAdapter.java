@@ -11,6 +11,7 @@ import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricBlockType;
 import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
 import com.dfsek.terra.fabric.world.block.data.FabricOrientable;
+import com.dfsek.terra.fabric.world.block.data.FabricRotatable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
@@ -42,6 +43,8 @@ public final class FabricAdapter {
         if(state.contains(Properties.SLAB_TYPE)) return new FabricSlab(state);
 
         if(state.contains(Properties.AXIS)) return new FabricOrientable(state);
+
+        if(state.contains(Properties.ROTATION)) return new FabricRotatable(state);
 
         if(state.getProperties().containsAll(Arrays.asList(Properties.NORTH, Properties.SOUTH, Properties.EAST, Properties.WEST)))
             return new FabricMultipleFacing(state);
