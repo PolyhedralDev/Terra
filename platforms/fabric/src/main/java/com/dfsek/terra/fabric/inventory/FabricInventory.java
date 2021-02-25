@@ -3,13 +3,12 @@ package com.dfsek.terra.fabric.inventory;
 import com.dfsek.terra.api.platform.inventory.Inventory;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.fabric.world.FabricAdapter;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.item.Items;
 
 public class FabricInventory implements Inventory {
-    private final LootableContainerBlockEntity delegate;
+    private final net.minecraft.inventory.Inventory delegate;
 
-    public FabricInventory(LootableContainerBlockEntity delegate) {
+    public FabricInventory(net.minecraft.inventory.Inventory delegate) {
         this.delegate = delegate;
     }
 

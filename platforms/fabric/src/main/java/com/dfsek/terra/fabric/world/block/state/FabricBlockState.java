@@ -5,12 +5,9 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
-import net.minecraft.block.AbstractChestBlock;
-import net.minecraft.block.AbstractSignBlock;
-import net.minecraft.block.SpawnerBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.world.WorldAccess;
@@ -25,18 +22,15 @@ public class FabricBlockState implements BlockState {
     }
 
     public static FabricBlockState newInstance(Block block) {
-        net.minecraft.block.Block block1 = ((FabricBlockData) block.getBlockData()).getHandle().getBlock();
         WorldAccess worldAccess = ((FabricWorldHandle) block.getLocation().getWorld()).getWorld();
 
-        if(block1 instanceof AbstractSignBlock) {
-            SignBlockEntity signBlockEntity = (SignBlockEntity) worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
-            return new FabricSign(signBlockEntity, worldAccess);
-        } else if(block1 instanceof SpawnerBlock) {
-            MobSpawnerBlockEntity mobSpawnerBlockEntity = (MobSpawnerBlockEntity) worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
-            return new FabricMobSpawner(mobSpawnerBlockEntity, worldAccess);
-        } else if(block1 instanceof AbstractChestBlock) {
-            BlockEntity abstractChestBlock = worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
-            return new FabricContainer(abstractChestBlock, worldAccess);
+        BlockEntity entity = worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
+        if(entity instanceof SignBlockEntity) {
+            return new FabricSign((SignBlockEntity) entity, worldAccess);
+        } else if(entity instanceof MobSpawnerBlockEntity) {
+            return new FabricMobSpawner((MobSpawnerBlockEntity) entity, worldAccess);
+        } else if(entity instanceof LootableContainerBlockEntity) {
+            return new FabricContainer((LootableContainerBlockEntity) entity, worldAccess);
         }
         return null;
     }

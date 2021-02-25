@@ -3,6 +3,8 @@ package com.dfsek.terra.fabric.inventory;
 import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
+import com.dfsek.terra.fabric.inventory.meta.FabricDamageable;
+import com.dfsek.terra.fabric.inventory.meta.FabricItemMeta;
 
 public class FabricItemStack implements ItemStack {
     private net.minecraft.item.ItemStack delegate;
@@ -27,24 +29,14 @@ public class FabricItemStack implements ItemStack {
     }
 
     @Override
-    public ItemStack clone() {
-        try {
-            FabricItemStack stack = (FabricItemStack) super.clone();
-            stack.delegate = delegate;
-            return stack;
-        } catch(CloneNotSupportedException e) {
-            throw new Error();
-        }
-    }
-
-    @Override
     public ItemMeta getItemMeta() {
-        return null;
+        if(delegate.isDamageable()) return new FabricDamageable(delegate);
+        return new FabricItemMeta(delegate.copy());
     }
 
     @Override
     public void setItemMeta(ItemMeta meta) {
-
+        this.delegate = ((FabricItemMeta) meta).getHandle();
     }
 
     @Override

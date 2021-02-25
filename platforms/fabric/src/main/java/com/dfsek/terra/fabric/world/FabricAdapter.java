@@ -3,6 +3,8 @@ package com.dfsek.terra.fabric.world;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.entity.EntityType;
+import com.dfsek.terra.api.platform.inventory.item.Enchantment;
+import com.dfsek.terra.fabric.inventory.FabricEnchantment;
 import com.dfsek.terra.fabric.inventory.FabricItem;
 import com.dfsek.terra.fabric.inventory.FabricItemStack;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
@@ -72,5 +74,13 @@ public final class FabricAdapter {
 
     public static com.dfsek.terra.api.platform.inventory.Item adapt(Item item) {
         return new FabricItem(item);
+    }
+
+    public static Enchantment adapt(net.minecraft.enchantment.Enchantment enchantment) {
+        return new FabricEnchantment(enchantment);
+    }
+
+    public static net.minecraft.enchantment.Enchantment adapt(Enchantment enchantment) {
+        return ((FabricEnchantment) enchantment).getHandle();
     }
 }

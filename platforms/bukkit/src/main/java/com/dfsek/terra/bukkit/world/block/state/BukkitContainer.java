@@ -15,4 +15,8 @@ public class BukkitContainer extends BukkitBlockState implements Container {
         return new BukkitInventory(((org.bukkit.block.Container) getHandle()).getInventory());
     }
 
+    @Override
+    public boolean update(boolean applyPhysics) {
+        return false; // This clears the inventory. we don't want that.
+    }
 }
