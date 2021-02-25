@@ -16,8 +16,11 @@ import java.util.function.BiFunction;
  * Contains method to get interpolated noise at a coordinate within the chunk.
  */
 public class ChunkInterpolator3D implements ChunkInterpolator {
-    private final Interpolator3[][][] interpGrid = new Interpolator3[4][64][4];
+    private final Interpolator3[][][] interpGrid;
     private final BiFunction<Generator, Vector3, Double> noiseGetter;
+
+    private final int min;
+    private final int max;
 
     /**
      * Instantiates a 3D ChunkInterpolator3D at a pair of chunk coordinates.
@@ -31,7 +34,15 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
 
-        double[][][] noiseStorage = new double[5][5][65];
+        this.max = w.getMaxHeight();
+        this.min = w.getMinHeight();
+        int range = max - min + 1;
+
+        int size = range >> 2;
+
+        interpGrid = new Interpolator3[4][size][4];
+
+        double[][][] noiseStorage = new double[5][5][size + 1];
 
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
@@ -47,7 +58,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
                     }
                 }
 
-                for(int y = 0; y < 65; y++) {
+                for(int y = 0; y < size + 1; y++) {
                     noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, y << 2, (z << 2) + zOrigin);
                 }
             }
@@ -55,7 +66,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
 
         for(int x = 0; x < 4; x++) {
             for(int z = 0; z < 4; z++) {
-                for(int y = 0; y < 64; y++) {
+                for(int y = 0; y < size; y++) {
                     interpGrid[x][y][z] = new Interpolator3(
                             noiseStorage[x][z][y],
                             noiseStorage[x + 1][z][y],
@@ -87,6 +98,6 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
      */
     @Override
     public double getNoise(double x, double y, double z) {
-        return interpGrid[reRange(((int) x) / 4, 3)][reRange(((int) y) / 4, 63)][reRange(((int) z) / 4, 3)].trilerp((x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
+        return interpGrid[reRange(((int) x) / 4, 3)][FastMath.max(FastMath.min(((int) y), max), min) / 4][reRange(((int) z) / 4, 3)].trilerp((x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
     }
 }

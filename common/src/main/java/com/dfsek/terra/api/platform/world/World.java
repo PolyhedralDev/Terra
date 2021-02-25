@@ -32,4 +32,6 @@ public interface World extends Handle {
     Block getBlockAt(Location l);
 
     Entity spawnEntity(Location location, EntityType entityType);
+
+    int getMinHeight();
 }

@@ -78,6 +78,11 @@ public class BukkitWorld implements World {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public org.bukkit.World getHandle() {
         return delegate;
     }

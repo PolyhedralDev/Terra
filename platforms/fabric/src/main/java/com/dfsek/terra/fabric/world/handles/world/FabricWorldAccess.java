@@ -81,6 +81,11 @@ public class FabricWorldAccess implements World, FabricWorldHandle {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public WorldAccess getHandle() {
         return delegate;
     }

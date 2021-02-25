@@ -81,6 +81,11 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public int hashCode() {
         return ((ServerWorldAccess) handle.worldAccess).toServerWorld().hashCode();
     }

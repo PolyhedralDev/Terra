@@ -116,7 +116,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
                     boolean justSet = false;
                     BlockData data = null;
-                    for(int y = world.getMaxHeight() - 1; y >= 0; y--) {
+                    for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
                             justSet = true;
                             data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, y, cz);

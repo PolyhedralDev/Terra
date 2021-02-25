@@ -92,6 +92,11 @@ public class FabricWorldChunkRegion implements World, FabricWorldHandle {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public Object getHandle() {
         return delegate;
     }

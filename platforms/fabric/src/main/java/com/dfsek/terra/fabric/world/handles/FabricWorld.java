@@ -94,6 +94,11 @@ public class FabricWorld implements World, FabricWorldHandle {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public Handle getHandle() {
         return null;
     }

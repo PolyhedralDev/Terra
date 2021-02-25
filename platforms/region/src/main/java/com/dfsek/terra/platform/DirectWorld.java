@@ -93,6 +93,11 @@ public class DirectWorld implements World {
     }
 
     @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
     public Object getHandle() {
         return generator;
     }
