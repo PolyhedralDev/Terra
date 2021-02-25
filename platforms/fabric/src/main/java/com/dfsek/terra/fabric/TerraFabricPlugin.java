@@ -272,8 +272,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         if(!addonRegistry.loadAll()) {
             throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
         }
+        logger.info("Loaded addons.");
 
         registry.loadAll(this);
+
+        logger.info("Loaded packs.");
 
         Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), POPULATOR_FEATURE);
         RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "flora_populator"));

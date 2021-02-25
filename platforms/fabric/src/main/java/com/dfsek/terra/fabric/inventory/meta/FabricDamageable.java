@@ -15,7 +15,6 @@ public class FabricDamageable extends FabricItemMeta implements Damageable {
 
     @Override
     public void setDamage(int damage) {
-        System.out.println("Setting damage: " + damage);
         delegate.setDamage(damage);
     }
 

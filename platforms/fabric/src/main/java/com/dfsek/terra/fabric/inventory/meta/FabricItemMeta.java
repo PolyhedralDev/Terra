@@ -36,7 +36,6 @@ public class FabricItemMeta implements ItemMeta {
 
     @Override
     public void addEnchantment(Enchantment enchantment, int level) {
-        System.out.println("Enchanting: " + enchantment.getHandle() + ", " + level);
         delegate.addEnchantment(FabricAdapter.adapt(enchantment), level);
     }
 }
