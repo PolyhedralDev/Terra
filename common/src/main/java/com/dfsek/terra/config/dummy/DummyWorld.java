@@ -29,7 +29,7 @@ public class DummyWorld implements World {
 
     @Override
     public ChunkGenerator getGenerator() {
-        throw new UnsupportedOperationException("Cannot get generator of DummyWorld");
+        return () -> (ChunkGenerator) () -> null;
     }
 
     @Override

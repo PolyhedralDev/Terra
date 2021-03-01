@@ -26,6 +26,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -218,11 +219,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
     }
 
-    public static String createBiomeID(ConfigPack pack, TerraBiome biome) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biome.getID().toLowerCase();
+    public static String createBiomeID(ConfigPack pack, String biomeID) {
+        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID;
     }
 
-    private Biome createBiome(TerraBiome biome) {
+    private Biome createBiome(BiomeBuilder<?> biome) {
         SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
@@ -282,14 +283,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "flora_populator"));
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), POPULATOR_CONFIGURED_FEATURE);
 
-        registry.forEach(pack -> pack.getBiomeRegistry().forEach(biome -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, biome)), createBiome(biome)))); // Register all Terra biomes.
+        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome)))); // Register all Terra biomes.
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registry.forEach(pack -> {
-                System.out.println(pack.getTemplate().getID());
-                pack.getBiomeRegistry().forEach(b -> System.out.println(b.getID()));
                 final GeneratorType generatorType = new GeneratorType("terra." + pack.getTemplate().getID()) {
                     @Override
                     protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {

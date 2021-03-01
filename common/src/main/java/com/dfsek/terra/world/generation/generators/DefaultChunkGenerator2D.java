@@ -122,11 +122,6 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
     }
 
     @Override
-    public SamplerCache getCache() {
-        return cache;
-    }
-
-    @Override
     public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth) {
         return new Sampler2D(chunkX, chunkZ, provider, world, elevationSmooth);
     }

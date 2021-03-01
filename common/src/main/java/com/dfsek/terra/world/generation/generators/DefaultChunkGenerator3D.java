@@ -26,7 +26,6 @@ import com.dfsek.terra.profiler.ProfileFuture;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
-import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
 import org.jetbrains.annotations.NotNull;
@@ -42,16 +41,14 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
     private final Carver carver;
 
-    private final SamplerCache cache;
 
 
-    public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main, SamplerCache cache) {
+    public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
         carver = new NoiseCarver(new Range(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
         water = main.getWorldHandle().createBlockData("minecraft:water").getBlockType();
         blank = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:air"));
-        this.cache = cache;
     }
 
     @Override
@@ -99,7 +96,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
 
-            Sampler sampler = cache.getChunk(chunkX, chunkZ);
+            Sampler sampler = tw.getConfig().getSamplerCache().getChunk(chunkX, chunkZ);
 
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
@@ -233,11 +230,6 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     @Override
     public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
         biomes(world, chunkX, chunkZ, biome, main);
-    }
-
-    @Override
-    public SamplerCache getCache() {
-        return cache;
     }
 
     @Override

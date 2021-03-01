@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
 public class ProbabilityCollection<E> implements Collection<E> {
@@ -41,6 +42,17 @@ public class ProbabilityCollection<E> implements Collection<E> {
     public E get(NoiseSampler n, double x, double z) {
         if(array.length == 0) return null;
         return (E) array[MathUtil.normalizeIndex(n.getNoise(x, z), array.length)];
+    }
+
+    public <T> ProbabilityCollection<T> map(Function<E, T> mapper, boolean carryNull) {
+        ProbabilityCollection<T> newCollection = new ProbabilityCollection<>();
+        newCollection.array = new Object[array.length];
+
+        for(int i = 0; i < array.length; i++) {
+            if(carryNull && array[i] == null) continue;
+            newCollection.array[i] = mapper.apply((E) array[i]);
+        }
+        return newCollection;
     }
 
     public int getTotalProbability() {

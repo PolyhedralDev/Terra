@@ -40,4 +40,9 @@ public class SamplerCache {
         long key = MathUtil.squash(cx, cz);
         return cache.getUnchecked(key);
     }
+
+    public void clear() {
+        cache.invalidateAll();
+        cache.cleanUp();
+    }
 }

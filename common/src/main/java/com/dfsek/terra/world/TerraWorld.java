@@ -28,10 +28,10 @@ public class TerraWorld {
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
         if(!isTerraWorld(w)) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
-        config = c.toWorldConfig(this);
-        profiler = new WorldProfiler(w);
-        this.provider = config.getProvider();
         this.world = w;
+        config = c.toWorldConfig(this);
+        this.provider = config.getProvider();
+        profiler = new WorldProfiler(w);
         air = main.getWorldHandle().createBlockData("minecraft:air");
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this));
         safe = true;

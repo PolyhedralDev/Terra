@@ -50,8 +50,8 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX * 4, biomeZ * 4);
-        return biomeRegistry.get(new Identifier("terra", TerraFabricPlugin.createBiomeID(pack, biome)));
+        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
+        return biomeRegistry.get(new Identifier("terra", TerraFabricPlugin.createBiomeID(pack, biome.getID())));
     }
 
 

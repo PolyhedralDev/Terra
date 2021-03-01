@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ImageBiomeProvider implements BiomeProvider, BiomeProvider.BiomeProviderBuilder { // This provider does not need a seed, so it is its own builder.
     private final Map<Color, TerraBiome> colorBiomeMap = new HashMap<>();
@@ -16,7 +17,7 @@ public class ImageBiomeProvider implements BiomeProvider, BiomeProvider.BiomePro
     private final int resolution;
     private final Align align;
 
-    public ImageBiomeProvider(Registry<TerraBiome> registry, BufferedImage image, int resolution, Align align) {
+    public ImageBiomeProvider(Set<TerraBiome> registry, BufferedImage image, int resolution, Align align) {
         this.image = image;
         this.resolution = resolution;
         this.align = align;

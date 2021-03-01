@@ -34,7 +34,7 @@ public class SpawnCommand extends WorldCommand implements DebugCommand {
         int z = p.getBlockZ();
         Position dummy = new Position(0, 0);
         com.dfsek.terra.api.platform.world.World w = BukkitAdapter.adapt(world);
-        String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), getMain().getWorld(w).getConfig().getSamplerCache(), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
+        String check = new CheckFunction(getMain(), new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
                 new com.dfsek.terra.api.math.vector.Location(w, x, y, z)
         ), Rotation.NONE, new FastRandom(), 0), new HashMap<>());
 

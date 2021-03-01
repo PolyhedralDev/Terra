@@ -78,7 +78,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
 
-        this.delegate = new DefaultChunkGenerator3D(pack, TerraFabricPlugin.getInstance(), pack.getSamplerCache());
+        this.delegate = new DefaultChunkGenerator3D(pack, TerraFabricPlugin.getInstance());
         delegate.getMain().logger().info("Loading world with config pack " + pack.getTemplate().getID());
         this.biomeSource = biomeSource;
 

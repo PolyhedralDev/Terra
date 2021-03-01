@@ -27,14 +27,15 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.SingleBiomeProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.BiomePipelineTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
@@ -157,10 +158,10 @@ public class DistributionTest {
         ConfigLoader pipeLoader = new ConfigLoader()
                 .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
-                .registerLoader(TerraBiome.class, biomeRegistry)
+                .registerLoader(BiomeBuilder.class, biomeRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(folderLoader))
-                .registerLoader(SingleBiomeProviderTemplate.class, () -> new SingleBiomeProviderTemplate(biomeRegistry))
-                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(biomeRegistry, MAIN))
+                .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
+                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(MAIN))
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
         new GenericLoaders(null).register(pipeLoader);
 
@@ -285,7 +286,7 @@ public class DistributionTest {
         }
     }
 
-    private static final class TestBiome extends AbstractableTemplate implements TerraBiome, ValidatedConfigTemplate {
+    private static final class TestBiome extends AbstractableTemplate implements TerraBiome, ValidatedConfigTemplate, BiomeBuilder<TestBiome> {
 
         @Value("color")
         @Default
@@ -335,6 +336,11 @@ public class DistributionTest {
         @Override
         public String toString() {
             return id;
+        }
+
+        @Override
+        public TestBiome apply(Long aLong) {
+            return this;
         }
     }
 }

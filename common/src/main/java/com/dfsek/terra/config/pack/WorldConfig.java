@@ -48,7 +48,7 @@ public class WorldConfig {
         this.scriptRegistry = new LockedRegistry<>(pack.getScriptRegistry());
 
         OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistry<>();
-        pack.getBiomeRegistry().forEach((id, biome) -> biomeOpenRegistry.add(id, biome.build(world, main)));
+        pack.getBiomeRegistry().forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
 
         this.biomeRegistry = new LockedRegistry<>(biomeOpenRegistry);
         this.carverRegistry = new LockedRegistry<>(pack.getCarverRegistry());

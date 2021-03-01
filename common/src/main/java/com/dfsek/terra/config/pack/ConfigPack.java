@@ -23,7 +23,8 @@ import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.builder.ConfigBuilder;
+import com.dfsek.terra.config.builder.UserDefinedBiomeBuilder;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
@@ -37,9 +38,9 @@ import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.SingleBiomeProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.BiomePipelineTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
@@ -263,7 +264,7 @@ public class ConfigPack implements LoaderRegistrar {
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(Palette.class, paletteRegistry)
-                .registerLoader(TerraBiome.class, biomeRegistry)
+                .registerLoader(BiomeBuilder.class, biomeRegistry)
                 .registerLoader(Flora.class, floraRegistry)
                 .registerLoader(Ore.class, oreRegistry)
                 .registerLoader(Tree.class, treeRegistry)
@@ -273,8 +274,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
                 .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
-                .registerLoader(SingleBiomeProviderTemplate.class, () -> new SingleBiomeProviderTemplate(biomeRegistry))
-                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(biomeRegistry, main))
+                .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
+                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
                 .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
     }
 
@@ -290,7 +291,7 @@ public class ConfigPack implements LoaderRegistrar {
         return new CheckedRegistry<>(scriptRegistry);
     }
 
-    public CheckedRegistry<ConfigBuilder<TerraBiome>> getBiomeRegistry() {
+    public CheckedRegistry<BiomeBuilder<? extends TerraBiome>> getBiomeRegistry() {
         return new CheckedRegistry<>(biomeRegistry);
     }
 
