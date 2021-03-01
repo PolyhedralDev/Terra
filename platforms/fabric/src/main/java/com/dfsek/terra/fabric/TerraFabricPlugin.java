@@ -75,6 +75,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -219,7 +220,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     public static String createBiomeID(ConfigPack pack, String biomeID) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID;
+        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
     private Biome createBiome(BiomeBuilder biome) {
