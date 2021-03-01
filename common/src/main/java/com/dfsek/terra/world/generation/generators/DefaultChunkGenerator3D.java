@@ -99,7 +99,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
 
-            Sampler sampler = cache.getChunk(world, chunkX, chunkZ);
+            Sampler sampler = cache.getChunk(chunkX, chunkZ);
 
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {

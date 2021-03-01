@@ -16,56 +16,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SamplerCache {
-    private final Map<Long, Container> containerMap;
-    private final TerraPlugin main;
+    private final LoadingCache<Long, Sampler> cache;
 
-    public SamplerCache(TerraPlugin main) {
-        containerMap = Collections.synchronizedMap(new HashMap<>());
-        this.main = main;
+    public SamplerCache(TerraPlugin main, TerraWorld world) {
+        cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getSamplerCache())
+                .build(new CacheLoader<Long, Sampler>() {
+                    @Override
+                    public Sampler load(@NotNull Long key) {
+                        int cx = (int) (key >> 32);
+                        int cz = (int) key.longValue();
+                        return world.getGenerator().createSampler(cx, cz, world.getBiomeProvider(), world.getWorld(), world.getConfig().getTemplate().getElevationBlend());
+                    }
+                });
     }
 
-    public Sampler get(World world, int x, int z) {
-        synchronized(containerMap) {
-            return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).get(x, z);
-        }
+    public Sampler get(int x, int z) {
+        int cx = FastMath.floorDiv(x, 16);
+        int cz = FastMath.floorDiv(z, 16);
+        return getChunk(cx, cz);
     }
 
-    public Sampler getChunk(World world, int chunkX, int chunkZ) {
-        synchronized(containerMap) {
-            return containerMap.computeIfAbsent(world.getSeed(), seed -> new Container(world)).getChunk(chunkX, chunkZ);
-        }
-    }
-
-    public void clear() {
-        containerMap.clear();
-    }
-
-    private final class Container {
-        private final TerraWorld terraWorld;
-        private final LoadingCache<Long, Sampler> cache;
-
-        private Container(World world) {
-            cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getSamplerCache())
-                    .build(new CacheLoader<Long, Sampler>() {
-                        @Override
-                        public Sampler load(@NotNull Long key) {
-                            int cx = (int) (key >> 32);
-                            int cz = (int) key.longValue();
-                            return terraWorld.getGenerator().createSampler(cx, cz, terraWorld.getBiomeProvider(), world, terraWorld.getConfig().getTemplate().getElevationBlend());
-                        }
-                    });
-            terraWorld = main.getWorld(world);
-        }
-
-        public Sampler get(int x, int z) {
-            int cx = FastMath.floorDiv(x, 16);
-            int cz = FastMath.floorDiv(z, 16);
-            return getChunk(cx, cz);
-        }
-
-        public Sampler getChunk(int cx, int cz) {
-            long key = MathUtil.squash(cx, cz);
-            return cache.getUnchecked(key);
-        }
+    public Sampler getChunk(int cx, int cz) {
+        long key = MathUtil.squash(cx, cz);
+        return cache.getUnchecked(key);
     }
 }

@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.templates.FloraTemplate;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
 
-public class FloraFactory implements TerraFactory<FloraTemplate, Flora> {
+public class FloraFactory implements ConfigFactory<FloraTemplate, Flora> {
     @Override
     public TerraFlora build(FloraTemplate config, TerraPlugin main) {
         Palette<BlockData> palette = new NoisePalette<>(new WhiteNoiseSampler(2403), false);

@@ -1,6 +1,8 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.source;
 
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.registry.config.BiomeRegistry;
@@ -14,7 +16,7 @@ public class ImageProviderTemplate extends BiomeProviderTemplate {
     @Value("image.align")
     private ImageBiomeProvider.Align align;
 
-    public ImageProviderTemplate(BiomeRegistry registry) {
+    public ImageProviderTemplate(Registry<TerraBiome> registry) {
         super(registry);
     }
 

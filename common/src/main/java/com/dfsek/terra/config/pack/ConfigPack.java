@@ -23,13 +23,15 @@ import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.builder.ConfigBuilder;
+import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.factories.StructureFactory;
-import com.dfsek.terra.config.factories.TerraFactory;
+import com.dfsek.terra.config.factories.ConfigFactory;
 import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
@@ -60,7 +62,7 @@ import com.dfsek.terra.registry.config.PaletteRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
 import com.dfsek.terra.registry.config.StructureRegistry;
 import com.dfsek.terra.registry.config.TreeRegistry;
-import com.dfsek.terra.world.generation.math.SamplerCache;
+import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.ores.Ore;
 import org.apache.commons.io.IOUtils;
@@ -106,8 +108,6 @@ public class ConfigPack implements LoaderRegistrar {
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
 
-    private final SamplerCache samplerCache;
-
     private final TerraPlugin main;
     private final Loader loader;
 
@@ -119,7 +119,6 @@ public class ConfigPack implements LoaderRegistrar {
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
             long l = System.nanoTime();
-            this.samplerCache = new SamplerCache(main);
             floraRegistry = new FloraRegistry(main);
             paletteRegistry = new PaletteRegistry(main);
             treeRegistry = new TreeRegistry(main);
@@ -148,6 +147,7 @@ public class ConfigPack implements LoaderRegistrar {
             main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
             throw e;
         }
+        toWorldConfig(new TerraWorld(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
@@ -155,7 +155,6 @@ public class ConfigPack implements LoaderRegistrar {
             this.loader = new ZIPLoader(file);
             this.main = main;
             long l = System.nanoTime();
-            this.samplerCache = new SamplerCache(main);
             floraRegistry = new FloraRegistry(main);
             paletteRegistry = new PaletteRegistry(main);
             treeRegistry = new TreeRegistry(main);
@@ -192,9 +191,11 @@ public class ConfigPack implements LoaderRegistrar {
             main.logger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
             throw e;
         }
+
+        toWorldConfig(new TerraWorld(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
-    public static <C extends AbstractableTemplate, O> void buildAll(TerraFactory<C, O> factory, OpenRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
+    public static <C extends AbstractableTemplate, O> void buildAll(ConfigFactory<C, O> factory, OpenRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 
@@ -207,10 +208,10 @@ public class ConfigPack implements LoaderRegistrar {
 
         loader.open("structures/data", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
-                try {
-                    StructureScript structureScript = new StructureScript(entry.getValue(), main, scriptRegistry, lootRegistry, samplerCache, functionRegistry);
+                try(InputStream stream = entry.getValue()) {
+                    StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, lootRegistry, functionRegistry);
                     scriptRegistry.add(structureScript.getId(), structureScript);
-                } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException e) {
+                } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException | IOException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
                 }
             }
@@ -235,14 +236,6 @@ public class ConfigPack implements LoaderRegistrar {
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
-    }
-
-    public TerraBiome getBiome(String id) {
-        return biomeRegistry.get(id);
-    }
-
-    public List<String> getBiomeIDs() {
-        return biomeRegistry.entries().stream().map(TerraBiome::getID).collect(Collectors.toList());
     }
 
     public TerraStructure getStructure(String id) {
@@ -285,10 +278,6 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
     }
 
-    public SamplerCache getSamplerCache() {
-        return samplerCache;
-    }
-
     public Set<UserDefinedCarver> getCarvers() {
         return carverRegistry.entries();
     }
@@ -301,7 +290,7 @@ public class ConfigPack implements LoaderRegistrar {
         return new CheckedRegistry<>(scriptRegistry);
     }
 
-    public CheckedRegistry<TerraBiome> getBiomeRegistry() {
+    public CheckedRegistry<ConfigBuilder<TerraBiome>> getBiomeRegistry() {
         return new CheckedRegistry<>(biomeRegistry);
     }
 
@@ -339,5 +328,9 @@ public class ConfigPack implements LoaderRegistrar {
 
     public CheckedRegistry<TerraStructure> getStructureRegistry() {
         return new CheckedRegistry<>(structureRegistry);
+    }
+
+    public WorldConfig toWorldConfig(TerraWorld world){
+        return new WorldConfig(world, this, main);
     }
 }

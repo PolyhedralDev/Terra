@@ -12,13 +12,14 @@ import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.profiler.WorldProfiler;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import net.jafama.FastMath;
 
 public class TerraWorld {
     private final BiomeProvider provider;
-    private final ConfigPack config;
+    private final WorldConfig config;
     private final boolean safe;
     private final WorldProfiler profiler;
     private final World world;
@@ -27,10 +28,9 @@ public class TerraWorld {
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
         if(!isTerraWorld(w)) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
-        c.getBiomeRegistry().forEach(biome -> biome.getGenerator(w)); // Load all gens to cache
-        config = c;
+        config = c.toWorldConfig(this);
         profiler = new WorldProfiler(w);
-        this.provider = config.getBiomeProviderBuilder().build(w.getSeed());
+        this.provider = config.getProvider();
         this.world = w;
         air = main.getWorldHandle().createBlockData("minecraft:air");
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this));
@@ -53,7 +53,7 @@ public class TerraWorld {
         return provider;
     }
 
-    public ConfigPack getConfig() {
+    public WorldConfig getConfig() {
         return config;
     }
 
@@ -76,7 +76,7 @@ public class TerraWorld {
     public BlockData getUngeneratedBlock(int x, int y, int z) {
         UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(x, z);
         Palette<BlockData> palette = biome.getGenerator(world).getPalette(y);
-        Sampler sampler = config.getSamplerCache().get(world, x, z);
+        Sampler sampler = config.getSamplerCache().get(x, z);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
         double noise = sampler.sample(fdX, y, fdZ);

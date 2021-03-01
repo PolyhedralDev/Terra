@@ -11,7 +11,7 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import java.util.Arrays;
 import java.util.List;
 
-public class CarverFactory implements TerraFactory<CarverTemplate, UserDefinedCarver> {
+public class CarverFactory implements ConfigFactory<CarverTemplate, UserDefinedCarver> {
     private final ConfigPack pack;
 
     public CarverFactory(ConfigPack pack) {

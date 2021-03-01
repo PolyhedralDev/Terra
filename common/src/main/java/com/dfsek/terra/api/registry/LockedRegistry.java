@@ -15,9 +15,9 @@ import java.util.function.Consumer;
  * @param <T> Type in registry
  */
 public class LockedRegistry<T> implements Registry<T> {
-    private final OpenRegistry<T> registry;
+    private final Registry<T> registry;
 
-    public LockedRegistry(OpenRegistry<T> registry) {
+    public LockedRegistry(Registry<T> registry) {
         this.registry = registry;
     }
 
