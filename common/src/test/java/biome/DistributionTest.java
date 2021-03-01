@@ -145,11 +145,11 @@ public class DistributionTest {
 
     private static BiomeProvider getProvider(long seed) throws ConfigException, IOException {
         System.out.println(seed);
-        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/betterend/");
+        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/default/");
         FolderLoader folderLoader = new FolderLoader(pack.toPath());
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
-        new GenericLoaders(null).register(loader);
+        new GenericLoaders(MAIN).register(loader);
 
         BiomeRegistry biomeRegistry = new BiomeRegistry();
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), MAIN));
@@ -163,7 +163,7 @@ public class DistributionTest {
                 .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(MAIN))
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
-        new GenericLoaders(null).register(pipeLoader);
+        new GenericLoaders(MAIN).register(pipeLoader);
 
         pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NoiseRegistry()));
 
@@ -286,7 +286,7 @@ public class DistributionTest {
         }
     }
 
-    private static final class TestBiome extends AbstractableTemplate implements TerraBiome, ValidatedConfigTemplate, BiomeBuilder<TestBiome> {
+    private static final class TestBiome extends AbstractableTemplate implements TerraBiome, ValidatedConfigTemplate, BiomeBuilder {
 
         @Value("color")
         @Default

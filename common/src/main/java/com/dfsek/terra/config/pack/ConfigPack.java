@@ -17,22 +17,20 @@ import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.builder.UserDefinedBiomeBuilder;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.factories.BiomeFactory;
 import com.dfsek.terra.config.factories.CarverFactory;
+import com.dfsek.terra.config.factories.ConfigFactory;
 import com.dfsek.terra.config.factories.FloraFactory;
 import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.factories.StructureFactory;
-import com.dfsek.terra.config.factories.ConfigFactory;
 import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
@@ -291,7 +289,7 @@ public class ConfigPack implements LoaderRegistrar {
         return new CheckedRegistry<>(scriptRegistry);
     }
 
-    public CheckedRegistry<BiomeBuilder<? extends TerraBiome>> getBiomeRegistry() {
+    public CheckedRegistry<BiomeBuilder> getBiomeRegistry() {
         return new CheckedRegistry<>(biomeRegistry);
     }
 

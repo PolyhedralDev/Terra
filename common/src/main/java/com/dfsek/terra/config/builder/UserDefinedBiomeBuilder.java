@@ -17,7 +17,7 @@ import com.dfsek.terra.world.generation.WorldGenerator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserDefinedBiomeBuilder implements BiomeBuilder<UserDefinedBiome> {
+public class UserDefinedBiomeBuilder implements BiomeBuilder {
     private final BiomeTemplate template;
     private final ConfigPack pack;
 

@@ -6,7 +6,6 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.pipeline.mutator.BiomeMutator;
 import com.dfsek.terra.api.world.biome.pipeline.mutator.ReplaceListMutator;
 import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.config.builder.UserDefinedBiomeBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +16,10 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
     private String defaultFrom;
 
     @Value("default-to")
-    private ProbabilityCollection<BiomeBuilder<? extends TerraBiome>> defaultTo;
+    private ProbabilityCollection<BiomeBuilder> defaultTo;
 
     @Value("to")
-    private Map<BiomeBuilder<? extends TerraBiome>, ProbabilityCollection<BiomeBuilder<? extends TerraBiome>>> replace;
+    private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
 
     @Override
     public BiomeMutator build(long seed) {

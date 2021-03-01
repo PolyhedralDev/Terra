@@ -22,7 +22,6 @@ import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.Logger;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
@@ -223,7 +222,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return pack.getTemplate().getID().toLowerCase() + "/" + biomeID;
     }
 
-    private Biome createBiome(BiomeBuilder<?> biome) {
+    private Biome createBiome(BiomeBuilder biome) {
         SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);

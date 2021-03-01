@@ -22,7 +22,7 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
     private ProbabilityCollection<UserDefinedBiomeBuilder> defaultTo;
 
     @Value("replace")
-    private Map<BiomeBuilder<? extends TerraBiome>, ProbabilityCollection<BiomeBuilder<? extends TerraBiome>>> replace;
+    private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
 
 
     @Override
