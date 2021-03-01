@@ -3,11 +3,9 @@ package com.dfsek.terra.api.world.biome;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
-import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -64,5 +62,10 @@ public class UserDefinedBiome implements TerraBiome {
     @Override
     public Set<String> getTags() {
         return tags;
+    }
+
+    @Override
+    public String toString() {
+        return "{BIOME:" + getID() + "}";
     }
 }

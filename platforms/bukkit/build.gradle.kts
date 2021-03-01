@@ -33,8 +33,6 @@ dependencies {
     "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
 
     "shadedImplementation"("com.google.guava:guava:30.0-jre")
-
-    "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 
 val testDir = "target/server/"

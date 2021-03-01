@@ -16,10 +16,13 @@ import com.dfsek.terra.world.generation.WorldGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserDefinedBiomeBuilder implements BiomeBuilder {
     private final BiomeTemplate template;
     private final ConfigPack pack;
+
+    private final Map<Long, UserDefinedBiome> biomeMap = new ConcurrentHashMap<>();
 
     public UserDefinedBiomeBuilder(BiomeTemplate template, ConfigPack pack) {
         this.template = template;
@@ -28,29 +31,36 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
 
     @Override
     public UserDefinedBiome apply(Long seed) {
-        NoiseSampler noise;
-        NoiseSampler elevation;
-        NoiseSampler carving;
-        Scope varScope = new Scope().withParent(pack.getVarScope());
+        synchronized(biomeMap) {
+            return biomeMap.computeIfAbsent(seed,
+                    s -> {
+                        NoiseSampler noise;
+                        NoiseSampler elevation;
+                        NoiseSampler carving;
+                        Scope varScope = new Scope().withParent(pack.getVarScope());
 
-        template.getVariables().forEach(varScope::create);
+                        template.getVariables().forEach(varScope::create);
+                        System.out.println("Building biome " + template.getID() + " for seed " + s);
 
-        Map<String, NoiseSeeded> noiseBuilderMap = pack.getTemplate().getNoiseBuilderMap();
-        Map<String, FunctionTemplate> functionTemplateMap = new HashMap<>(template.getFunctions());
+                        Map<String, NoiseSeeded> noiseBuilderMap = pack.getTemplate().getNoiseBuilderMap();
+                        Map<String, FunctionTemplate> functionTemplateMap = new HashMap<>(template.getFunctions());
 
-        functionTemplateMap.putAll(template.getFunctions());
+                        functionTemplateMap.putAll(template.getFunctions());
 
-        try {
-            noise = new ExpressionSampler(template.getNoiseEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
-            elevation = template.getElevationEquation() == null ? new ConstantSampler(0) : new ExpressionSampler(template.getElevationEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
-            carving = new ExpressionSampler(template.getCarvingEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
-        } catch(ParseException e) {
-            throw new RuntimeException(e);
+                        try {
+                            noise = new ExpressionSampler(template.getNoiseEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
+                            elevation = template.getElevationEquation() == null ? new ConstantSampler(0) : new ExpressionSampler(template.getElevationEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
+                            carving = new ExpressionSampler(template.getCarvingEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
+                        } catch(ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        WorldGenerator generator = new WorldGenerator(template.getPalette(), template.getSlantPalette(), noise, elevation, carving, template.getBiomeNoise().apply(seed), template.getElevationWeight(),
+                                template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
+                        return new UserDefinedBiome(template.getVanilla(), generator, template);
+                    }
+            );
         }
-
-        WorldGenerator generator = new WorldGenerator(template.getPalette(), template.getSlantPalette(), noise, elevation, carving, template.getBiomeNoise().apply(seed), template.getElevationWeight(),
-                template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
-        return new UserDefinedBiome(template.getVanilla(), generator, template);
     }
 
     @Override

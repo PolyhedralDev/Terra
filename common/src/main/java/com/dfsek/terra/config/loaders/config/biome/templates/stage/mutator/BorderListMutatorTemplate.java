@@ -6,7 +6,6 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.pipeline.mutator.BiomeMutator;
 import com.dfsek.terra.api.world.biome.pipeline.mutator.BorderListMutator;
 import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.config.builder.UserDefinedBiomeBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
     private String defaultReplace;
 
     @Value("default-to")
-    private ProbabilityCollection<UserDefinedBiomeBuilder> defaultTo;
+    private ProbabilityCollection<BiomeBuilder> defaultTo;
 
     @Value("replace")
     private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
@@ -29,7 +28,7 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
     public BiomeMutator build(long seed) {
         Map<TerraBiome, ProbabilityCollection<TerraBiome>> replaceMap = new HashMap<>();
 
-        replace.forEach((biomeBuilder, biomeBuilders) -> replaceMap.put(biomeBuilder.apply(seed), biomeBuilders.map(builder -> builder.apply(seed), true)));
+        replace.forEach((keyBuilder, replacements) -> replaceMap.put(keyBuilder.apply(seed), replacements.map(replacement -> replacement.apply(seed), true)));
 
         return new BorderListMutator(replaceMap, from, defaultReplace, noise.apply(seed), defaultTo.map(biomeBuilder -> biomeBuilder.apply(seed), true));
     }

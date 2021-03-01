@@ -2,25 +2,28 @@ package com.dfsek.terra.api.util.collections;
 
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.util.mutable.MutableInteger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
 public class ProbabilityCollection<E> implements Collection<E> {
-    private final Set<E> cont = new HashSet<>();
+    protected final Map<E, MutableInteger> cont = new HashMap<>();
     private Object[] array = new Object[0];
     private int size;
 
     public ProbabilityCollection<E> add(E item, int probability) {
-        if(!cont.contains(item)) size++;
-        cont.add(item);
+        if(!cont.containsKey(item)) size++;
+        cont.computeIfAbsent(item, i -> new MutableInteger(0)).increment();
         int oldLength = array.length;
         Object[] newArray = new Object[array.length + probability];
         System.arraycopy(array, 0, newArray, 0, array.length); // Expand array.
@@ -59,6 +62,20 @@ public class ProbabilityCollection<E> implements Collection<E> {
         return array.length;
     }
 
+    public int getProbability(E item) {
+        MutableInteger integer = cont.get(item);
+        return integer == null ? 0 : integer.get();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("[");
+
+        cont.forEach((item, prob) -> builder.append(item).append(": ").append(prob).append(", "));
+
+        return builder.append("]").toString();
+    }
+
     @Override
     public int size() {
         return size;
@@ -71,26 +88,26 @@ public class ProbabilityCollection<E> implements Collection<E> {
 
     @Override
     public boolean contains(Object o) {
-        return cont.contains(o);
+        return cont.containsKey(o);
     }
 
     @NotNull
     @Override
     public Iterator<E> iterator() {
-        return cont.iterator();
+        return cont.keySet().iterator();
     }
 
     @NotNull
     @Override
     public Object[] toArray() {
-        return cont.toArray();
+        return cont.keySet().toArray();
     }
 
     @SuppressWarnings("SuspiciousToArrayCall")
     @NotNull
     @Override
     public <T> T[] toArray(@NotNull T[] a) {
-        return cont.toArray(a);
+        return cont.keySet().toArray(a);
     }
 
     /**
@@ -109,7 +126,7 @@ public class ProbabilityCollection<E> implements Collection<E> {
 
     @Override
     public boolean containsAll(@NotNull Collection<?> c) {
-        return cont.containsAll(c);
+        return cont.keySet().containsAll(c);
     }
 
     @Override
@@ -135,7 +152,7 @@ public class ProbabilityCollection<E> implements Collection<E> {
     }
 
     public Set<E> getContents() {
-        return new HashSet<>(cont);
+        return new HashSet<>(cont.keySet());
     }
 
     public static final class Singleton<T> extends ProbabilityCollection<T> {
@@ -143,11 +160,18 @@ public class ProbabilityCollection<E> implements Collection<E> {
 
         public Singleton(T single) {
             this.single = single;
+            cont.put(single, new MutableInteger(1));
         }
 
         @Override
         public ProbabilityCollection<T> add(T item, int probability) {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public <T1> ProbabilityCollection<T1> map(Function<T, T1> mapper, boolean carryNull) {
+            if(carryNull && single == null) return new Singleton<>(null);
+            return new Singleton<>(mapper.apply(single));
         }
 
         @Override
