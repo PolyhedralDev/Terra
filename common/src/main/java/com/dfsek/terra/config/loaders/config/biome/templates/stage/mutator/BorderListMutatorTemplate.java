@@ -10,6 +10,7 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class BorderListMutatorTemplate extends MutatorStageTemplate {
     @Value("from")
     private String from;
