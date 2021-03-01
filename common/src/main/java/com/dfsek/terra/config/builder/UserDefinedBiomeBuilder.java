@@ -40,7 +40,6 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
                         Scope varScope = new Scope().withParent(pack.getVarScope());
 
                         template.getVariables().forEach(varScope::create);
-                        System.out.println("Building biome " + template.getID() + " for seed " + s);
 
                         Map<String, NoiseSeeded> noiseBuilderMap = pack.getTemplate().getNoiseBuilderMap();
                         Map<String, FunctionTemplate> functionTemplateMap = new HashMap<>(template.getFunctions());
