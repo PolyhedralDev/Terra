@@ -4,7 +4,6 @@
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BiomeEffectsAccessor"
   ],
   "client": [
     "GeneratorTypeAccessor"

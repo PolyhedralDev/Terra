@@ -30,7 +30,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
-import com.dfsek.terra.fabric.mixin.BiomeEffectsAccessor;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricTree;
@@ -236,20 +235,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
-        BiomeEffectsAccessor biomeEffectsAccessor = (BiomeEffectsAccessor) vanilla.getEffects();
 
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(biomeEffectsAccessor.getWaterColor())
-                .waterFogColor(biomeEffectsAccessor.getWaterFogColor())
-                .fogColor(biomeEffectsAccessor.getFogColor())
-                .skyColor(biomeEffectsAccessor.getSkyColor())
-                .grassColorModifier(biomeEffectsAccessor.getGrassColorModifier());
-        if(biomeEffectsAccessor.getGrassColor().isPresent()) {
-            effects.grassColor(biomeEffectsAccessor.getGrassColor().get());
-        }
-        if(biomeEffectsAccessor.getFoliageColor().isPresent()) {
-            effects.foliageColor(biomeEffectsAccessor.getFoliageColor().get());
-        }
+                .waterColor(vanilla.getEffects().waterColor)
+                .waterFogColor(vanilla.getEffects().waterFogColor)
+                .fogColor(vanilla.getEffects().fogColor)
+                .skyColor(vanilla.getEffects().skyColor)
+                .grassColorModifier(vanilla.getEffects().grassColorModifier);
+        vanilla.getEffects().grassColor.ifPresent(effects::grassColor);
+        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
 
         return (new Biome.Builder())
                 .precipitation(vanilla.getPrecipitation())

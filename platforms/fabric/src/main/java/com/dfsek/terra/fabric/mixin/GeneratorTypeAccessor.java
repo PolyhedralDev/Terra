@@ -15,9 +15,6 @@ public interface GeneratorTypeAccessor {
         throw new UnsupportedOperationException();
     }
 
-    @Accessor
-    Text getTranslationKey();
-
     @Mutable
     @Accessor
     void setTranslationKey(Text translationKey);
