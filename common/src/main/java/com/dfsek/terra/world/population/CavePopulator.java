@@ -12,6 +12,7 @@ import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.profiler.ProfileFuture;
 import com.dfsek.terra.world.TerraWorld;
@@ -40,7 +41,7 @@ public class CavePopulator implements TerraBlockPopulator {
         try(ProfileFuture ignored = tw.getProfiler().measure("CaveTime")) {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
-            ConfigPack config = tw.getConfig();
+            WorldConfig config = tw.getConfig();
 
             for(UserDefinedCarver c : config.getCarvers()) {
                 CarverTemplate template = c.getConfig();

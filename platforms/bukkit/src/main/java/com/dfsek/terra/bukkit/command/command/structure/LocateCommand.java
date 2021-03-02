@@ -21,6 +21,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +47,7 @@ public class LocateCommand extends WorldCommand {
         }
         TerraStructure s;
         try {
-            s = Objects.requireNonNull(getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getStructure(id));
+            s = Objects.requireNonNull(getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getStructureRegistry().get(id));
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.structure.invalid", BukkitAdapter.adapt(sender), id);
             return true;
@@ -90,7 +91,9 @@ public class LocateCommand extends WorldCommand {
         if(!(sender instanceof Player) || !(TerraWorld.isTerraWorld(BukkitAdapter.adapt(((Player) sender).getWorld()))))
             return Collections.emptyList();
 
-        List<String> ids = getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getStructureIDs();
+        List<String> ids = new ArrayList<>();
+
+        getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getStructureRegistry().forEach((id, struct) -> ids.add(id));
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
 

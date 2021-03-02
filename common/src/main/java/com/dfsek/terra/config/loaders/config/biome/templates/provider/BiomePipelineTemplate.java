@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome.templates.source;
+package com.dfsek.terra.config.loaders.config.biome.templates.provider;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
@@ -8,7 +8,6 @@ import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.world.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.StandardBiomeProvider;
-import com.dfsek.terra.registry.config.BiomeRegistry;
 
 import java.util.List;
 
@@ -25,8 +24,7 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     @Value("pipeline.source")
     private SourceSeeded source;
 
-    public BiomePipelineTemplate(BiomeRegistry registry, TerraPlugin main) {
-        super(registry);
+    public BiomePipelineTemplate(TerraPlugin main) {
         this.main = main;
     }
 

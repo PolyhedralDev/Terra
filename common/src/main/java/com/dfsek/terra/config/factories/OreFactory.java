@@ -7,7 +7,7 @@ import com.dfsek.terra.world.population.items.ores.DeformedSphereOre;
 import com.dfsek.terra.world.population.items.ores.Ore;
 import com.dfsek.terra.world.population.items.ores.VanillaOre;
 
-public class OreFactory implements TerraFactory<OreTemplate, Ore> {
+public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
     @Override
     public Ore build(OreTemplate config, TerraPlugin main) {
         BlockData m = config.getMaterial();

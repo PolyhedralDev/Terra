@@ -31,6 +31,7 @@ import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,7 +183,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("tags")
     @Default
     @Abstractable
-    private Set<String> tags;
+    private Set<String> tags = new HashSet<>();
 
     @Value("carving")
     @Abstractable

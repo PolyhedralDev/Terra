@@ -3,17 +3,16 @@ package com.dfsek.terra.api.world.biome;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
-import com.dfsek.terra.config.builder.GeneratorBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.world.generation.WorldGenerator;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements TerraBiome {
-    private final GeneratorBuilder gen;
+    private final WorldGenerator gen;
     private final ProbabilityCollection<Biome> vanilla;
     private final String id;
     private final BiomeTemplate config;
@@ -21,13 +20,13 @@ public class UserDefinedBiome implements TerraBiome {
     private final Set<String> tags;
 
 
-    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, GeneratorBuilder gen, BiomeTemplate config) {
+    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, WorldGenerator gen, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();
         this.config = config;
         this.color = config.getColor();
-        this.tags = config.getTags() == null ? new HashSet<>() : config.getTags();
+        this.tags = config.getTags();
         tags.add("BIOME:" + id);
     }
 
@@ -52,7 +51,7 @@ public class UserDefinedBiome implements TerraBiome {
 
     @Override
     public Generator getGenerator(World w) {
-        return gen.build(w.getSeed());
+        return gen;
     }
 
     @Override
@@ -63,5 +62,10 @@ public class UserDefinedBiome implements TerraBiome {
     @Override
     public Set<String> getTags() {
         return tags;
+    }
+
+    @Override
+    public String toString() {
+        return "{BIOME:" + getID() + "}";
     }
 }

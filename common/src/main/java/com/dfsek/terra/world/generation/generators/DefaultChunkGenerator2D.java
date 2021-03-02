@@ -86,7 +86,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
 
-            Sampler sampler = cache.getChunk(world, chunkX, chunkZ);
+            Sampler sampler = cache.getChunk(chunkX, chunkZ);
 
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
@@ -119,11 +119,6 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
     @Override
     public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
         DefaultChunkGenerator3D.biomes(world, chunkX, chunkZ, biome, main);
-    }
-
-    @Override
-    public SamplerCache getCache() {
-        return cache;
     }
 
     @Override
