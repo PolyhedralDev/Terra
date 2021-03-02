@@ -37,10 +37,12 @@ configure<LoomGradleExtension> {
 }
 
 tasks.register<RemapJarTask>("remapShadedJar") {
-    dependsOn("shadowJar")
-    setProperty("input", file("build/libs/Terra-fabric-${version}-shaded.jar"))
-    setProperty("addNestedDependencies", false)
-    setProperty("remapAccessWidener", true)
+    val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
+    dependsOn(shadowJar)
+    input.set(shadowJar.archiveFile)
+    archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), "shaded-mapped.jar"))
+    addNestedDependencies.set(true)
+    remapAccessWidener.set(true)
 }
 
 dependencies {

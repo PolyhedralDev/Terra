@@ -30,6 +30,8 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
+import com.dfsek.terra.fabric.mixin.BiomeEffectsAccessor;
+import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
@@ -234,17 +236,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
+        BiomeEffectsAccessor biomeEffectsAccessor = (BiomeEffectsAccessor) vanilla.getEffects();
+
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(vanilla.getWaterColor())
-                .waterFogColor(vanilla.getWaterFogColor())
-                .fogColor(vanilla.getFogColor())
-                .skyColor(vanilla.getSkyColor())
-                .grassColorModifier(vanilla.getEffects().getGrassColorModifier());
-        if(vanilla.getEffects().getGrassColor().isPresent()) {
-            effects.grassColor(vanilla.getEffects().getGrassColor().get());
+                .waterColor(biomeEffectsAccessor.getWaterColor())
+                .waterFogColor(biomeEffectsAccessor.getWaterFogColor())
+                .fogColor(biomeEffectsAccessor.getFogColor())
+                .skyColor(biomeEffectsAccessor.getSkyColor())
+                .grassColorModifier(biomeEffectsAccessor.getGrassColorModifier());
+        if(biomeEffectsAccessor.getGrassColor().isPresent()) {
+            effects.grassColor(biomeEffectsAccessor.getGrassColor().get());
         }
-        if(vanilla.getEffects().getFoliageColor().isPresent()) {
-            effects.foliageColor(vanilla.getEffects().getFoliageColor().get());
+        if(biomeEffectsAccessor.getFoliageColor().isPresent()) {
+            effects.foliageColor(biomeEffectsAccessor.getFoliageColor().get());
         }
 
         return (new Biome.Builder())
@@ -296,8 +300,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     }
                 };
                 //noinspection ConstantConditions
-                generatorType.translationKey = (new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorType.VALUES.add(generatorType);
+                ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
+                GeneratorTypeAccessor.getVALUES().add(generatorType);
             });
         }
 
