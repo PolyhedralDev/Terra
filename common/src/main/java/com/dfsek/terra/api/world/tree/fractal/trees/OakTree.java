@@ -39,7 +39,7 @@ public class OakTree extends FractalTree {
 
     private void growBranch(Location l1, Vector3 diff, double d1, int recursions, Random r) {
         BlockData wood = getMain().getWorldHandle().createBlockData("minecraft:oak_wood");
-        BlockData leaves = getMain().getWorldHandle().createBlockData("minecraft:oak_leave");
+        BlockData leaves = getMain().getWorldHandle().createBlockData("minecraft:oak_leaves");
         if(recursions > 1) {
             geo.generateSphere(l1, leaves, 1 + r.nextInt(2) + (3 - recursions), false, r);
             if(recursions > 2) return;
