@@ -6,6 +6,7 @@ import com.dfsek.terra.bukkit.command.WorldCommand;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -15,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,10 +29,10 @@ public class BiomeInfoCommand extends WorldCommand {
     @Override
     public boolean execute(@NotNull Player sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, World world) {
         String id = args[0];
-        ConfigPack cfg = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig();
+        WorldConfig cfg = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig();
         UserDefinedBiome b;
         try {
-            b = (UserDefinedBiome) cfg.getBiome(id);
+            b = (UserDefinedBiome) cfg.getBiomeRegistry().get(id);
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.biome.invalid", new BukkitCommandSender(sender), id);
             return true;
@@ -74,7 +76,9 @@ public class BiomeInfoCommand extends WorldCommand {
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
         if(!(sender instanceof Player) || !TerraWorld.isTerraWorld(BukkitAdapter.adapt(((Player) sender).getWorld())))
             return Collections.emptyList();
-        List<String> ids = getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getBiomeIDs();
+        List<String> ids = new ArrayList<>();
+
+        getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getBiomeRegistry().forEach((id, biome) -> ids.add(id));
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         return Collections.emptyList();

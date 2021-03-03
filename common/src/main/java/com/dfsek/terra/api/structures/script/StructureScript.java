@@ -31,7 +31,6 @@ import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
-import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
@@ -49,7 +48,7 @@ public class StructureScript {
     private final TerraPlugin main;
     private String tempID;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache, FunctionRegistry functionRegistry) throws ParseException {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, FunctionRegistry functionRegistry) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -60,7 +59,7 @@ public class StructureScript {
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
         parser.registerFunction("block", new BlockFunctionBuilder(main))
-                .registerFunction("check", new CheckFunctionBuilder(main, cache))
+                .registerFunction("check", new CheckFunctionBuilder(main))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())

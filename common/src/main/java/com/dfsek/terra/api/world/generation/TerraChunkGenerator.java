@@ -31,7 +31,5 @@ public interface TerraChunkGenerator {
 
     TerraPlugin getMain();
 
-    SamplerCache getCache();
-
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
 }

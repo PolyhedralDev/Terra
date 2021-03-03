@@ -92,7 +92,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         boolean succeed = registry.loadAll(this);
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
-            ((BukkitChunkGeneratorWrapper) world.getGenerator().getHandle()).getHandle().getCache().clear();
+            tw.getConfig().getSamplerCache().clear();
             String packID = tw.getConfig().getTemplate().getID();
             newMap.put(world, new TerraWorld(world, registry.get(packID), this));
         });
@@ -218,7 +218,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             if(!registry.contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
             ConfigPack pack = registry.get(id);
             worlds.put(worldName, pack);
-            return new DefaultChunkGenerator3D(registry.get(id), this, pack.getSamplerCache());
+            return new DefaultChunkGenerator3D(registry.get(id), this);
         }));
     }
 

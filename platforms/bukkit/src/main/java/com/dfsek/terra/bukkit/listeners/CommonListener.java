@@ -9,6 +9,7 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -46,7 +47,7 @@ public class CommonListener implements Listener {
         World bukkit = BukkitAdapter.adapt(e.getWorld());
         if(!TerraWorld.isTerraWorld(bukkit)) return;
         TerraWorld tw = main.getWorld(bukkit);
-        ConfigPack c = tw.getConfig();
+        WorldConfig c = tw.getConfig();
         if(c.getTemplate().isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();

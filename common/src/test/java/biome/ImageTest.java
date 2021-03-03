@@ -48,7 +48,7 @@ public class ImageTest {
         };
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), null));
 
-        return new ImageBiomeProvider(biomeRegistry, ImageIO.read(ImageTest.class.getResourceAsStream("/map.jpg")), 1, ImageBiomeProvider.Align.CENTER);
+        return new ImageBiomeProvider(biomeRegistry.entries(), ImageIO.read(ImageTest.class.getResourceAsStream("/map.jpg")), 1, ImageBiomeProvider.Align.CENTER);
     }
 
     @Test

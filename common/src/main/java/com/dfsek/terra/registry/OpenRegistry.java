@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * Registry implementation with read/write access. For internal use only.
  * @param <T>
  */
-public abstract class OpenRegistry<T> implements Registry<T> {
+public class OpenRegistry<T> implements Registry<T> {
     private final Map<String, T> objects = new HashMap<>();
 
     @Override

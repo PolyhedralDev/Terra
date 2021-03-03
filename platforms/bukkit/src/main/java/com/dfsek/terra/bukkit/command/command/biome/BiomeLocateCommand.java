@@ -21,6 +21,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class BiomeLocateCommand extends WorldCommand {
         }
         TerraBiome b;
         try {
-            b = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getBiome(id);
+            b = getMain().getWorld(BukkitAdapter.adapt(world)).getConfig().getBiomeRegistry().get(id);
         } catch(IllegalArgumentException | NullPointerException e) {
             LangUtil.send("command.biome.invalid", BukkitAdapter.adapt(sender), id);
             return true;
@@ -84,7 +85,9 @@ public class BiomeLocateCommand extends WorldCommand {
     public List<String> getTabCompletions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
         if(!(sender instanceof Player) || !TerraWorld.isTerraWorld(BukkitAdapter.adapt(((Player) sender).getWorld())))
             return Collections.emptyList();
-        List<String> ids = getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getBiomeIDs();
+        List<String> ids = new ArrayList<>();
+
+        getMain().getWorld(BukkitAdapter.adapt(((Player) sender).getWorld())).getConfig().getBiomeRegistry().forEach((id, biome) -> ids.add(id));
         if(args.length == 1)
             return ids.stream().filter(string -> string.toUpperCase().startsWith(args[0].toUpperCase())).collect(Collectors.toList());
         return Collections.emptyList();
