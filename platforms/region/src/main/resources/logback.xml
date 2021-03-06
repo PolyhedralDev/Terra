@@ -1,0 +1,63 @@
+<!--
+  ~ Copyright (c) 2020 solonovamax <solonovamax@12oclockpoint.com>
+  ~
+  ~       This program is free software: you can redistribute it and/or modify
+  ~       it under the terms of the GNU General Public License as published by
+  ~       the Free Software Foundation, either version 3 of the License, or
+  ~       (at your option) any later version.
+  ~
+  ~       This program is distributed in the hope that it will be useful,
+  ~       but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~       GNU General Public License for more details.
+  ~
+  ~       You should have received a copy of the GNU General Public License
+  ~       along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+
+<configuration>
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+    <timestamp key="startTimestamp" datePattern="yyyyMMddHHmmssSSS"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <!--            <pattern>%d %highlight(%-5level) [%thread] %class - %highlight(%msg %n) %xEx</pattern>-->
+            <pattern>%d %-20([%.-20(%thread)]) %highlight(%-5level) %logger{40} - %highlight(%msg){}%n{}%ex{full,DISPLAY_EX_EVAL}
+            </pattern>
+        </encoder>
+        <!--
+        <withJansi>true</withJansi>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d [%thread] %highlight(%-5level) %logger{15} - %highlight(%msg %n) %xEx</Pattern>
+        </layout>
+        -->
+    </appender>
+    <property name="LOG_DIR" value="logs/"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/region-generator.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- hourly rollover -->
+            <fileNamePattern>${LOG_DIR}/region-generator.%d{yyyy-MM-dd_HH}.%i.log.gz</fileNamePattern>
+            <!-- keep 60 days worth of history capped at 5GB total size & 10MB per file -->
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-20([%.-25(%thread)]) %-5level %-60logger{60} - %msg{}%n{}%ex{full, DISPLAY_EX_EVAL}</pattern>
+        </encoder>
+    </appender>
+    <root level="TRACE">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <!--    <logger level="warn">-->
+    <!--        <appender-ref ref="STDOUT"/>-->
+    <!--    </logger>-->
+</configuration>

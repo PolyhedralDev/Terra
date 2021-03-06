@@ -30,10 +30,27 @@ fun Project.configureCommon() {
 }
 
 fun Project.getGitHash(): String {
-    val stdout = java.io.ByteArrayOutputStream()
-    exec {
+    val stdout = ByteArrayOutputStream()
+    val result = exec {
+        isIgnoreExitValue = true
         commandLine = mutableListOf("git", "rev-parse", "--short", "HEAD")
         standardOutput = stdout
+    }
+    when (result.exitValue) {
+        128 -> {
+            project.logger.error("You must git clone the repository. You cannot build from a zip/tarball of the sources.")
+            result.rethrowFailure().assertNormalExitValue()
+        }
+        127 -> {
+            project.logger.error("Could not find git executable. Please install git. https://git-scm.com/downloads")
+            result.rethrowFailure().assertNormalExitValue()
+        }
+        0 -> { // do nothing
+        }
+        else -> {
+            project.logger.error("An error may or may not have occurred. The exit code was not zero.")
+            result.rethrowFailure().assertNormalExitValue()
+        }
     }
     return stdout.toString().trim()
 }

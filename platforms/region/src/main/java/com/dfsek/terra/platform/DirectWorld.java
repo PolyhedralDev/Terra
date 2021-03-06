@@ -6,13 +6,14 @@ import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
 import net.querz.nbt.tag.CompoundTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DirectWorld implements World {
+    private final Logger logger = LoggerFactory.getLogger(DirectWorld.class);
     private final long seed;
     private final GenWrapper generator;
     private final Map<Long, MCAFile> files = Collections.synchronizedMap(new HashMap<>());
@@ -62,7 +64,7 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public Chunk getChunkAt(int x, int z) {
+    public DirectChunkData getChunkAt(int x, int z) {
         MCAFile file = compute(x, z);
         net.querz.mca.Chunk chunk = file.getChunk(x, z);
         if(chunk == null) {
@@ -108,7 +110,7 @@ public class DirectWorld implements World {
                 File test = new File("region", MCAUtil.createNameFromChunkLocation(x, z));
                 if(test.exists()) {
                     try {
-                        System.out.println("Re-loading " + MCAUtil.createNameFromChunkLocation(x, z));
+                        logger.info("Re-loading {}", MCAUtil.createNameFromChunkLocation(x, z));
                         return MCAUtil.read(test);
                     } catch(IOException e) {
                         e.printStackTrace();

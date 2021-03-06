@@ -61,6 +61,7 @@ fun Project.configureDistribution() {
     }
 
     tasks.named<ShadowJar>("shadowJar") {
+        mergeServiceFiles()
         // Tell shadow to download the packs
         dependsOn(downloadDefaultPacks)
 
@@ -71,7 +72,8 @@ fun Project.configureDistribution() {
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("parsii", "com.dfsek.terra.lib.parsii")
         relocate("net.jafama", "com.dfsek.terra.lib.jafama")
-        minimize()
+        minimize {
+        }
     }
     convention.getPlugin<BasePluginConvention>().archivesBaseName = project.name
 
