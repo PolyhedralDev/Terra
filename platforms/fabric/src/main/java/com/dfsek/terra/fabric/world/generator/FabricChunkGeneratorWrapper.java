@@ -1,6 +1,8 @@
 package com.dfsek.terra.fabric.world.generator;
 
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
@@ -30,7 +32,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
-public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.dfsek.terra.api.platform.world.generator.ChunkGenerator {
+public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     private final long seed;
     private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
@@ -85,10 +87,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
         this.seed = seed;
     }
 
-    @Override
-    public DefaultChunkGenerator3D getHandle() {
-        return delegate;
-    }
 
     @Override
     protected Codec<? extends ChunkGenerator> getCodec() {
@@ -148,5 +146,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements com.d
         }
 
         return new VerticalBlockSample(array);
+    }
+
+    @Override
+    public TerraChunkGenerator getHandle() {
+        return delegate;
     }
 }
