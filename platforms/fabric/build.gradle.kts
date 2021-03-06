@@ -39,7 +39,7 @@ configure<LoomGradleExtension> {
 tasks.register<RemapJarTask>("remapShadedJar") {
     dependsOn("shadowJar")
     setProperty("input", file("build/libs/Terra-fabric-${version}-shaded.jar"))
-    setProperty("addNestedDependencies", false)
+    setProperty("addNestedDependencies", true)
     setProperty("remapAccessWidener", true)
 }
 
@@ -57,7 +57,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
 
-    "compileOnly"("net.fabricmc:sponge-mixin:+")
-    "annotationProcessor"("net.fabricmc:sponge-mixin:+")
+    "compileOnly"("net.fabricmc:sponge-mixin:0.8.1")
+    "annotationProcessor"("net.fabricmc:sponge-mixin:0.8.1")
     "annotationProcessor"("net.fabricmc:fabric-loom:+")
 }
