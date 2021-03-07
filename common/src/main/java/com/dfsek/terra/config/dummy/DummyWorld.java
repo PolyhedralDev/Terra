@@ -7,6 +7,7 @@ import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 
 import java.io.File;
 import java.util.UUID;
@@ -24,12 +25,12 @@ public class DummyWorld implements World {
 
     @Override
     public int getMaxHeight() {
-        return 155;
+        return 255;
     }
 
     @Override
     public ChunkGenerator getGenerator() {
-        return () -> (ChunkGenerator) () -> null;
+        return () -> (GeneratorWrapper) () -> null;
     }
 
     @Override
