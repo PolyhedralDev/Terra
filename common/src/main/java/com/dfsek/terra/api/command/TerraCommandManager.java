@@ -19,11 +19,14 @@ public class TerraCommandManager implements CommandManager {
 
     @Override
     public void execute(String commandName, List<String> argsIn) throws CommandException {
+        execute(commands.get(commandName), new ArrayList<>(argsIn));
+    }
 
-        List<String> args = new ArrayList<>(argsIn);
+    private void execute(CommandHolder commandHolder, List<String> args) throws CommandException {
+        List<String> ogArgs = new ArrayList<>(args);
+
         ExecutionState state = new ExecutionState();
 
-        CommandHolder commandHolder = commands.get(commandName);
         Class<? extends CommandTemplate> commandClass = commandHolder.clazz;
 
         if(!commandClass.isAnnotationPresent(Command.class)) {
@@ -38,7 +41,10 @@ public class TerraCommandManager implements CommandManager {
         }
 
         if(commandHolder.subcommands.containsKey(args.get(0))) {
-            invoke(commandHolder.subcommands.get(args.get(0)).clazz(), state);
+            String c = args.get(0);
+            args.remove(0);
+            execute(commandHolder.subcommands.get(c), args);
+            return;
         }
 
 
@@ -49,7 +55,7 @@ public class TerraCommandManager implements CommandManager {
             req = argument.required();
 
             if(args.isEmpty()) {
-                if(req) throw new InvalidArgumentsException("Invalid arguments: " + command.usage());
+                if(req) throw new InvalidArgumentsException("Invalid arguments: " + ogArgs + ", usage: " + command.usage());
                 break;
             }
 
@@ -83,16 +89,17 @@ public class TerraCommandManager implements CommandManager {
 
     private static final class CommandHolder {
         private final Class<? extends CommandTemplate> clazz;
-        private final Map<String, Subcommand> subcommands = new HashMap<>();
+        private final Map<String, CommandHolder> subcommands = new HashMap<>();
 
         private CommandHolder(Class<? extends CommandTemplate> clazz) {
             this.clazz = clazz;
             if(clazz.isAnnotationPresent(Command.class)) {
                 Command command = clazz.getAnnotation(Command.class);
                 for(Subcommand subcommand : command.subcommands()) {
-                    subcommands.put(subcommand.value(), subcommand);
+                    CommandHolder holder = new CommandHolder(subcommand.clazz());
+                    subcommands.put(subcommand.value(), holder);
                     for(String alias : subcommand.aliases()) {
-                        subcommands.put(alias, subcommand);
+                        subcommands.put(alias, holder);
                     }
                 }
             }
