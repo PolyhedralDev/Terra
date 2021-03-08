@@ -174,7 +174,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
 
         c.setExecutor(command);
-        //c.setTabCompleter(command);
+        c.setTabCompleter(command);
 
 
         long save = config.getDataSaveInterval();

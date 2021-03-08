@@ -21,6 +21,7 @@ import com.dfsek.terra.world.TerraWorld;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,26 @@ public class TerraCommandManager implements CommandManager {
         commands.put(name, new CommandHolder(clazz));
     }
 
+    @Override
+    public List<String> tabComplete(String command, CommandSender sender, List<String> args) throws CommandException {
+        if(args.isEmpty()) return new ArrayList<>(commands.keySet());
+
+        List<String> completions = new ArrayList<>();
+
+        if(args.size() == 1) {
+            completions.addAll(commands.get(command).subcommands.keySet());
+        }
+
+        if(args.size() <= commands.get(command).arguments.size()) {
+            try {
+                completions.addAll(commands.get(command).arguments.get(args.size()).tabCompleter().getConstructor().newInstance().complete(sender));
+            } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new MalformedCommandException("Unable to reflectively instantiate tab-completer: ", e);
+            }
+        }
+        return completions;
+    }
+
     /**
      * Pre-processes command metadata.
      */
@@ -145,6 +166,7 @@ public class TerraCommandManager implements CommandManager {
         private final Class<? extends CommandTemplate> clazz;
         private final Map<String, CommandHolder> subcommands = new HashMap<>();
         private final Map<String, String> switches = new HashMap<>();
+        private final List<Argument> arguments;
 
         private CommandHolder(Class<? extends CommandTemplate> clazz) {
             this.clazz = clazz;
@@ -163,7 +185,8 @@ public class TerraCommandManager implements CommandManager {
                         switches.put(alias, aSwitch.value());
                     }
                 }
-            }
+                arguments = Arrays.asList(command.arguments());
+            } else arguments = Collections.emptyList();
         }
     }
 }

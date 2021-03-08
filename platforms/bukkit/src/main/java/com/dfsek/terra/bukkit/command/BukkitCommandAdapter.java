@@ -6,13 +6,16 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class BukkitCommandAdapter implements CommandExecutor {
+public class BukkitCommandAdapter implements CommandExecutor, TabCompleter {
     private final CommandManager manager;
 
     public BukkitCommandAdapter(CommandManager manager) {
@@ -32,5 +35,17 @@ public class BukkitCommandAdapter implements CommandExecutor {
             sender.sendMessage(e.getMessage());
         }
         return true;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        List<String> argList = new ArrayList<>(Arrays.asList(args));
+
+        try {
+            return manager.tabComplete(argList.remove(0), BukkitAdapter.adapt(sender), argList);
+        } catch(CommandException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 }

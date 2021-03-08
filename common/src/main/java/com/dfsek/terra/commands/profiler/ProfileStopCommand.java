@@ -24,6 +24,6 @@ public class ProfileStopCommand implements CommandTemplate {
         Player player = (Player) state.getSender();
         TerraWorld world = main.getWorld(player.getWorld());
         world.getProfiler().setProfiling(false);
-        state.getSender().sendMessage("Profiling enabled.");
+        state.getSender().sendMessage("Profiling disabled.");
     }
 }
