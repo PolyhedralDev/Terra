@@ -3,9 +3,11 @@ package com.dfsek.terra.api.command;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
+import com.dfsek.terra.api.command.annotation.Switch;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
+import com.dfsek.terra.api.command.exception.SwitchFormatException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -62,12 +64,23 @@ public class TerraCommandManager implements CommandManager {
 
             String arg = args.get(0);
 
-            if(arg.startsWith("-")) { // flags have started.
-                if(req) throw new InvalidArgumentsException("Flags must come after arguments.");
+            if(arg.startsWith("-")) { // switches have started.
+                if(req) throw new InvalidArgumentsException("Switches must come after arguments.");
                 break;
             }
 
             state.addArgument(argument.value(), args.remove(0));
+        }
+
+        while(!args.isEmpty()) {
+            String aSwitch = args.remove(0);
+            if(!aSwitch.startsWith("-")) throw new SwitchFormatException("Invalid switch \"" + aSwitch + "\"");
+
+            String val = aSwitch.substring(1); // remove dash
+
+            if(!commandHolder.switches.containsKey(val)) throw new SwitchFormatException("No such switch \"" + aSwitch + "\"");
+
+            state.addSwitch(commandHolder.switches.get(val));
         }
 
 
@@ -91,6 +104,7 @@ public class TerraCommandManager implements CommandManager {
     private static final class CommandHolder {
         private final Class<? extends CommandTemplate> clazz;
         private final Map<String, CommandHolder> subcommands = new HashMap<>();
+        private final Map<String, String> switches = new HashMap<>();
 
         private CommandHolder(Class<? extends CommandTemplate> clazz) {
             this.clazz = clazz;
@@ -101,6 +115,12 @@ public class TerraCommandManager implements CommandManager {
                     subcommands.put(subcommand.value(), holder);
                     for(String alias : subcommand.aliases()) {
                         subcommands.put(alias, holder);
+                    }
+                }
+                for(Switch aSwitch : command.switches()) {
+                    switches.put(aSwitch.value(), aSwitch.value());
+                    for(String alias : aSwitch.aliases()) {
+                        switches.put(alias, aSwitch.value());
                     }
                 }
             }

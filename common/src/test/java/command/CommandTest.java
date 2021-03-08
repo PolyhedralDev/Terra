@@ -7,6 +7,7 @@ import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
+import com.dfsek.terra.api.command.annotation.Switch;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
@@ -64,6 +65,24 @@ public class CommandTest {
         }
     }
 
+    @Test
+    public void switches() throws CommandException {
+        CommandManager manager = new TerraCommandManager();
+        manager.register("test", DemoSwitchCommand.class);
+
+        manager.execute("test", Arrays.asList("first", "2"));
+        manager.execute("test", Arrays.asList("first", "2", "3.4"));
+
+        manager.execute("test", Arrays.asList("first", "2", "-a"));
+        manager.execute("test", Arrays.asList("first", "2", "3.4", "-b"));
+
+        manager.execute("test", Arrays.asList("first", "2", "-aSwitch"));
+        manager.execute("test", Arrays.asList("first", "2", "3.4", "-bSwitch"));
+
+        manager.execute("test", Arrays.asList("first", "2", "-aSwitch", "-b"));
+        manager.execute("test", Arrays.asList("first", "2", "3.4", "-bSwitch", "-a"));
+    }
+
     @Command(
             arguments = {
                     @Argument(value = "arg0"),
@@ -81,6 +100,34 @@ public class CommandTest {
             } catch(IllegalArgumentException e) {
                 System.out.println("arg2 undefined.");
             }
+        }
+    }
+
+    @Command(
+            arguments = {
+                    @Argument(value = "arg0"),
+                    @Argument(value = "arg1", type = int.class),
+                    @Argument(value = "arg2", type = double.class, required = false)
+            },
+            switches = {
+                    @Switch(value = "a", aliases = {"aSwitch"}),
+                    @Switch(value = "b", aliases = {"bSwitch"})
+            }
+    )
+    public static final class DemoSwitchCommand implements CommandTemplate {
+
+        @Override
+        public void execute(ExecutionState state) {
+            System.out.println(state.getArgument("arg0", String.class));
+            System.out.println(state.getArgument("arg1", int.class));
+            try {
+                System.out.println(state.getArgument("arg2", double.class));
+            } catch(IllegalArgumentException e) {
+                System.out.println("arg2 undefined.");
+            }
+
+            System.out.println("A: " + state.hasSwitch("a"));
+            System.out.println("B: " + state.hasSwitch("b"));
         }
     }
 

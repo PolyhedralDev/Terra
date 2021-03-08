@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface Command {
     Argument[] arguments() default {};
 
-    Flag[] flags() default {};
+    Switch[] switches() default {};
 
     Subcommand[] subcommands() default {};
 

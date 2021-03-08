@@ -6,15 +6,15 @@ import java.util.Map;
 import java.util.Set;
 
 public final class ExecutionState {
-    private final Set<String> flags = new HashSet<>();
+    private final Set<String> switches = new HashSet<>();
     private final Map<String, String> args = new HashMap<>();
 
     protected ExecutionState() {
 
     }
 
-    protected void addFlag(String flag) {
-        flags.add(flag);
+    protected void addSwitch(String flag) {
+        switches.add(flag);
     }
 
     protected void addArgument(String arg, String value) {
@@ -39,7 +39,7 @@ public final class ExecutionState {
         return (T) value;
     }
 
-    public boolean hasFlag(String flag) {
-        return flags.contains(flag);
+    public boolean hasSwitch(String flag) {
+        return switches.contains(flag);
     }
 }

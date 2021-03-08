@@ -7,10 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface Flag {
+public @interface Switch {
     String value();
 
-    String shorthand() default "";
-
-    String defaultValue() default "";
+    String[] aliases() default {};
 }
