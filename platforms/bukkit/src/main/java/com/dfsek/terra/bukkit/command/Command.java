@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents a command or subcommand, can be nested via getSubCommands.
+ * Represents a command or subcommands, can be nested via getSubCommands.
  */
 public abstract class Command implements CommandExecutor, TabCompleter {
     private final TerraPlugin main;
@@ -29,7 +29,8 @@ public abstract class Command implements CommandExecutor, TabCompleter {
     }
 
     /**
-     * Gets the name of the command/subcommand
+     * Gets the name of the command/subcommands
+     *
      * @return Name of command
      */
     public abstract String getName();
@@ -47,7 +48,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * (if defined) will be sent to the player.
      *
      * @param sender Source of the command
-     * @param command Command which was executed
+     * @param command CommandTemplate which was executed
      * @param label Alias of the command which was used
      * @param args Passed command arguments
      * @return true if a valid command, otherwise false
@@ -67,7 +68,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * (if defined) will be sent to the player.
      *
      * @param sender Source of the command
-     * @param command Command which was executed
+     * @param command CommandTemplate which was executed
      * @param label Alias of the command which was used
      * @param args Passed command arguments
      * @return true if a valid command, otherwise false

@@ -19,10 +19,10 @@ public abstract class PlayerCommand extends Command {
      * If false is returned, then the "usage" plugin.yml entry for this command
      * (if defined) will be sent to the player.
      *
-     * @param sender Source of the command
-     * @param command Command which was executed
-     * @param label Alias of the command which was used
-     * @param args Passed command arguments
+     * @param sender  Source of the command
+     * @param command CommandTemplate which was executed
+     * @param label   Alias of the command which was used
+     * @param args    Passed command arguments
      * @return true if a valid command, otherwise false
      */
     @Override
@@ -34,6 +34,7 @@ public abstract class PlayerCommand extends Command {
         Player p = (Player) sender;
         return execute(p, command, label, args);
     }
+
     /**
      * Executes the given command, returning its success.
      * <br>
@@ -41,7 +42,7 @@ public abstract class PlayerCommand extends Command {
      * (if defined) will be sent to the player.
      *
      * @param sender Player that executed command
-     * @param command Command which was executed
+     * @param command CommandTemplate which was executed
      * @param label Alias of the command which was used
      * @param args Passed command arguments
      * @return true if a valid command, otherwise false
