@@ -50,8 +50,9 @@ public class TerraCommandManager implements CommandManager {
 
         boolean req = true;
         for(Argument argument : command.arguments()) {
-            if(!req && argument.required())
+            if(!req && argument.required()) {
                 throw new MalformedCommandException("Required arguments must come first! Arguments: " + Arrays.toString(command.arguments()));
+            }
             req = argument.required();
 
             if(args.isEmpty()) {

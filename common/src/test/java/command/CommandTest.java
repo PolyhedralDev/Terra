@@ -28,6 +28,7 @@ public class CommandTest {
         manager.execute("test", Arrays.asList("s2", "first", "2"));
         manager.execute("test", Arrays.asList("sub1", "first", "2", "3.4"));
         manager.execute("test", Arrays.asList("sub2", "first", "2"));
+        manager.execute("test", Arrays.asList("first", "2")); // Parent command args
     }
 
     @Test
