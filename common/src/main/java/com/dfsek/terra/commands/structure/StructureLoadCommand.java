@@ -11,7 +11,8 @@ import com.dfsek.terra.api.command.annotation.Switch;
                 @Argument(
                         value = "rotation",
                         required = false,
-                        type = int.class
+                        type = int.class,
+                        tabCompleter = RotationCompleter.class
                 )
         },
         switches = {

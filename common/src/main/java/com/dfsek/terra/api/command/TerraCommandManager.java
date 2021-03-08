@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TerraCommandManager implements CommandManager {
     private final Map<String, CommandHolder> commands = new HashMap<>();
@@ -78,7 +79,7 @@ public class TerraCommandManager implements CommandManager {
             } else throw new InvalidArgumentsException("Expected 0 arguments, found " + args.size());
         }
 
-        if(commandHolder.subcommands.containsKey(args.get(0))) {
+        if(!args.isEmpty() && commandHolder.subcommands.containsKey(args.get(0))) {
             String c = args.get(0);
             args.remove(0);
             execute(commandHolder.subcommands.get(c), sender, args);
@@ -141,20 +142,29 @@ public class TerraCommandManager implements CommandManager {
 
     @Override
     public List<String> tabComplete(String command, CommandSender sender, List<String> args) throws CommandException {
-        if(args.isEmpty()) return new ArrayList<>(commands.keySet());
+        if(args.isEmpty()) return new ArrayList<>(commands.keySet()).stream().sorted(String::compareTo).collect(Collectors.toList());
+        return tabComplete(commands.get(command), sender, new ArrayList<>(args)).stream().filter(s -> s.toLowerCase().startsWith(args.get(args.size() - 1).toLowerCase())).sorted(String::compareTo).collect(Collectors.toList());
+    }
 
+    private List<String> tabComplete(CommandHolder holder, CommandSender sender, List<String> args) throws CommandException {
+        if(args.isEmpty()) return Collections.emptyList();
         List<String> completions = new ArrayList<>();
 
         if(args.size() == 1) {
-            completions.addAll(commands.get(command).subcommands.keySet());
+            completions.addAll(holder.subcommands.keySet());
         }
 
-        if(args.size() <= commands.get(command).arguments.size()) {
-            try {
-                completions.addAll(commands.get(command).arguments.get(args.size()).tabCompleter().getConstructor().newInstance().complete(sender));
-            } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new MalformedCommandException("Unable to reflectively instantiate tab-completer: ", e);
+        if(holder.subcommands.containsKey(args.get(0))) {
+            List<String> newArgs = new ArrayList<>(args);
+            newArgs.remove(0);
+            completions.addAll(tabComplete(holder.subcommands.get(args.get(0)), sender, newArgs));
+        }
+        try {
+            if(args.size() <= holder.arguments.size()) {
+                completions.addAll(holder.arguments.get(args.size() - 1).tabCompleter().getConstructor().newInstance().complete(sender));
             }
+        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new MalformedCommandException("Unable to reflectively instantiate tab-completer: ", e);
         }
         return completions;
     }

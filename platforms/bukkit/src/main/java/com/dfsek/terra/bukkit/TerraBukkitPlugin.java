@@ -31,6 +31,7 @@ import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.listeners.TerraListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
+import com.dfsek.terra.commands.StructureCommand;
 import com.dfsek.terra.commands.profiler.ProfileCommand;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
@@ -170,6 +171,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         CommandManager manager = new TerraCommandManager(this);
 
         manager.register("profile", ProfileCommand.class);
+        manager.register("structure", StructureCommand.class);
 
         BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
 
