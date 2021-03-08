@@ -8,6 +8,6 @@ import com.dfsek.terra.api.command.annotation.Command;
 public class StructureExportCommand implements CommandTemplate {
     @Override
     public void execute(ExecutionState state) {
-
+        System.out.println("export command");
     }
 }

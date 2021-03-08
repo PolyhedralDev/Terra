@@ -13,4 +13,6 @@ public @interface Command {
     Flag[] flags() default {};
 
     Subcommand[] subcommands() default {};
+
+    String usage() default "";
 }
