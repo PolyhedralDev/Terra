@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.registry.Registry;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class FabricItemMeta implements ItemMeta {
 
         delegate.getEnchantments().forEach(enchantment -> {
             CompoundTag eTag = (CompoundTag) enchantment;
-            map.put(FabricAdapter.adapt(net.minecraft.enchantment.Enchantment.byRawId(eTag.getInt("id"))), eTag.getInt("lvl"));
+            map.put(FabricAdapter.adapt(Registry.ENCHANTMENT.get(eTag.getInt("id"))), eTag.getInt("lvl"));
         });
         return map;
     }
