@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitPlayer implements Player {
@@ -20,6 +21,11 @@ public class BukkitPlayer implements Player {
     public Location getLocation() {
         org.bukkit.Location bukkit = delegate.getLocation();
         return new Location(BukkitAdapter.adapt(bukkit.getWorld()), bukkit.getX(), bukkit.getY(), bukkit.getZ());
+    }
+
+    @Override
+    public World getWorld() {
+        return BukkitAdapter.adapt(delegate.getWorld());
     }
 
     @Override

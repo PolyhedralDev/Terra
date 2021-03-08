@@ -19,6 +19,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
+import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
@@ -27,6 +28,7 @@ import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -351,6 +353,8 @@ public final class BukkitAdapter {
     }
 
     public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
+        if(sender instanceof Player) return new BukkitPlayer((Player) sender);
+        if(sender instanceof Entity) return new BukkitEntity((Entity) sender);
         return new BukkitCommandSender(sender);
     }
 

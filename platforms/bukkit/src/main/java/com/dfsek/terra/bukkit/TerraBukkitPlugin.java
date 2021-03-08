@@ -6,6 +6,8 @@ import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.addons.annotations.Addon;
 import com.dfsek.terra.api.addons.annotations.Author;
 import com.dfsek.terra.api.addons.annotations.Version;
+import com.dfsek.terra.api.command.CommandManager;
+import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -19,8 +21,7 @@ import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.bukkit.command.command.TerraCommand;
-import com.dfsek.terra.bukkit.command.command.structure.LocateCommand;
+import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
@@ -30,6 +31,7 @@ import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.listeners.TerraListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
+import com.dfsek.terra.commands.profiler.ProfileCommand;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -163,14 +165,16 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
-        TerraCommand command = new TerraCommand(this); // Set up main Terra command.
-        c.setExecutor(command);
-        c.setTabCompleter(command);
+        //TerraCommand command = new TerraCommand(this); // Set up main Terra command.
 
-        LocateCommand locate = new LocateCommand(command);
-        PluginCommand locatePl = Objects.requireNonNull(getCommand("locate"));
-        locatePl.setExecutor(locate); // Override locate command. Once Paper accepts StructureLocateEvent this will be unneeded on Paper implementations.
-        locatePl.setTabCompleter(locate);
+        CommandManager manager = new TerraCommandManager(this);
+
+        manager.register("profile", ProfileCommand.class);
+
+        BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
+
+        c.setExecutor(command);
+        //c.setTabCompleter(command);
 
 
         long save = config.getDataSaveInterval();

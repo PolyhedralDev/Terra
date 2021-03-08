@@ -1,13 +1,22 @@
 package com.dfsek.terra.api.command;
 
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
 import com.dfsek.terra.api.command.annotation.Switch;
+import com.dfsek.terra.api.command.annotation.type.DebugCommand;
+import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
+import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.command.exception.SwitchFormatException;
+import com.dfsek.terra.api.injection.Injector;
+import com.dfsek.terra.api.injection.exception.InjectionException;
+import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.world.TerraWorld;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -18,37 +27,62 @@ import java.util.Map;
 
 public class TerraCommandManager implements CommandManager {
     private final Map<String, CommandHolder> commands = new HashMap<>();
+    private final Injector<TerraPlugin> pluginInjector;
+    private final TerraPlugin main;
 
-    @Override
-    public void execute(String commandName, List<String> argsIn) throws CommandException {
-        execute(commands.get(commandName), new ArrayList<>(argsIn));
+    public TerraCommandManager(TerraPlugin main) {
+        this.main = main;
+        this.pluginInjector = new Injector<>(main);
+        pluginInjector.addExplicitTarget(TerraPlugin.class);
     }
 
-    private void execute(CommandHolder commandHolder, List<String> args) throws CommandException {
+    @Override
+    public void execute(String commandName, CommandSender sender, List<String> argsIn) throws CommandException {
+        execute(commands.get(commandName), sender, new ArrayList<>(argsIn));
+    }
+
+    private void execute(CommandHolder commandHolder, CommandSender sender, List<String> args) throws CommandException {
+        Class<? extends CommandTemplate> commandClass = commandHolder.clazz;
+
+        if(commandClass.isAnnotationPresent(DebugCommand.class) && !main.isDebug()) {
+            sender.sendMessage("Command must be executed with debug mode enabled.");
+            return;
+        }
+
+        if(commandClass.isAnnotationPresent(PlayerCommand.class) && !(sender instanceof Player)) {
+            sender.sendMessage("Command must be executed by player.");
+            return;
+        }
+
+        if(commandClass.isAnnotationPresent(WorldCommand.class) && (!(sender instanceof Player) || !TerraWorld.isTerraWorld(((Player) sender).getWorld()))) {
+            sender.sendMessage("Command must be executed in a Terra world.");
+            return;
+        }
+
         List<String> ogArgs = new ArrayList<>(args);
 
-        ExecutionState state = new ExecutionState();
-
-        Class<? extends CommandTemplate> commandClass = commandHolder.clazz;
+        ExecutionState state = new ExecutionState(sender);
 
         if(!commandClass.isAnnotationPresent(Command.class)) {
             invoke(commandClass, state);
+            return;
         }
 
         Command command = commandClass.getAnnotation(Command.class);
 
         if(command.arguments().length == 0 && command.subcommands().length == 0) {
-            if(args.isEmpty()) invoke(commandClass, state);
-            else throw new InvalidArgumentsException("Expected 0 arguments, found " + args.size());
+            if(args.isEmpty()) {
+                invoke(commandClass, state);
+                return;
+            } else throw new InvalidArgumentsException("Expected 0 arguments, found " + args.size());
         }
 
         if(commandHolder.subcommands.containsKey(args.get(0))) {
             String c = args.get(0);
             args.remove(0);
-            execute(commandHolder.subcommands.get(c), args);
+            execute(commandHolder.subcommands.get(c), sender, args);
             return;
         }
-
 
         boolean req = true;
         for(Argument argument : command.arguments()) {
@@ -83,15 +117,18 @@ public class TerraCommandManager implements CommandManager {
             state.addSwitch(commandHolder.switches.get(val));
         }
 
-
         invoke(commandClass, state);
     }
 
     private void invoke(Class<? extends CommandTemplate> clazz, ExecutionState state) throws MalformedCommandException {
         try {
             System.out.println("invocation");
-            clazz.getConstructor().newInstance().execute(state);
-        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            CommandTemplate template = clazz.getConstructor().newInstance();
+
+            pluginInjector.inject(template);
+
+            template.execute(state);
+        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | InjectionException e) {
             throw new MalformedCommandException("Unable to reflectively instantiate command: ", e);
         }
     }
@@ -101,6 +138,9 @@ public class TerraCommandManager implements CommandManager {
         commands.put(name, new CommandHolder(clazz));
     }
 
+    /**
+     * Pre-processes command metadata.
+     */
     private static final class CommandHolder {
         private final Class<? extends CommandTemplate> clazz;
         private final Map<String, CommandHolder> subcommands = new HashMap<>();
