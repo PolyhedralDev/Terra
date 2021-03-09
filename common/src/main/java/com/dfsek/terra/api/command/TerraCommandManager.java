@@ -21,6 +21,7 @@ import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.entity.Player;
 import com.dfsek.terra.api.util.ReflectionUtil;
 import com.dfsek.terra.world.TerraWorld;
+import net.jafama.FastMath;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -180,6 +181,24 @@ public class TerraCommandManager implements CommandManager {
     public List<String> tabComplete(String command, CommandSender sender, List<String> args) throws CommandException {
         if(args.isEmpty()) return new ArrayList<>(commands.keySet()).stream().sorted(String::compareTo).collect(Collectors.toList());
         return tabComplete(commands.get(command), sender, new ArrayList<>(args)).stream().filter(s -> s.toLowerCase().startsWith(args.get(args.size() - 1).toLowerCase())).sorted(String::compareTo).collect(Collectors.toList());
+    }
+
+    @Override
+    public int getMaxArgumentDepth() {
+        int max = 0;
+        for(CommandHolder value : commands.values()) {
+            max = FastMath.max(getMaxArgumentDepth(value), max);
+        }
+        return max;
+    }
+
+    private int getMaxArgumentDepth(CommandHolder holder) {
+        int max = 0;
+        max = FastMath.max(holder.arguments.size(), max);
+        for(CommandHolder value : holder.subcommands.values()) {
+            max = FastMath.max(max, getMaxArgumentDepth(value) + 1);
+        }
+        return max;
     }
 
     private List<String> tabComplete(CommandHolder holder, CommandSender sender, List<String> args) throws CommandException {

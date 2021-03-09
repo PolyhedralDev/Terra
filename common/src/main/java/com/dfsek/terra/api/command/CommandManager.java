@@ -11,5 +11,7 @@ public interface CommandManager {
 
     void register(String name, Class<? extends CommandTemplate> clazz) throws MalformedCommandException;
 
-    List<String> tabComplete(String command, CommandSender sender, List<String> args) throws MalformedCommandException, CommandException;
+    List<String> tabComplete(String command, CommandSender sender, List<String> args) throws CommandException;
+
+    int getMaxArgumentDepth();
 }

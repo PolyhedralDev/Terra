@@ -34,6 +34,8 @@ public class CommandTest {
         manager.execute("test", null, Arrays.asList("sub1", "first", "2", "3.4"));
         manager.execute("test", null, Arrays.asList("sub2", "first", "2"));
         manager.execute("test", null, Arrays.asList("first", "2")); // Parent command args
+
+        System.out.println("ARGS: " + manager.getMaxArgumentDepth());
     }
 
     @Test

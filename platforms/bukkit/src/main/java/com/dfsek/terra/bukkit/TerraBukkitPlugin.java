@@ -32,8 +32,7 @@ import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.listeners.TerraListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
-import com.dfsek.terra.commands.StructureCommand;
-import com.dfsek.terra.commands.profiler.ProfileCommand;
+import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -173,8 +172,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
 
         try {
-            manager.register("structure", StructureCommand.class);
-            manager.register("profile", ProfileCommand.class);
+            CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) { // This should never happen.
             logger().severe("Errors occurred while registering commands.");
             e.printStackTrace();

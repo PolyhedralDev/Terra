@@ -6,6 +6,10 @@ import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.addons.annotations.Addon;
 import com.dfsek.terra.api.addons.annotations.Author;
 import com.dfsek.terra.api.addons.annotations.Version;
+import com.dfsek.terra.api.command.CommandManager;
+import com.dfsek.terra.api.command.TerraCommandManager;
+import com.dfsek.terra.api.command.exception.CommandException;
+import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
@@ -23,6 +27,7 @@ import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.api.world.tree.Tree;
+import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.builder.BiomeBuilder;
@@ -31,6 +36,7 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.FabricWorldHandle;
@@ -42,11 +48,16 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.world.GeneratorType;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -75,29 +86,24 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
-    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
-    private static TerraFabricPlugin instance;
-
-    private final EventManager eventManager = new TerraEventManager(this);
-
-
-    public static TerraFabricPlugin getInstance() {
-        return instance;
-    }
-
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
-
+    private static TerraFabricPlugin instance;
+    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
+    private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Logger logger = new Logger() {
         private final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
+
         @Override
         public void info(String message) {
             logger.info(message);
@@ -114,20 +120,25 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         }
     };
     private final DebugLogger debugLogger = new DebugLogger(logger);
-
-
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
-
     private final AddonRegistry addonRegistry = new AddonRegistry(new FabricAddon(this), this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
-
-
+    private final PluginConfig plugin = new PluginConfig();
+    private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
+            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
+            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
     private File config;
 
-    private final PluginConfig plugin = new PluginConfig();
+    public static TerraFabricPlugin getInstance() {
+        return instance;
+    }
+
+    public static String createBiomeID(ConfigPack pack, String biomeID) {
+        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
+    }
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -208,20 +219,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return debugLogger;
     }
 
-    private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
-            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
-            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
-
     @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
-    }
-
-    public static String createBiomeID(ConfigPack pack, String biomeID) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
     private Biome createBiome(BiomeBuilder biome) {
@@ -258,6 +261,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .build();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onInitialize() {
         instance = this;
@@ -299,6 +303,61 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             });
         }
 
+        CommandManager manager = new TerraCommandManager(this);
+        try {
+            CommandUtil.registerAll(manager);
+        } catch(MalformedCommandException e) {
+            e.printStackTrace(); // TODO do something here even though this should literally never happen
+        }
+
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+                    LiteralArgumentBuilder<ServerCommandSource> argumentBuilder = net.minecraft.server.command.CommandManager.literal("terra").executes(context -> {
+                        System.out.println(context.getNodes());
+                        System.out.println(context);
+                        System.out.println(context.getInput());
+                        return 1;
+                    });
+
+                    int max = manager.getMaxArgumentDepth();
+                    System.out.println("MAX:" + max);
+                    RequiredArgumentBuilder<ServerCommandSource, String> arg = RequiredArgumentBuilder.argument("arg0", StringArgumentType.string());
+                    for(int i = 0; i < max; i++) {
+                        System.out.println("arg " + i);
+                        int finalI = i;
+                        RequiredArgumentBuilder<ServerCommandSource, String> next = RequiredArgumentBuilder.argument("arg" + i, StringArgumentType.string());
+
+                        arg = arg.then(next.suggests((context, builder) -> {
+                            List<String> args = parseCommand(context.getInput());
+                            System.out.println("Tab completing " + finalI);
+                            System.out.println(args);
+                            try {
+                                manager.tabComplete(args.remove(0), FabricAdapter.adapt(context.getSource()), args).forEach(builder::suggest);
+                            } catch(CommandException e) {
+                                e.printStackTrace();
+                            }
+                            return builder.buildFuture();
+                        }).executes(context -> {
+                            List<String> args = parseCommand(context.getInput());
+                            try {
+                                manager.execute(args.remove(0), FabricAdapter.adapt(context.getSource()), args);
+                            } catch(CommandException e) {
+                                e.printStackTrace();
+                                return -1;
+                            }
+                            return 1;
+                        }));
+                    }
+                    dispatcher.register(argumentBuilder.then(arg));
+                }
+        );
+
+    }
+
+    private List<String> parseCommand(String command) {
+        if(command.startsWith("/terra ")) command = command.substring("/terra ".length());
+        else if(command.startsWith("/te ")) command = command.substring("/te ".length());
+        return new ArrayList<>(Arrays.asList(command.split(" ")));
     }
 
 
