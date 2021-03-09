@@ -144,6 +144,8 @@ public class TerraCommandManager implements CommandManager {
 
                     ArgumentParser<?> argumentParser = holder.argumentMap.get(argumentTarget.value()).argumentParser().getConstructor().newInstance();
 
+                    pluginInjector.inject(argumentParser);
+
                     field.setAccessible(true);
                     field.set(template, argumentParser.parse(state.getSender(), state.getArgument(argument)));
                 }
