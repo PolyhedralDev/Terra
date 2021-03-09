@@ -8,5 +8,6 @@ public final class CommandUtil {
     public static void registerAll(CommandManager manager) throws MalformedCommandException {
         manager.register("structure", StructureCommand.class);
         manager.register("profile", ProfileCommand.class);
+        manager.register("reload", ReloadCommand.class);
     }
 }

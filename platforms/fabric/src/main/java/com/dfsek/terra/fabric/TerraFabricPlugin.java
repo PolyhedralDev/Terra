@@ -126,11 +126,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
     private final AddonRegistry addonRegistry = new AddonRegistry(new FabricAddon(this), this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
-    private final PluginConfig plugin = new PluginConfig();
+    private final PluginConfig config = new PluginConfig();
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
-    private File config;
+    private File dataFolder;
 
     public static TerraFabricPlugin getInstance() {
         return instance;
@@ -161,12 +161,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public PluginConfig getTerraConfig() {
-        return plugin;
+        return config;
     }
 
     @Override
     public File getDataFolder() {
-        return config;
+        return dataFolder;
     }
 
     @Override
@@ -191,7 +191,18 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public boolean reload() {
-        return true;
+        config.load(this);
+        LangUtil.load(config.getLanguage(), this); // Load language.
+        boolean succeed = registry.loadAll(this);
+        Map<Long, TerraWorld> newMap = new HashMap<>();
+        worldMap.forEach((seed, tw) -> {
+            tw.getConfig().getSamplerCache().clear();
+            String packID = tw.getConfig().getTemplate().getID();
+            newMap.put(seed, new TerraWorld(tw.getWorld(), registry.get(packID), this));
+        });
+        worldMap.clear();
+        worldMap.putAll(newMap);
+        return succeed;
     }
 
     @Override
@@ -266,10 +277,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public void onInitialize() {
         instance = this;
 
-        this.config = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
+        this.dataFolder = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();
-        plugin.load(this);
-        LangUtil.load(plugin.getLanguage(), this);
+        config.load(this);
+        LangUtil.load(config.getLanguage(), this);
         logger.info("Initializing Terra...");
 
         if(!addonRegistry.loadAll()) {
@@ -324,34 +335,36 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     RequiredArgumentBuilder<ServerCommandSource, String> arg = RequiredArgumentBuilder.argument("arg0", StringArgumentType.string());
                     for(int i = 0; i < max; i++) {
                         System.out.println("arg " + i);
-                        int finalI = i;
                         RequiredArgumentBuilder<ServerCommandSource, String> next = RequiredArgumentBuilder.argument("arg" + i, StringArgumentType.string());
 
-                        arg = arg.then(next.suggests((context, builder) -> {
-                            List<String> args = parseCommand(context.getInput());
-                            System.out.println("Tab completing " + finalI);
-                            System.out.println(args);
-                            try {
-                                manager.tabComplete(args.remove(0), FabricAdapter.adapt(context.getSource()), args).forEach(builder::suggest);
-                            } catch(CommandException e) {
-                                e.printStackTrace();
-                            }
-                            return builder.buildFuture();
-                        }).executes(context -> {
-                            List<String> args = parseCommand(context.getInput());
-                            try {
-                                manager.execute(args.remove(0), FabricAdapter.adapt(context.getSource()), args);
-                            } catch(CommandException e) {
-                                e.printStackTrace();
-                                return -1;
-                            }
-                            return 1;
-                        }));
+                        arg = arg.then(assemble(next, manager));
                     }
-                    dispatcher.register(argumentBuilder.then(arg));
+                    dispatcher.register(argumentBuilder.then(assemble(arg, manager)));
                 }
         );
 
+    }
+
+    private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
+        return in.suggests((context, builder) -> {
+            List<String> args = parseCommand(context.getInput());
+            System.out.println(args);
+            try {
+                manager.tabComplete(args.remove(0), FabricAdapter.adapt(context.getSource()), args).forEach(builder::suggest);
+            } catch(CommandException e) {
+                e.printStackTrace();
+            }
+            return builder.buildFuture();
+        }).executes(context -> {
+            List<String> args = parseCommand(context.getInput());
+            try {
+                manager.execute(args.remove(0), FabricAdapter.adapt(context.getSource()), args);
+            } catch(CommandException e) {
+                e.printStackTrace();
+                return -1;
+            }
+            return 1;
+        });
     }
 
     private List<String> parseCommand(String command) {
