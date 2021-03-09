@@ -16,6 +16,7 @@ import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
@@ -49,7 +50,6 @@ import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
@@ -91,6 +91,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -323,23 +326,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
 
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-                    LiteralArgumentBuilder<ServerCommandSource> argumentBuilder = net.minecraft.server.command.CommandManager.literal("terra").executes(context -> {
-                        System.out.println(context.getNodes());
-                        System.out.println(context);
-                        System.out.println(context.getInput());
-                        return 1;
-                    });
-
                     int max = manager.getMaxArgumentDepth();
                     System.out.println("MAX:" + max);
-                    RequiredArgumentBuilder<ServerCommandSource, String> arg = RequiredArgumentBuilder.argument("arg0", StringArgumentType.string());
+                    RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
                     for(int i = 0; i < max; i++) {
                         System.out.println("arg " + i);
-                        RequiredArgumentBuilder<ServerCommandSource, String> next = RequiredArgumentBuilder.argument("arg" + i, StringArgumentType.string());
+                        RequiredArgumentBuilder<ServerCommandSource, String> next = argument("arg" + (max - i - 1), StringArgumentType.word());
 
-                        arg = arg.then(assemble(next, manager));
+                        arg = next.then(assemble(arg, manager));
                     }
-                    dispatcher.register(argumentBuilder.then(assemble(arg, manager)));
+
+                    dispatcher.register(literal("terra").executes(context -> 1).then(assemble(arg, manager)));
+                    dispatcher.register(literal("te").executes(context -> 1).then(assemble(arg, manager)));
+                    //dispatcher.register(literal("te").redirect(root));
                 }
         );
 
@@ -348,11 +347,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
         return in.suggests((context, builder) -> {
             List<String> args = parseCommand(context.getInput());
-            System.out.println(args);
+            CommandSender sender = FabricAdapter.adapt(context.getSource());
             try {
-                manager.tabComplete(args.remove(0), FabricAdapter.adapt(context.getSource()), args).forEach(builder::suggest);
+                manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
             } catch(CommandException e) {
-                e.printStackTrace();
+                sender.sendMessage(e.getMessage());
             }
             return builder.buildFuture();
         }).executes(context -> {
@@ -370,7 +369,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private List<String> parseCommand(String command) {
         if(command.startsWith("/terra ")) command = command.substring("/terra ".length());
         else if(command.startsWith("/te ")) command = command.substring("/te ".length());
-        return new ArrayList<>(Arrays.asList(command.split(" ")));
+        List<String> c = new ArrayList<>(Arrays.asList(command.split(" ")));
+        if(command.endsWith(" ")) c.add("");
+        return c;
     }
 
 
