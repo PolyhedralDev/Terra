@@ -8,6 +8,7 @@ import com.dfsek.terra.api.addons.annotations.Author;
 import com.dfsek.terra.api.addons.annotations.Version;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
+import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -170,8 +171,17 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         CommandManager manager = new TerraCommandManager(this);
 
-        manager.register("profile", ProfileCommand.class);
-        manager.register("structure", StructureCommand.class);
+
+        try {
+            manager.register("structure", StructureCommand.class);
+            manager.register("profile", ProfileCommand.class);
+        } catch(MalformedCommandException e) { // This should never happen.
+            logger().severe("Errors occurred while registering commands.");
+            e.printStackTrace();
+            logger().severe("Please report this to Terra.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
 

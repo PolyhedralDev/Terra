@@ -2,15 +2,19 @@ package command;
 
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
-import com.dfsek.terra.api.command.ExecutionState;
 import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
 import com.dfsek.terra.api.command.annotation.Switch;
+import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
+import com.dfsek.terra.api.command.annotation.inject.SwitchTarget;
+import com.dfsek.terra.api.command.arg.DoubleArgumentParser;
+import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
+import com.dfsek.terra.api.platform.CommandSender;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -86,29 +90,35 @@ public class CommandTest {
     @Command(
             arguments = {
                     @Argument(value = "arg0"),
-                    @Argument(value = "arg1", type = int.class),
-                    @Argument(value = "arg2", type = double.class, required = false)
+                    @Argument(value = "arg1", argumentParser = IntegerArgumentParser.class),
+                    @Argument(value = "arg2", required = false, argumentParser = DoubleArgumentParser.class)
             }
     )
     public static final class DemoCommand implements CommandTemplate {
 
+        @ArgumentTarget("arg0")
+        private String arg0;
+
+        @ArgumentTarget("arg1")
+        private Integer arg1;
+
+        @ArgumentTarget("arg2")
+        private Double arg2;
+
+
         @Override
-        public void execute(ExecutionState state) {
-            System.out.println(state.getArgument("arg0", String.class));
-            System.out.println(state.getArgument("arg1", int.class));
-            try {
-                System.out.println(state.getArgument("arg2", double.class));
-            } catch(IllegalArgumentException e) {
-                System.out.println("arg2 undefined.");
-            }
+        public void execute(CommandSender sender) {
+            System.out.println(arg0);
+            System.out.println(arg1);
+            System.out.println(arg2);
         }
     }
 
     @Command(
             arguments = {
                     @Argument(value = "arg0"),
-                    @Argument(value = "arg1", type = int.class),
-                    @Argument(value = "arg2", type = double.class, required = false)
+                    @Argument(value = "arg1"),
+                    @Argument(value = "arg2", required = false)
             },
             switches = {
                     @Switch(value = "a", aliases = {"aSwitch"}),
@@ -116,33 +126,44 @@ public class CommandTest {
             }
     )
     public static final class DemoSwitchCommand implements CommandTemplate {
+        @ArgumentTarget("arg0")
+        private String arg0;
+
+        @ArgumentTarget("arg1")
+        private String arg1;
+
+        @ArgumentTarget("arg2")
+        private String arg2;
+
+        @SwitchTarget("a")
+        private boolean a;
+
+        @SwitchTarget("b")
+        private boolean b;
+
 
         @Override
-        public void execute(ExecutionState state) {
-            System.out.println(state.getArgument("arg0", String.class));
-            System.out.println(state.getArgument("arg1", int.class));
-            try {
-                System.out.println(state.getArgument("arg2", double.class));
-            } catch(IllegalArgumentException e) {
-                System.out.println("arg2 undefined.");
-            }
+        public void execute(CommandSender sender) {
+            System.out.println(arg0);
+            System.out.println(arg1);
+            System.out.println(arg2);
 
-            System.out.println("A: " + state.hasSwitch("a"));
-            System.out.println("B: " + state.hasSwitch("b"));
+            System.out.println("A: " + a);
+            System.out.println("B: " + b);
         }
     }
 
     @Command(
             arguments = {
                     @Argument(value = "arg0"),
-                    @Argument(value = "arg2", type = double.class, required = false), // optional arguments must be last. this command is invalid.
-                    @Argument(value = "arg1", type = int.class)
+                    @Argument(value = "arg2", required = false), // optional arguments must be last. this command is invalid.
+                    @Argument(value = "arg1")
             }
     )
     public static final class DemoInvalidCommand implements CommandTemplate {
 
         @Override
-        public void execute(ExecutionState state) {
+        public void execute(CommandSender sender) {
             throw new Error("this should never be reached");
         }
     }
@@ -150,8 +171,8 @@ public class CommandTest {
     @Command(
             arguments = {
                     @Argument(value = "arg0"),
-                    @Argument(value = "arg1", type = int.class),
-                    @Argument(value = "arg2", type = double.class, required = false),
+                    @Argument(value = "arg1"),
+                    @Argument(value = "arg2", required = false),
             },
             subcommands = {
                     @Subcommand(
@@ -167,38 +188,47 @@ public class CommandTest {
             }
     )
     public static final class DemoParentCommand implements CommandTemplate {
+        @ArgumentTarget("arg0")
+        private String arg0;
+
+        @ArgumentTarget("arg1")
+        private String arg1;
+
+        @ArgumentTarget("arg2")
+        private String arg2;
+
 
         @Override
-        public void execute(ExecutionState state) {
-            System.out.println("Parent command");
-            System.out.println(state.getArgument("arg0", String.class));
-            System.out.println(state.getArgument("arg1", int.class));
-            try {
-                System.out.println(state.getArgument("arg2", double.class));
-            } catch(IllegalArgumentException e) {
-                System.out.println("arg2 undefined.");
-            }
+        public void execute(CommandSender sender) {
+            System.out.println(arg0);
+            System.out.println(arg1);
+            System.out.println(arg2);
         }
     }
 
     @Command(
             arguments = {
                     @Argument(value = "arg0"),
-                    @Argument(value = "arg1", type = int.class),
-                    @Argument(value = "arg2", type = double.class, required = false),
+                    @Argument(value = "arg1"),
+                    @Argument(value = "arg2", required = false),
             }
     )
     public static final class DemoChildCommand implements CommandTemplate {
+        @ArgumentTarget("arg0")
+        private String arg0;
+
+        @ArgumentTarget("arg1")
+        private String arg1;
+
+        @ArgumentTarget("arg2")
+        private String arg2;
+
+
         @Override
-        public void execute(ExecutionState state) {
-            System.out.println("Child command");
-            System.out.println(state.getArgument("arg0", String.class));
-            System.out.println(state.getArgument("arg1", int.class));
-            try {
-                System.out.println(state.getArgument("arg2", double.class));
-            } catch(IllegalArgumentException e) {
-                System.out.println("arg2 undefined.");
-            }
+        public void execute(CommandSender sender) {
+            System.out.println(arg0);
+            System.out.println(arg1);
+            System.out.println(arg2);
         }
     }
 }

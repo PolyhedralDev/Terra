@@ -9,7 +9,7 @@ import java.util.List;
 public interface CommandManager {
     void execute(String command, CommandSender sender, List<String> args) throws CommandException;
 
-    void register(String name, Class<? extends CommandTemplate> clazz);
+    void register(String name, Class<? extends CommandTemplate> clazz) throws MalformedCommandException;
 
     List<String> tabComplete(String command, CommandSender sender, List<String> args) throws MalformedCommandException, CommandException;
 }

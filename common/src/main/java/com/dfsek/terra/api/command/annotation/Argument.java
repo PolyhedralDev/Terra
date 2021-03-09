@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.command.annotation;
 
+import com.dfsek.terra.api.command.arg.ArgumentParser;
+import com.dfsek.terra.api.command.arg.StringArgumentParser;
 import com.dfsek.terra.api.command.tab.NothingCompleter;
 import com.dfsek.terra.api.command.tab.TabCompleter;
 
@@ -15,7 +17,7 @@ public @interface Argument {
 
     boolean required() default true;
 
-    Class<?> type() default String.class;
-
     Class<? extends TabCompleter> tabCompleter() default NothingCompleter.class;
+
+    Class<? extends ArgumentParser<?>> argumentParser() default StringArgumentParser.class;
 }

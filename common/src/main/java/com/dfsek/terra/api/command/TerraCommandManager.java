@@ -5,9 +5,12 @@ import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
 import com.dfsek.terra.api.command.annotation.Switch;
+import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
+import com.dfsek.terra.api.command.annotation.inject.SwitchTarget;
 import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
+import com.dfsek.terra.api.command.arg.ArgumentParser;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
@@ -16,8 +19,10 @@ import com.dfsek.terra.api.injection.Injector;
 import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.util.ReflectionUtil;
 import com.dfsek.terra.world.TerraWorld;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +71,7 @@ public class TerraCommandManager implements CommandManager {
         ExecutionState state = new ExecutionState(sender);
 
         if(!commandClass.isAnnotationPresent(Command.class)) {
-            invoke(commandClass, state);
+            invoke(commandClass, state, commandHolder);
             return;
         }
 
@@ -74,7 +79,7 @@ public class TerraCommandManager implements CommandManager {
 
         if(command.arguments().length == 0 && command.subcommands().length == 0) {
             if(args.isEmpty()) {
-                invoke(commandClass, state);
+                invoke(commandClass, state, commandHolder);
                 return;
             } else throw new InvalidArgumentsException("Expected 0 arguments, found " + args.size());
         }
@@ -119,24 +124,53 @@ public class TerraCommandManager implements CommandManager {
             state.addSwitch(commandHolder.switches.get(val));
         }
 
-        invoke(commandClass, state);
+        invoke(commandClass, state, commandHolder);
     }
 
-    private void invoke(Class<? extends CommandTemplate> clazz, ExecutionState state) throws MalformedCommandException {
+    private void invoke(Class<? extends CommandTemplate> clazz, ExecutionState state, CommandHolder holder) throws MalformedCommandException {
         try {
-            System.out.println("invocation");
             CommandTemplate template = clazz.getConstructor().newInstance();
 
             pluginInjector.inject(template);
 
-            template.execute(state);
+            for(Field field : ReflectionUtil.getFields(clazz)) {
+                if(field.isAnnotationPresent(ArgumentTarget.class)) {
+                    ArgumentTarget argumentTarget = field.getAnnotation(ArgumentTarget.class);
+                    if(!holder.argumentMap.containsKey(argumentTarget.value())) {
+                        throw new MalformedCommandException("Argument Target specifies nonexistent argument \"" + argumentTarget.value() + "\"");
+                    }
+
+                    String argument = argumentTarget.value();
+
+                    ArgumentParser<?> argumentParser = holder.argumentMap.get(argumentTarget.value()).argumentParser().getConstructor().newInstance();
+
+                    field.setAccessible(true);
+                    field.set(template, argumentParser.parse(state.getSender(), state.getArgument(argument)));
+                }
+                if(field.isAnnotationPresent(SwitchTarget.class)) {
+                    SwitchTarget switchTarget = field.getAnnotation(SwitchTarget.class);
+                    if(!holder.switches.containsValue(switchTarget.value())) {
+                        System.out.println(holder.switches);
+                        throw new MalformedCommandException("Switch Target specifies nonexistent switch \"" + switchTarget.value() + "\"");
+                    }
+
+                    if(!(field.getType() == boolean.class)) {
+                        throw new MalformedCommandException("Switch Target must be of type boolean.");
+                    }
+
+                    field.setAccessible(true);
+                    field.setBoolean(template, state.hasSwitch(switchTarget.value()));
+                }
+            }
+
+            template.execute(state.getSender());
         } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | InjectionException e) {
             throw new MalformedCommandException("Unable to reflectively instantiate command: ", e);
         }
     }
 
     @Override
-    public void register(String name, Class<? extends CommandTemplate> clazz) {
+    public void register(String name, Class<? extends CommandTemplate> clazz) throws MalformedCommandException {
         commands.put(name, new CommandHolder(clazz));
     }
 
@@ -177,12 +211,15 @@ public class TerraCommandManager implements CommandManager {
         private final Map<String, CommandHolder> subcommands = new HashMap<>();
         private final Map<String, String> switches = new HashMap<>();
         private final List<Argument> arguments;
+        private final Map<String, Argument> argumentMap = new HashMap<>();
 
-        private CommandHolder(Class<? extends CommandTemplate> clazz) {
+        private CommandHolder(Class<? extends CommandTemplate> clazz) throws MalformedCommandException {
             this.clazz = clazz;
             if(clazz.isAnnotationPresent(Command.class)) {
                 Command command = clazz.getAnnotation(Command.class);
                 for(Subcommand subcommand : command.subcommands()) {
+                    if(subcommands.containsKey(subcommand.value()))
+                        throw new MalformedCommandException("Duplicate subcommand: " + subcommand);
                     CommandHolder holder = new CommandHolder(subcommand.clazz());
                     subcommands.put(subcommand.value(), holder);
                     for(String alias : subcommand.aliases()) {
@@ -190,10 +227,15 @@ public class TerraCommandManager implements CommandManager {
                     }
                 }
                 for(Switch aSwitch : command.switches()) {
+                    if(switches.containsKey(aSwitch.value())) throw new MalformedCommandException("Duplicate switch: " + aSwitch);
                     switches.put(aSwitch.value(), aSwitch.value());
                     for(String alias : aSwitch.aliases()) {
                         switches.put(alias, aSwitch.value());
                     }
+                }
+                for(Argument argument : command.arguments()) {
+                    if(argumentMap.containsKey(argument.value())) throw new MalformedCommandException("Duplicate argument: " + argument);
+                    argumentMap.put(argument.value(), argument);
                 }
                 arguments = Arrays.asList(command.arguments());
             } else arguments = Collections.emptyList();

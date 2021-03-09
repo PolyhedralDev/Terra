@@ -24,21 +24,8 @@ public final class ExecutionState {
         args.put(arg, value);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T getArgument(String argument, Class<T> clazz) {
-
-        Object value = args.get(argument);
-        if(value == null) throw new IllegalArgumentException("Argument \"" + argument + "\" does not exist!");
-
-        if(clazz == int.class || clazz == Integer.class) {
-            value = Integer.parseInt(value.toString());
-        } else if(clazz == double.class || clazz == Double.class) {
-            value = Double.parseDouble(value.toString());
-        }
-
-        // TODO: type loaders
-
-        return clazz.cast(value);
+    public String getArgument(String argument) {
+        return args.get(argument);
     }
 
     public boolean hasSwitch(String flag) {
