@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class BukkitCommandAdapter implements CommandExecutor, TabCompleter {
     private final CommandManager manager;
@@ -42,7 +44,8 @@ public class BukkitCommandAdapter implements CommandExecutor, TabCompleter {
         List<String> argList = new ArrayList<>(Arrays.asList(args));
 
         try {
-            return manager.tabComplete(argList.remove(0), BukkitAdapter.adapt(sender), argList);
+            return manager.tabComplete(argList.remove(0), BukkitAdapter.adapt(sender), argList).stream()
+                    .filter(s -> s.toLowerCase(Locale.ROOT).startsWith(args[args.length - 1].toLowerCase(Locale.ROOT))).sorted(String::compareTo).collect(Collectors.toList());
         } catch(CommandException e) {
             e.printStackTrace();
             return Collections.emptyList();

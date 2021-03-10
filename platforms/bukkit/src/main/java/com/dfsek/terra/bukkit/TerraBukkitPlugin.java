@@ -135,6 +135,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     @Override
+    public void runPossiblyUnsafeTask(Runnable task) {
+        Bukkit.getScheduler().runTask(this, task);
+    }
+
+    @Override
     public void onDisable() {
         BukkitChunkGeneratorWrapper.saveAll();
     }

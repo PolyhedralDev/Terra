@@ -53,4 +53,15 @@ public interface TerraPlugin extends LoaderRegistrar {
     default String getVersion() {
         return "@VERSION@";
     }
+
+    /**
+     * Runs a task that may or may not be thread safe, depending on platform.
+     * <p>
+     * Allows platforms to define what code is safe to be run asynchronously.
+     *
+     * @param task Task to be run.
+     */
+    default void runPossiblyUnsafeTask(Runnable task) {
+        task.run();
+    }
 }

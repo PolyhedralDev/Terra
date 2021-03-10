@@ -69,7 +69,7 @@ public class BiomeLocateCommand implements CommandTemplate {
             if(location != null) {
                 sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", biome.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3(0, player.getLocation().getY(), 0)).distance(player.getLocation().toVector())));
                 if(teleport) {
-                    player.setLocation(new Location(player.getWorld(), location.getX(), player.getLocation().getY(), location.getZ()));
+                    main.runPossiblyUnsafeTask(() -> player.setLocation(new Location(player.getWorld(), location.getX(), player.getLocation().getY(), location.getZ())));
                 }
             } else LangUtil.send("command.biome.unable-to-locate", sender);
         }, main), "Biome Location Thread").start();
