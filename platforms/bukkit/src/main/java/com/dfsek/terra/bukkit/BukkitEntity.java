@@ -23,6 +23,11 @@ public class BukkitEntity implements Entity {
     }
 
     @Override
+    public void setLocation(Location location) {
+        entity.teleport(BukkitAdapter.adapt(location));
+    }
+
+    @Override
     public World getWorld() {
         return BukkitAdapter.adapt(entity.getWorld());
     }

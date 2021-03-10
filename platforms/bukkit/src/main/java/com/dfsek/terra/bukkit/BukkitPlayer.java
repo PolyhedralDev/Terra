@@ -24,6 +24,11 @@ public class BukkitPlayer implements Player {
     }
 
     @Override
+    public void setLocation(Location location) {
+        delegate.teleport(BukkitAdapter.adapt(location));
+    }
+
+    @Override
     public World getWorld() {
         return BukkitAdapter.adapt(delegate.getWorld());
     }

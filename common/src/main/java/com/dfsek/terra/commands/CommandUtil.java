@@ -11,5 +11,8 @@ public final class CommandUtil {
         manager.register("reload", ReloadCommand.class);
         manager.register("addons", AddonsCommand.class);
         manager.register("version", VersionCommand.class);
+        manager.register("getblock", GetBlockCommand.class);
+        manager.register("packs", PacksCommand.class);
+        manager.register("biome", BiomeCommand.class);
     }
 }

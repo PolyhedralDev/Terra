@@ -8,5 +8,7 @@ import com.dfsek.terra.api.platform.world.World;
 public interface Entity extends Handle, CommandSender {
     Location getLocation();
 
+    void setLocation(Location location);
+
     World getWorld();
 }
