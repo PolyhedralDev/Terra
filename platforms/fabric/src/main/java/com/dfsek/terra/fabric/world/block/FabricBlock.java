@@ -21,7 +21,7 @@ public class FabricBlock implements Block {
 
     @Override
     public void setBlockData(BlockData data, boolean physics) {
-        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), 0, 0);
+        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042, 0);
     }
 
     @Override
