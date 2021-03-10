@@ -48,6 +48,7 @@ public class TerraCommandManager implements CommandManager {
 
     @Override
     public void execute(String commandName, CommandSender sender, List<String> argsIn) throws CommandException {
+        if(!commands.containsKey(commandName)) throw new InvalidArgumentsException("No such command \"" + commandName + "\"");
         execute(commands.get(commandName), sender, new ArrayList<>(argsIn));
     }
 
@@ -190,6 +191,7 @@ public class TerraCommandManager implements CommandManager {
     @Override
     public List<String> tabComplete(String command, CommandSender sender, List<String> args) throws CommandException {
         if(args.isEmpty()) return new ArrayList<>(commands.keySet()).stream().sorted(String::compareTo).collect(Collectors.toList());
+        if(!commands.containsKey(command)) return Collections.emptyList();
         return tabComplete(commands.get(command), sender, new ArrayList<>(args)).stream().filter(s -> s.toLowerCase().startsWith(args.get(args.size() - 1).toLowerCase())).sorted(String::compareTo).collect(Collectors.toList());
     }
 
