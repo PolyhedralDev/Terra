@@ -23,6 +23,8 @@ import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
+import com.dfsek.terra.bukkit.command.FixChunkCommand;
+import com.dfsek.terra.bukkit.command.SaveDataCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
@@ -178,6 +180,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         try {
             CommandUtil.registerAll(manager);
+            manager.register("save-data", SaveDataCommand.class);
+            manager.register("fix-chunk", FixChunkCommand.class);
         } catch(MalformedCommandException e) { // This should never happen.
             logger().severe("Errors occurred while registering commands.");
             e.printStackTrace();
