@@ -9,5 +9,6 @@ public final class CommandUtil {
         manager.register("structure", StructureCommand.class);
         manager.register("profile", ProfileCommand.class);
         manager.register("reload", ReloadCommand.class);
+        manager.register("addons", AddonsCommand.class);
     }
 }

@@ -12,9 +12,11 @@ import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.command.arg.ArgumentParser;
 import com.dfsek.terra.api.command.exception.CommandException;
+import com.dfsek.terra.api.command.exception.ExecutionException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.command.exception.SwitchFormatException;
+import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.injection.Injector;
 import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.api.platform.CommandSender;
@@ -128,7 +130,7 @@ public class TerraCommandManager implements CommandManager {
         invoke(commandClass, state, commandHolder);
     }
 
-    private void invoke(Class<? extends CommandTemplate> clazz, ExecutionState state, CommandHolder holder) throws MalformedCommandException {
+    private void invoke(Class<? extends CommandTemplate> clazz, ExecutionState state, CommandHolder holder) throws CommandException {
         try {
             CommandTemplate template = clazz.getConstructor().newInstance();
 
@@ -166,7 +168,11 @@ public class TerraCommandManager implements CommandManager {
                 }
             }
 
-            template.execute(state.getSender());
+            try {
+                template.execute(state.getSender());
+            } catch(Throwable e) {
+                throw new ExecutionException("Failed to execute command: ", e);
+            }
         } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | InjectionException e) {
             throw new MalformedCommandException("Unable to reflectively instantiate command: ", e);
         }
@@ -216,9 +222,11 @@ public class TerraCommandManager implements CommandManager {
         }
         try {
             if(args.size() <= holder.arguments.size()) {
-                completions.addAll(holder.arguments.get(args.size() - 1).tabCompleter().getConstructor().newInstance().complete(sender));
+                TabCompleter completer = holder.arguments.get(args.size() - 1).tabCompleter().getConstructor().newInstance();
+                pluginInjector.inject(completer);
+                completions.addAll(completer.complete(sender));
             }
-        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | InjectionException e) {
             throw new MalformedCommandException("Unable to reflectively instantiate tab-completer: ", e);
         }
         return completions;
