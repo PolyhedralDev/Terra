@@ -2,7 +2,6 @@ package com.dfsek.terra.bukkit.command.command.structure;
 
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.command.PlayerCommand;
-import com.dfsek.terra.bukkit.command.command.structure.load.LoadCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,7 +30,7 @@ public class StructureCommand extends PlayerCommand {
 
     @Override
     public List<com.dfsek.terra.bukkit.command.Command> getSubCommands() {
-        return Arrays.asList(new ExportCommand(this), new LoadCommand(this), new LocateCommand(this), new SpawnCommand(this));
+        return Arrays.asList(new ExportCommand(this), new LocateCommand(this));
     }
 
     @Override
