@@ -150,7 +150,11 @@ public class TerraCommandManager implements CommandManager {
                     pluginInjector.inject(argumentParser);
 
                     field.setAccessible(true);
-                    field.set(template, argumentParser.parse(state.getSender(), state.getArgument(argument)));
+                    String value = state.getArgument(argument);
+
+                    if(value == null) value = holder.argumentMap.get(argumentTarget.value()).defaultValue();
+
+                    field.set(template, argumentParser.parse(state.getSender(), value));
                 }
                 if(field.isAnnotationPresent(SwitchTarget.class)) {
                     SwitchTarget switchTarget = field.getAnnotation(SwitchTarget.class);
@@ -200,7 +204,7 @@ public class TerraCommandManager implements CommandManager {
 
     private int getMaxArgumentDepth(CommandHolder holder) {
         int max = 0;
-        max = FastMath.max(holder.arguments.size(), max);
+        max = FastMath.max(holder.arguments.size() + holder.switchList.size(), max);
         for(CommandHolder value : holder.subcommands.values()) {
             max = FastMath.max(max, getMaxArgumentDepth(value) + 1);
         }
@@ -240,6 +244,7 @@ public class TerraCommandManager implements CommandManager {
         private final Map<String, CommandHolder> subcommands = new HashMap<>();
         private final Map<String, String> switches = new HashMap<>();
         private final List<Argument> arguments;
+        private final List<Switch> switchList;
         private final Map<String, Argument> argumentMap = new HashMap<>();
 
         private CommandHolder(Class<? extends CommandTemplate> clazz) throws MalformedCommandException {
@@ -267,7 +272,11 @@ public class TerraCommandManager implements CommandManager {
                     argumentMap.put(argument.value(), argument);
                 }
                 arguments = Arrays.asList(command.arguments());
-            } else arguments = Collections.emptyList();
+                switchList = Arrays.asList(command.switches());
+            } else {
+                arguments = Collections.emptyList();
+                switchList = Collections.emptyList();
+            }
         }
     }
 }

@@ -49,4 +49,8 @@ public interface TerraPlugin extends LoaderRegistrar {
     DebugLogger getDebugLogger();
 
     EventManager getEventManager();
+
+    default String getVersion() {
+        return "@VERSION@";
+    }
 }

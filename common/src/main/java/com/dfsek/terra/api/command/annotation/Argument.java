@@ -20,4 +20,6 @@ public @interface Argument {
     Class<? extends TabCompleter> tabCompleter() default NothingCompleter.class;
 
     Class<? extends ArgumentParser<?>> argumentParser() default StringArgumentParser.class;
+
+    String defaultValue() default "";
 }

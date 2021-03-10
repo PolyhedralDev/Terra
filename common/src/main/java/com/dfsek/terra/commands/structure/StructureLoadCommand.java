@@ -17,6 +17,9 @@ import com.dfsek.terra.api.platform.entity.Player;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.commands.structure.argument.ScriptArgumentParser;
+import com.dfsek.terra.commands.structure.completer.RotationCompleter;
+import com.dfsek.terra.commands.structure.completer.ScriptCompleter;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -34,7 +37,8 @@ import java.util.concurrent.ThreadLocalRandom;
                         value = "rotation",
                         required = false,
                         tabCompleter = RotationCompleter.class,
-                        argumentParser = IntegerArgumentParser.class
+                        argumentParser = IntegerArgumentParser.class,
+                        defaultValue = "0"
                 )
         },
         switches = {

@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.structure;
+package com.dfsek.terra.commands.structure.completer;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.tab.TabCompleter;
