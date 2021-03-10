@@ -25,12 +25,10 @@ public final class WorldEditUtil {
         try {
             selection = we.getSession(sender).getSelection(BukkitAdapter.adapt(sender.getWorld()));
         } catch(IncompleteRegionException | ClassCastException e) {
-            sender.sendMessage("Invalid/incomplete selection!");
-            return null;
+            throw new IllegalStateException("Invalid/incomplete selection!");
         }
         if(selection == null) {
-            sender.sendMessage("Please make a selection before attempting to export!");
-            return null;
+            throw new IllegalStateException("Please make a selection before attempting to export!");
         }
         BlockVector3 min = selection.getMinimumPoint();
         BlockVector3 max = selection.getMaximumPoint();

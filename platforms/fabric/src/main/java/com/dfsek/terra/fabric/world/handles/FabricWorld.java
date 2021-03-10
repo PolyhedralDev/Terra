@@ -86,11 +86,6 @@ public class FabricWorld implements World, FabricWorldHandle {
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         net.minecraft.entity.Entity entity = FabricAdapter.adapt(entityType).create(delegate.world);
         entity.setPos(location.getX(), location.getY(), location.getZ());

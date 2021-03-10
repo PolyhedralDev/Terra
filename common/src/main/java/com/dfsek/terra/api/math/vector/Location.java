@@ -170,4 +170,9 @@ public class Location implements Cloneable {
     public String toString() {
         return "[" + world + ": (" + getX() + ", " + getY() + ", " + getZ() + ")]";
     }
+
+    public Location multiply(double v) {
+        vector.multiply(v);
+        return this;
+    }
 }

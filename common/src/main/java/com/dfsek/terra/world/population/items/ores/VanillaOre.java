@@ -68,7 +68,7 @@ public class VanillaOre extends Ore {
                                 if(x > 15 || z > 15 || y > 255 || x < 0 || z < 0 || y < 0) continue;
                                 Block block = chunk.getBlock(x, y, z);
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block.getType())) {
-                                    handle.setBlockData(block, getMaterial(), isApplyGravity());
+                                    block.setBlockData(getMaterial(), isApplyGravity());
                                 }
                             }
                         }

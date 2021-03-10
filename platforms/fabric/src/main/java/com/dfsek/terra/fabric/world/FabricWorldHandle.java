@@ -1,7 +1,5 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
@@ -15,15 +13,6 @@ import net.minecraft.util.registry.Registry;
 import java.util.Locale;
 
 public class FabricWorldHandle implements WorldHandle {
-    @Override
-    public void setBlockData(Block block, BlockData data, boolean physics) {
-        block.setBlockData(data, physics);
-    }
-
-    @Override
-    public BlockData getBlockData(Block block) {
-        return block.getBlockData();
-    }
 
     @Override
     public FabricBlockData createBlockData(String data) {

@@ -64,11 +64,6 @@ public class DummyWorld implements World {
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        throw new UnsupportedOperationException("Cannot get block in DummyWorld");
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         throw new UnsupportedOperationException("Cannot spawn entity in DummyWorld");
     }

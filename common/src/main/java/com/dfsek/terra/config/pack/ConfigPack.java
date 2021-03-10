@@ -274,6 +274,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
+                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry))
                 .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
     }
 

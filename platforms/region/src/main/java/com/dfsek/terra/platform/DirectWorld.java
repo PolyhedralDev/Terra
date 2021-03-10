@@ -83,11 +83,6 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         return null;
     }

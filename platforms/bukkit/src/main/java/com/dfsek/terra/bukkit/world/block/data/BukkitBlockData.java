@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import org.bukkit.Material;
 import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.MultipleFacing;
@@ -80,5 +81,10 @@ public class BukkitBlockData implements BlockData {
     @Override
     public boolean isAir() {
         return delegate.getMaterial().isAir();
+    }
+
+    @Override
+    public boolean isStructureVoid() {
+        return delegate.getMaterial() == Material.STRUCTURE_VOID;
     }
 }

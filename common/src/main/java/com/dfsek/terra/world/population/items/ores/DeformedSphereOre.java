@@ -40,7 +40,7 @@ public class DeformedSphereOre extends Ore {
                     if(oreLoc.distance(origin) < (rad + 0.5) * ((ore.getNoise(x, y, z) + 1) * deform)) {
                         Block b = c.getBlock(oreLoc.getBlockX(), oreLoc.getBlockY(), oreLoc.getBlockZ());
                         if(getReplaceable().contains(b.getType()) && b.getLocation().getY() >= 0)
-                            handle.setBlockData(b, getMaterial(), isApplyGravity());
+                            b.setBlockData(getMaterial(), isApplyGravity());
                     }
                 }
             }

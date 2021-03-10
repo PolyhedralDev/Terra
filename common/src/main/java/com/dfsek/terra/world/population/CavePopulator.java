@@ -11,7 +11,6 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.profiler.ProfileFuture;
@@ -49,7 +48,7 @@ public class CavePopulator implements TerraBlockPopulator {
                 Set<Block> updateNeeded = new HashSet<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
-                    BlockData m = handle.getBlockData(b);
+                    BlockData m = b.getBlockData();
                     BlockType re = m.getBlockType();
                     switch(type) {
                         case CENTER:
@@ -85,18 +84,18 @@ public class CavePopulator implements TerraBlockPopulator {
                 for(Map.Entry<Location, BlockData> entry : shiftCandidate.entrySet()) {
                     Location l = entry.getKey();
                     Location mut = l.clone();
-                    BlockData orig = handle.getBlockData(l.getBlock());
+                    BlockData orig = l.getBlock().getBlockData();
                     do mut.subtract(0, 1, 0);
-                    while(mut.getY() > 0 && handle.getBlockData(mut.getBlock()).matches(orig));
+                    while(mut.getY() > 0 && mut.getBlock().getBlockData().matches(orig));
                     try {
                         if(template.getShift().get(entry.getValue().getBlockType()).contains(mut.getBlock().getBlockData().getBlockType())) {
-                            handle.setBlockData(mut.getBlock(), shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
+                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
                         }
                     } catch(NullPointerException ignore) {
                     }
                 }
                 for(Block b : updateNeeded) {
-                    BlockData orig = handle.getBlockData(b);
+                    BlockData orig = b.getBlockData();
                     b.setBlockData(AIR, false);
                     b.setBlockData(orig, true);
                 }

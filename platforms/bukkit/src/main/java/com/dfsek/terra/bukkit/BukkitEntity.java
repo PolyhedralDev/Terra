@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitEntity implements Entity {
@@ -19,6 +20,16 @@ public class BukkitEntity implements Entity {
     @Override
     public Location getLocation() {
         return BukkitAdapter.adapt(entity.getLocation());
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        entity.teleport(BukkitAdapter.adapt(location));
+    }
+
+    @Override
+    public World getWorld() {
+        return BukkitAdapter.adapt(entity.getWorld());
     }
 
     @Override

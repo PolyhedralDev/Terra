@@ -68,11 +68,6 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        return new BukkitBlock(delegate.getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         return new BukkitEntity(delegate.spawnEntity(BukkitAdapter.adapt(location), ((BukkitEntityType) entityType).getHandle()));
     }
