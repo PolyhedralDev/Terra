@@ -52,6 +52,11 @@ public class Data implements BlockData, BlockType {
         return noProp.equals("minecraft:air");
     }
 
+    @Override
+    public boolean isStructureVoid() {
+        return false;
+    }
+
 
     @Override
     public BlockData clone() {

@@ -176,7 +176,7 @@ public class TerraCommandManager implements CommandManager {
             try {
                 template.execute(state.getSender());
             } catch(Throwable e) {
-                throw new ExecutionException("Failed to execute command: ", e);
+                throw new ExecutionException("Failed to execute command: " + e.getMessage(), e);
             }
         } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | InjectionException e) {
             throw new MalformedCommandException("Unable to reflectively instantiate command: ", e);

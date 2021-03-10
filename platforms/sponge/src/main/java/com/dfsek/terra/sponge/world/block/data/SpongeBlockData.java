@@ -40,4 +40,9 @@ public class SpongeBlockData implements BlockData {
     public boolean isAir() {
         return false;
     }
+
+    @Override
+    public boolean isStructureVoid() {
+        return false;
+    }
 }

@@ -13,4 +13,6 @@ public interface BlockData extends Cloneable, Handle {
     String getAsString();
 
     boolean isAir();
+
+    boolean isStructureVoid();
 }

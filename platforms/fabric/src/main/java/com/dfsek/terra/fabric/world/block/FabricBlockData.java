@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.state.State;
 import net.minecraft.util.registry.Registry;
 
@@ -49,6 +50,11 @@ public class FabricBlockData implements BlockData {
     @Override
     public boolean isAir() {
         return delegate.isAir();
+    }
+
+    @Override
+    public boolean isStructureVoid() {
+        return delegate.getBlock() == Blocks.STRUCTURE_VOID;
     }
 
     @Override
