@@ -1,12 +1,10 @@
-package com.dfsek.terra.commands;
+package com.dfsek.terra.commands.structure;
 
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
 import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.commands.structure.SpawnCommand;
-import com.dfsek.terra.commands.structure.StructureExportCommand;
-import com.dfsek.terra.commands.structure.StructureLoadCommand;
+import com.dfsek.terra.config.lang.LangUtil;
 
 @Command(
         subcommands = {
@@ -31,6 +29,6 @@ import com.dfsek.terra.commands.structure.StructureLoadCommand;
 public class StructureCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
-
+        LangUtil.send("command.structure.main-menu", sender);
     }
 }

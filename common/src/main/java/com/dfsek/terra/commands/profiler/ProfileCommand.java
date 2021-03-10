@@ -7,6 +7,7 @@ import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.config.lang.LangUtil;
 
 @Command(
         subcommands = {
@@ -23,6 +24,6 @@ import com.dfsek.terra.api.platform.CommandSender;
 public class ProfileCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
-
+        LangUtil.send("command.profile.main-menu", sender);
     }
 }

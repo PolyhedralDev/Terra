@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands;
+package com.dfsek.terra.commands.biome;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;
@@ -11,8 +11,6 @@ import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.entity.Player;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
-import com.dfsek.terra.commands.biome.BiomeInfoCommand;
-import com.dfsek.terra.commands.biome.BiomeLocateCommand;
 import com.dfsek.terra.config.lang.LangUtil;
 
 @Command(
