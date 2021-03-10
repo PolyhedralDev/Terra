@@ -118,7 +118,7 @@ public class TerraFlora implements Flora {
                     ((Rotatable) data).setRotation(oneFace);
                 }
             }
-            handle.setBlockData(location.clone().add(0, i + c, 0).getBlock(), data, physics);
+            location.clone().add(0, i + c, 0).getBlock().setBlockData(data, physics);
         }
         return true;
     }
