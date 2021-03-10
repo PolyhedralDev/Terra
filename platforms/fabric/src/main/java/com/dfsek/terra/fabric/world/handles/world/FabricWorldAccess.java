@@ -77,7 +77,6 @@ public class FabricWorldAccess implements World, FabricWorldHandle {
         net.minecraft.entity.Entity entity = FabricAdapter.adapt(entityType).create(((ServerWorldAccess) delegate).toServerWorld());
         entity.setPos(location.getX(), location.getY(), location.getZ());
         delegate.spawnEntity(entity);
-        System.out.println("Spawned " + entity);
         return new FabricEntity(entity);
     }
 

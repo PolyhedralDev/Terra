@@ -359,8 +359,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             try {
                 manager.execute(args.remove(0), FabricAdapter.adapt(context.getSource()), args);
             } catch(CommandException e) {
-                e.printStackTrace();
-                return -1;
+                context.getSource().sendError(new LiteralText(e.getMessage()));
             }
             return 1;
         });
@@ -400,8 +399,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         @Global
         public void injectTrees(ConfigPackPreLoadEvent event) {
             CheckedRegistry<Tree> treeRegistry = event.getPack().getTreeRegistry();
-            injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.BROWN_MUSHROOM_GIANT);
-            injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.RED_MUSHROOM_GIANT);
+            injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.HUGE_BROWN_MUSHROOM);
+            injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.HUGE_RED_MUSHROOM);
             injectTree(treeRegistry, "JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE);
             injectTree(treeRegistry, "JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE);
             injectTree(treeRegistry, "LARGE_OAK", ConfiguredFeatures.FANCY_OAK);

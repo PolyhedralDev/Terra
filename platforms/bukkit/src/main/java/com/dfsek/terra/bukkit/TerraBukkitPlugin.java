@@ -173,7 +173,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
-        //TerraCommand command = new TerraCommand(this); // Set up main Terra command.
 
         CommandManager manager = new TerraCommandManager(this);
 
