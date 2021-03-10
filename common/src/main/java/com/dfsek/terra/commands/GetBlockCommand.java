@@ -13,7 +13,9 @@ import com.dfsek.terra.api.platform.entity.Player;
 @WorldCommand
 @DebugCommand
 @PlayerCommand
-@Command
+@Command(
+        usage = "/terra getblock"
+)
 public class GetBlockCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;

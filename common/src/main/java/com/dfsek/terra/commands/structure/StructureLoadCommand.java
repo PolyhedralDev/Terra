@@ -45,7 +45,8 @@ import java.util.concurrent.ThreadLocalRandom;
                 @Switch(value = "chunk",
                         aliases = "c"
                 )
-        }
+        },
+        usage = "/terra structure load [ROTATION] [-c]"
 )
 public class StructureLoadCommand implements CommandTemplate {
     @ArgumentTarget("rotation")

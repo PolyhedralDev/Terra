@@ -5,6 +5,9 @@ import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
+import com.dfsek.terra.api.command.annotation.type.DebugCommand;
+import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
+import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.CommandSender;
@@ -20,12 +23,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+@PlayerCommand
+@WorldCommand
+@DebugCommand
 @Command(
         arguments = {
                 @Argument(
                         value = "id"
                 )
-        }
+        },
+        usage = "/terra structure export <ID>"
 )
 public class StructureExportCommand implements CommandTemplate {
     @Inject

@@ -25,7 +25,8 @@ import com.dfsek.terra.commands.structure.StructureLoadCommand;
                         value = "spawn",
                         aliases = "s"
                 )
-        }
+        },
+        usage = "/te structure"
 )
 public class StructureCommand implements CommandTemplate {
     @Override

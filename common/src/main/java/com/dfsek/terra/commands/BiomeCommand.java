@@ -27,7 +27,8 @@ import com.dfsek.terra.config.lang.LangUtil;
                         aliases = {"l"},
                         clazz = BiomeLocateCommand.class
                 )
-        }
+        },
+        usage = "/terra biome"
 )
 @WorldCommand
 @PlayerCommand

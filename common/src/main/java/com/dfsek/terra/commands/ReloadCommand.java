@@ -7,7 +7,9 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.config.lang.LangUtil;
 
-@Command()
+@Command(
+        usage = "/terra reload"
+)
 public class ReloadCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;

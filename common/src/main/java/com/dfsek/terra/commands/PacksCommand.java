@@ -10,7 +10,9 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.ConfigPackTemplate;
 
-@Command
+@Command(
+        usage = "/terra packs"
+)
 public class PacksCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;

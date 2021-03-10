@@ -23,7 +23,9 @@ import java.util.HashMap;
 @DebugCommand
 @PlayerCommand
 @WorldCommand
-@Command
+@Command(
+        usage = "/terra spawn"
+)
 public class SpawnCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;
