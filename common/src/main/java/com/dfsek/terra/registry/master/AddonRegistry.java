@@ -58,7 +58,7 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
             for(File jar : addonsFolder.listFiles(file -> file.getName().endsWith(".jar"))) {
                 main.logger().info("Loading Addon(s) from: " + jar.getName());
                 for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar)) {
-                    pool.add(new PreLoadAddon(addonClass));
+                    pool.add(new PreLoadAddon(addonClass, jar));
                 }
             }
 

@@ -7,6 +7,7 @@ import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.addons.annotations.Addon;
 import com.dfsek.terra.api.addons.annotations.Depends;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +17,12 @@ public class PreLoadAddon {
     private final Class<? extends TerraAddon> addonClass;
     private final String id;
     private final String[] dependencies;
+    private final File file;
 
-    public PreLoadAddon(Class<? extends TerraAddon> addonClass) {
+    public PreLoadAddon(Class<? extends TerraAddon> addonClass, File file) {
         this.addonClass = addonClass;
         this.id = addonClass.getAnnotation(Addon.class).value();
+        this.file = file;
         Depends depends = addonClass.getAnnotation(Depends.class);
         this.dependencies = depends == null ? new String[] {} : depends.value();
     }
@@ -47,5 +50,9 @@ public class PreLoadAddon {
 
     public Class<? extends TerraAddon> getAddonClass() {
         return addonClass;
+    }
+
+    public File getFile() {
+        return file;
     }
 }

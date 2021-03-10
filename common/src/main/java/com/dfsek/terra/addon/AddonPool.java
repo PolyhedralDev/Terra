@@ -11,8 +11,18 @@ public class AddonPool {
     private final Map<String, PreLoadAddon> pool = new HashMap<>();
 
     public void add(PreLoadAddon addon) throws AddonLoadException {
-        if(pool.containsKey(addon.getId()))
-            throw new AddonLoadException("Duplicate addon ID: " + addon.getId());
+        if(pool.containsKey(addon.getId())) {
+            String message = "Duplicate addon ID: " +
+                    addon.getId() + "; original ID from file: " +
+                    pool.get(addon.getId()).getFile().getAbsolutePath() +
+                    ", class: " +
+                    pool.get(addon.getId()).getAddonClass().getCanonicalName() +
+                    "Duplicate ID from file: " +
+                    addon.getFile().getAbsolutePath() +
+                    ", class: " +
+                    addon.getAddonClass().getCanonicalName();
+            throw new AddonLoadException(message);
+        }
         pool.put(addon.getId(), addon);
     }
 
