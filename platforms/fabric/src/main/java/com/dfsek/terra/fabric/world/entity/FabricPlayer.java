@@ -5,9 +5,7 @@ import com.dfsek.terra.api.platform.entity.Player;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 
 public class FabricPlayer implements Player {
@@ -40,6 +38,5 @@ public class FabricPlayer implements Player {
     @Override
     public void setLocation(Location location) {
         delegate.teleport(location.getX(), location.getY(), location.getZ());
-        delegate.moveToWorld((ServerWorld) ((FabricWorldHandle) location).getWorld());
     }
 }
