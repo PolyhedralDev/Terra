@@ -1,3 +1,11 @@
+---
+name: "Pull Request"
+about: "Standard pull request template."
+title: ""
+labels: "Status: Pending"
+
+---
+
 # Pull Request
 
 ## Brief description.
@@ -49,11 +57,10 @@
     If your PR is not adding new features, only fixing bugs or adding translations, then you may delete this section.
 -->
 - [ ] <!-- First thing -->
-  - [ ] <!-- A requirement of the first thing. -->
-  - [ ] <!-- A second requirement of the first thing. -->
+    - [ ] <!-- A requirement of the first thing. -->
+    - [ ] <!-- A second requirement of the first thing. -->
 - [ ] <!-- Second thing -->
 - [ ] <!-- etc. -->
-
 
 ## Affects of the PR
 
