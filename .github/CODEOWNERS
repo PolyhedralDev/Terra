@@ -1,0 +1,4 @@
+# Global owners, automatically request review when pull request is submitted
+*       @dfsek @solonovamax @duplexsystem
+
+# Patterns below override the rules above
