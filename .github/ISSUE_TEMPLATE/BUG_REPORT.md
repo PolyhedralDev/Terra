@@ -1,9 +1,9 @@
 ---
-name: Bug Report
-about: Open a bug report to help us identify issues with Terra.
-title: '[Bug] <Put your title here>'
-labels: Type: Bug, Status: Pending
-assignees: ''
+name: "Bug Report"
+about: "Open a bug report to help us identify issues with Terra."
+title: "[Bug] <Put your title here>"
+labels: "Type: Bug, Status: Pending"
+assignees: ""
 
 ---
 

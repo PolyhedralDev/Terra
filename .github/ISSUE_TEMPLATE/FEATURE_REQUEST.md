@@ -1,9 +1,9 @@
 ---
-name: Feature Request
-about: Give us suggestions of features we could add to Terra.
-title: '[Feature] <Put your title here>'
-labels: Type: Enhancement, Status: Pending
-assignees: ''
+name: "Feature Request"
+about: "Give us suggestions of features we could add to Terra."
+title: "[Feature] <Put your title here>"
+labels: "Type: Enhancement, Status: Pending"
+assignees: ""
 
 ---
 
