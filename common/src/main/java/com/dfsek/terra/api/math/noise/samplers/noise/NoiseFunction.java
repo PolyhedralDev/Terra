@@ -22,6 +22,8 @@ public abstract class NoiseFunction implements NoiseSampler {
         return f >= 0 ? (int) f : (int) f - 1;
     }
 
+    static final int precision = 100;
+
     protected static int hash(int seed, int xPrimed, int yPrimed, int zPrimed) {
         int hash = seed ^ xPrimed ^ yPrimed ^ zPrimed;
 
@@ -35,6 +37,8 @@ public abstract class NoiseFunction implements NoiseSampler {
         hash *= 0x27d4eb2d;
         return hash;
     }
+
+    static final int modulus = 360 * precision;
 
     protected static int fastRound(double f) {
         return f >= 0 ? (int) (f + 0.5f) : (int) (f - 0.5);
@@ -72,6 +76,48 @@ public abstract class NoiseFunction implements NoiseSampler {
     protected static double fastSqrt(double f) {
         return FastMath.sqrt(f);
     }
+
+    static final double[] sin = new double[360 * 100]; // lookup table
+
+    static {
+        for(int i = 0; i < sin.length; i++) {
+            sin[i] = (float) Math.sin((double) (i) / (precision));
+        }
+    }
+
+    protected static int fastCeil(double f) {
+        int i = (int) f;
+        if(i < f) i++;
+        return i;
+    }
+
+    /**
+     * Murmur64 hashing function
+     *
+     * @param h Input value
+     * @return Hashed value
+     */
+    protected static long murmur64(long h) {
+        h ^= h >>> 33;
+        h *= 0xff51afd7ed558ccdL;
+        h ^= h >>> 33;
+        h *= 0xc4ceb9fe1a85ec53L;
+        h ^= h >>> 33;
+        return h;
+    }
+
+    private static double sinLookup(int a) {
+        return a >= 0 ? sin[a % (modulus)] : -sin[-a % (modulus)];
+    }
+
+    protected static double fastSin(double a) {
+        return sinLookup((int) (a * precision + 0.5f));
+    }
+
+    protected static double fastCos(double a) {
+        return sinLookup((int) ((a + Math.PI / 2) * precision + 0.5f));
+    }
+
 
     public void setSeed(int seed) {
         this.seed = seed;

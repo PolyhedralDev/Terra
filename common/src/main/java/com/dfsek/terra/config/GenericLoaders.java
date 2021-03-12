@@ -95,8 +95,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(CarverPalette.class, new CarverPaletteLoader())
                 .registerLoader(SourceSeeded.class, new SourceBuilderLoader())
                 .registerLoader(StageSeeded.class, new StageBuilderLoader())
-                .registerLoader(TerraAddon.class, main.getAddons())
-                .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType())
                 .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(BiomeProvider.Type.class, (t, object, cf) -> BiomeProvider.Type.valueOf((String) object))
@@ -107,5 +105,10 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
                 .registerLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()));
+
+        if(main != null) {
+            registry.registerLoader(TerraAddon.class, main.getAddons())
+                    .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType());
+        }
     }
 }

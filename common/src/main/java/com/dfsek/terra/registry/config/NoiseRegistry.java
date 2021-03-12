@@ -6,6 +6,7 @@ import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2SSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.PerlinSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.simplex.SimplexSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.value.ValueCubicSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.value.ValueSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
@@ -15,6 +16,7 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.KernelTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.CellularNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.ConstantNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.ExpressionFunctionTemplate;
+import com.dfsek.terra.config.loaders.config.sampler.templates.noise.GaborNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.SimpleNoiseTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.BrownianMotionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.PingPongTemplate;
@@ -44,6 +46,8 @@ public class NoiseRegistry extends OpenRegistry<Supplier<ObjectTemplate<NoiseSee
         add("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
         add("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
         add("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
+        add("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
+        add("GABOR", GaborNoiseTemplate::new);
 
 
         add("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));

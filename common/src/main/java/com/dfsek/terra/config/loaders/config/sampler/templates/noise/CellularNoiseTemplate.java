@@ -39,7 +39,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Override
     public NoiseSampler apply(Long seed) {
-        CellularSampler sampler = new CellularSampler((int) (long) seed);
+        CellularSampler sampler = new CellularSampler((int) (long) seed + salt);
         sampler.setNoiseLookup(lookup.apply(seed));
         sampler.setFrequency(frequency);
         sampler.setJitterModifier(cellularJitter);
