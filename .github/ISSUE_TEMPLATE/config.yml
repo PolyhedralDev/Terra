@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name:  Which issue template do I choose?
-    url:   https://example.com
+    url:   https://github.com/PolyhedralDev/Terra/wiki/How-To-Choose-An-Issue-Template
     about: Click this if you don't know which issue template to select. This will help you make sure you choose the right one and provide enough information for us to help you.
   - name:  Terra Wiki
     url:   https://github.com/PolyhedralDev/Terra/wiki
