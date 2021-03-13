@@ -42,7 +42,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
                         template.getVariables().forEach(varScope::create);
 
                         Map<String, NoiseSeeded> noiseBuilderMap = pack.getTemplate().getNoiseBuilderMap();
-                        Map<String, FunctionTemplate> functionTemplateMap = new HashMap<>(template.getFunctions());
+                        Map<String, FunctionTemplate> functionTemplateMap = new HashMap<>(pack.getTemplate().getFunctions());
 
                         functionTemplateMap.putAll(template.getFunctions());
 
