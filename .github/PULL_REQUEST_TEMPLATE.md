@@ -1,11 +1,3 @@
----
-name: "Pull Request"
-about: "Standard pull request template."
-title: ""
-labels: "Status: Pending"
-
----
-
 # Pull Request
 
 ## Brief description.
