@@ -35,11 +35,6 @@ public class FabricBlock implements Block {
     }
 
     @Override
-    public Block getRelative(BlockFace face) {
-        return getRelative(face, 1);
-    }
-
-    @Override
     public Block getRelative(BlockFace face, int len) {
         BlockPos newPos = delegate.position.add(face.getModX() * len, face.getModY() * len, face.getModZ() * len);
         return new FabricBlock(newPos, delegate.worldAccess);

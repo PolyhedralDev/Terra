@@ -104,6 +104,11 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     @Override
+    public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
+        super.generateFeatures(region, accessor);
+    }
+
+    @Override
     public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
         FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(world, seed, this);
         delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));

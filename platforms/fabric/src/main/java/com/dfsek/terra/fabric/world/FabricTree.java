@@ -30,6 +30,7 @@ public class FabricTree implements Tree {
     @Override
     public MaterialSet getSpawnable() {
         return MaterialSet.get(TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:grass_block"),
-                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:podzol"));
+                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:podzol"),
+                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:mycelium"));
     }
 }
