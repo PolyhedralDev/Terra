@@ -22,6 +22,11 @@ import com.dfsek.terra.config.lang.LangUtil;
                         clazz = SpawnCommand.class,
                         value = "spawn",
                         aliases = "s"
+                ),
+                @Subcommand(
+                        clazz = StructureLocateCommand.class,
+                        value = "locate",
+                        aliases = "l"
                 )
         },
         usage = "/te structure"

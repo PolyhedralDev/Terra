@@ -2,7 +2,6 @@ package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.registry.OpenRegistry;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -44,6 +43,11 @@ public class LockedRegistry<T> implements Registry<T> {
     @Override
     public Set<T> entries() {
         return registry.entries();
+    }
+
+    @Override
+    public Set<String> keys() {
+        return registry.keys();
     }
 
     @Override

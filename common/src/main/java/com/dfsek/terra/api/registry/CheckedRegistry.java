@@ -73,6 +73,11 @@ public class CheckedRegistry<T> implements Registry<T> {
     }
 
     @Override
+    public Set<String> keys() {
+        return registry.keys();
+    }
+
+    @Override
     public T load(Type t, Object c, ConfigLoader loader) throws LoadException {
         return registry.load(t, c, loader);
     }

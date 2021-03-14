@@ -43,4 +43,11 @@ public interface Registry<T> extends TypeLoader<T> {
      * @return Set containing all entries.
      */
     Set<T> entries();
+
+    /**
+     * Get all the keys in this registry.
+     *
+     * @return Keys in registry
+     */
+    Set<String> keys();
 }

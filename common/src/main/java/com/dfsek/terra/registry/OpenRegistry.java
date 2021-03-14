@@ -78,6 +78,11 @@ public class OpenRegistry<T> implements Registry<T> {
         return new HashSet<>(objects.values());
     }
 
+    @Override
+    public Set<String> keys() {
+        return objects.keySet();
+    }
+
     /**
      * Clears all entries from the registry.
      */
