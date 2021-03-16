@@ -4,12 +4,12 @@ import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import net.querz.mca.Chunk;
 import net.querz.nbt.tag.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
-public class DirectChunkData implements ChunkGenerator.ChunkData, com.dfsek.terra.api.platform.world.Chunk {
+public class DirectChunkData implements ChunkData, com.dfsek.terra.api.platform.world.Chunk {
     private final Chunk delegate;
     private final DirectWorld world;
     private final int x;

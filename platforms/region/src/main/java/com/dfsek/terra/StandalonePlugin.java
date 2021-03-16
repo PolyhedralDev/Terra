@@ -1,23 +1,28 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.EventManager;
-import com.dfsek.terra.api.core.event.TerraEventManager;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.event.EventManager;
+import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.util.logging.DebugLogger;
+import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
-import com.dfsek.terra.debug.DebugLogger;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
-import com.dfsek.terra.registry.ConfigRegistry;
+import com.dfsek.terra.registry.master.AddonRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 
 import java.io.File;
@@ -26,6 +31,10 @@ import java.util.logging.Logger;
 
 public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
+    private final AddonRegistry addonRegistry = new AddonRegistry(this);
+
+    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+
     private final PluginConfig config = new PluginConfig();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
     private final EventManager eventManager = new TerraEventManager(this);
@@ -36,18 +45,13 @@ public class StandalonePlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
     public TerraWorld getWorld(World world) {
         return new TerraWorld(world, registry.get("DEFAULT"), this);
     }
 
     @Override
-    public Logger getLogger() {
-        return Logger.getLogger("Terra");
+    public com.dfsek.terra.api.util.logging.Logger logger() {
+        return new JavaLogger(Logger.getLogger("Terra"));
     }
 
     @Override
@@ -75,12 +79,17 @@ public class StandalonePlugin implements TerraPlugin {
     }
 
     @Override
-    public ConfigRegistry getRegistry() {
-        return registry;
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return new CheckedRegistry<>(registry);
     }
 
     @Override
-    public void reload() {
+    public LockedRegistry<TerraAddon> getAddons() {
+        return addonLockedRegistry;
+    }
+
+    @Override
+    public boolean reload() {
         throw new UnsupportedOperationException();
     }
 
@@ -101,15 +110,30 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public DebugLogger getDebugLogger() {
-        return new DebugLogger(Logger.getLogger("Terra"));
+        Logger logger = Logger.getLogger("Terra");
+        return new DebugLogger(new com.dfsek.terra.api.util.logging.Logger() {
+            @Override
+            public void info(String message) {
+                logger.info(message);
+            }
+
+            @Override
+            public void warning(String message) {
+                logger.warning(message);
+            }
+
+            @Override
+            public void severe(String message) {
+                logger.severe(message);
+            }
+        });
     }
 
     @Override
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(Biome.class, (t, o, l) -> new RawBiome(o.toString()))
-                .registerLoader(MaterialData.class, (t, o, l) -> worldHandle.createMaterialData((String) o));
+                .registerLoader(Biome.class, (t, o, l) -> new RawBiome(o.toString()));
         new GenericLoaders(this).register(registry);
     }
 

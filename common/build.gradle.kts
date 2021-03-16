@@ -18,10 +18,13 @@ dependencies {
     "shadedApi"("net.jafama:jafama:2.3.2")
     "shadedApi"("org.yaml:snakeyaml:1.27")
     "shadedApi"("org.ow2.asm:asm:9.0")
+    "shadedApi"("commons-io:commons-io:2.6")
 
     "compileOnly"("com.googlecode.json-simple:json-simple:1.1")
 
-    "shadedApi"("com.google.guava:guava:30.0-jre")
+    "compileOnly"("com.google.guava:guava:30.0-jre")
+
+    "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 
 publishing {

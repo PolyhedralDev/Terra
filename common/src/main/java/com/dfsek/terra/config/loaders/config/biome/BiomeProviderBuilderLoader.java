@@ -3,10 +3,10 @@ package com.dfsek.terra.config.loaders.config.biome;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.biome.provider.BiomeProvider;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.SingleBiomeProviderTemplate;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.BiomePipelineTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 
 import java.lang.reflect.Type;
 import java.util.Map;

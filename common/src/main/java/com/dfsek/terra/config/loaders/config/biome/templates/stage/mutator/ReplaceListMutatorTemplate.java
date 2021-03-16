@@ -1,11 +1,13 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator;
 
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.biome.TerraBiome;
-import com.dfsek.terra.biome.pipeline.mutator.BiomeMutator;
-import com.dfsek.terra.biome.pipeline.mutator.ReplaceListMutator;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.pipeline.mutator.BiomeMutator;
+import com.dfsek.terra.api.world.biome.pipeline.mutator.ReplaceListMutator;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -14,13 +16,17 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
     private String defaultFrom;
 
     @Value("default-to")
-    private ProbabilityCollection<TerraBiome> defaultTo;
+    private ProbabilityCollection<BiomeBuilder> defaultTo;
 
     @Value("to")
-    private Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace;
+    private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
 
     @Override
     public BiomeMutator build(long seed) {
-        return new ReplaceListMutator(replace, defaultFrom, defaultTo, noise.apply(seed));
+        Map<TerraBiome, ProbabilityCollection<TerraBiome>> replaceMap = new HashMap<>();
+
+        replace.forEach((biomeBuilder, biomeBuilders) -> replaceMap.put(biomeBuilder.apply(seed), biomeBuilders.map(builder -> builder.apply(seed), true)));
+
+        return new ReplaceListMutator(replaceMap, defaultFrom, defaultTo.map(biomeBuilder -> biomeBuilder.apply(seed), true), noise.apply(seed));
     }
 }

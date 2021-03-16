@@ -1,26 +1,36 @@
 package com.dfsek.terra.fabric.inventory;
 
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
+import com.dfsek.terra.fabric.world.FabricAdapter;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.command.argument.ItemStackArgumentType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
-import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FabricItemHandle implements ItemHandle {
+
     @Override
-    public ItemStack newItemStack(MaterialData material, int amount) {
-        return null;
+    public Item createItem(String data) {
+        try {
+            return FabricAdapter.adapt(new ItemStackArgumentType().parse(new StringReader(data)).getItem());
+        } catch(CommandSyntaxException e) {
+            throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
+        }
     }
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return null;
+        return FabricAdapter.adapt(Registry.ENCHANTMENT.get(Identifier.tryParse(id)));
     }
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return Collections.emptySet();
+        return Registry.ENCHANTMENT.stream().map(FabricAdapter::adapt).collect(Collectors.toSet());
     }
 }

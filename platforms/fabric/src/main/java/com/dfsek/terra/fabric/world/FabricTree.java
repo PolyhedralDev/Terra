@@ -1,19 +1,17 @@
 package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import com.dfsek.terra.util.MaterialSet;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 
 import java.util.Random;
-import java.util.Set;
 
 public class FabricTree implements Tree {
     private final ConfiguredFeature<?, ?> delegate;
@@ -30,8 +28,9 @@ public class FabricTree implements Tree {
     }
 
     @Override
-    public Set<MaterialData> getSpawnable() {
-        return MaterialSet.get(TerraFabricPlugin.getInstance().getWorldHandle().createMaterialData("minecraft:grass_block"),
-                TerraFabricPlugin.getInstance().getWorldHandle().createMaterialData("minecraft:podzol"));
+    public MaterialSet getSpawnable() {
+        return MaterialSet.get(TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:grass_block"),
+                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:podzol"),
+                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:mycelium"));
     }
 }

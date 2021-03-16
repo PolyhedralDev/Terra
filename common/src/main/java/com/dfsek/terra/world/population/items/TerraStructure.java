@@ -1,9 +1,9 @@
 package com.dfsek.terra.world.population.items;
 
 import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.config.templates.StructureTemplate;
 
 public class TerraStructure {

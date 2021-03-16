@@ -1,12 +1,12 @@
 package com.dfsek.terra.api.world.tree.fractal.trees;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
 import com.dfsek.terra.api.world.tree.fractal.TreeGeometry;
-import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.Random;
@@ -17,8 +17,8 @@ public class OakTree extends FractalTree {
 
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:podzol"),
-                main.getWorldHandle().createMaterialData("minecraft:grass_block"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:podzol"),
+                main.getWorldHandle().createBlockData("minecraft:grass_block"));
     }
 
     /**
@@ -39,7 +39,7 @@ public class OakTree extends FractalTree {
 
     private void growBranch(Location l1, Vector3 diff, double d1, int recursions, Random r) {
         BlockData wood = getMain().getWorldHandle().createBlockData("minecraft:oak_wood");
-        BlockData leaves = getMain().getWorldHandle().createBlockData("minecraft:oak_leave");
+        BlockData leaves = getMain().getWorldHandle().createBlockData("minecraft:oak_leaves");
         if(recursions > 1) {
             geo.generateSphere(l1, leaves, 1 + r.nextInt(2) + (3 - recursions), false, r);
             if(recursions > 2) return;

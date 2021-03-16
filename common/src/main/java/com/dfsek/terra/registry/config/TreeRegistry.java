@@ -1,9 +1,9 @@
 package com.dfsek.terra.registry.config;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.Cactus;
@@ -14,14 +14,13 @@ import com.dfsek.terra.api.world.tree.fractal.trees.ShatteredTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredPillar;
 import com.dfsek.terra.api.world.tree.fractal.trees.SmallShatteredTree;
 import com.dfsek.terra.api.world.tree.fractal.trees.SpruceTree;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
-import java.util.Set;
 
-public class TreeRegistry extends TerraRegistry<Tree> {
+public class TreeRegistry extends OpenRegistry<Tree> {
     private final TerraPlugin main;
 
     public TreeRegistry(TerraPlugin main) {
@@ -40,13 +39,13 @@ public class TreeRegistry extends TerraRegistry<Tree> {
         try {
             add(id, new FractalTreeHolder(value));
         } catch(Exception e) {
-            main.getLogger().warning("Unable to load tree " + id + ": " + e.getMessage());
+            main.logger().warning("Unable to load tree " + id + ": " + e.getMessage());
         }
     }
 
     @Override
-    public boolean add(String name, Tree value) {
-        return super.add(name, value);
+    public boolean add(String identifier, Tree value) {
+        return super.add(identifier, value);
     }
 
     private final class FractalTreeHolder implements Tree {
@@ -71,7 +70,7 @@ public class TreeRegistry extends TerraRegistry<Tree> {
         }
 
         @Override
-        public Set<MaterialData> getSpawnable() {
+        public MaterialSet getSpawnable() {
             return tree.getSpawnable();
         }
     }

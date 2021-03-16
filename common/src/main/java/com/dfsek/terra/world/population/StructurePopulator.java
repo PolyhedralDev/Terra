@@ -1,16 +1,17 @@
 package com.dfsek.terra.world.population;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.profiler.ProfileFuture;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -35,7 +36,7 @@ public class StructurePopulator implements TerraBlockPopulator {
             int cz = (chunk.getZ() << 4);
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
-            ConfigPack config = tw.getConfig();
+            WorldConfig config = tw.getConfig();
             for(TerraStructure conf : config.getStructures()) {
                 Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
 

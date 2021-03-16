@@ -1,6 +1,7 @@
 package com.dfsek.terra.profiler;
 
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.world.TerraWorld;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.jafama.FastMath;
@@ -13,7 +14,7 @@ public class WorldProfiler {
     private boolean isProfiling;
 
     public WorldProfiler(World w) {
-        if(w.getGenerator().getTerraGenerator() == null)
+        if(!TerraWorld.isTerraWorld(w))
             throw new IllegalArgumentException("Attempted to instantiate profiler on non-Terra managed world!");
         this.addMeasurement(new Measurement(2500000, DataType.PERIOD_MILLISECONDS), "TotalChunkGenTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "FloraTime")
@@ -21,7 +22,7 @@ public class WorldProfiler {
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "OreTime")
                 .addMeasurement(new Measurement(5000000, DataType.PERIOD_MILLISECONDS), "CaveTime")
                 .addMeasurement(new Measurement(1500000, DataType.PERIOD_MILLISECONDS), "StructureTime");
-        ;
+
         isProfiling = false;
         this.world = w;
     }

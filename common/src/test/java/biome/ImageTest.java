@@ -7,17 +7,17 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.biome.TerraBiome;
-import com.dfsek.terra.biome.provider.BiomeProvider;
-import com.dfsek.terra.biome.provider.ImageBiomeProvider;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
-import com.dfsek.terra.registry.TerraRegistry;
+import com.dfsek.terra.registry.OpenRegistry;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -44,11 +44,11 @@ public class ImageTest {
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
 
-        TerraRegistry<TerraBiome> biomeRegistry = new TerraRegistry<TerraBiome>() {
+        OpenRegistry<TerraBiome> biomeRegistry = new OpenRegistry<TerraBiome>() {
         };
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), null));
 
-        return new ImageBiomeProvider(biomeRegistry, ImageIO.read(ImageTest.class.getResourceAsStream("/map.jpg")), 1, ImageBiomeProvider.Align.CENTER);
+        return new ImageBiomeProvider(biomeRegistry.entries(), ImageIO.read(ImageTest.class.getResourceAsStream("/map.jpg")), 1, ImageBiomeProvider.Align.CENTER);
     }
 
     @Test

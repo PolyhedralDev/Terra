@@ -1,18 +1,17 @@
 package com.dfsek.terra.registry.config;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
-import com.dfsek.terra.registry.TerraRegistry;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.world.population.items.flora.ConstantFlora;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 
-public class FloraRegistry extends TerraRegistry<Flora> {
+public class FloraRegistry extends OpenRegistry<Flora> {
     private final TerraPlugin main;
 
     public FloraRegistry(TerraPlugin main) {
@@ -52,15 +51,15 @@ public class FloraRegistry extends TerraRegistry<Flora> {
         addItem("BROWN_MUSHROOM", () -> new ConstantFlora(mushroom, Collections.singletonList(data("minecraft:brown_mushroom"))));
     }
 
-    private MaterialData create(String s) {
-        return main.getWorldHandle().createMaterialData(s);
+    private BlockData create(String s) {
+        return main.getWorldHandle().createBlockData(s);
     }
 
     private void addItem(String id, Callable<ConstantFlora> flora) {
         try {
             add(id, flora.call());
         } catch(Exception e) {
-            main.getLogger().warning("Failed to load Flora item: " + id + ": " + e.getMessage());
+            main.logger().warning("Failed to load Flora item: " + id + ": " + e.getMessage());
         }
     }
 
@@ -70,7 +69,7 @@ public class FloraRegistry extends TerraRegistry<Flora> {
 
 
     @Override
-    public Flora get(String id) {
-        return super.get(id);
+    public Flora get(String identifier) {
+        return super.get(identifier);
     }
 }

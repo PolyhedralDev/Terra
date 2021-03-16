@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.async.AsyncStructureFinder;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -23,7 +23,7 @@ public class PaperListener implements Listener {
         String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
         TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getWorld()));
-        TerraStructure config = tw.getConfig().getStructure(tw.getConfig().getTemplate().getLocatable().get(name));
+        TerraStructure config = tw.getConfig().getStructureRegistry().get(tw.getConfig().getTemplate().getLocatable().get(name));
         if(config != null) {
             AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin()), 0, 500, location -> {
                 if(location != null)
@@ -32,7 +32,7 @@ public class PaperListener implements Listener {
             }, main);
             finder.run(); // Do this synchronously.
         } else {
-            main.getLogger().warning("No overrides are defined for \"" + name + "\"");
+            main.logger().warning("No overrides are defined for \"" + name + "\"");
         }
 
     }

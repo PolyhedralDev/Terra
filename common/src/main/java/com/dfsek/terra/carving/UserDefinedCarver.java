@@ -4,7 +4,7 @@ import com.dfsek.paralithic.Expression;
 import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
@@ -13,9 +13,9 @@ import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.carving.Carver;
 import com.dfsek.terra.api.world.carving.Worm;
-import com.dfsek.terra.biome.UserDefinedBiome;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -39,7 +39,7 @@ public class UserDefinedCarver extends Carver {
     private final Expression yRad;
     private final Expression zRad;
 
-    private final Map<World, CarverCache> cacheMap = new ConcurrentHashMap<>();
+    private final Map<Long, CarverCache> cacheMap = new ConcurrentHashMap<>();
     private final TerraPlugin main;
     private double step = 2;
     private Range recalc = new Range(8, 10);
@@ -108,7 +108,7 @@ public class UserDefinedCarver extends Carver {
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
         synchronized(cacheMap) {
-            CarverCache cache = cacheMap.computeIfAbsent(w, world -> new CarverCache(world, main, this));
+            CarverCache cache = cacheMap.computeIfAbsent(w.getSeed(), world -> new CarverCache(w, main, this));
             int carvingRadius = getCarvingRadius();
             for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
                 for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {

@@ -1,9 +1,10 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import org.bukkit.Material;
 import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.MultipleFacing;
@@ -28,7 +29,7 @@ public class BukkitBlockData implements BlockData {
         if(bukkitData instanceof Rail) return new BukkitRail((Rail) bukkitData);
         if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
         if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
-        if(TerraBukkitPlugin.BUKKIT_VERSION.above(TerraBukkitPlugin.Version.V1_16) && bukkitData instanceof Wall) { // Wall only exists on 1.16 and up.
+        if(TerraBukkitPlugin.BUKKIT_VERSION.above(TerraBukkitPlugin.BukkitVersion.V1_16) && bukkitData instanceof Wall) { // Wall only exists on 1.16 and up.
             return new BukkitWall((Wall) bukkitData);
         }
 
@@ -52,13 +53,13 @@ public class BukkitBlockData implements BlockData {
     }
 
     @Override
-    public MaterialData getMaterial() {
-        return new BukkitMaterialData(delegate.getMaterial());
+    public BlockType getBlockType() {
+        return BukkitAdapter.adapt(delegate.getMaterial());
     }
 
     @Override
-    public boolean matches(MaterialData materialData) {
-        return delegate.getMaterial().equals(((BukkitMaterialData) materialData).getHandle());
+    public boolean matches(BlockData data) {
+        return delegate.getMaterial() == ((BukkitBlockData) data).getHandle().getMaterial();
     }
 
     @Override
@@ -75,5 +76,15 @@ public class BukkitBlockData implements BlockData {
     @Override
     public String getAsString() {
         return delegate.getAsString(false);
+    }
+
+    @Override
+    public boolean isAir() {
+        return delegate.getMaterial().isAir();
+    }
+
+    @Override
+    public boolean isStructureVoid() {
+        return delegate.getMaterial() == Material.STRUCTURE_VOID;
     }
 }

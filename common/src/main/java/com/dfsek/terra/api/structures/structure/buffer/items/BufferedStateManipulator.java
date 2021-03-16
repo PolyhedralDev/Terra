@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 
@@ -15,12 +15,13 @@ public class BufferedStateManipulator implements BufferedItem {
 
     @Override
     public void paste(Location origin) {
-        BlockState state = origin.getBlock().getState();
         try {
+            BlockState state = origin.getBlock().getState();
             state.applyState(data);
             state.update(false);
         } catch(Exception e) {
-            main.getLogger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
+            main.logger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
+            main.getDebugLogger().stack(e);
         }
     }
 }

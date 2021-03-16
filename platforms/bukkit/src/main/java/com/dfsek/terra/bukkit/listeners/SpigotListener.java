@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.async.AsyncStructureFinder;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -37,7 +37,7 @@ public class SpigotListener implements Listener {
             if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
             TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getEntity().getWorld()));
             EnderSignal signal = (EnderSignal) entity;
-            TerraStructure config = tw.getConfig().getStructure(tw.getConfig().getTemplate().getLocatable().get("STRONGHOLD"));
+            TerraStructure config = tw.getConfig().getStructureRegistry().get(tw.getConfig().getTemplate().getLocatable().get("STRONGHOLD"));
             if(config != null) {
                 main.getDebugLogger().info("Overriding Ender Signal...");
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation()), 0, 500, location -> {
@@ -47,7 +47,7 @@ public class SpigotListener implements Listener {
                 }, main);
                 finder.run(); // Do this synchronously so eye doesn't change direction several ticks after spawning.
             } else
-                main.getLogger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
+                main.logger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
         }
     }
 
@@ -56,9 +56,9 @@ public class SpigotListener implements Listener {
         if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
         if(!(e.getEntity() instanceof Villager)) return;
         if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
-            main.getLogger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
-            main.getLogger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
-            main.getLogger().severe("at the source, and doesn't require us to do stupid band-aids.");
+            main.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
+            main.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
+            main.logger().severe("at the source, and doesn't require us to do stupid band-aids.");
             e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
         }
     }
@@ -67,9 +67,9 @@ public class SpigotListener implements Listener {
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
         if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
-            main.getLogger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
-            main.getLogger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
-            main.getLogger().severe("at the source, and doesn't require us to do stupid band-aids.");
+            main.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
+            main.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
+            main.logger().severe("at the source, and doesn't require us to do stupid band-aids.");
             e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
             e.setCancelled(true);
         }

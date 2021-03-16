@@ -1,14 +1,14 @@
 package com.dfsek.terra.api.world.tree.fractal.trees;
 
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
 import com.dfsek.terra.api.world.tree.fractal.TreeGeometry;
-import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.Random;
@@ -20,7 +20,7 @@ public class SmallShatteredTree extends FractalTree {
 
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:end_stone"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:end_stone"));
     }
 
     /**

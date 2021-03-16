@@ -31,15 +31,8 @@ dependencies {
     "shadedImplementation"("org.bstats:bstats-bukkit:1.7")
 
     "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
-}
 
-tasks.withType<ProcessResources> {
-    include("**/*.yml")
-    filter<org.apache.tools.ant.filters.ReplaceTokens>(
-            "tokens" to mapOf(
-                    "VERSION" to project.version.toString()
-            )
-    )
+    "shadedImplementation"("com.google.guava:guava:30.0-jre")
 }
 
 val testDir = "target/server/"

@@ -9,32 +9,36 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.core.event.EventManager;
-import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.logging.DebugLogger;
+import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.biome.TerraBiome;
-import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.BiomePipelineTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.ImageProviderTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.SingleBiomeProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.BiomePipelineTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProviderTemplate;
+import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
-import com.dfsek.terra.debug.DebugLogger;
-import com.dfsek.terra.registry.ConfigRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -63,18 +67,13 @@ public class DistributionTest {
         }
 
         @Override
-        public boolean isEnabled() {
-            return false;
-        }
-
-        @Override
         public TerraWorld getWorld(World world) {
             return null;
         }
 
         @Override
-        public Logger getLogger() {
-            return Logger.getLogger("Terra");
+        public com.dfsek.terra.api.util.logging.Logger logger() {
+            return new JavaLogger(Logger.getLogger("Terra"));
         }
 
         @Override
@@ -98,13 +97,18 @@ public class DistributionTest {
         }
 
         @Override
-        public ConfigRegistry getRegistry() {
+        public CheckedRegistry<ConfigPack> getConfigRegistry() {
             return null;
         }
 
         @Override
-        public void reload() {
+        public LockedRegistry<TerraAddon> getAddons() {
+            return null;
+        }
 
+        @Override
+        public boolean reload() {
+            return true;
         }
 
         @Override
@@ -124,7 +128,7 @@ public class DistributionTest {
 
         @Override
         public DebugLogger getDebugLogger() {
-            return new DebugLogger(Logger.getLogger("Terra"));
+            return new DebugLogger(new JavaLogger(Logger.getLogger("Terra")));
         }
 
         @Override
@@ -141,11 +145,11 @@ public class DistributionTest {
 
     private static BiomeProvider getProvider(long seed) throws ConfigException, IOException {
         System.out.println(seed);
-        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/betterend/");
+        File pack = new File("/home/dfsek/Documents/Terra/platforms/bukkit/target/server/plugins/Terra/packs/default/");
         FolderLoader folderLoader = new FolderLoader(pack.toPath());
 
         AbstractConfigLoader loader = new AbstractConfigLoader();
-        new GenericLoaders(null).register(loader);
+        new GenericLoaders(MAIN).register(loader);
 
         BiomeRegistry biomeRegistry = new BiomeRegistry();
         folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), MAIN));
@@ -154,12 +158,12 @@ public class DistributionTest {
         ConfigLoader pipeLoader = new ConfigLoader()
                 .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
                 .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
-                .registerLoader(TerraBiome.class, biomeRegistry)
+                .registerLoader(BiomeBuilder.class, biomeRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(folderLoader))
-                .registerLoader(SingleBiomeProviderTemplate.class, () -> new SingleBiomeProviderTemplate(biomeRegistry))
-                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(biomeRegistry, MAIN))
+                .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
+                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(MAIN))
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
-        new GenericLoaders(null).register(pipeLoader);
+        new GenericLoaders(MAIN).register(pipeLoader);
 
         pipeLoader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NoiseRegistry()));
 
@@ -282,7 +286,7 @@ public class DistributionTest {
         }
     }
 
-    private static final class TestBiome extends AbstractableTemplate implements TerraBiome, ValidatedConfigTemplate {
+    private static final class TestBiome extends AbstractableTemplate implements TerraBiome, ValidatedConfigTemplate, BiomeBuilder {
 
         @Value("color")
         @Default
@@ -332,6 +336,11 @@ public class DistributionTest {
         @Override
         public String toString() {
             return id;
+        }
+
+        @Override
+        public TestBiome apply(Long aLong) {
+            return this;
         }
     }
 }

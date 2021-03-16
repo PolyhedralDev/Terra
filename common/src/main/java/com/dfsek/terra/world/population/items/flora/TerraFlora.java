@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population.items.flora;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
@@ -13,9 +13,9 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.util.MaterialSet;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;
@@ -118,7 +118,7 @@ public class TerraFlora implements Flora {
                     ((Rotatable) data).setRotation(oneFace);
                 }
             }
-            handle.setBlockData(location.clone().add(0, i + c, 0).getBlock(), data, physics);
+            location.clone().add(0, i + c, 0).getBlock().setBlockData(data, physics);
         }
         return true;
     }

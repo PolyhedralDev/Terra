@@ -4,11 +4,11 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.ProbabilityCollection;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.Types;
-import com.dfsek.terra.util.MaterialSet;
 
 import java.lang.reflect.Type;
 import java.util.List;

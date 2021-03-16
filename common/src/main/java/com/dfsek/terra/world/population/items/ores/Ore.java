@@ -1,10 +1,10 @@
 package com.dfsek.terra.world.population.items.ores;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 
 import java.util.Random;
 

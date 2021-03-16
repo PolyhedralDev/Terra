@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.world;
 
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class TerraBiomeSource extends BiomeSource {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
             Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getRegistry()::get))));
+    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
             Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),
@@ -50,8 +50,8 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX * 4, biomeZ * 4);
-        return biomeRegistry.get(new Identifier("terra", TerraFabricPlugin.createBiomeID(pack, biome)));
+        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
+        return biomeRegistry.get(new Identifier("terra", TerraFabricPlugin.createBiomeID(pack, biome.getID())));
     }
 
 

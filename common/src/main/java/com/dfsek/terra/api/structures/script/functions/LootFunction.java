@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.structures.loot.LootTable;
@@ -45,7 +45,7 @@ public class LootFunction implements Function<Void> {
         LootTable table = registry.get(id);
 
         if(table == null) {
-            main.getLogger().severe("No such loot table " + id);
+            main.logger().severe("No such loot table " + id);
             return null;
         }
 

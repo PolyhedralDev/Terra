@@ -7,15 +7,19 @@ import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
+import com.dfsek.terra.fabric.world.entity.FabricEntity;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 
 import java.io.File;
 import java.util.UUID;
 
-public class FabricSeededWorldAccess implements World {
+public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     private final Handle handle;
 
@@ -70,28 +74,37 @@ public class FabricSeededWorldAccess implements World {
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+    public Entity spawnEntity(Location location, EntityType entityType) {
+        net.minecraft.entity.Entity entity = FabricAdapter.adapt(entityType).create((ServerWorld) handle.worldAccess);
+        entity.setPos(location.getX(), location.getY(), location.getZ());
+        handle.worldAccess.spawnEntity(entity);
+        return new FabricEntity(entity);
     }
 
     @Override
-    public Entity spawnEntity(Location location, EntityType entityType) {
-        return null;
+    public int getMinHeight() {
+        return 0;
     }
 
     @Override
     public int hashCode() {
-        return handle.worldAccess.hashCode();
+        return ((ServerWorldAccess) handle.worldAccess).toServerWorld().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(!(obj instanceof FabricSeededWorldAccess)) return false;
+        return ((ServerWorldAccess) ((FabricSeededWorldAccess) obj).handle.worldAccess).toServerWorld().equals(((ServerWorldAccess) handle.worldAccess).toServerWorld());
     }
 
     @Override
     public Handle getHandle() {
         return handle;
+    }
+
+    @Override
+    public WorldAccess getWorld() {
+        return handle.worldAccess;
     }
 
     public static class Handle {

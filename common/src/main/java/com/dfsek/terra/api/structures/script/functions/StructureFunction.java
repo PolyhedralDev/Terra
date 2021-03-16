@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.script.functions;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
@@ -57,7 +57,7 @@ public class StructureFunction implements Function<Boolean> {
         String app = id.apply(implementationArguments, variableMap);
         StructureScript script = registry.get(app);
         if(script == null) {
-            main.getLogger().severe("No such structure " + app);
+            main.logger().severe("No such structure " + app);
             return null;
         }
 
@@ -66,7 +66,7 @@ public class StructureFunction implements Function<Boolean> {
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
-            main.getLogger().severe("Invalid rotation " + rotString);
+            main.logger().severe("Invalid rotation " + rotString);
             return null;
         }
 

@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.world.tree.fractal.trees;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.tree.fractal.FractalTree;
-import com.dfsek.terra.util.MaterialSet;
 
 import java.util.Random;
 
@@ -12,7 +12,7 @@ public class ShatteredPillar extends FractalTree {
 
     @Override
     public MaterialSet getSpawnable() {
-        return MaterialSet.get(main.getWorldHandle().createMaterialData("minecraft:end_stone"));
+        return MaterialSet.get(main.getWorldHandle().createBlockData("minecraft:end_stone"));
     }
 
     /**

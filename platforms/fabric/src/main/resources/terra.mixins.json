@@ -3,12 +3,14 @@
   "minVersion": "0.8",
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+  ],
   "client": [
     "GeneratorTypeAccessor"
   ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "terra-refmap.json"
 }

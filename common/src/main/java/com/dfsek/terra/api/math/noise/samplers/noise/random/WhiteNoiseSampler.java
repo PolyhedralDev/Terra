@@ -12,38 +12,41 @@ public class WhiteNoiseSampler extends NoiseFunction {
         super(seed);
     }
 
+    public double getNoiseRaw(long seed) {
+        return (Double.longBitsToDouble((murmur64(seed) & 0x000fffffffffffffL) | POSITIVE_POW1) - 1.5) * 2;
+    }
+
     @Override
     public double getNoiseRaw(int seed, double x, double y) {
-        long hashX = Double.doubleToRawLongBits(x) ^ seed;
-        long hashZ = Double.doubleToRawLongBits(y) ^ seed;
-        long hash = ((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed;
-        long base = (murmur64(hash) & 0x000fffffffffffffL)
-                | POSITIVE_POW1; // Sign and exponent
-        return (Double.longBitsToDouble(base) - 1.5) * 2;
+        return (getNoiseUnmapped(seed, x, y) - 1.5) * 2;
     }
 
     @Override
     public double getNoiseRaw(int seed, double x, double y, double z) {
+        return (getNoiseUnmapped(seed, x, y, z) - 1.5) * 2;
+    }
+
+    public double getNoiseUnmapped(int seed, double x, double y, double z) {
+        long base = ((randomBits(seed, x, y, z)) & 0x000fffffffffffffL) | POSITIVE_POW1; // Sign and exponent
+        return Double.longBitsToDouble(base);
+    }
+
+    public double getNoiseUnmapped(int seed, double x, double y) {
+        long base = (randomBits(seed, x, y) & 0x000fffffffffffffL) | POSITIVE_POW1; // Sign and exponent
+        return Double.longBitsToDouble(base);
+    }
+
+    public long randomBits(int seed, double x, double y, double z) {
         long hashX = Double.doubleToRawLongBits(x) ^ seed;
         long hashZ = Double.doubleToRawLongBits(y) ^ seed;
         long hash = (((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed) + Double.doubleToRawLongBits(z);
-        long base = ((murmur64(hash)) & 0x000fffffffffffffL)
-                | POSITIVE_POW1; // Sign and exponent
-        return (Double.longBitsToDouble(base) - 1.5) * 2;
+        return murmur64(hash);
     }
 
-    /**
-     * Murmur64 hashing function
-     *
-     * @param h Input value
-     * @return Hashed value
-     */
-    private static long murmur64(long h) {
-        h ^= h >>> 33;
-        h *= 0xff51afd7ed558ccdL;
-        h ^= h >>> 33;
-        h *= 0xc4ceb9fe1a85ec53L;
-        h ^= h >>> 33;
-        return h;
+    public long randomBits(int seed, double x, double y) {
+        long hashX = Double.doubleToRawLongBits(x) ^ seed;
+        long hashZ = Double.doubleToRawLongBits(y) ^ seed;
+        long hash = ((hashX ^ (hashX >>> 32)) + ((hashZ ^ (hashZ >>> 32)) << 32)) ^ seed;
+        return murmur64(hash);
     }
 }

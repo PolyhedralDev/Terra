@@ -3,8 +3,8 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.platform.block.MaterialData;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -18,7 +18,7 @@ public class MaterialSetLoader implements TypeLoader<MaterialSet> {
 
         for(String string : stringData) {
             try {
-                set.add(configLoader.loadClass(MaterialData.class, string));
+                set.add(configLoader.loadClass(BlockType.class, string));
             } catch(NullPointerException e) {
                 throw new LoadException("Invalid data identifier \"" + string + "\"", e);
             }

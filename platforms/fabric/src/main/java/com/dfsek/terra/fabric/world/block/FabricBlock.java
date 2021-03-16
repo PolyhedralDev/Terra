@@ -4,9 +4,10 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
-import com.dfsek.terra.fabric.world.FabricAdapters;
+import com.dfsek.terra.fabric.world.FabricAdapter;
+import com.dfsek.terra.fabric.world.block.state.FabricBlockState;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
@@ -20,7 +21,7 @@ public class FabricBlock implements Block {
 
     @Override
     public void setBlockData(BlockData data, boolean physics) {
-        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), 0, 0);
+        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042, 0);
     }
 
     @Override
@@ -30,12 +31,7 @@ public class FabricBlock implements Block {
 
     @Override
     public BlockState getState() {
-        return null;
-    }
-
-    @Override
-    public Block getRelative(BlockFace face) {
-        return getRelative(face, 1);
+        return FabricBlockState.newInstance(this);
     }
 
     @Override
@@ -46,17 +42,17 @@ public class FabricBlock implements Block {
 
     @Override
     public boolean isEmpty() {
-        return getBlockData().getMaterial().isAir();
+        return getBlockData().isAir();
     }
 
     @Override
     public Location getLocation() {
-        return FabricAdapters.toVector(delegate.position).toLocation(new FabricWorldAccess(delegate.worldAccess));
+        return FabricAdapter.adapt(delegate.position).toLocation(new FabricWorldAccess(delegate.worldAccess));
     }
 
     @Override
-    public MaterialData getType() {
-        return getBlockData().getMaterial();
+    public BlockType getType() {
+        return getBlockData().getBlockType();
     }
 
     @Override

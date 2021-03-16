@@ -1,23 +1,21 @@
 package com.dfsek.terra.config.lang;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.util.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static com.dfsek.terra.api.util.JarUtil.copyResourcesToDirectory;
 
 public final class LangUtil {
     private static Language language;
-    private static Logger logger;
 
     public static void load(String langID, TerraPlugin main) {
-        logger = main.getLogger();
+        Logger logger = main.logger();
         File file = new File(main.getDataFolder(), "lang");
         try(JarFile jar = new JarFile(new File(TerraPlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
             copyResourcesToDirectory(jar, "lang", file.toString());
@@ -39,10 +37,6 @@ public final class LangUtil {
 
     public static Language getLanguage() {
         return language;
-    }
-
-    public static void log(String messageID, Level level, String... args) {
-        language.getMessage(messageID).log(logger, level, args);
     }
 
     public static void send(String messageID, CommandSender sender, String... args) {

@@ -25,11 +25,19 @@ public interface World extends Handle {
 
     Chunk getChunkAt(int x, int z);
 
+    default Chunk getChunkAt(Location location) {
+        return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4);
+    }
+
     File getWorldFolder();
 
     Block getBlockAt(int x, int y, int z);
 
-    Block getBlockAt(Location l);
+    default Block getBlockAt(Location l) {
+        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+    }
 
     Entity spawnEntity(Location location, EntityType entityType);
+
+    int getMinHeight();
 }

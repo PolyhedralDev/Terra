@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population.items.ores;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.math.vector.Vector3;
@@ -8,7 +8,7 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 
 import java.util.Random;
 
@@ -40,7 +40,7 @@ public class DeformedSphereOre extends Ore {
                     if(oreLoc.distance(origin) < (rad + 0.5) * ((ore.getNoise(x, y, z) + 1) * deform)) {
                         Block b = c.getBlock(oreLoc.getBlockX(), oreLoc.getBlockY(), oreLoc.getBlockZ());
                         if(getReplaceable().contains(b.getType()) && b.getLocation().getY() >= 0)
-                            handle.setBlockData(b, getMaterial(), isApplyGravity());
+                            b.setBlockData(getMaterial(), isApplyGravity());
                     }
                 }
             }

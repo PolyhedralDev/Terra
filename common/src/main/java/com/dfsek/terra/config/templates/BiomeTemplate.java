@@ -8,16 +8,16 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
-import com.dfsek.terra.api.core.TerraPlugin;
-import com.dfsek.terra.api.math.ProbabilityCollection;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
@@ -31,6 +31,7 @@ import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,12 +159,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("slabs.palettes")
     @Abstractable
     @Default
-    private Map<MaterialData, Palette<BlockData>> slabPalettes;
+    private Map<BlockType, Palette<BlockData>> slabPalettes;
 
     @Value("slabs.stair-palettes")
     @Abstractable
     @Default
-    private Map<MaterialData, Palette<BlockData>> stairPalettes;
+    private Map<BlockType, Palette<BlockData>> stairPalettes;
 
     @Value("slant.threshold")
     @Abstractable
@@ -182,7 +183,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("tags")
     @Default
     @Abstractable
-    private Set<String> tags;
+    private Set<String> tags = new HashSet<>();
 
     @Value("carving")
     @Abstractable
@@ -237,11 +238,11 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return doSlabs;
     }
 
-    public Map<MaterialData, Palette<BlockData>> getSlabPalettes() {
+    public Map<BlockType, Palette<BlockData>> getSlabPalettes() {
         return slabPalettes;
     }
 
-    public Map<MaterialData, Palette<BlockData>> getStairPalettes() {
+    public Map<BlockType, Palette<BlockData>> getStairPalettes() {
         return stairPalettes;
     }
 

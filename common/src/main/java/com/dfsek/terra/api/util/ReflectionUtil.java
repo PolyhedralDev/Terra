@@ -2,9 +2,12 @@ package com.dfsek.terra.api.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class ReflectionUtil {
@@ -24,5 +27,10 @@ public class ReflectionUtil {
             result = Stream.concat(Arrays.stream(result), Arrays.stream(getMethods(parentClass))).toArray(Method[]::new);
         }
         return result;
+    }
+
+    public static <T extends Annotation> void ifAnnotationPresent(AnnotatedElement element, Class<? extends T> annotation, Consumer<T> operation) {
+        T a = element.getAnnotation(annotation);
+        if(a != null) operation.accept(a);
     }
 }

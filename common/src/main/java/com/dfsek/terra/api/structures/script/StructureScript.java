@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.script;
 
-import com.dfsek.terra.api.core.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.structures.parser.Parser;
@@ -28,10 +28,9 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.registry.FunctionRegistry;
+import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
-import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
@@ -47,9 +46,9 @@ public class StructureScript {
     private final String id;
     private final Cache<Location, StructureBuffer> cache;
     private final TerraPlugin main;
-    String tempID;
+    private String tempID;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, SamplerCache cache, FunctionRegistry functionRegistry) throws ParseException {
+    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, FunctionRegistry functionRegistry) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));
@@ -57,8 +56,10 @@ public class StructureScript {
             throw new RuntimeException(e);
         }
 
+        functionRegistry.forEach(parser::registerFunction); // Register registry functions.
+
         parser.registerFunction("block", new BlockFunctionBuilder(main))
-                .registerFunction("check", new CheckFunctionBuilder(main, cache))
+                .registerFunction("check", new CheckFunctionBuilder(main))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())
@@ -85,8 +86,6 @@ public class StructureScript {
                 .registerFunction("round", new UnaryNumberFunctionBuilder(number -> FastMath.round(number.doubleValue())))
                 .registerFunction("max", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("min", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
-
-        functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
         block = parser.parse();
         this.id = parser.getID();
@@ -149,7 +148,7 @@ public class StructureScript {
         try {
             return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
         } catch(RuntimeException e) {
-            main.getLogger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
+            main.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
             main.getDebugLogger().stack(e);
             return false;
         }

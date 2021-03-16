@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.util.mutable;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MutableDouble extends MutableNumber<Double> {
     private static final long serialVersionUID = -2218110876763640053L;
 
@@ -35,5 +37,10 @@ public class MutableDouble extends MutableNumber<Double> {
     @Override
     public void divide(Double divide) {
         value /= divide;
+    }
+
+    @Override
+    public int compareTo(@NotNull Double o) {
+        return Double.compare(value, o);
     }
 }
