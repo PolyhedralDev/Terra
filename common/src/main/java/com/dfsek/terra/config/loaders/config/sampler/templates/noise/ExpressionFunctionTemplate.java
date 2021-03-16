@@ -12,6 +12,8 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.ExpressionFunction;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
+import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
+import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
@@ -32,7 +34,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
 
     @Value("functions")
     @Default
-    private Map<String, NoiseSeeded> functions = new HashMap<>();
+    private LinkedHashMap<String, NoiseSeeded> functions = new LinkedHashMap<>();
 
     @Value("expressions")
     @Default
@@ -41,7 +43,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Override
     public NoiseSampler apply(Long seed) {
         try {
-            Map<String, Function> noiseFunctionMap = generateFunctions();
+            Map<String, Function> noiseFunctionMap = generateFunctions(seed);
             return new ExpressionFunction(noiseFunctionMap, equation, vars);
         } catch(ParseException e) {
             throw new IllegalStateException(e);
@@ -51,7 +53,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Override
     public boolean validate() throws ValidationException {
         try {
-            Map<String, Function> noiseFunctionMap = generateFunctions();
+            Map<String, Function> noiseFunctionMap = generateFunctions(0L);
             new ExpressionFunction(noiseFunctionMap, equation, vars);
         } catch(ParseException e) {
             throw new ValidationException("Errors occurred while parsing noise equation: ", e);
@@ -59,7 +61,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
         return super.validate();
     }
 
-    private Map<String, Function> generateFunctions() throws ParseException {
+    private Map<String, Function> generateFunctions(Long seed) throws ParseException {
         Map<String, Function> noiseFunctionMap = new HashMap<>();
 
         for(Map.Entry<String, FunctionTemplate> entry : expressions.entrySet()) {
@@ -69,8 +71,8 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
 
         functions.forEach((id, function) -> {
             if(function.getDimensions() == 2) {
-                noiseFunctionMap.put(id, new BlankFunction(2));
-            } else noiseFunctionMap.put(id, new BlankFunction(3));
+                noiseFunctionMap.put(id, new NoiseFunction2(function.apply(seed)));
+            } else noiseFunctionMap.put(id, new NoiseFunction3(function.apply(seed)));
         });
 
         return noiseFunctionMap;
