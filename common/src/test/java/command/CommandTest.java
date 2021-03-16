@@ -93,7 +93,7 @@ public class CommandTest {
             arguments = {
                     @Argument(value = "arg0"),
                     @Argument(value = "arg1", argumentParser = IntegerArgumentParser.class),
-                    @Argument(value = "arg2", required = false, argumentParser = DoubleArgumentParser.class)
+                    @Argument(value = "arg2", required = false, argumentParser = DoubleArgumentParser.class, defaultValue = "0")
             }
     )
     public static final class DemoCommand implements CommandTemplate {
