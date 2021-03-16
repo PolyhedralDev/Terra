@@ -19,4 +19,9 @@ public class Sampler2D implements Sampler {
     public double sample(double x, double y, double z) {
         return interpolator.getNoise(x, 0, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
     }
+
+    @Override
+    public double sample(int x, int y, int z) {
+        return interpolator.getNoise(x, 0, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
+    }
 }

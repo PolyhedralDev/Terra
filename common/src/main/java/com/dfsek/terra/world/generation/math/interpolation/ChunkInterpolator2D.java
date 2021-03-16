@@ -81,4 +81,8 @@ public class ChunkInterpolator2D implements ChunkInterpolator {
     public double getNoise(double x, double y, double z) {
         return interpGrid[reRange(((int) x) / 4, 3)][reRange(((int) z) / 4, 3)].bilerp((x % 4) / 4, (z % 4) / 4);
     }
+
+    public double getNoise(int x, int y, int z) {
+        return interpGrid[x / 4][z / 4].bilerp((double) (x % 4) / 4, (double) (z % 4) / 4);
+    }
 }

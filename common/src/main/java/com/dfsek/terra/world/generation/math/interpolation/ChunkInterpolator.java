@@ -15,6 +15,11 @@ public interface ChunkInterpolator {
      */
     double getNoise(double x, double y, double z);
 
+    default double getNoise(int x, int y, int z) { // Floating-point modulus operations are expensive. This allows implementations to optionally handle integers separately.
+        return getNoise((double) x, y, z);
+    }
+
+
     default double computeNoise(Map<Generator, MutableInteger> gens, double x, double y, double z) {
         double n = 0;
         double div = 0;
