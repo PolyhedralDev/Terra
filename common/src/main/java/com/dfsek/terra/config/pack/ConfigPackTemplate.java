@@ -73,7 +73,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private String version = "0.1.0";
 
-    public Map<String, FunctionTemplate> getFunctions() {
+    public LinkedHashMap<String, FunctionTemplate> getFunctions() {
         return functions;
     }
 

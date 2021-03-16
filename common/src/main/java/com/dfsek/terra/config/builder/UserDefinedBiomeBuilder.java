@@ -14,7 +14,7 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,7 +42,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
                         template.getVariables().forEach(varScope::create);
 
                         Map<String, NoiseSeeded> noiseBuilderMap = pack.getTemplate().getNoiseBuilderMap();
-                        Map<String, FunctionTemplate> functionTemplateMap = new HashMap<>(pack.getTemplate().getFunctions());
+                        Map<String, FunctionTemplate> functionTemplateMap = new LinkedHashMap<>(pack.getTemplate().getFunctions());
 
                         functionTemplateMap.putAll(template.getFunctions());
 
