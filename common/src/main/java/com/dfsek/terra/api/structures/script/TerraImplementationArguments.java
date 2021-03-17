@@ -11,6 +11,7 @@ public class TerraImplementationArguments implements ImplementationArguments {
     private final Rotation rotation;
     private final Random random;
     private final int recursions;
+    private boolean waterlog = false;
 
     public TerraImplementationArguments(Buffer buffer, Rotation rotation, Random random, int recursions) {
         this.buffer = buffer;
@@ -33,5 +34,13 @@ public class TerraImplementationArguments implements ImplementationArguments {
 
     public Rotation getRotation() {
         return rotation;
+    }
+
+    public boolean isWaterlog() {
+        return waterlog;
+    }
+
+    public void setWaterlog(boolean waterlog) {
+        this.waterlog = waterlog;
     }
 }

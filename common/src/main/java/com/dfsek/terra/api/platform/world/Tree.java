@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.tree;
+package com.dfsek.terra.api.platform.world;
 
 
 import com.dfsek.terra.api.math.vector.Location;

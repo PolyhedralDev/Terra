@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 
 public class FabricBlockType implements BlockType {
     private final Block delegate;
@@ -25,6 +26,11 @@ public class FabricBlockType implements BlockType {
     @Override
     public boolean isSolid() {
         return delegate.getDefaultState().isOpaque();
+    }
+
+    @Override
+    public boolean isWater() {
+        return delegate == Blocks.WATER;
     }
 
     @Override

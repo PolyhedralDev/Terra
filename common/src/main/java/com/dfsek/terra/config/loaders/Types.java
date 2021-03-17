@@ -1,11 +1,11 @@
 package com.dfsek.terra.config.loaders;
 
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.tree.Tree;
 
 import java.lang.reflect.Type;
 import java.util.Map;

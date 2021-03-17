@@ -12,6 +12,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
@@ -20,7 +21,6 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
@@ -120,7 +120,7 @@ public class ConfigPack implements LoaderRegistrar {
             long l = System.nanoTime();
             floraRegistry = new FloraRegistry(main);
             paletteRegistry = new PaletteRegistry(main);
-            treeRegistry = new TreeRegistry(main);
+            treeRegistry = new TreeRegistry();
             register(abstractConfigLoader);
             register(selfLoader);
 
@@ -156,7 +156,7 @@ public class ConfigPack implements LoaderRegistrar {
             long l = System.nanoTime();
             floraRegistry = new FloraRegistry(main);
             paletteRegistry = new PaletteRegistry(main);
-            treeRegistry = new TreeRegistry(main);
+            treeRegistry = new TreeRegistry();
             register(abstractConfigLoader);
             register(selfLoader);
 

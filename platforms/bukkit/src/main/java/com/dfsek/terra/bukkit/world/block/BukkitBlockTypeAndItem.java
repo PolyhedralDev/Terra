@@ -30,6 +30,11 @@ public class BukkitBlockTypeAndItem implements BlockType, Item {
     }
 
     @Override
+    public boolean isWater() {
+        return delegate == Material.WATER;
+    }
+
+    @Override
     public ItemStack newItemStack(int amount) {
         return BukkitAdapter.adapt(new org.bukkit.inventory.ItemStack(delegate, amount));
     }

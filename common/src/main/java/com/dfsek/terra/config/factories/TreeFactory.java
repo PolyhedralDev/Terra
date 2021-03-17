@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.world.tree.Tree;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.world.population.items.tree.TerraTree;
 

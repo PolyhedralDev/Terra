@@ -6,4 +6,6 @@ public interface BlockType extends Handle {
     BlockData getDefaultData();
 
     boolean isSolid();
+
+    boolean isWater();
 }

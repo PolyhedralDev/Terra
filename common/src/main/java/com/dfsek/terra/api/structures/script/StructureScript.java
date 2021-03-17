@@ -21,6 +21,7 @@ import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.SetMarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StateFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.UnaryBooleanFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.ZeroArgFunctionBuilder;
@@ -58,7 +59,8 @@ public class StructureScript {
 
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
-        parser.registerFunction("block", new BlockFunctionBuilder(main))
+        parser.registerFunction("block", new BlockFunctionBuilder(main, false))
+                .registerFunction("dynamicBlock", new BlockFunctionBuilder(main, true))
                 .registerFunction("check", new CheckFunctionBuilder(main))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
@@ -71,6 +73,7 @@ public class StructureScript {
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
                 .registerFunction("state", new StateFunctionBuilder(main))
+                .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
                 .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(), Returnable.ReturnType.NUMBER))
@@ -146,7 +149,7 @@ public class StructureScript {
 
     private boolean applyBlock(TerraImplementationArguments arguments) {
         try {
-            return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
+            return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
             main.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
             main.getDebugLogger().stack(e);
