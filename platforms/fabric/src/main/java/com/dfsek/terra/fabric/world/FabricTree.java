@@ -1,8 +1,8 @@
 package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.math.vector.Location;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;

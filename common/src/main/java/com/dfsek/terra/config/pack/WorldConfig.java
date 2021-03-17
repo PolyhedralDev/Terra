@@ -1,19 +1,15 @@
 package com.dfsek.terra.config.pack;
 
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.structures.loot.LootTable;
-import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.tree.Tree;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -22,7 +18,6 @@ import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.ores.Ore;
 
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class WorldConfig {
     private final LockedRegistry<StructureScript> scriptRegistry;
