@@ -97,4 +97,9 @@ public class Data implements BlockData, BlockType {
     public boolean isSolid() {
         return false;
     }
+
+    @Override
+    public boolean isWater() {
+        return false;
+    }
 }

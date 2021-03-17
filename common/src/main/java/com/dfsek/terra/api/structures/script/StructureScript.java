@@ -21,6 +21,7 @@ import com.dfsek.terra.api.structures.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.SetMarkFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StateFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.StructureFunctionBuilder;
+import com.dfsek.terra.api.structures.script.builders.UnaryBooleanFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.ZeroArgFunctionBuilder;
@@ -71,6 +72,7 @@ public class StructureScript {
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
                 .registerFunction("state", new StateFunctionBuilder(main))
+                .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
                 .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(), Returnable.ReturnType.NUMBER))
                 .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(), Returnable.ReturnType.NUMBER))
