@@ -59,7 +59,8 @@ public class StructureScript {
 
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
-        parser.registerFunction("block", new BlockFunctionBuilder(main))
+        parser.registerFunction("block", new BlockFunctionBuilder(main, false))
+                .registerFunction("dynamicBlock", new BlockFunctionBuilder(main, true))
                 .registerFunction("check", new CheckFunctionBuilder(main))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
@@ -148,7 +149,7 @@ public class StructureScript {
 
     private boolean applyBlock(TerraImplementationArguments arguments) {
         try {
-            return !block.apply(arguments).getLevel().equals(Block.ReturnLevel.FAIL);
+            return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
             main.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
             main.getDebugLogger().stack(e);
