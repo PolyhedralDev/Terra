@@ -406,7 +406,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "LARGE_OAK", ConfiguredFeatures.FANCY_OAK);
             injectTree(treeRegistry, "LARGE_SPRUCE", ConfiguredFeatures.PINE);
             injectTree(treeRegistry, "SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE);
-            injectTree(treeRegistry, "SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE);
+            injectTree(treeRegistry, "SWAMP_OAK", ConfiguredFeatures.SWAMP_OAK);
             injectTree(treeRegistry, "TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL);
             injectTree(treeRegistry, "ACACIA", ConfiguredFeatures.ACACIA);
             injectTree(treeRegistry, "BIRCH", ConfiguredFeatures.BIRCH);

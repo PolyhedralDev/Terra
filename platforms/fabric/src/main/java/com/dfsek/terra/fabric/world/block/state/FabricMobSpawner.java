@@ -19,7 +19,7 @@ public class FabricMobSpawner extends FabricBlockState implements MobSpawner { /
 
     @Override
     public EntityType getSpawnedType() {
-        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(((MobSpawnerBlockEntity) blockEntity).getLogic().getEntityId()));
+        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(((MobSpawnerBlockEntity) blockEntity).getLogic().getEntityId(blockEntity.getWorld(), blockEntity.getPos())));
     }
 
     @Override

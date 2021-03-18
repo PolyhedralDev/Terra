@@ -59,7 +59,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
                 }
 
                 for(int y = 0; y < size + 1; y++) {
-                    noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, y << 2, (z << 2) + zOrigin);
+                    noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, (y << 2) + min, (z << 2) + zOrigin);
                 }
             }
         }
@@ -98,10 +98,10 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
      */
     @Override
     public double getNoise(double x, double y, double z) {
-        return interpGrid[reRange(((int) x) / 4, 3)][FastMath.max(FastMath.min(((int) y), max), min) / 4][reRange(((int) z) / 4, 3)].trilerp((x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
+        return interpGrid[reRange(((int) x) / 4, 3)][(FastMath.max(FastMath.min(((int) y), max), min) - min) / 4][reRange(((int) z) / 4, 3)].trilerp((x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
     }
 
     public double getNoise(int x, int y, int z) {
-        return interpGrid[x / 4][y / 4][z / 4].trilerp((double) (x % 4) / 4, (double) (y % 4) / 4, (double) (z % 4) / 4);
+        return interpGrid[x / 4][(y - min) / 4][z / 4].trilerp((double) (x % 4) / 4, (double) (y % 4) / 4, (double) (z % 4) / 4);
     }
 }

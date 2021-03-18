@@ -35,7 +35,7 @@ public class FabricWorld implements World, FabricWorldHandle {
 
     @Override
     public int getMaxHeight() {
-        return delegate.world.getHeight();
+        return delegate.world.getHeight() + delegate.world.getBottomY();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class FabricWorld implements World, FabricWorldHandle {
 
     @Override
     public int getMinHeight() {
-        return 0;
+        return delegate.world.getBottomY();
     }
 
     @Override

@@ -11,8 +11,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-
-import java.util.Random;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 /**
  * Feature wrapper for Terra populator
@@ -23,7 +22,10 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
+    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+        ChunkGenerator chunkGenerator = context.getGenerator();
+        StructureWorldAccess world = context.getWorld();
+        BlockPos pos = context.getOrigin();
         FabricChunkGeneratorWrapper gen = (FabricChunkGeneratorWrapper) chunkGenerator;
         FabricChunkWorldAccess chunk = new FabricChunkWorldAccess(world, pos.getX() >> 4, pos.getZ() >> 4);
         FabricWorld world1 = new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator));
@@ -33,5 +35,6 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
         gen.getTreePopulator().populate(world1, chunk);
         gen.getFloraPopulator().populate(world1, chunk);
         return true;
+
     }
 }

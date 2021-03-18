@@ -17,16 +17,16 @@ public class FabricSign extends FabricBlockState implements Sign {
         SignBlockEntity sign = (SignBlockEntity) blockEntity;
 
         return new String[] {
-                sign.getTextOnRow(0).asString(),
-                sign.getTextOnRow(1).asString(),
-                sign.getTextOnRow(2).asString(),
-                sign.getTextOnRow(3).asString()
+                sign.getTextOnRow(0, false).asString(),
+                sign.getTextOnRow(1, false).asString(),
+                sign.getTextOnRow(2, false).asString(),
+                sign.getTextOnRow(3, false).asString()
         };
     }
 
     @Override
     public @NotNull String getLine(int index) throws IndexOutOfBoundsException {
-        return ((SignBlockEntity) blockEntity).getTextOnRow(index).asString();
+        return ((SignBlockEntity) blockEntity).getTextOnRow(index, false).asString();
     }
 
     @Override

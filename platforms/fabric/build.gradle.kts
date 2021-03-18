@@ -22,11 +22,11 @@ dependencies {
     "shadedImplementation"("org.yaml:snakeyaml:1.27")
     "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
 
-    "minecraft"("com.mojang:minecraft:1.16.5")
-    "mappings"("net.fabricmc:yarn:1.16.5+build.5:v2")
-    "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
+    "minecraft"("com.mojang:minecraft:21w11a")
+    "mappings"("net.fabricmc:yarn:21w11a+build.3:v2")
+    "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
 
-    "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
+    "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.32.4+1.17")
 }
 
 tasks.named<ShadowJar>("shadowJar") {

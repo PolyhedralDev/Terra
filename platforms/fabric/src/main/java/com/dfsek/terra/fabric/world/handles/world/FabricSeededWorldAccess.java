@@ -34,7 +34,7 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     @Override
     public int getMaxHeight() {
-        return handle.getWorldAccess().getDimensionHeight();
+        return handle.worldAccess.getHeight() + handle.worldAccess.getBottomY();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     @Override
     public UUID getUID() {
-        return UUID.randomUUID(); // TODO: implementation
+        return null; // TODO: implementation
     }
 
     @Override
@@ -83,7 +83,7 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     @Override
     public int getMinHeight() {
-        return 0;
+        return handle.worldAccess.getBottomY();
     }
 
     @Override

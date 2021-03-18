@@ -5,6 +5,7 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
@@ -20,10 +21,9 @@ import net.minecraft.block.Blocks;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
@@ -31,6 +31,9 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     private final long seed;
@@ -109,12 +112,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     @Override
-    public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-        FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(world, seed, this);
-        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
-    }
-
-    @Override
     public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
         // No caves
     }
@@ -125,17 +122,19 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     @Override
-    public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
-        return false;
+    public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
+        FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(((StructureAccessorAccessor) accessor).getWorld(), seed, this);
+        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
+        return CompletableFuture.completedFuture(chunk);
     }
 
     @Override
-    public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+    public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world) {
         return 0;
     }
 
     @Override
-    public BlockView getColumnSample(int x, int z) {
+    public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world) {
         int height = 64; // TODO: implementation
         BlockState[] array = new BlockState[256];
         for(int y = 255; y >= 0; y--) {
@@ -150,8 +149,14 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             }
         }
 
-        return new VerticalBlockSample(array);
+        return new VerticalBlockSample(world.getBottomY(), array);
     }
+
+    @Override
+    public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
+        return false;
+    }
+
 
     @Override
     public TerraChunkGenerator getHandle() {

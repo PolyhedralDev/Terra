@@ -67,7 +67,7 @@ public class FabricBlockState implements BlockState {
 
     @Override
     public boolean update(boolean applyPhysics) {
-        worldAccess.getChunk(blockEntity.getPos()).setBlockEntity(blockEntity.getPos(), blockEntity);
+        worldAccess.getChunk(blockEntity.getPos()).setBlockEntity(blockEntity);
         return true;
     }
 }

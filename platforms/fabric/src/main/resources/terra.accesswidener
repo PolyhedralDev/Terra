@@ -4,7 +4,7 @@ extendable method net/minecraft/client/world/GeneratorType <init> (Ljava/lang/St
 
 accessible field net/minecraft/server/world/ServerWorld worldProperties Lnet/minecraft/world/level/ServerWorldProperties;
 
-accessible method net/minecraft/world/MobSpawnerLogic getEntityId ()Lnet/minecraft/util/Identifier;
+accessible method net/minecraft/world/MobSpawnerLogic getEntityId (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/Identifier;
 
 accessible field net/minecraft/state/State PROPERTY_MAP_PRINTER Ljava/util/function/Function;
 
@@ -17,3 +17,4 @@ accessible field net/minecraft/world/biome/BiomeEffects skyColor I
 accessible field net/minecraft/world/biome/BiomeEffects foliageColor Ljava/util/Optional;
 accessible field net/minecraft/world/biome/BiomeEffects grassColor Ljava/util/Optional;
 accessible field net/minecraft/world/biome/BiomeEffects grassColorModifier Lnet/minecraft/world/biome/BiomeEffects$GrassColorModifier;
+
