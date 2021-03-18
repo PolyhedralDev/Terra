@@ -21,7 +21,7 @@ public class PaletteHolderBuilder {
         int min = FastMath.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
 
         Palette<BlockData>[] palettes = new Palette[paletteMap.lastKey() + 1 - min];
-        for(int y = 0; y <= FastMath.max(paletteMap.lastKey(), 255); y++) {
+        for(int y = min; y <= FastMath.max(paletteMap.lastKey(), 255); y++) {
             Palette<BlockData> d = null;
             for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
                 if(e.getKey() >= y) {
