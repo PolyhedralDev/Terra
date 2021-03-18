@@ -14,6 +14,10 @@ public class PaletteHolder {
 
     public Palette<BlockData> getPalette(int y) {
         int index = y + offset;
-        return index >= 0 ? palettes[index] : palettes[0];
+        return index >= 0
+                ? index < palettes.length
+                ? palettes[index]
+                : palettes[palettes.length - 1]
+                : palettes[0];
     }
 }

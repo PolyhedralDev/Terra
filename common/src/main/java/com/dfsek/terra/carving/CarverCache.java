@@ -15,6 +15,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -41,13 +42,13 @@ public class CarverCache {
                                 carving.step();
                                 TerraBiome biome = provider.getBiome(carving.getRunning().toLocation(w));
                                 if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(CarverCache.this.carver)) { // Stop if we enter a biome this carver is not present in
-                                    return new GlueList<>();
+                                    return Collections.emptyList();
                                 }
                                 points.add(carving.getPoint());
                             }
                             return points;
                         }
-                        return new GlueList<>();
+                        return Collections.emptyList();
                     }
                 });
     }
