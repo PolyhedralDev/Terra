@@ -34,6 +34,7 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     private final long seed;
@@ -123,9 +124,11 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
-        FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(((StructureAccessorAccessor) accessor).getWorld(), seed, this);
-        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
-        return CompletableFuture.completedFuture(chunk);
+        return CompletableFuture.supplyAsync(() -> {
+            FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(((StructureAccessorAccessor) accessor).getWorld(), seed, this);
+            delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
+            return chunk;
+        }, executor);
     }
 
     @Override
