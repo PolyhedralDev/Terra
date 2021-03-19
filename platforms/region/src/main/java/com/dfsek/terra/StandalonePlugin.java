@@ -24,20 +24,31 @@ import com.dfsek.terra.platform.RawWorldHandle;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 public class StandalonePlugin implements TerraPlugin {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(StandalonePlugin.class);
     private final ConfigRegistry registry = new ConfigRegistry();
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
 
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
-    private final PluginConfig config = new PluginConfig();
+    private final PluginConfig config;
     private final RawWorldHandle worldHandle = new RawWorldHandle();
+    private final Map<World, TerraWorld> worldMap;
     private final EventManager eventManager = new TerraEventManager(this);
+
+    public StandalonePlugin(PluginConfig config) {
+        this.config = config;
+        logger.debug("{}", config);
+        worldMap = new ConcurrentHashMap<>();
+    }
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -46,7 +57,7 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return new TerraWorld(world, registry.get("DEFAULT"), this);
+        return worldMap.computeIfAbsent(world, w -> new TerraWorld(w, registry.get("DEFAULT"), this));
     }
 
     @Override
@@ -100,7 +111,7 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public void saveDefaultConfig() {
-
+        // no
     }
 
     @Override

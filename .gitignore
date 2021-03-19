@@ -144,3 +144,5 @@ build
 /packs/
 /config.yml
 /region/
+/platforms/region/testDir/
+/.idea/
