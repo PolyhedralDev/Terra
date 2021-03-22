@@ -4,7 +4,6 @@ import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.world.handles.FabricWorld;
 import com.dfsek.terra.fabric.world.handles.chunk.FabricChunkWorldAccess;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
@@ -29,8 +28,6 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
         FabricChunkGeneratorWrapper gen = (FabricChunkGeneratorWrapper) chunkGenerator;
         FabricChunkWorldAccess chunk = new FabricChunkWorldAccess(world, pos.getX() >> 4, pos.getZ() >> 4);
         FabricWorld world1 = new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator));
-        gen.getCavePopulator().populate(new FabricWorldAccess(world), chunk);
-        gen.getStructurePopulator().populate(new FabricWorldAccess(world), chunk);
         gen.getOrePopulator().populate(world1, chunk);
         gen.getTreePopulator().populate(world1, chunk);
         gen.getFloraPopulator().populate(world1, chunk);

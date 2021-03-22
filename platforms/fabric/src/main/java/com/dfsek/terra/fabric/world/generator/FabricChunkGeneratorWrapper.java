@@ -7,6 +7,7 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
+import com.dfsek.terra.fabric.world.handles.chunk.FabricChunk;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.population.CavePopulator;
@@ -34,7 +35,6 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     private final long seed;
@@ -70,14 +70,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     public FloraPopulator getFloraPopulator() {
         return floraPopulator;
-    }
-
-    public StructurePopulator getStructurePopulator() {
-        return structurePopulator;
-    }
-
-    public CavePopulator getCavePopulator() {
-        return cavePopulator;
     }
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
@@ -126,7 +118,11 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(((StructureAccessorAccessor) accessor).getWorld(), seed, this);
+            com.dfsek.terra.api.platform.world.Chunk c = new FabricChunk(worldAccess, chunk);
+
             delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
+            cavePopulator.populate(worldAccess, c);
+            structurePopulator.populate(worldAccess, c);
             return chunk;
         }, executor);
     }

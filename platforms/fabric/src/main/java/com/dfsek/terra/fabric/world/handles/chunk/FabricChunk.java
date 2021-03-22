@@ -4,14 +4,18 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
+import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 public class FabricChunk implements Chunk {
     private final net.minecraft.world.chunk.Chunk chunk;
+    private final FabricWorldHandle worldHandle;
 
-    public FabricChunk(net.minecraft.world.chunk.Chunk chunk) {
+    public FabricChunk(FabricWorldHandle worldHandle, net.minecraft.world.chunk.Chunk chunk) {
+        this.worldHandle = worldHandle;
         this.chunk = chunk;
     }
 
@@ -27,12 +31,13 @@ public class FabricChunk implements Chunk {
 
     @Override
     public World getWorld() {
-        return null;
+        return worldHandle;
     }
 
     @Override
     public Block getBlock(int x, int y, int z) {
-        return null;
+        BlockPos pos = new BlockPos(x + (chunk.getPos().x << 4), y, z + (chunk.getPos().z << 4));
+        return new FabricBlock(pos, worldHandle.getWorld());
     }
 
     @Override

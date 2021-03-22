@@ -60,7 +60,7 @@ public class FabricWorld implements World, FabricWorldHandle {
 
     @Override
     public Chunk getChunkAt(int x, int z) {
-        return new FabricChunk(delegate.world.getChunk(x, z));
+        return new FabricChunk(this, delegate.world.getChunk(x, z));
     }
 
     @Override
