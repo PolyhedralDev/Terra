@@ -50,32 +50,6 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         return pack;
     }
 
-    private final FloraPopulator floraPopulator = new FloraPopulator(TerraFabricPlugin.getInstance());
-    private final OrePopulator orePopulator = new OrePopulator(TerraFabricPlugin.getInstance());
-    private final TreePopulator treePopulator = new TreePopulator(TerraFabricPlugin.getInstance());
-    private final StructurePopulator structurePopulator = new StructurePopulator(TerraFabricPlugin.getInstance());
-    private final CavePopulator cavePopulator = new CavePopulator(TerraFabricPlugin.getInstance());
-
-    public TreePopulator getTreePopulator() {
-        return treePopulator;
-    }
-
-    public OrePopulator getOrePopulator() {
-        return orePopulator;
-    }
-
-    public FloraPopulator getFloraPopulator() {
-        return floraPopulator;
-    }
-
-    public StructurePopulator getStructurePopulator() {
-        return structurePopulator;
-    }
-
-    public CavePopulator getCavePopulator() {
-        return cavePopulator;
-    }
-
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
@@ -123,6 +97,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) {
 
     }
+
+
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {

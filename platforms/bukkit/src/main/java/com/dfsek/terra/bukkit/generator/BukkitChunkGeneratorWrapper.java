@@ -23,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,20 +42,13 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     private final TerraPlugin main;
 
-    private final List<TerraBlockPopulator> populators = new LinkedList<>();
-
     private boolean needsLoad = true;
 
     public BukkitChunkGeneratorWrapper(TerraChunkGenerator delegate) {
         this.delegate = delegate;
         this.main = delegate.getMain();
-        popMan = new PopulationManager(main);
-        popMan.attach(new OrePopulator(main));
-        popMan.attach(new TreePopulator(main));
-        popMan.attach(new FloraPopulator(main));
-        populators.add(new CavePopulator(main));
-        populators.add(new StructurePopulator(main));
-        populators.add(popMan);
+        this.popMan = new PopulationManager(delegate, main);
+
     }
 
 
@@ -96,7 +91,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return populators.stream().map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
+        return Arrays.asList(popMan, new BukkitPopulatorWrapper(delegate));
     }
 
     @Override

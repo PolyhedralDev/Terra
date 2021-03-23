@@ -9,6 +9,7 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.world.PopulationUtil;
+import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.pack.WorldConfig;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class CavePopulator implements TerraBlockPopulator {
+public class CavePopulator implements TerraBlockPopulator, Chunkified {
     private static final Map<BlockType, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private final TerraPlugin main;
 

@@ -9,6 +9,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.WorldConfig;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class StructurePopulator implements TerraBlockPopulator {
+public class StructurePopulator implements TerraBlockPopulator, Chunkified {
     private final TerraPlugin main;
 
     public StructurePopulator(TerraPlugin main) {
