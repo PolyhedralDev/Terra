@@ -14,13 +14,9 @@ fun Project.configureDistribution() {
     apply(plugin = "java-library")
     apply(plugin = "com.github.johnrengelman.shadow")
 
-
-//    configurations.create("shaded")
-
     configurations {
         val shaded = create("shaded")
         getByName("compile").extendsFrom(shaded)
-//        shaded.extendsFrom(getByName("compile"))
         val shadedApi = create("shadedApi")
         shaded.extendsFrom(shadedApi)
         getByName("api").extendsFrom(shadedApi)
@@ -29,11 +25,8 @@ fun Project.configureDistribution() {
         getByName("implementation").extendsFrom(shadedImplementation)
     }
 
-//    tasks.withType<JavaCompile> {
-//        classpath +=
-//    }
-
     val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
+        group = "terra"
         doFirst {
             file("${buildDir}/resources/main/packs/").deleteRecursively()
 
