@@ -190,8 +190,17 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();
 
+    @Value("colors")
+    @Abstractable
+    @Default
+    private Map<String, Integer> colors = new HashMap<>(); // Plain ol' map, so platforms can decide what to do with colors (if anything).
+
     public Set<String> getTags() {
         return tags;
+    }
+
+    public Map<String, Integer> getColors() {
+        return colors;
     }
 
     public Map<UserDefinedCarver, Integer> getCarvers() {

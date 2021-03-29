@@ -66,4 +66,9 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
     public ProbabilityCollection<Biome> getVanillaBiomes() {
         return template.getVanilla();
     }
+
+    @Override
+    public BiomeTemplate getTemplate() {
+        return template;
+    }
 }

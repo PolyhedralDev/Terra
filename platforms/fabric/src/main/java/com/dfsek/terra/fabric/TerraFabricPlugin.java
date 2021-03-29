@@ -35,6 +35,7 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.world.FabricAdapter;
@@ -246,6 +247,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
         DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
 
+        BiomeTemplate template = biome.getTemplate();
+        Map<String, Integer> colors = template.getColors();
+
         Biome vanilla = ((FabricBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
@@ -254,28 +258,37 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
 
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(vanilla.getEffects().waterColor)
-                .waterFogColor(vanilla.getEffects().waterFogColor)
-                .fogColor(vanilla.getEffects().fogColor)
-                .skyColor(vanilla.getEffects().skyColor)
+                .waterColor(colors.getOrDefault("water", vanilla.getEffects().waterColor))
+                .waterFogColor(colors.getOrDefault("water-fog", vanilla.getEffects().waterFogColor))
+                .fogColor(colors.getOrDefault("fog", vanilla.getEffects().fogColor))
+                .skyColor(colors.getOrDefault("sky", vanilla.getEffects().skyColor))
                 .grassColorModifier(vanilla.getEffects().grassColorModifier);
-        vanilla.getEffects().grassColor.ifPresent(effects::grassColor);
-        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
 
-        return (new Biome.Builder())
+        if(colors.containsKey("grass")) {
+            effects.grassColor(colors.get("grass"));
+        } else {
+            vanilla.getEffects().grassColor.ifPresent(effects::grassColor);
+        }
+        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+        if(colors.containsKey("foliage")) {
+            effects.foliageColor(colors.get("foliage"));
+        } else {
+            vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+        }
+
+        return new Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
                 .depth(vanilla.getDepth())
                 .scale(vanilla.getScale())
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
-                .effects(vanilla.getEffects()) // TODO: configurable
+                .effects(effects.build())
                 .spawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())
                 .build();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onInitialize() {
         instance = this;

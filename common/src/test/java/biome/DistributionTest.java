@@ -39,6 +39,7 @@ import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiom
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
+import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -303,6 +304,11 @@ public class DistributionTest {
 
         @Override
         public ProbabilityCollection<Biome> getVanillaBiomes() {
+            return null;
+        }
+
+        @Override
+        public BiomeTemplate getTemplate() {
             return null;
         }
 
