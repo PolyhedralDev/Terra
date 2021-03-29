@@ -63,8 +63,6 @@ public class StructureLoadCommand implements CommandTemplate {
 
     @Override
     public void execute(CommandSender sender) {
-        System.out.println(rotation);
-
         Player player = (Player) sender;
 
         long t = System.nanoTime();

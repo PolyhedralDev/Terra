@@ -151,7 +151,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
-        if(worldMap.size() > 1) System.out.println(worldMap.size());
         return worldMap.computeIfAbsent(world.getSeed(), w -> {
             logger.info("Loading world " + w);
             return new TerraWorld(world, ((FabricChunkGeneratorWrapper) ((FabricChunkGenerator) world.getGenerator()).getHandle()).getPack(), this);
@@ -340,10 +339,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
                     int max = manager.getMaxArgumentDepth();
-                    System.out.println("MAX:" + max);
                     RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
                     for(int i = 0; i < max; i++) {
-                        System.out.println("arg " + i);
                         RequiredArgumentBuilder<ServerCommandSource, String> next = argument("arg" + (max - i - 1), StringArgumentType.word());
 
                         arg = next.then(assemble(arg, manager));
