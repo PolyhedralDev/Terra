@@ -160,7 +160,6 @@ public class TerraCommandManager implements CommandManager {
                 if(field.isAnnotationPresent(SwitchTarget.class)) {
                     SwitchTarget switchTarget = field.getAnnotation(SwitchTarget.class);
                     if(!holder.switches.containsValue(switchTarget.value())) {
-                        System.out.println(holder.switches);
                         throw new MalformedCommandException("Switch Target specifies nonexistent switch \"" + switchTarget.value() + "\"");
                     }
 

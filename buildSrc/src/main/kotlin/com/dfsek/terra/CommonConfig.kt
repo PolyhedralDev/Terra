@@ -30,7 +30,7 @@ fun Project.configureCommon() {
 }
 
 fun Project.getGitHash(): String {
-    val stdout = java.io.ByteArrayOutputStream()
+    val stdout = ByteArrayOutputStream()
     exec {
         commandLine = mutableListOf("git", "rev-parse", "--short", "HEAD")
         standardOutput = stdout

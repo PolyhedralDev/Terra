@@ -40,6 +40,7 @@ configure<LoomGradleExtension> {
 }
 
 tasks.register<RemapJarTask>("remapShadedJar") {
+    group = "fabric"
     val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
     dependsOn(shadowJar)
     input.set(shadowJar.archiveFile)

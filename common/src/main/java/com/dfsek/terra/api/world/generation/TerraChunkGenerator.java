@@ -6,10 +6,10 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 public interface TerraChunkGenerator {
@@ -32,4 +32,6 @@ public interface TerraChunkGenerator {
     TerraPlugin getMain();
 
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
+
+    List<TerraBlockPopulator> getPopulators();
 }

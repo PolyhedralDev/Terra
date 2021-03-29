@@ -33,6 +33,8 @@ public class FloraPopulator implements TerraBlockPopulator {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("FloraTime")) {
+            if(tw.getConfig().getTemplate().disableCarvers()) return;
+
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();

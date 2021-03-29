@@ -27,11 +27,7 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
         FabricChunkGeneratorWrapper gen = (FabricChunkGeneratorWrapper) chunkGenerator;
         FabricChunkWorldAccess chunk = new FabricChunkWorldAccess(world, pos.getX() >> 4, pos.getZ() >> 4);
         FabricWorld world1 = new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator));
-        gen.getCavePopulator().populate(new FabricWorldAccess(world), chunk);
-        gen.getStructurePopulator().populate(new FabricWorldAccess(world), chunk);
-        gen.getOrePopulator().populate(world1, chunk);
-        gen.getTreePopulator().populate(world1, chunk);
-        gen.getFloraPopulator().populate(world1, chunk);
+        gen.getHandle().getPopulators().forEach(populator -> populator.populate(world1, chunk));
         return true;
     }
 }

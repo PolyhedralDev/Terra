@@ -17,6 +17,7 @@ import com.dfsek.terra.api.util.world.PaletteUtil;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
@@ -28,8 +29,15 @@ import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
+import com.dfsek.terra.world.population.CavePopulator;
+import com.dfsek.terra.world.population.FloraPopulator;
+import com.dfsek.terra.world.population.OrePopulator;
+import com.dfsek.terra.world.population.StructurePopulator;
+import com.dfsek.terra.world.population.TreePopulator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -38,14 +46,21 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final TerraPlugin main;
     private final BlockType water;
     private final SinglePalette<BlockData> blank;
+    private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
     private final Carver carver;
-
 
 
     public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
+
+        blockPopulators.add(new CavePopulator(main));
+        blockPopulators.add(new StructurePopulator(main));
+        blockPopulators.add(new OrePopulator(main));
+        blockPopulators.add(new TreePopulator(main));
+        blockPopulators.add(new FloraPopulator(main));
+
         carver = new NoiseCarver(new Range(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
         water = main.getWorldHandle().createBlockData("minecraft:water").getBlockType();
         blank = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:air"));
@@ -235,5 +250,10 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     @Override
     public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth) {
         return new Sampler3D(chunkX, chunkZ, provider, world, elevationSmooth);
+    }
+
+    @Override
+    public List<TerraBlockPopulator> getPopulators() {
+        return blockPopulators;
     }
 }
