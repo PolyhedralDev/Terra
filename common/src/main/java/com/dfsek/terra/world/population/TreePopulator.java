@@ -33,6 +33,8 @@ public class TreePopulator implements TerraBlockPopulator {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("TreeTime")) {
+            if(tw.getConfig().getTemplate().disableCarvers()) return;
+
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
             Random random = PopulationUtil.getRandom(chunk);

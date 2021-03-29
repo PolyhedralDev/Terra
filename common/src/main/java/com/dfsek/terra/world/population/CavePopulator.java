@@ -42,6 +42,7 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
             WorldConfig config = tw.getConfig();
+            if(config.getTemplate().disableCarvers()) return;
 
             for(UserDefinedCarver c : config.getCarvers()) {
                 CarverTemplate template = c.getConfig();

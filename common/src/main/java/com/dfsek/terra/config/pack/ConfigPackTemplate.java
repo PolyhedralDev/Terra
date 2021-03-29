@@ -73,6 +73,46 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private String version = "0.1.0";
 
+    @Value("disable.carvers")
+    @Default
+    private boolean disableCarvers = false;
+
+    @Value("disable.structures")
+    @Default
+    private boolean disableStructures = false;
+
+    @Value("disable.ores")
+    @Default
+    private boolean disableOres = false;
+
+    @Value("disable.trees")
+    @Default
+    private boolean disableTrees = false;
+
+    @Value("disable.flora")
+    @Default
+    private boolean disableFlora = false;
+
+    public boolean disableCarvers() {
+        return disableCarvers;
+    }
+
+    public boolean disableFlora() {
+        return disableFlora;
+    }
+
+    public boolean disableOres() {
+        return disableOres;
+    }
+
+    public boolean disableStructures() {
+        return disableStructures;
+    }
+
+    public boolean disableTrees() {
+        return disableTrees;
+    }
+
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
         return functions;
     }
