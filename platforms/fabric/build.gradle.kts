@@ -51,6 +51,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     remapAccessWidener.set(true)
 }
 
+
 tasks.register<TaskModrinthUpload>("publishModrinth") {
     dependsOn("remapShadedJar")
     group = "fabric"
