@@ -29,11 +29,11 @@ public class BufferedLootApplication implements BufferedItem {
             }
             Container container = (Container) data;
 
-            LootPopulateEvent event = new LootPopulateEvent(block, container, main.getWorld(block.getLocation().getWorld()).getGenerator().getConfigPack());
+            LootPopulateEvent event = new LootPopulateEvent(block, container, table, main.getWorld(block.getLocation().getWorld()).getGenerator().getConfigPack());
             main.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
 
-            table.fillInventory(container.getInventory(), new FastRandom(origin.hashCode()));
+            event.getTable().fillInventory(container.getInventory(), new FastRandom(origin.hashCode()));
             data.update(false);
         } catch(Exception e) {
             main.logger().warning("Could not apply loot at " + origin + ": " + e.getMessage());
