@@ -33,7 +33,7 @@ public class TerraWorld {
         this.provider = config.getProvider();
         profiler = new WorldProfiler(w);
         air = main.getWorldHandle().createBlockData("minecraft:air");
-        main.getEventManager().callEvent(new TerraWorldLoadEvent(this));
+        main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
         safe = true;
     }
 
