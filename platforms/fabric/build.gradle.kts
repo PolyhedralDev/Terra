@@ -1,11 +1,13 @@
 import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     `java-library`
     id("fabric-loom").version("0.6-SNAPSHOT")
+    id("com.modrinth.minotaur").version("1.1.0")
 }
 
 configureCommon()
@@ -39,7 +41,7 @@ configure<LoomGradleExtension> {
     accessWidener("src/main/resources/terra.accesswidener")
 }
 
-tasks.register<RemapJarTask>("remapShadedJar") {
+val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     group = "fabric"
     val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
     dependsOn(shadowJar)
@@ -47,4 +49,16 @@ tasks.register<RemapJarTask>("remapShadedJar") {
     archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), "-shaded-mapped.jar"))
     addNestedDependencies.set(true)
     remapAccessWidener.set(true)
+}
+
+tasks.register<TaskModrinthUpload>("publishModrinth") {
+    dependsOn("remapShadedJar")
+    group = "fabric"
+    token = System.getenv("MODRINTH_SECRET")
+    projectId = "FIlZB9L0"
+    versionNumber = project.version.toString()
+    uploadFile = remapped.get().archiveFile.get().asFile
+    addGameVersion("1.16.4")
+    addGameVersion("1.16.5")
+    addLoader("fabric")
 }
