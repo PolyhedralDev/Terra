@@ -59,6 +59,7 @@ tasks.register<TaskModrinthUpload>("publishModrinth") {
     projectId = "FIlZB9L0"
     versionNumber = project.version.toString()
     uploadFile = remapped.get().archiveFile.get().asFile
+    releaseType = "beta"
     addGameVersion("1.16.4")
     addGameVersion("1.16.5")
     addLoader("fabric")
