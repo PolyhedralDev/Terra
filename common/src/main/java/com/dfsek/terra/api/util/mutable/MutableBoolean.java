@@ -5,6 +5,14 @@ import org.jetbrains.annotations.NotNull;
 public class MutableBoolean implements MutablePrimitive<Boolean> {
     private boolean value;
 
+    public MutableBoolean() {
+        this.value = false;
+    }
+
+    public MutableBoolean(boolean value) {
+        this.value = value;
+    }
+
     @Override
     public Boolean get() {
         return value;
