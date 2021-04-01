@@ -68,7 +68,7 @@ public class StructureScript {
                 .registerFunction("setMark", new SetMarkFunctionBuilder())
                 .registerFunction("getMark", new GetMarkFunctionBuilder())
                 .registerFunction("pull", new PullFunctionBuilder(main))
-                .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry))
+                .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry, this))
                 .registerFunction("entity", new EntityFunctionBuilder(main))
                 .registerFunction("getBiome", new BiomeFunctionBuilder(main))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
