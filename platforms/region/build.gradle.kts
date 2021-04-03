@@ -1,3 +1,4 @@
+import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {

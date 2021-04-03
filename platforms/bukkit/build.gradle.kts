@@ -1,3 +1,5 @@
+import com.dfsek.terra.configureCommon
+import com.dfsek.terra.gitClone
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
 import java.nio.channels.Channels

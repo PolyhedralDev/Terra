@@ -1,3 +1,5 @@
+import com.dfsek.terra.configureCommon
+
 plugins {
     java
 }
