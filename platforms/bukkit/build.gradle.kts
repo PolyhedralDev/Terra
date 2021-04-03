@@ -1,5 +1,3 @@
-import com.dfsek.terra.configureCommon
-import com.dfsek.terra.gitClone
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
 import java.nio.channels.Channels
@@ -166,6 +164,11 @@ task<JavaExec>(name = "runPaper") {
     //args = listOf("nogui")
     workingDir = file("$testDir/paper")
     classpath = files("$testDir/paper/paperclip.jar")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 task<JavaExec>(name = "runPurpur") {

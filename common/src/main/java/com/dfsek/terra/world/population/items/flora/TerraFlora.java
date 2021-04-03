@@ -9,7 +9,6 @@ import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Directional;
 import com.dfsek.terra.api.platform.block.data.MultipleFacing;
 import com.dfsek.terra.api.platform.block.data.Rotatable;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
@@ -94,7 +93,6 @@ public class TerraFlora implements Flora {
 
     @Override
     public boolean plant(Location location) {
-        WorldHandle handle = main.getWorldHandle();
 
         boolean doRotation = testRotation.size() > 0;
         int size = floraPalette.getSize();

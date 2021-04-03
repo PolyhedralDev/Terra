@@ -1,5 +1,3 @@
-import com.dfsek.terra.configureCommon
-
 plugins {
     java
     id("org.spongepowered.plugin").version("0.9.0")
@@ -12,6 +10,11 @@ group = "com.dfsek.terra"
 repositories {
     mavenCentral()
     jcenter()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {

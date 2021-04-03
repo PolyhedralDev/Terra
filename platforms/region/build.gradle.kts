@@ -1,4 +1,3 @@
-import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
@@ -12,6 +11,11 @@ group = "com.dfsek.terra"
 repositories {
     mavenCentral()
     maven { url = uri("https://jitpack.io/") }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {

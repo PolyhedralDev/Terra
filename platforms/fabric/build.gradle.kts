@@ -1,4 +1,3 @@
-import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.LoomGradleExtension
@@ -15,6 +14,11 @@ configureCommon()
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.json", "com.dfsek.terra.lib.json")
     relocate("org.yaml", "com.dfsek.terra.lib.yaml")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 group = "com.dfsek.terra.fabric"
