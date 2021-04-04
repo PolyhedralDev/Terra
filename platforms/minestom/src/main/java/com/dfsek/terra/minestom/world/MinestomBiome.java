@@ -10,7 +10,7 @@ public class MinestomBiome implements Biome {
     }
 
     @Override
-    public Object getHandle() {
+    public net.minestom.server.world.biomes.Biome getHandle() {
         return delegate;
     }
 }

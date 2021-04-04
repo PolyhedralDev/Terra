@@ -3,6 +3,7 @@ package com.dfsek.terra.minestom.generator;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.minestom.world.MinestomBiomeGrid;
 import com.dfsek.terra.minestom.world.MinestomBlockPopulatorWrapper;
 import com.dfsek.terra.minestom.world.MinestomChunkData;
 import com.dfsek.terra.minestom.world.MinestomWorld;
@@ -16,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MinestomChunkGeneratorWrapper implements GeneratorWrapper, ChunkGenerator {
@@ -42,7 +42,7 @@ public class MinestomChunkGeneratorWrapper implements GeneratorWrapper, ChunkGen
 
     @Override
     public void fillBiomes(@NotNull Biome[] biomes, int chunkX, int chunkZ) {
-        Arrays.fill(biomes, Biome.PLAINS);
+        chunkGenerator3D.generateBiomes(new MinestomWorld(instance), new FastRandom(), chunkX, chunkZ, new MinestomBiomeGrid(biomes, chunkX, chunkZ));
     }
 
     @Override

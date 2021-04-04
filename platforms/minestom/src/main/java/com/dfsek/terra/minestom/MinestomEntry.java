@@ -28,6 +28,8 @@ public final class MinestomEntry {
 
         container.setChunkGenerator(new MinestomChunkGeneratorWrapper(chunkGenerator3D, container));
 
+        MinecraftServer.getBiomeManager().unmodifiableCollection().forEach(biome -> System.out.println(biome.getId() + ": " + biome.toNbt()));
+
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addEventCallback(PlayerLoginEvent.class, event -> {
             Player player = event.getPlayer();
