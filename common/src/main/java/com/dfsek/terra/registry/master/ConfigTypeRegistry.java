@@ -34,8 +34,12 @@ public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?>> {
     }
 
     @SuppressWarnings("deprecation")
-    private <T extends AbstractableTemplate, O> T load(CheckedRegistry<O> registry, T object, ConfigFactory<T, O> factory, TerraPlugin main) throws LoadException {
-        registry.addUnchecked(object.getID(), factory.build(object, main));
+    private <T extends AbstractableTemplate, O> T load(CheckedRegistry<O> registry, T object, ConfigFactory<T, O> factory, TerraPlugin main) {
+        try {
+            registry.addUnchecked(object.getID(), factory.build(object, main));
+        } catch(LoadException e) {
+            throw new RuntimeException(e);
+        }
         return object;
     }
 }

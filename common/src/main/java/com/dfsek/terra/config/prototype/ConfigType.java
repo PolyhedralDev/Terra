@@ -7,5 +7,4 @@ import com.dfsek.terra.config.pack.ConfigPack;
 @FunctionalInterface
 public interface ConfigType<T extends ConfigTemplate> {
     T getTemplate(ConfigPack pack, TerraPlugin main);
-
 }
