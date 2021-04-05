@@ -42,6 +42,7 @@ import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
+import com.dfsek.terra.registry.config.ConfigTypeRegistry;
 import com.dfsek.terra.registry.config.FloraRegistry;
 import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
@@ -104,9 +105,12 @@ public class ConfigPack implements LoaderRegistrar {
 
     private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
+    private final ConfigTypeRegistry configTypeRegistry;
+
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         try {
+            this.configTypeRegistry = new ConfigTypeRegistry(this, main);
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
             long l = System.nanoTime();
@@ -143,6 +147,7 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
+            this.configTypeRegistry = new ConfigTypeRegistry(this, main);
             this.loader = new ZIPLoader(file);
             this.main = main;
             long l = System.nanoTime();
@@ -264,6 +269,7 @@ public class ConfigPack implements LoaderRegistrar {
     @Override
     public void register(TypeRegistry registry) {
         registry
+                .registerLoader(ConfigType.class, configTypeRegistry)
                 .registerLoader(Palette.class, paletteRegistry)
                 .registerLoader(BiomeBuilder.class, biomeRegistry)
                 .registerLoader(Flora.class, floraRegistry)
