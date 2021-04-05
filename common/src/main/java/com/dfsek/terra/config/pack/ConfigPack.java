@@ -2,6 +2,8 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
+import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
@@ -24,14 +26,7 @@ import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
-import com.dfsek.terra.config.factories.BiomeFactory;
-import com.dfsek.terra.config.factories.CarverFactory;
 import com.dfsek.terra.config.factories.ConfigFactory;
-import com.dfsek.terra.config.factories.FloraFactory;
-import com.dfsek.terra.config.factories.OreFactory;
-import com.dfsek.terra.config.factories.PaletteFactory;
-import com.dfsek.terra.config.factories.StructureFactory;
-import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -41,14 +36,9 @@ import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProvi
 import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.prototype.ConfigType;
+import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
-import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.config.templates.FloraTemplate;
-import com.dfsek.terra.config.templates.OreTemplate;
-import com.dfsek.terra.config.templates.PaletteTemplate;
-import com.dfsek.terra.config.templates.StructureTemplate;
-import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.CarverRegistry;
@@ -74,7 +64,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -224,14 +216,22 @@ public class ConfigPack implements LoaderRegistrar {
             }
         }).close();
 
-        loader
-                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
-                .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
-                .open("structures/trees", ".yml").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
-                .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
-                .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
-                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
+        List<Configuration> configurations = new ArrayList<>();
+
+        loader.open("", ".yml").then(streams -> streams.forEach(stream -> configurations.add(new Configuration(stream))));
+
+        ConfigLoader protoLoader = new ConfigLoader();
+        Map<ConfigType<? extends ConfigTemplate>, List<Configuration>> configs = new HashMap<>();
+
+        for(Configuration configuration : configurations) {
+            ProtoConfig config = new ProtoConfig();
+            protoLoader.load(config, configuration);
+            configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+        }
+
+        for(Map.Entry<ConfigType<? extends ConfigTemplate>, List<Configuration>> entry : configs.entrySet()) {
+            abstractConfigLoader.loadConfigs(entry.getValue(), () -> entry.getKey().getTemplate(this, main));
+        }
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
