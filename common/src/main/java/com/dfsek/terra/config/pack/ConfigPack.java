@@ -190,6 +190,7 @@ public class ConfigPack implements LoaderRegistrar {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {
         main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));
 
@@ -230,7 +231,9 @@ public class ConfigPack implements LoaderRegistrar {
         }
 
         for(Map.Entry<ConfigType<? extends ConfigTemplate>, List<Configuration>> entry : configs.entrySet()) {
-            abstractConfigLoader.loadConfigs(entry.getValue(), () -> entry.getKey().getTemplate(this, main));
+            for(ConfigTemplate config : abstractConfigLoader.loadConfigs(entry.getValue(), () -> entry.getKey().getTemplate(this, main))) {
+                ((ConfigType) entry.getKey()).callback(this, main, config);
+            }
         }
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
