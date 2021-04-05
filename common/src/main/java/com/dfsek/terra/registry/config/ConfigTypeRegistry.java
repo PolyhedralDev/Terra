@@ -1,5 +1,6 @@
 package com.dfsek.terra.registry.config;
 
+import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -23,18 +24,35 @@ import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.registry.OpenRegistry;
 
+import java.util.LinkedHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?>> {
     public ConfigTypeRegistry(ConfigPack pack, TerraPlugin main) {
-        add("BIOME", new ConfigBuilder<>(pack.getBiomeRegistry(), new BiomeFactory(pack), () -> new BiomeTemplate(pack, main)));
+        super(new LinkedHashMap<>()); // Ordered
         add("PALETTE", new ConfigBuilder<>(pack.getPaletteRegistry(), new PaletteFactory(), PaletteTemplate::new));
         add("ORE", new ConfigBuilder<>(pack.getOreRegistry(), new OreFactory(), OreTemplate::new));
         add("FLORA", new ConfigBuilder<>(pack.getFloraRegistry(), new FloraFactory(), FloraTemplate::new));
         add("CARVER", new ConfigBuilder<>(pack.getCarverRegistry(), new CarverFactory(pack), CarverTemplate::new));
         add("STRUCTURE", new ConfigBuilder<>(pack.getStructureRegistry(), new StructureFactory(), StructureTemplate::new));
         add("TREE", new ConfigBuilder<>(pack.getTreeRegistry(), new TreeFactory(), TreeTemplate::new));
+        add("BIOME", new ConfigBuilder<>(pack.getBiomeRegistry(), new BiomeFactory(pack), () -> new BiomeTemplate(pack, main)));
+        add("PACK", new PackBuilder());
+    }
+
+    private static final class PackBuilder implements ConfigType<ConfigTemplate> {
+
+        @Override
+        public ConfigTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
+            return new ConfigTemplate() {
+            };
+        }
+
+        @Override
+        public void callback(ConfigPack pack, TerraPlugin main, ConfigTemplate loadedConfig) {
+
+        }
     }
 
     private static final class ConfigBuilder<T extends AbstractableTemplate, O> implements ConfigType<T> {

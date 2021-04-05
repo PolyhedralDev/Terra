@@ -14,7 +14,7 @@ dependencies {
     "shadedApi"("commons-io:commons-io:2.4")
 
     "shadedApi"("com.dfsek:Paralithic:0.3.2")
-    "shadedApi"("com.dfsek:Tectonic:1.3.0")
+    "shadedApi"("com.dfsek:Tectonic:1.3.1")
     "shadedApi"("net.jafama:jafama:2.3.2")
     "shadedApi"("org.yaml:snakeyaml:1.27")
     "shadedApi"("org.ow2.asm:asm:9.0")

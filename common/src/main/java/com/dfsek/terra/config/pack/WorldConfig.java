@@ -17,6 +17,7 @@ import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.ores.Ore;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class WorldConfig {
@@ -66,7 +67,7 @@ public class WorldConfig {
     }
 
     public Set<UserDefinedCarver> getCarvers() {
-        return carverRegistry.entries();
+        return new HashSet<>(carverRegistry.entries());
     }
 
     public LockedRegistry<StructureScript> getScriptRegistry() {
@@ -110,7 +111,7 @@ public class WorldConfig {
     }
 
     public Set<TerraStructure> getStructures() {
-        return structureRegistry.entries();
+        return new HashSet<>(structureRegistry.entries());
     }
 
     public ConfigPackTemplate getTemplate() {

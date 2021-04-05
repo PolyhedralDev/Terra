@@ -66,8 +66,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -110,13 +112,14 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         try {
+            floraRegistry = new FloraRegistry(main);
+            paletteRegistry = new PaletteRegistry(main);
+            treeRegistry = new TreeRegistry();
             this.configTypeRegistry = new ConfigTypeRegistry(this, main);
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
             long l = System.nanoTime();
-            floraRegistry = new FloraRegistry(main);
-            paletteRegistry = new PaletteRegistry(main);
-            treeRegistry = new TreeRegistry();
+
             register(abstractConfigLoader);
             register(selfLoader);
 
@@ -147,13 +150,14 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
+            floraRegistry = new FloraRegistry(main);
+            paletteRegistry = new PaletteRegistry(main);
+            treeRegistry = new TreeRegistry();
             this.configTypeRegistry = new ConfigTypeRegistry(this, main);
             this.loader = new ZIPLoader(file);
             this.main = main;
             long l = System.nanoTime();
-            floraRegistry = new FloraRegistry(main);
-            paletteRegistry = new PaletteRegistry(main);
-            treeRegistry = new TreeRegistry();
+
             register(abstractConfigLoader);
             register(selfLoader);
 
@@ -224,20 +228,19 @@ public class ConfigPack implements LoaderRegistrar {
 
         List<Configuration> configurations = new ArrayList<>();
 
-        loader.open("", ".yml").then(streams -> streams.forEach(stream -> configurations.add(new Configuration(stream))));
+        loader.open("", ".yml").thenEntries(entries -> entries.forEach(stream -> configurations.add(new Configuration(stream.getValue(), stream.getKey()))));
 
-        ConfigLoader protoLoader = new ConfigLoader();
         Map<ConfigType<? extends ConfigTemplate>, List<Configuration>> configs = new HashMap<>();
 
         for(Configuration configuration : configurations) {
             ProtoConfig config = new ProtoConfig();
-            protoLoader.load(config, configuration);
+            selfLoader.load(config, configuration);
             configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
         }
 
-        for(Map.Entry<ConfigType<? extends ConfigTemplate>, List<Configuration>> entry : configs.entrySet()) {
-            for(ConfigTemplate config : abstractConfigLoader.loadConfigs(entry.getValue(), () -> entry.getKey().getTemplate(this, main))) {
-                ((ConfigType) entry.getKey()).callback(this, main, config);
+        for(ConfigType<?> configType : configTypeRegistry.entries()) {
+            for(ConfigTemplate config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()), () -> configType.getTemplate(this, main))) {
+                ((ConfigType) configType).callback(this, main, config);
             }
         }
 
@@ -250,7 +253,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     public Set<TerraStructure> getStructures() {
-        return structureRegistry.entries();
+        return new HashSet<>(structureRegistry.entries());
     }
 
     public List<String> getStructureIDs() {
@@ -288,7 +291,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     public Set<UserDefinedCarver> getCarvers() {
-        return carverRegistry.entries();
+        return new HashSet<>(carverRegistry.entries());
     }
 
     public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {

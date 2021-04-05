@@ -6,6 +6,7 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,7 +19,15 @@ import java.util.function.Consumer;
  * @param <T>
  */
 public class OpenRegistry<T> implements Registry<T> {
-    private final Map<String, T> objects = new HashMap<>();
+    private final Map<String, T> objects;
+
+    public OpenRegistry() {
+        objects = new HashMap<>();
+    }
+
+    protected OpenRegistry(Map<String, T> init) {
+        this.objects = init;
+    }
 
     @Override
     public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
@@ -74,8 +83,8 @@ public class OpenRegistry<T> implements Registry<T> {
     }
 
     @Override
-    public Set<T> entries() {
-        return new HashSet<>(objects.values());
+    public Collection<T> entries() {
+        return objects.values();
     }
 
     @Override
