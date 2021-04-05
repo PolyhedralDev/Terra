@@ -342,4 +342,14 @@ public class ConfigPack implements LoaderRegistrar {
     public WorldConfig toWorldConfig(TerraWorld world){
         return new WorldConfig(world, this, main);
     }
+
+    public CheckedRegistry<ConfigType<?>> getConfigTypeRegistry() {
+        return new CheckedRegistry<ConfigType<?>>(configTypeRegistry) {
+            @Override
+            @SuppressWarnings("deprecation")
+            public void addUnchecked(String identifier, ConfigType<?> value) {
+                if(contains(identifier)) throw new UnsupportedOperationException("Cannot override values in ConfigTypeRegistry!");
+            }
+        };
+    }
 }
