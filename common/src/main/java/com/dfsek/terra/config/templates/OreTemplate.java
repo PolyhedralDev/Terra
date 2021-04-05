@@ -17,7 +17,7 @@ public class OreTemplate extends AbstractableTemplate {
     @Abstractable
     private BlockData material;
 
-    @Value("type")
+    @Value("algorithm")
     @Abstractable
     @Default
     private Ore.Type oreType = Ore.Type.VANILLA;
