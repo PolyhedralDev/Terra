@@ -15,6 +15,7 @@ public class Tokenizer {
     private final Lookahead reader;
     private final Stack<Token> brackets = new Stack<>();
     private Token current;
+    private Token last;
 
     public Tokenizer(String data) throws ParseException {
         reader = new Lookahead(new StringReader(data + '\0'));
@@ -28,7 +29,7 @@ public class Tokenizer {
      * @throws ParseException If token does not exist
      */
     public Token get() throws ParseException {
-        if(!hasNext()) throw new ParseException("Unexpected end of input", current.getPosition());
+        if(!hasNext()) throw new ParseException("Unexpected end of input", last.getPosition());
         return current;
     }
 
@@ -39,7 +40,7 @@ public class Tokenizer {
      * @throws ParseException If token does not exist
      */
     public Token consume() throws ParseException {
-        if(!hasNext()) throw new ParseException("Unexpected end of input", current.getPosition());
+        if(!hasNext()) throw new ParseException("Unexpected end of input", last.getPosition());
         Token temp = current;
         current = fetchCheck();
         return temp;
@@ -57,8 +58,9 @@ public class Tokenizer {
     private Token fetchCheck() throws ParseException {
         Token fetch = fetch();
         if(fetch != null) {
-            if(fetch.getType().equals(Token.Type.BLOCK_BEGIN)) brackets.push(fetch); // Opening bracket
-            else if(fetch.getType().equals(Token.Type.BLOCK_END)) {
+            last = fetch;
+            if(fetch.getType() == Token.Type.BLOCK_BEGIN) brackets.push(fetch); // Opening bracket
+            else if(fetch.getType() == Token.Type.BLOCK_END) {
                 if(!brackets.isEmpty()) brackets.pop();
                 else throw new ParseException("Dangling opening brace", new Position(0, 0));
             }
