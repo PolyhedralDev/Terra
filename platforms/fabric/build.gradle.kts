@@ -6,6 +6,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     `java-library`
+    `maven-publish`
     id("fabric-loom").version("0.6-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
@@ -63,4 +64,28 @@ tasks.register<TaskModrinthUpload>("publishModrinth") {
     addGameVersion("1.16.4")
     addGameVersion("1.16.5")
     addLoader("fabric")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifact(tasks["sourcesJar"])
+            artifact(tasks["jar"])
+        }
+    }
+
+    repositories {
+        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
+
+        maven(mavenUrl) {
+            val mavenUsername: String? by project
+            val mavenPassword: String? by project
+            if (mavenUsername != null && mavenPassword != null) {
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
+                }
+            }
+        }
+    }
 }
