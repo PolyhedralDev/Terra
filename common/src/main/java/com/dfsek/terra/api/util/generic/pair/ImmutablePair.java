@@ -1,10 +1,12 @@
 package com.dfsek.terra.api.util.generic.pair;
 
-public class ImmutablePair<L, R> {
+public final class ImmutablePair<L, R> {
     private final L left;
     private final R right;
 
-    public ImmutablePair(L left, R right) {
+    private static final ImmutablePair<?, ?> NULL = new ImmutablePair<>(null, null);
+
+    private ImmutablePair(L left, R right) {
         this.left = left;
         this.right = right;
     }
@@ -21,7 +23,12 @@ public class ImmutablePair<L, R> {
         return left;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <L1, R1> ImmutablePair<L1, R1> ofNull() {
+        return (ImmutablePair<L1, R1>) NULL;
+    }
+
     public Pair<L, R> mutable() {
-        return new Pair<>(left, right);
+        return Pair.of(left, right);
     }
 }

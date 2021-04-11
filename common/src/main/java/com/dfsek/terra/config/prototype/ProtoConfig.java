@@ -8,14 +8,14 @@ public class ProtoConfig implements ConfigTemplate {
     private String id;
 
     @Value("type")
-    private ConfigType<?> type;
+    private ConfigType<?, ?> type;
 
 
     public String getId() {
         return id;
     }
 
-    public ConfigType<?> getType() {
+    public ConfigType<?, ?> getType() {
         return type;
     }
 }

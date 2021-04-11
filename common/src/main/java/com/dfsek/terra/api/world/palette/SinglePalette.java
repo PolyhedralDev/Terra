@@ -1,14 +1,16 @@
 package com.dfsek.terra.api.world.palette;
 
-public class SinglePalette<E> extends Palette<E> {
-    private final E item;
+import com.dfsek.terra.api.platform.block.BlockData;
 
-    public SinglePalette(E item) {
+public class SinglePalette extends Palette {
+    private final BlockData item;
+
+    public SinglePalette(BlockData item) {
         this.item = item;
     }
 
     @Override
-    public E get(int layer, double x, double y, double z) {
+    public BlockData get(int layer, double x, double y, double z) {
         return item;
     }
 }

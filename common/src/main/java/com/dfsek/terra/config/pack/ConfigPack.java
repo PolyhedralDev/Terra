@@ -8,22 +8,16 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structures.loot.LootTable;
-import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
-import com.dfsek.terra.api.world.flora.Flora;
-import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.factories.ConfigFactory;
@@ -40,21 +34,13 @@ import com.dfsek.terra.config.prototype.ConfigType;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.registry.OpenRegistry;
-import com.dfsek.terra.registry.config.BiomeRegistry;
-import com.dfsek.terra.registry.config.CarverRegistry;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
-import com.dfsek.terra.registry.config.FloraRegistry;
 import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
-import com.dfsek.terra.registry.config.OreRegistry;
-import com.dfsek.terra.registry.config.PaletteRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
-import com.dfsek.terra.registry.config.StructureRegistry;
-import com.dfsek.terra.registry.config.TreeRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
-import com.dfsek.terra.world.population.items.ores.Ore;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
 
@@ -73,8 +59,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -84,16 +68,11 @@ import java.util.zip.ZipFile;
 public class ConfigPack implements LoaderRegistrar {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
 
-    private final BiomeRegistry biomeRegistry = new BiomeRegistry();
-    private final StructureRegistry structureRegistry = new StructureRegistry();
-    private final PaletteRegistry paletteRegistry;
-    private final FloraRegistry floraRegistry;
-    private final OreRegistry oreRegistry = new OreRegistry();
-    private final TreeRegistry treeRegistry;
+    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
+
+
     private final ScriptRegistry scriptRegistry = new ScriptRegistry();
     private final LootRegistry lootRegistry = new LootRegistry();
-
-    private final CarverRegistry carverRegistry = new CarverRegistry();
 
     private final NoiseRegistry noiseRegistry = new NoiseRegistry();
     private final FunctionRegistry functionRegistry = new FunctionRegistry();
@@ -112,10 +91,12 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         try {
-            floraRegistry = new FloraRegistry(main);
-            paletteRegistry = new PaletteRegistry(main);
-            treeRegistry = new TreeRegistry();
-            this.configTypeRegistry = new ConfigTypeRegistry(this, main);
+            this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
+                OpenRegistry<?> openRegistry = configType.registrySupplier().get();
+                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
+                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
+                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistry<>(openRegistry)));
+            });
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
             long l = System.nanoTime();
@@ -151,19 +132,18 @@ public class ConfigPack implements LoaderRegistrar {
 
     public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
-            floraRegistry = new FloraRegistry(main);
-            paletteRegistry = new PaletteRegistry(main);
-            treeRegistry = new TreeRegistry();
-            this.configTypeRegistry = new ConfigTypeRegistry(this, main);
+            this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
+                OpenRegistry<?> openRegistry = configType.registrySupplier().get();
+                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
+                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
+                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistry<>(openRegistry)));
+            });
             this.loader = new ZIPLoader(file);
             this.main = main;
             long l = System.nanoTime();
 
-            register(abstractConfigLoader);
             register(selfLoader);
-
             main.register(selfLoader);
-            main.register(abstractConfigLoader);
 
             try {
                 ZipEntry pack = null;
@@ -202,12 +182,7 @@ public class ConfigPack implements LoaderRegistrar {
     }
 
     private void checkDeadEntries(TerraPlugin main) {
-        biomeRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in biome registry: '" + id + "'"));
-        paletteRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in palette registry: '" + id + "'"));
-        floraRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in flora registry: '" + id + "'"));
-        carverRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in carver registry: '" + id + "'"));
-        treeRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in tree registry: '" + id + "'"));
-        oreRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in ore registry: '" + id + "'"));
+        registryMap.forEach((clazz, pair) -> pair.getLeft().getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in '" + clazz + "' registry: '" + id + "'")));
     }
 
 
@@ -242,7 +217,7 @@ public class ConfigPack implements LoaderRegistrar {
 
         loader.open("", ".yml").thenEntries(entries -> entries.forEach(stream -> configurations.add(new Configuration(stream.getValue(), stream.getKey()))));
 
-        Map<ConfigType<? extends ConfigTemplate>, List<Configuration>> configs = new HashMap<>();
+        Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
         for(Configuration configuration : configurations) {
             ProtoConfig config = new ProtoConfig();
@@ -250,7 +225,7 @@ public class ConfigPack implements LoaderRegistrar {
             configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
         }
 
-        for(ConfigType<?> configType : configTypeRegistry.entries()) {
+        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) {
             for(ConfigTemplate config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()), () -> configType.getTemplate(this, main))) {
                 ((ConfigType) configType).callback(this, main, config);
             }
@@ -260,16 +235,9 @@ public class ConfigPack implements LoaderRegistrar {
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 
-    public TerraStructure getStructure(String id) {
-        return structureRegistry.get(id);
-    }
 
     public Set<TerraStructure> getStructures() {
-        return new HashSet<>(structureRegistry.entries());
-    }
-
-    public List<String> getStructureIDs() {
-        return structureRegistry.entries().stream().map(terraStructure -> terraStructure.getTemplate().getID()).collect(Collectors.toList());
+        return new HashSet<>(getRegistry(TerraStructure.class).entries());
     }
 
     public ConfigPackTemplate getTemplate() {
@@ -280,30 +248,24 @@ public class ConfigPack implements LoaderRegistrar {
         return varScope;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> CheckedRegistry<T> getRegistry(Class<T> clazz) {
+        return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
+    }
+
 
     @Override
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(ConfigType.class, configTypeRegistry)
-                .registerLoader(Palette.class, paletteRegistry)
-                .registerLoader(BiomeBuilder.class, biomeRegistry)
-                .registerLoader(Flora.class, floraRegistry)
-                .registerLoader(Ore.class, oreRegistry)
-                .registerLoader(Tree.class, treeRegistry)
                 .registerLoader(StructureScript.class, scriptRegistry)
-                .registerLoader(TerraStructure.class, structureRegistry)
                 .registerLoader(LootTable.class, lootRegistry)
-                .registerLoader(UserDefinedCarver.class, carverRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
                 .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
-                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry))
-                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
-    }
-
-    public Set<UserDefinedCarver> getCarvers() {
-        return new HashSet<>(carverRegistry.entries());
+                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)))
+                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)));
     }
 
     public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
@@ -314,55 +276,20 @@ public class ConfigPack implements LoaderRegistrar {
         return new CheckedRegistry<>(scriptRegistry);
     }
 
-    public CheckedRegistry<BiomeBuilder> getBiomeRegistry() {
-        return new CheckedRegistry<>(biomeRegistry);
-    }
-
-    public CheckedRegistry<Tree> getTreeRegistry() {
-        return new CheckedRegistry<>(treeRegistry);
-    }
-
-    public CheckedRegistry<FunctionBuilder<?>> getFunctionRegistry() {
-        return new CheckedRegistry<>(functionRegistry);
-    }
-
-    public CheckedRegistry<Supplier<ObjectTemplate<NoiseSeeded>>> getNormalizerRegistry() {
-        return new CheckedRegistry<>(noiseRegistry);
-    }
-
-    public CheckedRegistry<UserDefinedCarver> getCarverRegistry() {
-        return new CheckedRegistry<>(carverRegistry);
-    }
-
-    public CheckedRegistry<Flora> getFloraRegistry() {
-        return new CheckedRegistry<>(floraRegistry);
-    }
-
     public CheckedRegistry<LootTable> getLootRegistry() {
         return new CheckedRegistry<>(lootRegistry);
     }
 
-    public CheckedRegistry<Ore> getOreRegistry() {
-        return new CheckedRegistry<>(oreRegistry);
-    }
 
-    public CheckedRegistry<Palette<BlockData>> getPaletteRegistry() {
-        return new CheckedRegistry<>(paletteRegistry);
-    }
-
-    public CheckedRegistry<TerraStructure> getStructureRegistry() {
-        return new CheckedRegistry<>(structureRegistry);
-    }
-
-    public WorldConfig toWorldConfig(TerraWorld world){
+    public WorldConfig toWorldConfig(TerraWorld world) {
         return new WorldConfig(world, this, main);
     }
 
-    public CheckedRegistry<ConfigType<?>> getConfigTypeRegistry() {
-        return new CheckedRegistry<ConfigType<?>>(configTypeRegistry) {
+    public CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry() {
+        return new CheckedRegistry<ConfigType<?, ?>>(configTypeRegistry) {
             @Override
             @SuppressWarnings("deprecation")
-            public void addUnchecked(String identifier, ConfigType<?> value) {
+            public void addUnchecked(String identifier, ConfigType<?, ?> value) {
                 if(contains(identifier)) throw new UnsupportedOperationException("Cannot override values in ConfigTypeRegistry!");
             }
         };

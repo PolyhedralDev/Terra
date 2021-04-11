@@ -75,7 +75,7 @@ public class TerraWorld {
      */
     public BlockData getUngeneratedBlock(int x, int y, int z) {
         UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(x, z);
-        Palette<BlockData> palette = biome.getGenerator(world).getPalette(y);
+        Palette palette = biome.getGenerator(world).getPalette(y);
         Sampler sampler = config.getSamplerCache().get(x, z);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);

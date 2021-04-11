@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  */
 public class OpenRegistry<T> implements Registry<T> {
     private final Map<String, Entry<T>> objects;
+    private static final Entry<?> NULL = new Entry<>(null);
 
     public OpenRegistry() {
         objects = new HashMap<>();
@@ -72,9 +73,10 @@ public class OpenRegistry<T> implements Registry<T> {
         return objects.containsKey(identifier);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T get(String identifier) {
-        return objects.get(identifier).getValue();
+        return objects.getOrDefault(identifier, (Entry<T>) NULL).getValue();
     }
 
     @Override
@@ -89,7 +91,7 @@ public class OpenRegistry<T> implements Registry<T> {
 
     @Override
     public Collection<T> entries() {
-        return objects.values().stream().map(Entry::getRaw).collect(Collectors.toSet());
+        return objects.values().stream().map(Entry::getRaw).collect(Collectors.toList());
     }
 
     @Override

@@ -28,6 +28,6 @@ public class BukkitWorldHandle implements WorldHandle {
     @Override
     public Pair<Location, Location> getSelectedLocation(Player player) {
         org.bukkit.Location[] locations = WorldEditUtil.getSelectionLocations(BukkitAdapter.adapt(player));
-        return new Pair<>(BukkitAdapter.adapt(locations[0]), BukkitAdapter.adapt(locations[1]));
+        return Pair.of(BukkitAdapter.adapt(locations[0]), BukkitAdapter.adapt(locations[1]));
     }
 }

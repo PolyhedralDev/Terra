@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TerraFlora implements Flora {
-    private final Palette<BlockData> floraPalette;
+    private final Palette floraPalette;
     private final boolean physics;
     private final boolean ceiling;
 
@@ -43,7 +43,7 @@ public class TerraFlora implements Flora {
 
     private final TerraPlugin main;
 
-    public TerraFlora(Palette<BlockData> floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraPlugin main) {
+    public TerraFlora(Palette floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraPlugin main) {
         this.floraPalette = floraPalette;
         this.physics = physics;
         this.testRotation = testRotation;

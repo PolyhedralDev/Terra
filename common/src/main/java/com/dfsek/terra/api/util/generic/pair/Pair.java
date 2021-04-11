@@ -4,7 +4,7 @@ public class Pair<L, R> {
     private L left;
     private R right;
 
-    public Pair(L left, R right) {
+    private Pair(L left, R right) {
         this.left = left;
         this.right = right;
     }
@@ -30,6 +30,6 @@ public class Pair<L, R> {
     }
 
     public ImmutablePair<L, R> immutable() {
-        return new ImmutablePair<>(left, right);
+        return ImmutablePair.of(left, right);
     }
 }

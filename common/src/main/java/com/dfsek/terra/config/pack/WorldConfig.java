@@ -1,7 +1,6 @@
 package com.dfsek.terra.config.pack;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.structures.loot.LootTable;
@@ -11,6 +10,7 @@ import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.math.SamplerCache;
@@ -29,7 +29,7 @@ public class WorldConfig {
     private final LockedRegistry<Flora> floraRegistry;
     private final LockedRegistry<LootTable> lootRegistry;
     private final LockedRegistry<Ore> oreRegistry;
-    private final LockedRegistry<Palette<BlockData>> paletteRegistry;
+    private final LockedRegistry<Palette> paletteRegistry;
     private final LockedRegistry<TerraStructure> structureRegistry;
 
     private final BiomeProvider provider;
@@ -44,16 +44,16 @@ public class WorldConfig {
         this.scriptRegistry = new LockedRegistry<>(pack.getScriptRegistry());
 
         OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistry<>();
-        pack.getBiomeRegistry().forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
+        pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
 
         this.biomeRegistry = new LockedRegistry<>(biomeOpenRegistry);
-        this.carverRegistry = new LockedRegistry<>(pack.getCarverRegistry());
-        this.treeRegistry = new LockedRegistry<>(pack.getTreeRegistry());
-        this.floraRegistry = new LockedRegistry<>(pack.getFloraRegistry());
+        this.carverRegistry = new LockedRegistry<>(pack.getRegistry(UserDefinedCarver.class));
+        this.treeRegistry = new LockedRegistry<>(pack.getRegistry(Tree.class));
+        this.floraRegistry = new LockedRegistry<>(pack.getRegistry(Flora.class));
         this.lootRegistry = new LockedRegistry<>(pack.getLootRegistry());
-        this.oreRegistry = new LockedRegistry<>(pack.getOreRegistry());
-        this.paletteRegistry = new LockedRegistry<>(pack.getPaletteRegistry());
-        this.structureRegistry = new LockedRegistry<>(pack.getStructureRegistry());
+        this.oreRegistry = new LockedRegistry<>(pack.getRegistry(Ore.class));
+        this.paletteRegistry = new LockedRegistry<>(pack.getRegistry(Palette.class));
+        this.structureRegistry = new LockedRegistry<>(pack.getRegistry(TerraStructure.class));
 
         this.provider = pack.getBiomeProviderBuilder().build(world.getWorld().getSeed());
     }
@@ -98,7 +98,7 @@ public class WorldConfig {
         return oreRegistry;
     }
 
-    public LockedRegistry<Palette<BlockData>> getPaletteRegistry() {
+    public LockedRegistry<Palette> getPaletteRegistry() {
         return paletteRegistry;
     }
 

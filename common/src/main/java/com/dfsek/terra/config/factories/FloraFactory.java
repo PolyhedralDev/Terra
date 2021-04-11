@@ -2,7 +2,6 @@ package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.NoisePalette;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -13,7 +12,7 @@ import com.dfsek.terra.world.population.items.flora.TerraFlora;
 public class FloraFactory implements ConfigFactory<FloraTemplate, Flora> {
     @Override
     public TerraFlora build(FloraTemplate config, TerraPlugin main) {
-        Palette<BlockData> palette = new NoisePalette<>(new WhiteNoiseSampler(2403), false);
+        Palette palette = new NoisePalette(new WhiteNoiseSampler(2403), false);
         for(PaletteLayerHolder layer : config.getFloraPalette()) {
             palette.add(layer.getLayer(), layer.getSize(), layer.getSampler());
         }
