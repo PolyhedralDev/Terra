@@ -138,6 +138,7 @@ public class ConfigPack implements LoaderRegistrar {
                 selfLoader.load(packPostTemplate, new FileInputStream(pack));
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                checkDeadEntries(main);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
@@ -184,6 +185,7 @@ public class ConfigPack implements LoaderRegistrar {
                 selfLoader.load(packPostTemplate, file.getInputStream(pack));
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                checkDeadEntries(main);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
@@ -198,6 +200,16 @@ public class ConfigPack implements LoaderRegistrar {
     public static <C extends AbstractableTemplate, O> void buildAll(ConfigFactory<C, O> factory, OpenRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
+
+    private void checkDeadEntries(TerraPlugin main) {
+        biomeRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in biome registry: '" + id + "'"));
+        paletteRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in palette registry: '" + id + "'"));
+        floraRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in flora registry: '" + id + "'"));
+        carverRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in carver registry: '" + id + "'"));
+        treeRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in tree registry: '" + id + "'"));
+        oreRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in ore registry: '" + id + "'"));
+    }
+
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {

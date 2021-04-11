@@ -57,7 +57,9 @@ public class FloraRegistry extends OpenRegistry<Flora> {
 
     private void addItem(String id, Callable<ConstantFlora> flora) {
         try {
-            add(id, flora.call());
+            Entry<Flora> entry = new Entry<>(flora.call());
+            entry.getValue(); // Mark as not dead.
+            add(id, entry);
         } catch(Exception e) {
             main.logger().warning("Failed to load Flora item: " + id + ": " + e.getMessage());
         }
