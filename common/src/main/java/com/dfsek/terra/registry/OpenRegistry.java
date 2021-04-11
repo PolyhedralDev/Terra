@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @param <T>
  */
 public class OpenRegistry<T> implements Registry<T> {
-    private final Map<String, T> objects;
+    private final Map<String, Entry<T>> objects;
 
     public OpenRegistry() {
         objects = new HashMap<>();
@@ -29,7 +29,6 @@ public class OpenRegistry<T> implements Registry<T> {
     protected OpenRegistry(Map<String, Entry<T>> init) {
         this.objects = init;
     }
-    private final Map<String, Entry<T>> objects = new HashMap<>();
 
     @Override
     public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
