@@ -14,6 +14,6 @@ public class BiomeArgumentParser implements ArgumentParser<TerraBiome> {
     @Override
     public TerraBiome parse(CommandSender sender, String arg) {
         Player player = (Player) sender;
-        return main.getWorld(player.getWorld()).getConfig().getBiomeRegistry().get(arg);
+        return main.getWorld(player.getWorld()).getConfig().getRegistry(TerraBiome.class).get(arg);
     }
 }

@@ -276,10 +276,6 @@ public class ConfigPack implements LoaderRegistrar {
         return new CheckedRegistry<>(scriptRegistry);
     }
 
-    public CheckedRegistry<LootTable> getLootRegistry() {
-        return new CheckedRegistry<>(lootRegistry);
-    }
-
 
     public WorldConfig toWorldConfig(TerraWorld world) {
         return new WorldConfig(world, this, main);
