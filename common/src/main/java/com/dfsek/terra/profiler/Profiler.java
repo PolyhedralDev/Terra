@@ -12,4 +12,9 @@ public interface Profiler {
     void stop();
 
     Map<String, Timings> getTimings();
+
+    default AutoCloseable profile(String frame) {
+        push(frame);
+        return () -> pop(frame);
+    }
 }
