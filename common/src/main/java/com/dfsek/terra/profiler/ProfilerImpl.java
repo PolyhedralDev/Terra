@@ -1,5 +1,6 @@
 package com.dfsek.terra.profiler;
 
+import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.profiler.exception.MalformedStackException;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class ProfilerImpl implements Profiler {
     private volatile boolean running = false;
     private static boolean instantiated = false;
 
+    private static final ThreadLocal<Boolean> SAFE = ThreadLocal.withInitial(() -> false);
+    private static final ThreadLocal<MutableInteger> STACK_SIZE = ThreadLocal.withInitial(() -> new MutableInteger(0));
 
     public ProfilerImpl() {
         if(instantiated) throw new IllegalStateException("Only one instance of Profiler may exist!");
@@ -23,15 +26,18 @@ public class ProfilerImpl implements Profiler {
 
     @Override
     public void push(String frame) {
-        if(running) {
+        STACK_SIZE.get().increment();
+        if(running && SAFE.get()) {
             Stack<Frame> stack = THREAD_STACK.get();
-            stack.push(new Frame(stack.size() == 0 ? frame : stack.peek().getId() + "." + frame));
-        }
+            stack.push(new Frame(stack.isEmpty() ? frame : stack.peek().getId() + "." + frame));
+        } else SAFE.set(false);
     }
 
     @Override
     public void pop(String frame) {
-        if(running) {
+        MutableInteger size = STACK_SIZE.get();
+        size.decrement();
+        if(running && SAFE.get()) {
             long time = System.nanoTime();
             Stack<Frame> stack = THREAD_STACK.get();
 
@@ -51,6 +57,7 @@ public class ProfilerImpl implements Profiler {
 
             timings.add(time - top.getStart());
         }
+        if(size.get() == 0) SAFE.set(true);
     }
 
     @Override

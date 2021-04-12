@@ -7,7 +7,7 @@ public class ProfilerTest {
     private static final Profiler PROFILER = new ProfilerImpl();
     //@Test
     public static void main(String... a) throws InterruptedException {
-        PROFILER.start();
+        //PROFILER.start();
         for(int i = 0; i < 1000; i++) {
             doThing();
         }
@@ -20,6 +20,14 @@ public class ProfilerTest {
             doOtherThing();
         }
         PROFILER.stop();
+        PROFILER.push("thing");
+        PROFILER.push("thing2");
+        PROFILER.start();
+        PROFILER.pop("thing2");
+        PROFILER.pop("thing");
+        PROFILER.push("thing4");
+        PROFILER.pop("thing4");
+
         PROFILER.getTimings().forEach((id, timings) -> {
             System.out.println(id + ": " + timings.toString());
         });
