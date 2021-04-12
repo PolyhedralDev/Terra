@@ -22,13 +22,6 @@ val testMem = "3G"
 val paperURL = "https://papermc.io/api/v1/paper/%version%/latest/download/"
 val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/final/purpurclip.jar"
 
-repositories {
-    mavenCentral()
-    maven { url = uri("http://maven.enginehub.org/repo/") }
-    maven { url = uri("https://repo.codemc.org/repository/maven-public") }
-    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-}
-
 dependencies {
     "shadedApi"(project(":common"))
 
@@ -39,7 +32,7 @@ dependencies {
 
     "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
 
-    "shadedImplementation"("com.google.guava:guava:30.0-jre")
+    "shadedApi"("com.google.guava:guava:30.0-jre")
 }
 
 val jvmFlags = listOf("-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
@@ -189,6 +182,7 @@ task<JavaExec>(name = "runPurpur") {
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+    relocate("com.google.common", "com.dfsek.terra.lib.google.common")
 }
 
 publishing {

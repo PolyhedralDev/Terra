@@ -21,19 +21,12 @@ group = "com.dfsek.terra.fabric"
 
 dependencies {
     "shadedApi"(project(":common"))
-    "shadedImplementation"("org.yaml:snakeyaml:1.27")
-    "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
 
     "minecraft"("com.mojang:minecraft:1.16.5")
     "mappings"("net.fabricmc:yarn:1.16.5+build.5:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
 
     "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
-}
-
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.json", "com.dfsek.terra.lib.json")
-    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
 
