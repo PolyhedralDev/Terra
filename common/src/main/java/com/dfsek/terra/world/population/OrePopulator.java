@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,7 @@ public class OrePopulator implements TerraBlockPopulator {
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
-        try(ProfileFuture ignored = tw.getProfiler().measure("OreTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
             if(tw.getConfig().getTemplate().disableOres()) return;
 
             if(!tw.isSafe()) return;

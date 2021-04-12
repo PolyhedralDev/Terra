@@ -14,7 +14,7 @@ import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +38,7 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
         TerraWorld tw = main.getWorld(world);
         WorldHandle handle = main.getWorldHandle();
         BlockData AIR = handle.createBlockData("minecraft:air");
-        try(ProfileFuture ignored = tw.getProfiler().measure("CaveTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
             WorldConfig config = tw.getConfig();
@@ -93,7 +93,7 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                         if(template.getShift().get(entry.getValue().getBlockType()).contains(mut.getBlock().getBlockData().getBlockType())) {
                             mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
                         }
-                    } catch(NullPointerException ignore) {
+                    } catch(NullPointerException ignored) {
                     }
                 }
                 for(Block b : updateNeeded) {
