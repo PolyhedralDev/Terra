@@ -34,23 +34,25 @@ public class Timings {
         return subItems.computeIfAbsent(id, s -> new Timings());
     }
 
-    public String toString(int indent) {
+    public String toString(int indent, Timings parent) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("Avg ").append(average() / 1000000).append("ms");
+        builder.append((double) min() / 1000000).append("ms min / ").append(average() / 1000000).append("ms avg / ")
+                .append((double) max() / 1000000).append("ms max (").append(timings.size()).append(" samples, ")
+                .append((average() / parent.average()) * 100).append("% of parent)");
 
         subItems.forEach((id, timings) -> {
             builder.append('\n');
             for(int i = 0; i <= indent; i++) {
                 builder.append('\t');
             }
-            builder.append(id).append(": ").append(timings.toString(indent + 1));
+            builder.append(id).append(": ").append(timings.toString(indent + 1, this));
         });
         return builder.toString();
     }
 
     @Override
     public String toString() {
-        return toString(0);
+        return toString(0, this);
     }
 }

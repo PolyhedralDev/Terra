@@ -15,7 +15,7 @@ public class ProfilerImpl implements Profiler {
     private volatile boolean running = false;
 
 
-    protected ProfilerImpl() {
+    public ProfilerImpl() {
 
     }
 
