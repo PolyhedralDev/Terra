@@ -10,8 +10,8 @@ import java.util.Stack;
 
 public class ProfilerImpl implements Profiler {
     private static final ThreadLocal<Stack<Frame>> THREAD_STACK = ThreadLocal.withInitial(Stack::new);
-    private static final ThreadLocal<Map<String, Timings>> TIMINGS = ThreadLocal.withInitial(HashMap::new);
-    private final List<Map<String, Timings>> accessibleThreadMaps = new ArrayList<>();
+    private static final ThreadLocal<Map<String, List<Long>>> TIMINGS = ThreadLocal.withInitial(HashMap::new);
+    private final List<Map<String, List<Long>>> accessibleThreadMaps = new ArrayList<>();
     private volatile boolean running = false;
 
 
@@ -21,7 +21,10 @@ public class ProfilerImpl implements Profiler {
 
     @Override
     public void push(String frame) {
-        if(running) THREAD_STACK.get().push(new Frame(frame));
+        if(running) {
+            Stack<Frame> stack = THREAD_STACK.get();
+            stack.push(new Frame(stack.size() == 0 ? frame : stack.peek().getId() + "." + frame));
+        }
     }
 
     @Override
@@ -30,7 +33,7 @@ public class ProfilerImpl implements Profiler {
             long time = System.nanoTime();
             Stack<Frame> stack = THREAD_STACK.get();
 
-            Map<String, Timings> timingsMap = TIMINGS.get();
+            Map<String, List<Long>> timingsMap = TIMINGS.get();
 
             if(timingsMap.size() == 0) {
                 synchronized(accessibleThreadMaps) {
@@ -38,16 +41,13 @@ public class ProfilerImpl implements Profiler {
                 }
             }
 
-            Timings bottom = timingsMap.computeIfAbsent(stack.get(0).getId(), id -> new Timings());
-
-            for(int i = 1; i < stack.size(); i++) {
-                bottom = bottom.getSubItem(stack.get(i).getId());
-            }
-
             Frame top = stack.pop();
-            if(!top.getId().equals(frame)) throw new MalformedStackException("Expected " + frame + ", found " + top);
+            if((stack.size() != 0 && !top.getId().endsWith("." + frame)) || (stack.size() == 0 && !top.getId().equals(frame)))
+                throw new MalformedStackException("Expected " + frame + ", found " + top);
 
-            bottom.addTime(time - top.getStart());
+            List<Long> timings = timingsMap.computeIfAbsent(top.getId(), id -> new ArrayList<>());
+
+            timings.add(time - top.getStart());
         }
     }
 
@@ -64,7 +64,16 @@ public class ProfilerImpl implements Profiler {
     @Override
     public Map<String, Timings> getTimings() {
         Map<String, Timings> map = new HashMap<>();
-        accessibleThreadMaps.forEach(map::putAll);
+        accessibleThreadMaps.forEach(smap -> {
+            smap.forEach((key, list) -> {
+                String[] keys = key.split("\\.");
+                Timings timings = map.computeIfAbsent(keys[0], id -> new Timings());
+                for(int i = 1; i < keys.length; i++) {
+                    timings = timings.getSubItem(keys[i]);
+                }
+                list.forEach(timings::addTime);
+            });
+        });
         return map;
     }
 }

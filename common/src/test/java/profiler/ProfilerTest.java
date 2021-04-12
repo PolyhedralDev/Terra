@@ -6,7 +6,7 @@ public class ProfilerTest {
     //@Test
     public static void main(String... a) throws InterruptedException {
         Profiler.INSTANCE.start();
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 1000; i++) {
             doThing();
         }
 
