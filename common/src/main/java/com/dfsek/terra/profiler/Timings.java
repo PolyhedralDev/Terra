@@ -30,6 +30,10 @@ public class Timings {
         return timings.stream().mapToLong(Long::longValue).min().orElse(0L);
     }
 
+    public double sum() {
+        return timings.stream().mapToDouble(Long::doubleValue).sum();
+    }
+
     public Timings getSubItem(String id) {
         return subItems.computeIfAbsent(id, s -> new Timings());
     }
@@ -39,7 +43,7 @@ public class Timings {
 
         builder.append((double) min() / 1000000).append("ms min / ").append(average() / 1000000).append("ms avg / ")
                 .append((double) max() / 1000000).append("ms max (").append(timings.size()).append(" samples, ")
-                .append((average() / parent.average()) * 100).append("% of parent)");
+                .append((sum() / parent.sum()) * 100).append("% of parent)");
 
         subItems.forEach((id, timings) -> {
             builder.append('\n');
