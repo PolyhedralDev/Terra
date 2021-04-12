@@ -13,10 +13,12 @@ public class ProfilerImpl implements Profiler {
     private static final ThreadLocal<Map<String, List<Long>>> TIMINGS = ThreadLocal.withInitial(HashMap::new);
     private final List<Map<String, List<Long>>> accessibleThreadMaps = new ArrayList<>();
     private volatile boolean running = false;
+    private static boolean instantiated = false;
 
 
     public ProfilerImpl() {
-
+        if(instantiated) throw new IllegalStateException("Only one instance of Profiler may exist!");
+        instantiated = true;
     }
 
     @Override
@@ -64,16 +66,14 @@ public class ProfilerImpl implements Profiler {
     @Override
     public Map<String, Timings> getTimings() {
         Map<String, Timings> map = new HashMap<>();
-        accessibleThreadMaps.forEach(smap -> {
-            smap.forEach((key, list) -> {
-                String[] keys = key.split("\\.");
-                Timings timings = map.computeIfAbsent(keys[0], id -> new Timings());
-                for(int i = 1; i < keys.length; i++) {
-                    timings = timings.getSubItem(keys[i]);
-                }
-                list.forEach(timings::addTime);
-            });
-        });
+        accessibleThreadMaps.forEach(smap -> smap.forEach((key, list) -> {
+            String[] keys = key.split("\\.");
+            Timings timings = map.computeIfAbsent(keys[0], id -> new Timings());
+            for(int i = 1; i < keys.length; i++) {
+                timings = timings.getSubItem(keys[i]);
+            }
+            list.forEach(timings::addTime);
+        }));
         return map;
     }
 }

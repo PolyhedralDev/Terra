@@ -46,6 +46,8 @@ import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
@@ -105,6 +107,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final Map<Long, TerraWorld> worldMap = new HashMap<>();
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
+
+    private final Profiler profiler = new ProfilerImpl();
+
     private final Logger logger = new Logger() {
         private final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
@@ -389,6 +394,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public Profiler getProfiler() {
+        return profiler;
     }
 
     @Addon("Terra-Fabric")
