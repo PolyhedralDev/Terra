@@ -66,6 +66,7 @@ public class PopulationManager extends BlockPopulator {
     }
 
     @Override
+    @SuppressWarnings("try")
     public void populate(org.bukkit.@NotNull World world, @NotNull Random random, org.bukkit.@NotNull Chunk source) {
         try(ProfileFrame ignore = main.getProfiler().profile("popman")) {
             Chunk chunk = BukkitAdapter.adapt(source);

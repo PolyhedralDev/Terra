@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.block.state.SerialState;
 import com.dfsek.terra.api.platform.block.state.Sign;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("deprecation")
 public class BukkitSign extends BukkitBlockState implements Sign {
     protected BukkitSign(org.bukkit.block.Sign block) {
         super(block);

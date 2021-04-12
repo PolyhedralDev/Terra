@@ -53,6 +53,7 @@ public class Transformer<F, T> {
         private final LinkedHashMap<Transform<F, T>, List<Validator<T>>> transforms = new LinkedHashMap<>();
 
         @SafeVarargs
+        @SuppressWarnings("varargs")
         public final Builder<F, T> addTransform(Transform<F, T> transform, Validator<T>... validators) {
             transforms.put(transform, Arrays.asList(validators));
             return this;
