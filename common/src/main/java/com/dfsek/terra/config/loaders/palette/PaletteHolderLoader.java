@@ -3,11 +3,9 @@ package com.dfsek.terra.config.loaders.palette;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolderBuilder;
-import com.dfsek.terra.config.loaders.Types;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -21,7 +19,7 @@ public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {
         PaletteHolderBuilder builder = new PaletteHolderBuilder();
         for(Map<String, Integer> layer : palette) {
             for(Map.Entry<String, Integer> entry : layer.entrySet()) {
-                builder.add(entry.getValue(), (Palette<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PALETTE_TYPE, entry.getKey()));
+                builder.add(entry.getValue(), (Palette) configLoader.loadType(Palette.class, entry.getKey()));
             }
         }
         return builder.build();

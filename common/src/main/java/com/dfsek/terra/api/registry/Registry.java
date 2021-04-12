@@ -2,6 +2,7 @@ package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.loading.TypeLoader;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -42,7 +43,7 @@ public interface Registry<T> extends TypeLoader<T> {
      *
      * @return Set containing all entries.
      */
-    Set<T> entries();
+    Collection<T> entries();
 
     /**
      * Get all the keys in this registry.

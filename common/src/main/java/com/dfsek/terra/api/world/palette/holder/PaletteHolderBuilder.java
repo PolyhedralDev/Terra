@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.world.palette.holder;
 
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.palette.Palette;
 import net.jafama.FastMath;
 
@@ -8,19 +7,19 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class PaletteHolderBuilder {
-    private final TreeMap<Integer, Palette<BlockData>> paletteMap = new TreeMap<>();
+    private final TreeMap<Integer, Palette> paletteMap = new TreeMap<>();
 
-    public PaletteHolderBuilder add(int y, Palette<BlockData> palette) {
+    public PaletteHolderBuilder add(int y, Palette palette) {
         paletteMap.put(y, palette);
         return this;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     public PaletteHolder build() {
-        Palette<BlockData>[] palettes = new Palette[paletteMap.lastKey() + 1];
+        Palette[] palettes = new Palette[paletteMap.lastKey() + 1];
         for(int y = 0; y <= FastMath.max(paletteMap.lastKey(), 255); y++) {
-            Palette<BlockData> d = null;
-            for(Map.Entry<Integer, Palette<BlockData>> e : paletteMap.entrySet()) {
+            Palette d = null;
+            for(Map.Entry<Integer, Palette> e : paletteMap.entrySet()) {
                 if(e.getKey() >= y) {
                     d = e.getValue();
                     break;

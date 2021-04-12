@@ -3,10 +3,13 @@ package com.dfsek.terra.api.structures.script;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
+import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BinaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BiomeFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.BlockFunctionBuilder;
@@ -29,9 +32,6 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.registry.config.FunctionRegistry;
-import com.dfsek.terra.registry.config.LootRegistry;
-import com.dfsek.terra.registry.config.ScriptRegistry;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
@@ -49,7 +49,7 @@ public class StructureScript {
     private final TerraPlugin main;
     private String tempID;
 
-    public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, FunctionRegistry functionRegistry) throws ParseException {
+    public StructureScript(InputStream inputStream, TerraPlugin main, Registry<StructureScript> registry, Registry<LootTable> lootRegistry, Registry<FunctionBuilder<?>> functionRegistry) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream));

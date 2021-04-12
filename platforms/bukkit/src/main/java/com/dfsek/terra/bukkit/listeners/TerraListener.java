@@ -5,6 +5,7 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitTree;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
@@ -22,7 +23,9 @@ public class TerraListener implements EventListener {
     public void injectTrees(ConfigPackPreLoadEvent event) {
         for(TreeType value : TreeType.values()) {
             try {
-                event.getPack().getTreeRegistry().add(BukkitAdapter.TREE_TRANSFORMER.translate(value), new BukkitTree(value, main));
+                String id = BukkitAdapter.TREE_TRANSFORMER.translate(value);
+                event.getPack().getRegistry(Tree.class).add(id, new BukkitTree(value, main));
+                event.getPack().getRegistry(Tree.class).get(id); // Platform trees should never be marked "dead"
             } catch(DuplicateEntryException ignore) { // If another addon has already registered trees, do nothing.
             }
         }

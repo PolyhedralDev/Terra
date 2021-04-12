@@ -6,6 +6,7 @@ import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -68,7 +69,7 @@ public class CheckedRegistry<T> implements Registry<T> {
     }
 
     @Override
-    public Set<T> entries() {
+    public Collection<T> entries() {
         return registry.entries();
     }
 

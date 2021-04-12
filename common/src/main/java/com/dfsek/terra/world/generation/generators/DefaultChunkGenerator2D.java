@@ -112,7 +112,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
                     TerraBiome b = grid.getBiome(xOrig + x, zOrig + z);
                     BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
-                    Palette<BlockData> seaPalette = c.getOceanPalette();
+                    Palette seaPalette = c.getOceanPalette();
 
                     int height = FastMath.min((int) sampler.sample(x, 0, z), world.getMaxHeight() - 1);
 

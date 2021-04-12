@@ -30,7 +30,7 @@ public class ZIPLoader extends Loader {
             ZipEntry entry = entries.nextElement();
             if(!entry.isDirectory() && entry.getName().startsWith(directory) && entry.getName().endsWith(extension)) {
                 try {
-                    String rel = entry.getName().substring(directory.length() + 1);
+                    String rel = entry.getName().substring(directory.length());
                     streams.put(rel, file.getInputStream(entry));
                 } catch(IOException e) {
                     e.printStackTrace();

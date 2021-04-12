@@ -13,7 +13,6 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.util.GlueList;
@@ -124,7 +123,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("ocean.palette")
     @Abstractable
     @Default
-    private Palette<BlockData> oceanPalette;
+    private Palette oceanPalette;
 
     @Value("elevation.equation")
     @Default
@@ -159,12 +158,12 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Value("slabs.palettes")
     @Abstractable
     @Default
-    private Map<BlockType, Palette<BlockData>> slabPalettes;
+    private Map<BlockType, Palette> slabPalettes;
 
     @Value("slabs.stair-palettes")
     @Abstractable
     @Default
-    private Map<BlockType, Palette<BlockData>> stairPalettes;
+    private Map<BlockType, Palette> stairPalettes;
 
     @Value("slant.threshold")
     @Abstractable
@@ -247,14 +246,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return doSlabs;
     }
 
-    public Map<BlockType, Palette<BlockData>> getSlabPalettes() {
-        return slabPalettes;
-    }
-
-    public Map<BlockType, Palette<BlockData>> getStairPalettes() {
-        return stairPalettes;
-    }
-
     public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
         biomeNoise = new NoiseSeeded() {
@@ -268,7 +259,15 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
                 return 2;
             }
         };
-        oceanPalette = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:water"));
+        oceanPalette = new SinglePalette(main.getWorldHandle().createBlockData("minecraft:water"));
+    }
+
+    public Map<BlockType, Palette> getSlabPalettes() {
+        return slabPalettes;
+    }
+
+    public Map<BlockType, Palette> getStairPalettes() {
+        return stairPalettes;
     }
 
     public NoiseSeeded getBiomeNoise() {
@@ -291,7 +290,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return seaLevel;
     }
 
-    public Palette<BlockData> getOceanPalette() {
+    public Palette getOceanPalette() {
         return oceanPalette;
     }
 

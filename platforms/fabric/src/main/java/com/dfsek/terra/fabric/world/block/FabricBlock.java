@@ -9,6 +9,7 @@ import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.state.FabricBlockState;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 
@@ -21,7 +22,10 @@ public class FabricBlock implements Block {
 
     @Override
     public void setBlockData(BlockData data, boolean physics) {
-        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042, 0);
+        delegate.worldAccess.setBlockState(delegate.position, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042);
+        if(physics && ((FabricBlockData) data).getHandle().getBlock() instanceof FluidBlock) {
+            delegate.worldAccess.getFluidTickScheduler().schedule(delegate.position, ((FluidBlock) ((FabricBlockData) data).getHandle().getBlock()).getFluidState(((FabricBlockData) data).getHandle()).getFluid(), 0);
+        }
     }
 
     @Override

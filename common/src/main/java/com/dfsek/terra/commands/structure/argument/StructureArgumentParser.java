@@ -13,6 +13,6 @@ public class StructureArgumentParser implements ArgumentParser<TerraStructure> {
 
     @Override
     public TerraStructure parse(CommandSender sender, String arg) {
-        return main.getWorld(((Player) sender).getWorld()).getConfig().getStructureRegistry().get(arg);
+        return main.getWorld(((Player) sender).getWorld()).getConfig().getRegistry(TerraStructure.class).get(arg);
     }
 }

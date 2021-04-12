@@ -6,6 +6,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     `java-library`
+    `maven-publish`
     id("fabric-loom").version("0.6-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
@@ -21,19 +22,12 @@ group = "com.dfsek.terra.fabric"
 
 dependencies {
     "shadedApi"(project(":common"))
-    "shadedImplementation"("org.yaml:snakeyaml:1.27")
-    "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
 
     "minecraft"("com.mojang:minecraft:1.16.5")
     "mappings"("net.fabricmc:yarn:1.16.5+build.5:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
 
     "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
-}
-
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.json", "com.dfsek.terra.lib.json")
-    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
 
@@ -63,4 +57,28 @@ tasks.register<TaskModrinthUpload>("publishModrinth") {
     addGameVersion("1.16.4")
     addGameVersion("1.16.5")
     addLoader("fabric")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifact(tasks["sourcesJar"])
+            artifact(tasks["jar"])
+        }
+    }
+
+    repositories {
+        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
+
+        maven(mavenUrl) {
+            val mavenUsername: String? by project
+            val mavenPassword: String? by project
+            if (mavenUsername != null && mavenPassword != null) {
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
+                }
+            }
+        }
+    }
 }

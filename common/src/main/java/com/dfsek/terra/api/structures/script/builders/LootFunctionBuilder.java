@@ -1,21 +1,22 @@
 package com.dfsek.terra.api.structures.script.builders;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.script.functions.LootFunction;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.registry.config.LootRegistry;
 
 import java.util.List;
 
 public class LootFunctionBuilder implements FunctionBuilder<LootFunction> {
     private final TerraPlugin main;
-    private final LootRegistry registry;
+    private final Registry<LootTable> registry;
     private final StructureScript script;
 
-    public LootFunctionBuilder(TerraPlugin main, LootRegistry registry, StructureScript script) {
+    public LootFunctionBuilder(TerraPlugin main, Registry<LootTable> registry, StructureScript script) {
         this.main = main;
         this.registry = registry;
         this.script = script;

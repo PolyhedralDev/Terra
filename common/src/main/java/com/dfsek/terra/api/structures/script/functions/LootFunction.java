@@ -3,6 +3,7 @@ package com.dfsek.terra.api.structures.script.functions;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
@@ -13,20 +14,19 @@ import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedLootApplication;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.registry.config.LootRegistry;
 import net.jafama.FastMath;
 
 import java.util.Map;
 
 public class LootFunction implements Function<Void> {
-    private final LootRegistry registry;
+    private final Registry<LootTable> registry;
     private final Returnable<String> data;
     private final Returnable<Number> x, y, z;
     private final Position position;
     private final TerraPlugin main;
     private final StructureScript script;
 
-    public LootFunction(LootRegistry registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, TerraPlugin main, Position position, StructureScript script) {
+    public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, TerraPlugin main, Position position, StructureScript script) {
         this.registry = registry;
         this.position = position;
         this.data = data;

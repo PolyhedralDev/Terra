@@ -4,6 +4,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -41,7 +42,7 @@ public class LockedRegistry<T> implements Registry<T> {
     }
 
     @Override
-    public Set<T> entries() {
+    public Collection<T> entries() {
         return registry.entries();
     }
 

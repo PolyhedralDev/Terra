@@ -23,7 +23,7 @@ public class PaperListener implements Listener {
         String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
         TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getWorld()));
-        TerraStructure config = tw.getConfig().getStructureRegistry().get(tw.getConfig().getTemplate().getLocatable().get(name));
+        TerraStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getTemplate().getLocatable().get(name));
         if(config != null) {
             AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin()), 0, 500, location -> {
                 if(location != null)

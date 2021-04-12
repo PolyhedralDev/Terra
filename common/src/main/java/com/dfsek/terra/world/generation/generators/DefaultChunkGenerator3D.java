@@ -45,7 +45,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
     private final BlockType water;
-    private final SinglePalette<BlockData> blank;
+    private final SinglePalette blank;
     private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
     private final Carver carver;
@@ -63,7 +63,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
         carver = new NoiseCarver(new Range(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
         water = main.getWorldHandle().createBlockData("minecraft:water").getBlockType();
-        blank = new SinglePalette<>(main.getWorldHandle().createBlockData("minecraft:air"));
+        blank = new SinglePalette(main.getWorldHandle().createBlockData("minecraft:air"));
     }
 
     @Override
@@ -124,7 +124,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                     BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
                     int sea = c.getSeaLevel();
-                    Palette<BlockData> seaPalette = c.getOceanPalette();
+                    Palette seaPalette = c.getOceanPalette();
 
                     boolean justSet = false;
                     BlockData data = null;
@@ -162,11 +162,11 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         }
     }
 
-    private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette<BlockData>> slabs,
-                                       Map<BlockType, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+    private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette> slabs,
+                                       Map<BlockType, Palette> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getX(), block.getY() - 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
-                Palette<BlockData> stairPalette = stairs.get(down.getBlockType());
+                Palette stairPalette = stairs.get(down.getBlockType());
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
                     if(stair instanceof Stairs) {
@@ -183,11 +183,11 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         }
     }
 
-    private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette<BlockData>> slabs,
-                                         Map<BlockType, Palette<BlockData>> stairs, double thresh, Sampler sampler) {
+    private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette> slabs,
+                                         Map<BlockType, Palette> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getX(), block.getY() + 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
-                Palette<BlockData> stairPalette = stairs.get(up.getBlockType());
+                Palette stairPalette = stairs.get(up.getBlockType());
                 if(stairPalette != null) {
                     BlockData stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
                     if(stair instanceof Stairs) {

@@ -16,18 +16,11 @@ configureCommon()
 group = "com.dfsek.terra.bukkit"
 
 val mcVersion = "1.16.5"
-val testDir = "target/server/"
+val testDir = "target/server"
 val testMem = "3G"
 
 val paperURL = "https://papermc.io/api/v1/paper/%version%/latest/download/"
 val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/final/purpurclip.jar"
-
-repositories {
-    mavenCentral()
-    maven { url = uri("http://maven.enginehub.org/repo/") }
-    maven { url = uri("https://repo.codemc.org/repository/maven-public") }
-    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-}
 
 dependencies {
     "shadedApi"(project(":common"))
@@ -39,17 +32,17 @@ dependencies {
 
     "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
 
-    "shadedImplementation"("com.google.guava:guava:30.0-jre")
+    "shadedApi"("com.google.guava:guava:30.0-jre")
 }
 
-val aikarsFlags = listOf("-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
+val jvmFlags = listOf("-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
         "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",
         "-XX:G1NewSizePercent=30", "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M",
         "-XX:G1ReservePercent=20", "-XX:G1HeapWastePercent=5", "-XX:G1MixedGCCountTarget=4",
         "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
         "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
         "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
-        "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear")
+        "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear", "-javaagent:paperclip.jar")
 
 fun downloadPaperclip(url: String, dir: String) {
     val clip = URL(url.replace("%version%", mcVersion))
@@ -160,7 +153,7 @@ task<JavaExec>(name = "runPaper") {
     }
 
     main = "io.papermc.paperclip.Paperclip"
-    jvmArgs = aikarsFlags
+    jvmArgs = jvmFlags
     maxHeapSize = testMem
     minHeapSize = testMem
     //args = listOf("nogui")
@@ -178,7 +171,7 @@ task<JavaExec>(name = "runPurpur") {
     }
 
     main = "io.papermc.paperclip.Paperclip"
-    jvmArgs = aikarsFlags
+    jvmArgs = jvmFlags
     maxHeapSize = testMem
     minHeapSize = testMem
     //args = listOf("nogui")
@@ -189,6 +182,7 @@ task<JavaExec>(name = "runPurpur") {
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+    relocate("com.google.common", "com.dfsek.terra.lib.google.common")
 }
 
 publishing {

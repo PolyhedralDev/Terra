@@ -1,7 +1,6 @@
 package com.dfsek.terra.world.generation;
 
 import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
@@ -67,7 +66,7 @@ public class WorldGenerator implements Generator {
      * @return BlockPalette - The biome's palette.
      */
     @Override
-    public Palette<BlockData> getPalette(int y) {
+    public Palette getPalette(int y) {
         return palettes.getPalette(y);
     }
 
@@ -86,7 +85,7 @@ public class WorldGenerator implements Generator {
         return blendStep;
     }
 
-    public Palette<BlockData> getSlantPalette(int y) {
+    public Palette getSlantPalette(int y) {
         return slantPalettes.getPalette(y);
     }
 }
