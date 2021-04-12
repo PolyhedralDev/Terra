@@ -15,7 +15,7 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
@@ -94,7 +94,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
     public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         BiomeProvider grid = tw.getBiomeProvider();
-        try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("chunk_base_2d")) {
             if(!tw.isSafe()) return chunk;
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);

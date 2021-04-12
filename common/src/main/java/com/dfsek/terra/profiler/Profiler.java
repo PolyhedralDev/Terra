@@ -13,8 +13,12 @@ public interface Profiler {
 
     Map<String, Timings> getTimings();
 
-    default AutoCloseable profile(String frame) {
+    default ProfileFrame profile(String frame) {
         push(frame);
-        return () -> pop(frame);
+        return new ProfileFrame(() -> pop(frame));
+    }
+
+    default void reset() {
+        // todo: impl
     }
 }

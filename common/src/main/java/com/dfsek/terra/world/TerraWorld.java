@@ -13,7 +13,6 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.WorldConfig;
-import com.dfsek.terra.profiler.WorldProfiler;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import net.jafama.FastMath;
 
@@ -21,7 +20,6 @@ public class TerraWorld {
     private final BiomeProvider provider;
     private final WorldConfig config;
     private final boolean safe;
-    private final WorldProfiler profiler;
     private final World world;
     private final BlockData air;
 
@@ -31,7 +29,6 @@ public class TerraWorld {
         this.world = w;
         config = c.toWorldConfig(this);
         this.provider = config.getProvider();
-        profiler = new WorldProfiler(w);
         air = main.getWorldHandle().createBlockData("minecraft:air");
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
         safe = true;
@@ -61,9 +58,6 @@ public class TerraWorld {
         return safe;
     }
 
-    public WorldProfiler getProfiler() {
-        return profiler;
-    }
 
     /**
      * Get a block at an ungenerated location
