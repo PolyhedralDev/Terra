@@ -29,6 +29,7 @@ public class ProfilerTest {
         PROFILER.push("thing");
         Thread.sleep(1);
         doOtherThing();
+        thing4();
         PROFILER.pop("thing");
     }
 
@@ -36,6 +37,7 @@ public class ProfilerTest {
         PROFILER.push("thing2");
         Thread.sleep(2);
         doThirdOtherThing();
+        thing4();
         PROFILER.pop("thing2");
     }
 
@@ -43,5 +45,11 @@ public class ProfilerTest {
         PROFILER.push("thing3");
         Thread.sleep(2);
         PROFILER.pop("thing3");
+    }
+
+    private static void thing4() throws InterruptedException {
+        PROFILER.push("thing4");
+        Thread.sleep(2);
+        PROFILER.pop("thing4");
     }
 }

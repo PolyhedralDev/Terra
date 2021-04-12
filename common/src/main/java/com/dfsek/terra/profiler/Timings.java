@@ -1,9 +1,12 @@
 package com.dfsek.terra.profiler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Timings {
     private final Map<String, Timings> subItems = new HashMap<>();
@@ -38,25 +41,33 @@ public class Timings {
         return subItems.computeIfAbsent(id, s -> new Timings());
     }
 
-    public String toString(int indent, Timings parent) {
+    public String toString(int indent, Timings parent, Set<Integer> branches) {
         StringBuilder builder = new StringBuilder();
 
         builder.append((double) min() / 1000000).append("ms min / ").append(average() / 1000000).append("ms avg / ")
                 .append((double) max() / 1000000).append("ms max (").append(timings.size()).append(" samples, ")
                 .append((sum() / parent.sum()) * 100).append("% of parent)");
 
-        subItems.forEach((id, timings) -> {
+        List<String> frames = new ArrayList<>();
+        Set<Integer> newBranches = new HashSet<>(branches);
+        newBranches.add(indent);
+        subItems.forEach((id, timings) -> frames.add(id + ": " + timings.toString(indent + 1, this, newBranches)));
+
+        for(int i = 0; i < frames.size(); i++) {
             builder.append('\n');
-            for(int i = 0; i <= indent; i++) {
-                builder.append('\t');
+            for(int j = 0; j < indent; j++) {
+                if(branches.contains(j)) builder.append("│   ");
+                else builder.append("    ");
             }
-            builder.append(id).append(": ").append(timings.toString(indent + 1, this));
-        });
+            if(i == frames.size() - 1 && !frames.get(i).contains("\n")) builder.append("└───");
+            else builder.append("├───");
+            builder.append(frames.get(i));
+        }
         return builder.toString();
     }
 
     @Override
     public String toString() {
-        return toString(0, this);
+        return toString(1, this, Collections.emptySet());
     }
 }
