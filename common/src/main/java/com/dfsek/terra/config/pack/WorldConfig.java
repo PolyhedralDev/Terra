@@ -2,7 +2,6 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -18,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class WorldConfig {
-    private final LockedRegistry<StructureScript> scriptRegistry;
     private final SamplerCache samplerCache;
 
     private final BiomeProvider provider;
@@ -35,7 +33,6 @@ public class WorldConfig {
 
         pack.getConfigTypeRegistry().forEach(configType -> registryMap.put(configType.getTypeClass(), new LockedRegistry<>(pack.getRegistry(configType.getTypeClass()))));
 
-        this.scriptRegistry = new LockedRegistry<>(pack.getScriptRegistry());
 
         OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistry<>();
         pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
@@ -59,10 +56,6 @@ public class WorldConfig {
 
     public Set<UserDefinedCarver> getCarvers() {
         return new HashSet<>(getRegistry(UserDefinedCarver.class).entries());
-    }
-
-    public LockedRegistry<StructureScript> getScriptRegistry() {
-        return scriptRegistry;
     }
 
     public BiomeProvider getProvider() {

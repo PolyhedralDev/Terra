@@ -13,6 +13,6 @@ public class ScriptArgumentParser implements ArgumentParser<StructureScript> {
 
     @Override
     public StructureScript parse(CommandSender sender, String arg) {
-        return main.getWorld(((Player) sender).getWorld()).getConfig().getScriptRegistry().get(arg);
+        return main.getWorld(((Player) sender).getWorld()).getConfig().getRegistry(StructureScript.class).get(arg);
     }
 }

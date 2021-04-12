@@ -13,14 +13,16 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.loot.LootTable;
+import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
+import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
-import com.dfsek.terra.config.factories.ConfigFactory;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -32,7 +34,6 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.prototype.ConfigType;
 import com.dfsek.terra.config.prototype.ProtoConfig;
-import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
 import com.dfsek.terra.registry.config.FunctionRegistry;
@@ -68,33 +69,21 @@ import java.util.zip.ZipFile;
 public class ConfigPack implements LoaderRegistrar {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
 
-    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
-
-
-    private final ScriptRegistry scriptRegistry = new ScriptRegistry();
-    private final LootRegistry lootRegistry = new LootRegistry();
-
-    private final NoiseRegistry noiseRegistry = new NoiseRegistry();
-    private final FunctionRegistry functionRegistry = new FunctionRegistry();
-
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
-
     private final TerraPlugin main;
     private final Loader loader;
-
     private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
-    private final ConfigTypeRegistry configTypeRegistry;
 
+    private final ConfigTypeRegistry configTypeRegistry;
+    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = newRegistryMap();
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
-                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistry<>(openRegistry)));
             });
             this.loader = new FolderLoader(folder.toPath());
@@ -134,8 +123,6 @@ public class ConfigPack implements LoaderRegistrar {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
-                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistry<>(openRegistry)));
             });
             this.loader = new ZIPLoader(file);
@@ -177,14 +164,34 @@ public class ConfigPack implements LoaderRegistrar {
         toWorldConfig(new TerraWorld(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
-    public static <C extends AbstractableTemplate, O> void buildAll(ConfigFactory<C, O> factory, OpenRegistry<O> registry, List<C> configTemplates, TerraPlugin main) throws LoadException {
-        for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> newRegistryMap() {
+        Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map = new HashMap<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>>() {
+            private static final long serialVersionUID = 4015855819914064466L;
+
+            @Override
+            public ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>> put(Class<?> key, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>> value) {
+                selfLoader.registerLoader(key, value.getLeft());
+                abstractConfigLoader.registerLoader(key, value.getLeft());
+                return super.put(key, value);
+            }
+        };
+
+        putPair(map, NoiseProvider.class, new NoiseRegistry());
+        putPair(map, FunctionBuilder.class, (OpenRegistry<FunctionBuilder>) (Object) new FunctionRegistry());
+        putPair(map, LootTable.class, new LootRegistry());
+        putPair(map, StructureScript.class, new ScriptRegistry());
+
+        return map;
+    }
+
+    private <R> void putPair(Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map, Class<R> key, OpenRegistry<R> l) {
+        map.put(key, ImmutablePair.of(l, new CheckedRegistry<>(l)));
     }
 
     private void checkDeadEntries(TerraPlugin main) {
         registryMap.forEach((clazz, pair) -> pair.getLeft().getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in '" + clazz + "' registry: '" + id + "'")));
     }
-
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {
@@ -197,8 +204,8 @@ public class ConfigPack implements LoaderRegistrar {
         loader.open("structures/data", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try(InputStream stream = entry.getValue()) {
-                    StructureScript structureScript = new StructureScript(stream, main, scriptRegistry, lootRegistry, functionRegistry);
-                    scriptRegistry.add(structureScript.getId(), structureScript);
+                    StructureScript structureScript = new StructureScript(stream, main, getRegistry(StructureScript.class), getRegistry(LootTable.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
+                    getOpenRegistry(StructureScript.class).add(structureScript.getId(), structureScript);
                 } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException | IOException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
                 }
@@ -206,7 +213,7 @@ public class ConfigPack implements LoaderRegistrar {
         }).close().open("structures/loot", ".json").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
-                    lootRegistry.add(entry.getKey(), new LootTable(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
+                    getOpenRegistry(LootTable.class).add(entry.getKey(), new LootTable(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
                 } catch(ParseException | IOException | NullPointerException e) {
                     throw new LoadException("Unable to load loot table \"" + entry.getKey() + "\"", e);
                 }
@@ -253,27 +260,26 @@ public class ConfigPack implements LoaderRegistrar {
         return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
     }
 
+    @SuppressWarnings("unchecked")
+    protected <T> OpenRegistry<T> getOpenRegistry(Class<T> clazz) {
+        return (OpenRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getLeft();
+    }
+
 
     @Override
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(ConfigType.class, configTypeRegistry)
-                .registerLoader(StructureScript.class, scriptRegistry)
-                .registerLoader(LootTable.class, lootRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)))
-                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)));
+                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)))
+                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(getOpenRegistry(NoiseProvider.class)));
     }
 
     public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
         return biomeProviderBuilder;
-    }
-
-    public CheckedRegistry<StructureScript> getScriptRegistry() {
-        return new CheckedRegistry<>(scriptRegistry);
     }
 
 

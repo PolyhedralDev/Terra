@@ -3,6 +3,7 @@ package com.dfsek.terra.api.structures.script.functions;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
@@ -13,21 +14,20 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.IntermediateBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.registry.config.ScriptRegistry;
 import net.jafama.FastMath;
 
 import java.util.List;
 import java.util.Map;
 
 public class StructureFunction implements Function<Boolean> {
-    private final ScriptRegistry registry;
+    private final Registry<StructureScript> registry;
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
     private final Position position;
     private final TerraPlugin main;
     private final List<Returnable<String>> rotations;
 
-    public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id, List<Returnable<String>> rotations, ScriptRegistry registry, Position position, TerraPlugin main) {
+    public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id, List<Returnable<String>> rotations, Registry<StructureScript> registry, Position position, TerraPlugin main) {
         this.registry = registry;
         this.id = id;
         this.position = position;
