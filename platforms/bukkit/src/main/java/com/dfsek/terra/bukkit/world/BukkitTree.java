@@ -42,6 +42,7 @@ public class BukkitTree implements Tree {
     }
 
     @Override
+    @SuppressWarnings("try")
     public boolean plant(Location l, Random r) {
         try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
             return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
