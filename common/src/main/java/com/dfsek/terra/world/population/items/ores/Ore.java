@@ -16,7 +16,6 @@ public abstract class Ore {
     protected TerraPlugin main;
 
     public Ore(BlockData material, MaterialSet replaceable, boolean applyGravity, TerraPlugin main) {
-
         this.material = material;
         this.replaceable = replaceable;
         this.applyGravity = applyGravity;

@@ -40,11 +40,13 @@ public class OrePopulator implements TerraBlockPopulator {
                     BiomeTemplate config = ((UserDefinedBiome) b).getConfig();
                     int finalCx = cx;
                     int finalCz = cz;
-                    config.getOreHolder().forEach((ore, oreConfig) -> {
-                        int amount = oreConfig.getAmount().get(random);
-                        for(int i = 0; i < amount; i++) {
-                            Vector3 location = new Vector3(random.nextInt(16) + 16 * finalCx, oreConfig.getHeight().get(random), random.nextInt(16) + 16 * finalCz);
-                            ore.generate(location, chunk, random);
+                    config.getOreHolder().forEach((id, orePair) -> {
+                        try(ProfileFrame ignored = main.getProfiler().profile("ore:" + id)) {
+                            int amount = orePair.getRight().getAmount().get(random);
+                            for(int i = 0; i < amount; i++) {
+                                Vector3 location = new Vector3(random.nextInt(16) + 16 * finalCx, orePair.getRight().getHeight().get(random), random.nextInt(16) + 16 * finalCz);
+                                orePair.getLeft().generate(location, chunk, random);
+                            }
                         }
                     });
                 }

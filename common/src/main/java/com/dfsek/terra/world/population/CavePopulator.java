@@ -49,38 +49,40 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                 Map<Location, BlockData> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
-                    Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
-                    BlockData m = b.getBlockData();
-                    BlockType re = m.getBlockType();
-                    switch(type) {
-                        case CENTER:
-                            if(template.getInner().canReplace(re)) {
-                                b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
-                            }
-                            break;
-                        case WALL:
-                            if(template.getOuter().canReplace(re)) {
-                                b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
-                            }
-                            break;
-                        case TOP:
-                            if(template.getTop().canReplace(re)) {
-                                b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
-                            }
-                            break;
-                        case BOTTOM:
-                            if(template.getBottom().canReplace(re)) {
-                                b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
-                                if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
-                            }
-                            break;
+                    try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
+                        Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
+                        BlockData m = b.getBlockData();
+                        BlockType re = m.getBlockType();
+                        switch(type) {
+                            case CENTER:
+                                if(template.getInner().canReplace(re)) {
+                                    b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
+                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                }
+                                break;
+                            case WALL:
+                                if(template.getOuter().canReplace(re)) {
+                                    b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
+                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                }
+                                break;
+                            case TOP:
+                                if(template.getTop().canReplace(re)) {
+                                    b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
+                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                }
+                                break;
+                            case BOTTOM:
+                                if(template.getBottom().canReplace(re)) {
+                                    b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
+                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                }
+                                break;
+                        }
                     }
                 });
                 for(Map.Entry<Location, BlockData> entry : shiftCandidate.entrySet()) {
