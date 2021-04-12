@@ -20,7 +20,8 @@ dependencies {
     "shadedApi"("org.ow2.asm:asm:9.0")
     "shadedApi"("commons-io:commons-io:2.6")
 
-    "compileOnly"("com.googlecode.json-simple:json-simple:1.1")
+    "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
+    "shadedApi"("org.yaml:snakeyaml:1.27")
 
     "compileOnly"("com.google.guava:guava:30.0-jre")
 
