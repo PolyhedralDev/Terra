@@ -12,6 +12,7 @@ import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.world.TerraWorld;
 
 import java.io.File;
@@ -64,4 +65,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     default void runPossiblyUnsafeTask(Runnable task) {
         task.run();
     }
+
+    Profiler getProfiler();
 }

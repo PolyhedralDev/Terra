@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,7 @@ public class OrePopulator implements TerraBlockPopulator {
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
-        try(ProfileFuture ignored = tw.getProfiler().measure("OreTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
             if(tw.getConfig().getTemplate().disableCarvers()) return;
 
             if(!tw.isSafe()) return;
@@ -40,11 +40,13 @@ public class OrePopulator implements TerraBlockPopulator {
                     BiomeTemplate config = ((UserDefinedBiome) b).getConfig();
                     int finalCx = cx;
                     int finalCz = cz;
-                    config.getOreHolder().forEach((ore, oreConfig) -> {
-                        int amount = oreConfig.getAmount().get(random);
-                        for(int i = 0; i < amount; i++) {
-                            Vector3 location = new Vector3(random.nextInt(16) + 16 * finalCx, oreConfig.getHeight().get(random), random.nextInt(16) + 16 * finalCz);
-                            ore.generate(location, chunk, random);
+                    config.getOreHolder().forEach((id, orePair) -> {
+                        try(ProfileFrame ignored = main.getProfiler().profile("ore:" + id)) {
+                            int amount = orePair.getRight().getAmount().get(random);
+                            for(int i = 0; i < amount; i++) {
+                                Vector3 location = new Vector3(random.nextInt(16) + 16 * finalCx, orePair.getRight().getHeight().get(random), random.nextInt(16) + 16 * finalCz);
+                                orePair.getLeft().generate(location, chunk, random);
+                            }
                         }
                     });
                 }

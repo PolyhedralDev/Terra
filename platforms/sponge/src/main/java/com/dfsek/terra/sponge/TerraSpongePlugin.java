@@ -14,6 +14,7 @@ import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.sponge.world.SpongeWorldHandle;
@@ -137,5 +138,10 @@ public class TerraSpongePlugin implements TerraPlugin {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public Profiler getProfiler() {
+        return null;
     }
 }

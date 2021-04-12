@@ -5,12 +5,10 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.Chunkified;
-import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.profiler.ProfileFuture;
-import com.dfsek.terra.profiler.WorldProfiler;
+import com.dfsek.terra.profiler.ProfileFrame;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,20 +24,10 @@ public class PopulationManager extends BlockPopulator {
     private final TerraChunkGenerator generator;
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
     private final TerraPlugin main;
-    private WorldProfiler profiler;
 
     public PopulationManager(TerraChunkGenerator generator, TerraPlugin main) {
         this.generator = generator;
         this.main = main;
-    }
-
-    private ProfileFuture measure() {
-        if(profiler != null) return profiler.measure("PopulationManagerTime");
-        return null;
-    }
-
-    public void attachProfiler(WorldProfiler p) {
-        this.profiler = p;
     }
 
     @SuppressWarnings("unchecked")
@@ -78,8 +66,9 @@ public class PopulationManager extends BlockPopulator {
     }
 
     @Override
+    @SuppressWarnings("try")
     public void populate(org.bukkit.@NotNull World world, @NotNull Random random, org.bukkit.@NotNull Chunk source) {
-        try(ProfileFuture ignored = measure()) {
+        try(ProfileFrame ignore = main.getProfiler().profile("popman")) {
             Chunk chunk = BukkitAdapter.adapt(source);
             needsPop.add(new ChunkCoordinate(chunk));
             int x = chunk.getX();
