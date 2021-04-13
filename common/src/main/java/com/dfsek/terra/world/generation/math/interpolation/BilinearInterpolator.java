@@ -5,20 +5,24 @@ package com.dfsek.terra.world.generation.math.interpolation;
  */
 public class BilinearInterpolator implements Interpolator2 {
     private final double v0, v1, v2, v3;
+    private final double width, height;
 
     /**
      * Constructs an interpolator with given values as vertices of a unit square.
-     *
-     * @param v0 - (0,0)
+     *  @param v0 - (0,0)
      * @param v1 - (1,0)
      * @param v2 - (0,1)
      * @param v3 - (1,1)
+     * @param width
+     * @param height
      */
-    public BilinearInterpolator(double v0, double v1, double v2, double v3) {
+    public BilinearInterpolator(double v0, double v1, double v2, double v3, double width, double height) {
         this.v0 = v0;
         this.v1 = v1;
         this.v2 = v2;
         this.v3 = v3;
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -42,6 +46,8 @@ public class BilinearInterpolator implements Interpolator2 {
      */
     @Override
     public double interpolate(double s, double t) {
+        s/=width;
+        t/=height;
         double v01 = lerp(s, v0, v1);
         double v23 = lerp(s, v2, v3);
         return lerp(t, v01, v23);
