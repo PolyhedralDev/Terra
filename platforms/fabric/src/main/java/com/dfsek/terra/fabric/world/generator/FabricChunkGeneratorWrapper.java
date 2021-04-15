@@ -8,13 +8,10 @@ import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
-import com.dfsek.terra.world.population.CavePopulator;
-import com.dfsek.terra.world.population.FloraPopulator;
-import com.dfsek.terra.world.population.OrePopulator;
-import com.dfsek.terra.world.population.StructurePopulator;
-import com.dfsek.terra.world.population.TreePopulator;
+import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.structure.StructureManager;
@@ -45,6 +42,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
     private final ConfigPack pack;
+    private FabricSeededWorldAccess worldAccess = null;
 
     public ConfigPack getPack() {
         return pack;
@@ -86,6 +84,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
         FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(world, seed, this);
         delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
+        // TODO: replace this caching with sth proper
+        if (this.worldAccess == null) {
+            this.worldAccess = worldAccess;
+        }
     }
 
     @Override
@@ -107,7 +109,19 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
-        return 0;
+        if (this.worldAccess == null) return 0;
+
+        Sampler sampler = TerraFabricPlugin.getInstance().getWorld(worldAccess).getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
+        int cx = FastMath.floorMod(x, 16);
+        int cz = FastMath.floorMod(z, 16);
+
+        int height = worldAccess.getMaxHeight();
+
+        while (height >= 0 && sampler.sample(cx, height - 1, cz) < 0) {
+            height--;
+        }
+
+        return height;
     }
 
     @Override
