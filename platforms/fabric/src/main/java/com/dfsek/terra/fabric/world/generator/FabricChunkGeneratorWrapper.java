@@ -7,7 +7,9 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.handles.world.FabricSeededWorldAccess;
+import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
+import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.population.CavePopulator;
 import com.dfsek.terra.world.population.FloraPopulator;
 import com.dfsek.terra.world.population.OrePopulator;
@@ -15,6 +17,7 @@ import com.dfsek.terra.world.population.StructurePopulator;
 import com.dfsek.terra.world.population.TreePopulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.structure.StructureManager;
@@ -107,7 +110,18 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
-        return 0;
+        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(seed);
+        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
+        int cx = FastMath.floorMod(x, 16);
+        int cz = FastMath.floorMod(z, 16);
+
+        int height = world.getWorld().getMaxHeight();
+
+        while (height >= 0 && sampler.sample(cx, height - 1, cz) < 0) {
+            height--;
+        }
+
+        return height;
     }
 
     @Override
