@@ -62,8 +62,8 @@ tasks.register<TaskModrinthUpload>("publishModrinth") {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["jar"])
+            artifact(tasks["remapSourcesJar"])
+            artifact(tasks["remapJar"])
         }
     }
 

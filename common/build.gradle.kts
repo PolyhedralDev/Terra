@@ -31,8 +31,8 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            artifact(tasks["remapSourcesJar"])
-            artifact(tasks["remapJar"])
+            artifact(tasks["sourcesJar"])
+            artifact(tasks["jar"])
         }
     }
 
