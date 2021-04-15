@@ -157,6 +157,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         });
     }
 
+    public TerraWorld getWorld(long seed) {
+        TerraWorld world = worldMap.get(seed);
+        if(world == null) throw new IllegalArgumentException("No world exists with seed " + seed);
+        return world;
+    }
+
     @Override
     public Logger logger() {
         return logger;
