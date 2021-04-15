@@ -33,7 +33,7 @@ public class StructurePopulator implements TerraBlockPopulator, Chunkified {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFuture ignored = tw.getProfiler().measure("StructureTime")) {
-            if(tw.getConfig().getTemplate().disableCarvers()) return;
+            if(tw.getConfig().getTemplate().disableStructures()) return;
 
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
