@@ -4,6 +4,10 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.world.generation.math.samplers.terrain.TerrainSampler;
+
+import java.util.Collections;
+import java.util.List;
 
 public class WorldGenerator implements Generator {
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
@@ -83,6 +87,11 @@ public class WorldGenerator implements Generator {
     @Override
     public int getBlendStep() {
         return blendStep;
+    }
+
+    @Override
+    public List<TerrainSampler> getTerrainSamplers() {
+        return Collections.emptyList();
     }
 
     public Palette getSlantPalette(int y) {

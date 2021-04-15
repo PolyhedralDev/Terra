@@ -2,6 +2,9 @@ package com.dfsek.terra.api.world.biome;
 
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.world.palette.Palette;
+import com.dfsek.terra.world.generation.math.samplers.terrain.TerrainSampler;
+
+import java.util.List;
 
 public interface Generator {
     /**
@@ -41,4 +44,6 @@ public interface Generator {
     double getElevationWeight();
 
     int getBlendStep();
+
+    List<TerrainSampler> getTerrainSamplers();
 }
