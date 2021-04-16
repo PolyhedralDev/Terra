@@ -157,6 +157,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         });
     }
 
+    public TerraWorld getWorld(long seed) {
+        TerraWorld world = worldMap.get(seed);
+        if(world == null) throw new IllegalArgumentException("No world exists with seed " + seed);
+        return world;
+    }
+
     @Override
     public Logger logger() {
         return logger;
@@ -242,10 +248,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     private Biome createBiome(BiomeBuilder biome) {
-        SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
-        DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
-        DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
-
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
@@ -283,7 +285,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
-                .spawnSettings(spawnSettings.build())
+                .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
     }
