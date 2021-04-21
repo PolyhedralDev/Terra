@@ -18,6 +18,7 @@ import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.task.TaskScheduler;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
@@ -134,6 +135,11 @@ public class DistributionTest {
 
         @Override
         public EventManager getEventManager() {
+            return null;
+        }
+
+        @Override
+        public TaskScheduler getScheduler() {
             return null;
         }
 

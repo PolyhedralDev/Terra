@@ -10,6 +10,7 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.task.TaskScheduler;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.Language;
@@ -137,5 +138,10 @@ public class TerraSpongePlugin implements TerraPlugin {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public TaskScheduler getScheduler() {
+        return null;
     }
 }

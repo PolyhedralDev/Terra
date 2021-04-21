@@ -7,6 +7,7 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.task.TaskScheduler;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.config.PluginConfig;
@@ -64,4 +65,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     default void runPossiblyUnsafeTask(Runnable task) {
         task.run();
     }
+
+    TaskScheduler getScheduler();
 }

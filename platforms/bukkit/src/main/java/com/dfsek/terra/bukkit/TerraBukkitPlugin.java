@@ -18,6 +18,7 @@ import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.task.TaskScheduler;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.util.logging.Logger;
@@ -32,6 +33,7 @@ import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.listeners.TerraListener;
+import com.dfsek.terra.bukkit.task.BukkitTaskScheduler;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
 import com.dfsek.terra.commands.CommandUtil;
@@ -63,6 +65,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final Map<String, DefaultChunkGenerator3D> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
+
+    private final TaskScheduler scheduler = new BukkitTaskScheduler(this);
 
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
@@ -139,6 +143,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public void runPossiblyUnsafeTask(Runnable task) {
         Bukkit.getScheduler().runTask(this, task);
+    }
+
+    @Override
+    public TaskScheduler getScheduler() {
+        return scheduler;
     }
 
     @Override

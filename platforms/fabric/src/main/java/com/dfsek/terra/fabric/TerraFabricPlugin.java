@@ -24,6 +24,7 @@ import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.task.TaskScheduler;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.util.logging.DebugLogger;
@@ -38,6 +39,7 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.inventory.FabricItemHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.task.FabricTaskScheduler;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.FabricBiome;
 import com.dfsek.terra.fabric.world.FabricTree;
@@ -98,7 +100,6 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
-
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
@@ -134,6 +135,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
+
+    private final TaskScheduler scheduler = new FabricTaskScheduler();
     private File dataFolder;
 
     public static TerraFabricPlugin getInstance() {
@@ -389,6 +392,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public TaskScheduler getScheduler() {
+        return scheduler;
     }
 
     @Addon("Terra-Fabric")
