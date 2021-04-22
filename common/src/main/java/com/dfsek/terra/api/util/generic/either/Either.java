@@ -49,4 +49,21 @@ public final class Either<L, R> {
     public boolean hasRight() {
         return !leftPresent;
     }
+
+    @Override
+    public int hashCode() {
+        if(hasLeft()) return left.hashCode();
+        return right.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Either<?, ?>)) return false;
+
+        Either<?, ?> that = (Either<?, ?>) o;
+
+        if(hasLeft() && that.hasLeft()) return left.equals(that.left);
+        if(hasRight() && that.hasRight()) return right.equals(that.right);
+        return false;
+    }
 }

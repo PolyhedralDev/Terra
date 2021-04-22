@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.util.generic.pair;
 
+import java.util.Objects;
+
 public class ImmutablePair<L, R> {
     private final L left;
     private final R right;
@@ -23,5 +25,16 @@ public class ImmutablePair<L, R> {
 
     public Pair<L, R> mutable() {
         return new Pair<>(left, right);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(left, right);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof ImmutablePair)) return false;
+        ImmutablePair<?, ?> that = (ImmutablePair<?, ?>) o;
+        return that.left.equals(left) && that.right.equals(right);
     }
 }
