@@ -15,24 +15,52 @@ import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class ConfigPackTemplate implements ConfigTemplate {
+
+    /**
+     * The ID of the config pack.
+     */
     @Value("id")
     private String id;
 
+    /**
+     * Noise functions to be made available
+     * to noise equations in the config pack.
+     * <p>
+     * Keys are Paralithic function IDs,
+     * values are noise functions.
+     */
     @Value("noise")
     private Map<String, NoiseSeeded> noiseBuilderMap;
 
+    /**
+     * Addons this pack depends on.
+     */
     @Value("addons")
     @Default
     private Set<TerraAddon> addons = new HashSet<>();
 
+    /**
+     * Variables to be made available
+     * to noise equations in the config pack.
+     * <p>
+     * Keys are variable IDs,
+     * values are variable values.
+     */
     @Value("variables")
     @Default
     private Map<String, Double> variables = new HashMap<>();
 
+    /**
+     * Whether to enable beta noise
+     * carvers.
+     */
     @Value("beta.carving")
     @Default
     private boolean betaCarvers = false;
 
+    /**
+     *
+     */
     @Value("functions")
     @Default
     private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();

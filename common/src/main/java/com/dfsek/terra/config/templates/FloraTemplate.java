@@ -32,7 +32,7 @@ public class FloraTemplate extends AbstractableTemplate {
     @Value("irrigable")
     @Abstractable
     @Default
-    private MaterialSet irrigable = null;
+    private MaterialSet irrigable = new MaterialSet();
 
     @Value("rotatable")
     @Abstractable

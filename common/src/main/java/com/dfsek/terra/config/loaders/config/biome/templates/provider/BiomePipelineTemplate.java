@@ -11,16 +11,28 @@ import com.dfsek.terra.api.world.biome.provider.StandardBiomeProvider;
 
 import java.util.List;
 
+/**
+ * Configures a biome pipeline.
+ */
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class BiomePipelineTemplate extends BiomeProviderTemplate {
     private final TerraPlugin main;
+    /**
+     * Initial size of biome pipeline chunks.
+     */
     @Value("pipeline.initial-size")
     @Default
     private int initialSize = 2;
 
+    /**
+     * Mutator stages to be used in this biome pipeline.
+     */
     @Value("pipeline.stages")
     private List<StageSeeded> stages;
 
+    /**
+     * Biome source to initialize the pipeline.
+     */
     @Value("pipeline.source")
     private SourceSeeded source;
 

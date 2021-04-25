@@ -10,6 +10,9 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings("FieldMayBeFinal")
 public abstract class SamplerTemplate<T extends NoiseSampler> implements ValidatedConfigTemplate, ObjectTemplate<NoiseSeeded>, NoiseSeeded {
+    /**
+     * Number of dimensions for this sampler.
+     */
     @Value("dimensions")
     @Default
     private int dimensions = 2;

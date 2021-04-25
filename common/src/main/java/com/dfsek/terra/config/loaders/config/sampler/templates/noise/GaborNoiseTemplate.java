@@ -5,15 +5,27 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.GaborNoiseSampler;
 
+/**
+ * Defines a Gabor noise function.
+ */
 public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
+    /**
+     * Rotation to apply to noise. Only has noticeable effects in anisotropic mode.
+     */
     @Value("rotation")
     @Default
     private double rotation = 0.25;
 
+    /**
+     * Whether to use anisotropic or isotropic algorithm.
+     */
     @Value("isotropic")
     @Default
     private boolean isotropic = true;
 
+    /**
+     * Standard deviation of result values.
+     */
     @Value("deviation")
     @Default
     private double deviation = 1.0;
