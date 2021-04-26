@@ -1,7 +1,9 @@
 import com.dfsek.terra.configureCommon
+import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.expr.StringLiteralExpr
-import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.type.PrimitiveType.Primitive
+import com.github.javaparser.ast.type.Type
 
 plugins {
     `java-library`
@@ -62,6 +64,12 @@ publishing {
     }
 }
 
+sourceSets {
+    create("tectonic") {
+
+    }
+}
+
 tasks.create<SourceTask>("tectonicDocs") {
     group = "terra"
     println("Scanning sources...")
@@ -81,7 +89,7 @@ tasks.create<SourceTask>("tectonicDocs") {
                     doc.append("${sanitizeJavadoc(it.toText())}    \n")
                 }
                 declaration.extendedTypes.forEach {
-                    if(!it.name.asString().equals("AbstractableTemplate")) {
+                    if (!it.name.asString().equals("AbstractableTemplate")) {
                         doc.append("Inherits from [${it.name}](./${it.name})\n")
                     }
                 }
@@ -92,11 +100,11 @@ tasks.create<SourceTask>("tectonicDocs") {
             unit.findAll(FieldDeclaration::class.java).filter { it.isAnnotationPresent("Value") }.forEach { fieldDeclaration ->
                 doc.append("## ${(fieldDeclaration.getAnnotationByName("Value").get().childNodes[1] as StringLiteralExpr).asString()}\n")
 
-                if(fieldDeclaration.isAnnotationPresent("Default")) {
+                if (fieldDeclaration.isAnnotationPresent("Default")) {
                     doc.append("* Default value: ${fieldDeclaration.variables[0]}    \n")
                 }
-                val type =fieldDeclaration.commonType.asString()
-                doc.append("* Type: [$type](./$type)    \n")
+                val type = fieldDeclaration.commonType
+                doc.append("* Type: ${parseTypeLink(type)}    \n")
                 doc.append("\n")
 
                 fieldDeclaration.javadoc.ifPresent {
@@ -106,7 +114,9 @@ tasks.create<SourceTask>("tectonicDocs") {
                 applicable = true
             }
             val s = doc.toString()
-            if (s.isNotEmpty() && applicable) docs[name] = s
+            if (s.isNotEmpty() && applicable) {
+                docs[name] = s
+            }
         }
     }
     println("Done. Generated ${docs.size} files")
@@ -119,8 +129,51 @@ tasks.create<SourceTask>("tectonicDocs") {
         save.createNewFile()
         save.writeText(it.value)
     }
+
+    sourceSets["tectonic"].resources.forEach {
+        it.copyTo(File(docsDir, it.name), true)
+    }
 }
 
-fun sanitizeJavadoc(doc:String):String {
-    return doc.replace("<p>", "").replace("<", "\\<").replace(">", "\\>")
+fun parseTypeLink(type: Type): String {
+    val st = parseType(type)
+
+    if(st.contains('<')) {
+        val outer = type.childNodes[0]
+
+        val builder = StringBuilder()
+        builder.append("[$outer](./$outer)\\<")
+
+        for(i in 1 until type.childNodes.size) {
+            builder.append(parseTypeLink(type.childNodes[i] as Type))
+            if(i != type.childNodes.size-1) builder.append(", ")
+        }
+
+        builder.append("\\>")
+
+        return builder.toString()
+    }
+    return "[$st](./$st)"
+}
+
+fun parseType(type: Type): String {
+    if(type is com.github.javaparser.ast.type.PrimitiveType) {
+        return when(type.type) {
+            Primitive.BOOLEAN -> "Boolean"
+            Primitive.BYTE -> "Byte"
+            Primitive.DOUBLE -> "Double"
+            Primitive.INT -> "Integer"
+            Primitive.CHAR -> "Char"
+            Primitive.FLOAT -> "Float"
+            Primitive.SHORT -> "Short"
+            Primitive.LONG -> "Long"
+            else -> type.asString()
+        }
+    }
+    return type.asString()
+}
+
+fun sanitizeJavadoc(doc: String): String {
+    return doc
+            .replace("<p>", "")
 }
