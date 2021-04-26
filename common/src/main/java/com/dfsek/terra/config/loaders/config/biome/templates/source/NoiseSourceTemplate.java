@@ -7,10 +7,19 @@ import com.dfsek.terra.api.world.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.api.world.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 
+/**
+ * Configures a noise-based biome source.
+ */
 public class NoiseSourceTemplate extends SourceTemplate {
+    /**
+     * Noise function to use for selecting biomes.
+     */
     @Value("noise")
     private NoiseSeeded noise;
 
+    /**
+     * ProbabilityCollection of biomes to use.
+     */
     @Value("biomes")
     private ProbabilityCollection<BiomeBuilder> biomes;
 

@@ -8,6 +8,9 @@ import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.world.biome.pipeline.stages.Stage;
 
 public abstract class StageTemplate implements ObjectTemplate<SeededBuilder<Stage>>, StageSeeded {
+    /**
+     * Noise function to use for mutating biomes in this stage.
+     */
     @Value("noise")
     protected NoiseSeeded noise;
 

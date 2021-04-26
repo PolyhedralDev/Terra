@@ -5,7 +5,13 @@ import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.SingleBiomeProvider;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 
+/**
+ * Configures a single-biome provider.
+ */
 public class SingleBiomeProviderTemplate extends BiomeProviderTemplate {
+    /**
+     * The biome.
+     */
     @Value("biome")
     private BiomeBuilder biome;
 

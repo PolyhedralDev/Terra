@@ -9,11 +9,21 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 import java.awt.image.BufferedImage;
 import java.util.stream.Collectors;
 
+/**
+ * Configures an image biome provider.
+ */
 public class ImageProviderTemplate extends BiomeProviderTemplate {
     private final Registry<BiomeBuilder> biomes;
+
+    /**
+     * Image to use for biome selection.
+     */
     @Value("image.name")
     private BufferedImage image;
 
+    /**
+     * How the image should be aligned.
+     */
     @Value("image.align")
     private ImageBiomeProvider.Align align;
 
