@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.source;
 
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.pipeline.source.BiomeSource;
@@ -10,6 +11,7 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 /**
  * Configures a noise-based biome source.
  */
+@AutoDocAlias("NoiseSource")
 public class NoiseSourceTemplate extends SourceTemplate {
     /**
      * Noise function to use for selecting biomes.
