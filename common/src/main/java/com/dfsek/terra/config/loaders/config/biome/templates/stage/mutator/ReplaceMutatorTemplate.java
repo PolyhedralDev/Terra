@@ -10,9 +10,15 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 @SuppressWarnings("unused")
 @AutoDocAlias("ReplaceMutator")
 public class ReplaceMutatorTemplate extends MutatorStageTemplate {
+    /**
+     * Tag of biomes to replace.
+     */
     @Value("from")
     private String from;
 
+    /**
+     * Biomes to replace with.
+     */
     @Value("to")
     private ProbabilityCollection<BiomeBuilder> to;
 

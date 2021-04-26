@@ -10,12 +10,23 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 @SuppressWarnings("unused")
 @AutoDocAlias("BorderMutator")
 public class BorderMutatorTemplate extends MutatorStageTemplate {
+    /**
+     * Tag of the biome on the external side of the border.
+     */
     @Value("from")
     private String from;
 
+    /**
+     * Tag of biomes to replace when bordering biomes
+     * with tag "from"
+     */
     @Value("replace")
     private String replace;
 
+    /**
+     * Collection of biomes to place at borders
+     * of "from" and "to"
+     */
     @Value("to")
     private ProbabilityCollection<BiomeBuilder> to;
 

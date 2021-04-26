@@ -14,15 +14,28 @@ import java.util.Map;
 @SuppressWarnings("unused")
 @AutoDocAlias("BorderListMutator")
 public class BorderListMutatorTemplate extends MutatorStageTemplate {
+    /**
+     * Tag of the biome on the external side of the border.
+     */
     @Value("from")
     private String from;
 
+    /**
+     * Tag of biomes to replace when bordering biomes with
+     * tag "from".
+     */
     @Value("default-replace")
     private String defaultReplace;
 
+    /**
+     * Default replacement biomes.
+     */
     @Value("default-to")
     private ProbabilityCollection<BiomeBuilder> defaultTo;
 
+    /**
+     * Map of single biomes to their replacements.
+     */
     @Value("replace")
     private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
 

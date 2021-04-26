@@ -14,6 +14,9 @@ import java.util.Map;
 @SuppressWarnings("unused")
 @AutoDocAlias("ReplaceListMutator")
 public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
+    /**
+     * Default tag to replace from
+     */
     @Value("default-from")
     private String defaultFrom;
 
