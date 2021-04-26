@@ -76,8 +76,7 @@ tasks.create<SourceTask>("tectonicDocs") {
 
     val docs = HashMap<String, String>()
 
-    sourceSets.forEach { sourceSet ->
-        sourceSet.java.forEach { file ->
+    sourceSets.main.get().java.forEach { file ->
             val doc = StringBuilder()
             val name = file.name.substring(0, file.name.length - 5)
             val unit = StaticJavaParser.parse(file)
@@ -118,7 +117,6 @@ tasks.create<SourceTask>("tectonicDocs") {
                 docs[name] = s
             }
         }
-    }
     println("Done. Generated ${docs.size} files")
 
     val docsDir = File(buildDir, "tectonic")
