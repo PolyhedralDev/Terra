@@ -86,7 +86,7 @@ tasks.create<SourceTask>("tectonicDocs") {
 
     sources.forEach { (name, unit) ->
         unit.getClassByName(name).ifPresent { declaration ->
-            if(declaration.isAnnotationPresent("AutoDocAlias")) {
+            if (declaration.isAnnotationPresent("AutoDocAlias")) {
                 refactor[name] = (declaration.getAnnotationByName("AutoDocAlias").get().childNodes[1] as StringLiteralExpr).asString()
                 println("Refactoring $name to ${refactor[name]}.")
             }
@@ -94,43 +94,43 @@ tasks.create<SourceTask>("tectonicDocs") {
     }
 
     sources.forEach { (name, unit) ->
-            val doc = StringBuilder()
-            doc.append("# ${generify(name, refactor)}\n")
+        val doc = StringBuilder()
+        doc.append("# ${generify(name, refactor)}\n")
 
-            unit.getClassByName(name).ifPresent { declaration ->
-                declaration.javadoc.ifPresent {
-                    doc.append("${sanitizeJavadoc(it.toText())}    \n")
-                }
-                declaration.extendedTypes.forEach {
-                    if (!it.name.asString().equals("AbstractableTemplate")) {
-                        doc.append("Inherits from [${it.name}](./${it.name})\n")
-                    }
-                }
-                doc.append("\n")
+        unit.getClassByName(name).ifPresent { declaration ->
+            declaration.javadoc.ifPresent {
+                doc.append("${sanitizeJavadoc(it.toText())}    \n")
             }
-
-            var applicable = false
-            unit.findAll(FieldDeclaration::class.java).filter { it.isAnnotationPresent("Value") }.forEach { fieldDeclaration ->
-                doc.append("## ${(fieldDeclaration.getAnnotationByName("Value").get().childNodes[1] as StringLiteralExpr).asString()}\n")
-
-                if (fieldDeclaration.isAnnotationPresent("Default")) {
-                    doc.append("* Default value: ${fieldDeclaration.variables[0]}    \n")
+            declaration.extendedTypes.forEach {
+                if (!it.name.asString().equals("AbstractableTemplate")) {
+                    doc.append("Inherits from [${it.name}](./${it.name})\n")
                 }
-                val type = fieldDeclaration.commonType
-                doc.append("* Type: ${parseTypeLink(type, refactor)}    \n")
-                doc.append("\n")
-
-                fieldDeclaration.javadoc.ifPresent {
-                    doc.append(sanitizeJavadoc(it.toText()))
-                }
-                doc.append("\n\n")
-                applicable = true
             }
-            val s = doc.toString()
-            if (s.isNotEmpty() && applicable) {
-                docs[generify(name, refactor)] = s
-            }
+            doc.append("\n")
         }
+
+        var applicable = false
+        unit.findAll(FieldDeclaration::class.java).filter { it.isAnnotationPresent("Value") }.forEach { fieldDeclaration ->
+            doc.append("## ${(fieldDeclaration.getAnnotationByName("Value").get().childNodes[1] as StringLiteralExpr).asString()}\n")
+
+            if (fieldDeclaration.isAnnotationPresent("Default")) {
+                doc.append("* Default value: ${fieldDeclaration.variables[0]}    \n")
+            }
+            val type = fieldDeclaration.commonType
+            doc.append("* Type: ${parseTypeLink(type, refactor)}    \n")
+            doc.append("\n")
+
+            fieldDeclaration.javadoc.ifPresent {
+                doc.append(sanitizeJavadoc(it.toText()))
+            }
+            doc.append("\n\n")
+            applicable = true
+        }
+        val s = doc.toString()
+        if (s.isNotEmpty() && applicable) {
+            docs[generify(name, refactor)] = s
+        }
+    }
     println("Done. Generated ${docs.size} files")
 
     val docsDir = File(buildDir, "tectonic")
@@ -150,15 +150,15 @@ tasks.create<SourceTask>("tectonicDocs") {
 fun parseTypeLink(type: Type, refactor: Map<String, String>): String {
     val st = parseType(type, refactor)
 
-    if(st.contains('<')) {
+    if (st.contains('<')) {
         val outer = generify(type.childNodes[0].toString(), refactor)
 
         val builder = StringBuilder()
         builder.append("[$outer](./$outer)\\<")
 
-        for(i in 1 until type.childNodes.size) {
+        for (i in 1 until type.childNodes.size) {
             builder.append(parseTypeLink(type.childNodes[i] as Type, refactor))
-            if(i != type.childNodes.size-1) builder.append(", ")
+            if (i != type.childNodes.size - 1) builder.append(", ")
         }
 
         builder.append("\\>")
@@ -169,8 +169,8 @@ fun parseTypeLink(type: Type, refactor: Map<String, String>): String {
 }
 
 fun parseType(type: Type, refactor: Map<String, String>): String {
-    if(type is com.github.javaparser.ast.type.PrimitiveType) {
-        return when(type.type) {
+    if (type is com.github.javaparser.ast.type.PrimitiveType) {
+        return when (type.type) {
             Primitive.BOOLEAN -> "Boolean"
             Primitive.BYTE -> "Byte"
             Primitive.DOUBLE -> "Double"
@@ -185,8 +185,8 @@ fun parseType(type: Type, refactor: Map<String, String>): String {
     return generify(type.asString(), refactor)
 }
 
-fun generify(type:String, refactor: Map<String, String>): String {
-    return when(type) {
+fun generify(type: String, refactor: Map<String, String>): String {
+    return when (type) {
         "HashMap", "LinkedHashMap" -> "Map"
         "ArrayList", "LinkedList", "GlueList" -> "List"
         "HashSet" -> "Set"
