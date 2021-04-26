@@ -76,12 +76,26 @@ tasks.create<SourceTask>("tectonicDocs") {
 
     val docs = HashMap<String, String>()
 
-    sourceSets.main.get().java.forEach { file ->
-            val doc = StringBuilder()
-            val name = file.name.substring(0, file.name.length - 5)
-            val unit = StaticJavaParser.parse(file)
+    val refactor = HashMap<String, String>()
 
-            doc.append("# $name\n")
+    val sources = HashMap<String, com.github.javaparser.ast.CompilationUnit>()
+
+    sourceSets.main.get().java.forEach {
+        sources[it.name.substring(0, it.name.length - 5)] = StaticJavaParser.parse(it)
+    }
+
+    sources.forEach { (name, unit) ->
+        unit.getClassByName(name).ifPresent { declaration ->
+            if(declaration.isAnnotationPresent("AutoDocAlias")) {
+                refactor[name] = (declaration.getAnnotationByName("AutoDocAlias").get().childNodes[1] as StringLiteralExpr).asString()
+                println("Refactoring $name to ${refactor[name]}.")
+            }
+        }
+    }
+
+    sources.forEach { (name, unit) ->
+            val doc = StringBuilder()
+            doc.append("# ${generify(name, refactor)}\n")
 
             unit.getClassByName(name).ifPresent { declaration ->
                 declaration.javadoc.ifPresent {
@@ -103,7 +117,7 @@ tasks.create<SourceTask>("tectonicDocs") {
                     doc.append("* Default value: ${fieldDeclaration.variables[0]}    \n")
                 }
                 val type = fieldDeclaration.commonType
-                doc.append("* Type: ${parseTypeLink(type)}    \n")
+                doc.append("* Type: ${parseTypeLink(type, refactor)}    \n")
                 doc.append("\n")
 
                 fieldDeclaration.javadoc.ifPresent {
@@ -114,7 +128,7 @@ tasks.create<SourceTask>("tectonicDocs") {
             }
             val s = doc.toString()
             if (s.isNotEmpty() && applicable) {
-                docs[name] = s
+                docs[generify(name, refactor)] = s
             }
         }
     println("Done. Generated ${docs.size} files")
@@ -133,17 +147,17 @@ tasks.create<SourceTask>("tectonicDocs") {
     }
 }
 
-fun parseTypeLink(type: Type): String {
-    val st = parseType(type)
+fun parseTypeLink(type: Type, refactor: Map<String, String>): String {
+    val st = parseType(type, refactor)
 
     if(st.contains('<')) {
-        val outer = type.childNodes[0]
+        val outer = generify(type.childNodes[0].toString(), refactor)
 
         val builder = StringBuilder()
         builder.append("[$outer](./$outer)\\<")
 
         for(i in 1 until type.childNodes.size) {
-            builder.append(parseTypeLink(type.childNodes[i] as Type))
+            builder.append(parseTypeLink(type.childNodes[i] as Type, refactor))
             if(i != type.childNodes.size-1) builder.append(", ")
         }
 
@@ -154,7 +168,7 @@ fun parseTypeLink(type: Type): String {
     return "[$st](./$st)"
 }
 
-fun parseType(type: Type): String {
+fun parseType(type: Type, refactor: Map<String, String>): String {
     if(type is com.github.javaparser.ast.type.PrimitiveType) {
         return when(type.type) {
             Primitive.BOOLEAN -> "Boolean"
@@ -168,7 +182,16 @@ fun parseType(type: Type): String {
             else -> type.asString()
         }
     }
-    return type.asString()
+    return generify(type.asString(), refactor)
+}
+
+fun generify(type:String, refactor: Map<String, String>): String {
+    return when(type) {
+        "HashMap", "LinkedHashMap" -> "Map"
+        "ArrayList", "LinkedList", "GlueList" -> "List"
+        "HashSet" -> "Set"
+        else -> refactor.getOrDefault(type, type)
+    }
 }
 
 fun sanitizeJavadoc(doc: String): String {

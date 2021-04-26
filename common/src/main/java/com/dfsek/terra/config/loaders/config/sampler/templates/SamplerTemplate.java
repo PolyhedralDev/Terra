@@ -5,10 +5,12 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings("FieldMayBeFinal")
+@AutoDocAlias("NoiseSeeded")
 public abstract class SamplerTemplate<T extends NoiseSampler> implements ValidatedConfigTemplate, ObjectTemplate<NoiseSeeded>, NoiseSeeded {
     /**
      * Number of dimensions for this sampler.
@@ -31,4 +33,7 @@ public abstract class SamplerTemplate<T extends NoiseSampler> implements Validat
     public NoiseSeeded get() {
         return this;
     }
+
+    @Override
+    public abstract T apply(Long seed);
 }

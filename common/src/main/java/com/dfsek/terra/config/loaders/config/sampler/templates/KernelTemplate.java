@@ -4,13 +4,14 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.samplers.KernelSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 import java.util.List;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
+@AutoDocAlias("KernelSampler")
 public class KernelTemplate extends SamplerTemplate<KernelSampler> implements ValidatedConfigTemplate {
 
     @Value("kernel")
@@ -28,7 +29,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
     private double frequency = 1;
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public KernelSampler apply(Long seed) {
         double[][] k = new double[kernel.size()][kernel.get(0).size()];
 
         for(int x = 0; x < kernel.size(); x++) {

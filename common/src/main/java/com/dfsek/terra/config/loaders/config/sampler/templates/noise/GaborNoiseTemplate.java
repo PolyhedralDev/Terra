@@ -2,12 +2,13 @@ package com.dfsek.terra.config.loaders.config.sampler.templates.noise;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.samplers.noise.GaborNoiseSampler;
 
 /**
  * Defines a Gabor noise function.
  */
+@AutoDocAlias("GaborNoiseSampler")
 public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     /**
      * Rotation to apply to noise. Only has noticeable effects in anisotropic mode.
@@ -39,7 +40,7 @@ public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     private double f0 = 0.625;
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public GaborNoiseSampler apply(Long seed) {
         GaborNoiseSampler gaborNoiseSampler = new GaborNoiseSampler((int) (long) seed + salt);
         gaborNoiseSampler.setFrequency(frequency);
         gaborNoiseSampler.setRotation(rotation);

@@ -1,12 +1,12 @@
 package com.dfsek.terra.config.loaders.config.sampler.templates.normalizer;
 
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.normalizer.ClampNormalizer;
-import com.dfsek.terra.api.math.noise.normalizer.LinearNormalizer;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class ClampNormalizerTemplate extends NormalizerTemplate<LinearNormalizer> {
+@AutoDocAlias("ClampNormalizer")
+public class ClampNormalizerTemplate extends NormalizerTemplate<ClampNormalizer> {
     @Value("max")
     private double max;
 
@@ -14,7 +14,7 @@ public class ClampNormalizerTemplate extends NormalizerTemplate<LinearNormalizer
     private double min;
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public ClampNormalizer apply(Long seed) {
         return new ClampNormalizer(function.apply(seed), min, max);
     }
 }

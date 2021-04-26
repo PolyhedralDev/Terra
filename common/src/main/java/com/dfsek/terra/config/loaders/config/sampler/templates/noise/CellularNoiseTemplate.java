@@ -2,12 +2,14 @@ package com.dfsek.terra.config.loaders.config.sampler.templates.noise;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings("FieldMayBeFinal")
+@AutoDocAlias("CellularSampler")
 public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("distance")
     @Default
@@ -38,7 +40,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     };
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public CellularSampler apply(Long seed) {
         CellularSampler sampler = new CellularSampler((int) (long) seed + salt);
         sampler.setNoiseLookup(lookup.apply(seed));
         sampler.setFrequency(frequency);

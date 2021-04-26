@@ -9,6 +9,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
+@AutoDocAlias("TerraBiome")
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
 
     private final ConfigPack pack;

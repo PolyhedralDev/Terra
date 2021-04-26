@@ -6,6 +6,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 
@@ -14,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
+@AutoDocAlias("NoiseSeeded")
 public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
     private final NoiseRegistry noiseRegistry;
 

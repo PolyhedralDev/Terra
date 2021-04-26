@@ -3,6 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
+@AutoDocAlias("UserDefinedCarver")
 public class CarverTemplate extends AbstractableTemplate {
     @Value("id")
     private String id;

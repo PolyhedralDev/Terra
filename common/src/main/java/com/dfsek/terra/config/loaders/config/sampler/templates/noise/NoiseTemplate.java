@@ -2,10 +2,12 @@ package com.dfsek.terra.config.loaders.config.sampler.templates.noise;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.docs.AutoDocAlias;
 import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
+@AutoDocAlias("NoiseFunction")
 public abstract class NoiseTemplate<T extends NoiseFunction> extends SamplerTemplate<T> {
     @Value("frequency")
     @Default
