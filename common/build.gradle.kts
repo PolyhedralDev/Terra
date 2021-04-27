@@ -7,6 +7,7 @@ import com.github.javaparser.ast.type.PrimitiveType
 import com.github.javaparser.ast.type.PrimitiveType.Primitive
 import com.github.javaparser.ast.type.Type
 import com.github.javaparser.ast.Node
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
 
 plugins {
     `java-library`
@@ -97,7 +98,7 @@ tasks.create<SourceTask>("tectonicDocs") {
         }
     }
 
-    val children = HashMap<String, MutableList<com.github.javaparser.ast.body.ClassOrInterfaceDeclaration>>()
+    val children = HashMap<String, MutableList<ClassOrInterfaceDeclaration>>()
     sources.forEach { (name, unit) ->
         unit.getClassByName(name).ifPresent { declaration ->
             declaration.extendedTypes.forEach { classOrInterfaceType ->
@@ -172,7 +173,7 @@ tasks.create<SourceTask>("tectonicDocs") {
     }
 }
 
-fun scanForParent(map: HashMap<String, CompilationUnit>, current: com.github.javaparser.ast.body.ClassOrInterfaceDeclaration, vararg parent: String): Boolean {
+fun scanForParent(map: HashMap<String, CompilationUnit>, current: ClassOrInterfaceDeclaration, vararg parent: String): Boolean {
     for (type in current.implementedTypes) {
         if(parent.contains(type.childNodes[0].toString())) return true
     }
