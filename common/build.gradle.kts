@@ -116,7 +116,7 @@ tasks.create<SourceTask>("tectonicDocs") {
             }
             declaration.extendedTypes.forEach {
                 if (!it.name.asString().equals("AbstractableTemplate")) {
-                    doc.append("Inherits from ${parseType(it, refactor)}    \n")
+                    doc.append("Inherits from ${parseTypeLink(it, refactor)}    \n")
                 }
             }
             if (children.containsKey(name)) {
