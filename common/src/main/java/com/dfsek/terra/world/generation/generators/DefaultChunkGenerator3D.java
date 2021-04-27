@@ -50,7 +50,6 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
     private final Carver carver;
 
-
     public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
@@ -227,17 +226,20 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         return false;
     }
 
+    @SuppressWarnings({"try"})
     static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, TerraPlugin main) {
-        int xOrig = (chunkX << 4);
-        int zOrig = (chunkZ << 4);
-        BiomeProvider grid = main.getWorld(world).getBiomeProvider();
-        for(int x = 0; x < 4; x++) {
-            for(int z = 0; z < 4; z++) {
-                int cx = xOrig + (x << 2);
-                int cz = zOrig + (z << 2);
-                TerraBiome b = grid.getBiome(cx, cz);
+        try(ProfileFrame ignore = main.getProfiler().profile("biomes")) {
+            int xOrig = (chunkX << 4);
+            int zOrig = (chunkZ << 4);
+            BiomeProvider grid = main.getWorld(world).getBiomeProvider();
+            for(int x = 0; x < 4; x++) {
+                for(int z = 0; z < 4; z++) {
+                    int cx = xOrig + (x << 2);
+                    int cz = zOrig + (z << 2);
+                    TerraBiome b = grid.getBiome(cx, cz);
 
-                biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
+                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
+                }
             }
         }
     }
