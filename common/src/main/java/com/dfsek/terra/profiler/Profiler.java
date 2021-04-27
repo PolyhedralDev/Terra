@@ -18,7 +18,5 @@ public interface Profiler {
         return new ProfileFrame(() -> pop(frame));
     }
 
-    default void reset() {
-        // todo: impl
-    }
+    void reset();
 }

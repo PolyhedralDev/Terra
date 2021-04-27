@@ -83,4 +83,9 @@ public class ProfilerImpl implements Profiler {
         }));
         return map;
     }
+
+    @Override
+    public void reset() {
+        accessibleThreadMaps.forEach(Map::clear);
+    }
 }
