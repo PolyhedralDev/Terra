@@ -1,11 +1,11 @@
 package com.dfsek.terra.config.loaders.config.sampler.templates.noise;
 
-import com.dfsek.terra.api.docs.AutoDocAlias;
+import com.dfsek.terra.api.docs.AutoDocShadow;
 import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
 
 import java.util.function.Function;
 
-@AutoDocAlias("NoiseFunction")
+@AutoDocShadow("NoiseFunction")
 public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
     private final Function<Integer, NoiseFunction> samplerSupplier;
 

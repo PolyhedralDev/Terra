@@ -94,6 +94,9 @@ tasks.create<SourceTask>("tectonicDocs") {
             if (declaration.isAnnotationPresent("AutoDocAlias")) {
                 refactor[name] = (declaration.getAnnotationByName("AutoDocAlias").get().childNodes[1] as StringLiteralExpr).asString()
                 println("Refactoring $name to ${refactor[name]}.")
+            } else if (declaration.isAnnotationPresent("AutoDocShadow")) {
+                refactor[name] = (declaration.getAnnotationByName("AutoDocShadow").get().childNodes[1] as StringLiteralExpr).asString()
+                println("Shadowing $name to ${refactor[name]}.")
             }
         }
     }
@@ -101,10 +104,12 @@ tasks.create<SourceTask>("tectonicDocs") {
     val children = HashMap<String, MutableList<ClassOrInterfaceDeclaration>>()
     sources.forEach { (name, unit) ->
         unit.getClassByName(name).ifPresent { declaration ->
-            declaration.extendedTypes.forEach { classOrInterfaceType ->
-                val inherit = classOrInterfaceType.name.asString()
-                if (!children.containsKey(inherit)) children[inherit] = ArrayList()
-                children[inherit]!!.add(declaration)
+            if(!declaration.isAnnotationPresent("AutoDocShadow")) {
+                declaration.extendedTypes.forEach { classOrInterfaceType ->
+                    val inherit = classOrInterfaceType.name.asString()
+                    if (!children.containsKey(inherit)) children[inherit] = ArrayList()
+                    children[inherit]!!.add(declaration)
+                }
             }
         }
     }
@@ -121,7 +126,7 @@ tasks.create<SourceTask>("tectonicDocs") {
 
         unit.getClassByName(name).ifPresent { declaration ->
             applicable = scanForParent(sources, declaration, "ConfigTemplate", "ValidatedConfigTemplate", "ObjectTemplate")
-            if(applicable) println("Validated $name")
+
             declaration.javadoc.ifPresent {
                 doc.append("${sanitizeJavadoc(it.toText())}    \n")
             }
