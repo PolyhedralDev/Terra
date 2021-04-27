@@ -1,7 +1,9 @@
 import com.dfsek.terra.configureCommon
 import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.expr.StringLiteralExpr
+import com.github.javaparser.ast.type.PrimitiveType
 import com.github.javaparser.ast.type.PrimitiveType.Primitive
 import com.github.javaparser.ast.type.Type
 
@@ -78,7 +80,7 @@ tasks.create<SourceTask>("tectonicDocs") {
 
     val refactor = HashMap<String, String>()
 
-    val sources = HashMap<String, com.github.javaparser.ast.CompilationUnit>()
+    val sources = HashMap<String, CompilationUnit>()
 
     sourceSets.main.get().java.forEach {
         sources[it.name.substring(0, it.name.length - 5)] = StaticJavaParser.parse(it)
@@ -169,7 +171,7 @@ fun parseTypeLink(type: Type, refactor: Map<String, String>): String {
 }
 
 fun parseType(type: Type, refactor: Map<String, String>): String {
-    if (type is com.github.javaparser.ast.type.PrimitiveType) {
+    if (type is PrimitiveType) {
         return when (type.type) {
             Primitive.BOOLEAN -> "Boolean"
             Primitive.BYTE -> "Byte"
