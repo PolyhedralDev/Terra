@@ -108,11 +108,16 @@ tasks.create<SourceTask>("tectonicDocs") {
             }
         }
     }
+
+    val linksAll = HashMap<String, Set<String>>()
+
     sources.forEach { (name, unit) ->
         val doc = StringBuilder()
         doc.append("# ${generify(name, refactor)}\n")
 
         var applicable = false
+
+        val links = HashSet<String>()
 
         unit.getClassByName(name).ifPresent { declaration ->
             applicable = scanForParent(sources, declaration, "ConfigTemplate", "ValidatedConfigTemplate", "ObjectTemplate")
@@ -122,13 +127,13 @@ tasks.create<SourceTask>("tectonicDocs") {
             }
             declaration.extendedTypes.forEach {
                 if (!it.name.asString().equals("AbstractableTemplate")) {
-                    doc.append("Inherits from ${parseTypeLink(it, refactor, false)}    \n    \n")
+                    doc.append("Inherits from ${parseTypeLink(it, refactor, links, false)}    \n    \n")
                 }
             }
             if (children.containsKey(name)) {
                 doc.append("Children:\n")
                 children[name]!!.forEach {
-                    doc.append("* ${parseTypeLink(it.name, refactor)}\n")
+                    doc.append("* ${parseTypeLink(it.name, refactor, links)}\n")
                 }
                 doc.append("    \n\n")
             }
@@ -143,7 +148,7 @@ tasks.create<SourceTask>("tectonicDocs") {
                 doc.append("* Default value: ${fieldDeclaration.variables[0]}    \n")
             }
             val type = fieldDeclaration.commonType
-            doc.append("* Type: ${parseTypeLink(type, refactor)}    \n")
+            doc.append("* Type: ${parseTypeLink(type, refactor, links)}    \n")
             doc.append("\n")
 
             fieldDeclaration.javadoc.ifPresent {
@@ -155,21 +160,32 @@ tasks.create<SourceTask>("tectonicDocs") {
         val s = doc.toString()
         if (s.isNotEmpty() && applicable) {
             docs[generify(name, refactor)] = s
+            linksAll[name] = links
         }
     }
     println("Done. Generated ${docs.size} files")
 
     val docsDir = File(buildDir, "tectonic")
     docsDir.mkdirs()
+    val files = HashSet<String>()
+
     docs.forEach {
         val save = File(docsDir, "${it.key}.md")
+        files.add(it.key)
         if (save.exists()) save.delete()
         save.createNewFile()
         save.writeText(it.value)
     }
 
     sourceSets["tectonic"].resources.forEach {
+        files.add(it.name.substringBefore('.'))
         it.copyTo(File(docsDir, it.name), true)
+    }
+
+    linksAll.forEach { (file, links) ->
+        links.forEach {
+            if(!files.contains(it)) println("WARNING: Dead link to \"$it\" in file \"$file\"")
+        }
     }
 }
 
@@ -189,7 +205,7 @@ fun scanForParent(map: HashMap<String, CompilationUnit>, current: ClassOrInterfa
     return false
 }
 
-fun parseTypeLink(type: Node, refactor: Map<String, String>, generic: Boolean = true): String {
+fun parseTypeLink(type: Node, refactor: Map<String, String>, links: MutableSet<String>, generic: Boolean = true): String {
     val st = parseType(type, refactor)
 
     if (type is Type && type.childNodes.size > 1 && generic) {
@@ -197,9 +213,10 @@ fun parseTypeLink(type: Node, refactor: Map<String, String>, generic: Boolean = 
 
         val builder = StringBuilder()
         builder.append("[$outer](./$outer)\\<")
+        links.add(outer)
 
         for (i in 1 until type.childNodes.size) {
-            builder.append(parseTypeLink(type.childNodes[i], refactor))
+            builder.append(parseTypeLink(type.childNodes[i], refactor, links, generic))
             if (i != type.childNodes.size - 1) builder.append(", ")
         }
 
@@ -207,6 +224,7 @@ fun parseTypeLink(type: Node, refactor: Map<String, String>, generic: Boolean = 
 
         return builder.toString()
     }
+    links.add(st)
     return "[$st](./$st)"
 }
 
