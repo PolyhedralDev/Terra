@@ -97,13 +97,13 @@ tasks.create<SourceTask>("tectonicDocs") {
         }
     }
 
-    val children = HashMap<String, MutableList<Node>>()
+    val children = HashMap<String, MutableList<com.github.javaparser.ast.body.ClassOrInterfaceDeclaration>>()
     sources.forEach { (name, unit) ->
         unit.getClassByName(name).ifPresent { declaration ->
             declaration.extendedTypes.forEach { classOrInterfaceType ->
                 val inherit = classOrInterfaceType.name.asString()
                 if (!children.containsKey(inherit)) children[inherit] = ArrayList()
-                children[inherit]!!.add(declaration.name)
+                children[inherit]!!.add(declaration)
             }
         }
     }
@@ -111,7 +111,11 @@ tasks.create<SourceTask>("tectonicDocs") {
         val doc = StringBuilder()
         doc.append("# ${generify(name, refactor)}\n")
 
+        var applicable = false
+
         unit.getClassByName(name).ifPresent { declaration ->
+            applicable = scanForParent(sources, declaration, "ConfigTemplate", "ValidatedConfigTemplate", "ObjectTemplate")
+            if(applicable) println("Validated $name")
             declaration.javadoc.ifPresent {
                 doc.append("${sanitizeJavadoc(it.toText())}    \n")
             }
@@ -123,14 +127,14 @@ tasks.create<SourceTask>("tectonicDocs") {
             if (children.containsKey(name)) {
                 doc.append("Children:\n")
                 children[name]!!.forEach {
-                    doc.append("* ${parseTypeLink(it, refactor)}\n")
+                    doc.append("* ${parseTypeLink(it.name, refactor)}\n")
                 }
                 doc.append("    \n\n")
             }
             doc.append("\n")
         }
 
-        var applicable = false
+
         unit.findAll(FieldDeclaration::class.java).filter { it.isAnnotationPresent("Value") }.forEach { fieldDeclaration ->
             doc.append("## ${(fieldDeclaration.getAnnotationByName("Value").get().childNodes[1] as StringLiteralExpr).asString()}\n")
 
@@ -166,6 +170,22 @@ tasks.create<SourceTask>("tectonicDocs") {
     sourceSets["tectonic"].resources.forEach {
         it.copyTo(File(docsDir, it.name), true)
     }
+}
+
+fun scanForParent(map: HashMap<String, CompilationUnit>, current: com.github.javaparser.ast.body.ClassOrInterfaceDeclaration, vararg parent: String): Boolean {
+    for (type in current.implementedTypes) {
+        if(parent.contains(type.childNodes[0].toString())) return true
+    }
+    for(type in current.extendedTypes) {
+        val name = type.childNodes[0].toString()
+        if(map.containsKey(name)) {
+            val op = map[name]!!.getClassByName(name)
+            if(op.isPresent && scanForParent(map, op.get(), *parent)) {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 fun parseTypeLink(type: Node, refactor: Map<String, String>, generic: Boolean = true): String {
