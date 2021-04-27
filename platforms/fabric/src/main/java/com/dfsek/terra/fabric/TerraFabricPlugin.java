@@ -46,6 +46,8 @@ import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
@@ -67,7 +69,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
@@ -75,7 +76,6 @@ import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
@@ -105,6 +105,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final Map<Long, TerraWorld> worldMap = new HashMap<>();
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
+
+    private final Profiler profiler = new ProfilerImpl();
+
     private final Logger logger = new Logger() {
         private final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
@@ -391,6 +394,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return eventManager;
     }
 
+    @Override
+    public Profiler getProfiler() {
+        return profiler;
+    }
+
     @Addon("Terra-Fabric")
     @Author("Terra")
     @Version("1.0.0")
@@ -435,7 +443,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
-                registry.add(id, new FabricTree(tree));
+                registry.add(id, new FabricTree(tree, id));
             } catch(DuplicateEntryException ignore) {
             }
         }

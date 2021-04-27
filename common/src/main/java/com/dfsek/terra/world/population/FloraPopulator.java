@@ -8,7 +8,7 @@ import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class FloraPopulator implements TerraBlockPopulator {
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
-        try(ProfileFuture ignored = tw.getProfiler().measure("FloraTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("flora")) {
             if(tw.getConfig().getTemplate().disableFlora()) return;
 
             if(!tw.isSafe()) return;

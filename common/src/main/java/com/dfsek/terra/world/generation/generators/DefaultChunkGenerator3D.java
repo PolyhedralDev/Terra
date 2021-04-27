@@ -23,7 +23,7 @@ import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
@@ -49,7 +49,6 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
     private final Carver carver;
-
 
     public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
@@ -106,7 +105,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
         TerraWorld tw = main.getWorld(world);
         BiomeProvider grid = tw.getBiomeProvider();
-        try(ProfileFuture ignore = tw.getProfiler().measure("TotalChunkGenTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("chunk_base_3d")) {
             if(!tw.isSafe()) return chunk;
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
@@ -227,17 +226,20 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         return false;
     }
 
+    @SuppressWarnings({"try"})
     static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, TerraPlugin main) {
-        int xOrig = (chunkX << 4);
-        int zOrig = (chunkZ << 4);
-        BiomeProvider grid = main.getWorld(world).getBiomeProvider();
-        for(int x = 0; x < 4; x++) {
-            for(int z = 0; z < 4; z++) {
-                int cx = xOrig + (x << 2);
-                int cz = zOrig + (z << 2);
-                TerraBiome b = grid.getBiome(cx, cz);
+        try(ProfileFrame ignore = main.getProfiler().profile("biomes")) {
+            int xOrig = (chunkX << 4);
+            int zOrig = (chunkZ << 4);
+            BiomeProvider grid = main.getWorld(world).getBiomeProvider();
+            for(int x = 0; x < 4; x++) {
+                for(int z = 0; z < 4; z++) {
+                    int cx = xOrig + (x << 2);
+                    int cz = zOrig + (z << 2);
+                    TerraBiome b = grid.getBiome(cx, cz);
 
-                biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
+                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
+                }
             }
         }
     }

@@ -29,6 +29,7 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
@@ -39,6 +40,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -52,7 +54,7 @@ public class StructureScript {
     public StructureScript(InputStream inputStream, TerraPlugin main, ScriptRegistry registry, LootRegistry lootRegistry, FunctionRegistry functionRegistry) throws ParseException {
         Parser parser;
         try {
-            parser = new Parser(IOUtils.toString(inputStream));
+            parser = new Parser(IOUtils.toString(inputStream, Charset.defaultCharset()));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
@@ -104,22 +106,31 @@ public class StructureScript {
      * @param rotation Rotation of structure
      * @return Whether generation was successful
      */
+    @SuppressWarnings("try")
     public boolean execute(Location location, Random random, Rotation rotation) {
-        StructureBuffer buffer = new StructureBuffer(location);
-        boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
-        buffer.paste();
-        return level;
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript:" + id)) {
+            StructureBuffer buffer = new StructureBuffer(location);
+            boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
+            buffer.paste();
+            return level;
+        }
     }
 
+    @SuppressWarnings("try")
     public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
-        StructureBuffer buffer = computeBuffer(location, random, rotation);
-        buffer.paste(chunk);
-        return buffer.succeeded();
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_chunk:" + id)) {
+            StructureBuffer buffer = computeBuffer(location, random, rotation);
+            buffer.paste(chunk);
+            return buffer.succeeded();
+        }
     }
 
+    @SuppressWarnings("try")
     public boolean test(Location location, Random random, Rotation rotation) {
-        StructureBuffer buffer = computeBuffer(location, random, rotation);
-        return buffer.succeeded();
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {
+            StructureBuffer buffer = computeBuffer(location, random, rotation);
+            return buffer.succeeded();
+        }
     }
 
     private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
@@ -134,13 +145,19 @@ public class StructureScript {
         }
     }
 
+    @SuppressWarnings("try")
     public boolean executeInBuffer(Buffer buffer, Random random, Rotation rotation, int recursions) {
-        return applyBlock(new TerraImplementationArguments(buffer, rotation, random, recursions));
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_recursive:" + id)) {
+            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, recursions));
+        }
     }
 
+    @SuppressWarnings("try")
     public boolean executeDirect(Location location, Random random, Rotation rotation) {
-        DirectBuffer buffer = new DirectBuffer(location);
-        return applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
+            DirectBuffer buffer = new DirectBuffer(location);
+            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
+        }
     }
 
     public String getId() {

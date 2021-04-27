@@ -40,6 +40,8 @@ import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -63,6 +65,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final Map<String, DefaultChunkGenerator3D> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
+
+    private final Profiler profiler = new ProfilerImpl();
 
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
@@ -139,6 +143,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public void runPossiblyUnsafeTask(Runnable task) {
         Bukkit.getScheduler().runTask(this, task);
+    }
+
+    @Override
+    public Profiler getProfiler() {
+        return profiler;
     }
 
     @Override
