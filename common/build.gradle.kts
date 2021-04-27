@@ -6,6 +6,7 @@ import com.github.javaparser.ast.expr.StringLiteralExpr
 import com.github.javaparser.ast.type.PrimitiveType
 import com.github.javaparser.ast.type.PrimitiveType.Primitive
 import com.github.javaparser.ast.type.Type
+import com.github.javaparser.ast.Node
 
 plugins {
     `java-library`
@@ -96,7 +97,7 @@ tasks.create<SourceTask>("tectonicDocs") {
         }
     }
 
-    val children = HashMap<String, MutableList<com.github.javaparser.ast.Node>>()
+    val children = HashMap<String, MutableList<Node>>()
     sources.forEach { (name, unit) ->
         unit.getClassByName(name).ifPresent { declaration ->
             declaration.extendedTypes.forEach { classOrInterfaceType ->
@@ -116,11 +117,11 @@ tasks.create<SourceTask>("tectonicDocs") {
             }
             declaration.extendedTypes.forEach {
                 if (!it.name.asString().equals("AbstractableTemplate")) {
-                    doc.append("Inherits from ${parseTypeLink(it, refactor)}    \n")
+                    doc.append("Inherits from ${parseTypeLink(it, refactor, false)}    \n    \n")
                 }
             }
             if (children.containsKey(name)) {
-                doc.append("Children: \n")
+                doc.append("Children:\n")
                 children[name]!!.forEach {
                     doc.append("* ${parseTypeLink(it, refactor)}\n")
                 }
@@ -167,17 +168,17 @@ tasks.create<SourceTask>("tectonicDocs") {
     }
 }
 
-fun parseTypeLink(type: com.github.javaparser.ast.Node, refactor: Map<String, String>): String {
+fun parseTypeLink(type: Node, refactor: Map<String, String>, generic: Boolean = true): String {
     val st = parseType(type, refactor)
 
-    if (st.contains('<')) {
+    if (type is Type && type.childNodes.size > 1 && generic) {
         val outer = generify(type.childNodes[0].toString(), refactor)
 
         val builder = StringBuilder()
         builder.append("[$outer](./$outer)\\<")
 
         for (i in 1 until type.childNodes.size) {
-            builder.append(parseTypeLink(type.childNodes[i] as Type, refactor))
+            builder.append(parseTypeLink(type.childNodes[i], refactor))
             if (i != type.childNodes.size - 1) builder.append(", ")
         }
 
@@ -188,7 +189,7 @@ fun parseTypeLink(type: com.github.javaparser.ast.Node, refactor: Map<String, St
     return "[$st](./$st)"
 }
 
-fun parseType(type: com.github.javaparser.ast.Node, refactor: Map<String, String>): String {
+fun parseType(type: Node, refactor: Map<String, String>): String {
     if (type is PrimitiveType) {
         return when (type.type) {
             Primitive.BOOLEAN -> "Boolean"
@@ -202,6 +203,7 @@ fun parseType(type: com.github.javaparser.ast.Node, refactor: Map<String, String
             else -> type.asString()
         }
     }
+    if(type is Type && type.childNodes.size > 1) return generify(type.childNodes[0].toString(), refactor)
     return generify(type.toString(), refactor)
 }
 
