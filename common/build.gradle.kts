@@ -76,6 +76,7 @@ tasks.create<SourceTask>("tectonicDocs") {
     group = "terra"
     println("Scanning sources...")
 
+
     val docs = HashMap<String, String>()
 
     val refactor = HashMap<String, String>()
@@ -95,6 +96,16 @@ tasks.create<SourceTask>("tectonicDocs") {
         }
     }
 
+    val children = HashMap<String, MutableList<com.github.javaparser.ast.Node>>()
+    sources.forEach { (name, unit) ->
+        unit.getClassByName(name).ifPresent { declaration ->
+            declaration.extendedTypes.forEach { classOrInterfaceType ->
+                val inherit = classOrInterfaceType.name.asString()
+                if (!children.containsKey(inherit)) children[inherit] = ArrayList()
+                children[inherit]!!.add(declaration.name)
+            }
+        }
+    }
     sources.forEach { (name, unit) ->
         val doc = StringBuilder()
         doc.append("# ${generify(name, refactor)}\n")
@@ -105,8 +116,15 @@ tasks.create<SourceTask>("tectonicDocs") {
             }
             declaration.extendedTypes.forEach {
                 if (!it.name.asString().equals("AbstractableTemplate")) {
-                    doc.append("Inherits from [${it.name}](./${it.name})\n")
+                    doc.append("Inherits from ${parseType(it, refactor)}    \n")
                 }
+            }
+            if (children.containsKey(name)) {
+                doc.append("Children: \n")
+                children[name]!!.forEach {
+                    doc.append("* ${parseTypeLink(it, refactor)}\n")
+                }
+                doc.append("    \n\n")
             }
             doc.append("\n")
         }
@@ -149,7 +167,7 @@ tasks.create<SourceTask>("tectonicDocs") {
     }
 }
 
-fun parseTypeLink(type: Type, refactor: Map<String, String>): String {
+fun parseTypeLink(type: com.github.javaparser.ast.Node, refactor: Map<String, String>): String {
     val st = parseType(type, refactor)
 
     if (st.contains('<')) {
@@ -170,7 +188,7 @@ fun parseTypeLink(type: Type, refactor: Map<String, String>): String {
     return "[$st](./$st)"
 }
 
-fun parseType(type: Type, refactor: Map<String, String>): String {
+fun parseType(type: com.github.javaparser.ast.Node, refactor: Map<String, String>): String {
     if (type is PrimitiveType) {
         return when (type.type) {
             Primitive.BOOLEAN -> "Boolean"
@@ -184,7 +202,7 @@ fun parseType(type: Type, refactor: Map<String, String>): String {
             else -> type.asString()
         }
     }
-    return generify(type.asString(), refactor)
+    return generify(type.toString(), refactor)
 }
 
 fun generify(type: String, refactor: Map<String, String>): String {
