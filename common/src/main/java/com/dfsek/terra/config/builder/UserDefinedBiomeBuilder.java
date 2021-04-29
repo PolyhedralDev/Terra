@@ -54,7 +54,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
                             throw new RuntimeException(e);
                         }
 
-                        WorldGenerator generator = new WorldGenerator(template.getPalette(), template.getSlantPalette(), noise, elevation, carving, template.getBiomeNoise().apply(seed), template.getElevationWeight(),
+                        WorldGenerator generator = new WorldGenerator(template.getPalette(), template.getSlant(), noise, elevation, carving, template.getBiomeNoise().apply(seed), template.getElevationWeight(),
                                 template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
                         return new UserDefinedBiome(template.getVanilla(), generator, template);
                     }

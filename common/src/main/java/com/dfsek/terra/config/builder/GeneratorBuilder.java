@@ -7,6 +7,7 @@ import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
 import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
@@ -31,7 +32,7 @@ public class GeneratorBuilder {
 
     private PaletteHolder palettes;
 
-    private PaletteHolder slantPalettes;
+    private SlantHolder slantPalettes;
 
     private boolean preventInterpolation;
 
@@ -121,11 +122,11 @@ public class GeneratorBuilder {
         this.palettes = palettes;
     }
 
-    public PaletteHolder getSlantPalettes() {
+    public SlantHolder getSlantPalettes() {
         return slantPalettes;
     }
 
-    public void setSlantPalettes(PaletteHolder slantPalettes) {
+    public void setSlantPalettes(SlantHolder slantPalettes) {
         this.slantPalettes = slantPalettes;
     }
 

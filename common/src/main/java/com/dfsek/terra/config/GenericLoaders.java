@@ -20,6 +20,7 @@ import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
+import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
@@ -49,6 +50,7 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.Normal
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
+import com.dfsek.terra.config.loaders.palette.slant.SlantHolderLoader;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
 import com.dfsek.terra.world.population.items.ores.Ore;
@@ -72,6 +74,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(GridSpawn.class, new GridSpawnLoader())
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayerHolder.class, new PaletteLayerLoader())
+                .registerLoader(SlantHolder.class, new SlantHolderLoader())
                 .registerLoader(FloraLayer.class, new FloraLayerLoader())
                 .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf(o.toString()))
                 .registerLoader(OreConfig.class, new OreConfigLoader())

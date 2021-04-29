@@ -21,6 +21,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -67,10 +68,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     private PaletteHolder palette;
 
-    @Value("slant.palette")
+    @Value("slant")
     @Abstractable
     @Default
-    private PaletteHolder slantPalette = null;
+    private SlantHolder slant = null;
 
     @Value("vanilla")
     @Abstractable
@@ -165,11 +166,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Default
     private Map<BlockType, Palette> stairPalettes;
 
-    @Value("slant.threshold")
-    @Abstractable
-    @Default
-    private double slantThreshold = 0.1;
-
     @Value("interpolate-elevation")
     @Abstractable
     @Default
@@ -230,8 +226,8 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return extend;
     }
 
-    public double getSlantThreshold() {
-        return slantThreshold;
+    public SlantHolder getSlant() {
+        return slant;
     }
 
     public double getSlabThreshold() {
@@ -304,10 +300,6 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     public List<TreeLayer> getTrees() {
         return trees;
-    }
-
-    public PaletteHolder getSlantPalette() {
-        return slantPalette;
     }
 
     public ProbabilityCollection<Biome> getVanilla() {
