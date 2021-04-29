@@ -16,17 +16,6 @@ fun Project.configureCommon() {
     configureDistribution()
 
     version = rootProject.version
-
-
-
-    tasks.withType<Test>().configureEach {
-        useJUnitPlatform()
-
-        maxHeapSize = "2G"
-        ignoreFailures = false
-        failFast = true
-        maxParallelForks = 12
-    }
 }
 
 fun Project.getGitHash(): String {
