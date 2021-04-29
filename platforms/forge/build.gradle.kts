@@ -1,6 +1,9 @@
 import com.dfsek.terra.configureCommon
-import net.minecraftforge.gradle.userdev.UserDevExtension
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.minecraftforge.gradle.common.util.RunConfig
+import net.minecraftforge.gradle.mcp.task.GenerateSRG
+import net.minecraftforge.gradle.userdev.UserDevExtension
+import net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace
 
 buildscript {
     repositories {
@@ -38,7 +41,12 @@ dependencies {
     "minecraft"("net.minecraftforge:forge:$mcVersion-$forgeVersion")
 }
 
-
+afterEvaluate {
+    val reobf = extensions.getByName<NamedDomainObjectContainer<RenameJarInPlace>>("reobf")
+    reobf.maybeCreate("shadowJar").run {
+        mappings = tasks.getByName<GenerateSRG>("createMcpToSrg").output
+    }
+}
 
 configure<UserDevExtension> {
     mappings(mapOf(
@@ -57,4 +65,29 @@ configure<UserDevExtension> {
         create("client", runConfig)
         create("server", runConfig)
     }
+}
+
+tasks.register<Jar>("deobfJar") {
+    from(sourceSets["main"].output)
+    archiveClassifier.set("dev")
+}
+
+val deobfElements = configurations.register("deobfElements") {
+    isVisible = false
+    description = "De-obfuscated elements for libs"
+    isCanBeResolved = false
+    isCanBeConsumed = true
+    attributes {
+        attribute(Usage.USAGE_ATTRIBUTE, project.objects.named(Usage.JAVA_API))
+        attribute(Category.CATEGORY_ATTRIBUTE, project.objects.named(Category.LIBRARY))
+        attribute(Bundling.BUNDLING_ATTRIBUTE, project.objects.named(Bundling.EXTERNAL))
+        attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, project.objects.named(LibraryElements.JAR))
+        attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 8)
+    }
+    outgoing.artifact(tasks.named("deobfJar"))
+}
+
+val javaComponent = components["java"] as AdhocComponentWithVariants
+javaComponent.addVariantsFromConfiguration(deobfElements.get()) {
+    mapToMavenScope("runtime")
 }
