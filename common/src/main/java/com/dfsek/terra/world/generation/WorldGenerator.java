@@ -4,12 +4,13 @@ import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
+import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 
 public class WorldGenerator implements Generator {
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     private final PaletteHolder palettes;
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
-    private final PaletteHolder slantPalettes;
+    private final SlantHolder slantPalettes;
 
     private final NoiseSampler noise;
     private final NoiseSampler elevation;
@@ -21,7 +22,7 @@ public class WorldGenerator implements Generator {
     private final int blendStep;
     private final double blendWeight;
 
-    public WorldGenerator(PaletteHolder palettes, PaletteHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
+    public WorldGenerator(PaletteHolder palettes, SlantHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.palettes = palettes;
         this.slantPalettes = slantPalettes;
         this.noise = noise;
@@ -83,9 +84,5 @@ public class WorldGenerator implements Generator {
     @Override
     public int getBlendStep() {
         return blendStep;
-    }
-
-    public Palette getSlantPalette(int y) {
-        return slantPalettes.getPalette(y);
     }
 }
