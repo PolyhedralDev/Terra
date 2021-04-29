@@ -10,9 +10,11 @@ public final class PaletteUtil {
     public static Palette getPalette(int x, int y, int z, BiomeTemplate c, Sampler sampler) {
 
         SlantHolder slant = c.getSlant();
-        double slope = MathUtil.derivative(sampler, x, y, z);
-        if (slant != null && slope > slant.getMinSlope()) {
-            return slant.getPalette(slope).getPalette(y);
+        if (slant != null) {
+            double slope = MathUtil.derivative(sampler, x, y, z);
+            if (slope > slant.getMinSlope()) {
+                return slant.getPalette(slope).getPalette(y);
+            }
         }
 
         return c.getPalette().getPalette(y);
