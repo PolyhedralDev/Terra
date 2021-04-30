@@ -36,7 +36,7 @@ public class NoiseFunction2 implements NoiseFunction {
             super(cacheSize);
         }
 
-        public double get(NoiseSampler noise, double x, double z) {
+        public synchronized double get(NoiseSampler noise, double x, double z) {
             double xx = x >= 0 ? x * 2 : x * -2 - 1;
             double zz = z >= 0 ? z * 2 : z * -2 - 1;
             double key = (xx >= zz) ? (xx * xx + xx + zz) : (zz * zz + xx);

@@ -18,6 +18,11 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 group = "com.dfsek.terra.fabric"
 
 dependencies {

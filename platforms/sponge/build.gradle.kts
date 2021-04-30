@@ -14,6 +14,11 @@ repositories {
     jcenter()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 dependencies {
     "compileOnly"("org.spongepowered:spongeapi:7.2.0")
     "shadedApi"(project(":common"))

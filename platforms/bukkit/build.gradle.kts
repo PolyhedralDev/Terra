@@ -161,6 +161,11 @@ task<JavaExec>(name = "runPaper") {
     classpath = files("$testDir/paper/paperclip.jar")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 task<JavaExec>(name = "runPurpur") {
     group = "bukkit"
     standardInput = System.`in`

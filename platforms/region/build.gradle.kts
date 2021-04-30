@@ -14,6 +14,11 @@ repositories {
     maven { url = uri("https://jitpack.io/") }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 dependencies {
     "shadedApi"(project(":common"))
     "shadedImplementation"("com.github.Querz:NBT:5.2") // Standalone NBT API
