@@ -53,11 +53,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldSettingsImport;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -93,7 +95,7 @@ import java.util.Map;
 @Mod("terra")
 @Mod.EventBusSubscriber(modid = "terra", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TerraForgePlugin implements TerraPlugin {
-    public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(NoFeatureConfig.CODEC);
+    public static final PopulatorFeature POPULATOR_FEATURE = (PopulatorFeature) new PopulatorFeature(NoFeatureConfig.CODEC).setRegistryName("terra", "terra");
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configured(IFeatureConfig.NONE).decorated(DecoratedPlacement.NOPE.configured(NoPlacementConfig.INSTANCE));
 
     private static TerraForgePlugin INSTANCE;
@@ -135,10 +137,6 @@ public class TerraForgePlugin implements TerraPlugin {
     public TerraForgePlugin() {
         if(INSTANCE != null) throw new IllegalStateException("Only one TerraPlugin instance may exist.");
         INSTANCE = this;
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::setup);
-
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public static TerraForgePlugin getInstance() {
@@ -151,13 +149,23 @@ public class TerraForgePlugin implements TerraPlugin {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Biome> event) {
-        INSTANCE.registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> event.getRegistry().register(createBiome(biome)))); // Register all Terra biomes.
+        INSTANCE.setup(); // Setup now because we need the biomes, and this event happens after blocks n stuff
+        INSTANCE.registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> {
+            Biome minecraftBiome = createBiome(biome);
+            INSTANCE.logger().info("Registering biome " + minecraftBiome.getRegistryName());
+            event.getRegistry().register(minecraftBiome);
+        })); // Register all Terra biomes.
     }
 
     @SubscribeEvent
     public static void registerLevels(RegistryEvent.Register<ForgeWorldType> event) {
         getInstance().logger.info("Registering level types...");
         event.getRegistry().register(TerraLevelType.FORGE_WORLD_TYPE);
+    }
+
+    @SubscribeEvent
+    public static void registerPop(RegistryEvent.Register<Feature<?>> event) {
+        event.getRegistry().register(POPULATOR_FEATURE);
     }
 
     private static Biome createBiome(BiomeBuilder biome) {
@@ -204,10 +212,10 @@ public class TerraForgePlugin implements TerraPlugin {
                 .specialEffects(vanilla.getSpecialEffects())
                 .mobSpawnSettings(vanilla.getMobSettings())
                 .generationSettings(generationSettings.build())
-                .build();
+                .build().setRegistryName("terra", createBiomeID(template.getPack(), template.getID()));
     }
 
-    public void setup(FMLCommonSetupEvent event) {
+    public void setup() {
         this.dataFolder = Paths.get("config", "Terra").toFile();
         saveDefaultConfig();
         config.load(this);
@@ -222,9 +230,6 @@ public class TerraForgePlugin implements TerraPlugin {
         registry.loadAll(this);
 
         logger.info("Loaded packs.");
-
-        Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation("terra:terra"), ForgeChunkGeneratorWrapper.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, new ResourceLocation("terra:terra"), TerraBiomeSource.CODEC);
 
         CommandManager manager = new TerraCommandManager(this);
         try {

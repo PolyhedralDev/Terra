@@ -9,6 +9,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraftforge.common.world.ForgeWorldType;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class TerraLevelType implements ForgeWorldType.IChunkGeneratorFactory {
     public static final TerraLevelType TERRA_LEVEL_TYPE = new TerraLevelType();

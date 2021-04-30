@@ -34,6 +34,7 @@ public class ForgeBlockData implements BlockData {
 
     @Override
     public String getAsString() {
+
         /*
         StringBuilder data = new StringBuilder(Registry.BLOCK.getId(delegate.getBlock()).toString());
         if(!delegate.getProperties().isEmpty()) {
