@@ -65,6 +65,7 @@ import net.minecraft.world.gen.placement.DecoratedPlacement;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ForgeWorldTypeScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.ForgeWorldType;
@@ -72,6 +73,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -84,6 +86,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -121,7 +124,7 @@ public class TerraForgePlugin implements TerraPlugin {
     private final WorldHandle worldHandle = new ForgeWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
-    private final AddonRegistry addonRegistry = new AddonRegistry(new FabricAddon(this), this);
+    private final AddonRegistry addonRegistry = new AddonRegistry(new ForgeAddon(this), this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
     private final PluginConfig config = new PluginConfig();
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
@@ -146,13 +149,65 @@ public class TerraForgePlugin implements TerraPlugin {
         return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
-
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Biome> event) {
         INSTANCE.registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> event.getRegistry().register(createBiome(biome)))); // Register all Terra biomes.
     }
 
-    public void setup(final FMLCommonSetupEvent event) {
+    @SubscribeEvent
+    public static void registerLevels(RegistryEvent.Register<ForgeWorldType> event) {
+        getInstance().logger.info("Registering level types...");
+        event.getRegistry().register(TerraLevelType.FORGE_WORLD_TYPE);
+    }
+
+    private static Biome createBiome(BiomeBuilder biome) {
+        BiomeTemplate template = biome.getTemplate();
+        Map<String, Integer> colors = template.getColors();
+
+        Biome vanilla = ((ForgeBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
+
+        BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder();
+        generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
+        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
+
+
+        /*
+        BiomeAmbience.Builder effects = new BiomeAmbience.Builder()
+                .waterColor(colors.getOrDefault("water", vanilla.getSpecialEffects().waterColor))
+                .waterFogColor(colors.getOrDefault("water-fog", vanilla.getSpecialEffects().waterFogColor))
+                .fogColor(colors.getOrDefault("fog", vanilla.getSpecialEffects().fogColor))
+                .skyColor(colors.getOrDefault("sky", vanilla.getSpecialEffects().skyColor))
+                .grassColorModifier(vanilla.getSpecialEffects().grassColorModifier);
+
+        if(colors.containsKey("grass")) {
+            effects.grassColorOverride(colors.get("grass"));
+        } else {
+            vanilla.getSpecialEffects().grassColor.ifPresent(effects::grassColor);
+        }
+        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+        if(colors.containsKey("foliage")) {
+            effects.foliageColor(colors.get("foliage"));
+        } else {
+            vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+        }
+
+         */
+
+        return new Biome.Builder()
+                .precipitation(vanilla.getPrecipitation())
+                .biomeCategory(vanilla.getBiomeCategory())
+                .depth(vanilla.getDepth())
+                .scale(vanilla.getScale())
+                .temperature(vanilla.getBaseTemperature())
+                .downfall(vanilla.getDownfall())
+                //.specialEffects(effects.build())
+                .specialEffects(vanilla.getSpecialEffects())
+                .mobSpawnSettings(vanilla.getMobSettings())
+                .generationSettings(generationSettings.build())
+                .build();
+    }
+
+    public void setup(FMLCommonSetupEvent event) {
         this.dataFolder = Paths.get("config", "Terra").toFile();
         saveDefaultConfig();
         config.load(this);
@@ -170,16 +225,6 @@ public class TerraForgePlugin implements TerraPlugin {
 
         Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation("terra:terra"), ForgeChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new ResourceLocation("terra:terra"), TerraBiomeSource.CODEC);
-
-        registry.forEach(configPack -> {
-            ForgeWorldType world = new ForgeWorldType(new TerraLevelType(configPack)).setRegistryName("terra", configPack.getTemplate().getID().toLowerCase(Locale.ROOT));
-            ForgeWorldTypeScreens.registerFactory(world, (returnTo, dimensionGeneratorSettings) -> new Screen(world.getDisplayName()) {
-                @Override
-                protected void init() {
-                    addButton(new Button(0, 0, 120, 20, new StringTextComponent("close"), btn -> Minecraft.getInstance().setScreen(returnTo)));
-                }
-            });
-        });
 
         CommandManager manager = new TerraCommandManager(this);
         try {
@@ -311,51 +356,9 @@ public class TerraForgePlugin implements TerraPlugin {
                 .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new ForgeBiome(biomeFixer.translate((String) o)));
     }
 
-    private static Biome createBiome(BiomeBuilder biome) {
-        BiomeTemplate template = biome.getTemplate();
-        Map<String, Integer> colors = template.getColors();
-
-        Biome vanilla = ((ForgeBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
-
-        BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder();
-        generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
-        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
-
-
-        /*
-        BiomeAmbience.Builder effects = new BiomeAmbience.Builder()
-                .waterColor(colors.getOrDefault("water", vanilla.getSpecialEffects().waterColor))
-                .waterFogColor(colors.getOrDefault("water-fog", vanilla.getSpecialEffects().waterFogColor))
-                .fogColor(colors.getOrDefault("fog", vanilla.getSpecialEffects().fogColor))
-                .skyColor(colors.getOrDefault("sky", vanilla.getSpecialEffects().skyColor))
-                .grassColorModifier(vanilla.getSpecialEffects().grassColorModifier);
-
-        if(colors.containsKey("grass")) {
-            effects.grassColorOverride(colors.get("grass"));
-        } else {
-            vanilla.getSpecialEffects().grassColor.ifPresent(effects::grassColor);
-        }
-        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
-        if(colors.containsKey("foliage")) {
-            effects.foliageColor(colors.get("foliage"));
-        } else {
-            vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
-        }
-
-         */
-
-        return new Biome.Builder()
-                .precipitation(vanilla.getPrecipitation())
-                .biomeCategory(vanilla.getBiomeCategory())
-                .depth(vanilla.getDepth())
-                .scale(vanilla.getScale())
-                .temperature(vanilla.getBaseTemperature())
-                .downfall(vanilla.getDownfall())
-                //.specialEffects(effects.build())
-                .specialEffects(vanilla.getSpecialEffects())
-                .mobSpawnSettings(vanilla.getMobSettings())
-                .generationSettings(generationSettings.build())
-                .build();
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
     /*
@@ -390,25 +393,35 @@ public class TerraForgePlugin implements TerraPlugin {
 
      */
 
-
-    @Override
-    public EventManager getEventManager() {
-        return eventManager;
-    }
-
     @Override
     public Profiler getProfiler() {
         return profiler;
     }
 
-    @Addon("Terra-Fabric")
+    @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static final class ClientEvents {
+        @SubscribeEvent
+        public static void register(FMLClientSetupEvent event) {
+            getInstance().logger.info("Client setup...");
+
+            ForgeWorldType world = TerraLevelType.FORGE_WORLD_TYPE;
+            ForgeWorldTypeScreens.registerFactory(world, (returnTo, dimensionGeneratorSettings) -> new Screen(world.getDisplayName()) {
+                @Override
+                protected void init() {
+                    addButton(new Button(0, 0, 120, 20, new StringTextComponent("close"), btn -> Minecraft.getInstance().setScreen(returnTo)));
+                }
+            });
+        }
+    }
+
+    @Addon("Terra-Forge")
     @Author("Terra")
     @Version("1.0.0")
-    private static final class FabricAddon extends TerraAddon implements EventListener {
+    private static final class ForgeAddon extends TerraAddon implements EventListener {
 
         private final TerraPlugin main;
 
-        private FabricAddon(TerraPlugin main) {
+        private ForgeAddon(TerraPlugin main) {
             this.main = main;
         }
 

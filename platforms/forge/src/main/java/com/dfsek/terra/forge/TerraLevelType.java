@@ -3,6 +3,7 @@ package com.dfsek.terra.forge;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.forge.world.TerraBiomeSource;
 import com.dfsek.terra.forge.world.generator.ForgeChunkGeneratorWrapper;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -10,14 +11,12 @@ import net.minecraft.world.gen.DimensionSettings;
 import net.minecraftforge.common.world.ForgeWorldType;
 
 public class TerraLevelType implements ForgeWorldType.IChunkGeneratorFactory {
-    private final ConfigPack pack;
-
-    public TerraLevelType(ConfigPack pack) {
-        this.pack = pack;
-    }
-
+    public static final TerraLevelType TERRA_LEVEL_TYPE = new TerraLevelType();
+    public static final ForgeWorldType FORGE_WORLD_TYPE = new ForgeWorldType(TERRA_LEVEL_TYPE).setRegistryName("terra", "world");
     @Override
     public ChunkGenerator createChunkGenerator(Registry<Biome> biomeRegistry, Registry<DimensionSettings> dimensionSettingsRegistry, long seed, String generatorSettings) {
+        ConfigPack pack = TerraForgePlugin.getInstance().getConfigRegistry().get("DEFAULT");
+        TerraForgePlugin.getInstance().logger().info("Creating generator for config pack " + pack.getTemplate().getID());
         return new ForgeChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
     }
 }
