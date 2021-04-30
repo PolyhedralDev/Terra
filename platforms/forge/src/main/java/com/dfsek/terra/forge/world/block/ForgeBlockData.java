@@ -5,8 +5,32 @@ import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.forge.world.ForgeAdapter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.state.Property;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ForgeBlockData implements BlockData {
+    private static final Function<Map.Entry<Property<?>, Comparable<?>>, String> PROPERTY_MAPPER = new Function<Map.Entry<Property<?>, Comparable<?>>, String>() {
+        public String apply(@Nullable Map.Entry<Property<?>, Comparable<?>> entry) {
+            if (entry == null) {
+                return "<NULL>";
+            } else {
+                Property<?> property = entry.getKey();
+                return property.getName() + "=" + this.getName(property, entry.getValue());
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private <T extends Comparable<T>> String getName(Property<T> property, Comparable<?> comparable) {
+            return property.getName((T)comparable);
+        }
+    };
+
     protected BlockState delegate;
 
     public ForgeBlockData(BlockState delegate) {
@@ -34,18 +58,13 @@ public class ForgeBlockData implements BlockData {
 
     @Override
     public String getAsString() {
-
-        /*
-        StringBuilder data = new StringBuilder(Registry.BLOCK.getId(delegate.getBlock()).toString());
+        StringBuilder data = new StringBuilder(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(delegate.getBlock())).toString());
         if(!delegate.getProperties().isEmpty()) {
             data.append('[');
-            data.append(delegate.getProperties().stream().map(State.PROPERTY_MAP_PRINTER).collect(Collectors.joining(",")));
+            data.append(delegate.getValues().entrySet().stream().map(PROPERTY_MAPPER).collect(Collectors.joining(",")));
             data.append(']');
         }
         return data.toString();
-
-         */
-        throw new UnsupportedOperationException("TODO: implement this"); // TODO
     }
 
     @Override
