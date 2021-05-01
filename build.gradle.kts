@@ -16,7 +16,7 @@ allprojects {
         maxHeapSize = "2G"
         ignoreFailures = false
         failFast = true
-        maxParallelForks = (Runtime.getRuntime().availableProcessors()).takeIf { it > 0 } ?: 1
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).takeIf { it > 0 } ?: 1
 
         reports.html.isEnabled = false
         reports.junitXml.isEnabled = false
