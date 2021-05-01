@@ -1,15 +1,17 @@
 package com.dfsek.terra
 
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.repositories
 
 fun Project.configureDependencies() {
+    apply(plugin = "java")
+    apply(plugin = "java-library")
 
     configurations {
         val shaded = create("shaded")
-        getByName("compile").extendsFrom(shaded)
         val shadedApi = create("shadedApi")
         shaded.extendsFrom(shadedApi)
         getByName("api").extendsFrom(shadedApi)

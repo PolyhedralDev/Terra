@@ -7,10 +7,6 @@ import org.gradle.kotlin.dsl.withType
 import java.io.ByteArrayOutputStream
 
 fun Project.configureCommon() {
-    apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
-    apply(plugin = "idea")
-
     configureDependencies()
     configureCompilation()
     configureDistribution()

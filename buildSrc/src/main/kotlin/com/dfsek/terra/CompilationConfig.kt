@@ -10,6 +10,9 @@ import org.gradle.kotlin.dsl.*
 import org.gradle.language.jvm.tasks.ProcessResources
 
 fun Project.configureCompilation() {
+    apply(plugin = "maven-publish")
+    apply(plugin = "idea")
+
     configure<JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

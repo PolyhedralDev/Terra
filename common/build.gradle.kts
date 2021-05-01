@@ -1,4 +1,3 @@
-import com.dfsek.terra.configureCommon
 import com.dfsek.terra.configureCompilation
 import com.dfsek.terra.configureDependencies
 
