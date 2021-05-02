@@ -16,9 +16,6 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
 
-import java.io.File;
-import java.util.UUID;
-
 public class ForgeSeededWorldAccess implements World, ForgeWorldHandle {
 
     private final Handle handle;
@@ -48,22 +45,7 @@ public class ForgeSeededWorldAccess implements World, ForgeWorldHandle {
     }
 
     @Override
-    public UUID getUID() {
-        return UUID.randomUUID(); // TODO: implementation
-    }
-
-    @Override
-    public boolean isChunkGenerated(int x, int z) {
-        return false;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
-        return null;
-    }
-
-    @Override
-    public File getWorldFolder() {
         return null;
     }
 

@@ -16,9 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.server.ServerWorld;
 
-import java.io.File;
-import java.util.UUID;
-
 public class ForgeWorld implements World, ForgeWorldHandle {
 
     private final Handle delegate;
@@ -48,23 +45,8 @@ public class ForgeWorld implements World, ForgeWorldHandle {
     }
 
     @Override
-    public UUID getUID() {
-        return null;
-    }
-
-    @Override
-    public boolean isChunkGenerated(int x, int z) {
-        return false;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         return new ForgeChunk(delegate.world.getChunk(x, z));
-    }
-
-    @Override
-    public File getWorldFolder() {
-        return null;
     }
 
     @Override

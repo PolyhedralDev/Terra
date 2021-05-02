@@ -19,17 +19,11 @@ public interface World extends Handle {
 
     String getName();
 
-    UUID getUID();
-
-    boolean isChunkGenerated(int x, int z);
-
     Chunk getChunkAt(int x, int z);
 
     default Chunk getChunkAt(Location location) {
         return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
-
-    File getWorldFolder();
 
     Block getBlockAt(int x, int y, int z);
 
