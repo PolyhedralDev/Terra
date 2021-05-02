@@ -1,9 +1,9 @@
 import com.dfsek.terra.configureCommon
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.minecraftforge.gradle.common.util.RunConfig
 import net.minecraftforge.gradle.mcp.task.GenerateSRG
 import net.minecraftforge.gradle.userdev.UserDevExtension
 import net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace
+import java.util.Date
 
 buildscript {
     repositories {
@@ -18,8 +18,11 @@ buildscript {
     }
 }
 apply(plugin = "net.minecraftforge.gradle")
+apply(plugin = "org.spongepowered.mixin")
 
-
+configure<org.spongepowered.asm.gradle.plugins.MixinExtension> {
+    add(sourceSets.main.orNull, "terra.refmap.json")
+}
 
 plugins {
     java
@@ -41,6 +44,15 @@ val mcVersion = "1.16.5"
 dependencies {
     "shadedApi"(project(":common"))
     "minecraft"("net.minecraftforge:forge:$mcVersion-$forgeVersion")
+    "annotationProcessor"("org.spongepowered:mixin:0.8.2:processor")
+}
+
+if (System.getProperty("idea.sync.active") == "true") {
+    afterEvaluate {
+        tasks.withType<JavaCompile>().all {
+            options.annotationProcessorPath = files()
+        }
+    }
 }
 
 afterEvaluate {
@@ -61,6 +73,7 @@ configure<UserDevExtension> {
                     "forge.logging.markers" to "SCAN,REGISTRIES,REGISTRYDUMP",
                     "forge.logging.console.level" to "debug"
             ))
+            arg("-mixin.config=terra.mixins.json")
             workingDirectory = project.file("run").canonicalPath
             source(sourceSets["main"])
         }
@@ -92,4 +105,18 @@ val deobfElements = configurations.register("deobfElements") {
 val javaComponent = components["java"] as AdhocComponentWithVariants
 javaComponent.addVariantsFromConfiguration(deobfElements.get()) {
     mapToMavenScope("runtime")
+}
+
+tasks.jar {
+    manifest {
+        attributes(mapOf(
+                "Specification-Title" to "terra",
+                "Specification-Vendor" to "Terra",
+                "Specification-Version" to "1.0",
+                "Implementation-Title" to "Terra",
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to "terra",
+                "MixinConfigs" to "terra.mixins.json"
+        ))
+    }
 }

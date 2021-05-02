@@ -37,6 +37,7 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.forge.inventory.ForgeItemHandle;
+import com.dfsek.terra.forge.mixin.BiomeAmbienceAccessor;
 import com.dfsek.terra.forge.world.ForgeAdapter;
 import com.dfsek.terra.forge.world.ForgeBiome;
 import com.dfsek.terra.forge.world.ForgeTree;
@@ -62,6 +63,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeAmbience;
 import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -214,7 +216,7 @@ public class TerraForgePlugin implements TerraPlugin {
 
     public Biome createBiome(BiomeBuilder biome) {
         BiomeTemplate template = biome.getTemplate();
-        //Map<String, Integer> colors = template.getColors();
+        Map<String, Integer> colors = template.getColors();
 
         Biome vanilla = ((ForgeBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
 
@@ -222,28 +224,25 @@ public class TerraForgePlugin implements TerraPlugin {
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
-
-        /*
+        BiomeAmbienceAccessor accessor = ((BiomeAmbienceAccessor) vanilla.getSpecialEffects());
         BiomeAmbience.Builder effects = new BiomeAmbience.Builder()
-                .waterColor(colors.getOrDefault("water", vanilla.getSpecialEffects().waterColor))
-                .waterFogColor(colors.getOrDefault("water-fog", vanilla.getSpecialEffects().waterFogColor))
-                .fogColor(colors.getOrDefault("fog", vanilla.getSpecialEffects().fogColor))
-                .skyColor(colors.getOrDefault("sky", vanilla.getSpecialEffects().skyColor))
-                .grassColorModifier(vanilla.getSpecialEffects().grassColorModifier);
+                .waterColor(colors.getOrDefault("water", accessor.getWaterColor()))
+                .waterFogColor(colors.getOrDefault("water-fog", accessor.getWaterFogColor()))
+                .fogColor(colors.getOrDefault("fog", accessor.getFogColor()))
+                .skyColor(colors.getOrDefault("sky", accessor.getSkyColor()))
+                .grassColorModifier(accessor.getGrassColorModifier());
 
         if(colors.containsKey("grass")) {
             effects.grassColorOverride(colors.get("grass"));
         } else {
-            vanilla.getSpecialEffects().grassColor.ifPresent(effects::grassColor);
+            accessor.getGrassColorOverride().ifPresent(effects::grassColorOverride);
         }
-        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+        accessor.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         if(colors.containsKey("foliage")) {
-            effects.foliageColor(colors.get("foliage"));
+            effects.foliageColorOverride(colors.get("foliage"));
         } else {
-            vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+            accessor.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         }
-
-         */
 
         return new Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
@@ -252,8 +251,7 @@ public class TerraForgePlugin implements TerraPlugin {
                 .scale(vanilla.getScale())
                 .temperature(vanilla.getBaseTemperature())
                 .downfall(vanilla.getDownfall())
-                //.specialEffects(effects.build())
-                .specialEffects(vanilla.getSpecialEffects())
+                .specialEffects(effects.build())
                 .mobSpawnSettings(vanilla.getMobSettings())
                 .generationSettings(generationSettings.build())
                 .build().setRegistryName("terra", createBiomeID(template.getPack(), template.getID()));

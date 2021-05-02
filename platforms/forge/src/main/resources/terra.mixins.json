@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.dfsek.terra.forge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "terra.refmap.json",
+  "mixins": [
+    "BiomeAmbienceAccessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
