@@ -178,11 +178,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
-    public boolean isDebug() {
-        return true;
-    }
-
-    @Override
     public Language getLanguage() {
         return LangUtil.getLanguage();
     }
@@ -302,6 +297,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         config.load(this);
         LangUtil.load(config.getLanguage(), this);
         logger.info("Initializing Terra...");
+
+        debugLogger.setDebug(config.isDebugLogging());
+        if(config.isDebugProfiler()) profiler.start();
 
         if(!addonRegistry.loadAll()) {
             throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");

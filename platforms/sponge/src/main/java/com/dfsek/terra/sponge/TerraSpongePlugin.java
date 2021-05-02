@@ -87,11 +87,6 @@ public class TerraSpongePlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isDebug() {
-        return true;
-    }
-
-    @Override
     public Language getLanguage() {
         try {
             return new Language(new File(getDataFolder(), "lang/en_us.yml"));

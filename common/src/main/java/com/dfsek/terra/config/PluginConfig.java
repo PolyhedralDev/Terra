@@ -18,9 +18,21 @@ import java.util.jar.JarFile;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PluginConfig implements ConfigTemplate {
-    @Value("debug")
+    @Value("debug.commands")
     @Default
-    private boolean debug = false;
+    private boolean debugCommands = false;
+
+    @Value("debug.log")
+    @Default
+    private boolean debugLog = false;
+
+    @Value("debug.profiler")
+    @Default
+    private boolean debugProfiler = false;
+
+    @Value("debug.script")
+    @Default
+    private boolean debugScript = false;
 
     @Value("language")
     @Default
@@ -80,15 +92,31 @@ public class PluginConfig implements ConfigTemplate {
         } catch(ConfigException | IOException e) {
             e.printStackTrace();
         }
-        logger.info("DebugLogger: " + isDebug());
+
+        if(isDebugCommands()) logger.info("Debug commands enabled.");
+        if(isDebugLogging()) logger.info("Debug logging enabled.");
+        if(isDebugProfiler()) logger.info("Debug profiler enabled.");
+        if(isDebugScript()) logger.info("Script debug blocks enabled.");
     }
 
     public String getLanguage() {
         return language;
     }
 
-    public boolean isDebug() {
-        return debug;
+    public boolean isDebugCommands() {
+        return debugCommands;
+    }
+
+    public boolean isDebugLogging() {
+        return debugLog;
+    }
+
+    public boolean isDebugProfiler() {
+        return debugProfiler;
+    }
+
+    public boolean isDebugScript() {
+        return debugScript;
     }
 
     public long getDataSaveInterval() {
