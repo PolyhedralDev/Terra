@@ -13,16 +13,17 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Properties;
 import java.util.Random;
 
-// Mixins commented out until loom fixes multi-project builds.
-
-//@Mixin(GeneratorOptions.class)
+@Mixin(GeneratorOptions.class)
 public class MixinGeneratorOptions {
-    //@Inject(method = "fromProperties(Lnet/minecraft/util/registry/DynamicRegistryManager;Ljava/util/Properties;)Lnet/minecraft/world/gen/GeneratorOptions;", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "fromProperties(Lnet/minecraft/util/registry/DynamicRegistryManager;Ljava/util/Properties;)Lnet/minecraft/world/gen/GeneratorOptions;", at = @At("HEAD"), cancellable = true)
     private static void fromProperties(DynamicRegistryManager dynamicRegistryManager, Properties properties, CallbackInfoReturnable<GeneratorOptions> cir) {
         if(properties.get("level-type") == null) {
             return;

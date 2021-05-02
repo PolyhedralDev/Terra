@@ -33,6 +33,7 @@ dependencies {
 
 configure<LoomGradleExtension> {
     accessWidener("src/main/resources/terra.accesswidener")
+    refmapName = "terra.refmap.json"
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
