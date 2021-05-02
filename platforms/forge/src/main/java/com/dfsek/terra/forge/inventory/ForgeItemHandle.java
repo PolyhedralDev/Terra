@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.arguments.ItemArgument;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,11 +27,11 @@ public class ForgeItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return ForgeAdapter.adapt(Registry.ENCHANTMENT.get(ResourceLocation.tryParse(id)));
+        return ForgeAdapter.adapt(ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse(id)));
     }
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return Registry.ENCHANTMENT.stream().map(ForgeAdapter::adapt).collect(Collectors.toSet());
+        return ForgeRegistries.ENCHANTMENTS.getEntries().stream().map(entry -> ForgeAdapter.adapt(entry.getValue())).collect(Collectors.toSet());
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Locale;
 
@@ -30,6 +31,6 @@ public class ForgeWorldHandle implements WorldHandle {
     public EntityType getEntity(String id) {
         ResourceLocation identifier = ResourceLocation.tryParse(id);
         if(identifier == null) identifier = ResourceLocation.tryParse("minecraft:" + id.toLowerCase(Locale.ROOT));
-        return ForgeAdapter.adapt(Registry.ENTITY_TYPE.get(identifier));
+        return ForgeAdapter.adapt(ForgeRegistries.ENTITIES.getValue(identifier));
     }
 }

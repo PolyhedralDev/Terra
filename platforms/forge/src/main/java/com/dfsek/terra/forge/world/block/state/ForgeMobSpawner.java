@@ -8,6 +8,7 @@ import com.dfsek.terra.forge.world.ForgeAdapter;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorld;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 public class ForgeMobSpawner extends ForgeBlockState implements MobSpawner { // TODO: finish implementation / refactor API because bukkit doesnt expose most of the stuff spawners can do
@@ -19,7 +20,7 @@ public class ForgeMobSpawner extends ForgeBlockState implements MobSpawner { // 
 
     @Override
     public EntityType getSpawnedType() {
-        return ForgeAdapter.adapt(Registry.ENTITY_TYPE.get(((MobSpawnerTileEntity) blockEntity).getSpawner().getSpawnerEntity().getType().getRegistryName()));
+        return ForgeAdapter.adapt(ForgeRegistries.ENTITIES.getValue(((MobSpawnerTileEntity) blockEntity).getSpawner().getSpawnerEntity().getType().getRegistryName()));
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.forge.world.ForgeAdapter;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class ForgeEnchantment implements Enchantment {
 
     @Override
     public String getID() {
-        return Objects.requireNonNull(Registry.ENCHANTMENT.getKey(enchantment)).toString();
+        return Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(enchantment)).toString();
     }
 
     @Override

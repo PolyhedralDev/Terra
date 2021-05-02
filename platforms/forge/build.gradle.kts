@@ -3,7 +3,6 @@ import net.minecraftforge.gradle.common.util.RunConfig
 import net.minecraftforge.gradle.mcp.task.GenerateSRG
 import net.minecraftforge.gradle.userdev.UserDevExtension
 import net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace
-import java.util.Date
 
 buildscript {
     repositories {
@@ -21,11 +20,12 @@ apply(plugin = "net.minecraftforge.gradle")
 apply(plugin = "org.spongepowered.mixin")
 
 configure<org.spongepowered.asm.gradle.plugins.MixinExtension> {
-    add(sourceSets.main.orNull, "terra.refmap.json")
+    add(sourceSets.main.get(), "terra.refmap.json")
 }
 
 plugins {
     java
+    id("com.modrinth.minotaur").version("1.1.0")
 }
 
 configureCommon()
@@ -47,7 +47,7 @@ dependencies {
     "annotationProcessor"("org.spongepowered:mixin:0.8.2:processor")
 }
 
-if (System.getProperty("idea.sync.active") == "true") {
+if ("true" == System.getProperty("idea.sync.active")) {
     afterEvaluate {
         tasks.withType<JavaCompile>().all {
             options.annotationProcessorPath = files()
@@ -58,6 +58,7 @@ if (System.getProperty("idea.sync.active") == "true") {
 afterEvaluate {
     val reobf = extensions.getByName<NamedDomainObjectContainer<RenameJarInPlace>>("reobf")
     reobf.maybeCreate("shadowJar").run {
+        group = "forge"
         mappings = tasks.getByName<GenerateSRG>("createMcpToSrg").output
     }
 }
@@ -85,6 +86,7 @@ configure<UserDevExtension> {
 tasks.register<Jar>("deobfJar") {
     from(sourceSets["main"].output)
     archiveClassifier.set("dev")
+    group = "forge"
 }
 
 val deobfElements = configurations.register("deobfElements") {
@@ -119,4 +121,8 @@ tasks.jar {
                 "MixinConfigs" to "terra.mixins.json"
         ))
     }
+}
+
+tasks.named("shadowJar") {
+
 }
