@@ -103,9 +103,10 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     @Override
     @SuppressWarnings({"try"})
     public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
-        TerraWorld tw = main.getWorld(world);
-        BiomeProvider grid = tw.getBiomeProvider();
         try(ProfileFrame ignore = main.getProfiler().profile("chunk_base_3d")) {
+            TerraWorld tw = main.getWorld(world);
+            BiomeProvider grid = tw.getBiomeProvider();
+
             if(!tw.isSafe()) return chunk;
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
@@ -119,7 +120,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                     int cx = xOrig + x;
                     int cz = zOrig + z;
 
-                    TerraBiome b = grid.getBiome(xOrig + x, zOrig + z);
+                    TerraBiome b = grid.getBiome(cx, cz);
                     BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
 
                     int sea = c.getSeaLevel();
