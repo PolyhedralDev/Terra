@@ -409,7 +409,6 @@ public class TerraForgePlugin implements TerraPlugin {
 
             event.getDispatcher().register(literal("terra").executes(context -> 1).then((ArgumentBuilder) assemble(arg, INSTANCE.manager)));
             event.getDispatcher().register(literal("te").executes(context -> 1).then((ArgumentBuilder) assemble(arg, INSTANCE.manager)));
-            //dispatcher.register(literal("te").redirect(root));
         }
     }
 
