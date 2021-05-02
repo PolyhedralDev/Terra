@@ -159,7 +159,7 @@ public class DistributionTest {
         new GenericLoaders(MAIN).register(loader);
 
         BiomeRegistry biomeRegistry = new BiomeRegistry();
-        folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), MAIN));
+        folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.loadConfigs(inputStreams, TestBiome::new), MAIN));
 
         BiomeProviderTemplate template = new BiomeProviderTemplate();
         ConfigLoader pipeLoader = new ConfigLoader()

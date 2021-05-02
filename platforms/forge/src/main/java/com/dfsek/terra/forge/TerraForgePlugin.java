@@ -37,7 +37,6 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.forge.inventory.ForgeItemHandle;
-import com.dfsek.terra.forge.mixin.BiomeAmbienceAccessor;
 import com.dfsek.terra.forge.world.ForgeAdapter;
 import com.dfsek.terra.forge.world.ForgeBiome;
 import com.dfsek.terra.forge.world.ForgeTree;
@@ -196,11 +195,7 @@ public class TerraForgePlugin implements TerraPlugin {
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Biome> event) {
         INSTANCE.setup(); // Setup now because we need the biomes, and this event happens after blocks n stuff
-        INSTANCE.getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> {
-            Biome minecraftBiome = INSTANCE.createBiome(biome);
-            INSTANCE.logger().info("Registering biome " + minecraftBiome.getRegistryName());
-            event.getRegistry().register(minecraftBiome);
-        })); // Register all Terra biomes.
+        INSTANCE.getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> event.getRegistry().register(INSTANCE.createBiome(biome)))); // Register all Terra biomes.
     }
 
     @SubscribeEvent
@@ -224,24 +219,24 @@ public class TerraForgePlugin implements TerraPlugin {
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
-        BiomeAmbienceAccessor accessor = ((BiomeAmbienceAccessor) vanilla.getSpecialEffects());
+        BiomeAmbience vanillaEffects =  vanilla.getSpecialEffects();
         BiomeAmbience.Builder effects = new BiomeAmbience.Builder()
-                .waterColor(colors.getOrDefault("water", accessor.getWaterColor()))
-                .waterFogColor(colors.getOrDefault("water-fog", accessor.getWaterFogColor()))
-                .fogColor(colors.getOrDefault("fog", accessor.getFogColor()))
-                .skyColor(colors.getOrDefault("sky", accessor.getSkyColor()))
-                .grassColorModifier(accessor.getGrassColorModifier());
+                .waterColor(colors.getOrDefault("water", vanillaEffects.getWaterColor()))
+                .waterFogColor(colors.getOrDefault("water-fog", vanillaEffects.getWaterFogColor()))
+                .fogColor(colors.getOrDefault("fog", vanillaEffects.getFogColor()))
+                .skyColor(colors.getOrDefault("sky", vanillaEffects.getSkyColor()))
+                .grassColorModifier(vanillaEffects.getGrassColorModifier());
 
         if(colors.containsKey("grass")) {
             effects.grassColorOverride(colors.get("grass"));
         } else {
-            accessor.getGrassColorOverride().ifPresent(effects::grassColorOverride);
+            vanillaEffects.getGrassColorOverride().ifPresent(effects::grassColorOverride);
         }
-        accessor.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
+        vanillaEffects.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         if(colors.containsKey("foliage")) {
             effects.foliageColorOverride(colors.get("foliage"));
         } else {
-            accessor.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
+            vanillaEffects.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         }
 
         return new Biome.Builder()
