@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.inventory;
+package com.dfsek.terra.fabric.handle;
 
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.inventory.Item;

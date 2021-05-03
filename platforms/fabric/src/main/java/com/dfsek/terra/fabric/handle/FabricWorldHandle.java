@@ -1,7 +1,8 @@
-package com.dfsek.terra.fabric.world;
+package com.dfsek.terra.fabric.handle;
 
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
