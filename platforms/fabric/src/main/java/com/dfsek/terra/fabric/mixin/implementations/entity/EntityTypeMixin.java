@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.entity;
+package com.dfsek.terra.fabric.mixin.implementations.entity;
 
 import net.minecraft.entity.EntityType;
 import org.spongepowered.asm.mixin.Implements;

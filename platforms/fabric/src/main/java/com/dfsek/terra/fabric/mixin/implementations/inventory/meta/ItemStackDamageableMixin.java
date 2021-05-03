@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.inventory;
+package com.dfsek.terra.fabric.mixin.implementations.inventory.meta;
 
 import com.dfsek.terra.api.platform.inventory.item.Damageable;
 import net.minecraft.item.ItemStack;

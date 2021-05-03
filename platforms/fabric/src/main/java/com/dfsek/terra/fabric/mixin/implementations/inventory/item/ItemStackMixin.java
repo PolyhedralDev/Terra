@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.inventory;
+package com.dfsek.terra.fabric.mixin.implementations.inventory.item;
 
 import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;

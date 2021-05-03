@@ -1,8 +1,9 @@
-package com.dfsek.terra.fabric.mixin.block;
+package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
 import com.dfsek.terra.api.platform.block.state.Container;
 import com.dfsek.terra.api.platform.inventory.Inventory;
 import com.dfsek.terra.fabric.inventory.FabricInventory;
+import com.dfsek.terra.fabric.mixin.implementations.block.BlockEntityMixin;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;

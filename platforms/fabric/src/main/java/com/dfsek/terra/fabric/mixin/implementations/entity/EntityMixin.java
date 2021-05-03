@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.entity;
+package com.dfsek.terra.fabric.mixin.implementations.entity;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.World;

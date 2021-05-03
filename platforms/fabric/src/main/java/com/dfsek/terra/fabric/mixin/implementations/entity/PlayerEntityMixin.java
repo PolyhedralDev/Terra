@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.entity;
+package com.dfsek.terra.fabric.mixin.implementations.entity;
 
 import com.dfsek.terra.api.platform.entity.Player;
 import net.minecraft.entity.player.PlayerEntity;

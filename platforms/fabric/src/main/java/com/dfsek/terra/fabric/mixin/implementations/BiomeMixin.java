@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.world;
+package com.dfsek.terra.fabric.mixin.implementations;
 
 import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Implements;

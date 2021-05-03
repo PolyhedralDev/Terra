@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.block;
+package com.dfsek.terra.fabric.mixin.implementations.block;
 
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;

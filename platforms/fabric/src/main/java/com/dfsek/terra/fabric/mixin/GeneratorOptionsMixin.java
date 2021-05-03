@@ -22,7 +22,7 @@ import java.util.Properties;
 import java.util.Random;
 
 @Mixin(GeneratorOptions.class)
-public class MixinGeneratorOptions {
+public abstract class GeneratorOptionsMixin {
     @Inject(method = "fromProperties(Lnet/minecraft/util/registry/DynamicRegistryManager;Ljava/util/Properties;)Lnet/minecraft/world/gen/GeneratorOptions;", at = @At("HEAD"), cancellable = true)
     private static void fromProperties(DynamicRegistryManager dynamicRegistryManager, Properties properties, CallbackInfoReturnable<GeneratorOptions> cir) {
         if(properties.get("level-type") == null) {
