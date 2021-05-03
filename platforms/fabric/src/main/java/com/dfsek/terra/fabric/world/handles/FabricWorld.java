@@ -41,11 +41,6 @@ public class FabricWorld implements World, FabricWorldHandle {
     }
 
     @Override
-    public String getName() {
-        return delegate.world.worldProperties.getLevelName();
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         return (Chunk) delegate.world.getChunk(x, z);
     }

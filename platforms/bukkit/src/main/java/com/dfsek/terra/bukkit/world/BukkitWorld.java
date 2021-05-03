@@ -37,7 +37,6 @@ public class BukkitWorld implements World {
         return new BukkitChunkGenerator(delegate.getGenerator());
     }
 
-    @Override
     public String getName() {
         return delegate.getName();
     }

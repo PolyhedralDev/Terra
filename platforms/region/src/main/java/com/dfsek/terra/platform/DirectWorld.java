@@ -46,11 +46,6 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         MCAFile file = compute(x, z);
         net.querz.mca.Chunk chunk = file.getChunk(x, z);

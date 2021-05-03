@@ -39,11 +39,6 @@ public class ForgeWorldAccess implements World, ForgeWorldHandle {
     }
 
     @Override
-    public String getName() {
-        return ((IServerWorld) delegate).getLevel().toString();
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         return null;
     }

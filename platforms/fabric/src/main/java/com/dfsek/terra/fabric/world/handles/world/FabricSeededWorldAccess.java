@@ -40,11 +40,6 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
     }
 
     @Override
-    public String getName() {
-        return handle.toString(); // TODO: implementation
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         return null;
     }

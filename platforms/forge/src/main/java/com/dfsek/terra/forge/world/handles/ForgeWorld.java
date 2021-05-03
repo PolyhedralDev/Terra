@@ -40,11 +40,6 @@ public class ForgeWorld implements World, ForgeWorldHandle {
     }
 
     @Override
-    public String getName() {
-        return delegate.world.toString();
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         return new ForgeChunk(delegate.world.getChunk(x, z));
     }

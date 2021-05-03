@@ -19,8 +19,6 @@ public interface World extends Handle {
 
     ChunkGenerator getGenerator();
 
-    String getName();
-
     Chunk getChunkAt(int x, int z);
 
     default Chunk getChunkAt(Location location) {

@@ -31,11 +31,6 @@ public class DummyWorld implements World {
     }
 
     @Override
-    public String getName() {
-        return "DUMMY";
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         throw new UnsupportedOperationException("Cannot get chunk in DummyWorld");
     }
