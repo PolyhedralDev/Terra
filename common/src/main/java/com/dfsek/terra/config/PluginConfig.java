@@ -69,12 +69,12 @@ public class PluginConfig implements ConfigTemplate {
             ConfigLoader loader = new ConfigLoader();
             loader.load(this, file);
             if(dumpDefaultConfig) { // Don't dump default config if already loaded.
-                try(JarFile jar = new JarFile(new File(TerraPlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
+                try(JarFile jar = main.getModJar()) {
                     JarUtil.copyResourcesToDirectory(jar, "packs", new File(main.getDataFolder(), "packs").toString());
                 } catch(IOException | URISyntaxException e) {
                     main.getDebugLogger().error("Failed to dump default config files!");
                     e.printStackTrace();
-                    main.getDebugLogger().error("Report this to Terra!");
+                    main.getDebugLogger().error("Either you're on Forge, or this is a bug. If it's the latter, report this to Terra!");
                 }
             }
         } catch(ConfigException | IOException e) {

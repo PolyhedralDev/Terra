@@ -26,6 +26,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.util.JarUtil;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.commands.CommandUtil;
@@ -86,10 +87,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
+import org.objectweb.asm.Type;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,7 +100,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
 
 import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
@@ -219,7 +225,7 @@ public class TerraForgePlugin implements TerraPlugin {
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
-        BiomeAmbience vanillaEffects =  vanilla.getSpecialEffects();
+        BiomeAmbience vanillaEffects = vanilla.getSpecialEffects();
         BiomeAmbience.Builder effects = new BiomeAmbience.Builder()
                 .waterColor(colors.getOrDefault("water", vanillaEffects.getWaterColor()))
                 .waterFogColor(colors.getOrDefault("water-fog", vanillaEffects.getWaterFogColor()))
@@ -287,6 +293,22 @@ public class TerraForgePlugin implements TerraPlugin {
             logger.info("Loading world " + w);
             return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) ((ForgeChunkGenerator) world.getGenerator()).getHandle()).getPack(), this);
         });
+    }
+
+    @Override
+    public JarFile getModJar() throws URISyntaxException, IOException {
+        File modsDir = new File("./mods");
+
+        if(!modsDir.exists()) return JarUtil.getJarFile();
+
+        for(File file : Objects.requireNonNull(modsDir.listFiles((dir, name) -> name.endsWith(".jar")))) {
+            try(ZipFile zipFile = new ZipFile(file)) {
+                if(zipFile.getEntry(Type.getInternalName(TerraPlugin.class) + ".class") != null) {
+                    return new JarFile(file);
+                }
+            }
+        }
+        return JarUtil.getJarFile();
     }
 
     public TerraWorld getWorld(long seed) {
