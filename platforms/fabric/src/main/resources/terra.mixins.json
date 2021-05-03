@@ -9,6 +9,7 @@
     "implementations.ChunkGeneratorMixin",
     "implementations.block.BlockEntityMixin",
     "implementations.block.state.LootableContainerBlockEntityMixin",
+    "implementations.block.state.MobSpawnerBlockEntityMixin",
     "implementations.block.state.SignBlockEntityMixin",
     "implementations.chunk.ChunkRegionMixin",
     "implementations.chunk.WorldChunkMixin",

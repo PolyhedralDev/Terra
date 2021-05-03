@@ -3,6 +3,9 @@ package com.dfsek.terra.fabric.world;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.platform.block.state.Container;
+import com.dfsek.terra.api.platform.block.state.MobSpawner;
+import com.dfsek.terra.api.platform.block.state.Sign;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricBlockType;
 import com.dfsek.terra.fabric.world.block.data.FabricDirectional;
@@ -14,9 +17,14 @@ import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.WorldAccess;
 
 import java.util.Arrays;
 
@@ -70,5 +78,19 @@ public final class FabricAdapter {
 
     public static BlockType adapt(Block block) {
         return new FabricBlockType(block);
+    }
+
+    public static com.dfsek.terra.api.platform.block.state.BlockState adapt(com.dfsek.terra.api.platform.block.Block block) {
+        WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();
+
+        BlockEntity entity = worldAccess.getBlockEntity(adapt(block.getLocation().toVector()));
+        if(entity instanceof SignBlockEntity) {
+            return (Sign) entity;
+        } else if(entity instanceof MobSpawnerBlockEntity) {
+            return (MobSpawner) entity;
+        } else if(entity instanceof LootableContainerBlockEntity) {
+            return (Container) entity;
+        }
+        return null;
     }
 }

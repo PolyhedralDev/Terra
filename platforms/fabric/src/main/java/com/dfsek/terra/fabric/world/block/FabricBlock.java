@@ -8,7 +8,6 @@ import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.world.FabricAdapter;
-import com.dfsek.terra.fabric.world.block.state.FabricBlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
@@ -35,7 +34,7 @@ public class FabricBlock implements Block {
 
     @Override
     public BlockState getState() {
-        return FabricBlockState.newInstance(this);
+        return FabricAdapter.adapt(this);
     }
 
     @Override
