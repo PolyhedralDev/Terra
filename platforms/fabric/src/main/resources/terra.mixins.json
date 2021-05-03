@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinGeneratorOptions",
+    "entity.EntityMixin",
+    "entity.PlayerEntityMixin",
     "entity.ServerCommandSourceMixin",
     "world.ChunkRegionMixin",
     "world.ProtoChunkMixin",

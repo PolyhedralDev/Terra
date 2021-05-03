@@ -18,6 +18,8 @@ import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.platform.entity.Player;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Tree;
@@ -54,6 +56,7 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
@@ -364,6 +367,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             List<String> args = parseCommand(context.getInput());
             CommandSender sender = (CommandSender) context.getSource();
             try {
+                sender = (Entity) context.getSource().getEntityOrThrow();
+            } catch(CommandSyntaxException ignore) {
+            }
+            try {
                 manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
             } catch(CommandException e) {
                 sender.sendMessage(e.getMessage());
@@ -371,8 +378,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             return builder.buildFuture();
         }).executes(context -> {
             List<String> args = parseCommand(context.getInput());
+            CommandSender sender = (CommandSender) context.getSource();
             try {
-                manager.execute(args.remove(0), (CommandSender) context.getSource(), args);
+                sender = (Entity) context.getSource().getEntityOrThrow();
+            } catch(CommandSyntaxException ignore) {
+            }
+            try {
+                manager.execute(args.remove(0), sender, args);
             } catch(CommandException e) {
                 context.getSource().sendError(new LiteralText(e.getMessage()));
             }

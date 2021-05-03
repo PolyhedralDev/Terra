@@ -9,7 +9,6 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.entity.FabricEntity;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +59,7 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
         net.minecraft.entity.Entity entity = FabricAdapter.adapt(entityType).create((ServerWorld) handle.worldAccess);
         entity.setPos(location.getX(), location.getY(), location.getZ());
         handle.worldAccess.spawnEntity(entity);
-        return new FabricEntity(entity);
+        return (Entity) entity;
     }
 
     @Override
