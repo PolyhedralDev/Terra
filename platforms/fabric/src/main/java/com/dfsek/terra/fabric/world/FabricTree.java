@@ -25,6 +25,7 @@ public class FabricTree implements Tree {
     }
 
     @Override
+    @SuppressWarnings("try")
     public boolean plant(Location l, Random r) {
         try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             FabricWorldAccess fabricWorldAccess = ((FabricWorldAccess) l.getWorld());
