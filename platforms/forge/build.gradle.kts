@@ -128,7 +128,7 @@ tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge")
     group = "forge"
     token = System.getenv("MODRINTH_SECRET")
     projectId = "FIlZB9L0"
-    versionNumber = project.version.toString()
+    versionNumber = "${project.version}-forge"
     uploadFile = tasks.named<RenameJarInPlace>("reobfShadowJar").get().input.absoluteFile
     releaseType = "alpha"
     addGameVersion("1.16.5")

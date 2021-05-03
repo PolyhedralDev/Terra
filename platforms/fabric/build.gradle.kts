@@ -52,7 +52,7 @@ tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     group = "fabric"
     token = System.getenv("MODRINTH_SECRET")
     projectId = "FIlZB9L0"
-    versionNumber = project.version.toString()
+    versionNumber = "${project.version}-fabric"
     uploadFile = remapped.get().archiveFile.get().asFile
     releaseType = "beta"
     addGameVersion("1.16.4")
