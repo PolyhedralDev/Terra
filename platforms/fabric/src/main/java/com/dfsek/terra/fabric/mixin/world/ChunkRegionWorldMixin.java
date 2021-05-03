@@ -11,15 +11,22 @@ import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = World.class, prefix = "terra$"))
 public abstract class ChunkRegionWorldMixin {
+    @Shadow
+    @Final
+    private ServerWorld world;
+
     public int terra$getMaxHeight() {
         return ((ChunkRegion) (Object) this).getDimensionHeight();
     }
@@ -57,5 +64,20 @@ public abstract class ChunkRegionWorldMixin {
 
     public TerraChunkGenerator terra$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
+    }
+
+    /**
+     * We need regions delegating to the same world
+     * to have the same hashcode. This
+     * minimizes cache misses.
+     * <p>
+     * This is sort of jank, but shouldn't(tm)
+     * break any other mods, unless they're doing
+     * something they really shouldn't, since
+     * ChunkRegions are not supposed to persist.
+     */
+    @Override
+    public int hashCode() {
+        return world.hashCode();
     }
 }
