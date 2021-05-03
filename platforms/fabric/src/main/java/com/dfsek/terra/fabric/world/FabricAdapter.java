@@ -6,7 +6,6 @@ import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.fabric.inventory.FabricEnchantment;
-import com.dfsek.terra.fabric.inventory.FabricItemStack;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
 import com.dfsek.terra.fabric.world.block.FabricBlockType;
 import com.dfsek.terra.fabric.world.block.data.FabricDirectional;
@@ -21,7 +20,6 @@ import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -87,14 +85,6 @@ public final class FabricAdapter {
 
     public static net.minecraft.entity.EntityType<? extends Entity> adapt(EntityType entityType) {
         return ((FabricEntityType) entityType).getHandle();
-    }
-
-    public static ItemStack adapt(com.dfsek.terra.api.platform.inventory.ItemStack itemStack) {
-        return ((FabricItemStack) itemStack).getHandle();
-    }
-
-    public static com.dfsek.terra.api.platform.inventory.ItemStack adapt(ItemStack itemStack) {
-        return new FabricItemStack(itemStack);
     }
 
     public static Enchantment adapt(net.minecraft.enchantment.Enchantment enchantment) {

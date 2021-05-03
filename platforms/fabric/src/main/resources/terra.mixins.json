@@ -9,6 +9,9 @@
     "entity.PlayerEntityMixin",
     "entity.ServerCommandSourceMixin",
     "inventory.ItemMixin",
+    "inventory.ItemStackDamageableMixin",
+    "inventory.ItemStackMetaMixin",
+    "inventory.ItemStackMixin",
     "world.ChunkRegionMixin",
     "world.ProtoChunkMixin",
     "world.WorldChunkMixin"

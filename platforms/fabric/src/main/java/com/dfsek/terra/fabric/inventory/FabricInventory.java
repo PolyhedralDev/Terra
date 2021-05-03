@@ -22,14 +22,16 @@ public class FabricInventory implements Inventory {
         return delegate.size();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public ItemStack getItem(int slot) {
         net.minecraft.item.ItemStack itemStack = delegate.getStack(slot);
-        return itemStack.getItem() == Items.AIR ? null : FabricAdapter.adapt(itemStack);
+        return itemStack.getItem() == Items.AIR ? null : (ItemStack) (Object) itemStack;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void setItem(int slot, ItemStack newStack) {
-        delegate.setStack(slot, FabricAdapter.adapt(newStack));
+        delegate.setStack(slot, (net.minecraft.item.ItemStack) (Object) newStack);
     }
 }

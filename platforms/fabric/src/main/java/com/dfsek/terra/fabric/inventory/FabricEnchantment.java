@@ -19,9 +19,10 @@ public class FabricEnchantment implements Enchantment {
         return enchantment;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean canEnchantItem(ItemStack itemStack) {
-        return enchantment.isAcceptableItem(FabricAdapter.adapt(itemStack));
+        return enchantment.isAcceptableItem((net.minecraft.item.ItemStack) (Object) itemStack);
     }
 
     @Override

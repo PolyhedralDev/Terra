@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.mixin.inventory;
 
 import com.dfsek.terra.api.platform.inventory.ItemStack;
-import com.dfsek.terra.fabric.inventory.FabricItemStack;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -18,8 +17,9 @@ public abstract class ItemMixin {
         return this;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public ItemStack vw$newItemStack(int amount) {
-        return new FabricItemStack(new net.minecraft.item.ItemStack((Item) (Object) this, amount));
+        return (ItemStack) (Object) new net.minecraft.item.ItemStack((Item) (Object) this, amount);
     }
 
     public double vw$getMaxDurability() {
