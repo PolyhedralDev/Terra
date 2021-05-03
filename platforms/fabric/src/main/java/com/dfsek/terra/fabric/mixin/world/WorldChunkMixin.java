@@ -6,10 +6,13 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
+import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
+import com.dfsek.terra.fabric.world.handles.FabricWorld;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import net.minecraft.block.BlockState;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
@@ -17,32 +20,28 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(ChunkRegion.class)
+@Mixin(WorldChunk.class)
 @Implements(@Interface(iface = Chunk.class, prefix = "vw$"))
-public abstract class ChunkRegionMixin {
+public abstract class WorldChunkMixin {
     @Final
     @Shadow
-    private int centerChunkX;
-
-    @Final
-    @Shadow
-    private int centerChunkZ;
+    private net.minecraft.world.World world;
 
     public int vw$getX() {
-        return centerChunkX;
+        return ((net.minecraft.world.chunk.Chunk) this).getPos().x;
     }
 
     public int vw$getZ() {
-        return centerChunkZ;
+        return ((net.minecraft.world.chunk.Chunk) this).getPos().z;
     }
 
     public World vw$getWorld() {
-        return new FabricWorldAccess((ChunkRegion) (Object) this);
+        return new FabricWorld((ServerWorld) world, new FabricChunkGenerator(((ServerWorld) world).getChunkManager().getChunkGenerator()));
     }
 
     public Block vw$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4));
-        return new FabricBlock(pos, (ChunkRegion) (Object) this);
+        BlockPos pos = new BlockPos(x + (vw$getX() << 4), y, z + (vw$getZ() << 4));
+        return new FabricBlock(pos, world);
     }
 
     public @NotNull BlockData vw$getBlockData(int x, int y, int z) {
@@ -50,7 +49,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public void vw$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4)), ((FabricBlockData) blockData).getHandle(), 0);
+        ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockData) blockData).getHandle(), false);
     }
 
     public Object vw$getHandle() {

@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.world.generator;
 
+import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
@@ -88,7 +89,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
         FabricSeededWorldAccess worldAccess = new FabricSeededWorldAccess(world, seed, this);
-        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new FabricChunkData(chunk));
+        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
     }
 
     @Override

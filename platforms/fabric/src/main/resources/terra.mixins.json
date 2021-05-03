@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinGeneratorOptions",
-    "world.ChunkRegionMixin"
+    "world.ChunkRegionMixin",
+    "world.ProtoChunkMixin",
+    "world.WorldChunkMixin"
   ],
   "client": [
     "GeneratorTypeAccessor"
