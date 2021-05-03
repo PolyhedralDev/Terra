@@ -47,7 +47,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
 }
 
 
-tasks.register<TaskModrinthUpload>("publishModrinth") {
+tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     dependsOn("remapShadedJar")
     group = "fabric"
     token = System.getenv("MODRINTH_SECRET")

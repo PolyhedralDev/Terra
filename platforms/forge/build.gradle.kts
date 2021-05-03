@@ -123,6 +123,14 @@ tasks.jar {
     }
 }
 
-tasks.named("shadowJar") {
-
+tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
+    dependsOn("reobfShadedJar")
+    group = "forge"
+    token = System.getenv("MODRINTH_SECRET")
+    projectId = "FIlZB9L0"
+    versionNumber = project.version.toString()
+    uploadFile = tasks.named<AbstractArchiveTask>("reobfShadedJar").get().archiveFile.get().asFile
+    releaseType = "alpha"
+    addGameVersion("1.16.5")
+    addLoader("forge")
 }
