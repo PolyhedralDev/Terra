@@ -5,24 +5,25 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "GeneratorOptionsMixin",
+    "implementations.BiomeMixin",
+    "implementations.ChunkGeneratorMixin",
     "implementations.block.BlockEntityMixin",
     "implementations.block.state.LootableContainerBlockEntityMixin",
+    "implementations.block.state.SignBlockEntityMixin",
+    "implementations.chunk.ChunkRegionMixin",
+    "implementations.chunk.WorldChunkMixin",
+    "implementations.chunk.data.ProtoChunkMixin",
     "implementations.entity.EntityMixin",
     "implementations.entity.EntityTypeMixin",
     "implementations.entity.PlayerEntityMixin",
     "implementations.entity.ServerCommandSourceMixin",
-    "implementations.inventory.meta.EnchantmentMixin",
     "implementations.inventory.item.ItemMixin",
+    "implementations.inventory.item.ItemStackMixin",
+    "implementations.inventory.meta.EnchantmentMixin",
     "implementations.inventory.meta.ItemStackDamageableMixin",
     "implementations.inventory.meta.ItemStackMetaMixin",
-    "implementations.inventory.item.ItemStackMixin",
-    "implementations.BiomeMixin",
-    "implementations.ChunkGeneratorMixin",
-    "implementations.chunk.ChunkRegionMixin",
     "implementations.world.ChunkRegionMixin",
-    "implementations.chunk.data.ProtoChunkMixin",
-    "implementations.world.ServerWorldMixin",
-    "implementations.chunk.WorldChunkMixin"
+    "implementations.world.ServerWorldMixin"
   ],
   "client": [
     "GeneratorTypeAccessor"
