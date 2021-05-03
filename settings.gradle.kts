@@ -16,7 +16,7 @@ include("platforms:sponge")
 
 pluginManagement {
     repositories {
-        maven(url = "http://maven.fabricmc.net") {
+        maven(url = "https://maven.fabricmc.net") {
             name = "Fabric"
         }
         gradlePluginPortal()

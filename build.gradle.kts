@@ -5,6 +5,23 @@ val versionObj = Version("5", "2", "0", true)
 allprojects {
     version = versionObj
     group = "com.dfsek.terra"
+
+    tasks.withType<JavaCompile>().configureEach {
+        options.isFork = true
+        options.isIncremental = true
+    }
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+
+        maxHeapSize = "2G"
+        ignoreFailures = false
+        failFast = true
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).takeIf { it > 0 } ?: 1
+
+        reports.html.isEnabled = false
+        reports.junitXml.isEnabled = false
+    }
+
 }
 /**
  * Version class that does version stuff.
