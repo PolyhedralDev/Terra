@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Biome.class)
 @Implements(@Interface(iface = com.dfsek.terra.api.platform.world.Biome.class, prefix = "terra$"))
-public class BiomeMixin {
-
+public abstract class BiomeMixin {
+    public Object terra$getHandle() {
+        return this;
+    }
 }
