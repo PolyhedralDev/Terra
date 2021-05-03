@@ -8,6 +8,7 @@ import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.profiler.ProfileFrame;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
@@ -32,21 +33,28 @@ public class PopulationManager extends BlockPopulator {
 
     @SuppressWarnings("unchecked")
     public synchronized void saveBlocks(World w) throws IOException {
-        File f = new File(Gaea.getGaeaFolder(w), "chunks.bin");
+        File f = new File(getDataFolder(w), "chunks.bin");
         f.createNewFile();
         SerializationUtil.toFile((HashSet<ChunkCoordinate>) needsPop.clone(), f);
     }
 
     @SuppressWarnings("unchecked")
     public synchronized void loadBlocks(World w) throws IOException, ClassNotFoundException {
-        File f = new File(Gaea.getGaeaFolder(w), "chunks.bin");
+        File f = new File(getDataFolder(w), "chunks.bin");
         needsPop.addAll((HashSet<ChunkCoordinate>) SerializationUtil.fromFile(f));
+    }
+
+    public static File getDataFolder(World w) {
+        File f = new File(((BukkitWorld) w).getWorldFolder(), "gaea");
+        f.mkdirs();
+        return f;
     }
 
 
     // Synchronize to prevent chunks from being queued for population multiple times.
-    public synchronized void checkNeighbors(int x, int z, World w) {
-        ChunkCoordinate c = new ChunkCoordinate(x, z, w.getUID());
+    public synchronized void checkNeighbors(int x, int z, World world) {
+        BukkitWorld w = (BukkitWorld) world;
+        ChunkCoordinate c = new ChunkCoordinate(x, z, (w).getUID());
         if(w.isChunkGenerated(x + 1, z)
                 && w.isChunkGenerated(x - 1, z)
                 && w.isChunkGenerated(x, z + 1)

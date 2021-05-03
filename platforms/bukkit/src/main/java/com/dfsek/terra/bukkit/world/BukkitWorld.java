@@ -42,12 +42,10 @@ public class BukkitWorld implements World {
         return delegate.getName();
     }
 
-    @Override
     public UUID getUID() {
         return delegate.getUID();
     }
 
-    @Override
     public boolean isChunkGenerated(int x, int z) {
         return delegate.isChunkGenerated(x, z);
     }
@@ -57,7 +55,6 @@ public class BukkitWorld implements World {
         return BukkitAdapter.adapt(delegate.getChunkAt(x, z));
     }
 
-    @Override
     public File getWorldFolder() {
         return delegate.getWorldFolder();
     }

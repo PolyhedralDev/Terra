@@ -21,7 +21,7 @@ fun Project.configureCompilation() {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         doFirst {
-            options.compilerArgs = mutableListOf("-Xlint:all")
+            options.compilerArgs.add("-Xlint:all")
         }
     }
 

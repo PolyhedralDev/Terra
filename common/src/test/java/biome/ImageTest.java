@@ -46,7 +46,7 @@ public class ImageTest {
 
         OpenRegistry<TerraBiome> biomeRegistry = new OpenRegistry<TerraBiome>() {
         };
-        folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), null));
+        folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.loadConfigs(inputStreams, TestBiome::new), null));
 
         return new ImageBiomeProvider(biomeRegistry.entries(), ImageIO.read(ImageTest.class.getResourceAsStream("/map.jpg")), 1, ImageBiomeProvider.Align.CENTER);
     }

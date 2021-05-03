@@ -33,6 +33,7 @@ dependencies {
 
 configure<LoomGradleExtension> {
     accessWidener("src/main/resources/terra.accesswidener")
+    refmapName = "terra.refmap.json"
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
@@ -46,7 +47,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
 }
 
 
-tasks.register<TaskModrinthUpload>("publishModrinth") {
+tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     dependsOn("remapShadedJar")
     group = "fabric"
     token = System.getenv("MODRINTH_SECRET")

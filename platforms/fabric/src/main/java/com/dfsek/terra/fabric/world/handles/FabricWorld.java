@@ -17,9 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 
-import java.io.File;
-import java.util.UUID;
-
 public class FabricWorld implements World, FabricWorldHandle {
 
     private final Handle delegate;
@@ -49,23 +46,8 @@ public class FabricWorld implements World, FabricWorldHandle {
     }
 
     @Override
-    public UUID getUID() {
-        return null;
-    }
-
-    @Override
-    public boolean isChunkGenerated(int x, int z) {
-        return false;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         return new FabricChunk(delegate.world.getChunk(x, z));
-    }
-
-    @Override
-    public File getWorldFolder() {
-        return null;
     }
 
     @Override
