@@ -3,6 +3,7 @@ package com.dfsek.terra.fabric.world.block.state;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
+import com.dfsek.terra.api.platform.block.state.Container;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,7 +21,7 @@ public class FabricBlockState implements BlockState {
         this.worldAccess = worldAccess;
     }
 
-    public static FabricBlockState newInstance(Block block) {
+    public static BlockState newInstance(Block block) {
         WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();
 
         BlockEntity entity = worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
@@ -29,7 +30,7 @@ public class FabricBlockState implements BlockState {
         } else if(entity instanceof MobSpawnerBlockEntity) {
             return new FabricMobSpawner((MobSpawnerBlockEntity) entity, worldAccess);
         } else if(entity instanceof LootableContainerBlockEntity) {
-            return new FabricContainer((LootableContainerBlockEntity) entity, worldAccess);
+            return (Container) entity;
         }
         return null;
     }

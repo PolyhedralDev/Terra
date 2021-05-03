@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinGeneratorOptions",
+    "block.BlockEntityMixin",
+    "block.LootableContainerBlockEntityMixin",
     "entity.EntityMixin",
     "entity.EntityTypeMixin",
     "entity.PlayerEntityMixin",
