@@ -19,12 +19,12 @@ public class FabricMobSpawner extends FabricBlockState implements MobSpawner { /
 
     @Override
     public EntityType getSpawnedType() {
-        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(((MobSpawnerBlockEntity) blockEntity).getLogic().getEntityId()));
+        return (EntityType) Registry.ENTITY_TYPE.get(((MobSpawnerBlockEntity) blockEntity).getLogic().getEntityId());
     }
 
     @Override
     public void setSpawnedType(@NotNull EntityType creatureType) {
-        ((MobSpawnerBlockEntity) blockEntity).getLogic().setEntityId(FabricAdapter.adapt(creatureType));
+        ((MobSpawnerBlockEntity) blockEntity).getLogic().setEntityId((net.minecraft.entity.EntityType<?>) creatureType);
     }
 
     @Override

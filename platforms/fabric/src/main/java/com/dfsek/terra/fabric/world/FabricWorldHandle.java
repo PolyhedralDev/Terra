@@ -30,6 +30,6 @@ public class FabricWorldHandle implements WorldHandle {
     public EntityType getEntity(String id) {
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse("minecraft:" + id.toLowerCase(Locale.ROOT));
-        return FabricAdapter.adapt(Registry.ENTITY_TYPE.get(identifier));
+        return (EntityType) Registry.ENTITY_TYPE.get(identifier);
     }
 }

@@ -6,6 +6,7 @@
   "mixins": [
     "MixinGeneratorOptions",
     "entity.EntityMixin",
+    "entity.EntityTypeMixin",
     "entity.PlayerEntityMixin",
     "entity.ServerCommandSourceMixin",
     "inventory.EnchantmentMixin",

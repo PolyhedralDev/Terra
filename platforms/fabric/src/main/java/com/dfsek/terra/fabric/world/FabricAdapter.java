@@ -13,7 +13,6 @@ import com.dfsek.terra.fabric.world.block.data.FabricRotatable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
-import com.dfsek.terra.fabric.world.entity.FabricEntityType;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -75,14 +74,6 @@ public final class FabricAdapter {
 
     public static BlockType adapt(Block block) {
         return new FabricBlockType(block);
-    }
-
-    public static EntityType adapt(net.minecraft.entity.EntityType<?> entityType) {
-        return new FabricEntityType(entityType);
-    }
-
-    public static net.minecraft.entity.EntityType<? extends Entity> adapt(EntityType entityType) {
-        return ((FabricEntityType) entityType).getHandle();
     }
 
     public WorldAccess adapt(FabricWorldHandle worldHandle) {

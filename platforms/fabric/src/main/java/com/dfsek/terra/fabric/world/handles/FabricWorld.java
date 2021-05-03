@@ -68,7 +68,7 @@ public class FabricWorld implements World, FabricWorldHandle {
 
     @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
-        net.minecraft.entity.Entity entity = FabricAdapter.adapt(entityType).create(delegate.world);
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(delegate.world);
         entity.setPos(location.getX(), location.getY(), location.getZ());
         delegate.world.spawnEntity(entity);
         return (Entity) entity;
