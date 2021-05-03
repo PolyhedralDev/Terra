@@ -4,11 +4,9 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.entity.Entity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,10 +27,6 @@ public abstract class EntityMixin {
     public abstract void teleport(double destX, double destY, double destZ);
 
     @Shadow
-    @Nullable
-    public abstract Entity moveToWorld(ServerWorld destination);
-
-    @Shadow
     public abstract void sendSystemMessage(Text message, UUID senderUuid);
 
     public Object terra$getHandle() {
@@ -45,7 +39,6 @@ public abstract class EntityMixin {
 
     public void terra$setLocation(Location location) {
         teleport(location.getX(), location.getY(), location.getZ());
-        moveToWorld((ServerWorld) location.getWorld());
     }
 
     public World getWorld() {

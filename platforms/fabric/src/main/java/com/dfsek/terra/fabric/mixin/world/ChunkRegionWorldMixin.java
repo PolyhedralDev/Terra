@@ -37,7 +37,10 @@ public abstract class ChunkRegionWorldMixin {
     }
 
     public Entity terra$spawnEntity(Location location, EntityType entityType) {
-        throw new UnsupportedOperationException();
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ChunkRegion) (Object) this).toServerWorld());
+        entity.setPos(location.getX(), location.getY(), location.getZ());
+        ((ChunkRegion) (Object) this).spawnEntity(entity);
+        return (Entity) entity;
     }
 
     public int terra$getMinHeight() {

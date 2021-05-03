@@ -26,6 +26,9 @@ public abstract class BlockEntityMixin {
     @Shadow
     public abstract net.minecraft.block.BlockState getCachedState();
 
+    @Shadow
+    public abstract boolean hasWorld();
+
     public Object terra$getHandle() {
         return this;
     }
@@ -51,7 +54,7 @@ public abstract class BlockEntityMixin {
     }
 
     public boolean terra$update(boolean applyPhysics) {
-        world.getChunk(pos).setBlockEntity(pos, (BlockEntity) (Object) this);
+        if(hasWorld()) world.getChunk(pos).setBlockEntity(pos, (BlockEntity) (Object) this);
         return true;
     }
 }
