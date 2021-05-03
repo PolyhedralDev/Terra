@@ -5,7 +5,6 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -22,7 +21,7 @@ public class FabricBlockState implements BlockState {
     }
 
     public static FabricBlockState newInstance(Block block) {
-        WorldAccess worldAccess = ((FabricWorldHandle) block.getLocation().getWorld()).getWorld();
+        WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();
 
         BlockEntity entity = worldAccess.getBlockEntity(FabricAdapter.adapt(block.getLocation().toVector()));
         if(entity instanceof SignBlockEntity) {

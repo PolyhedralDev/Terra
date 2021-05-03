@@ -16,7 +16,9 @@
     "inventory.ItemStackMixin",
     "world.ChunkGeneratorMixin",
     "world.ChunkRegionMixin",
+    "world.ChunkRegionWorldMixin",
     "world.ProtoChunkMixin",
+    "world.ServerWorldMixin",
     "world.WorldChunkMixin"
   ],
   "client": [

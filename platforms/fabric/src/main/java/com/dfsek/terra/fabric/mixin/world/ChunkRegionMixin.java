@@ -6,8 +6,6 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +35,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public World vw$getWorld() {
-        return new FabricWorldAccess((ChunkRegion) (Object) this);
+        return (World) this;
     }
 
     public Block vw$getBlock(int x, int y, int z) {

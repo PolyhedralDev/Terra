@@ -4,11 +4,8 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
-import com.dfsek.terra.fabric.world.handles.FabricWorld;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +31,7 @@ public abstract class WorldChunkMixin {
     }
 
     public World vw$getWorld() {
-        return new FabricWorld((ServerWorld) world, (ChunkGenerator) ((ServerWorld) world).getChunkManager().getChunkGenerator());
+        return (World) world;
     }
 
     public Block vw$getBlock(int x, int y, int z) {

@@ -3,14 +3,11 @@ package com.dfsek.terra.fabric.mixin.entity;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.world.FabricAdapter;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
-import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -43,16 +40,16 @@ public abstract class EntityMixin {
     }
 
     public Location vw$getLocation() {
-        return new Location(new FabricWorldAccess(world), FabricAdapter.adapt(blockPos));
+        return new Location((World) world, FabricAdapter.adapt(blockPos));
     }
 
     public void vw$setLocation(Location location) {
         teleport(location.getX(), location.getY(), location.getZ());
-        moveToWorld((ServerWorld) ((FabricWorldHandle) location).getWorld());
+        moveToWorld((ServerWorld) location.getWorld());
     }
 
     public World getWorld() {
-        return new FabricWorldAccess(world);
+        return (World) world;
     }
 
     public void vw$sendMessage(String message) {
