@@ -4,7 +4,8 @@
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinGeneratorOptions"
+    "MixinGeneratorOptions",
+    "world.ChunkRegionMixin"
   ],
   "client": [
     "GeneratorTypeAccessor"
