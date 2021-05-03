@@ -2,12 +2,10 @@ package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.Container;
 import com.dfsek.terra.api.platform.block.state.MobSpawner;
 import com.dfsek.terra.api.platform.block.state.Sign;
 import com.dfsek.terra.fabric.world.block.FabricBlockData;
-import com.dfsek.terra.fabric.world.block.FabricBlockType;
 import com.dfsek.terra.fabric.world.block.data.FabricDirectional;
 import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
 import com.dfsek.terra.fabric.world.block.data.FabricOrientable;
@@ -15,7 +13,6 @@ import com.dfsek.terra.fabric.world.block.data.FabricRotatable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -76,9 +73,6 @@ public final class FabricAdapter {
         }
     }
 
-    public static BlockType adapt(Block block) {
-        return new FabricBlockType(block);
-    }
 
     public static com.dfsek.terra.api.platform.block.state.BlockState adapt(com.dfsek.terra.api.platform.block.Block block) {
         WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();

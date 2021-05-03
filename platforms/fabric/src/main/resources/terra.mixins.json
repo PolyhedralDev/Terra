@@ -8,6 +8,7 @@
     "implementations.BiomeMixin",
     "implementations.ChunkGeneratorMixin",
     "implementations.block.BlockEntityMixin",
+    "implementations.block.BlockMixin",
     "implementations.block.state.LootableContainerBlockEntityMixin",
     "implementations.block.state.MobSpawnerBlockEntityMixin",
     "implementations.block.state.SignBlockEntityMixin",

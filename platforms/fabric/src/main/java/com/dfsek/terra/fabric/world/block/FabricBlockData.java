@@ -19,7 +19,7 @@ public class FabricBlockData implements BlockData {
 
     @Override
     public BlockType getBlockType() {
-        return FabricAdapter.adapt(delegate.getBlock());
+        return (BlockType) delegate.getBlock();
     }
 
     @Override
