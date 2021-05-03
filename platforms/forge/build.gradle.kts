@@ -124,12 +124,12 @@ tasks.jar {
 }
 
 tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
-    dependsOn("reobfShadedJar")
+    dependsOn("reobfShadowJar")
     group = "forge"
     token = System.getenv("MODRINTH_SECRET")
     projectId = "FIlZB9L0"
     versionNumber = project.version.toString()
-    uploadFile = tasks.named<AbstractArchiveTask>("reobfShadedJar").get().archiveFile.get().asFile
+    uploadFile = tasks.named<RenameJarInPlace>("reobfShadowJar").get().input.absoluteFile
     releaseType = "alpha"
     addGameVersion("1.16.5")
     addLoader("forge")
