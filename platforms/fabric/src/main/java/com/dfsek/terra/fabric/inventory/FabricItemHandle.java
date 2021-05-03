@@ -26,11 +26,11 @@ public class FabricItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return FabricAdapter.adapt(Registry.ENCHANTMENT.get(Identifier.tryParse(id)));
+        return (Enchantment) (Registry.ENCHANTMENT.get(Identifier.tryParse(id)));
     }
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return Registry.ENCHANTMENT.stream().map(FabricAdapter::adapt).collect(Collectors.toSet());
+        return Registry.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());
     }
 }

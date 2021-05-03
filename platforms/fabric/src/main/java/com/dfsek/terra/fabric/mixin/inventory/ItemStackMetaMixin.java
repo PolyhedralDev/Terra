@@ -38,12 +38,12 @@ public abstract class ItemStackMetaMixin {
 
         getEnchantments().forEach(enchantment -> {
             CompoundTag eTag = (CompoundTag) enchantment;
-            map.put(FabricAdapter.adapt(Registry.ENCHANTMENT.get(eTag.getInt("id"))), eTag.getInt("lvl"));
+            map.put((Enchantment) Registry.ENCHANTMENT.get(eTag.getInt("id")), eTag.getInt("lvl"));
         });
         return map;
     }
 
     public void vw$addEnchantment(Enchantment enchantment, int level) {
-        addEnchantment(FabricAdapter.adapt(enchantment), level);
+        addEnchantment((net.minecraft.enchantment.Enchantment) enchantment, level);
     }
 }
