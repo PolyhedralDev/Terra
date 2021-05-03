@@ -8,6 +8,7 @@
     "entity.EntityMixin",
     "entity.PlayerEntityMixin",
     "entity.ServerCommandSourceMixin",
+    "inventory.ItemMixin",
     "world.ChunkRegionMixin",
     "world.ProtoChunkMixin",
     "world.WorldChunkMixin"

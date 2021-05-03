@@ -18,7 +18,7 @@ public class FabricItemHandle implements ItemHandle {
     @Override
     public Item createItem(String data) {
         try {
-            return FabricAdapter.adapt(new ItemStackArgumentType().parse(new StringReader(data)).getItem());
+            return (Item) new ItemStackArgumentType().parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
         }

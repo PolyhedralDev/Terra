@@ -25,7 +25,7 @@ public class FabricItemStack implements ItemStack {
 
     @Override
     public Item getType() {
-        return new FabricItem(delegate.getItem());
+        return (Item) delegate.getItem();
     }
 
     @Override
