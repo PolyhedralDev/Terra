@@ -8,6 +8,11 @@ to your specifications, with no knowledge of Java required.
 * Paper+ servers (Paper, Tuinity, Purpur, etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
 * Fabric: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
 
+## Licensing
+
+Terra as a whole is licensed under the GNU General Public License, version 3.0. Terra's API is licensed under the GNU Lesser General Public
+License, version 3.0, in order to allow linking to the API without GPL infection.
+
 ## Building and running Terra
 
 To build, simply run `./gradlew build` (`gradlew.bat build` on Windows). This will produce a jar in `build/libs`
