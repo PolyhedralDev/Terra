@@ -7,9 +7,10 @@ import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
-import com.dfsek.terra.fabric.world.FabricAdapter;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
+import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
@@ -35,7 +36,7 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
 
     @Override
     public ChunkGenerator getGenerator() {
-        return new FabricChunkGenerator(handle.getGenerator());
+        return (ChunkGenerator) handle.getGenerator();
     }
 
     @Override
@@ -110,5 +111,15 @@ public class FabricSeededWorldAccess implements World, FabricWorldHandle {
         public WorldAccess getWorldAccess() {
             return worldAccess;
         }
+    }
+
+    @Override
+    public boolean isTerraWorld() {
+        return handle.generator instanceof GeneratorWrapper;
+    }
+
+    @Override
+    public TerraChunkGenerator getTerraGenerator() {
+        return ((FabricChunkGeneratorWrapper) handle.generator).getHandle();
     }
 }

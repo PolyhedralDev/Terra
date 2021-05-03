@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.world.features;
 
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.world.handles.FabricWorld;
 import com.mojang.serialization.Codec;
@@ -24,7 +23,7 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
     @Override
     public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
         FabricChunkGeneratorWrapper gen = (FabricChunkGeneratorWrapper) chunkGenerator;
-        FabricWorld world1 = new FabricWorld(world.toServerWorld(), new FabricChunkGenerator(chunkGenerator));
+        FabricWorld world1 = new FabricWorld(world.toServerWorld(), (com.dfsek.terra.api.platform.world.generator.ChunkGenerator) chunkGenerator);
         gen.getHandle().getPopulators().forEach(populator -> populator.populate(world1, (Chunk) world));
         return true;
     }

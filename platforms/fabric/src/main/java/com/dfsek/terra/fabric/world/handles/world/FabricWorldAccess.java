@@ -7,9 +7,10 @@ import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
-import com.dfsek.terra.fabric.world.FabricAdapter;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
+import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.StructureWorldAccess;
@@ -34,7 +35,7 @@ public class FabricWorldAccess implements World, FabricWorldHandle {
 
     @Override
     public ChunkGenerator getGenerator() {
-        return new FabricChunkGenerator(((ServerWorldAccess) delegate).toServerWorld().getChunkManager().getChunkGenerator());
+        return (ChunkGenerator) ((ServerWorldAccess) delegate).toServerWorld().getChunkManager().getChunkGenerator();
     }
 
     @Override
@@ -85,5 +86,15 @@ public class FabricWorldAccess implements World, FabricWorldHandle {
     public boolean equals(Object obj) {
         if(!(obj instanceof FabricWorldAccess)) return false;
         return ((ServerWorldAccess) ((FabricWorldAccess) obj).delegate).toServerWorld().equals(((ServerWorldAccess) delegate).toServerWorld());
+    }
+
+    @Override
+    public boolean isTerraWorld() {
+        return getGenerator() instanceof GeneratorWrapper;
+    }
+
+    @Override
+    public TerraChunkGenerator getTerraGenerator() {
+        return ((FabricChunkGeneratorWrapper) getGenerator()).getHandle();
     }
 }

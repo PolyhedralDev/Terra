@@ -6,6 +6,8 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 
 import java.io.File;
 import java.util.UUID;
@@ -34,4 +36,12 @@ public interface World extends Handle {
     Entity spawnEntity(Location location, EntityType entityType);
 
     int getMinHeight();
+
+    default boolean isTerraWorld() {
+        return getGenerator().getHandle() instanceof GeneratorWrapper;
+    }
+
+    default TerraChunkGenerator getTerraGenerator() {
+        return ((GeneratorWrapper) getGenerator().getHandle()).getHandle();
+    }
 }

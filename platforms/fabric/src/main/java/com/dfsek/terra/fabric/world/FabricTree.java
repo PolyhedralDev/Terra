@@ -4,7 +4,6 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldAccess;
 import com.dfsek.terra.profiler.ProfileFrame;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +28,7 @@ public class FabricTree implements Tree {
     public boolean plant(Location l, Random r) {
         try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             FabricWorldAccess fabricWorldAccess = ((FabricWorldAccess) l.getWorld());
-            ChunkGenerator generatorWrapper = ((FabricChunkGenerator) fabricWorldAccess.getGenerator()).getHandle();
+            ChunkGenerator generatorWrapper = (ChunkGenerator) fabricWorldAccess.getGenerator();
             return delegate.generate((StructureWorldAccess) fabricWorldAccess.getHandle(), generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
         }
     }
