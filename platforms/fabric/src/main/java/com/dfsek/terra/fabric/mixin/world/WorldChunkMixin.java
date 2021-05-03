@@ -16,38 +16,38 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(WorldChunk.class)
-@Implements(@Interface(iface = Chunk.class, prefix = "vw$"))
+@Implements(@Interface(iface = Chunk.class, prefix = "terra$"))
 public abstract class WorldChunkMixin {
     @Final
     @Shadow
     private net.minecraft.world.World world;
 
-    public int vw$getX() {
+    public int terra$getX() {
         return ((net.minecraft.world.chunk.Chunk) this).getPos().x;
     }
 
-    public int vw$getZ() {
+    public int terra$getZ() {
         return ((net.minecraft.world.chunk.Chunk) this).getPos().z;
     }
 
-    public World vw$getWorld() {
+    public World terra$getWorld() {
         return (World) world;
     }
 
-    public Block vw$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (vw$getX() << 4), y, z + (vw$getZ() << 4));
+    public Block terra$getBlock(int x, int y, int z) {
+        BlockPos pos = new BlockPos(x + (terra$getX() << 4), y, z + (terra$getZ() << 4));
         return new FabricBlock(pos, world);
     }
 
-    public @NotNull BlockData vw$getBlockData(int x, int y, int z) {
-        return vw$getBlock(x, y, z).getBlockData();
+    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+        return terra$getBlock(x, y, z).getBlockData();
     }
 
-    public void vw$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
+    public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
         ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockData) blockData).getHandle(), false);
     }
 
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 }

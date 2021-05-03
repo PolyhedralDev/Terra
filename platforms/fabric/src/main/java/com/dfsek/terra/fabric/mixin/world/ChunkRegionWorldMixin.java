@@ -11,7 +11,6 @@ import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import org.spongepowered.asm.mixin.Implements;
@@ -19,41 +18,41 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = World.class, prefix = "vw$"))
+@Implements(@Interface(iface = World.class, prefix = "terra$"))
 public abstract class ChunkRegionWorldMixin {
-    public int vw$getMaxHeight() {
+    public int terra$getMaxHeight() {
         return ((ChunkRegion) (Object) this).getDimensionHeight();
     }
 
-    public ChunkGenerator vw$getGenerator() {
+    public ChunkGenerator terra$getGenerator() {
         return (ChunkGenerator) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator();
     }
 
-    public Chunk vw$getChunkAt(int x, int z) {
+    public Chunk terra$getChunkAt(int x, int z) {
         return (Chunk) ((ChunkRegion) (Object) this).getChunk(x, z);
     }
 
-    public Block vw$getBlockAt(int x, int y, int z) {
+    public Block terra$getBlockAt(int x, int y, int z) {
         return new FabricBlock(new BlockPos(x, y, z), ((ChunkRegion) (Object) this));
     }
 
-    public Entity vw$spawnEntity(Location location, EntityType entityType) {
+    public Entity terra$spawnEntity(Location location, EntityType entityType) {
         throw new UnsupportedOperationException();
     }
 
-    public int vw$getMinHeight() {
+    public int terra$getMinHeight() {
         return 0;
     }
 
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 
-    public boolean vw$isTerraWorld() {
-        return vw$getGenerator() instanceof GeneratorWrapper;
+    public boolean terra$isTerraWorld() {
+        return terra$getGenerator() instanceof GeneratorWrapper;
     }
 
-    public TerraChunkGenerator vw$getTerraGenerator() {
-        return ((FabricChunkGeneratorWrapper) vw$getGenerator()).getHandle();
+    public TerraChunkGenerator terra$getTerraGenerator() {
+        return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
     }
 }

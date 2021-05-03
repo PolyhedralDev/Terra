@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = Chunk.class, prefix = "vw$"))
+@Implements(@Interface(iface = Chunk.class, prefix = "terra$"))
 public abstract class ChunkRegionMixin {
     @Final
     @Shadow
@@ -26,32 +26,32 @@ public abstract class ChunkRegionMixin {
     @Shadow
     private int centerChunkZ;
 
-    public int vw$getX() {
+    public int terra$getX() {
         return centerChunkX;
     }
 
-    public int vw$getZ() {
+    public int terra$getZ() {
         return centerChunkZ;
     }
 
-    public World vw$getWorld() {
+    public World terra$getWorld() {
         return (World) this;
     }
 
-    public Block vw$getBlock(int x, int y, int z) {
+    public Block terra$getBlock(int x, int y, int z) {
         BlockPos pos = new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4));
         return new FabricBlock(pos, (ChunkRegion) (Object) this);
     }
 
-    public @NotNull BlockData vw$getBlockData(int x, int y, int z) {
-        return vw$getBlock(x, y, z).getBlockData();
+    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+        return terra$getBlock(x, y, z).getBlockData();
     }
 
-    public void vw$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
+    public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4)), ((FabricBlockData) blockData).getHandle(), 0);
     }
 
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 }

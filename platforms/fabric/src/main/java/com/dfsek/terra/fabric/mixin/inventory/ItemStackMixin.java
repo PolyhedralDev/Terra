@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.inventory.ItemStack.class, prefix = "vw$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.inventory.ItemStack.class, prefix = "terra$"))
 public abstract class ItemStackMixin {
     @Shadow
     public abstract int getCount();
@@ -26,11 +26,11 @@ public abstract class ItemStackMixin {
     @Shadow
     public abstract ItemStack copy();
 
-    public int vw$getAmount() {
+    public int terra$getAmount() {
         return getCount();
     }
 
-    public void vw$setAmount(int i) {
+    public void terra$setAmount(int i) {
         setCount(i);
     }
 
@@ -38,15 +38,15 @@ public abstract class ItemStackMixin {
         return (Item) getItem();
     }
 
-    public ItemMeta vw$getItemMeta() {
+    public ItemMeta terra$getItemMeta() {
         return (ItemMeta) this;
     }
 
-    public void vw$setItemMeta(ItemMeta meta) {
+    public void terra$setItemMeta(ItemMeta meta) {
 
     }
 
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 }

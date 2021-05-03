@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EntityType.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.EntityType.class, prefix = "vw$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.EntityType.class, prefix = "terra$"))
 public abstract class EntityTypeMixin {
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 }

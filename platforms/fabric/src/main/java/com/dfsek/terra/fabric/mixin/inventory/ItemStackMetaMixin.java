@@ -2,7 +2,6 @@ package com.dfsek.terra.fabric.mixin.inventory;
 
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
-import com.dfsek.terra.fabric.world.FabricAdapter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = ItemMeta.class, prefix = "vw$"))
+@Implements(@Interface(iface = ItemMeta.class, prefix = "terra$"))
 public abstract class ItemStackMetaMixin {
     @Shadow
     public abstract boolean hasEnchantments();
@@ -28,11 +27,11 @@ public abstract class ItemStackMetaMixin {
     @Shadow
     public abstract void addEnchantment(net.minecraft.enchantment.Enchantment enchantment, int level);
 
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 
-    public Map<Enchantment, Integer> vw$getEnchantments() {
+    public Map<Enchantment, Integer> terra$getEnchantments() {
         if(!hasEnchantments()) return Collections.emptyMap();
         Map<Enchantment, Integer> map = new HashMap<>();
 
@@ -43,7 +42,7 @@ public abstract class ItemStackMetaMixin {
         return map;
     }
 
-    public void vw$addEnchantment(Enchantment enchantment, int level) {
+    public void terra$addEnchantment(Enchantment enchantment, int level) {
         addEnchantment((net.minecraft.enchantment.Enchantment) enchantment, level);
     }
 }

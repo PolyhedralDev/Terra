@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ChunkGenerator.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.world.generator.ChunkGenerator.class, prefix = "vw$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.world.generator.ChunkGenerator.class, prefix = "terra$"))
 public abstract class ChunkGeneratorMixin {
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 }

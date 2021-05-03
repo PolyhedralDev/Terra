@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(PlayerEntity.class)
-@Implements(@Interface(iface = Player.class, prefix = "vw$"))
+@Implements(@Interface(iface = Player.class, prefix = "terra$"))
 public abstract class PlayerEntityMixin extends EntityMixin {
 
 }

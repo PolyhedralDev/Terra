@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.UUID;
 
 @Mixin(Entity.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.Entity.class, prefix = "vw$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.Entity.class, prefix = "terra$"))
 public abstract class EntityMixin {
     @Shadow
     public net.minecraft.world.World world;
@@ -35,15 +35,15 @@ public abstract class EntityMixin {
     @Shadow
     public abstract void sendSystemMessage(Text message, UUID senderUuid);
 
-    public Object vw$getHandle() {
+    public Object terra$getHandle() {
         return this;
     }
 
-    public Location vw$getLocation() {
+    public Location terra$getLocation() {
         return new Location((World) world, FabricAdapter.adapt(blockPos));
     }
 
-    public void vw$setLocation(Location location) {
+    public void terra$setLocation(Location location) {
         teleport(location.getX(), location.getY(), location.getZ());
         moveToWorld((ServerWorld) location.getWorld());
     }
@@ -52,7 +52,7 @@ public abstract class EntityMixin {
         return (World) world;
     }
 
-    public void vw$sendMessage(String message) {
+    public void terra$sendMessage(String message) {
         sendSystemMessage(new LiteralText(message), UUID.randomUUID()); // TODO: look into how this actually works and make it less jank
     }
 }
