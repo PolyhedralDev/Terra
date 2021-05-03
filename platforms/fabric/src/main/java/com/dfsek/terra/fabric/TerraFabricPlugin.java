@@ -362,7 +362,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
         return in.suggests((context, builder) -> {
             List<String> args = parseCommand(context.getInput());
-            CommandSender sender = FabricAdapter.adapt(context.getSource());
+            CommandSender sender = (CommandSender) context.getSource();
             try {
                 manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
             } catch(CommandException e) {
@@ -372,7 +372,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         }).executes(context -> {
             List<String> args = parseCommand(context.getInput());
             try {
-                manager.execute(args.remove(0), FabricAdapter.adapt(context.getSource()), args);
+                manager.execute(args.remove(0), (CommandSender) context.getSource(), args);
             } catch(CommandException e) {
                 context.getSource().sendError(new LiteralText(e.getMessage()));
             }

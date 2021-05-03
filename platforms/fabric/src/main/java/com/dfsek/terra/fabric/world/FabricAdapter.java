@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.world;
 
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.entity.EntityType;
@@ -18,17 +17,13 @@ import com.dfsek.terra.fabric.world.block.data.FabricRotatable;
 import com.dfsek.terra.fabric.world.block.data.FabricSlab;
 import com.dfsek.terra.fabric.world.block.data.FabricStairs;
 import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
-import com.dfsek.terra.fabric.world.entity.FabricCommandSender;
 import com.dfsek.terra.fabric.world.entity.FabricEntityType;
-import com.dfsek.terra.fabric.world.entity.FabricPlayer;
 import com.dfsek.terra.fabric.world.handles.world.FabricWorldHandle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -63,11 +58,6 @@ public final class FabricAdapter {
             return new FabricMultipleFacing(state);
         if(state.contains(Properties.WATERLOGGED)) return new FabricWaterlogged(state);
         return new FabricBlockData(state);
-    }
-
-    public static CommandSender adapt(ServerCommandSource serverCommandSource) {
-        if(serverCommandSource.getEntity() instanceof PlayerEntity) return new FabricPlayer((PlayerEntity) serverCommandSource.getEntity());
-        return new FabricCommandSender(serverCommandSource);
     }
 
     public static Direction adapt(BlockFace face) {
