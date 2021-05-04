@@ -24,7 +24,7 @@ public abstract class ConfiguredFeatureMixin {
     @Shadow
     public abstract boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos);
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "try"})
     public boolean terra$plant(Location l, Random r) {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
         try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {

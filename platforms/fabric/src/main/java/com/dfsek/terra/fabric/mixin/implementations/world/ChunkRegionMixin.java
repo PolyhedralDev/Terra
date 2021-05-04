@@ -32,6 +32,7 @@ public abstract class ChunkRegionMixin {
         return ((ChunkRegion) (Object) this).getDimensionHeight();
     }
 
+    @SuppressWarnings("deprecation")
     public ChunkGenerator terra$getGenerator() {
         return (ChunkGenerator) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator();
     }
@@ -44,6 +45,7 @@ public abstract class ChunkRegionMixin {
         return new FabricBlock(new BlockPos(x, y, z), ((ChunkRegion) (Object) this));
     }
 
+    @SuppressWarnings("deprecation")
     public Entity terra$spawnEntity(Location location, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ChunkRegion) (Object) this).toServerWorld());
         entity.setPos(location.getX(), location.getY(), location.getZ());
