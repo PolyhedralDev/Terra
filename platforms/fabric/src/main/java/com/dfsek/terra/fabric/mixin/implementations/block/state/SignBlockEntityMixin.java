@@ -23,12 +23,11 @@ public abstract class SignBlockEntityMixin {
     private Text[] text;
 
     public @NotNull String[] terra$getLines() {
-        return new String[] {
-                terra$getLine(0),
-                terra$getLine(1),
-                terra$getLine(2),
-                terra$getLine(3)
-        };
+        String[] lines = new String[text.length];
+        for(int i = 0; i < text.length; i++) {
+            lines[i] = text[i].asString();
+        }
+        return lines;
     }
 
     public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
