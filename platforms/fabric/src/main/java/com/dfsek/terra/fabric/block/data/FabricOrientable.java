@@ -2,6 +2,7 @@ package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.platform.block.Axis;
 import com.dfsek.terra.api.platform.block.data.Orientable;
+import com.dfsek.terra.fabric.FabricAdapter;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.EnumProperty;
@@ -26,11 +27,11 @@ public class FabricOrientable extends FabricBlockData implements Orientable {
 
     @Override
     public Axis getAxis() {
-        return FabricEnumAdapter.adapt(getHandle().get(property));
+        return FabricAdapter.adapt(getHandle().get(property));
     }
 
     @Override
     public void setAxis(Axis axis) {
-        delegate = delegate.with(property, FabricEnumAdapter.adapt(axis));
+        delegate = delegate.with(property, FabricAdapter.adapt(axis));
     }
 }
