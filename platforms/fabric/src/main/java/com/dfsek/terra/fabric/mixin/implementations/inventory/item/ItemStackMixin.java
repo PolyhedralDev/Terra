@@ -20,12 +20,6 @@ public abstract class ItemStackMixin {
     @Shadow
     public abstract net.minecraft.item.Item getItem();
 
-    @Shadow
-    public abstract boolean isDamageable();
-
-    @Shadow
-    public abstract ItemStack copy();
-
     public int terra$getAmount() {
         return getCount();
     }
@@ -34,7 +28,7 @@ public abstract class ItemStackMixin {
         setCount(i);
     }
 
-    public Item getType() {
+    public Item terra$getType() {
         return (Item) getItem();
     }
 

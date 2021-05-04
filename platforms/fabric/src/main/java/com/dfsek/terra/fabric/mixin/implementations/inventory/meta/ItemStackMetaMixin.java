@@ -8,6 +8,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -31,6 +32,7 @@ public abstract class ItemStackMetaMixin {
         return this;
     }
 
+    @Intrinsic(displace = true)
     public Map<Enchantment, Integer> terra$getEnchantments() {
         if(!hasEnchantments()) return Collections.emptyMap();
         Map<Enchantment, Integer> map = new HashMap<>();
