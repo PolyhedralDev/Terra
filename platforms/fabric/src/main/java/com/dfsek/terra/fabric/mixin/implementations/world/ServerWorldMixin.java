@@ -16,11 +16,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ServerWorld.class)
 @Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ServerWorldMixin {
+    @Shadow
+    public abstract long getSeed();
+
     public int terra$getMaxHeight() {
         return ((ServerWorld) (Object) this).getDimensionHeight();
     }
@@ -42,6 +47,11 @@ public abstract class ServerWorldMixin {
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ServerWorld) (Object) this).spawnEntity(entity);
         return (Entity) entity;
+    }
+
+    @Intrinsic
+    public long terra$getSeed() {
+        return getSeed();
     }
 
     public int terra$getMinHeight() {

@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -19,6 +20,9 @@ public abstract class ItemStackMixin {
 
     @Shadow
     public abstract net.minecraft.item.Item getItem();
+
+    @Shadow
+    public abstract boolean isDamageable();
 
     public int terra$getAmount() {
         return getCount();
@@ -42,5 +46,10 @@ public abstract class ItemStackMixin {
 
     public Object terra$getHandle() {
         return this;
+    }
+
+    @Intrinsic
+    public boolean terra$isDamageable() {
+        return isDamageable();
     }
 }

@@ -41,7 +41,7 @@ public abstract class EntityMixin {
         teleport(location.getX(), location.getY(), location.getZ());
     }
 
-    public World getWorld() {
+    public World terra$getWorld() {
         return (World) world;
     }
 
