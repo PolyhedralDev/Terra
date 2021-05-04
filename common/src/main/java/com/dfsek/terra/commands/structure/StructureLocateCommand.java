@@ -61,6 +61,7 @@ public class StructureLocateCommand implements CommandTemplate {
 
     @Override
     public void execute(CommandSender sender) {
+        if (!(sender instanceof Player)) return; //fix to fix a ClassCastException; will implement something to tell the console the nearest location near worldspawn
         Player player = (Player) sender;
 
         new Thread(new AsyncStructureFinder(main.getWorld(player.getWorld()).getBiomeProvider(), structure, player.getLocation().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), 0, radius, location -> {
