@@ -20,7 +20,7 @@ apply(plugin = "net.minecraftforge.gradle")
 apply(plugin = "org.spongepowered.mixin")
 
 configure<org.spongepowered.asm.gradle.plugins.MixinExtension> {
-    add(sourceSets.main.get(), "terra.refmap.json")
+    add(sourceSets.main.get(), "terra-refmap.json")
 }
 
 plugins {

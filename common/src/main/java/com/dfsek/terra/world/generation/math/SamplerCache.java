@@ -25,7 +25,7 @@ public class SamplerCache {
                     public Sampler load(@NotNull Long key) {
                         int cx = (int) (key >> 32);
                         int cz = (int) key.longValue();
-                        return world.getGenerator().createSampler(cx, cz, world.getBiomeProvider(), world.getWorld(), world.getConfig().getTemplate().getElevationBlend());
+                        return world.getWorld().getTerraGenerator().createSampler(cx, cz, world.getBiomeProvider(), world.getWorld(), world.getConfig().getTemplate().getElevationBlend());
                     }
                 });
     }

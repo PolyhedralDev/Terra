@@ -25,7 +25,7 @@ public class TerraWorld {
 
 
     public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
-        if(!isTerraWorld(w)) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
+        if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
         config = c.toWorldConfig(this);
         this.provider = config.getProvider();
@@ -34,17 +34,11 @@ public class TerraWorld {
         safe = true;
     }
 
-    public static boolean isTerraWorld(World w) {
-        return w.getGenerator().getHandle() instanceof GeneratorWrapper;
-    }
 
     public World getWorld() {
         return world;
     }
 
-    public TerraChunkGenerator getGenerator() {
-        return ((GeneratorWrapper) world.getGenerator().getHandle()).getHandle();
-    }
 
     public BiomeProvider getBiomeProvider() {
         return provider;
