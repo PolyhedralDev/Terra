@@ -6,6 +6,7 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,19 +19,20 @@ public abstract class SignBlockEntityMixin {
     public abstract void setTextOnRow(int row, Text text);
 
     @Shadow
-    public abstract Text getTextOnRow(int row);
+    @Final
+    private Text[] text;
 
     public @NotNull String[] terra$getLines() {
         return new String[] {
-                getTextOnRow(0).asString(),
-                getTextOnRow(1).asString(),
-                getTextOnRow(2).asString(),
-                getTextOnRow(3).asString()
+                terra$getLine(0),
+                terra$getLine(1),
+                terra$getLine(2),
+                terra$getLine(3)
         };
     }
 
     public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
-        return getTextOnRow(index).asString();
+        return text[index].asString();
     }
 
     public void terra$setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
