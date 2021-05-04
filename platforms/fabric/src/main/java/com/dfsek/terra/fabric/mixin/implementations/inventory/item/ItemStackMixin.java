@@ -3,6 +3,8 @@ package com.dfsek.terra.fabric.mixin.implementations.inventory.item;
 import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -24,6 +26,9 @@ public abstract class ItemStackMixin {
     @Shadow
     public abstract boolean isDamageable();
 
+    @Shadow
+    public abstract void setTag(@Nullable CompoundTag tag);
+
     public int terra$getAmount() {
         return getCount();
     }
@@ -40,8 +45,9 @@ public abstract class ItemStackMixin {
         return (ItemMeta) this;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
-
+        setTag(((ItemStack) (Object) meta).getTag());
     }
 
     public Object terra$getHandle() {
