@@ -5,19 +5,25 @@ import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.fabric.FabricAdapter;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
@@ -29,6 +35,12 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.feature.StructureFeature;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     private final long seed;
@@ -73,6 +85,28 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public void buildSurface(ChunkRegion region, Chunk chunk) {
 
+    }
+
+    @Nullable
+    @Override
+    public BlockPos locateStructure(ServerWorld world, StructureFeature<?> feature, BlockPos center, int radius, boolean skipExistingChunks) {
+        String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
+        TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
+        TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
+        if(located != null) {
+            CompletableFuture<BlockPos> result = new CompletableFuture<>();
+            AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
+                result.complete(FabricAdapter.adapt(location));
+            }, TerraFabricPlugin.getInstance());
+            finder.run(); // Do this synchronously.
+            try {
+                return result.get();
+            } catch(InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        TerraFabricPlugin.getInstance().logger().warning("No overrides are defined for \"" + name + "\"");
+        return null;
     }
 
     @Override
