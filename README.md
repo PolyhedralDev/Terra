@@ -7,20 +7,39 @@ to your specifications, with no knowledge of Java required.
 
 * Paper+ servers (Paper, Tuinity, Purpur, etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
 * Fabric: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
+* Forge: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
 
-## Building and running Terra
+## Building and Running Terra
 
-To build, simply run `./gradlew build` (`gradlew.bat build` on Windows). This will produce a jar in `build/libs`
-called `Terra-[CURRENT VERSION].jar`. You can put this right into your plugins dir, along with the correct Gaea version.
+To build, simply run `./gradlew build` (`gradlew.bat build` on Windows). This will build all platforms, and
+produce JARs in `platforms/<platform>/build/libs`
 
-If you would like to test it with a default server config, just run `./gradlew setupServer` or
-`./gradlew.bat setupServer` to set up the server, then `./gradlew testWithPaper` or `gradlew.bat testWithPaper` to run the server. If you
-want a clean installation of the server, re-run the `setupServer` task. This will download a default server config
-from [here](https://github.com/PolyhedralDev/WorldGenTestServer)
-and install the server in the `target/server` directory, along with all the needed plugins.
+### Production JARs:
+* Bukkit: `Terra-<version>-shaded.jar`
+* Fabric: `Terra-<version>-shaded-mapped.jar`
+* Forge: `Terra-<version>-shaded.jar`
 
-**Note: You will need to adjust the `NAME` variable `bukkit.yml` of the test server if you are not using the default Terra config.**
+### Building a Specific Platform
+To build a specific platform, use the following Gradle tasks:
+* Bukkit: `:platforms:bukkit:shadowJar`
+* Fabric: `:platforms:fabric:remapShadedJar`
+* Forge: `:platforms:forge:reobfShadowJar`
 
+These tasks all produce JARs in `platforms/<platform>/build/libs`.
+
+### Running Minecraft in the IDE
+To run Minecraft with Terra in the IDE (for testing) use the following tasks:
+* Bukkit
+  * `installPaper` - Install a [Paper](https://github.com/PaperMC/Paper) test server. (Only needs to be run once).
+  * `installPurpur` - Install a [Purpur](https://github.com/pl3xgaming/Purpur) test server. (Only needs to be run once).
+  * `runPaper` - Run the Paper test server with Terra (`installPaper` must have been run previously).
+  * `runPurpur` - Run the Purpur test server with Terra (`installPurpur` must have been run previously).
+* Fabric
+  * `runClient` - Run a Minecraft client with Terra installed.
+  * `runServer` - Run a Minecraft server with Terra installed.
+* Forge
+  * `runClient` - Run a Minecraft client with Terra installed.
+  * `runServer` - Run a Minecraft server with Terra installed.
 ## Contributing
 Contributions are welcome! If you want to see a feature in Terra, please, open an issue, or implement it yourself and
 submit a PR!
