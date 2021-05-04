@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin;
+package com.dfsek.terra.fabric.mixin.access;
 
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.text.Text;
@@ -10,12 +10,12 @@ import java.util.List;
 
 @Mixin(GeneratorType.class)
 public interface GeneratorTypeAccessor {
-    @Accessor
-    static List<GeneratorType> getVALUES() {
+    @Accessor("VALUES")
+    static List<GeneratorType> getValues() {
         throw new UnsupportedOperationException();
     }
 
     @Mutable
-    @Accessor
+    @Accessor("translationKey")
     void setTranslationKey(Text translationKey);
 }

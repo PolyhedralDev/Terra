@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.block.state.MobSpawner;
 import com.dfsek.terra.api.platform.block.state.SerialState;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.mixin.access.MobSpawnerLogicAccessor;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.MobSpawnerLogic;
@@ -20,7 +21,7 @@ public abstract class MobSpawnerBlockEntityMixin {
     public abstract MobSpawnerLogic getLogic();
 
     public EntityType terra$getSpawnedType() {
-        return (EntityType) Registry.ENTITY_TYPE.get(getLogic().getEntityId());
+        return (EntityType) Registry.ENTITY_TYPE.get(((MobSpawnerLogicAccessor) getLogic()).callGetEntityId());
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {

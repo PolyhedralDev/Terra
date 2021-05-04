@@ -5,6 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "GeneratorOptionsMixin",
+    "access.BiomeEffectsAccessor",
+    "access.MobSpawnerLogicAccessor",
+    "access.StateAccessor",
     "implementations.BiomeMixin",
     "implementations.ChunkGeneratorMixin",
     "implementations.ConfiguredFeatureMixin",
@@ -30,7 +33,7 @@
     "implementations.world.ServerWorldMixin"
   ],
   "client": [
-    "GeneratorTypeAccessor"
+    "access.GeneratorTypeAccessor"
   ],
   "server": [],
   "injectors": {
