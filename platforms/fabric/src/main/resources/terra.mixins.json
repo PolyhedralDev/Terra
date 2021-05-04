@@ -7,6 +7,7 @@
     "GeneratorOptionsMixin",
     "implementations.BiomeMixin",
     "implementations.ChunkGeneratorMixin",
+    "implementations.ConfiguredFeatureMixin",
     "implementations.block.BlockEntityMixin",
     "implementations.block.BlockMixin",
     "implementations.block.state.LootableContainerBlockEntityMixin",

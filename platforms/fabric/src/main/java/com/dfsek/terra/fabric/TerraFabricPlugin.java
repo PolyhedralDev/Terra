@@ -40,7 +40,6 @@ import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
-import com.dfsek.terra.fabric.world.FabricTree;
 import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.fabric.world.features.PopulatorFeature;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
@@ -451,7 +450,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
-                registry.add(id, new FabricTree(tree, id));
+                registry.add(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
         }
