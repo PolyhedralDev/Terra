@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = ItemMeta.class, prefix = "terra$"))
+@Implements(@Interface(iface = ItemMeta.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ItemStackMetaMixin {
     @Shadow
     public abstract boolean hasEnchantments();

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(LockableContainerBlockEntity.class)
-@Implements(@Interface(iface = Inventory.class, prefix = "terra$"))
+@Implements(@Interface(iface = Inventory.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public class LockableContainerBlockEntityMixin {
     public Object terra$getHandle() {
         return this;

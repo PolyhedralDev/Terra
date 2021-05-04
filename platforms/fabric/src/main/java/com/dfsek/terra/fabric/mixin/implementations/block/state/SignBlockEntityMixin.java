@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(SignBlockEntity.class)
-@Implements(@Interface(iface = Sign.class, prefix = "terra$"))
+@Implements(@Interface(iface = Sign.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class SignBlockEntityMixin {
     @Shadow
     public abstract void setTextOnRow(int row, Text text);

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = Damageable.class, prefix = "terra$"))
+@Implements(@Interface(iface = Damageable.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ItemStackDamageableMixin {
     @Shadow
     public abstract boolean isDamaged();

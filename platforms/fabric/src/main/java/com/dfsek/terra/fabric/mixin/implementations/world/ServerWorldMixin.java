@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ServerWorld.class)
-@Implements(@Interface(iface = World.class, prefix = "terra$"))
+@Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ServerWorldMixin {
     public int terra$getMaxHeight() {
         return ((ServerWorld) (Object) this).getDimensionHeight();

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Objects;
 
 @Mixin(Enchantment.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.inventory.item.Enchantment.class, prefix = "terra$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.inventory.item.Enchantment.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class EnchantmentMixin {
     @Shadow
     public abstract boolean isAcceptableItem(net.minecraft.item.ItemStack stack);

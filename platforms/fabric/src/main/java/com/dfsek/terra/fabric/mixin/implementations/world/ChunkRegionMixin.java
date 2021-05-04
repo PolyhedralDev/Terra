@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = World.class, prefix = "terra$"))
+@Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     @Shadow
     @Final

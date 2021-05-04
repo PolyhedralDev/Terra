@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(Block.class)
-@Implements(@Interface(iface = BlockType.class, prefix = "terra$"))
+@Implements(@Interface(iface = BlockType.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockMixin {
     @Shadow
     private BlockState defaultState;

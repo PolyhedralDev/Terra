@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ProtoChunk.class)
-@Implements(@Interface(iface = ChunkData.class, prefix = "terra$"))
+@Implements(@Interface(iface = ChunkData.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ProtoChunkMixin {
     @Shadow
     public abstract BlockState getBlockState(BlockPos pos);

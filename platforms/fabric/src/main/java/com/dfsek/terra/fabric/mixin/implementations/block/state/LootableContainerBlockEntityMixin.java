@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(LootableContainerBlockEntity.class)
-@Implements(@Interface(iface = Container.class, prefix = "terra$"))
+@Implements(@Interface(iface = Container.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class LootableContainerBlockEntityMixin extends BlockEntityMixin {
     public Inventory terra$getInventory() {
         return (Inventory) this;

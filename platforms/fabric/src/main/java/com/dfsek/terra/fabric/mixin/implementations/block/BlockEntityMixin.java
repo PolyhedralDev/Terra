@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(BlockEntity.class)
-@Implements(@Interface(iface = BlockState.class, prefix = "terra$"))
+@Implements(@Interface(iface = BlockState.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockEntityMixin {
     @Shadow
     protected BlockPos pos;
