@@ -20,6 +20,7 @@
     "implementations.entity.EntityTypeMixin",
     "implementations.entity.PlayerEntityMixin",
     "implementations.entity.ServerCommandSourceMixin",
+    "implementations.inventory.LockableContainerBlockEntityMixin",
     "implementations.inventory.item.ItemMixin",
     "implementations.inventory.item.ItemStackMixin",
     "implementations.inventory.meta.EnchantmentMixin",
