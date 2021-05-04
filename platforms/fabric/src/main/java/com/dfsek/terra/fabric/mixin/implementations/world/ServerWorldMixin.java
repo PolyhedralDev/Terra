@@ -13,6 +13,7 @@ import com.dfsek.terra.fabric.world.block.FabricBlock;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -57,5 +58,19 @@ public abstract class ServerWorldMixin {
 
     public TerraChunkGenerator terra$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
+    }
+
+    /**
+     * Overridden in the same manner as {@link ChunkRegionMixin#hashCode()}
+     *
+     * @param other Another object
+     * @return Whether this world is the same as other.
+     * @see ChunkRegionMixin#hashCode()
+     */
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof ServerWorldAccess)) return false;
+        return (ServerWorldAccess) this == (((ServerWorldAccess) other).toServerWorld());
     }
 }

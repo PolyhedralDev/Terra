@@ -14,6 +14,7 @@ import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -79,5 +80,18 @@ public abstract class ChunkRegionMixin {
     @Override
     public int hashCode() {
         return world.hashCode();
+    }
+
+    /**
+     * Overridden in the same manner as {@link #hashCode()}
+     *
+     * @param other Another object
+     * @return Whether this world is the same as other.
+     * @see #hashCode()
+     */
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof ServerWorldAccess)) return false;
+        return world.equals(((ServerWorldAccess) other).toServerWorld());
     }
 }
