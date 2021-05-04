@@ -1,6 +1,7 @@
-package com.dfsek.terra.fabric.world.block.data;
+package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.platform.block.data.Slab;
+import com.dfsek.terra.fabric.FabricAdapter;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;
 
@@ -11,11 +12,11 @@ public class FabricSlab extends FabricWaterlogged implements Slab {
 
     @Override
     public Type getType() {
-        return FabricEnumAdapter.adapt(delegate.get(Properties.SLAB_TYPE));
+        return FabricAdapter.adapt(delegate.get(Properties.SLAB_TYPE));
     }
 
     @Override
     public void setType(Type type) {
-        delegate = delegate.with(Properties.SLAB_TYPE, FabricEnumAdapter.adapt(type));
+        delegate = delegate.with(Properties.SLAB_TYPE, FabricAdapter.adapt(type));
     }
 }

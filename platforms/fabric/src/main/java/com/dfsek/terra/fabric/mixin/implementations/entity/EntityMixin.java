@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.mixin.implementations.entity;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.fabric.world.FabricAdapter;
+import com.dfsek.terra.fabric.FabricAdapter;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.UUID;
 
 @Mixin(Entity.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.Entity.class, prefix = "terra$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.Entity.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class EntityMixin {
     @Shadow
     public net.minecraft.world.World world;
@@ -41,7 +41,7 @@ public abstract class EntityMixin {
         teleport(location.getX(), location.getY(), location.getZ());
     }
 
-    public World getWorld() {
+    public World terra$getWorld() {
         return (World) world;
     }
 

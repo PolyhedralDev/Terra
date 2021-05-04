@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world.generator;
+package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
@@ -7,7 +7,6 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.world.TerraBiomeSource;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;

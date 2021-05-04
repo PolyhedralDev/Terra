@@ -9,28 +9,35 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = World.class, prefix = "terra$"))
+@Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     @Shadow
     @Final
     private ServerWorld world;
 
+    @Shadow
+    @Final
+    private long seed;
+
     public int terra$getMaxHeight() {
         return ((ChunkRegion) (Object) this).getDimensionHeight();
     }
 
+    @SuppressWarnings("deprecation")
     public ChunkGenerator terra$getGenerator() {
         return (ChunkGenerator) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator();
     }
@@ -43,11 +50,17 @@ public abstract class ChunkRegionMixin {
         return new FabricBlock(new BlockPos(x, y, z), ((ChunkRegion) (Object) this));
     }
 
+    @SuppressWarnings("deprecation")
     public Entity terra$spawnEntity(Location location, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ChunkRegion) (Object) this).toServerWorld());
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;
+    }
+
+    @Intrinsic
+    public long terra$getSeed() {
+        return seed;
     }
 
     public int terra$getMinHeight() {
@@ -79,5 +92,18 @@ public abstract class ChunkRegionMixin {
     @Override
     public int hashCode() {
         return world.hashCode();
+    }
+
+    /**
+     * Overridden in the same manner as {@link #hashCode()}
+     *
+     * @param other Another object
+     * @return Whether this world is the same as other.
+     * @see #hashCode()
+     */
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof ServerWorldAccess)) return false;
+        return world.equals(((ServerWorldAccess) other).toServerWorld());
     }
 }

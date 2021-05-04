@@ -4,8 +4,8 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = Chunk.class, prefix = "terra$"))
+@Implements(@Interface(iface = Chunk.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     @Final
     @Shadow

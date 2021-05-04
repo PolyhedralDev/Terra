@@ -39,10 +39,11 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
-import com.dfsek.terra.fabric.mixin.GeneratorTypeAccessor;
-import com.dfsek.terra.fabric.world.TerraBiomeSource;
-import com.dfsek.terra.fabric.world.features.PopulatorFeature;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
+import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
+import com.dfsek.terra.fabric.generation.PopulatorFeature;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
@@ -259,23 +260,23 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
 
+        BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(colors.getOrDefault("water", vanilla.getEffects().waterColor))
-                .waterFogColor(colors.getOrDefault("water-fog", vanilla.getEffects().waterFogColor))
-                .fogColor(colors.getOrDefault("fog", vanilla.getEffects().fogColor))
-                .skyColor(colors.getOrDefault("sky", vanilla.getEffects().skyColor))
-                .grassColorModifier(vanilla.getEffects().grassColorModifier);
+                .waterColor(colors.getOrDefault("water", accessor.getWaterColor()))
+                .waterFogColor(colors.getOrDefault("water-fog", accessor.getWaterFogColor()))
+                .fogColor(colors.getOrDefault("fog", accessor.getFogColor()))
+                .skyColor(colors.getOrDefault("sky", accessor.getSkyColor()))
+                .grassColorModifier(accessor.getGrassColorModifier());
 
         if(colors.containsKey("grass")) {
             effects.grassColor(colors.get("grass"));
         } else {
-            vanilla.getEffects().grassColor.ifPresent(effects::grassColor);
+            accessor.getGrassColor().ifPresent(effects::grassColor);
         }
-        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
         if(colors.containsKey("foliage")) {
             effects.foliageColor(colors.get("foliage"));
         } else {
-            vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+            accessor.getFoliageColor().ifPresent(effects::foliageColor);
         }
 
         return new Biome.Builder()
@@ -328,7 +329,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 };
                 //noinspection ConstantConditions
                 ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorTypeAccessor.getVALUES().add(generatorType);
+                GeneratorTypeAccessor.getValues().add(generatorType);
             });
         }
 

@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world.block;
+package com.dfsek.terra.fabric.block;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
@@ -7,7 +7,7 @@ import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.fabric.world.FabricAdapter;
+import com.dfsek.terra.fabric.FabricAdapter;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;

@@ -3,13 +3,16 @@ package com.dfsek.terra.fabric.mixin.implementations.inventory.item;
 import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.inventory.ItemStack.class, prefix = "terra$"))
+@Implements(@Interface(iface = com.dfsek.terra.api.platform.inventory.ItemStack.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ItemStackMixin {
     @Shadow
     public abstract int getCount();
@@ -24,7 +27,7 @@ public abstract class ItemStackMixin {
     public abstract boolean isDamageable();
 
     @Shadow
-    public abstract ItemStack copy();
+    public abstract void setTag(@Nullable CompoundTag tag);
 
     public int terra$getAmount() {
         return getCount();
@@ -34,7 +37,7 @@ public abstract class ItemStackMixin {
         setCount(i);
     }
 
-    public Item getType() {
+    public Item terra$getType() {
         return (Item) getItem();
     }
 
@@ -42,11 +45,17 @@ public abstract class ItemStackMixin {
         return (ItemMeta) this;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
-
+        setTag(((ItemStack) (Object) meta).getTag());
     }
 
     public Object terra$getHandle() {
         return this;
+    }
+
+    @Intrinsic
+    public boolean terra$isDamageable() {
+        return isDamageable();
     }
 }

@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.mixin.implementations.chunk.data;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
-import com.dfsek.terra.fabric.world.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ProtoChunk;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ProtoChunk.class)
-@Implements(@Interface(iface = ChunkData.class, prefix = "terra$"))
+@Implements(@Interface(iface = ChunkData.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ProtoChunkMixin {
     @Shadow
     public abstract BlockState getBlockState(BlockPos pos);

@@ -3,7 +3,6 @@ package com.dfsek.terra.fabric.handle;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
-import com.dfsek.terra.fabric.world.FabricAdapter;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.ItemStackArgumentType;

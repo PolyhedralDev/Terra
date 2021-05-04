@@ -9,17 +9,23 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.fabric.world.block.FabricBlock;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ServerWorld.class)
-@Implements(@Interface(iface = World.class, prefix = "terra$"))
+@Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ServerWorldMixin {
+    @Shadow
+    public abstract long getSeed();
+
     public int terra$getMaxHeight() {
         return ((ServerWorld) (Object) this).getDimensionHeight();
     }
@@ -43,6 +49,11 @@ public abstract class ServerWorldMixin {
         return (Entity) entity;
     }
 
+    @Intrinsic
+    public long terra$getSeed() {
+        return getSeed();
+    }
+
     public int terra$getMinHeight() {
         return 0;
     }
@@ -57,5 +68,19 @@ public abstract class ServerWorldMixin {
 
     public TerraChunkGenerator terra$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
+    }
+
+    /**
+     * Overridden in the same manner as {@link ChunkRegionMixin#hashCode()}
+     *
+     * @param other Another object
+     * @return Whether this world is the same as other.
+     * @see ChunkRegionMixin#hashCode()
+     */
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof ServerWorldAccess)) return false;
+        return (ServerWorldAccess) this == (((ServerWorldAccess) other).toServerWorld());
     }
 }

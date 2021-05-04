@@ -5,6 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "GeneratorOptionsMixin",
+    "access.BiomeEffectsAccessor",
+    "access.MobSpawnerLogicAccessor",
+    "access.StateAccessor",
     "implementations.BiomeMixin",
     "implementations.ChunkGeneratorMixin",
     "implementations.ConfiguredFeatureMixin",
@@ -20,6 +23,7 @@
     "implementations.entity.EntityTypeMixin",
     "implementations.entity.PlayerEntityMixin",
     "implementations.entity.ServerCommandSourceMixin",
+    "implementations.inventory.LockableContainerBlockEntityMixin",
     "implementations.inventory.item.ItemMixin",
     "implementations.inventory.item.ItemStackMixin",
     "implementations.inventory.meta.EnchantmentMixin",
@@ -29,7 +33,7 @@
     "implementations.world.ServerWorldMixin"
   ],
   "client": [
-    "GeneratorTypeAccessor"
+    "access.GeneratorTypeAccessor"
   ],
   "server": [],
   "injectors": {

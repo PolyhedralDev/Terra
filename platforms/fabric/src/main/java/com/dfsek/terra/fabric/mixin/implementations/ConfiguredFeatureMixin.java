@@ -10,8 +10,6 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,12 +19,12 @@ import java.util.Locale;
 import java.util.Random;
 
 @Mixin(ConfiguredFeature.class)
-@Implements(@Interface(iface = Tree.class, prefix = "terra$"))
+@Implements(@Interface(iface = Tree.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ConfiguredFeatureMixin {
     @Shadow
     public abstract boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos);
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "try"})
     public boolean terra$plant(Location l, Random r) {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
         try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {

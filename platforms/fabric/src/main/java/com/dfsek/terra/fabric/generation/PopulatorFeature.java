@@ -1,8 +1,8 @@
-package com.dfsek.terra.fabric.world.features;
+package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
