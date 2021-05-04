@@ -20,12 +20,9 @@ produce JARs in `platforms/<platform>/build/libs`
 * Forge: `Terra-<version>-shaded.jar`
 
 ### Building a Specific Platform
-To build a specific platform, use the following Gradle tasks:
-* Bukkit: `:platforms:bukkit:shadowJar`
-* Fabric: `:platforms:fabric:remapShadedJar`
-* Forge: `:platforms:forge:reobfShadowJar`
+To build a specific platform, run `gradlew :platforms:<platform>:build`.
 
-These tasks all produce JARs in `platforms/<platform>/build/libs`.
+JARs are produced in `platforms/<platform>/build/libs`.
 
 ### Running Minecraft in the IDE
 To run Minecraft with Terra in the IDE (for testing) use the following tasks:
