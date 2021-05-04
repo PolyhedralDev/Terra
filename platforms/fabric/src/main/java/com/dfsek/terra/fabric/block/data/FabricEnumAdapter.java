@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.world.block.data;
+package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.platform.block.Axis;
 import com.dfsek.terra.api.platform.block.BlockFace;

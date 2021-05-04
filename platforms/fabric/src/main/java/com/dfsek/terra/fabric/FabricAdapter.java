@@ -1,18 +1,18 @@
-package com.dfsek.terra.fabric.world;
+package com.dfsek.terra.fabric;
 
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.state.Container;
 import com.dfsek.terra.api.platform.block.state.MobSpawner;
 import com.dfsek.terra.api.platform.block.state.Sign;
-import com.dfsek.terra.fabric.world.block.FabricBlockData;
-import com.dfsek.terra.fabric.world.block.data.FabricDirectional;
-import com.dfsek.terra.fabric.world.block.data.FabricMultipleFacing;
-import com.dfsek.terra.fabric.world.block.data.FabricOrientable;
-import com.dfsek.terra.fabric.world.block.data.FabricRotatable;
-import com.dfsek.terra.fabric.world.block.data.FabricSlab;
-import com.dfsek.terra.fabric.world.block.data.FabricStairs;
-import com.dfsek.terra.fabric.world.block.data.FabricWaterlogged;
+import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.data.FabricDirectional;
+import com.dfsek.terra.fabric.block.data.FabricMultipleFacing;
+import com.dfsek.terra.fabric.block.data.FabricOrientable;
+import com.dfsek.terra.fabric.block.data.FabricRotatable;
+import com.dfsek.terra.fabric.block.data.FabricSlab;
+import com.dfsek.terra.fabric.block.data.FabricStairs;
+import com.dfsek.terra.fabric.block.data.FabricWaterlogged;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;

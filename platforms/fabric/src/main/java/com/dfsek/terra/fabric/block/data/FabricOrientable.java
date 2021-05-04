@@ -1,8 +1,8 @@
-package com.dfsek.terra.fabric.world.block.data;
+package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.platform.block.Axis;
 import com.dfsek.terra.api.platform.block.data.Orientable;
-import com.dfsek.terra.fabric.world.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.Direction;

@@ -2,8 +2,8 @@ package com.dfsek.terra.fabric.mixin;
 
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.world.TerraBiomeSource;
-import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.google.common.base.MoreObjects;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
