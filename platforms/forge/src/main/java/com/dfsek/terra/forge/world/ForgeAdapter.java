@@ -1,16 +1,11 @@
 package com.dfsek.terra.forge.world;
 
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.inventory.item.Enchantment;
-import com.dfsek.terra.forge.inventory.ForgeEnchantment;
-import com.dfsek.terra.forge.inventory.ForgeItem;
-import com.dfsek.terra.forge.inventory.ForgeItemStack;
+import com.dfsek.terra.api.platform.block.state.Container;
+import com.dfsek.terra.api.platform.block.state.MobSpawner;
+import com.dfsek.terra.api.platform.block.state.Sign;
 import com.dfsek.terra.forge.world.block.ForgeBlockData;
-import com.dfsek.terra.forge.world.block.ForgeBlockType;
 import com.dfsek.terra.forge.world.block.data.ForgeDirectional;
 import com.dfsek.terra.forge.world.block.data.ForgeMultipleFacing;
 import com.dfsek.terra.forge.world.block.data.ForgeOrientable;
@@ -18,19 +13,12 @@ import com.dfsek.terra.forge.world.block.data.ForgeRotatable;
 import com.dfsek.terra.forge.world.block.data.ForgeSlab;
 import com.dfsek.terra.forge.world.block.data.ForgeStairs;
 import com.dfsek.terra.forge.world.block.data.ForgeWaterlogged;
-import com.dfsek.terra.forge.world.entity.ForgeCommandSender;
-import com.dfsek.terra.forge.world.entity.ForgeEntityType;
-import com.dfsek.terra.forge.world.entity.ForgePlayer;
-import com.dfsek.terra.forge.world.handles.world.ForgeWorldHandle;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.ICommandSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.LockableLootTileEntity;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.tileentity.SignTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -58,7 +46,8 @@ public final class ForgeAdapter {
 
         if(state.hasProperty(BlockStateProperties.FACING)) return new ForgeDirectional(state, BlockStateProperties.FACING);
         if(state.hasProperty(BlockStateProperties.FACING_HOPPER)) return new ForgeDirectional(state, BlockStateProperties.FACING_HOPPER);
-        if(state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) return new ForgeDirectional(state, BlockStateProperties.HORIZONTAL_FACING);
+        if(state.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
+            return new ForgeDirectional(state, BlockStateProperties.HORIZONTAL_FACING);
 
         if(state.getProperties().containsAll(Arrays.asList(BlockStateProperties.NORTH, BlockStateProperties.SOUTH, BlockStateProperties.EAST, BlockStateProperties.WEST)))
             return new ForgeMultipleFacing(state);
@@ -66,9 +55,18 @@ public final class ForgeAdapter {
         return new ForgeBlockData(state);
     }
 
-    public static CommandSender adapt(CommandSource serverCommandSource) {
-        if(serverCommandSource.getEntity() instanceof PlayerEntity) return new ForgePlayer((PlayerEntity) serverCommandSource.getEntity());
-        return new ForgeCommandSender(serverCommandSource);
+    public static com.dfsek.terra.api.platform.block.state.BlockState adapt(com.dfsek.terra.api.platform.block.Block block) {
+        IWorld worldAccess = (IWorld) block.getLocation().getWorld();
+
+        TileEntity entity = worldAccess.getBlockEntity(adapt(block.getLocation().toVector()));
+        if(entity instanceof SignTileEntity) {
+            return (Sign) entity;
+        } else if(entity instanceof MobSpawnerTileEntity) {
+            return (MobSpawner) entity;
+        } else if(entity instanceof LockableLootTileEntity) {
+            return (Container) entity;
+        }
+        return null;
     }
 
     public static Direction adapt(BlockFace face) {
@@ -88,41 +86,5 @@ public final class ForgeAdapter {
             default:
                 throw new IllegalArgumentException("Illegal direction: " + face);
         }
-    }
-
-    public static BlockType adapt(Block block) {
-        return new ForgeBlockType(block);
-    }
-
-    public static EntityType adapt(net.minecraft.entity.EntityType<?> entityType) {
-        return new ForgeEntityType(entityType);
-    }
-
-    public static net.minecraft.entity.EntityType<? extends Entity> adapt(EntityType entityType) {
-        return ((ForgeEntityType) entityType).getHandle();
-    }
-
-    public static ItemStack adapt(com.dfsek.terra.api.platform.inventory.ItemStack itemStack) {
-        return ((ForgeItemStack) itemStack).getHandle();
-    }
-
-    public static com.dfsek.terra.api.platform.inventory.ItemStack adapt(ItemStack itemStack) {
-        return new ForgeItemStack(itemStack);
-    }
-
-    public static com.dfsek.terra.api.platform.inventory.Item adapt(Item item) {
-        return new ForgeItem(item);
-    }
-
-    public static Enchantment adapt(net.minecraft.enchantment.Enchantment enchantment) {
-        return new ForgeEnchantment(enchantment);
-    }
-
-    public static net.minecraft.enchantment.Enchantment adapt(Enchantment enchantment) {
-        return ((ForgeEnchantment) enchantment).getHandle();
-    }
-
-    public IWorld adapt(ForgeWorldHandle worldHandle) {
-        return worldHandle.getWorld();
     }
 }

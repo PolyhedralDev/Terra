@@ -1,12 +1,13 @@
 package com.dfsek.terra.forge.world.generator;
 
+import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.dfsek.terra.forge.world.TerraBiomeSource;
-import com.dfsek.terra.forge.world.handles.world.ForgeSeededWorldAccess;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
@@ -21,7 +22,6 @@ import net.minecraft.world.Blockreader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.BiomeManager;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
@@ -30,7 +30,6 @@ import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.StructureSpreadSettings;
 import org.jetbrains.annotations.NotNull;
 
 public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
@@ -94,8 +93,7 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
 
     @Override
     public void fillFromNoise(@NotNull IWorld world, @NotNull StructureManager p_230352_2_, @NotNull IChunk chunk) {
-        ForgeSeededWorldAccess worldAccess = new ForgeSeededWorldAccess(world, seed, this);
-        delegate.generateChunkData(worldAccess, new FastRandom(), chunk.getPos().x, chunk.getPos().z, new ForgeChunkData(chunk));
+        delegate.generateChunkData((World) world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
     }
 
     @Override

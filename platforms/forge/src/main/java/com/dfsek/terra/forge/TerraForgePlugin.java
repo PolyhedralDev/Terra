@@ -37,13 +37,9 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.forge.inventory.ForgeItemHandle;
-import com.dfsek.terra.forge.world.ForgeAdapter;
-import com.dfsek.terra.forge.world.ForgeBiome;
-import com.dfsek.terra.forge.world.ForgeTree;
-import com.dfsek.terra.forge.world.ForgeWorldHandle;
+import com.dfsek.terra.forge.handle.ForgeItemHandle;
+import com.dfsek.terra.forge.handle.ForgeWorldHandle;
 import com.dfsek.terra.forge.world.features.PopulatorFeature;
-import com.dfsek.terra.forge.world.generator.ForgeChunkGenerator;
 import com.dfsek.terra.forge.world.generator.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.world.generator.config.TerraLevelType;
 import com.dfsek.terra.profiler.Profiler;
@@ -172,7 +168,7 @@ public class TerraForgePlugin implements TerraPlugin {
     private static RequiredArgumentBuilder<CommandSource, String> assemble(RequiredArgumentBuilder<CommandSource, String> in, CommandManager manager) {
         return in.suggests((context, builder) -> {
             List<String> args = parseCommand(context.getInput());
-            CommandSender sender = ForgeAdapter.adapt(context.getSource());
+            CommandSender sender = (CommandSender) context.getSource();
             try {
                 manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
             } catch(CommandException e) {
@@ -182,7 +178,7 @@ public class TerraForgePlugin implements TerraPlugin {
         }).executes(context -> {
             List<String> args = parseCommand(context.getInput());
             try {
-                manager.execute(args.remove(0), ForgeAdapter.adapt(context.getSource()), args);
+                manager.execute(args.remove(0), (CommandSender) context.getSource(), args);
             } catch(CommandException e) {
                 context.getSource().sendFailure(new StringTextComponent(e.getMessage()));
             }
@@ -215,11 +211,12 @@ public class TerraForgePlugin implements TerraPlugin {
         event.getRegistry().register(POPULATOR_FEATURE);
     }
 
+    @SuppressWarnings("ConstantConditions")
     public Biome createBiome(BiomeBuilder biome) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
-        Biome vanilla = ((ForgeBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
+        Biome vanilla = (Biome) ((Object) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0));
 
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder();
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
@@ -291,7 +288,7 @@ public class TerraForgePlugin implements TerraPlugin {
     public TerraWorld getWorld(World world) {
         return worldMap.computeIfAbsent(world.getSeed(), w -> {
             logger.info("Loading world " + w);
-            return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) ((ForgeChunkGenerator) world.getGenerator()).getHandle()).getPack(), this);
+            return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) (world.getGenerator()).getHandle()).getPack(), this);
         });
     }
 
@@ -398,7 +395,7 @@ public class TerraForgePlugin implements TerraPlugin {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new ForgeBiome(biomeFixer.translate((String) o)));
+                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o));
     }
 
     @Override
@@ -473,7 +470,7 @@ public class TerraForgePlugin implements TerraPlugin {
 
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
-                registry.add(id, new ForgeTree(tree, id, TerraForgePlugin.getInstance()));
+                registry.add(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
         }

@@ -2,7 +2,6 @@ package com.dfsek.terra.forge.world.block;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.forge.world.ForgeAdapter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.state.Property;
@@ -39,7 +38,7 @@ public class ForgeBlockData implements BlockData {
 
     @Override
     public BlockType getBlockType() {
-        return ForgeAdapter.adapt(delegate.getBlock());
+        return (BlockType) delegate.getBlock();
     }
 
     @Override

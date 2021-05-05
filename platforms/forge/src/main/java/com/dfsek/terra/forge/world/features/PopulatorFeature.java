@@ -1,9 +1,8 @@
 package com.dfsek.terra.forge.world.features;
 
-import com.dfsek.terra.forge.world.generator.ForgeChunkGenerator;
+import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.forge.world.generator.ForgeChunkGeneratorWrapper;
-import com.dfsek.terra.forge.world.handles.ForgeWorld;
-import com.dfsek.terra.forge.world.handles.chunk.ForgeChunkWorldAccess;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -23,11 +22,9 @@ public class PopulatorFeature extends Feature<NoFeatureConfig> {
     }
 
     @Override
-    public boolean place(@NotNull ISeedReader world, @NotNull ChunkGenerator generator, @NotNull Random random, BlockPos pos, @NotNull NoFeatureConfig config) {
+    public boolean place(@NotNull ISeedReader world, @NotNull ChunkGenerator generator, @NotNull Random random, @NotNull BlockPos pos, @NotNull NoFeatureConfig config) {
         ForgeChunkGeneratorWrapper gen = (ForgeChunkGeneratorWrapper) generator;
-        ForgeChunkWorldAccess chunk = new ForgeChunkWorldAccess(world, pos.getX() >> 4, pos.getZ() >> 4);
-        ForgeWorld world1 = new ForgeWorld(world.getLevel(), new ForgeChunkGenerator(generator));
-        gen.getHandle().getPopulators().forEach(populator -> populator.populate(world1, chunk));
+        gen.getHandle().getPopulators().forEach(populator -> populator.populate((World) world, (Chunk) world));
         return true;
     }
 

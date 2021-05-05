@@ -6,9 +6,8 @@ import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
+import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.forge.world.ForgeAdapter;
-import com.dfsek.terra.forge.world.block.state.ForgeBlockState;
-import com.dfsek.terra.forge.world.handles.world.ForgeWorldAccess;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -35,7 +34,7 @@ public class ForgeBlock implements Block {
 
     @Override
     public BlockState getState() {
-        return ForgeBlockState.newInstance(this);
+        return ForgeAdapter.adapt(this);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class ForgeBlock implements Block {
 
     @Override
     public Location getLocation() {
-        return ForgeAdapter.adapt(delegate.position).toLocation(new ForgeWorldAccess(delegate.worldAccess));
+        return ForgeAdapter.adapt(delegate.position).toLocation((World) delegate.worldAccess);
     }
 
     @Override
