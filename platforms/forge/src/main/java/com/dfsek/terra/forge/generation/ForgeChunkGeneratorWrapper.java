@@ -81,13 +81,13 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    public void createStructures(@NotNull DynamicRegistries p_242707_1_, @NotNull StructureManager p_242707_2_, @NotNull IChunk p_242707_3_, @NotNull TemplateManager p_242707_4_, long p_242707_5_) {
-
+    public void createStructures(@NotNull DynamicRegistries dynamicRegistries, @NotNull StructureManager manager, @NotNull IChunk chunk, @NotNull TemplateManager templateManager, long p_242707_5_) {
+        if(pack.getTemplate().vanillaStructures()) super.createStructures(dynamicRegistries, manager, chunk, templateManager, p_242707_5_);
     }
 
     @Override
-    public void applyCarvers(long p_230350_1_, @NotNull BiomeManager p_230350_3_, @NotNull IChunk p_230350_4_, GenerationStage.@NotNull Carving p_230350_5_) {
-        // No caves
+    public void applyCarvers(long p_230350_1_, @NotNull BiomeManager biomeManager, @NotNull IChunk chunk, GenerationStage.@NotNull Carving carving) {
+        if(pack.getTemplate().vanillaCaves()) super.applyCarvers(p_230350_1_, biomeManager, chunk, carving);
     }
 
     @Override

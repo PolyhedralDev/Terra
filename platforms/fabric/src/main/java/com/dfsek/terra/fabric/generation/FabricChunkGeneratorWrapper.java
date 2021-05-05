@@ -110,26 +110,20 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     @Override
-    public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
-        super.generateFeatures(region, accessor);
-    }
-
-    @Override
     public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
         delegate.generateChunkData((World) world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
     }
 
     @Override
     public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
-        // No caves
+        if(pack.getTemplate().vanillaCaves()) super.carve(seed, access, chunk, carver);
     }
 
     @Override
     public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) {
-
+        if(pack.getTemplate().vanillaStructures())
+            super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
     }
-
-
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
