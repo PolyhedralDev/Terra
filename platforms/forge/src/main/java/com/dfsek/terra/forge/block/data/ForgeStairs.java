@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge.world.block.data;
+package com.dfsek.terra.forge.block.data;
 
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.Stairs;

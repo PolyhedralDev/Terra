@@ -2,7 +2,7 @@ package com.dfsek.terra.forge.mixin.implementations.block;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.forge.world.ForgeAdapter;
+import com.dfsek.terra.forge.ForgeAdapter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

@@ -2,7 +2,7 @@ package com.dfsek.terra.forge.mixin.implementations.chunk.data;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
-import com.dfsek.terra.forge.world.block.ForgeBlockData;
+import com.dfsek.terra.forge.block.ForgeBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;

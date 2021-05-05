@@ -2,7 +2,7 @@ package com.dfsek.terra.forge.mixin.implementations.entity;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.forge.world.ForgeAdapter;
+import com.dfsek.terra.forge.ForgeAdapter;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;

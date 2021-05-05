@@ -1,18 +1,18 @@
-package com.dfsek.terra.forge.world;
+package com.dfsek.terra.forge;
 
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.state.Container;
 import com.dfsek.terra.api.platform.block.state.MobSpawner;
 import com.dfsek.terra.api.platform.block.state.Sign;
-import com.dfsek.terra.forge.world.block.ForgeBlockData;
-import com.dfsek.terra.forge.world.block.data.ForgeDirectional;
-import com.dfsek.terra.forge.world.block.data.ForgeMultipleFacing;
-import com.dfsek.terra.forge.world.block.data.ForgeOrientable;
-import com.dfsek.terra.forge.world.block.data.ForgeRotatable;
-import com.dfsek.terra.forge.world.block.data.ForgeSlab;
-import com.dfsek.terra.forge.world.block.data.ForgeStairs;
-import com.dfsek.terra.forge.world.block.data.ForgeWaterlogged;
+import com.dfsek.terra.forge.block.ForgeBlockData;
+import com.dfsek.terra.forge.block.data.ForgeDirectional;
+import com.dfsek.terra.forge.block.data.ForgeMultipleFacing;
+import com.dfsek.terra.forge.block.data.ForgeOrientable;
+import com.dfsek.terra.forge.block.data.ForgeRotatable;
+import com.dfsek.terra.forge.block.data.ForgeSlab;
+import com.dfsek.terra.forge.block.data.ForgeStairs;
+import com.dfsek.terra.forge.block.data.ForgeWaterlogged;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.LockableLootTileEntity;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge.world;
+package com.dfsek.terra.forge.generation;
 
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;

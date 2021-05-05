@@ -1,11 +1,10 @@
-package com.dfsek.terra.forge.world.block.data;
+package com.dfsek.terra.forge.block.data;
 
 import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.data.MultipleFacing;
-import com.dfsek.terra.forge.world.block.ForgeBlockData;
+import com.dfsek.terra.forge.block.ForgeBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.properties.BlockStateProperties;
-
 
 import java.util.HashSet;
 import java.util.Set;

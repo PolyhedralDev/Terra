@@ -1,9 +1,7 @@
-package com.dfsek.terra.forge.world.generator.config;
+package com.dfsek.terra.forge.generation;
 
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.forge.TerraForgePlugin;
-import com.dfsek.terra.forge.world.TerraBiomeSource;
-import com.dfsek.terra.forge.world.generator.ForgeChunkGeneratorWrapper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
