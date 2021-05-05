@@ -39,7 +39,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public Block terra$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (x << 4), y, z + (z << 4));
+        BlockPos pos = new BlockPos(x + (this.x << 4), y, z + (this.z << 4));
         return new ForgeBlock(pos, (WorldGenRegion) (Object) this);
     }
 
@@ -48,7 +48,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        ((WorldGenRegion) (Object) this).setBlock(new BlockPos(x + (x << 4), y, z + (z << 4)), ((ForgeBlockData) blockData).getHandle(), 0);
+        ((WorldGenRegion) (Object) this).setBlock(new BlockPos(x + (this.x << 4), y, z + (this.z << 4)), ((ForgeBlockData) blockData).getHandle(), 0);
     }
 
     public Object terra$getHandle() {

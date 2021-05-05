@@ -288,7 +288,7 @@ public class TerraForgePlugin implements TerraPlugin {
     public TerraWorld getWorld(World world) {
         return worldMap.computeIfAbsent(world.getSeed(), w -> {
             logger.info("Loading world " + w);
-            return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) (world.getGenerator()).getHandle()).getPack(), this);
+            return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) world.getGenerator()).getPack(), this);
         });
     }
 
