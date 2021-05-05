@@ -71,7 +71,7 @@ configure<UserDevExtension> {
     runs {
         val runConfig = Action<RunConfig> {
             properties(mapOf(
-                    "forge.logging.markers" to "SCAN,REGISTRIES,REGISTRYDUMP",
+                    //"forge.logging.markers" to "SCAN,REGISTRIES,REGISTRYDUMP",
                     "forge.logging.console.level" to "debug"
             ))
             arg("-mixin.config=terra.mixins.json")
