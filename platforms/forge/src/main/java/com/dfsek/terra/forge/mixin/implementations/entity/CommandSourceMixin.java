@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(CommandSource.class)
 @Implements(@Interface(iface = CommandSender.class, prefix = "terra$", remap = Interface.Remap.NONE))
-public abstract class ServerCommandSourceMixin {
+public abstract class CommandSourceMixin {
     @Shadow
     public abstract void sendSuccess(ITextComponent p_197030_1_, boolean p_197030_2_);
 

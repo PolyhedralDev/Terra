@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(AbstractSpawner.class)
-public interface MobSpawnerLogicAccessor {
+public interface AbstractSpawnerAccessor {
     @Invoker("getEntityId")
     ResourceLocation callGetEntityId();
 }

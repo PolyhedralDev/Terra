@@ -4,8 +4,8 @@ import com.dfsek.terra.api.platform.block.state.MobSpawner;
 import com.dfsek.terra.api.platform.block.state.SerialState;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.forge.TerraForgePlugin;
-import com.dfsek.terra.forge.mixin.access.MobSpawnerLogicAccessor;
-import com.dfsek.terra.forge.mixin.implementations.block.BlockEntityMixin;
+import com.dfsek.terra.forge.mixin.access.AbstractSpawnerAccessor;
+import com.dfsek.terra.forge.mixin.implementations.block.TileEntityMixin;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.spawner.AbstractSpawner;
@@ -17,12 +17,12 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(MobSpawnerTileEntity.class)
 @Implements(@Interface(iface = MobSpawner.class, prefix = "terra$", remap = Interface.Remap.NONE))
-public abstract class MobSpawnerBlockEntityMixin extends BlockEntityMixin {
+public abstract class MobSpawnerTileEntityMixin extends TileEntityMixin {
     @Shadow
     public abstract AbstractSpawner getSpawner();
 
     public EntityType terra$getSpawnedType() {
-        return (EntityType) Registry.ENTITY_TYPE.get(((MobSpawnerLogicAccessor) getSpawner()).callGetEntityId());
+        return (EntityType) Registry.ENTITY_TYPE.get(((AbstractSpawnerAccessor) getSpawner()).callGetEntityId());
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {

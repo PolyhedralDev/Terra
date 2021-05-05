@@ -26,9 +26,9 @@ public abstract class ConfiguredFeatureMixin {
     @SuppressWarnings({"try"})
     public boolean terra$plant(Location l, Random r) {
         try(ProfileFrame ignore = TerraForgePlugin.getInstance().getProfiler().profile("forge_tree")) {
-            ISeedReader fabricWorldAccess = ((ISeedReader) l.getWorld());
+            ISeedReader world = ((ISeedReader) l.getWorld());
             ChunkGenerator generatorWrapper = (ChunkGenerator) l.getWorld().getGenerator();
-            return place(fabricWorldAccess, generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
+            return place(world, generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
         }
     }
 

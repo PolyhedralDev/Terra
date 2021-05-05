@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(SignTileEntity.class)
 @Implements(@Interface(iface = Sign.class, prefix = "terra$", remap = Interface.Remap.NONE))
-public abstract class SignBlockEntityMixin {
+public abstract class SignTileEntityMixin {
     @Shadow
     @Final
     private ITextComponent[] messages;

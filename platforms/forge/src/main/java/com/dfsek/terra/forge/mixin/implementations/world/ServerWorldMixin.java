@@ -71,11 +71,11 @@ public abstract class ServerWorldMixin {
     }
 
     /**
-     * Overridden in the same manner as {@link ChunkRegionMixin#hashCode()}
+     * Overridden in the same manner as {@link WorldGenRegionMixin#hashCode()}
      *
      * @param other Another object
      * @return Whether this world is the same as other.
-     * @see ChunkRegionMixin#hashCode()
+     * @see WorldGenRegionMixin#hashCode()
      */
     @SuppressWarnings("ConstantConditions")
     @Override

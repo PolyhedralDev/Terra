@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(WorldGenRegion.class)
 @Implements(@Interface(iface = Chunk.class, prefix = "terra$", remap = Interface.Remap.NONE))
-public abstract class ChunkRegionMixin {
+public abstract class WorldGenRegionMixin {
     @Final
     @Shadow
     private int x;

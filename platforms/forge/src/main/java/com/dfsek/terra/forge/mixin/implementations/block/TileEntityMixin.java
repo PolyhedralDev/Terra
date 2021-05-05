@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 @Mixin(TileEntity.class)
 @Implements(@Interface(iface = BlockState.class, prefix = "terra$", remap = Interface.Remap.NONE))
-public abstract class BlockEntityMixin {
+public abstract class TileEntityMixin {
     @Shadow
     protected BlockPos worldPosition;
 
