@@ -70,6 +70,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -310,8 +311,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             ConfigPack pack = registry.get("DEFAULT");
             final GeneratorType generatorType = new GeneratorType("terra") {
                 @Override
-                public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures, boolean bonusChest) {
-                    return super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
+                public TerraGeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures, boolean bonusChest) {
+                    Registry<Biome> registry = registryManager.get(Registry.BIOME_KEY);
+                    Registry<DimensionType> registry2 = registryManager.get(Registry.DIMENSION_TYPE_KEY);
+                    Registry<ChunkGeneratorSettings> registry3 = registryManager.get(Registry.NOISE_SETTINGS_WORLDGEN);
+
+
+                    return new TerraGeneratorOptions(seed, generateStructures, bonusChest, GeneratorOptions.method_28608(registry2, DimensionType.createDefaultDimensionOptions(registry2, registry, registry3, seed), this.getChunkGenerator(registry, registry3, seed)), registry, registry3);
                 }
 
                 @Override
@@ -321,7 +327,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             };
             Map<Optional<GeneratorType>, GeneratorType.ScreenProvider> screenProviderMap = new HashMap<>(GeneratorTypeAccessor.getScreenProviders());
 
-            screenProviderMap.put(Optional.of(generatorType), (screen, generatorOptions) -> new TerraOptionsScreen(screen));
+            screenProviderMap.put(Optional.of(generatorType), (screen, generatorOptions) -> new TerraOptionsScreen(screen, (TerraGeneratorOptions) generatorOptions));
 
             GeneratorTypeAccessor.setScreenProviders(ImmutableMap.copyOf(screenProviderMap)); // jumping through hoops because ImmutableMap
 

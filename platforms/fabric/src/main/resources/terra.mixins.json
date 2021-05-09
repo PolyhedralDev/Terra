@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "GeneratorOptionsMixin",
+    "MinecraftServerMixin",
     "access.BiomeEffectsAccessor",
+    "access.LevelPropertiesAccessor",
     "access.MobSpawnerLogicAccessor",
+    "access.SimpleRegistryAccessor",
     "access.StateAccessor",
     "implementations.BiomeMixin",
     "implementations.ChunkGeneratorMixin",
