@@ -22,6 +22,8 @@ import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
+import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -39,6 +41,8 @@ public class StandalonePlugin implements TerraPlugin {
     private final PluginConfig config = new PluginConfig();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
     private final EventManager eventManager = new TerraEventManager(this);
+
+    private final Profiler profiler = new ProfilerImpl();
 
     @Override
     public WorldHandle getWorldHandle() {
@@ -147,6 +151,11 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public Profiler getProfiler() {
+        return profiler;
     }
 
     @Override

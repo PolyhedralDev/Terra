@@ -8,7 +8,7 @@ import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 import net.jafama.FastMath;
@@ -32,7 +32,7 @@ public class TreePopulator implements TerraBlockPopulator {
     @SuppressWarnings("try")
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
-        try(ProfileFuture ignored = tw.getProfiler().measure("TreeTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("tree")) {
             if(tw.getConfig().getTemplate().disableTrees()) return;
 
             if(!tw.isSafe()) return;
@@ -42,8 +42,9 @@ public class TreePopulator implements TerraBlockPopulator {
                 for(int z = 0; z < 16; z += 2) {
                     UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     for(TreeLayer layer : biome.getConfig().getTrees()) {
-                        if(layer.getDensity() >= random.nextDouble() * 100)
+                        if(layer.getDensity() >= random.nextDouble() * 100) {
                             layer.place(chunk, new Vector2(offset(random, x), offset(random, z)));
+                        }
                     }
                 }
             }

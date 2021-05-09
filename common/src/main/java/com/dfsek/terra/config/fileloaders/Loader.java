@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.fileloaders;
 
+import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.util.GlueList;
 
@@ -18,8 +19,12 @@ public abstract class Loader {
      *
      * @param consumer Something to do with the streams.
      */
-    public Loader then(ExceptionalConsumer<List<InputStream>> consumer) throws ConfigException {
-        consumer.accept(new GlueList<>(streams.values()));
+    public Loader then(ExceptionalConsumer<List<Configuration>> consumer) throws ConfigException {
+        List<Configuration> list = new GlueList<>();
+        streams.forEach((id, stream) -> {
+                    list.add(new Configuration(stream, id));
+        });
+        consumer.accept(list);
         return this;
     }
 

@@ -33,6 +33,7 @@ dependencies {
 
 configure<LoomGradleExtension> {
     accessWidener("src/main/resources/terra.accesswidener")
+    refmapName = "terra-refmap.json"
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
@@ -46,12 +47,12 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
 }
 
 
-tasks.register<TaskModrinthUpload>("publishModrinth") {
+tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     dependsOn("remapShadedJar")
     group = "fabric"
     token = System.getenv("MODRINTH_SECRET")
     projectId = "FIlZB9L0"
-    versionNumber = project.version.toString()
+    versionNumber = "${project.version}-fabric"
     uploadFile = remapped.get().archiveFile.get().asFile
     releaseType = "beta"
     addGameVersion("1.16.4")

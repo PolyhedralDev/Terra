@@ -41,6 +41,7 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.registry.config.BiomeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -144,6 +145,11 @@ public class DistributionTest {
         }
 
         @Override
+        public Profiler getProfiler() {
+            return null;
+        }
+
+        @Override
         public void register(TypeRegistry registry) {
 
         }
@@ -159,7 +165,7 @@ public class DistributionTest {
         new GenericLoaders(MAIN).register(loader);
 
         BiomeRegistry biomeRegistry = new BiomeRegistry();
-        folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.load(inputStreams, TestBiome::new), MAIN));
+        folderLoader.open("biomes", ".yml").then(inputStreams -> ConfigPack.buildAll((template, main) -> template, biomeRegistry, loader.loadConfigs(inputStreams, TestBiome::new), MAIN));
 
         BiomeProviderTemplate template = new BiomeProviderTemplate();
         ConfigLoader pipeLoader = new ConfigLoader()

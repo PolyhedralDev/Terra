@@ -237,13 +237,13 @@ public class ConfigPack implements LoaderRegistrar {
         }).close();
 
         loader
-                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
-                .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
-                .open("structures/trees", ".yml").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
-                .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
-                .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
-                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
+                .open("carving", ".yml").then(configs -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.loadConfigs(configs, CarverTemplate::new), main)).close()
+                .open("palettes", ".yml").then(configs -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.loadConfigs(configs, PaletteTemplate::new), main)).close()
+                .open("ores", ".yml").then(configs -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.loadConfigs(configs, OreTemplate::new), main)).close()
+                .open("structures/trees", ".yml").then(configs -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.loadConfigs(configs, TreeTemplate::new), main)).close()
+                .open("structures/structures", ".yml").then(configs -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.loadConfigs(configs, StructureTemplate::new), main)).close()
+                .open("flora", ".yml").then(configs -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.loadConfigs(configs, FloraTemplate::new), main)).close()
+                .open("biomes", ".yml").then(configs -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.loadConfigs(configs, () -> new BiomeTemplate(this, main)), main)).close();
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");

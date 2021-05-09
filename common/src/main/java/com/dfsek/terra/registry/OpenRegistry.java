@@ -65,7 +65,9 @@ public class OpenRegistry<T> implements Registry<T> {
 
     @Override
     public T get(String identifier) {
-        return objects.get(identifier).getValue();
+        Entry<T> entry = objects.get(identifier);
+        if(entry == null) return null;
+        return entry.getValue();
     }
 
     @Override

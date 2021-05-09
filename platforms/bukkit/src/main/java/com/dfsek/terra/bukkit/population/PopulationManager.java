@@ -5,12 +5,11 @@ import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.Chunkified;
-import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.profiler.ProfileFuture;
-import com.dfsek.terra.profiler.WorldProfiler;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.profiler.ProfileFrame;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,39 +25,36 @@ public class PopulationManager extends BlockPopulator {
     private final TerraChunkGenerator generator;
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
     private final TerraPlugin main;
-    private WorldProfiler profiler;
 
     public PopulationManager(TerraChunkGenerator generator, TerraPlugin main) {
         this.generator = generator;
         this.main = main;
     }
 
-    private ProfileFuture measure() {
-        if(profiler != null) return profiler.measure("PopulationManagerTime");
-        return null;
-    }
-
-    public void attachProfiler(WorldProfiler p) {
-        this.profiler = p;
-    }
-
     @SuppressWarnings("unchecked")
     public synchronized void saveBlocks(World w) throws IOException {
-        File f = new File(Gaea.getGaeaFolder(w), "chunks.bin");
+        File f = new File(getDataFolder(w), "chunks.bin");
         f.createNewFile();
         SerializationUtil.toFile((HashSet<ChunkCoordinate>) needsPop.clone(), f);
     }
 
     @SuppressWarnings("unchecked")
     public synchronized void loadBlocks(World w) throws IOException, ClassNotFoundException {
-        File f = new File(Gaea.getGaeaFolder(w), "chunks.bin");
+        File f = new File(getDataFolder(w), "chunks.bin");
         needsPop.addAll((HashSet<ChunkCoordinate>) SerializationUtil.fromFile(f));
+    }
+
+    public static File getDataFolder(World w) {
+        File f = new File(((BukkitWorld) w).getWorldFolder(), "gaea");
+        f.mkdirs();
+        return f;
     }
 
 
     // Synchronize to prevent chunks from being queued for population multiple times.
-    public synchronized void checkNeighbors(int x, int z, World w) {
-        ChunkCoordinate c = new ChunkCoordinate(x, z, w.getUID());
+    public synchronized void checkNeighbors(int x, int z, World world) {
+        BukkitWorld w = (BukkitWorld) world;
+        ChunkCoordinate c = new ChunkCoordinate(x, z, (w).getUID());
         if(w.isChunkGenerated(x + 1, z)
                 && w.isChunkGenerated(x - 1, z)
                 && w.isChunkGenerated(x, z + 1)
@@ -78,8 +74,9 @@ public class PopulationManager extends BlockPopulator {
     }
 
     @Override
+    @SuppressWarnings("try")
     public void populate(org.bukkit.@NotNull World world, @NotNull Random random, org.bukkit.@NotNull Chunk source) {
-        try(ProfileFuture ignored = measure()) {
+        try(ProfileFrame ignore = main.getProfiler().profile("popman")) {
             Chunk chunk = BukkitAdapter.adapt(source);
             needsPop.add(new ChunkCoordinate(chunk));
             int x = chunk.getX();

@@ -18,7 +18,7 @@ public class OreHolderLoader implements TypeLoader<OreHolder> {
         Map<String, Object> map = (Map<String, Object>) o;
 
         for(Map.Entry<String, Object> entry : map.entrySet()) {
-            holder.add(configLoader.loadClass(Ore.class, entry.getKey()), (OreConfig) configLoader.loadType(OreConfig.class, entry.getValue()));
+            holder.add(configLoader.loadClass(Ore.class, entry.getKey()), configLoader.loadClass(OreConfig.class, entry.getValue()), entry.getKey());
         }
 
         return holder;
