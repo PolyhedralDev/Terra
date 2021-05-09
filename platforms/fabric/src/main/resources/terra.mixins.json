@@ -34,10 +34,10 @@
   ],
   "client": [
     "access.GeneratorTypeAccessor",
-    "init.MinecraftClientMixin"
+    "client.MinecraftClientMixin"
   ],
   "server": [
-    "init.MinecraftServerMixin"
+    "server.MinecraftServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

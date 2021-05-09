@@ -1,4 +1,6 @@
 {
-  "generator.terra": "Terra"
+  "generator.terra": "Terra",
+  "terra.config-screen": "Terra Configuration",
+  "terra.screen.close": "Close"
 }
 

@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.init;
+package com.dfsek.terra.fabric.mixin.client;
 
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import net.minecraft.client.MinecraftClient;

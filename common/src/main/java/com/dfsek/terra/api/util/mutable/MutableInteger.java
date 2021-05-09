@@ -13,6 +13,11 @@ public class MutableInteger extends MutableNumber<Integer> {
         add(1);
     }
 
+    public void addMod(int add, int mod) {
+        add(add);
+        value %= mod;
+    }
+
     public void decrement() {
         subtract(1);
     }

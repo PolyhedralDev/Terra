@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.init;
+package com.dfsek.terra.fabric.mixin.server;
 
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.authlib.GameProfileRepository;

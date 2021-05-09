@@ -50,6 +50,7 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -63,12 +64,14 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.decorator.Decorator;
@@ -91,6 +94,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -300,16 +304,28 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registry.forEach(pack -> {
-                final GeneratorType generatorType = new GeneratorType("terra." + pack.getTemplate().getID()) {
-                    @Override
-                    protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
-                    }
-                };
-                //noinspection ConstantConditions
-                ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorTypeAccessor.getValues().add(generatorType);
+
             });
+
+            ConfigPack pack = registry.get("DEFAULT");
+            final GeneratorType generatorType = new GeneratorType("terra") {
+                @Override
+                public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures, boolean bonusChest) {
+                    return super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
+                }
+
+                @Override
+                protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
+                    return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
+                }
+            };
+            Map<Optional<GeneratorType>, GeneratorType.ScreenProvider> screenProviderMap = new HashMap<>(GeneratorTypeAccessor.getScreenProviders());
+
+            screenProviderMap.put(Optional.of(generatorType), (screen, generatorOptions) -> new TerraOptionsScreen(screen));
+
+            GeneratorTypeAccessor.setScreenProviders(ImmutableMap.copyOf(screenProviderMap)); // jumping through hoops because ImmutableMap
+
+            GeneratorTypeAccessor.getValues().add(generatorType);
         }
 
         logger.info("Loaded packs.");
