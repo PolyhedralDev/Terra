@@ -9,6 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -29,6 +30,7 @@ public abstract class EntityMixin {
     @Shadow
     public abstract void sendSystemMessage(Text message, UUID senderUuid);
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

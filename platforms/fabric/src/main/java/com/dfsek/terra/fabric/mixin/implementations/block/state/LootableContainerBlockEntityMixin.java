@@ -6,6 +6,7 @@ import com.dfsek.terra.fabric.mixin.implementations.block.BlockEntityMixin;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(LootableContainerBlockEntity.class)
@@ -15,6 +16,7 @@ public abstract class LootableContainerBlockEntityMixin extends BlockEntityMixin
         return (Inventory) this;
     }
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }
