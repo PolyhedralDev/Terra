@@ -201,7 +201,7 @@ public class TerraForgePlugin implements TerraPlugin {
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Biome> event) {
         INSTANCE.setup(); // Setup now because we need the biomes, and this event happens after blocks n stuff
-        INSTANCE.getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> event.getRegistry().register(INSTANCE.createBiome(biome)))); // Register all Terra biomes.
+        INSTANCE.getConfigRegistry().forEach(pack -> pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> event.getRegistry().register(INSTANCE.createBiome(biome)))); // Register all Terra biomes.
     }
 
     @SubscribeEvent
@@ -448,7 +448,7 @@ public class TerraForgePlugin implements TerraPlugin {
         @Priority(Priority.LOWEST)
         @Global
         public void injectTrees(ConfigPackPreLoadEvent event) {
-            CheckedRegistry<Tree> treeRegistry = event.getPack().getTreeRegistry();
+            CheckedRegistry<Tree> treeRegistry = event.getPack().getRegistry(Tree.class);
             injectTree(treeRegistry, "BROWN_MUSHROOM", Features.HUGE_BROWN_MUSHROOM);
             injectTree(treeRegistry, "RED_MUSHROOM", Features.HUGE_RED_MUSHROOM);
             injectTree(treeRegistry, "JUNGLE", Features.MEGA_JUNGLE_TREE);
