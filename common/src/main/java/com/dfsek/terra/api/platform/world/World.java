@@ -6,6 +6,8 @@ import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 
 import java.io.File;
 import java.util.UUID;
@@ -17,19 +19,11 @@ public interface World extends Handle {
 
     ChunkGenerator getGenerator();
 
-    String getName();
-
-    UUID getUID();
-
-    boolean isChunkGenerated(int x, int z);
-
     Chunk getChunkAt(int x, int z);
 
     default Chunk getChunkAt(Location location) {
         return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
-
-    File getWorldFolder();
 
     Block getBlockAt(int x, int y, int z);
 
@@ -40,4 +34,12 @@ public interface World extends Handle {
     Entity spawnEntity(Location location, EntityType entityType);
 
     int getMinHeight();
+
+    default boolean isTerraWorld() {
+        return getGenerator().getHandle() instanceof GeneratorWrapper;
+    }
+
+    default TerraChunkGenerator getTerraGenerator() {
+        return ((GeneratorWrapper) getGenerator().getHandle()).getHandle();
+    }
 }

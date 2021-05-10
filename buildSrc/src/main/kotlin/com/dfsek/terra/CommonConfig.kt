@@ -7,26 +7,11 @@ import org.gradle.kotlin.dsl.withType
 import java.io.ByteArrayOutputStream
 
 fun Project.configureCommon() {
-    apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
-    apply(plugin = "idea")
-
     configureDependencies()
     configureCompilation()
     configureDistribution()
 
     version = rootProject.version
-
-
-
-    tasks.withType<Test>().configureEach {
-        useJUnitPlatform()
-
-        maxHeapSize = "2G"
-        ignoreFailures = false
-        failFast = true
-        maxParallelForks = 12
-    }
 }
 
 fun Project.getGitHash(): String {

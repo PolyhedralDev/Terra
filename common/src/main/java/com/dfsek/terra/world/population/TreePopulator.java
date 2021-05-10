@@ -33,7 +33,7 @@ public class TreePopulator implements TerraBlockPopulator {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("tree")) {
-            if(tw.getConfig().getTemplate().disableCarvers()) return;
+            if(tw.getConfig().getTemplate().disableTrees()) return;
 
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();

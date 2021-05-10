@@ -34,8 +34,8 @@ public class DamageFunction implements LootFunction {
     @Override
     public ItemStack apply(ItemStack original, Random r) {
         if(original == null) return null;
+        if(!original.isDamageable()) return original;
         ItemMeta meta = original.getItemMeta();
-        if(!(meta instanceof Damageable)) return original;
         double itemDurability = (r.nextDouble() * (max - min)) + min;
         Damageable damage = (Damageable) meta;
         damage.setDamage((int) (original.getType().getMaxDurability() - (itemDurability / 100) * original.getType().getMaxDurability()));

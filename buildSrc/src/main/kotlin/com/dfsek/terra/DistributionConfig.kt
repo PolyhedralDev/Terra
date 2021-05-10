@@ -14,17 +14,6 @@ fun Project.configureDistribution() {
     apply(plugin = "java-library")
     apply(plugin = "com.github.johnrengelman.shadow")
 
-    configurations {
-        val shaded = create("shaded")
-        getByName("compile").extendsFrom(shaded)
-        val shadedApi = create("shadedApi")
-        shaded.extendsFrom(shadedApi)
-        getByName("api").extendsFrom(shadedApi)
-        val shadedImplementation = create("shadedImplementation")
-        shaded.extendsFrom(shadedImplementation)
-        getByName("implementation").extendsFrom(shadedImplementation)
-    }
-
     val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         group = "terra"
         doFirst {
@@ -37,21 +26,6 @@ fun Project.configureDistribution() {
         }
     }
     tasks["processResources"].dependsOn(downloadDefaultPacks)
-
-    tasks.withType<Jar> {
-        archiveBaseName.set("Terra-${archiveBaseName.get()}")
-        from("../LICENSE", "../../LICENSE")
-    }
-
-    tasks.register<Jar>("sourcesJar") {
-        archiveClassifier.set("sources")
-    }
-
-    tasks.register<Jar>("javadocJar") {
-        dependsOn("javadoc")
-        archiveClassifier.set("javadoc")
-        from(tasks.getByName<Javadoc>("javadoc").destinationDir)
-    }
 
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs

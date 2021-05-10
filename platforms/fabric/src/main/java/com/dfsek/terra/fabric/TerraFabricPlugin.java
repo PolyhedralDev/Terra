@@ -18,6 +18,7 @@ import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Tree;
@@ -48,12 +49,22 @@ import com.dfsek.terra.fabric.world.generator.FabricChunkGenerator;
 import com.dfsek.terra.fabric.world.generator.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
+import com.dfsek.terra.fabric.handle.FabricItemHandle;
+import com.dfsek.terra.fabric.handle.FabricWorldHandle;
+import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
+import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
+import com.dfsek.terra.fabric.generation.PopulatorFeature;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
@@ -77,7 +88,6 @@ import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
@@ -158,8 +168,14 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public TerraWorld getWorld(World world) {
         return worldMap.computeIfAbsent(world.getSeed(), w -> {
             logger.info("Loading world " + w);
-            return new TerraWorld(world, ((FabricChunkGeneratorWrapper) ((FabricChunkGenerator) world.getGenerator()).getHandle()).getPack(), this);
+            return new TerraWorld(world, ((FabricChunkGeneratorWrapper) world.getGenerator()).getPack(), this);
         });
+    }
+
+    public TerraWorld getWorld(long seed) {
+        TerraWorld world = worldMap.get(seed);
+        if(world == null) throw new IllegalArgumentException("No world exists with seed " + seed);
+        return world;
     }
 
     @Override
@@ -243,41 +259,37 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> new FabricBiome(biomeFixer.translate((String) o)));
+                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o));
     }
 
     private Biome createBiome(BiomeBuilder biome) {
-        SpawnSettings.Builder spawnSettings = new SpawnSettings.Builder();
-        DefaultBiomeFeatures.addFarmAnimals(spawnSettings);
-        DefaultBiomeFeatures.addMonsters(spawnSettings, 95, 5, 100);
-
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
-        Biome vanilla = ((FabricBiome) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
+        Biome vanilla = (Biome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
 
+        BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(colors.getOrDefault("water", vanilla.getEffects().waterColor))
-                .waterFogColor(colors.getOrDefault("water-fog", vanilla.getEffects().waterFogColor))
-                .fogColor(colors.getOrDefault("fog", vanilla.getEffects().fogColor))
-                .skyColor(colors.getOrDefault("sky", vanilla.getEffects().skyColor))
-                .grassColorModifier(vanilla.getEffects().grassColorModifier);
+                .waterColor(colors.getOrDefault("water", accessor.getWaterColor()))
+                .waterFogColor(colors.getOrDefault("water-fog", accessor.getWaterFogColor()))
+                .fogColor(colors.getOrDefault("fog", accessor.getFogColor()))
+                .skyColor(colors.getOrDefault("sky", accessor.getSkyColor()))
+                .grassColorModifier(accessor.getGrassColorModifier());
 
         if(colors.containsKey("grass")) {
             effects.grassColor(colors.get("grass"));
         } else {
-            vanilla.getEffects().grassColor.ifPresent(effects::grassColor);
+            accessor.getGrassColor().ifPresent(effects::grassColor);
         }
-        vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
         if(colors.containsKey("foliage")) {
             effects.foliageColor(colors.get("foliage"));
         } else {
-            vanilla.getEffects().foliageColor.ifPresent(effects::foliageColor);
+            accessor.getFoliageColor().ifPresent(effects::foliageColor);
         }
 
         return new Biome.Builder()
@@ -288,7 +300,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
-                .spawnSettings(spawnSettings.build())
+                .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
     }
@@ -330,7 +342,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 };
                 //noinspection ConstantConditions
                 ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorTypeAccessor.getVALUES().add(generatorType);
+                GeneratorTypeAccessor.getValues().add(generatorType);
             });
         }
 
@@ -362,7 +374,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
         return in.suggests((context, builder) -> {
             List<String> args = parseCommand(context.getInput());
-            CommandSender sender = FabricAdapter.adapt(context.getSource());
+            CommandSender sender = (CommandSender) context.getSource();
+            try {
+                sender = (Entity) context.getSource().getEntityOrThrow();
+            } catch(CommandSyntaxException ignore) {
+            }
             try {
                 manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
             } catch(CommandException e) {
@@ -371,8 +387,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             return builder.buildFuture();
         }).executes(context -> {
             List<String> args = parseCommand(context.getInput());
+            CommandSender sender = (CommandSender) context.getSource();
             try {
-                manager.execute(args.remove(0), FabricAdapter.adapt(context.getSource()), args);
+                sender = (Entity) context.getSource().getEntityOrThrow();
+            } catch(CommandSyntaxException ignore) {
+            }
+            try {
+                manager.execute(args.remove(0), sender, args);
             } catch(CommandException e) {
                 context.getSource().sendError(new LiteralText(e.getMessage()));
             }
@@ -443,7 +464,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
-                registry.add(id, new FabricTree(tree));
+                registry.add(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
         }

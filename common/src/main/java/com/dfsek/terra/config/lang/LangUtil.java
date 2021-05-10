@@ -17,7 +17,7 @@ public final class LangUtil {
     public static void load(String langID, TerraPlugin main) {
         Logger logger = main.logger();
         File file = new File(main.getDataFolder(), "lang");
-        try(JarFile jar = new JarFile(new File(TerraPlugin.class.getProtectionDomain().getCodeSource().getLocation().toURI()))) {
+        try(JarFile jar = main.getModJar()) {
             copyResourcesToDirectory(jar, "lang", file.toString());
         } catch(IOException | URISyntaxException e) {
             main.getDebugLogger().error("Failed to dump language files!");
