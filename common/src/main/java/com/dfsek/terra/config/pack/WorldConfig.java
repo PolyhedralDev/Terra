@@ -31,8 +31,7 @@ public class WorldConfig {
         this.pack = pack;
         this.samplerCache = new SamplerCache(main, world);
 
-        pack.getConfigTypeRegistry().forEach(configType -> registryMap.put(configType.getTypeClass(), new LockedRegistry<>(pack.getRegistry(configType.getTypeClass()))));
-
+        pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistry<>(pair.getLeft())));
 
         OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistry<>();
         pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
