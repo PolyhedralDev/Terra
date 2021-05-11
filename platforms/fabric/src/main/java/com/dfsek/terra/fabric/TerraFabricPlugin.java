@@ -37,6 +37,7 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.fabric.api.BiomeCreationEvent;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -249,7 +250,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o));
     }
 
-    private Biome createBiome(BiomeBuilder biome) {
+    private Biome createBiome(BiomeBuilder biome, ConfigPack pack) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
@@ -279,7 +280,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
         }
 
-        return new Biome.Builder()
+        Biome.Builder builder = new Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
                 .depth(vanilla.getDepth())
@@ -287,16 +288,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
-                .spawnSettings(vanilla.getSpawnSettings())
-                .generationSettings(generationSettings.build())
-                .build();
+                .spawnSettings(vanilla.getSpawnSettings());
+
+        eventManager.callEvent(new BiomeCreationEvent(builder, effects, biome, pack));
+
+        builder.generationSettings(generationSettings.build());
+        return builder.build();
     }
 
     public void packInit() {
         logger.info("Loading config packs...");
         registry.loadAll(this);
 
-        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome)))); // Register all Terra biomes.
+        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome, pack)))); // Register all Terra biomes.
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registry.forEach(pack -> {
@@ -329,7 +333,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
         }
         logger.info("Loaded addons.");
-
 
 
         Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), POPULATOR_FEATURE);
