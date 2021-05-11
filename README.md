@@ -32,11 +32,11 @@ To run Minecraft with Terra in the IDE (for testing) use the following tasks:
   * `runPaper` - Run the Paper test server with Terra (`installPaper` must have been run previously).
   * `runPurpur` - Run the Purpur test server with Terra (`installPurpur` must have been run previously).
 * Fabric
-  * `runClient` - Run a Minecraft client with Terra installed.
-  * `runServer` - Run a Minecraft server with Terra installed.
+  * `runClient` - Run a Minecraft Fabric client with Terra installed.
+  * `runServer` - Run a Minecraft Fabric server with Terra installed.
 * Forge
-  * `runClient` - Run a Minecraft client with Terra installed.
-  * `runServer` - Run a Minecraft server with Terra installed.
+  * `runClient` - Run a Minecraft Forge client with Terra installed.
+  * `runServer` - Run a Minecraft Forge server with Terra installed.
 ## Contributing
 Contributions are welcome! If you want to see a feature in Terra, please, open an issue, or implement it yourself and
 submit a PR!
