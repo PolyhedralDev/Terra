@@ -9,9 +9,6 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 
-import java.io.File;
-import java.util.UUID;
-
 public class DummyWorld implements World {
     @Override
     public Object getHandle() {
@@ -34,28 +31,8 @@ public class DummyWorld implements World {
     }
 
     @Override
-    public String getName() {
-        return "DUMMY";
-    }
-
-    @Override
-    public UUID getUID() {
-        return UUID.randomUUID();
-    }
-
-    @Override
-    public boolean isChunkGenerated(int x, int z) {
-        return false;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         throw new UnsupportedOperationException("Cannot get chunk in DummyWorld");
-    }
-
-    @Override
-    public File getWorldFolder() {
-        throw new UnsupportedOperationException("Cannot get folder of DummyWorld");
     }
 
     @Override

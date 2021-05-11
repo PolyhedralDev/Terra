@@ -193,6 +193,10 @@ public class ConfigPack implements LoaderRegistrar {
         registryMap.forEach((clazz, pair) -> pair.getLeft().getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in '" + clazz + "' registry: '" + id + "'")));
     }
 
+    protected Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
+        return registryMap;
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {
         main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));

@@ -13,10 +13,11 @@ include("platforms:bukkit")
 include("platforms:fabric")
 include("platforms:region")
 include("platforms:sponge")
+include("platforms:forge")
 
 pluginManagement {
     repositories {
-        maven(url = "http://maven.fabricmc.net") {
+        maven(url = "https://maven.fabricmc.net") {
             name = "Fabric"
         }
         gradlePluginPortal()

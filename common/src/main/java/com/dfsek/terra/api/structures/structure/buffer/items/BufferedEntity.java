@@ -19,6 +19,6 @@ public class BufferedEntity implements BufferedItem {
     @Override
     public void paste(Location origin) {
         Entity entity = origin.clone().add(0.5, 0, 0.5).getWorld().spawnEntity(origin, type);
-        main.getEventManager().callEvent(new EntitySpawnEvent(main.getWorld(entity.getWorld()).getGenerator().getConfigPack(), entity, entity.getLocation()));
+        main.getEventManager().callEvent(new EntitySpawnEvent(entity.getWorld().getTerraGenerator().getConfigPack(), entity, entity.getLocation()));
     }
 }

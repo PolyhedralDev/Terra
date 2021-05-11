@@ -70,8 +70,8 @@ fun installServer(dir: String) {
     // Cloning test setup.
     gitClone("https://github.com/PolyhedralDev/WorldGenTestServer")
     // Copying plugins
-    Files.move(Paths.get("WorldGenTestServer/plugins"),
-            Paths.get("$testDir/$dir/plugins"),
+    Files.move(file("WorldGenTestServer/plugins").toPath(),
+            file("$testDir/$dir/plugins").toPath(),
             StandardCopyOption.REPLACE_EXISTING)
     // Copying config
     val serverText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/server.properties").readText()

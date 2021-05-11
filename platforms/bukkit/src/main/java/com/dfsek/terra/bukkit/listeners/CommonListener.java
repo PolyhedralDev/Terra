@@ -44,7 +44,7 @@ public class CommonListener implements Listener {
     public void onSaplingGrow(StructureGrowEvent e) {
         if(e.isCancelled()) return;
         World bukkit = BukkitAdapter.adapt(e.getWorld());
-        if(!TerraWorld.isTerraWorld(bukkit)) return;
+        if(!bukkit.isTerraWorld()) return;
         TerraWorld tw = main.getWorld(bukkit);
         WorldConfig c = tw.getConfig();
         if(c.getTemplate().isDisableSaplings()) return;

@@ -68,10 +68,4 @@ public class FloraRegistry extends OpenRegistry<Flora> {
     private BlockData data(String s) {
         return main.getWorldHandle().createBlockData(s);
     }
-
-
-    @Override
-    public Flora get(String identifier) {
-        return super.get(identifier);
-    }
 }

@@ -7,6 +7,7 @@ import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.util.JarUtil;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.config.PluginConfig;
@@ -16,6 +17,9 @@ import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.world.TerraWorld;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.jar.JarFile;
 
 /**
  * Represents a Terra mod/plugin instance.
@@ -65,4 +69,8 @@ public interface TerraPlugin extends LoaderRegistrar {
     }
 
     Profiler getProfiler();
+
+    default JarFile getModJar() throws URISyntaxException, IOException {
+        return JarUtil.getJarFile();
+    }
 }
