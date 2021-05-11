@@ -52,6 +52,7 @@ import java.util.Map;
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
+    private final List<String> ignoredFunctions = new GlueList<>();
 
     private String id;
 
@@ -61,6 +62,11 @@ public class Parser {
 
     public Parser registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
         functions.put(name, functionBuilder);
+        return this;
+    }
+
+    public Parser ignoreFunction(String name) {
+        ignoredFunctions.add(name);
         return this;
     }
 
@@ -339,7 +345,10 @@ public class Parser {
         while(tokens.hasNext()) {
             Token token = tokens.get();
             if(token.getType().equals(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
-            parsedItems.add(parseItem(tokens, parsedVariables, loop));
+            Item<?> parsedItem = parseItem(tokens, parsedVariables, loop);
+            if (parsedItem != Function.NULL) {
+                parsedItems.add(parsedItem);
+            }
             if(tokens.hasNext() && !token.isLoopLike()) ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
         }
         return new Block(parsedItems, first.getPosition());
@@ -398,6 +407,10 @@ public class Parser {
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END); // Remove body end
 
         if(fullStatement) ParserUtil.checkType(tokens.get(), Token.Type.STATEMENT_END);
+        
+        if(ignoredFunctions.contains(identifier.getContent())) {
+            return Function.NULL;
+        }
 
         if(functions.containsKey(identifier.getContent())) {
             FunctionBuilder<?> builder = functions.get(identifier.getContent());
