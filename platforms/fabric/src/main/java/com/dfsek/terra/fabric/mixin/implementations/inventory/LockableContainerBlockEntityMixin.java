@@ -6,11 +6,13 @@ import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.item.Items;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(LockableContainerBlockEntity.class)
 @Implements(@Interface(iface = Inventory.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public class LockableContainerBlockEntityMixin {
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

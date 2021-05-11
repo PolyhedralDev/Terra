@@ -37,13 +37,13 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.PopulatorFeature;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
-import com.dfsek.terra.fabric.generation.TerraBiomeSource;
-import com.dfsek.terra.fabric.generation.PopulatorFeature;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
@@ -292,32 +292,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 .build();
     }
 
-    @Override
-    public void onInitialize() {
-        instance = this;
-
-        this.dataFolder = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
-        saveDefaultConfig();
-        config.load(this);
-        LangUtil.load(config.getLanguage(), this);
-        logger.info("Initializing Terra...");
-
-        if(!addonRegistry.loadAll()) {
-            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
-        }
-        logger.info("Loaded addons.");
-
+    public void packInit() {
+        logger.info("Loading config packs...");
         registry.loadAll(this);
 
-        logger.info("Loaded packs.");
-
-        Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), POPULATOR_FEATURE);
-        RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "flora_populator"));
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), POPULATOR_CONFIGURED_FEATURE);
-
         registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome)))); // Register all Terra biomes.
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registry.forEach(pack -> {
@@ -333,13 +312,39 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             });
         }
 
+        logger.info("Loaded packs.");
+    }
+
+    @Override
+    public void onInitialize() {
+        instance = this;
+
+        this.dataFolder = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
+        saveDefaultConfig();
+        config.load(this);
+        LangUtil.load(config.getLanguage(), this);
+        logger.info("Initializing Terra...");
+
+        if(!addonRegistry.loadAll()) {
+            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
+        }
+        logger.info("Loaded addons.");
+
+
+
+        Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), POPULATOR_FEATURE);
+        RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "flora_populator"));
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), POPULATOR_CONFIGURED_FEATURE);
+
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
+
         CommandManager manager = new TerraCommandManager(this);
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
-
 
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
                     int max = manager.getMaxArgumentDepth();
@@ -355,7 +360,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     //dispatcher.register(literal("te").redirect(root));
                 }
         );
-
+        logger.info("Finished initialization.");
     }
 
     private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {

@@ -51,7 +51,5 @@ public abstract class ChunkRegionMixin {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4)), ((FabricBlockData) blockData).getHandle(), 0);
     }
 
-    public Object terra$getHandle() {
-        return this;
-    }
+    // getHandle already added in world/ChunkRegionMixin.
 }

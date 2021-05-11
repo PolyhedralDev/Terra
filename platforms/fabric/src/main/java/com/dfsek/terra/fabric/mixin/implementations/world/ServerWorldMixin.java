@@ -58,6 +58,7 @@ public abstract class ServerWorldMixin {
         return 0;
     }
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }
