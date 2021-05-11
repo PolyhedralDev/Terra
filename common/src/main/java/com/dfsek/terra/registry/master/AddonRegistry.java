@@ -6,6 +6,7 @@ import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addons.annotations.Platform;
 import com.dfsek.terra.api.injection.Injector;
 import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.registry.OpenRegistry;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -66,6 +69,12 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
 
             for(PreLoadAddon addon : pool.getAddons()) {
                 Class<? extends TerraAddon> addonClass = addon.getAddonClass();
+
+                if(addonClass.isAnnotationPresent(Platform.class)) {
+                    List<String> platforms = Arrays.asList(addonClass.getAnnotation(Platform.class).value());
+                    if(!platforms.contains(main.platformName())) throw new AddonLoadException("Addon \"" + addon.getId() + "\" cannot run on platform " + main.platformName() + ". Allowed platforms: " + platforms);
+                }
+
                 Constructor<? extends TerraAddon> constructor;
 
                 String logPrefix = "Terra:" + addon.getId();
