@@ -7,7 +7,7 @@ to your specifications, with no knowledge of Java required.
 
 * Paper+ servers (Paper, Tuinity, Purpur, etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
 * Fabric: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
-* Forge: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
+* Forge **(ALPHA - NOT PRODUCTION-READY)**: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
 
 ## Building and Running Terra
 
