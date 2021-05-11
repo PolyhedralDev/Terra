@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.inventory.ItemStack;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -13,6 +14,7 @@ public abstract class ItemMixin {
     @Shadow
     public abstract int getMaxDamage();
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -29,6 +30,7 @@ public abstract class BlockEntityMixin {
     @Shadow
     public abstract boolean hasWorld();
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

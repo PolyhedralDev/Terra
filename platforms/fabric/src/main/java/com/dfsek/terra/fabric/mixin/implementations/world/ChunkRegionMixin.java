@@ -67,6 +67,7 @@ public abstract class ChunkRegionMixin {
         return 0;
     }
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

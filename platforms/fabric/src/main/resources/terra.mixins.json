@@ -33,9 +33,12 @@
     "implementations.world.ServerWorldMixin"
   ],
   "client": [
-    "access.GeneratorTypeAccessor"
+    "access.GeneratorTypeAccessor",
+    "init.MinecraftClientMixin"
   ],
-  "server": [],
+  "server": [
+    "init.ServerMainMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
