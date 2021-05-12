@@ -21,7 +21,7 @@ public class PackFeatureOptionsTemplate implements ConfigTemplate {
     @Default
     private List<Identifier> excludedRegistryFeatures = new ArrayList<>();
 
-    @Value("features.inject-biome.excluded-features")
+    @Value("features.inject-registry.excluded-features")
     @Default
     private List<Identifier> excludedBiomeFeatures = new ArrayList<>();
 
