@@ -24,8 +24,8 @@ import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.transform.NotNullValidator;
 import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.util.JarUtil;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
@@ -149,8 +149,8 @@ public class TerraForgePlugin implements TerraPlugin {
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
     private final PluginConfig config = new PluginConfig();
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
-            .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse(id)), new NotNullValidator<>())
-            .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
+            .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse(id)), Validator.notNull())
+            .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse("minecraft:" + id.toLowerCase())), Validator.notNull()).build();
     private File dataFolder;
 
     public TerraForgePlugin() {
