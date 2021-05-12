@@ -16,6 +16,8 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -109,7 +111,10 @@ public final class FabricUtil {
         if(optionsTemplate.doBiomeInjection()) {
             for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
                 for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
-                    generationSettings.feature(step, featureSupplier);
+                    Identifier key = BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get());
+                    if(!optionsTemplate.getExcludedBiomeFeatures().contains(key)) {
+                        generationSettings.feature(step, featureSupplier);
+                    }
                 }
             }
         }
