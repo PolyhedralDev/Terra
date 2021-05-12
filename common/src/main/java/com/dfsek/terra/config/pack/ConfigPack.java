@@ -2,7 +2,6 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
@@ -137,11 +136,7 @@ public class ConfigPack implements LoaderRegistrar {
 
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
-                ConfigPackPreLoadEvent event = new ConfigPackPreLoadEvent(this);
-                main.getEventManager().callEvent(event);
-                for(ConfigTemplate eventTemplate : event.getTemplates()) {
-                    selfLoader.load(eventTemplate, configuration);
-                }
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
 
                 load(l, main);
 
@@ -188,12 +183,7 @@ public class ConfigPack implements LoaderRegistrar {
                 selfLoader.load(template, configuration);
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
-                ConfigPackPreLoadEvent event = new ConfigPackPreLoadEvent(this);
-                main.getEventManager().callEvent(event);
-                for(ConfigTemplate eventTemplate : event.getTemplates()) {
-                    selfLoader.load(eventTemplate, configuration);
-                }
-
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
 
                 load(l, main);
 

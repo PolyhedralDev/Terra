@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric;
 
+import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
@@ -329,7 +330,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 };
                 //noinspection ConstantConditions
                 ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorTypeAccessor.getValues().add(generatorType);
+                GeneratorTypeAccessor.getValues().add(1, generatorType);
             });
         }
 
@@ -475,7 +476,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
 
             PackFeatureOptionsTemplate template = new PackFeatureOptionsTemplate();
-            event.addTemplate(template);
+            try {
+                event.loadTemplate(template);
+            } catch(ConfigException e) {
+                e.printStackTrace();
+            }
             templates.put(event.getPack(), template);
         }
 
