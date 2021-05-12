@@ -481,6 +481,18 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             } catch(ConfigException e) {
                 e.printStackTrace();
             }
+
+            if(template.doRegistryInjection()) {
+                BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
+                    if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
+                        try {
+                            event.getPack().getTreeRegistry().add(entry.getKey().getValue().toString(), (Tree) entry.getValue());
+                            main.logger().info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
+                        } catch(DuplicateEntryException ignored) {
+                        }
+                    }
+                });
+            }
             templates.put(event.getPack(), template);
         }
 
