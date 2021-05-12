@@ -3,6 +3,7 @@ package com.dfsek.terra.fabric.generation;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.fabric.FabricUtil;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -51,7 +52,7 @@ public class TerraBiomeSource extends BiomeSource {
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
-        return biomeRegistry.get(new Identifier("terra", TerraFabricPlugin.createBiomeID(pack, biome.getID())));
+        return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }
 
 

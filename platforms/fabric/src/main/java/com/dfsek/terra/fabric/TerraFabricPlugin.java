@@ -10,7 +10,6 @@ import com.dfsek.terra.api.addons.annotations.Author;
 import com.dfsek.terra.api.addons.annotations.Version;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
-import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
@@ -18,9 +17,7 @@ import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Tree;
@@ -34,18 +31,15 @@ import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
-import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
-import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
@@ -53,25 +47,16 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.world.GeneratorType;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.decorator.Decorator;
@@ -80,24 +65,14 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.function.Supplier;
-
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -148,10 +123,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     public static TerraFabricPlugin getInstance() {
         return instance;
-    }
-
-    public static String createBiomeID(ConfigPack pack, String biomeID) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
     @Override
@@ -262,63 +233,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 });
     }
 
-    private Biome createBiome(BiomeBuilder biome, ConfigPack pack) {
-        BiomeTemplate template = biome.getTemplate();
-        Map<String, Integer> colors = template.getColors();
-
-        Biome vanilla = (Biome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
-
-        GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-        generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
-        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
-
-        PackFeatureOptionsTemplate optionsTemplate = fabricAddon.getTemplates().get(pack);
-
-        if(optionsTemplate.doBiomeInjection()) {
-            for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
-                for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
-                    generationSettings.feature(step, featureSupplier);
-                }
-            }
-        }
-
-        BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
-        BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(colors.getOrDefault("water", accessor.getWaterColor()))
-                .waterFogColor(colors.getOrDefault("water-fog", accessor.getWaterFogColor()))
-                .fogColor(colors.getOrDefault("fog", accessor.getFogColor()))
-                .skyColor(colors.getOrDefault("sky", accessor.getSkyColor()))
-                .grassColorModifier(accessor.getGrassColorModifier());
-
-        if(colors.containsKey("grass")) {
-            effects.grassColor(colors.get("grass"));
-        } else {
-            accessor.getGrassColor().ifPresent(effects::grassColor);
-        }
-        if(colors.containsKey("foliage")) {
-            effects.foliageColor(colors.get("foliage"));
-        } else {
-            accessor.getFoliageColor().ifPresent(effects::foliageColor);
-        }
-
-        return new Biome.Builder()
-                .precipitation(vanilla.getPrecipitation())
-                .category(vanilla.getCategory())
-                .depth(vanilla.getDepth())
-                .scale(vanilla.getScale())
-                .temperature(vanilla.getTemperature())
-                .downfall(vanilla.getDownfall())
-                .effects(effects.build())
-                .spawnSettings(vanilla.getSpawnSettings())
-                .generationSettings(generationSettings.build())
-                .build();
-    }
-
     public void packInit() {
         logger.info("Loading config packs...");
         registry.loadAll(this);
 
-        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome, pack)))); // Register all Terra biomes.
+        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(fabricAddon, biome, pack)))); // Register all Terra biomes.
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registry.forEach(pack -> {
@@ -366,60 +285,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         } catch(MalformedCommandException e) {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
+        FabricUtil.registerCommands(manager);
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-                    int max = manager.getMaxArgumentDepth();
-                    RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
-                    for(int i = 0; i < max; i++) {
-                        RequiredArgumentBuilder<ServerCommandSource, String> next = argument("arg" + (max - i - 1), StringArgumentType.word());
-
-                        arg = next.then(assemble(arg, manager));
-                    }
-
-                    dispatcher.register(literal("terra").executes(context -> 1).then(assemble(arg, manager)));
-                    dispatcher.register(literal("te").executes(context -> 1).then(assemble(arg, manager)));
-                    //dispatcher.register(literal("te").redirect(root));
-                }
-        );
         logger.info("Finished initialization.");
-    }
-
-    private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
-        return in.suggests((context, builder) -> {
-            List<String> args = parseCommand(context.getInput());
-            CommandSender sender = (CommandSender) context.getSource();
-            try {
-                sender = (Entity) context.getSource().getEntityOrThrow();
-            } catch(CommandSyntaxException ignore) {
-            }
-            try {
-                manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
-            } catch(CommandException e) {
-                sender.sendMessage(e.getMessage());
-            }
-            return builder.buildFuture();
-        }).executes(context -> {
-            List<String> args = parseCommand(context.getInput());
-            CommandSender sender = (CommandSender) context.getSource();
-            try {
-                sender = (Entity) context.getSource().getEntityOrThrow();
-            } catch(CommandSyntaxException ignore) {
-            }
-            try {
-                manager.execute(args.remove(0), sender, args);
-            } catch(CommandException e) {
-                context.getSource().sendError(new LiteralText(e.getMessage()));
-            }
-            return 1;
-        });
-    }
-
-    private List<String> parseCommand(String command) {
-        if(command.startsWith("/terra ")) command = command.substring("/terra ".length());
-        else if(command.startsWith("/te ")) command = command.substring("/te ".length());
-        List<String> c = new ArrayList<>(Arrays.asList(command.split(" ")));
-        if(command.endsWith(" ")) c.add("");
-        return c;
     }
 
 
@@ -436,7 +304,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Addon("Terra-Fabric")
     @Author("Terra")
     @Version("1.0.0")
-    private static final class FabricAddon extends TerraAddon implements EventListener {
+    static final class FabricAddon extends TerraAddon implements EventListener {
 
         private final TerraPlugin main;
 
