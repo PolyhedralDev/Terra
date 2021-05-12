@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric;
 
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
@@ -37,6 +38,7 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -91,6 +93,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -130,9 +133,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
-    private final AddonRegistry addonRegistry = new AddonRegistry(new FabricAddon(this), this);
+
+    private final FabricAddon fabricAddon = new FabricAddon(this);
+    private final AddonRegistry addonRegistry = new AddonRegistry(fabricAddon, this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+
     private final PluginConfig config = new PluginConfig();
+
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), Validator.notNull())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), Validator.notNull()).build();
@@ -246,10 +253,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o));
+                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
+                .registerLoader(Identifier.class, (t, o, l) -> {
+                    Identifier identifier = Identifier.tryParse((String) o);
+                    if(identifier == null) throw new LoadException("Invalid identifier: " + o);
+                    return identifier;
+                });
     }
 
-    private Biome createBiome(BiomeBuilder biome) {
+    private Biome createBiome(BiomeBuilder biome, ConfigPack pack) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
@@ -259,6 +271,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
 
+        PackFeatureOptionsTemplate optionsTemplate = fabricAddon.getTemplates().get(pack);
+
+        if(optionsTemplate.doBiomeInjection()) {
+            for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
+                for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
+                    generationSettings.feature(step, featureSupplier);
+                }
+            }
+        }
 
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
@@ -296,7 +317,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         logger.info("Loading config packs...");
         registry.loadAll(this);
 
-        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome)))); // Register all Terra biomes.
+        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", createBiomeID(pack, id)), createBiome(biome, pack)))); // Register all Terra biomes.
 
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registry.forEach(pack -> {
@@ -329,7 +350,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
         }
         logger.info("Loaded addons.");
-
 
 
         Registry.register(Registry.FEATURE, new Identifier("terra", "flora_populator"), POPULATOR_FEATURE);
@@ -419,6 +439,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private final TerraPlugin main;
 
+        private final Map<ConfigPack, PackFeatureOptionsTemplate> templates = new HashMap<>();
+
         private FabricAddon(TerraPlugin main) {
             this.main = main;
         }
@@ -451,6 +473,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "MEGA_SPRUCE", ConfiguredFeatures.MEGA_SPRUCE);
             injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
             injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
+
+            PackFeatureOptionsTemplate template = new PackFeatureOptionsTemplate();
+            event.addTemplate(template);
+            templates.put(event.getPack(), template);
         }
 
 
@@ -459,6 +485,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 registry.add(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
+        }
+
+        public Map<ConfigPack, PackFeatureOptionsTemplate> getTemplates() {
+            return templates;
         }
     }
 }
