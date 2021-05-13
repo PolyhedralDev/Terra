@@ -70,7 +70,7 @@ public class TerraWorld {
         double noise = sampler.sample(fdX, y, fdZ);
         if(noise > 0) {
             int level = 0;
-            for(int yi = world.getMaxHeight(); yi > y; yi--) {
+            for(int yi = world.getMaxHeight();  yi-- + yi > y;) {
                 if(sampler.sample(fdX, yi, fdZ) > 0) level++;
                 else level = 0;
             }
