@@ -28,6 +28,14 @@ dependencies {
     "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
 
     "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
+
+    "modImplementation"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
+        exclude(group = "com.google.guava", module = "guava")
+        exclude(group = "com.google.code.gson", module = "gson")
+        exclude(group = "it.unimi.dsi", module = "fastutil")
+        exclude(group = "org.apache.logging.log4j", module = "log4j-api")
+        exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+    }
 }
 
 
