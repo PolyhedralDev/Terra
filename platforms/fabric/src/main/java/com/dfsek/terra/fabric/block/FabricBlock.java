@@ -7,7 +7,7 @@ import com.dfsek.terra.api.platform.block.BlockFace;
 import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.fabric.FabricAdapter;
+import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
