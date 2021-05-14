@@ -29,7 +29,7 @@ dependencies {
 
     "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
 
-    "modImplementation"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
+    "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
         exclude(group = "com.google.guava", module = "guava")
         exclude(group = "com.google.code.gson", module = "gson")
         exclude(group = "it.unimi.dsi", module = "fastutil")

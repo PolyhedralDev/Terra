@@ -1,9 +1,13 @@
 package com.dfsek.terra.fabric.handle;
 
+import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.entity.EntityType;
+import com.dfsek.terra.api.platform.entity.Player;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.fabric.FabricAdapter;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.util.FabricAdapter;
+import com.dfsek.terra.fabric.util.WorldEditUtil;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
@@ -32,5 +36,15 @@ public class FabricWorldHandle implements WorldHandle {
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse("minecraft:" + id.toLowerCase(Locale.ROOT));
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);
+    }
+
+    @Override
+    public Pair<Location, Location> getSelectedLocation(Player player) {
+        try {
+            Class.forName("com.sk89q.worldedit.WorldEdit");
+        } catch(ClassNotFoundException e) {
+            throw new IllegalStateException("WorldEdit is not installed.");
+        }
+        return WorldEditUtil.getSelection(player);
     }
 }

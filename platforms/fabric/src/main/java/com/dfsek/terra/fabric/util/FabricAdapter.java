@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric;
+package com.dfsek.terra.fabric.util;
 
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Axis;
