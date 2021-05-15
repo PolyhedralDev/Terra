@@ -3,10 +3,12 @@ package com.dfsek.terra.forge.listener;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -44,6 +46,10 @@ public class ForgeListener {
             List<String> args = parseCommand(context.getInput());
             CommandSender sender = (CommandSender) context.getSource();
             try {
+                sender = (Entity) context.getSource().getEntityOrException();
+            } catch(CommandSyntaxException ignore) {
+            }
+            try {
                 manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
             } catch(CommandException e) {
                 sender.sendMessage(e.getMessage());
@@ -52,7 +58,12 @@ public class ForgeListener {
         }).executes(context -> {
             List<String> args = parseCommand(context.getInput());
             try {
-                manager.execute(args.remove(0), (CommandSender) context.getSource(), args);
+                CommandSender sender = (CommandSender) context.getSource();
+                try {
+                    sender = (Entity) context.getSource().getEntityOrException();
+                } catch(CommandSyntaxException ignore) {
+                }
+                manager.execute(args.remove(0), sender, args);
             } catch(CommandException e) {
                 context.getSource().sendFailure(new StringTextComponent(e.getMessage()));
             }
