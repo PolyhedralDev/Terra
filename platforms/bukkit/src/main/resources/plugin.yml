@@ -12,7 +12,3 @@ commands:
     usage: "/terra "
     aliases: [ "te" ]
     permission: "terra.command"
-  locate:
-    description: "Locate a Terra Structure"
-    usage: "/locate <STRUCTURE_ID> <radius>"
-    permission: "terra.locate"
