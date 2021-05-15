@@ -50,6 +50,7 @@ public abstract class ItemStackMixin {
         setTag(((ItemStack) (Object) meta).getTag());
     }
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

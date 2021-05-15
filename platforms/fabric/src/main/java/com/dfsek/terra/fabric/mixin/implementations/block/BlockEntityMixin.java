@@ -3,14 +3,15 @@ package com.dfsek.terra.fabric.mixin.implementations.block;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.state.BlockState;
-import com.dfsek.terra.fabric.FabricAdapter;
 import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -29,6 +30,7 @@ public abstract class BlockEntityMixin {
     @Shadow
     public abstract boolean hasWorld();
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }
