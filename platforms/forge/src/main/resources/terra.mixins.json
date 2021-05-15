@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "terra-refmap.json",
   "mixins": [
+    "DimensionGeneratorSettingsMixin",
     "access.AbstractSpawnerAccessor",
     "implementations.BiomeMixin",
     "implementations.ChunkGeneratorMixin",
