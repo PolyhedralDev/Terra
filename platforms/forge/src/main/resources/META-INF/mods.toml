@@ -1,12 +1,12 @@
 modLoader = "javafml"
 loaderVersion = "[36,)"
-license = "GNU General Public License, version 3.0"
-issueTrackerURL = "https://github.com/PolyhedralDev/Terra/issues/"
+license = "@LICENSE@"
+issueTrackerURL = "@ISSUES@"
 [[mods]]
 modId = "terra"
 version = "@VERSION@"
 displayName = "Terra"
-displayURL = "https://github.com/PolyhedralDev/Terra/"
+displayURL = "@WIKI@"
 authors = "dfsek & Terra contributors"
 description = "@DESCRIPTION@"
 [[dependencies.terra]]

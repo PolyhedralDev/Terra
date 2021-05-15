@@ -8,10 +8,11 @@
     "dfsek"
   ],
   "contact": {
-    "homepage": "https://github.com/PolyhedralDev/Terra/wiki",
-    "sources": "https://github.com/PolyhedralDev/Terra"
+    "homepage": "@WIKI@",
+    "sources": "@SOURCE@",
+    "issues": "@ISSUES@"
   },
-  "license": "GPL-3.0",
+  "license": "@LICENSE@",
   "icon": "assets/terra/icon.png",
   "environment": "*",
   "entrypoints": {
