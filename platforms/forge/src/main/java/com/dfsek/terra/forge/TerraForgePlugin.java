@@ -29,11 +29,9 @@ import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
-import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.generation.PopulatorFeature;
 import com.dfsek.terra.forge.generation.TerraBiomeSource;
@@ -45,21 +43,15 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeAmbience;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.DecoratedPlacement;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -73,9 +65,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.jar.JarFile;
@@ -125,78 +115,35 @@ public class TerraForgePlugin implements TerraPlugin {
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
-    private File dataFolder;
+    private final File dataFolder;
 
     public TerraForgePlugin() {
         if(INSTANCE != null) throw new IllegalStateException("Only one TerraPlugin instance may exist.");
         INSTANCE = this;
+        this.dataFolder = Paths.get("config", "Terra").toFile();
+        saveDefaultConfig();
+        config.load(this);
+        LangUtil.load(config.getLanguage(), this);
+        try {
+            CommandUtil.registerAll(manager);
+        } catch(MalformedCommandException e) {
+            e.printStackTrace(); // TODO do something here even though this should literally never happen
+        }
     }
 
     public static TerraForgePlugin getInstance() {
         return INSTANCE;
     }
 
-    public static String createBiomeID(ConfigPack pack, String biomeID) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
-    }
-
     @SubscribeEvent
-    public static void setup(FMLCommonSetupEvent event) {
+    public static void setupListener(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Registry.register(Registry.BIOME_SOURCE, "terra:biome", TerraBiomeSource.CODEC);
             Registry.register(Registry.CHUNK_GENERATOR, "terra:generator", ForgeChunkGeneratorWrapper.CODEC);
         });
     }
 
-    @SuppressWarnings("ConstantConditions")
-    public Biome createBiome(BiomeBuilder biome) {
-        BiomeTemplate template = biome.getTemplate();
-        Map<String, Integer> colors = template.getColors();
-
-        Biome vanilla = (Biome) ((Object) new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0));
-
-        BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder();
-        generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()))); // It needs a surfacebuilder, even though we dont use it.
-        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, POPULATOR_CONFIGURED_FEATURE);
-
-        BiomeAmbience vanillaEffects = vanilla.getSpecialEffects();
-        BiomeAmbience.Builder effects = new BiomeAmbience.Builder()
-                .waterColor(colors.getOrDefault("water", vanillaEffects.getWaterColor()))
-                .waterFogColor(colors.getOrDefault("water-fog", vanillaEffects.getWaterFogColor()))
-                .fogColor(colors.getOrDefault("fog", vanillaEffects.getFogColor()))
-                .skyColor(colors.getOrDefault("sky", vanillaEffects.getSkyColor()))
-                .grassColorModifier(vanillaEffects.getGrassColorModifier());
-
-        if(colors.containsKey("grass")) {
-            effects.grassColorOverride(colors.get("grass"));
-        } else {
-            vanillaEffects.getGrassColorOverride().ifPresent(effects::grassColorOverride);
-        }
-        vanillaEffects.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
-        if(colors.containsKey("foliage")) {
-            effects.foliageColorOverride(colors.get("foliage"));
-        } else {
-            vanillaEffects.getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
-        }
-
-        return new Biome.Builder()
-                .precipitation(vanilla.getPrecipitation())
-                .biomeCategory(vanilla.getBiomeCategory())
-                .depth(vanilla.getDepth())
-                .scale(vanilla.getScale())
-                .temperature(vanilla.getBaseTemperature())
-                .downfall(vanilla.getDownfall())
-                .specialEffects(effects.build())
-                .mobSpawnSettings(vanilla.getMobSettings())
-                .generationSettings(generationSettings.build())
-                .build().setRegistryName("terra", createBiomeID(template.getPack(), template.getID()));
-    }
-
     public void setup() {
-        this.dataFolder = Paths.get("config", "Terra").toFile();
-        saveDefaultConfig();
-        config.load(this);
-        LangUtil.load(config.getLanguage(), this);
         logger.info("Initializing Terra...");
 
         if(!addonRegistry.loadAll()) {
@@ -205,15 +152,7 @@ public class TerraForgePlugin implements TerraPlugin {
         logger.info("Loaded addons.");
 
         registry.loadAll(this);
-
         logger.info("Loaded packs.");
-
-
-        try {
-            CommandUtil.registerAll(manager);
-        } catch(MalformedCommandException e) {
-            e.printStackTrace(); // TODO do something here even though this should literally never happen
-        }
     }
 
     @Override
@@ -229,6 +168,13 @@ public class TerraForgePlugin implements TerraPlugin {
         });
     }
 
+    /**
+     * evil code brought to you by Forge Mod Loader
+     * <p>
+     * Forge changes the JAR URI to something that cannot
+     * be resolved back to the original JAR, so we have to
+     * do this to get our JAR.
+     */
     @Override
     public JarFile getModJar() throws URISyntaxException, IOException {
         File modsDir = new File("./mods");
@@ -268,7 +214,7 @@ public class TerraForgePlugin implements TerraPlugin {
 
     @Override
     public boolean isDebug() {
-        return true;
+        return config.isDebug();
     }
 
     @Override

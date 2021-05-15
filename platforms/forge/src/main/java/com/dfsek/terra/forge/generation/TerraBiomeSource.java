@@ -3,6 +3,7 @@ package com.dfsek.terra.forge.generation;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.forge.ForgeUtil;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -51,6 +52,6 @@ public class TerraBiomeSource extends net.minecraft.world.biome.provider.BiomePr
     @Override
     public @NotNull Biome getNoiseBiome(int biomeX, int biomeY, int biomeZ) {
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
-        return Objects.requireNonNull(biomeRegistry.get(new ResourceLocation("terra", TerraForgePlugin.createBiomeID(pack, biome.getID()))));
+        return Objects.requireNonNull(biomeRegistry.get(new ResourceLocation("terra", ForgeUtil.createBiomeID(pack, biome.getID()))));
     }
 }

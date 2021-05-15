@@ -1,5 +1,6 @@
 package com.dfsek.terra.forge.listener;
 
+import com.dfsek.terra.forge.ForgeUtil;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.dfsek.terra.forge.generation.TerraLevelType;
 import net.minecraft.world.biome.Biome;
@@ -22,7 +23,7 @@ public class RegistryListener {
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Biome> event) {
         INSTANCE.setup(); // Setup now because we need the biomes, and this event happens after blocks n stuff
-        INSTANCE.getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> event.getRegistry().register(INSTANCE.createBiome(biome)))); // Register all Terra biomes.
+        INSTANCE.getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> event.getRegistry().register(ForgeUtil.createBiome(biome)))); // Register all Terra biomes.
     }
 
     @SubscribeEvent
