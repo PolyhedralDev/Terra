@@ -29,7 +29,8 @@ fun Project.configureCompilation() {
         include("**/*.*")
         filter<org.apache.tools.ant.filters.ReplaceTokens>(
                 "tokens" to mapOf(
-                        "VERSION" to project.version.toString()
+                        "VERSION" to project.version.toString(),
+                        "DESCRIPTION" to project.properties["terra.description"]
                 )
         )
     }
