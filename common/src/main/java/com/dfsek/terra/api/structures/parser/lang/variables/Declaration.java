@@ -32,15 +32,9 @@ public class Declaration<T> implements Item<T> {
     public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         T result = value.apply(implementationArguments, variableMap);
         switch(type) {
-            case NUMBER:
-                variableMap.put(identifier, new NumberVariable((Number) result, position));
-                break;
-            case BOOLEAN:
-                variableMap.put(identifier, new BooleanVariable((Boolean) result, position));
-                break;
-            case STRING:
-                variableMap.put(identifier, new StringVariable((String) result, position));
-                break;
+            case NUMBER -> variableMap.put(identifier, new NumberVariable((Number) result, position));
+            case BOOLEAN -> variableMap.put(identifier, new BooleanVariable((Boolean) result, position));
+            case STRING -> variableMap.put(identifier, new StringVariable((String) result, position));
         }
         return result;
     }

@@ -96,16 +96,12 @@ public class Parser {
 
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
 
-        switch(identifier.getType()) {
-            case FOR_LOOP:
-                return parseForLoop(tokens, variableMap, identifier.getPosition());
-            case IF_STATEMENT:
-                return parseIfStatement(tokens, variableMap, identifier.getPosition(), loop);
-            case WHILE_LOOP:
-                return parseWhileLoop(tokens, variableMap, identifier.getPosition());
-            default:
-                throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
-        }
+        return switch(identifier.getType()) {
+            case FOR_LOOP -> parseForLoop(tokens, variableMap, identifier.getPosition());
+            case IF_STATEMENT -> parseIfStatement(tokens, variableMap, identifier.getPosition(), loop);
+            case WHILE_LOOP -> parseWhileLoop(tokens, variableMap, identifier.getPosition());
+            default -> throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
+        };
     }
 
     private WhileKeyword parseWhileLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start) throws ParseException {
@@ -233,17 +229,13 @@ public class Parser {
     private ConstantExpression<?> parseConstantExpression(Tokenizer tokens) throws ParseException {
         Token constantToken = tokens.consume();
         Position position = constantToken.getPosition();
-        switch(constantToken.getType()) {
-            case NUMBER:
-                String content = constantToken.getContent();
-                return new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), position);
-            case STRING:
-                return new StringConstant(constantToken.getContent(), position);
-            case BOOLEAN:
-                return new BooleanConstant(Boolean.parseBoolean(constantToken.getContent()), position);
-            default:
-                throw new UnsupportedOperationException("Unsupported constant token: " + constantToken.getType() + " at position: " + position);
-        }
+        String content = constantToken.getContent();
+        return switch(constantToken.getType()) {
+            case NUMBER -> new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), position);
+            case STRING -> new StringConstant(content, position);
+            case BOOLEAN -> new BooleanConstant(Boolean.parseBoolean(content), position);
+            default -> throw new UnsupportedOperationException("Unsupported constant token: " + constantToken.getType() + " at position: " + position);
+        };
     }
 
     private Returnable<?> parseGroup(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {

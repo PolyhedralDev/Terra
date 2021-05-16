@@ -30,15 +30,9 @@ public class RotationUtil {
     public static void rotateVector(Vector2 orig, Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
-            case CW_90:
-                copy.setX(orig.getZ()).setZ(-orig.getX());
-                break;
-            case CCW_90:
-                copy.setX(-orig.getZ()).setZ(orig.getX());
-                break;
-            case CW_180:
-                copy.multiply(-1);
-                break;
+            case CW_90 -> copy.setX(orig.getZ()).setZ(-orig.getX());
+            case CCW_90 -> copy.setX(-orig.getZ()).setZ(orig.getX());
+            case CW_180 -> copy.multiply(-1);
         }
         orig.setX(copy.getX());
         orig.setZ(copy.getZ());
@@ -68,42 +62,25 @@ public class RotationUtil {
      * @return integer representation of BlockFace
      */
     public static int faceRotation(BlockFace f) {
-        switch(f) {
-            case NORTH:
-                return 0;
-            case NORTH_NORTH_EAST:
-                return 1;
-            case NORTH_EAST:
-                return 2;
-            case EAST_NORTH_EAST:
-                return 3;
-            case EAST:
-                return 4;
-            case EAST_SOUTH_EAST:
-                return 5;
-            case SOUTH_EAST:
-                return 6;
-            case SOUTH_SOUTH_EAST:
-                return 7;
-            case SOUTH:
-                return 8;
-            case SOUTH_SOUTH_WEST:
-                return 9;
-            case SOUTH_WEST:
-                return 10;
-            case WEST_SOUTH_WEST:
-                return 11;
-            case WEST:
-                return 12;
-            case WEST_NORTH_WEST:
-                return 13;
-            case NORTH_WEST:
-                return 14;
-            case NORTH_NORTH_WEST:
-                return 15;
-            default:
-                return -1;
-        }
+        return switch(f) {
+            case NORTH -> 0;
+            case NORTH_NORTH_EAST -> 1;
+            case NORTH_EAST -> 2;
+            case EAST_NORTH_EAST -> 3;
+            case EAST -> 4;
+            case EAST_SOUTH_EAST -> 5;
+            case SOUTH_EAST -> 6;
+            case SOUTH_SOUTH_EAST -> 7;
+            case SOUTH -> 8;
+            case SOUTH_SOUTH_WEST -> 9;
+            case SOUTH_WEST -> 10;
+            case WEST_SOUTH_WEST -> 11;
+            case WEST -> 12;
+            case WEST_NORTH_WEST -> 13;
+            case NORTH_WEST -> 14;
+            case NORTH_NORTH_WEST -> 15;
+            default -> -1;
+        };
     }
 
     /**
@@ -113,42 +90,25 @@ public class RotationUtil {
      * @return BlockFace represented by integer.
      */
     public static BlockFace fromRotation(int r) {
-        switch(FastMath.floorMod(r, 16)) {
-            case 0:
-                return BlockFace.NORTH;
-            case 1:
-                return BlockFace.NORTH_NORTH_EAST;
-            case 2:
-                return BlockFace.NORTH_EAST;
-            case 3:
-                return BlockFace.EAST_NORTH_EAST;
-            case 4:
-                return BlockFace.EAST;
-            case 5:
-                return BlockFace.EAST_SOUTH_EAST;
-            case 6:
-                return BlockFace.SOUTH_EAST;
-            case 7:
-                return BlockFace.SOUTH_SOUTH_EAST;
-            case 8:
-                return BlockFace.SOUTH;
-            case 9:
-                return BlockFace.SOUTH_SOUTH_WEST;
-            case 10:
-                return BlockFace.SOUTH_WEST;
-            case 11:
-                return BlockFace.WEST_SOUTH_WEST;
-            case 12:
-                return BlockFace.WEST;
-            case 13:
-                return BlockFace.WEST_NORTH_WEST;
-            case 14:
-                return BlockFace.NORTH_WEST;
-            case 15:
-                return BlockFace.NORTH_NORTH_WEST;
-            default:
-                throw new IllegalArgumentException();
-        }
+        return switch(FastMath.floorMod(r, 16)) {
+            case 0 -> BlockFace.NORTH;
+            case 1 -> BlockFace.NORTH_NORTH_EAST;
+            case 2 -> BlockFace.NORTH_EAST;
+            case 3 -> BlockFace.EAST_NORTH_EAST;
+            case 4 -> BlockFace.EAST;
+            case 5 -> BlockFace.EAST_SOUTH_EAST;
+            case 6 -> BlockFace.SOUTH_EAST;
+            case 7 -> BlockFace.SOUTH_SOUTH_EAST;
+            case 8 -> BlockFace.SOUTH;
+            case 9 -> BlockFace.SOUTH_SOUTH_WEST;
+            case 10 -> BlockFace.SOUTH_WEST;
+            case 11 -> BlockFace.WEST_SOUTH_WEST;
+            case 12 -> BlockFace.WEST;
+            case 13 -> BlockFace.WEST_NORTH_WEST;
+            case 14 -> BlockFace.NORTH_WEST;
+            case 15 -> BlockFace.NORTH_NORTH_WEST;
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     public static Axis getRotatedAxis(Axis orig, Rotation r) {
@@ -174,78 +134,45 @@ public class RotationUtil {
      */
     @SuppressWarnings("fallthrough")
     public static Rail.Shape getRotatedRail(Rail.Shape orig, Rotation r) {
-        switch(r) {
-            case CCW_90:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return Rail.Shape.SOUTH_WEST;
-                    case NORTH_SOUTH:
-                        return Rail.Shape.EAST_WEST;
-                    case SOUTH_WEST:
-                        return Rail.Shape.SOUTH_EAST;
-                    case SOUTH_EAST:
-                        return Rail.Shape.NORTH_EAST;
-                    case EAST_WEST:
-                        return Rail.Shape.NORTH_SOUTH;
-                    case NORTH_EAST:
-                        return Rail.Shape.NORTH_WEST;
-                    case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_NORTH;
-                    case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_WEST;
-                    case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_EAST;
-                }
-            case CW_90:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return Rail.Shape.NORTH_EAST;
-                    case NORTH_SOUTH:
-                        return Rail.Shape.EAST_WEST;
-                    case SOUTH_WEST:
-                        return Rail.Shape.NORTH_WEST;
-                    case SOUTH_EAST:
-                        return Rail.Shape.SOUTH_WEST;
-                    case EAST_WEST:
-                        return Rail.Shape.NORTH_SOUTH;
-                    case NORTH_EAST:
-                        return Rail.Shape.SOUTH_EAST;
-                    case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_NORTH;
-                    case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_EAST;
-                    case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_WEST;
-                }
-            case CW_180:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return Rail.Shape.SOUTH_EAST;
-                    case NORTH_SOUTH:
-                        return Rail.Shape.NORTH_SOUTH;
-                    case SOUTH_WEST:
-                        return Rail.Shape.NORTH_EAST;
-                    case SOUTH_EAST:
-                        return Rail.Shape.NORTH_WEST;
-                    case EAST_WEST:
-                        return Rail.Shape.EAST_WEST;
-                    case NORTH_EAST:
-                        return Rail.Shape.SOUTH_WEST;
-                    case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_WEST;
-                    case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_EAST;
-                    case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_SOUTH;
-                    case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_NORTH;
-                }
-        }
-        return orig;
+        return switch(r) {
+            case CCW_90 -> switch(orig) {
+                case NORTH_WEST -> Rail.Shape.SOUTH_WEST;
+                case NORTH_SOUTH -> Rail.Shape.EAST_WEST;
+                case SOUTH_WEST -> Rail.Shape.SOUTH_EAST;
+                case SOUTH_EAST -> Rail.Shape.NORTH_EAST;
+                case EAST_WEST -> Rail.Shape.NORTH_SOUTH;
+                case NORTH_EAST -> Rail.Shape.NORTH_WEST;
+                case ASCENDING_EAST -> Rail.Shape.ASCENDING_NORTH;
+                case ASCENDING_WEST -> Rail.Shape.ASCENDING_SOUTH;
+                case ASCENDING_NORTH -> Rail.Shape.ASCENDING_WEST;
+                case ASCENDING_SOUTH -> Rail.Shape.ASCENDING_EAST;
+            };
+            case CW_90 -> switch(orig) {
+                case NORTH_WEST -> Rail.Shape.NORTH_EAST;
+                case NORTH_SOUTH -> Rail.Shape.EAST_WEST;
+                case SOUTH_WEST -> Rail.Shape.NORTH_WEST;
+                case SOUTH_EAST -> Rail.Shape.SOUTH_WEST;
+                case EAST_WEST -> Rail.Shape.NORTH_SOUTH;
+                case NORTH_EAST -> Rail.Shape.SOUTH_EAST;
+                case ASCENDING_EAST -> Rail.Shape.ASCENDING_SOUTH;
+                case ASCENDING_WEST -> Rail.Shape.ASCENDING_NORTH;
+                case ASCENDING_NORTH -> Rail.Shape.ASCENDING_EAST;
+                case ASCENDING_SOUTH -> Rail.Shape.ASCENDING_WEST;
+            };
+            case CW_180 -> switch(orig) {
+                case NORTH_WEST -> Rail.Shape.SOUTH_EAST;
+                case NORTH_SOUTH -> Rail.Shape.NORTH_SOUTH;
+                case SOUTH_WEST -> Rail.Shape.NORTH_EAST;
+                case SOUTH_EAST -> Rail.Shape.NORTH_WEST;
+                case EAST_WEST -> Rail.Shape.EAST_WEST;
+                case NORTH_EAST -> Rail.Shape.SOUTH_WEST;
+                case ASCENDING_EAST -> Rail.Shape.ASCENDING_WEST;
+                case ASCENDING_WEST -> Rail.Shape.ASCENDING_EAST;
+                case ASCENDING_NORTH -> Rail.Shape.ASCENDING_SOUTH;
+                case ASCENDING_SOUTH -> Rail.Shape.ASCENDING_NORTH;
+            };
+            default -> orig;
+        };
     }
 
     public static void rotateBlockData(BlockData data, Rotation r) {

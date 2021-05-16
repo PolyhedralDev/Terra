@@ -20,29 +20,19 @@ public class BukkitWall extends BukkitWaterlogged implements Wall {
     }
 
     public static org.bukkit.block.data.type.Wall.Height adapt(com.dfsek.terra.api.platform.block.data.Wall.Height height) {
-        switch(height) {
-            case NONE:
-                return org.bukkit.block.data.type.Wall.Height.NONE;
-            case LOW:
-                return org.bukkit.block.data.type.Wall.Height.LOW;
-            case TALL:
-                return org.bukkit.block.data.type.Wall.Height.TALL;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(height) {
+            case NONE -> org.bukkit.block.data.type.Wall.Height.NONE;
+            case LOW -> org.bukkit.block.data.type.Wall.Height.LOW;
+            case TALL -> org.bukkit.block.data.type.Wall.Height.TALL;
+        };
     }
 
     public static com.dfsek.terra.api.platform.block.data.Wall.Height adapt(org.bukkit.block.data.type.Wall.Height height) {
-        switch(height) {
-            case TALL:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.TALL;
-            case LOW:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.LOW;
-            case NONE:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.NONE;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(height) {
+            case TALL -> Height.TALL;
+            case LOW -> Height.LOW;
+            case NONE -> Height.NONE;
+        };
     }
 
     @Override

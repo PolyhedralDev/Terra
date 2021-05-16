@@ -17,22 +17,14 @@ public class ForgeDirectional extends ForgeBlockData implements Directional {
 
     @Override
     public BlockFace getFacing() {
-        switch(delegate.getValue(property)) {
-            case SOUTH:
-                return BlockFace.SOUTH;
-            case DOWN:
-                return BlockFace.DOWN;
-            case UP:
-                return BlockFace.UP;
-            case EAST:
-                return BlockFace.EAST;
-            case WEST:
-                return BlockFace.WEST;
-            case NORTH:
-                return BlockFace.NORTH;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(delegate.getValue(property)) {
+            case SOUTH -> BlockFace.SOUTH;
+            case DOWN -> BlockFace.DOWN;
+            case UP -> BlockFace.UP;
+            case EAST -> BlockFace.EAST;
+            case WEST -> BlockFace.WEST;
+            case NORTH -> BlockFace.NORTH;
+        };
     }
 
     @Override

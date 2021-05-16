@@ -50,20 +50,13 @@ public final class BukkitAdapter {
 
 
     public static Stairs.Shape adapt(org.bukkit.block.data.type.Stairs.Shape shape) {
-        switch(shape) {
-            case STRAIGHT:
-                return Stairs.Shape.STRAIGHT;
-            case INNER_LEFT:
-                return Stairs.Shape.INNER_LEFT;
-            case OUTER_LEFT:
-                return Stairs.Shape.OUTER_LEFT;
-            case INNER_RIGHT:
-                return Stairs.Shape.INNER_RIGHT;
-            case OUTER_RIGHT:
-                return Stairs.Shape.OUTER_RIGHT;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(shape) {
+            case STRAIGHT -> Stairs.Shape.STRAIGHT;
+            case INNER_LEFT -> Stairs.Shape.INNER_LEFT;
+            case OUTER_LEFT -> Stairs.Shape.OUTER_LEFT;
+            case INNER_RIGHT -> Stairs.Shape.INNER_RIGHT;
+            case OUTER_RIGHT -> Stairs.Shape.OUTER_RIGHT;
+        };
     }
 
     public static BlockData adapt(org.bukkit.block.data.BlockData data) {
@@ -75,265 +68,154 @@ public final class BukkitAdapter {
     }
 
     public static Axis adapt(org.bukkit.Axis axis) {
-        switch(axis) {
-            case X:
-                return Axis.X;
-            case Y:
-                return Axis.Y;
-            case Z:
-                return Axis.Z;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(axis) {
+            case X -> Axis.X;
+            case Y -> Axis.Y;
+            case Z -> Axis.Z;
+        };
     }
 
     public static Bisected.Half adapt(org.bukkit.block.data.Bisected.Half half) {
-        switch(half) {
-            case BOTTOM:
-                return Bisected.Half.BOTTOM;
-            case TOP:
-                return Bisected.Half.TOP;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(half) {
+            case BOTTOM -> Bisected.Half.BOTTOM;
+            case TOP -> Bisected.Half.TOP;
+        };
     }
 
     public static BlockFace adapt(org.bukkit.block.BlockFace face) {
-        switch(face) {
-            case DOWN:
-                return BlockFace.DOWN;
-            case UP:
-                return BlockFace.UP;
-            case NORTH_WEST:
-                return BlockFace.NORTH_WEST;
-            case NORTH_EAST:
-                return BlockFace.NORTH_EAST;
-            case SOUTH_EAST:
-                return BlockFace.SOUTH_EAST;
-            case SOUTH_WEST:
-                return BlockFace.SOUTH_WEST;
-            case NORTH_NORTH_WEST:
-                return BlockFace.NORTH_NORTH_WEST;
-            case WEST_NORTH_WEST:
-                return BlockFace.WEST_NORTH_WEST;
-            case WEST_SOUTH_WEST:
-                return BlockFace.WEST_SOUTH_WEST;
-            case SOUTH_SOUTH_WEST:
-                return BlockFace.SOUTH_SOUTH_WEST;
-            case EAST_NORTH_EAST:
-                return BlockFace.EAST_NORTH_EAST;
-            case WEST:
-                return BlockFace.WEST;
-            case SOUTH:
-                return BlockFace.SOUTH;
-            case EAST:
-                return BlockFace.EAST;
-            case NORTH:
-                return BlockFace.NORTH;
-            case SELF:
-                return BlockFace.SELF;
-            case EAST_SOUTH_EAST:
-                return BlockFace.EAST_SOUTH_EAST;
-            case NORTH_NORTH_EAST:
-                return BlockFace.NORTH_NORTH_EAST;
-            case SOUTH_SOUTH_EAST:
-                return BlockFace.SOUTH_SOUTH_EAST;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(face) {
+            case DOWN -> BlockFace.DOWN;
+            case UP -> BlockFace.UP;
+            case NORTH_WEST -> BlockFace.NORTH_WEST;
+            case NORTH_EAST -> BlockFace.NORTH_EAST;
+            case SOUTH_EAST -> BlockFace.SOUTH_EAST;
+            case SOUTH_WEST -> BlockFace.SOUTH_WEST;
+            case NORTH_NORTH_WEST -> BlockFace.NORTH_NORTH_WEST;
+            case WEST_NORTH_WEST -> BlockFace.WEST_NORTH_WEST;
+            case WEST_SOUTH_WEST -> BlockFace.WEST_SOUTH_WEST;
+            case SOUTH_SOUTH_WEST -> BlockFace.SOUTH_SOUTH_WEST;
+            case EAST_NORTH_EAST -> BlockFace.EAST_NORTH_EAST;
+            case WEST -> BlockFace.WEST;
+            case SOUTH -> BlockFace.SOUTH;
+            case EAST -> BlockFace.EAST;
+            case NORTH -> BlockFace.NORTH;
+            case SELF -> BlockFace.SELF;
+            case EAST_SOUTH_EAST -> BlockFace.EAST_SOUTH_EAST;
+            case NORTH_NORTH_EAST -> BlockFace.NORTH_NORTH_EAST;
+            case SOUTH_SOUTH_EAST -> BlockFace.SOUTH_SOUTH_EAST;
+        };
     }
 
     public static Slab.Type adapt(org.bukkit.block.data.type.Slab.Type type) {
-        switch(type) {
-            case BOTTOM:
-                return Slab.Type.BOTTOM;
-            case TOP:
-                return Slab.Type.TOP;
-            case DOUBLE:
-                return Slab.Type.DOUBLE;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(type) {
+            case BOTTOM -> Slab.Type.BOTTOM;
+            case TOP -> Slab.Type.TOP;
+            case DOUBLE -> Slab.Type.DOUBLE;
+        };
     }
 
     public static RedstoneWire.Connection adapt(org.bukkit.block.data.type.RedstoneWire.Connection connection) {
-        switch(connection) {
-            case NONE:
-                return RedstoneWire.Connection.NONE;
-            case UP:
-                return RedstoneWire.Connection.UP;
-            case SIDE:
-                return RedstoneWire.Connection.SIDE;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(connection) {
+            case NONE -> RedstoneWire.Connection.NONE;
+            case UP -> RedstoneWire.Connection.UP;
+            case SIDE -> RedstoneWire.Connection.SIDE;
+        };
     }
 
     public static org.bukkit.block.data.type.RedstoneWire.Connection adapt(RedstoneWire.Connection connection) {
-        switch(connection) {
-            case SIDE:
-                return org.bukkit.block.data.type.RedstoneWire.Connection.SIDE;
-            case UP:
-                return org.bukkit.block.data.type.RedstoneWire.Connection.UP;
-            case NONE:
-                return org.bukkit.block.data.type.RedstoneWire.Connection.NONE;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(connection) {
+            case SIDE -> org.bukkit.block.data.type.RedstoneWire.Connection.SIDE;
+            case UP -> org.bukkit.block.data.type.RedstoneWire.Connection.UP;
+            case NONE -> org.bukkit.block.data.type.RedstoneWire.Connection.NONE;
+        };
     }
 
     public static org.bukkit.block.data.type.Stairs.Shape adapt(Stairs.Shape shape) {
-        switch(shape) {
-            case STRAIGHT:
-                return org.bukkit.block.data.type.Stairs.Shape.STRAIGHT;
-            case INNER_LEFT:
-                return org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT;
-            case OUTER_LEFT:
-                return org.bukkit.block.data.type.Stairs.Shape.OUTER_LEFT;
-            case INNER_RIGHT:
-                return org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT;
-            case OUTER_RIGHT:
-                return org.bukkit.block.data.type.Stairs.Shape.OUTER_RIGHT;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(shape) {
+            case STRAIGHT -> org.bukkit.block.data.type.Stairs.Shape.STRAIGHT;
+            case INNER_LEFT -> org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT;
+            case OUTER_LEFT -> org.bukkit.block.data.type.Stairs.Shape.OUTER_LEFT;
+            case INNER_RIGHT -> org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT;
+            case OUTER_RIGHT -> org.bukkit.block.data.type.Stairs.Shape.OUTER_RIGHT;
+        };
     }
 
     public static Rail.Shape adapt(org.bukkit.block.data.Rail.Shape shape) {
-        switch(shape) {
-            case SOUTH_WEST:
-                return Rail.Shape.SOUTH_WEST;
-            case SOUTH_EAST:
-                return Rail.Shape.SOUTH_EAST;
-            case NORTH_EAST:
-                return Rail.Shape.NORTH_EAST;
-            case NORTH_WEST:
-                return Rail.Shape.NORTH_WEST;
-            case ASCENDING_EAST:
-                return Rail.Shape.ASCENDING_EAST;
-            case ASCENDING_WEST:
-                return Rail.Shape.ASCENDING_WEST;
-            case ASCENDING_SOUTH:
-                return Rail.Shape.ASCENDING_SOUTH;
-            case ASCENDING_NORTH:
-                return Rail.Shape.ASCENDING_NORTH;
-            case NORTH_SOUTH:
-                return Rail.Shape.NORTH_SOUTH;
-            case EAST_WEST:
-                return Rail.Shape.EAST_WEST;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(shape) {
+            case SOUTH_WEST -> Rail.Shape.SOUTH_WEST;
+            case SOUTH_EAST -> Rail.Shape.SOUTH_EAST;
+            case NORTH_EAST -> Rail.Shape.NORTH_EAST;
+            case NORTH_WEST -> Rail.Shape.NORTH_WEST;
+            case ASCENDING_EAST -> Rail.Shape.ASCENDING_EAST;
+            case ASCENDING_WEST -> Rail.Shape.ASCENDING_WEST;
+            case ASCENDING_SOUTH -> Rail.Shape.ASCENDING_SOUTH;
+            case ASCENDING_NORTH -> Rail.Shape.ASCENDING_NORTH;
+            case NORTH_SOUTH -> Rail.Shape.NORTH_SOUTH;
+            case EAST_WEST -> Rail.Shape.EAST_WEST;
+        };
     }
 
     public static org.bukkit.block.data.Rail.Shape adapt(Rail.Shape shape) {
-        switch(shape) {
-            case EAST_WEST:
-                return org.bukkit.block.data.Rail.Shape.EAST_WEST;
-            case NORTH_SOUTH:
-                return org.bukkit.block.data.Rail.Shape.NORTH_SOUTH;
-            case ASCENDING_NORTH:
-                return org.bukkit.block.data.Rail.Shape.ASCENDING_NORTH;
-            case ASCENDING_SOUTH:
-                return org.bukkit.block.data.Rail.Shape.ASCENDING_SOUTH;
-            case ASCENDING_WEST:
-                return org.bukkit.block.data.Rail.Shape.ASCENDING_WEST;
-            case ASCENDING_EAST:
-                return org.bukkit.block.data.Rail.Shape.ASCENDING_EAST;
-            case NORTH_WEST:
-                return org.bukkit.block.data.Rail.Shape.NORTH_WEST;
-            case NORTH_EAST:
-                return org.bukkit.block.data.Rail.Shape.NORTH_EAST;
-            case SOUTH_EAST:
-                return org.bukkit.block.data.Rail.Shape.SOUTH_EAST;
-            case SOUTH_WEST:
-                return org.bukkit.block.data.Rail.Shape.SOUTH_WEST;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(shape) {
+            case EAST_WEST -> org.bukkit.block.data.Rail.Shape.EAST_WEST;
+            case NORTH_SOUTH -> org.bukkit.block.data.Rail.Shape.NORTH_SOUTH;
+            case ASCENDING_NORTH -> org.bukkit.block.data.Rail.Shape.ASCENDING_NORTH;
+            case ASCENDING_SOUTH -> org.bukkit.block.data.Rail.Shape.ASCENDING_SOUTH;
+            case ASCENDING_WEST -> org.bukkit.block.data.Rail.Shape.ASCENDING_WEST;
+            case ASCENDING_EAST -> org.bukkit.block.data.Rail.Shape.ASCENDING_EAST;
+            case NORTH_WEST -> org.bukkit.block.data.Rail.Shape.NORTH_WEST;
+            case NORTH_EAST -> org.bukkit.block.data.Rail.Shape.NORTH_EAST;
+            case SOUTH_EAST -> org.bukkit.block.data.Rail.Shape.SOUTH_EAST;
+            case SOUTH_WEST -> org.bukkit.block.data.Rail.Shape.SOUTH_WEST;
+        };
     }
 
 
     public static org.bukkit.block.data.Bisected.Half adapt(Bisected.Half half) {
-        switch(half) {
-            case TOP:
-                return org.bukkit.block.data.Bisected.Half.TOP;
-            case BOTTOM:
-                return org.bukkit.block.data.Bisected.Half.BOTTOM;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(half) {
+            case TOP -> org.bukkit.block.data.Bisected.Half.TOP;
+            case BOTTOM -> org.bukkit.block.data.Bisected.Half.BOTTOM;
+        };
     }
 
     public static org.bukkit.Axis adapt(Axis axis) {
-        switch(axis) {
-            case Z:
-                return org.bukkit.Axis.Z;
-            case Y:
-                return org.bukkit.Axis.Y;
-            case X:
-                return org.bukkit.Axis.X;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(axis) {
+            case Z -> org.bukkit.Axis.Z;
+            case Y -> org.bukkit.Axis.Y;
+            case X -> org.bukkit.Axis.X;
+        };
     }
 
     public static org.bukkit.block.BlockFace adapt(BlockFace face) {
-        switch(face) {
-            case DOWN:
-                return org.bukkit.block.BlockFace.DOWN;
-            case UP:
-                return org.bukkit.block.BlockFace.UP;
-            case NORTH_WEST:
-                return org.bukkit.block.BlockFace.NORTH_WEST;
-            case NORTH_EAST:
-                return org.bukkit.block.BlockFace.NORTH_EAST;
-            case SOUTH_EAST:
-                return org.bukkit.block.BlockFace.SOUTH_EAST;
-            case SOUTH_WEST:
-                return org.bukkit.block.BlockFace.SOUTH_WEST;
-            case NORTH_NORTH_WEST:
-                return org.bukkit.block.BlockFace.NORTH_NORTH_WEST;
-            case WEST_NORTH_WEST:
-                return org.bukkit.block.BlockFace.WEST_NORTH_WEST;
-            case WEST_SOUTH_WEST:
-                return org.bukkit.block.BlockFace.WEST_SOUTH_WEST;
-            case SOUTH_SOUTH_WEST:
-                return org.bukkit.block.BlockFace.SOUTH_SOUTH_WEST;
-            case EAST_NORTH_EAST:
-                return org.bukkit.block.BlockFace.EAST_NORTH_EAST;
-            case WEST:
-                return org.bukkit.block.BlockFace.WEST;
-            case SOUTH:
-                return org.bukkit.block.BlockFace.SOUTH;
-            case EAST:
-                return org.bukkit.block.BlockFace.EAST;
-            case NORTH:
-                return org.bukkit.block.BlockFace.NORTH;
-            case SELF:
-                return org.bukkit.block.BlockFace.SELF;
-            case EAST_SOUTH_EAST:
-                return org.bukkit.block.BlockFace.EAST_SOUTH_EAST;
-            case NORTH_NORTH_EAST:
-                return org.bukkit.block.BlockFace.NORTH_NORTH_EAST;
-            case SOUTH_SOUTH_EAST:
-                return org.bukkit.block.BlockFace.SOUTH_SOUTH_EAST;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(face) {
+            case DOWN -> org.bukkit.block.BlockFace.DOWN;
+            case UP -> org.bukkit.block.BlockFace.UP;
+            case NORTH_WEST -> org.bukkit.block.BlockFace.NORTH_WEST;
+            case NORTH_EAST -> org.bukkit.block.BlockFace.NORTH_EAST;
+            case SOUTH_EAST -> org.bukkit.block.BlockFace.SOUTH_EAST;
+            case SOUTH_WEST -> org.bukkit.block.BlockFace.SOUTH_WEST;
+            case NORTH_NORTH_WEST -> org.bukkit.block.BlockFace.NORTH_NORTH_WEST;
+            case WEST_NORTH_WEST -> org.bukkit.block.BlockFace.WEST_NORTH_WEST;
+            case WEST_SOUTH_WEST -> org.bukkit.block.BlockFace.WEST_SOUTH_WEST;
+            case SOUTH_SOUTH_WEST -> org.bukkit.block.BlockFace.SOUTH_SOUTH_WEST;
+            case EAST_NORTH_EAST -> org.bukkit.block.BlockFace.EAST_NORTH_EAST;
+            case WEST -> org.bukkit.block.BlockFace.WEST;
+            case SOUTH -> org.bukkit.block.BlockFace.SOUTH;
+            case EAST -> org.bukkit.block.BlockFace.EAST;
+            case NORTH -> org.bukkit.block.BlockFace.NORTH;
+            case SELF -> org.bukkit.block.BlockFace.SELF;
+            case EAST_SOUTH_EAST -> org.bukkit.block.BlockFace.EAST_SOUTH_EAST;
+            case NORTH_NORTH_EAST -> org.bukkit.block.BlockFace.NORTH_NORTH_EAST;
+            case SOUTH_SOUTH_EAST -> org.bukkit.block.BlockFace.SOUTH_SOUTH_EAST;
+        };
     }
 
     public static org.bukkit.block.data.type.Slab.Type adapt(Slab.Type type) {
-        switch(type) {
-            case TOP:
-                return org.bukkit.block.data.type.Slab.Type.TOP;
-            case DOUBLE:
-                return org.bukkit.block.data.type.Slab.Type.DOUBLE;
-            case BOTTOM:
-                return org.bukkit.block.data.type.Slab.Type.BOTTOM;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(type) {
+            case TOP -> org.bukkit.block.data.type.Slab.Type.TOP;
+            case DOUBLE -> org.bukkit.block.data.type.Slab.Type.DOUBLE;
+            case BOTTOM -> org.bukkit.block.data.type.Slab.Type.BOTTOM;
+        };
     }
 
     public static Location adapt(com.dfsek.terra.api.math.vector.Location location) {

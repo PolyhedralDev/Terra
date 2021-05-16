@@ -36,14 +36,11 @@ public class ParserTest {
 
             @Override
             public Returnable.ReturnType getArgument(int position) {
-                switch(position) {
-                    case 0:
-                        return Returnable.ReturnType.STRING;
-                    case 1:
-                        return Returnable.ReturnType.NUMBER;
-                    default:
-                        return null;
-                }
+                return switch(position) {
+                    case 0 -> Returnable.ReturnType.STRING;
+                    case 1 -> Returnable.ReturnType.NUMBER;
+                    default -> null;
+                };
             }
 
         });

@@ -70,21 +70,14 @@ public final class ForgeAdapter {
     }
 
     public static Direction adapt(BlockFace face) {
-        switch(face) {
-            case NORTH:
-                return Direction.NORTH;
-            case WEST:
-                return Direction.WEST;
-            case SOUTH:
-                return Direction.SOUTH;
-            case EAST:
-                return Direction.EAST;
-            case UP:
-                return Direction.UP;
-            case DOWN:
-                return Direction.DOWN;
-            default:
-                throw new IllegalArgumentException("Illegal direction: " + face);
-        }
+        return switch(face) {
+            case NORTH -> Direction.NORTH;
+            case WEST -> Direction.WEST;
+            case SOUTH -> Direction.SOUTH;
+            case EAST -> Direction.EAST;
+            case UP -> Direction.UP;
+            case DOWN -> Direction.DOWN;
+            default -> throw new IllegalArgumentException("Illegal direction: " + face);
+        };
     }
 }

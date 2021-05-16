@@ -29,24 +29,12 @@ public class FabricMultipleFacing extends FabricBlockData implements MultipleFac
     @Override
     public void setFace(BlockFace face, boolean facing) {
         switch(face) {
-            case NORTH:
-                delegate = delegate.with(Properties.NORTH, facing);
-                break;
-            case SOUTH:
-                delegate = delegate.with(Properties.SOUTH, facing);
-                break;
-            case EAST:
-                delegate = delegate.with(Properties.EAST, facing);
-                break;
-            case WEST:
-                delegate = delegate.with(Properties.WEST, facing);
-                break;
-            case UP:
-                delegate = delegate.with(Properties.UP, facing);
-                break;
-            case DOWN:
-                delegate = delegate.with(Properties.DOWN, facing);
-                break;
+            case NORTH -> delegate = delegate.with(Properties.NORTH, facing);
+            case SOUTH -> delegate = delegate.with(Properties.SOUTH, facing);
+            case EAST -> delegate = delegate.with(Properties.EAST, facing);
+            case WEST -> delegate = delegate.with(Properties.WEST, facing);
+            case UP -> delegate = delegate.with(Properties.UP, facing);
+            case DOWN -> delegate = delegate.with(Properties.DOWN, facing);
         }
     }
 

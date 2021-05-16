@@ -21,15 +21,10 @@ public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider.Biom
     public BiomeProvider.BiomeProviderBuilder load(Type t, Object c, ConfigLoader loader) throws LoadException { // TODO: clean this up
         Map<String, Object> map = (Map<String, Object>) c;
 
-        switch(loader.loadClass(BiomeProvider.Type.class, map.get("type"))) {
-            case IMAGE:
-                return loader.loadClass(ImageProviderTemplate.class, map);
-            case PIPELINE:
-                return loader.loadClass(BiomePipelineTemplate.class, map);
-            case SINGLE:
-                return loader.loadClass(SingleBiomeProviderTemplate.class, map);
-        }
-
-        throw new LoadException("No such biome provider type: " + map.get("type"));
+        return switch(loader.loadClass(BiomeProvider.Type.class, map.get("type"))) {
+            case IMAGE -> loader.loadClass(ImageProviderTemplate.class, map);
+            case PIPELINE -> loader.loadClass(BiomePipelineTemplate.class, map);
+            case SINGLE -> loader.loadClass(SingleBiomeProviderTemplate.class, map);
+        };
     }
 }

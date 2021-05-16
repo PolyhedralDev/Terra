@@ -39,17 +39,11 @@ public class BlockFunctionBuilder implements FunctionBuilder<AbstractBlockFuncti
 
     @Override
     public Returnable.ReturnType getArgument(int position) {
-        switch(position) {
-            case 0:
-            case 1:
-            case 2:
-                return Returnable.ReturnType.NUMBER;
-            case 3:
-                return Returnable.ReturnType.STRING;
-            case 4:
-                return Returnable.ReturnType.BOOLEAN;
-            default:
-                return null;
-        }
+        return switch(position) {
+            case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
+            case 3 -> Returnable.ReturnType.STRING;
+            case 4 -> Returnable.ReturnType.BOOLEAN;
+            default -> null;
+        };
     }
 }

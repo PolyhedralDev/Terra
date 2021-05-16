@@ -36,13 +36,9 @@ public class StructureFunctionBuilder implements FunctionBuilder<StructureFuncti
 
     @Override
     public Returnable.ReturnType getArgument(int position) {
-        switch(position) {
-            case 0:
-            case 1:
-            case 2:
-                return Returnable.ReturnType.NUMBER;
-            default:
-                return Returnable.ReturnType.STRING;
-        }
+        return switch(position) {
+            case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
+            default -> Returnable.ReturnType.STRING;
+        };
     }
 }

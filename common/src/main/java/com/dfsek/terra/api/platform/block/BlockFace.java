@@ -83,66 +83,28 @@ public enum BlockFace {
 
     @NotNull
     public BlockFace getOppositeFace() {
-        switch(this) {
-            case NORTH:
-                return BlockFace.SOUTH;
+        return switch(this) {
+            case NORTH -> BlockFace.SOUTH;
+            case SOUTH -> BlockFace.NORTH;
+            case EAST -> BlockFace.WEST;
+            case WEST -> BlockFace.EAST;
+            case UP -> BlockFace.DOWN;
+            case DOWN -> BlockFace.UP;
+            case NORTH_EAST -> BlockFace.SOUTH_WEST;
+            case NORTH_WEST -> BlockFace.SOUTH_EAST;
+            case SOUTH_EAST -> BlockFace.NORTH_WEST;
+            case SOUTH_WEST -> BlockFace.NORTH_EAST;
+            case WEST_NORTH_WEST -> BlockFace.EAST_SOUTH_EAST;
+            case NORTH_NORTH_WEST -> BlockFace.SOUTH_SOUTH_EAST;
+            case NORTH_NORTH_EAST -> BlockFace.SOUTH_SOUTH_WEST;
+            case EAST_NORTH_EAST -> BlockFace.WEST_SOUTH_WEST;
+            case EAST_SOUTH_EAST -> BlockFace.WEST_NORTH_WEST;
+            case SOUTH_SOUTH_EAST -> BlockFace.NORTH_NORTH_WEST;
+            case SOUTH_SOUTH_WEST -> BlockFace.NORTH_NORTH_EAST;
+            case WEST_SOUTH_WEST -> BlockFace.EAST_NORTH_EAST;
+            case SELF -> BlockFace.SELF;
+        };
 
-            case SOUTH:
-                return BlockFace.NORTH;
-
-            case EAST:
-                return BlockFace.WEST;
-
-            case WEST:
-                return BlockFace.EAST;
-
-            case UP:
-                return BlockFace.DOWN;
-
-            case DOWN:
-                return BlockFace.UP;
-
-            case NORTH_EAST:
-                return BlockFace.SOUTH_WEST;
-
-            case NORTH_WEST:
-                return BlockFace.SOUTH_EAST;
-
-            case SOUTH_EAST:
-                return BlockFace.NORTH_WEST;
-
-            case SOUTH_WEST:
-                return BlockFace.NORTH_EAST;
-
-            case WEST_NORTH_WEST:
-                return BlockFace.EAST_SOUTH_EAST;
-
-            case NORTH_NORTH_WEST:
-                return BlockFace.SOUTH_SOUTH_EAST;
-
-            case NORTH_NORTH_EAST:
-                return BlockFace.SOUTH_SOUTH_WEST;
-
-            case EAST_NORTH_EAST:
-                return BlockFace.WEST_SOUTH_WEST;
-
-            case EAST_SOUTH_EAST:
-                return BlockFace.WEST_NORTH_WEST;
-
-            case SOUTH_SOUTH_EAST:
-                return BlockFace.NORTH_NORTH_WEST;
-
-            case SOUTH_SOUTH_WEST:
-                return BlockFace.NORTH_NORTH_EAST;
-
-            case WEST_SOUTH_WEST:
-                return BlockFace.EAST_NORTH_EAST;
-
-            case SELF:
-                return BlockFace.SELF;
-        }
-
-        return BlockFace.SELF;
     }
 }
 

@@ -26,15 +26,10 @@ public class SetMarkFunctionBuilder implements FunctionBuilder<SetMarkFunction> 
 
     @Override
     public Returnable.ReturnType getArgument(int position) {
-        switch(position) {
-            case 0:
-            case 1:
-            case 2:
-                return Returnable.ReturnType.NUMBER;
-            case 3:
-                return Returnable.ReturnType.STRING;
-            default:
-                return null;
-        }
+        return switch(position) {
+            case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
+            case 3 -> Returnable.ReturnType.STRING;
+            default -> null;
+        };
     }
 }

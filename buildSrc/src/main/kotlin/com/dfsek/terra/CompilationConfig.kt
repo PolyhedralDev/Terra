@@ -21,7 +21,7 @@ fun Project.configureCompilation() {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         doFirst {
-            options.compilerArgs.addAll(arrayOf("-Xlint:all", "--release", "8", "--enable-preview"))
+            options.compilerArgs.addAll(arrayOf("-Xlint:all", "--release", "8", "-Xplugin:jabel"))
         }
     }
 

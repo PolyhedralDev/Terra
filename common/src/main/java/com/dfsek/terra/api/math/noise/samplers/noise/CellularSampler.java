@@ -333,36 +333,21 @@ public class CellularSampler extends NoiseFunction {
             }
         }
 
-        switch(returnType) {
-            case CellValue:
-                return closestHash * (1 / 2147483648.0);
-            case Distance:
-                return distance0 - 1;
-            case Distance2:
-                return distance1 - 1;
-            case Distance2Add:
-                return (distance1 + distance0) * 0.5 - 1;
-            case Distance2Sub:
-                return distance1 - distance0 - 1;
-            case Distance2Mul:
-                return distance1 * distance0 * 0.5 - 1;
-            case Distance2Div:
-                return distance0 / distance1 - 1;
-            case NoiseLookup:
-                return noiseLookup.getNoise(center.getX(), center.getZ());
-            case Distance3:
-                return distance2 - 1;
-            case Distance3Add:
-                return (distance2 + distance0) * 0.5 - 1;
-            case Distance3Sub:
-                return distance2 - distance0 - 1;
-            case Distance3Mul:
-                return distance2 * distance0 - 1;
-            case Distance3Div:
-                return distance0 / distance2 - 1;
-            default:
-                return 0;
-        }
+        return switch(returnType) {
+            case CellValue -> closestHash * (1 / 2147483648.0);
+            case Distance -> distance0 - 1;
+            case Distance2 -> distance1 - 1;
+            case Distance2Add -> (distance1 + distance0) * 0.5 - 1;
+            case Distance2Sub -> distance1 - distance0 - 1;
+            case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
+            case Distance2Div -> distance0 / distance1 - 1;
+            case NoiseLookup -> noiseLookup.getNoise(center.getX(), center.getZ());
+            case Distance3 -> distance2 - 1;
+            case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
+            case Distance3Sub -> distance2 - distance0 - 1;
+            case Distance3Mul -> distance2 * distance0 - 1;
+            case Distance3Div -> distance0 / distance2 - 1;
+        };
     }
 
     @Override
@@ -507,36 +492,21 @@ public class CellularSampler extends NoiseFunction {
             }
         }
 
-        switch(returnType) {
-            case CellValue:
-                return closestHash * (1 / 2147483648.0);
-            case Distance:
-                return distance0 - 1;
-            case Distance2:
-                return distance1 - 1;
-            case Distance2Add:
-                return (distance1 + distance0) * 0.5 - 1;
-            case Distance2Sub:
-                return distance1 - distance0 - 1;
-            case Distance2Mul:
-                return distance1 * distance0 * 0.5 - 1;
-            case Distance2Div:
-                return distance0 / distance1 - 1;
-            case NoiseLookup:
-                return noiseLookup.getNoise(center.getX(), center.getY(), center.getZ());
-            case Distance3:
-                return distance2 - 1;
-            case Distance3Add:
-                return (distance2 + distance0) * 0.5 - 1;
-            case Distance3Sub:
-                return distance2 - distance0 - 1;
-            case Distance3Mul:
-                return distance2 * distance0 - 1;
-            case Distance3Div:
-                return distance0 / distance2 - 1;
-            default:
-                return 0;
-        }
+        return switch(returnType) {
+            case CellValue -> closestHash * (1 / 2147483648.0);
+            case Distance -> distance0 - 1;
+            case Distance2 -> distance1 - 1;
+            case Distance2Add -> (distance1 + distance0) * 0.5 - 1;
+            case Distance2Sub -> distance1 - distance0 - 1;
+            case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
+            case Distance2Div -> distance0 / distance1 - 1;
+            case NoiseLookup -> noiseLookup.getNoise(center.getX(), center.getY(), center.getZ());
+            case Distance3 -> distance2 - 1;
+            case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
+            case Distance3Sub -> distance2 - distance0 - 1;
+            case Distance3Mul -> distance2 * distance0 - 1;
+            case Distance3Div -> distance0 / distance2 - 1;
+        };
     }
 
     public enum DistanceFunction {

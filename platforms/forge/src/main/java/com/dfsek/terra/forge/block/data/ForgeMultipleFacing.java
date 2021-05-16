@@ -29,24 +29,12 @@ public class ForgeMultipleFacing extends ForgeBlockData implements MultipleFacin
     @Override
     public void setFace(BlockFace face, boolean facing) {
         switch(face) {
-            case NORTH:
-                delegate = delegate.setValue(BlockStateProperties.NORTH, facing);
-                break;
-            case SOUTH:
-                delegate = delegate.setValue(BlockStateProperties.SOUTH, facing);
-                break;
-            case EAST:
-                delegate = delegate.setValue(BlockStateProperties.EAST, facing);
-                break;
-            case WEST:
-                delegate = delegate.setValue(BlockStateProperties.WEST, facing);
-                break;
-            case UP:
-                delegate = delegate.setValue(BlockStateProperties.UP, facing);
-                break;
-            case DOWN:
-                delegate = delegate.setValue(BlockStateProperties.DOWN, facing);
-                break;
+            case NORTH -> delegate = delegate.setValue(BlockStateProperties.NORTH, facing);
+            case SOUTH -> delegate = delegate.setValue(BlockStateProperties.SOUTH, facing);
+            case EAST -> delegate = delegate.setValue(BlockStateProperties.EAST, facing);
+            case WEST -> delegate = delegate.setValue(BlockStateProperties.WEST, facing);
+            case UP -> delegate = delegate.setValue(BlockStateProperties.UP, facing);
+            case DOWN -> delegate = delegate.setValue(BlockStateProperties.DOWN, facing);
         }
     }
 

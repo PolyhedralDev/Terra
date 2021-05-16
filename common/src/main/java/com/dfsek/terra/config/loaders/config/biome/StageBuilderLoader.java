@@ -38,20 +38,13 @@ public class StageBuilderLoader implements TypeLoader<StageSeeded> {
                 return loader.loadClass(ExpanderStageTemplate.class, mutator);
             } else throw new LoadException("No such expander \"" + stageType + "\"");
         } else if(entry.getKey().equals("mutate")) {
-            switch(loader.loadClass(MutatorStage.Type.class, mutator.get("type"))) {
-                case SMOOTH:
-                    return loader.loadClass(SmoothMutatorTemplate.class, mutator);
-                case REPLACE:
-                    return loader.loadClass(ReplaceMutatorTemplate.class, mutator);
-                case REPLACE_LIST:
-                    return loader.loadClass(ReplaceListMutatorTemplate.class, mutator);
-                case BORDER:
-                    return loader.loadClass(BorderMutatorTemplate.class, mutator);
-                case BORDER_LIST:
-                    return loader.loadClass(BorderListMutatorTemplate.class, mutator);
-                default:
-                    throw new LoadException("No such mutator type \"" + mutator.get("type"));
-            }
+            return switch(loader.loadClass(MutatorStage.Type.class, mutator.get("type"))) {
+                case SMOOTH -> loader.loadClass(SmoothMutatorTemplate.class, mutator);
+                case REPLACE -> loader.loadClass(ReplaceMutatorTemplate.class, mutator);
+                case REPLACE_LIST -> loader.loadClass(ReplaceListMutatorTemplate.class, mutator);
+                case BORDER -> loader.loadClass(BorderMutatorTemplate.class, mutator);
+                case BORDER_LIST -> loader.loadClass(BorderListMutatorTemplate.class, mutator);
+            };
         }
         throw new LoadException("No such mutator \"" + entry.getKey() + "\"");
     }

@@ -11,12 +11,9 @@ public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
     @Override
     public Ore build(OreTemplate config, TerraPlugin main) {
         BlockData m = config.getMaterial();
-        switch(config.getType()) {
-            case SPHERE:
-                return new DeformedSphereOre(m, config.getReplaceable(), config.doPhysics(), config.getDeform(), config.getDeformFrequency(), config.getSize(), main);
-            case VANILLA:
-                return new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), main);
-        }
-        return null;
+        return switch(config.getType()) {
+            case SPHERE -> new DeformedSphereOre(m, config.getReplaceable(), config.doPhysics(), config.getDeform(), config.getDeformFrequency(), config.getSize(), main);
+            case VANILLA -> new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), main);
+        };
     }
 }
