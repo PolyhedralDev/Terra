@@ -71,7 +71,9 @@ import org.apache.logging.log4j.LogManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -104,6 +106,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             logger.error(message);
         }
     };
+
     private final DebugLogger debugLogger = new DebugLogger(logger);
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
@@ -120,6 +123,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), Validator.notNull())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), Validator.notNull()).build();
     private File dataFolder;
+    private final CommandManager manager = new TerraCommandManager(this);
+
+    public CommandManager getManager() {
+        return manager;
+    }
 
     public static TerraFabricPlugin getInstance() {
         return instance;
@@ -279,13 +287,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
-        CommandManager manager = new TerraCommandManager(this);
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
         FabricUtil.registerCommands(manager);
+
 
         logger.info("Finished initialization.");
     }

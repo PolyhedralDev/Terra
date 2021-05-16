@@ -1,6 +1,6 @@
 import com.dfsek.terra.configureCommon
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.minecraftforge.gradle.common.util.RunConfig
-import net.minecraftforge.gradle.mcp.task.GenerateSRG
 import net.minecraftforge.gradle.userdev.UserDevExtension
 import net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace
 
@@ -55,11 +55,17 @@ if ("true" == System.getProperty("idea.sync.active")) {
     }
 }
 
+
+tasks.named<ShadowJar>("shadowJar") {
+    archiveBaseName.set(tasks.getByName<Jar>("jar").archiveBaseName.orNull) // Pain. Agony, even.
+    archiveClassifier.set("") // Suffering, if you will.
+}
+
 afterEvaluate {
-    val reobf = extensions.getByName<NamedDomainObjectContainer<RenameJarInPlace>>("reobf")
-    reobf.maybeCreate("shadowJar").run {
-        group = "forge"
-        mappings = tasks.getByName<GenerateSRG>("createMcpToSrg").output
+    tasks.named<RenameJarInPlace>("reobfJar") {
+        val shadow = tasks.getByName<ShadowJar>("shadowJar");
+        dependsOn(shadow)
+        input = shadow.archiveFile.orNull?.asFile
     }
 }
 
@@ -71,7 +77,7 @@ configure<UserDevExtension> {
     runs {
         val runConfig = Action<RunConfig> {
             properties(mapOf(
-                    "forge.logging.markers" to "SCAN,REGISTRIES,REGISTRYDUMP",
+                    //"forge.logging.markers" to "SCAN,REGISTRIES,REGISTRYDUMP",
                     "forge.logging.console.level" to "debug"
             ))
             arg("-mixin.config=terra.mixins.json")
@@ -124,12 +130,12 @@ tasks.jar {
 }
 
 tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
-    dependsOn("reobfShadowJar")
+    dependsOn("reobfJar")
     group = "forge"
     token = System.getenv("MODRINTH_SECRET")
     projectId = "FIlZB9L0"
     versionNumber = "${project.version}-forge"
-    uploadFile = tasks.named<RenameJarInPlace>("reobfShadowJar").get().input.absoluteFile
+    uploadFile = tasks.named<RenameJarInPlace>("reobfJar").get().input.absoluteFile
     releaseType = "alpha"
     addGameVersion("1.16.5")
     addLoader("forge")
