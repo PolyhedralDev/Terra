@@ -1,32 +1,21 @@
 package com.dfsek.terra.fabric;
 
-import com.dfsek.terra.api.command.CommandManager;
-import com.dfsek.terra.api.command.exception.CommandException;
-import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.block.Blocks;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -36,53 +25,35 @@ public final class FabricUtil {
         return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
-    private static RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
-        return in.suggests((context, builder) -> {
-            List<String> args = parseCommand(context.getInput());
-            CommandSender sender = (CommandSender) context.getSource();
-            try {
-                sender = (Entity) context.getSource().getEntityOrThrow();
-            } catch(CommandSyntaxException ignore) {
-            }
-            try {
-                manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
-            } catch(CommandException e) {
-                sender.sendMessage(e.getMessage());
-            }
-            return builder.buildFuture();
-        }).executes(context -> {
-            List<String> args = parseCommand(context.getInput());
-            CommandSender sender = (CommandSender) context.getSource();
-            try {
-                sender = (Entity) context.getSource().getEntityOrThrow();
-            } catch(CommandSyntaxException ignore) {
-            }
-            try {
-                manager.execute(args.remove(0), sender, args);
-            } catch(CommandException e) {
-                context.getSource().sendError(new LiteralText(e.getMessage()));
-            }
-            return 1;
-        });
-    }
-
-    private static List<String> parseCommand(String command) {
-        if(command.startsWith("/terra ")) command = command.substring("/terra ".length());
-        else if(command.startsWith("/te ")) command = command.substring("/te ".length());
-        List<String> c = new ArrayList<>(Arrays.asList(command.split(" ")));
-        if(command.endsWith(" ")) c.add("");
-        return c;
-    }
-
-    static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack) {
+    /**
+     * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
+     *
+     * @param fabricAddon The Fabric addon instance.
+     * @param biome       The Terra BiomeBuilder.
+     * @param pack        The ConfigPack this biome belongs to.
+     * @return The Minecraft delegate biome.
+     */
+    public static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
         Biome vanilla = (Biome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-        generationSettings.surfaceBuilder(SurfaceBuilder.DEFAULT.withConfig(new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState()))); // It needs a surfacebuilder, even though we dont use it.
+
+        generationSettings.surfaceBuilder(vanilla.getGenerationSettings().getSurfaceBuilder()); // It needs a surfacebuilder, even though we dont use it.
+
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, TerraFabricPlugin.POPULATOR_CONFIGURED_FEATURE);
+
+        for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
+            for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {
+                generationSettings.carver(carver, configuredCarverSupplier.get());
+            }
+        }
+
+        for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
+            generationSettings.structureFeature(structureFeature.get());
+        }
 
         PackFeatureOptionsTemplate optionsTemplate = fabricAddon.getTemplates().get(pack);
 
