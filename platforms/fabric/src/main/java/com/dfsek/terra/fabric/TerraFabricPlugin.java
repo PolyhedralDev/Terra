@@ -71,9 +71,7 @@ import org.apache.logging.log4j.LogManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -292,8 +290,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         } catch(MalformedCommandException e) {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
-        FabricUtil.registerCommands(manager);
-
 
         logger.info("Finished initialization.");
     }

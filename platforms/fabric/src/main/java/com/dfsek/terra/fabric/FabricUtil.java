@@ -9,10 +9,8 @@ import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
@@ -33,29 +31,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
-
 public final class FabricUtil {
     public static String createBiomeID(ConfigPack pack, String biomeID) {
         return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
-    }
-
-    protected static void registerCommands(CommandManager manager) {
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-                    int max = manager.getMaxArgumentDepth();
-                    RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
-                    for(int i = 0; i < max; i++) {
-                        RequiredArgumentBuilder<ServerCommandSource, String> next = argument("arg" + (max - i - 1), StringArgumentType.word());
-
-                        arg = next.then(FabricUtil.assemble(arg, manager));
-                    }
-
-                    dispatcher.register(literal("terra").executes(context -> 1).then(FabricUtil.assemble(arg, manager)));
-                    dispatcher.register(literal("te").executes(context -> 1).then(FabricUtil.assemble(arg, manager)));
-                    //dispatcher.register(literal("te").redirect(root));
-                }
-        );
     }
 
     private static RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
