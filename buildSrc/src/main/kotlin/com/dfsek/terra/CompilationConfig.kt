@@ -14,14 +14,14 @@ fun Project.configureCompilation() {
     apply(plugin = "idea")
 
     configure<JavaPluginConvention> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_14
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         doFirst {
-            options.compilerArgs.add("-Xlint:all")
+            options.compilerArgs.addAll(arrayOf("-Xlint:all", "--release", "8", "--enable-preview"))
         }
     }
 
