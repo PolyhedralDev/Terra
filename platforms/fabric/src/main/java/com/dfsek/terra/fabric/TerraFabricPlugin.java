@@ -8,7 +8,6 @@ import com.dfsek.terra.api.addons.annotations.Author;
 import com.dfsek.terra.api.addons.annotations.Version;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
-import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
@@ -16,9 +15,7 @@ import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.entity.Entity;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Tree;
@@ -50,16 +47,11 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.world.GeneratorType;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -86,14 +78,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -125,6 +112,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             logger.error(message);
         }
     };
+
     private final DebugLogger debugLogger = new DebugLogger(logger);
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
@@ -137,6 +125,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), new NotNullValidator<>())
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), new NotNullValidator<>()).build();
     private File dataFolder;
+    private final CommandManager manager = new TerraCommandManager(this);
+
+    public CommandManager getManager() {
+        return manager;
+    }
 
     public static TerraFabricPlugin getInstance() {
         return instance;
@@ -339,66 +332,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
 
-        CommandManager manager = new TerraCommandManager(this);
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-                    int max = manager.getMaxArgumentDepth();
-                    RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
-                    for(int i = 0; i < max; i++) {
-                        RequiredArgumentBuilder<ServerCommandSource, String> next = argument("arg" + (max - i - 1), StringArgumentType.word());
-
-                        arg = next.then(assemble(arg, manager));
-                    }
-
-                    dispatcher.register(literal("terra").executes(context -> 1).then(assemble(arg, manager)));
-                    dispatcher.register(literal("te").executes(context -> 1).then(assemble(arg, manager)));
-                    //dispatcher.register(literal("te").redirect(root));
-                }
-        );
         logger.info("Finished initialization.");
-    }
-
-    private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, CommandManager manager) {
-        return in.suggests((context, builder) -> {
-            List<String> args = parseCommand(context.getInput());
-            CommandSender sender = (CommandSender) context.getSource();
-            try {
-                sender = (Entity) context.getSource().getEntityOrThrow();
-            } catch(CommandSyntaxException ignore) {
-            }
-            try {
-                manager.tabComplete(args.remove(0), sender, args).forEach(builder::suggest);
-            } catch(CommandException e) {
-                sender.sendMessage(e.getMessage());
-            }
-            return builder.buildFuture();
-        }).executes(context -> {
-            List<String> args = parseCommand(context.getInput());
-            CommandSender sender = (CommandSender) context.getSource();
-            try {
-                sender = (Entity) context.getSource().getEntityOrThrow();
-            } catch(CommandSyntaxException ignore) {
-            }
-            try {
-                manager.execute(args.remove(0), sender, args);
-            } catch(CommandException e) {
-                context.getSource().sendError(new LiteralText(e.getMessage()));
-            }
-            return 1;
-        });
-    }
-
-    private List<String> parseCommand(String command) {
-        if(command.startsWith("/terra ")) command = command.substring("/terra ".length());
-        else if(command.startsWith("/te ")) command = command.substring("/te ".length());
-        List<String> c = new ArrayList<>(Arrays.asList(command.split(" ")));
-        if(command.endsWith(" ")) c.add("");
-        return c;
     }
 
 

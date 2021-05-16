@@ -27,8 +27,6 @@ dependencies {
     "mappings"("net.fabricmc:yarn:1.16.5+build.5:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
 
-    "modImplementation"("net.fabricmc.fabric-api:fabric-api:0.31.0+1.16")
-
     "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
         exclude(group = "com.google.guava", module = "guava")
         exclude(group = "com.google.code.gson", module = "gson")
