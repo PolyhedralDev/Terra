@@ -14,6 +14,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.gen.feature.StructureFeature;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class TerraBiomeSource extends BiomeSource {
@@ -32,7 +33,9 @@ public class TerraBiomeSource extends BiomeSource {
     private final ConfigPack pack;
 
     public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
-        super(biomes.stream().collect(Collectors.toList()));
+        super(biomes.stream()
+                .filter(biome -> Objects.requireNonNull(biomes.getId(biome)).getNamespace().equals("terra")) // Filter out non-Terra biomes.
+                .collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
         this.grid = pack.getBiomeProviderBuilder().build(seed);
@@ -60,6 +63,4 @@ public class TerraBiomeSource extends BiomeSource {
     public boolean hasStructureFeature(StructureFeature<?> feature) {
         return false;
     }
-
-
 }
