@@ -168,7 +168,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public boolean isDebug() {
-        return true;
+        return config.isDebug();
     }
 
     @Override

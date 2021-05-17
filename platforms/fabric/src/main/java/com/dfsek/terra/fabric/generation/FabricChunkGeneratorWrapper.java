@@ -90,23 +90,24 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Nullable
     @Override
     public BlockPos locateStructure(ServerWorld world, StructureFeature<?> feature, BlockPos center, int radius, boolean skipExistingChunks) {
-        String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
-        TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
-        TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
-        if(located != null) {
-            CompletableFuture<BlockPos> result = new CompletableFuture<>();
-            AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
-                result.complete(FabricAdapter.adapt(location));
-            }, TerraFabricPlugin.getInstance());
-            finder.run(); // Do this synchronously.
-            try {
-                return result.get();
-            } catch(InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
+        if(!pack.getTemplate().disableStructures()) {
+            String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
+            TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
+            TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
+            if(located != null) {
+                CompletableFuture<BlockPos> result = new CompletableFuture<>();
+                AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
+                    result.complete(FabricAdapter.adapt(location));
+                }, TerraFabricPlugin.getInstance());
+                finder.run(); // Do this synchronously.
+                try {
+                    return result.get();
+                } catch(InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
-        TerraFabricPlugin.getInstance().logger().warning("No overrides are defined for \"" + name + "\"");
-        return null;
+        return super.locateStructure(world, feature, center, radius, skipExistingChunks);
     }
 
     @Override
@@ -127,6 +128,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
+        if(pack.getTemplate().vanillaStructures()) return super.isStrongholdStartingChunk(chunkPos);
         return false;
     }
 

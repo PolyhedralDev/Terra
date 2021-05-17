@@ -59,11 +59,13 @@ public final class FabricUtil {
         PackFeatureOptionsTemplate optionsTemplate = fabricAddon.getTemplates().get(pack);
 
         if(optionsTemplate.doBiomeInjection()) {
+            TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting features into " + biome.getTemplate().getID());
             for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
                 for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
                     Identifier key = BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get());
                     if(!optionsTemplate.getExcludedBiomeFeatures().contains(key)) {
                         generationSettings.feature(step, featureSupplier);
+                        TerraFabricPlugin.getInstance().getDebugLogger().info("Injected " + key + " at stage " + step);
                     }
                 }
             }
