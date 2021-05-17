@@ -1,8 +1,9 @@
-package com.dfsek.terra.fabric;
+package com.dfsek.terra.fabric.util;
 
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import net.minecraft.util.Identifier;

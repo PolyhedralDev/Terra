@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric.generation;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.fabric.FabricUtil;
+import com.dfsek.terra.fabric.util.FabricUtil;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

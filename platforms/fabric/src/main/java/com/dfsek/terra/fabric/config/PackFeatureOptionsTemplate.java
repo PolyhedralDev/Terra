@@ -5,11 +5,10 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class PackFeatureOptionsTemplate implements ConfigTemplate {
     @Value("features.inject-registry.enable")
     @Default
