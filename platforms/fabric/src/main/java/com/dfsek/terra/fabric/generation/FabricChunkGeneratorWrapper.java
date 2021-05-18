@@ -11,9 +11,11 @@ import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
+import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
@@ -30,6 +32,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
@@ -56,6 +59,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
     private final ConfigPack pack;
+    private DimensionType dimensionType;
 
     public ConfigPack getPack() {
         return pack;
@@ -86,6 +90,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public void buildSurface(ChunkRegion region, Chunk chunk) {
 
+    }
+
+    public void setDimensionType(DimensionType dimensionType) {
+        this.dimensionType = dimensionType;
     }
 
     @Nullable
@@ -135,22 +143,17 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
-        /*
-        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(seed);
+        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
         int cx = FastMath.floorMod(x, 16);
         int cz = FastMath.floorMod(z, 16);
 
         int height = world.getWorld().getMaxHeight();
 
-        while (height >= 0 && sampler.sample(cx, height - 1, cz) < 0) {
-            height--;
-        }
+        do height--;
+        while(height >= 0 && sampler.sample(cx, height, cz) < 0);
 
         return height;
-
-         */
-        return 0;
     }
 
     @Override
