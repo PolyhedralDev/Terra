@@ -3,8 +3,8 @@ package com.dfsek.terra.fabric.generation;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.fabric.util.FabricUtil;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.util.FabricUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
@@ -14,7 +14,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.gen.feature.StructureFeature;
 
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class TerraBiomeSource extends BiomeSource {
@@ -33,9 +32,7 @@ public class TerraBiomeSource extends BiomeSource {
     private final ConfigPack pack;
 
     public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
-        super(biomes.stream()
-                .filter(biome -> Objects.requireNonNull(biomes.getId(biome)).getNamespace().equals("terra")) // Filter out non-Terra biomes.
-                .collect(Collectors.toList()));
+        super(biomes.stream().collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
         this.grid = pack.getBiomeProviderBuilder().build(seed);

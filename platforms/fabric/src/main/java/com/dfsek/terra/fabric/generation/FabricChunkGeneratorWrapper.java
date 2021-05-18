@@ -148,10 +148,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         int cx = FastMath.floorMod(x, 16);
         int cz = FastMath.floorMod(z, 16);
 
-        int height = world.getWorld().getMaxHeight();
+        int height = world.getWorld().getMaxHeight() - 1;
 
-        do height--;
-        while(height >= 0 && sampler.sample(cx, height, cz) < 0);
+        while(height >= 0 && sampler.sample(cx, height, cz) < 0) height--;
 
         return height;
     }

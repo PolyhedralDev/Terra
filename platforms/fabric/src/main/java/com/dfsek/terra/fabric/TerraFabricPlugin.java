@@ -35,7 +35,7 @@ import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
+import com.dfsek.terra.fabric.config.PackCompatibilityOptions;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -295,7 +295,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private final TerraPlugin main;
 
-        private final Map<ConfigPack, PackFeatureOptionsTemplate> templates = new HashMap<>();
+        private final Map<ConfigPack, PackCompatibilityOptions> templates = new HashMap<>();
 
         private FabricAddon(TerraPlugin main) {
             this.main = main;
@@ -330,7 +330,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
             injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
 
-            PackFeatureOptionsTemplate template = new PackFeatureOptionsTemplate();
+            PackCompatibilityOptions template = new PackCompatibilityOptions();
             try {
                 event.loadTemplate(template);
             } catch(ConfigException e) {
@@ -359,7 +359,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             }
         }
 
-        public Map<ConfigPack, PackFeatureOptionsTemplate> getTemplates() {
+        public Map<ConfigPack, PackCompatibilityOptions> getTemplates() {
             return templates;
         }
     }

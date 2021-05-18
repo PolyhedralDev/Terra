@@ -4,7 +4,7 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.config.PackFeatureOptionsTemplate;
+import com.dfsek.terra.fabric.config.PackCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -17,6 +17,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -52,18 +53,21 @@ public final class FabricUtil {
             }
         }
 
+        PackCompatibilityOptions compatibilityOptions = fabricAddon.getTemplates().get(pack);
+
         for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
-            generationSettings.structureFeature(structureFeature.get());
+            Identifier key = BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(structureFeature.get());
+            if(!compatibilityOptions.getExcludedBiomeStructures().contains(key) && !compatibilityOptions.getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
+                generationSettings.structureFeature(structureFeature.get());
+            }
         }
 
-        PackFeatureOptionsTemplate optionsTemplate = fabricAddon.getTemplates().get(pack);
-
-        if(optionsTemplate.doBiomeInjection()) {
+        if(compatibilityOptions.doBiomeInjection()) {
             TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting features into " + biome.getTemplate().getID());
             for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
                 for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
                     Identifier key = BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get());
-                    if(!optionsTemplate.getExcludedBiomeFeatures().contains(key)) {
+                    if(!compatibilityOptions.getExcludedBiomeFeatures().contains(key) && !compatibilityOptions.getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
                         generationSettings.feature(step, featureSupplier);
                         TerraFabricPlugin.getInstance().getDebugLogger().info("Injected " + key + " at stage " + step);
                     }
