@@ -12,8 +12,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.gen.feature.StructureFeature;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class TerraBiomeSource extends BiomeSource {
@@ -32,7 +32,9 @@ public class TerraBiomeSource extends BiomeSource {
     private final ConfigPack pack;
 
     public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
-        super(biomes.stream().collect(Collectors.toList()));
+        super(biomes.stream()
+                .filter(biome -> Objects.requireNonNull(biomes.getId(biome)).getNamespace().equals("terra")) // Filter out non-Terra biomes.
+                .collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
         this.grid = pack.getBiomeProviderBuilder().build(seed);
@@ -53,11 +55,5 @@ public class TerraBiomeSource extends BiomeSource {
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
-    }
-
-
-    @Override
-    public boolean hasStructureFeature(StructureFeature<?> feature) {
-        return false;
     }
 }
