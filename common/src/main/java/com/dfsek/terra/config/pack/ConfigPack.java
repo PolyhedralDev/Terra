@@ -111,6 +111,8 @@ public class ConfigPack implements LoaderRegistrar {
     private final TerraPlugin main;
     private final Loader loader;
 
+    private final Configuration configuration;
+
     private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
 
@@ -131,7 +133,7 @@ public class ConfigPack implements LoaderRegistrar {
             File pack = new File(folder, "pack.yml");
 
             try {
-                Configuration configuration = new Configuration(new FileInputStream(pack));
+                configuration = new Configuration(new FileInputStream(pack));
                 selfLoader.load(template, configuration);
 
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
@@ -179,7 +181,7 @@ public class ConfigPack implements LoaderRegistrar {
 
                 if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
-                Configuration configuration = new Configuration(file.getInputStream(pack));
+                configuration = new Configuration(file.getInputStream(pack));
                 selfLoader.load(template, configuration);
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
@@ -251,7 +253,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("flora", ".yml").then(configs -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.loadConfigs(configs, FloraTemplate::new), main)).close()
                 .open("biomes", ".yml").then(configs -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.loadConfigs(configs, () -> new BiomeTemplate(this, main)), main)).close();
 
-        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
+        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 

@@ -1,10 +1,12 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.config.PackCompatibilityOptions;
+import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -53,23 +55,27 @@ public final class FabricUtil {
             }
         }
 
-        PackCompatibilityOptions compatibilityOptions = fabricAddon.getTemplates().get(pack);
+        Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions> pair = fabricAddon.getTemplates().get(pack);
+        PreLoadCompatibilityOptions compatibilityOptions = pair.getLeft();
+        PostLoadCompatibilityOptions postLoadCompatibilityOptions = pair.getRight();
+
+        TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
 
         for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
             Identifier key = BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(structureFeature.get());
-            if(!compatibilityOptions.getExcludedBiomeStructures().contains(key) && !compatibilityOptions.getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
+            if(!compatibilityOptions.getExcludedBiomeStructures().contains(key) && !postLoadCompatibilityOptions.getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
                 generationSettings.structureFeature(structureFeature.get());
+                TerraFabricPlugin.getInstance().getDebugLogger().info("Injected structure " + key);
             }
         }
 
         if(compatibilityOptions.doBiomeInjection()) {
-            TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting features into " + biome.getTemplate().getID());
             for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
                 for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
                     Identifier key = BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get());
-                    if(!compatibilityOptions.getExcludedBiomeFeatures().contains(key) && !compatibilityOptions.getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
+                    if(!compatibilityOptions.getExcludedBiomeFeatures().contains(key) && !postLoadCompatibilityOptions.getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
                         generationSettings.feature(step, featureSupplier);
-                        TerraFabricPlugin.getInstance().getDebugLogger().info("Injected " + key + " at stage " + step);
+                        TerraFabricPlugin.getInstance().getDebugLogger().info("Injected feature " + key + " at stage " + step);
                     }
                 }
             }

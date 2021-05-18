@@ -16,6 +16,7 @@ import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
+import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -35,7 +36,8 @@ import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.fabric.config.PackCompatibilityOptions;
+import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -295,7 +297,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private final TerraPlugin main;
 
-        private final Map<ConfigPack, PackCompatibilityOptions> templates = new HashMap<>();
+        private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
 
         private FabricAddon(TerraPlugin main) {
             this.main = main;
@@ -330,7 +332,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
             injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
 
-            PackCompatibilityOptions template = new PackCompatibilityOptions();
+            PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
             try {
                 event.loadTemplate(template);
             } catch(ConfigException e) {
@@ -348,7 +350,21 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     }
                 });
             }
-            templates.put(event.getPack(), template);
+            templates.put(event.getPack(), Pair.of(template, null));
+        }
+
+        @Priority(Priority.HIGHEST)
+        @Global
+        public void createInjectionOptions(ConfigPackPostLoadEvent event) {
+            PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
+
+            try {
+                event.loadTemplate(template);
+            } catch(ConfigException e) {
+                e.printStackTrace();
+            }
+
+            templates.get(event.getPack()).setRight(template);
         }
 
 
@@ -359,7 +375,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             }
         }
 
-        public Map<ConfigPack, PackCompatibilityOptions> getTemplates() {
+        public Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
             return templates;
         }
     }

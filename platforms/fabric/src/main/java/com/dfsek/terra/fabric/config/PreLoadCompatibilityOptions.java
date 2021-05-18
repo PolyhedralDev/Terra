@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("FieldMayBeFinal")
-public class PackCompatibilityOptions implements ConfigTemplate {
+public class PreLoadCompatibilityOptions implements ConfigTemplate {
     @Value("features.inject-registry.enable")
     @Default
     private boolean doRegistryInjection = false;
@@ -29,17 +29,9 @@ public class PackCompatibilityOptions implements ConfigTemplate {
     @Default
     private Set<Identifier> excludedBiomeFeatures = new HashSet<>();
 
-    @Value("features.inject-biome.exclude-biomes")
-    @Default
-    private Map<BiomeBuilder, Set<Identifier>> excludedPerBiomeFeatures = new HashMap<>();
-
     @Value("structures.inject-biome.excluded-features")
     @Default
     private Set<Identifier> excludedBiomeStructures = new HashSet<>();
-
-    @Value("structures.inject-biome.exclude-biomes")
-    @Default
-    private Map<BiomeBuilder, Set<Identifier>> excludedPerBiomeStructures = new HashMap<>();
 
     public boolean doBiomeInjection() {
         return doBiomeInjection;
@@ -55,14 +47,6 @@ public class PackCompatibilityOptions implements ConfigTemplate {
 
     public Set<Identifier> getExcludedRegistryFeatures() {
         return excludedRegistryFeatures;
-    }
-
-    public Map<BiomeBuilder, Set<Identifier>> getExcludedPerBiomeFeatures() {
-        return excludedPerBiomeFeatures;
-    }
-
-    public Map<BiomeBuilder, Set<Identifier>> getExcludedPerBiomeStructures() {
-        return excludedPerBiomeStructures;
     }
 
     public Set<Identifier> getExcludedBiomeStructures() {
