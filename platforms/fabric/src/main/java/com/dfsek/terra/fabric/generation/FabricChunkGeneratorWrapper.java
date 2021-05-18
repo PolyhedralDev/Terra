@@ -11,11 +11,9 @@ import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
@@ -134,6 +132,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+        /*
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(seed);
         Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
         int cx = FastMath.floorMod(x, 16);
@@ -146,6 +145,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         }
 
         return height;
+
+         */
+        return 0;
     }
 
     @Override

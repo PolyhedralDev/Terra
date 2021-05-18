@@ -53,7 +53,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -75,7 +77,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
-    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
+    private final Map<DimensionType, TerraWorld> worldMap = new HashMap<>();
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
 
@@ -131,15 +133,15 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return worldMap.computeIfAbsent(world.getSeed(), w -> {
+        return worldMap.computeIfAbsent(((WorldAccess) world).getDimension(), w -> {
             logger.info("Loading world " + w);
             return new TerraWorld(world, ((FabricChunkGeneratorWrapper) world.getGenerator()).getPack(), this);
         });
     }
 
-    public TerraWorld getWorld(long seed) {
-        TerraWorld world = worldMap.get(seed);
-        if(world == null) throw new IllegalArgumentException("No world exists with seed " + seed);
+    public TerraWorld getWorld(DimensionType type) {
+        TerraWorld world = worldMap.get(type);
+        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
         return world;
     }
 
@@ -183,7 +185,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = registry.loadAll(this);
-        Map<Long, TerraWorld> newMap = new HashMap<>();
+        Map<DimensionType, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((seed, tw) -> {
             tw.getConfig().getSamplerCache().clear();
             String packID = tw.getConfig().getTemplate().getID();
