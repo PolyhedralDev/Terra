@@ -49,9 +49,11 @@ public final class FabricUtil {
 
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, TerraFabricPlugin.POPULATOR_CONFIGURED_FEATURE);
 
-        for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
-            for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {
-                generationSettings.carver(carver, configuredCarverSupplier.get());
+        if(pack.getTemplate().vanillaCaves()) {
+            for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
+                for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {
+                    generationSettings.carver(carver, configuredCarverSupplier.get());
+                }
             }
         }
 
