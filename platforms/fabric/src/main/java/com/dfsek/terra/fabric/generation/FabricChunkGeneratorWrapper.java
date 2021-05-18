@@ -25,9 +25,12 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -167,6 +170,18 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         }
 
         return new VerticalBlockSample(array);
+    }
+
+    @Override
+    public void populateEntities(ChunkRegion region) {
+        if(pack.getTemplate().vanillaMobs()) {
+            int cx = region.getCenterChunkX();
+            int cy = region.getCenterChunkZ();
+            Biome biome = region.getBiome((new ChunkPos(cx, cy)).getStartPos());
+            ChunkRandom chunkRandom = new ChunkRandom();
+            chunkRandom.setPopulationSeed(region.getSeed(), cx << 4, cy << 4);
+            SpawnHelper.populateEntities(region, biome, cx, cy, chunkRandom);
+        }
     }
 
     @Override
