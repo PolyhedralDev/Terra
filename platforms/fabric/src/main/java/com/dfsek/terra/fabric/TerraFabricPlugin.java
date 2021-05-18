@@ -26,6 +26,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.transform.Validator;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.commands.CommandUtil;
@@ -49,6 +50,7 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -77,7 +79,12 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
-    private final Map<DimensionType, TerraWorld> worldMap = new HashMap<>();
+    private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
+
+    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
+        return worldMap;
+    }
+
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
 
@@ -133,14 +140,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return worldMap.computeIfAbsent(((WorldAccess) world).getDimension(), w -> {
-            logger.info("Loading world " + w);
-            return new TerraWorld(world, ((FabricChunkGeneratorWrapper) world.getGenerator()).getPack(), this);
-        });
+        return getWorld(((WorldAccess) world).getDimension());
     }
 
     public TerraWorld getWorld(DimensionType type) {
-        TerraWorld world = worldMap.get(type);
+        TerraWorld world = worldMap.get(type).getRight();
         if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
         return world;
     }
@@ -185,14 +189,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = registry.loadAll(this);
-        Map<DimensionType, TerraWorld> newMap = new HashMap<>();
-        worldMap.forEach((seed, tw) -> {
-            tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getTemplate().getID();
-            newMap.put(seed, new TerraWorld(tw.getWorld(), registry.get(packID), this));
+        worldMap.forEach((seed, pair) -> {
+            pair.getRight().getConfig().getSamplerCache().clear();
+            String packID = pair.getRight().getConfig().getTemplate().getID();
+            pair.setRight(new TerraWorld(pair.getRight().getWorld(), registry.get(packID), this));
         });
-        worldMap.clear();
-        worldMap.putAll(newMap);
         return succeed;
     }
 

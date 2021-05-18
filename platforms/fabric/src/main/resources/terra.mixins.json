@@ -6,6 +6,7 @@
   "mixins": [
     "CommandManagerMixin",
     "GeneratorOptionsMixin",
+    "ServerWorldMixin",
     "access.BiomeEffectsAccessor",
     "access.MobSpawnerLogicAccessor",
     "access.StateAccessor",
