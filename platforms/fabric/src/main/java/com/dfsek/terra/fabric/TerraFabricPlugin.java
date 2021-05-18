@@ -40,7 +40,6 @@ import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
-import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
@@ -48,18 +47,13 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.world.GeneratorType;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -243,20 +237,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         registry.loadAll(this);
 
         registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(fabricAddon, biome, pack)))); // Register all Terra biomes.
-
-        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            registry.forEach(pack -> {
-                final GeneratorType generatorType = new GeneratorType("terra." + pack.getTemplate().getID()) {
-                    @Override
-                    protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
-                    }
-                };
-                //noinspection ConstantConditions
-                ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
-                GeneratorTypeAccessor.getValues().add(1, generatorType);
-            });
-        }
 
         logger.info("Loaded packs.");
     }
