@@ -77,7 +77,7 @@ import java.util.Map;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
-
+    private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
@@ -88,21 +88,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final Profiler profiler = new ProfilerImpl();
 
     private final Logger logger = new Logger() {
-        private final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
-
         @Override
         public void info(String message) {
-            logger.info(message);
+            log4jLogger.info(message);
         }
 
         @Override
         public void warning(String message) {
-            logger.warn(message);
+            log4jLogger.warn(message);
         }
 
         @Override
         public void severe(String message) {
-            logger.error(message);
+            log4jLogger.error(message);
         }
     };
 
@@ -270,6 +268,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         this.dataFolder = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
         saveDefaultConfig();
         config.load(this);
+        debugLogger.setDebug(config.isDebug());
         LangUtil.load(config.getLanguage(), this);
         logger.info("Initializing Terra...");
 
