@@ -342,7 +342,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
                         try {
                             event.getPack().getTreeRegistry().add(entry.getKey().getValue().toString(), (Tree) entry.getValue());
-                            main.logger().info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
+                            main.getDebugLogger().info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
                         } catch(DuplicateEntryException ignored) {
                         }
                     }
