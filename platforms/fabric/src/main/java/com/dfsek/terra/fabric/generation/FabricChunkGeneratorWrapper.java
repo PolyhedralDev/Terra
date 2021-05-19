@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -157,11 +158,12 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public BlockView getColumnSample(int x, int z) {
-        int height = 64; // TODO: implementation
+        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
+        int height = getHeight(x, z, Heightmap.Type.WORLD_SURFACE);
         BlockState[] array = new BlockState[256];
         for(int y = 255; y >= 0; y--) {
             if(y > height) {
-                if(y > getSeaLevel()) {
+                if(y > ((UserDefinedBiome) world.getBiomeProvider().getBiome(x, z)).getConfig().getSeaLevel()) {
                     array[y] = Blocks.AIR.getDefaultState();
                 } else {
                     array[y] = Blocks.WATER.getDefaultState();
