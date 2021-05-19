@@ -1,4 +1,8 @@
-debug: false
+debug:
+  commands: false
+  log: false
+  profiler: false
+  script: false
 data-save: PT6M
 language: "en_us"
 dump-default: true

@@ -66,6 +66,7 @@ public class StructureScript {
 
         parser.registerFunction("block", new BlockFunctionBuilder(main, false))
                 .registerFunction("dynamicBlock", new BlockFunctionBuilder(main, true))
+                .registerFunction("debugBlock", new BlockFunctionBuilder(main, false))
                 .registerFunction("check", new CheckFunctionBuilder(main))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
@@ -100,6 +101,10 @@ public class StructureScript {
                 .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> FastMath.atan(number.doubleValue())))
                 .registerFunction("max", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("min", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
+
+        if(!main.getTerraConfig().isDebugScript()) {
+            parser.ignoreFunction("debugBlock");
+        }
 
         block = parser.parse();
         this.id = parser.getID();

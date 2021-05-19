@@ -333,11 +333,6 @@ public class TerraForgePlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isDebug() {
-        return true;
-    }
-
-    @Override
     public Language getLanguage() {
         return LangUtil.getLanguage();
     }

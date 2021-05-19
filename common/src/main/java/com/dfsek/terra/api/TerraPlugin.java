@@ -35,8 +35,6 @@ public interface TerraPlugin extends LoaderRegistrar {
 
     File getDataFolder();
 
-    boolean isDebug();
-
     Language getLanguage();
 
     CheckedRegistry<ConfigPack> getConfigRegistry();

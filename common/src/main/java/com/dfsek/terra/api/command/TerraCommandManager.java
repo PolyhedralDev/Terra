@@ -55,8 +55,8 @@ public class TerraCommandManager implements CommandManager {
     private void execute(CommandHolder commandHolder, CommandSender sender, List<String> args) throws CommandException {
         Class<? extends CommandTemplate> commandClass = commandHolder.clazz;
 
-        if(commandClass.isAnnotationPresent(DebugCommand.class) && !main.isDebug()) {
-            sender.sendMessage("Command must be executed with debug mode enabled.");
+        if(commandClass.isAnnotationPresent(DebugCommand.class) && !main.getTerraConfig().isDebugCommands()) {
+            sender.sendMessage("Command must be executed with debug commands enabled.");
             return;
         }
 

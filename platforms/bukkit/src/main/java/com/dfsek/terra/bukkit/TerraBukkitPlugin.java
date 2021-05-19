@@ -172,7 +172,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         config.load(this); // Load master config.yml
         LangUtil.load(config.getLanguage(), this); // Load language.
-        debugLogger.setDebug(isDebug());
+
+        debugLogger.setDebug(config.isDebugLogging());
+        if(config.isDebugProfiler()) profiler.start();
 
         if(!addonRegistry.loadAll()) {
             getLogger().severe("Failed to load addons. Please correct addon installations to continue.");
@@ -253,12 +255,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             return new DefaultChunkGenerator3D(registry.get(id), this);
         }));
     }
-
-    @Override
-    public boolean isDebug() {
-        return config.isDebug();
-    }
-
 
     @Override
     public Language getLanguage() {
