@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -27,9 +28,13 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -55,6 +60,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
             .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
     private final ConfigPack pack;
+    private DimensionType dimensionType;
 
     public ConfigPack getPack() {
         return pack;
@@ -87,26 +93,31 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     }
 
+    public void setDimensionType(DimensionType dimensionType) {
+        this.dimensionType = dimensionType;
+    }
+
     @Nullable
     @Override
     public BlockPos locateStructure(ServerWorld world, StructureFeature<?> feature, BlockPos center, int radius, boolean skipExistingChunks) {
-        String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
-        TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
-        TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
-        if(located != null) {
-            CompletableFuture<BlockPos> result = new CompletableFuture<>();
-            AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
-                result.complete(FabricAdapter.adapt(location));
-            }, TerraFabricPlugin.getInstance());
-            finder.run(); // Do this synchronously.
-            try {
-                return result.get();
-            } catch(InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
+        if(!pack.getTemplate().disableStructures()) {
+            String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
+            TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
+            TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
+            if(located != null) {
+                CompletableFuture<BlockPos> result = new CompletableFuture<>();
+                AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
+                    result.complete(FabricAdapter.adapt(location));
+                }, TerraFabricPlugin.getInstance());
+                finder.run(); // Do this synchronously.
+                try {
+                    return result.get();
+                } catch(InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
-        TerraFabricPlugin.getInstance().logger().warning("No overrides are defined for \"" + name + "\"");
-        return null;
+        return super.locateStructure(world, feature, center, radius, skipExistingChunks);
     }
 
     @Override
@@ -127,32 +138,32 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
+        if(pack.getTemplate().vanillaStructures()) return super.isStrongholdStartingChunk(chunkPos);
         return false;
     }
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
-        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(seed);
+        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
         int cx = FastMath.floorMod(x, 16);
         int cz = FastMath.floorMod(z, 16);
 
         int height = world.getWorld().getMaxHeight();
 
-        while (height >= 0 && sampler.sample(cx, height - 1, cz) < 0) {
-            height--;
-        }
+        while(height >= 0 && sampler.sample(cx, height-1, cz) < 0) height--;
 
         return height;
     }
 
     @Override
     public BlockView getColumnSample(int x, int z) {
-        int height = 64; // TODO: implementation
+        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
+        int height = getHeight(x, z, Heightmap.Type.WORLD_SURFACE);
         BlockState[] array = new BlockState[256];
         for(int y = 255; y >= 0; y--) {
             if(y > height) {
-                if(y > getSeaLevel()) {
+                if(y > ((UserDefinedBiome) world.getBiomeProvider().getBiome(x, z)).getConfig().getSeaLevel()) {
                     array[y] = Blocks.AIR.getDefaultState();
                 } else {
                     array[y] = Blocks.WATER.getDefaultState();
@@ -163,6 +174,18 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         }
 
         return new VerticalBlockSample(array);
+    }
+
+    @Override
+    public void populateEntities(ChunkRegion region) {
+        if(pack.getTemplate().vanillaMobs()) {
+            int cx = region.getCenterChunkX();
+            int cy = region.getCenterChunkZ();
+            Biome biome = region.getBiome((new ChunkPos(cx, cy)).getStartPos());
+            ChunkRandom chunkRandom = new ChunkRandom();
+            chunkRandom.setPopulationSeed(region.getSeed(), cx << 4, cy << 4);
+            SpawnHelper.populateEntities(region, biome, cx, cy, chunkRandom);
+        }
     }
 
     @Override

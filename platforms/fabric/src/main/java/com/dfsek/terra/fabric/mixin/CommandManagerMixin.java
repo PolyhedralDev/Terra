@@ -31,7 +31,7 @@ public abstract class CommandManagerMixin {
     @Final
     private CommandDispatcher<ServerCommandSource> dispatcher;
 
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;findAmbiguities(Lcom/mojang/brigadier/AmbiguityConsumer;)V"))
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;findAmbiguities(Lcom/mojang/brigadier/AmbiguityConsumer;)V", remap = false))
     private void injectTerraCommands(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
         com.dfsek.terra.api.command.CommandManager manager = TerraFabricPlugin.getInstance().getManager();
         int max = manager.getMaxArgumentDepth();
