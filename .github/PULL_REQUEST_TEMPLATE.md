@@ -13,7 +13,7 @@
   Please go through this checklist item by item and make sure you have successfully completed each of these steps.
     - Your pull request MUST be either on the latest version of Terra, or on a branch for a future release.
     - Make sure that there are no already existing PRs that fix this. If so, it will be closed as a duplicate.
-    - Make sure that this change is actually within the scope of Terra and is something a terrain generation plugin should be doing.
+    - Make sure that this change is actually within the scope of Terra and is something a terrain generator should be doing.
     - Make sure that this is not an issue with a specific Terra *pack*, and instead applies to all of Terra.
     - Make sure that you have filled out all the required information and given descriptions of everything.
 -->
