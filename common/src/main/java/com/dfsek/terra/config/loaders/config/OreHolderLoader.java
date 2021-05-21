@@ -3,9 +3,9 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.population.items.ores.Ore;
-import com.dfsek.terra.population.items.ores.OreConfig;
-import com.dfsek.terra.population.items.ores.OreHolder;
+import com.dfsek.terra.world.population.items.ores.Ore;
+import com.dfsek.terra.world.population.items.ores.OreConfig;
+import com.dfsek.terra.world.population.items.ores.OreHolder;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class OreHolderLoader implements TypeLoader<OreHolder> {
         Map<String, Object> map = (Map<String, Object>) o;
 
         for(Map.Entry<String, Object> entry : map.entrySet()) {
-            holder.add((Ore) configLoader.loadType(Ore.class, entry.getKey()), (OreConfig) configLoader.loadType(OreConfig.class, entry.getValue()));
+            holder.add(configLoader.loadClass(Ore.class, entry.getKey()), configLoader.loadClass(OreConfig.class, entry.getValue()), entry.getKey());
         }
 
         return holder;

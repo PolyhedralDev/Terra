@@ -1,10 +1,10 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import net.querz.nbt.tag.CompoundTag;
 
-public class Data implements BlockData, MaterialData {
+public class Data implements BlockData, BlockType {
     private final CompoundTag data;
     private final String noProp;
 
@@ -38,13 +38,8 @@ public class Data implements BlockData, MaterialData {
 
 
     @Override
-    public MaterialData getMaterial() {
+    public BlockType getBlockType() {
         return this;
-    }
-
-    @Override
-    public boolean matches(MaterialData materialData) {
-        return ((Data) materialData).noProp.equals(noProp);
     }
 
     @Override
@@ -53,24 +48,15 @@ public class Data implements BlockData, MaterialData {
     }
 
     @Override
-    public boolean isSolid() {
-        return !isAir(); //TODO: actual implementation
-    }
-
-    @Override
     public boolean isAir() {
         return noProp.equals("minecraft:air");
     }
 
     @Override
-    public double getMaxDurability() {
-        return 0;
+    public boolean isStructureVoid() {
+        return false;
     }
 
-    @Override
-    public BlockData createBlockData() {
-        return this;
-    }
 
     @Override
     public BlockData clone() {
@@ -100,5 +86,20 @@ public class Data implements BlockData, MaterialData {
     public boolean equals(Object obj) {
         if(!(obj instanceof Data)) return false;
         return ((Data) obj).noProp.equals(noProp);
+    }
+
+    @Override
+    public BlockData getDefaultData() {
+        return this;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isWater() {
+        return false;
     }
 }

@@ -4,9 +4,11 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
 import java.util.List;
+import java.util.Map;
 
 public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void>> {
 
@@ -26,8 +28,8 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
 
             @SuppressWarnings("unchecked")
             @Override
-            public Void apply(ImplementationArguments implementationArguments) {
-                function.accept(((Returnable<String>) argumentList.get(0)).apply(implementationArguments));
+            public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+                function.accept(((Returnable<String>) argumentList.get(0)).apply(implementationArguments, variableMap));
                 return null;
             }
 

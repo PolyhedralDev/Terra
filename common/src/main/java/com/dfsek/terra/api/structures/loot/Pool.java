@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.structures.loot;
 
-import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

@@ -1,15 +1,15 @@
 package com.dfsek.terra.bukkit.world;
 
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.block.MaterialData;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
 import com.dfsek.terra.api.platform.world.Tree;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.profiler.ProfileFrame;
 import org.bukkit.TreeType;
 
+import java.util.Locale;
 import java.util.Random;
-import java.util.Set;
 
 public class BukkitTree implements Tree {
     private final TreeType delegate;
@@ -26,33 +26,31 @@ public class BukkitTree implements Tree {
         WorldHandle handle = main.getWorldHandle();
         switch(type) {
             case CRIMSON_FUNGUS:
-                return MaterialSet.get(handle.createMaterialData("minecraft:crimson_nylium"));
+                return MaterialSet.get(handle.createBlockData("minecraft:crimson_nylium"));
             case WARPED_FUNGUS:
-                return MaterialSet.get(handle.createMaterialData("minecraft:warped_nylium"));
+                return MaterialSet.get(handle.createBlockData("minecraft:warped_nylium"));
             case BROWN_MUSHROOM:
             case RED_MUSHROOM:
-                return MaterialSet.get(handle.createMaterialData("minecraft:mycelium"), handle.createMaterialData("minecraft:grass_block"),
-                        handle.createMaterialData("minecraft:podzol"));
+                return MaterialSet.get(handle.createBlockData("minecraft:mycelium"), handle.createBlockData("minecraft:grass_block"),
+                        handle.createBlockData("minecraft:podzol"));
             case CHORUS_PLANT:
-                return MaterialSet.get(handle.createMaterialData("minecraft:end_stone"));
+                return MaterialSet.get(handle.createBlockData("minecraft:end_stone"));
             default:
-                return MaterialSet.get(handle.createMaterialData("minecraft:grass_block"), handle.createMaterialData("minecraft:dirt"),
-                        handle.createMaterialData("minecraft:podzol"));
+                return MaterialSet.get(handle.createBlockData("minecraft:grass_block"), handle.createBlockData("minecraft:dirt"),
+                        handle.createBlockData("minecraft:podzol"));
         }
     }
 
     @Override
-    public TreeType getHandle() {
-        return delegate;
-    }
-
-    @Override
+    @SuppressWarnings("try")
     public boolean plant(Location l, Random r) {
-        return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
+        try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
+            return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
+        }
     }
 
     @Override
-    public Set<MaterialData> getSpawnable() {
+    public MaterialSet getSpawnable() {
         return spawnable;
     }
 }

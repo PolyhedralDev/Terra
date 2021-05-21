@@ -11,7 +11,9 @@ public interface Block extends Handle {
 
     BlockState getState();
 
-    Block getRelative(BlockFace face);
+    default Block getRelative(BlockFace face) {
+        return getRelative(face, 1);
+    }
 
     Block getRelative(BlockFace face, int len);
 
@@ -19,7 +21,9 @@ public interface Block extends Handle {
 
     Location getLocation();
 
-    MaterialData getType();
+    default BlockType getType() {
+        return getBlockData().getBlockType();
+    }
 
     int getX();
 

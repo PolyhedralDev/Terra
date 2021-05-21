@@ -3,9 +3,9 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.biome.palette.PaletteLayer;
-import com.dfsek.terra.population.items.flora.TerraFlora;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
+import com.dfsek.terra.world.population.items.flora.TerraFlora;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class FloraTemplate extends AbstractableTemplate {
 
     @Value("layers")
     @Abstractable
-    private List<PaletteLayer> palette;
+    private List<PaletteLayerHolder> palette;
 
     @Value("physics")
     @Abstractable
@@ -96,7 +96,7 @@ public class FloraTemplate extends AbstractableTemplate {
         return id;
     }
 
-    public List<PaletteLayer> getFloraPalette() {
+    public List<PaletteLayerHolder> getFloraPalette() {
         return palette;
     }
 

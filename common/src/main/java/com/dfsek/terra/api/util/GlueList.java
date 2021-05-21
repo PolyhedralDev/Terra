@@ -15,6 +15,8 @@
  */
 package com.dfsek.terra.api.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -76,14 +78,16 @@ import static net.jafama.FastMath.*;
  * @see ArrayList
  * @param <T> the type of elements held in this collection
  */
+@SuppressWarnings({"ManualMinMaxCalculation", "ConstantConditions", "ManualArrayToCollectionCopy"})
 public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, Serializable {
 
-    transient Node<T> first;
-    transient Node<T> last;
+    private static final long serialVersionUID = -4339173882660322249L;
+    private transient Node<T> first;
+    private transient Node<T> last;
 
-    int size;
+    private int size;
 
-    int initialCapacity;
+    private int initialCapacity;
 
     private static final int DEFAULT_CAPACITY = 10;
 
@@ -236,7 +240,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean addAll(Collection<? extends T> c) {
+    public boolean addAll(@NotNull Collection<? extends T> c) {
 
         Objects.requireNonNull(c);
 
@@ -244,7 +248,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
 
         int len = collection.length;
 
-        if (len == 0) {
+        if(len == 0) {
             return false;
         }
 
@@ -426,7 +430,6 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
         return indexOf(o) != -1;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public T remove(int index) {
 
@@ -499,12 +502,12 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(@NotNull Collection<?> c) {
 
         Objects.requireNonNull(c);
 
         Object[] arr = c.toArray();
-        if (arr.length == 0) {
+        if(arr.length == 0) {
             return false;
         }
 
@@ -518,12 +521,12 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(@NotNull Collection<?> c) {
 
         Objects.requireNonNull(c);
 
         Object[] arr = c.toArray();
-        if (arr.length == 0) {
+        if(arr.length == 0) {
             return false;
         }
 
@@ -663,7 +666,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     }
 
     @Override
-    public List<T> subList(int fromIndex, int toIndex) {
+    public @NotNull List<T> subList(int fromIndex, int toIndex) {
         return super.subList(fromIndex, toIndex);
     }
 
@@ -689,8 +692,8 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T[] toArray(T[] a) {
-        return (T[]) Arrays.copyOf(toArray(), size, a.getClass());
+    public <E> E[] toArray(E[] a) {
+        return (E[]) Arrays.copyOf(toArray(), size, a.getClass());
     }
 
     public boolean isEmpty() {
@@ -698,7 +701,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public @NotNull Iterator<T> iterator() {
         return new Itr();
     }
 
@@ -736,7 +739,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     }
 
     @Override
-    public ListIterator<T> listIterator(int index) {
+    public @NotNull ListIterator<T> listIterator(int index) {
 
         checkPositionIndex(index);
 
@@ -751,89 +754,65 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     }
 
     @Override
-    public ListIterator<T> listIterator() {
+    public @NotNull ListIterator<T> listIterator() {
         return new ListItr(0);
     }
 
-    private class Itr implements Iterator<T> {
+    protected static class Node<T> {
 
-        Node<T> node = first;
+        protected Node<T> pre;
+        protected Node<T> next;
 
-        int i = 0;//inner-array index
-        int j = 0;//total index -> cursor
+        protected int listSize;
 
-        int lastReturn = -1;
+        protected int startingIndex;
+        protected int endingIndex;
 
-        int expectedModCount = modCount;
-        int elementDataPointer = node.elementDataPointer;
+        protected T[] elementData;
+        protected int elementDataPointer;
 
-        @Override
-        public boolean hasNext() {
-            return j != size;
+        @SuppressWarnings("unchecked")
+        Node(Node<T> pre, Node<T> next, int listSize) {
+            this.pre = pre;
+            this.next = next;
+            this.listSize = listSize;
+            this.elementData = (T[]) new Object[listSize >>> 1];
+            this.startingIndex = listSize;
+            this.endingIndex = listSize + elementData.length - 1;
         }
 
-        @Override
-        public T next() {
-
-            checkForComodification();
-
-            if (j >= size) {
-                throw new NoSuchElementException();
-            }
-
-            if (j >= last.endingIndex + 1) {
-                throw new ConcurrentModificationException();
-            }
-
-            if (j == 0) {// it's for listIterator.when node becomes null.
-                node = first;
-                elementDataPointer = node.elementDataPointer;
-                i = 0;
-            }
-
-            T val = node.elementData[i++];
-
-            if (i >= elementDataPointer) {
-                node = node.next;
-                i = 0;
-                elementDataPointer = (node != null) ? node.elementDataPointer : 0;
-            }
-
-            lastReturn = j++;
-
-            return val;
+        Node(Node<T> pre, Node<T> next, int listSize, int initialCapacity) {
+            this.pre = pre;
+            this.next = next;
+            this.listSize = listSize;
+            this.elementData = createElementData(initialCapacity);
+            this.startingIndex = listSize;
+            this.endingIndex = listSize + elementData.length - 1;
         }
 
-        @Override
-        public void remove() {
+        @SuppressWarnings("unchecked")
+        T[] createElementData(int capacity) {
 
-            if (lastReturn < 0) {
-                throw new IllegalStateException();
-            }
-
-            checkForComodification();
-
-            try {
-                com.dfsek.terra.api.util.GlueList.this.remove(lastReturn);
-
-                j = lastReturn;
-
-                lastReturn = -1;
-
-                i = (--i < 0) ? 0 : i;
-
-                elementDataPointer = (node != null) ? node.elementDataPointer : 0;
-
-                expectedModCount = modCount;
-            } catch (IndexOutOfBoundsException e) {
-                throw new ConcurrentModificationException();
+            if(capacity == 0 || capacity == 1) {
+                return (T[]) new Object[DEFAULT_CAPACITY];
+            } else if(capacity > 1) {
+                return (T[]) new Object[capacity];
+            } else {
+                throw new IllegalArgumentException("Illegal Capacity: " + capacity);
             }
         }
 
-        void checkForComodification() {
-            if (modCount != expectedModCount) {
-                throw new ConcurrentModificationException();
-            }
+        boolean isAddable() {
+            return elementDataPointer < elementData.length;
+        }
+
+        void add(T element) {
+            elementData[elementDataPointer++] = element;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[sIndex: %d - eIndex: %d | elementDataPointer: %d | elementDataLength: %d]", startingIndex, endingIndex, elementDataPointer, elementData.length);
         }
     }
 
@@ -988,61 +967,85 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
         }
     }
 
-    static class Node<T> {
+    private class Itr implements Iterator<T> {
 
-        Node<T> pre;
-        Node<T> next;
+        protected Node<T> node = first;
 
-        int listSize;
+        protected int i = 0;//inner-array index
+        protected int j = 0;//total index -> cursor
 
-        int startingIndex;
-        int endingIndex;
+        protected int lastReturn = -1;
 
-        T[] elementData;
-        int elementDataPointer;
+        protected int expectedModCount = modCount;
+        protected int elementDataPointer = node.elementDataPointer;
 
-        @SuppressWarnings("unchecked")
-        Node(Node<T> pre, Node<T> next, int listSize) {
-            this.pre = pre;
-            this.next = next;
-            this.listSize = listSize;
-            this.elementData = (T[]) new Object[listSize >>> 1];
-            this.startingIndex = listSize;
-            this.endingIndex = listSize + elementData.length - 1;
-        }
-
-        Node(Node<T> pre, Node<T> next, int listSize, int initialCapacity) {
-            this.pre = pre;
-            this.next = next;
-            this.listSize = listSize;
-            this.elementData = createElementData(initialCapacity);
-            this.startingIndex = listSize;
-            this.endingIndex = listSize + elementData.length - 1;
-        }
-
-        @SuppressWarnings("unchecked")
-        T[] createElementData(int capacity) {
-
-            if (capacity == 0 || capacity == 1) {
-                return (T[]) new Object[DEFAULT_CAPACITY];
-            } else if (capacity > 1) {
-                return (T[]) new Object[capacity];
-            } else {
-                throw new IllegalArgumentException("Illegal Capacity: " + capacity);
-            }
-        }
-
-        boolean isAddable() {
-            return elementDataPointer < elementData.length;
-        }
-
-        void add(T element) {
-            elementData[elementDataPointer++] = element;
+        @Override
+        public boolean hasNext() {
+            return j != size;
         }
 
         @Override
-        public String toString() {
-            return String.format("[sIndex: %d - eIndex: %d | elementDataPointer: %d | elementDataLength: %d]", startingIndex, endingIndex, elementDataPointer, elementData.length);
+        public T next() {
+
+            checkForComodification();
+
+            if(j >= size) {
+                throw new NoSuchElementException();
+            }
+
+            if(j >= last.endingIndex + 1) {
+                throw new ConcurrentModificationException();
+            }
+
+            if(j == 0) {// it's for listIterator.when node becomes null.
+                node = first;
+                elementDataPointer = node.elementDataPointer;
+                i = 0;
+            }
+
+            T val = node.elementData[i++];
+
+            if(i >= elementDataPointer) {
+                node = node.next;
+                i = 0;
+                elementDataPointer = (node != null) ? node.elementDataPointer : 0;
+            }
+
+            lastReturn = j++;
+
+            return val;
+        }
+
+        @Override
+        public void remove() {
+
+            if(lastReturn < 0) {
+                throw new IllegalStateException();
+            }
+
+            checkForComodification();
+
+            try {
+                com.dfsek.terra.api.util.GlueList.this.remove(lastReturn);
+
+                j = lastReturn;
+
+                lastReturn = -1;
+
+                i = (--i < 0) ? 0 : i;
+
+                elementDataPointer = (node != null) ? node.elementDataPointer : 0;
+
+                expectedModCount = modCount;
+            } catch(IndexOutOfBoundsException e) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        void checkForComodification() {
+            if(modCount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
         }
     }
 }

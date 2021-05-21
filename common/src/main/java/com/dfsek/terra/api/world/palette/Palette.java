@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.math.ProbabilityCollection;
-import com.dfsek.terra.api.math.noise.samplers.NoiseSampler;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 
 import java.util.List;
 import java.util.Random;
@@ -21,30 +21,16 @@ public abstract class Palette<E> {
 
     }
 
-    /**
-     * Adds a material to the palette, for a number of layers.
-     *
-     * @param m      - The material to add to the palette.
-     * @param layers - The number of layers the material occupies.
-     * @return - BlockPalette instance for chaining.
-     */
-    public com.dfsek.terra.api.world.palette.Palette<E> add(E m, int layers) {
+    public com.dfsek.terra.api.world.palette.Palette<E> add(E m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
-            pallet.add(new PaletteLayer<>(m));
+            pallet.add(new PaletteLayer<>(m, sampler));
         }
         return this;
     }
 
-    /**
-     * Adds a ProbabilityCollection to the palette, for a number of layers.
-     *
-     * @param m      - The ProbabilityCollection to add to the palette.
-     * @param layers - The number of layers the material occupies.
-     * @return - BlockPalette instance for chaining.
-     */
-    public com.dfsek.terra.api.world.palette.Palette<E> add(ProbabilityCollection<E> m, int layers) {
+    public com.dfsek.terra.api.world.palette.Palette<E> add(ProbabilityCollection<E> m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
-            pallet.add(new PaletteLayer<>(m));
+            pallet.add(new PaletteLayer<>(m, sampler));
         }
         return this;
     }
@@ -55,7 +41,7 @@ public abstract class Palette<E> {
      * @param layer - The layer at which to fetch the material.
      * @return BlockData - The material fetched.
      */
-    public abstract E get(int layer, int x, int z);
+    public abstract E get(int layer, double x, double y, double z);
 
 
     public int getSize() {
@@ -72,26 +58,35 @@ public abstract class Palette<E> {
     public static class PaletteLayer<E> {
         private final boolean col; // Is layer using a collection?
         private ProbabilityCollection<E> collection;
+        private final NoiseSampler sampler;
         private E m;
 
         /**
-         * Constructs a PaletteLayer with a ProbabilityCollection of materials and a number of layers.
+         * Constructs a PaletteLayerHolder with a ProbabilityCollection of materials and a number of layers.
          *
-         * @param type - The collection of materials to choose from.
+         * @param type    The collection of materials to choose from.
+         * @param sampler Noise sampler to use
          */
-        public PaletteLayer(ProbabilityCollection<E> type) {
+        public PaletteLayer(ProbabilityCollection<E> type, NoiseSampler sampler) {
+            this.sampler = sampler;
             this.col = true;
             this.collection = type;
         }
 
         /**
-         * Constructs a PaletteLayer with a single Material and a number of layers.
+         * Constructs a PaletteLayerHolder with a single Material and a number of layers.
          *
-         * @param type - The material to use.
+         * @param type    The material to use.
+         * @param sampler Noise sampler to use
          */
-        public PaletteLayer(E type) {
+        public PaletteLayer(E type, NoiseSampler sampler) {
+            this.sampler = sampler;
             this.col = false;
             this.m = type;
+        }
+
+        public NoiseSampler getSampler() {
+            return sampler;
         }
 
         /**
@@ -104,8 +99,9 @@ public abstract class Palette<E> {
             return m;
         }
 
-        public E get(NoiseSampler random, int x, int z) {
-            if(col) return this.collection.get(random, x, z);
+        public E get(NoiseSampler random, double x, double y, double z, boolean is2D) {
+            if(col && is2D) return this.collection.get(random, x, z);
+            else if(col) return this.collection.get(random, x, y, z);
             return m;
         }
 

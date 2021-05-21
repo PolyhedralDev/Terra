@@ -1,20 +1,13 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.TerraWorld;
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.generator.GeneratorWrapper;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.api.world.generation.population.PopulationManager;
+import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
-import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.debug.Debug;
-import com.dfsek.terra.population.CavePopulator;
-import com.dfsek.terra.population.FloraPopulator;
-import com.dfsek.terra.population.OrePopulator;
-import com.dfsek.terra.population.StructurePopulator;
-import com.dfsek.terra.population.TreePopulator;
+import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -22,13 +15,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
 
@@ -45,10 +36,8 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public BukkitChunkGeneratorWrapper(TerraChunkGenerator delegate) {
         this.delegate = delegate;
         this.main = delegate.getMain();
-        popMan = new PopulationManager(main);
-        popMan.attach(new OrePopulator(main));
-        popMan.attach(new TreePopulator(main));
-        popMan.attach(new FloraPopulator(main));
+        this.popMan = new PopulationManager(delegate, main);
+
     }
 
 
@@ -56,7 +45,6 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
         for(Map.Entry<com.dfsek.terra.api.platform.world.World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());
-                Debug.info("Saved data for world " + e.getKey().getName());
             } catch(IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -64,15 +52,15 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(!TerraWorld.isTerraWorld(c.getWorld())) throw new IllegalArgumentException();
+        if(!c.getWorld().isTerraWorld()) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
     private void load(com.dfsek.terra.api.platform.world.World w) {
         try {
             popMan.loadBlocks(w);
-        } catch(FileNotFoundException e) {
-            LangUtil.log("warning.no-population", Level.WARNING);
+        } catch(FileNotFoundException ignore) {
+
         } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -90,7 +78,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return Stream.of(new CavePopulator(main), new StructurePopulator(main), popMan).map(BukkitPopulatorWrapper::new).collect(Collectors.toList());
+        return Arrays.asList(popMan, new BukkitPopulatorWrapper(delegate));
     }
 
     @Override
@@ -115,7 +103,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean shouldGenerateStructures() {
-        return super.shouldGenerateStructures();
+        return delegate.shouldGenerateStructures();
     }
 
     @Override

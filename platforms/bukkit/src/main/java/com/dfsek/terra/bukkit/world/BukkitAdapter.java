@@ -4,24 +4,51 @@ package com.dfsek.terra.bukkit.world;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.CommandSender;
 import com.dfsek.terra.api.platform.block.Axis;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.data.Bisected;
 import com.dfsek.terra.api.platform.block.data.Rail;
 import com.dfsek.terra.api.platform.block.data.RedstoneWire;
 import com.dfsek.terra.api.platform.block.data.Slab;
 import com.dfsek.terra.api.platform.block.data.Stairs;
+import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.transform.MapTransform;
+import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
+import com.dfsek.terra.bukkit.BukkitEntity;
+import com.dfsek.terra.bukkit.BukkitPlayer;
+import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
+import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.TreeType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.
  */
 public final class BukkitAdapter {
+    public static Transformer<TreeType, String> TREE_TRANSFORMER = new Transformer.Builder<TreeType, String>()
+            .addTransform(new MapTransform<TreeType, String>()
+                    .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
+                    .add(TreeType.BIG_TREE, "LARGE_OAK")
+                    .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
+                    .add(TreeType.REDWOOD, "SPRUCE")
+                    .add(TreeType.TREE, "OAK")
+                    .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
+                    .add(TreeType.SWAMP, "SWAMP_OAK"))
+            .addTransform(TreeType::toString)
+            .build();
+
+
     public static Stairs.Shape adapt(org.bukkit.block.data.type.Stairs.Shape shape) {
         switch(shape) {
             case STRAIGHT:
@@ -37,6 +64,14 @@ public final class BukkitAdapter {
             default:
                 throw new IllegalStateException();
         }
+    }
+
+    public static BlockData adapt(org.bukkit.block.data.BlockData data) {
+        return BukkitBlockData.newInstance(data);
+    }
+
+    public static org.bukkit.block.data.BlockData adapt(BlockData data) {
+        return ((BukkitBlockData) data).getHandle();
     }
 
     public static Axis adapt(org.bukkit.Axis axis) {
@@ -318,6 +353,8 @@ public final class BukkitAdapter {
     }
 
     public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
+        if(sender instanceof Player) return new BukkitPlayer((Player) sender);
+        if(sender instanceof Entity) return new BukkitEntity((Entity) sender);
         return new BukkitCommandSender(sender);
     }
 
@@ -347,5 +384,29 @@ public final class BukkitAdapter {
 
     public static org.bukkit.enchantments.Enchantment adapt(Enchantment enchantment) {
         return ((BukkitEnchantment) enchantment).getHandle();
+    }
+
+    public static Player adapt(com.dfsek.terra.api.platform.entity.Player player) {
+        return ((BukkitPlayer) player).getHandle();
+    }
+
+    public static com.dfsek.terra.api.platform.entity.Player adapt(Player player) {
+        return new BukkitPlayer(player);
+    }
+
+    public static BukkitBlockTypeAndItem adapt(Material material) {
+        return new BukkitBlockTypeAndItem(material);
+    }
+
+    public static Material adapt(BlockType type) {
+        return ((BukkitBlockTypeAndItem) type).getHandle();
+    }
+
+    public static ItemStack adapt(org.bukkit.inventory.ItemStack in) {
+        return new BukkitItemStack(in);
+    }
+
+    public static org.bukkit.inventory.ItemStack adapt(ItemStack in) {
+        return ((BukkitItemStack) in).getHandle();
     }
 }

@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.loot;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.structures.loot.functions.AmountFunction;
 import com.dfsek.terra.api.structures.loot.functions.DamageFunction;
@@ -19,10 +19,9 @@ import java.util.Random;
  * Representation of a single item entry within a Loot Table pool.
  */
 public class Entry {
-    private final MaterialData item;
+    private final Item item;
     private final long weight;
     private final List<LootFunction> functions = new GlueList<>();
-    private final TerraPlugin main;
 
     /**
      * Instantiates an Entry from a JSON representation.
@@ -30,9 +29,8 @@ public class Entry {
      * @param entry The JSON Object to instantiate from.
      */
     public Entry(JSONObject entry, TerraPlugin main) {
-        this.main = main;
         String id = entry.get("name").toString();
-        this.item = main.getWorldHandle().createMaterialData(id);
+        this.item = main.getItemHandle().createItem(id);
 
         long weight1;
         try {
@@ -85,7 +83,7 @@ public class Entry {
      * @return ItemStack - The ItemStack with all functions applied.
      */
     public ItemStack getItem(Random r) {
-        ItemStack item = main.getItemHandle().newItemStack(this.item, 1);
+        ItemStack item = this.item.newItemStack(1);
         for(LootFunction f : functions) {
             item = f.apply(item, r);
         }

@@ -5,8 +5,8 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.population.items.ores.Ore;
-import com.dfsek.terra.util.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.world.population.items.ores.Ore;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class OreTemplate extends AbstractableTemplate {

@@ -6,7 +6,6 @@ import net.jafama.FastMath;
 /**
  * oh yeah
  */
-@SuppressWarnings("unused")
 public class Vector2 implements Cloneable {
     private double x;
     private double z;
@@ -176,6 +175,14 @@ public class Vector2 implements Cloneable {
         this.x += x;
         this.z += z;
         return this;
+    }
+
+    public int getBlockX() {
+        return FastMath.floorToInt(x);
+    }
+
+    public int getBlockZ() {
+        return FastMath.floorToInt(z);
     }
 
     @Override

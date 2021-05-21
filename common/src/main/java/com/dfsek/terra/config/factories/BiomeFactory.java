@@ -1,12 +1,12 @@
 package com.dfsek.terra.config.factories;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
-import com.dfsek.terra.biome.UserDefinedBiome;
-import com.dfsek.terra.config.base.ConfigPack;
-import com.dfsek.terra.config.builder.GeneratorBuilder;
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.config.builder.BiomeBuilder;
+import com.dfsek.terra.config.builder.UserDefinedBiomeBuilder;
+import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 
-public class BiomeFactory implements TerraFactory<BiomeTemplate, UserDefinedBiome> {
+public class BiomeFactory implements ConfigFactory<BiomeTemplate, BiomeBuilder> {
     private final ConfigPack pack;
 
     public BiomeFactory(ConfigPack pack) {
@@ -14,19 +14,7 @@ public class BiomeFactory implements TerraFactory<BiomeTemplate, UserDefinedBiom
     }
 
     @Override
-    public UserDefinedBiome build(BiomeTemplate template, TerraPlugin main) {
-        GeneratorBuilder generatorBuilder = new GeneratorBuilder();
-        generatorBuilder.setElevationEquation(template.getElevationEquation());
-        generatorBuilder.setNoiseEquation(template.getNoiseEquation());
-        generatorBuilder.setNoiseBuilderMap(template.getPack().getTemplate().getNoiseBuilderMap());
-        generatorBuilder.setPalettes(template.getPalette());
-        generatorBuilder.setSlantPalettes(template.getSlantPalette());
-        generatorBuilder.setVarScope(pack.getVarScope());
-        generatorBuilder.setInterpolateElevation(template.interpolateElevation());
-        generatorBuilder.setNoise2d(template.isNoise2d());
-        generatorBuilder.setBase(template.getNoise2dBase());
-
-
-        return new UserDefinedBiome(template.getVanilla(), generatorBuilder, template, pack);
+    public BiomeBuilder build(BiomeTemplate template, TerraPlugin main) {
+        return new UserDefinedBiomeBuilder(template, pack);
     }
 }

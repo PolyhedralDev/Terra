@@ -4,9 +4,9 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.carving.CarverPalette;
-import com.dfsek.terra.util.MaterialSet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +104,7 @@ public class CarverTemplate extends AbstractableTemplate {
     @Value("shift")
     @Abstractable
     @Default
-    private Map<MaterialData, MaterialSet> shift = new HashMap<>();
+    private Map<BlockType, MaterialSet> shift = new HashMap<>();
 
     @Value("update")
     @Abstractable
@@ -187,7 +187,7 @@ public class CarverTemplate extends AbstractableTemplate {
         return inner;
     }
 
-    public Map<MaterialData, MaterialSet> getShift() {
+    public Map<BlockType, MaterialSet> getShift() {
         return shift;
     }
 

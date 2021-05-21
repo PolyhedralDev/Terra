@@ -4,12 +4,11 @@ import com.dfsek.terra.DirectUtils;
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.entity.Entity;
-import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class DirectWorld implements World {
     private final long seed;
@@ -48,21 +46,6 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public UUID getUID() {
-        return null;
-    }
-
-    @Override
-    public boolean isChunkGenerated(int x, int z) {
-        return false;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         MCAFile file = compute(x, z);
         net.querz.mca.Chunk chunk = file.getChunk(x, z);
@@ -74,28 +57,18 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public File getWorldFolder() {
-        return null;
-    }
-
-    @Override
     public Block getBlockAt(int x, int y, int z) {
         return new DirectBlock(this, new Vector3(x, y, z));
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        return getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ());
-    }
-
-    @Override
-    public boolean generateTree(Location l, Tree vanillaTreeType) {
-        return false;
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         return null;
+    }
+
+    @Override
+    public int getMinHeight() {
+        return 0;
     }
 
     @Override

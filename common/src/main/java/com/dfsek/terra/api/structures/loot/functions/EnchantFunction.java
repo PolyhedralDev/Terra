@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structures.loot.functions;
 
-import com.dfsek.terra.api.platform.TerraPlugin;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
@@ -35,6 +35,8 @@ public class EnchantFunction implements LootFunction {
      */
     @Override
     public ItemStack apply(ItemStack original, Random r) {
+        if(original.getItemMeta() == null) return original;
+
         double enchant = (r.nextDouble() * (max - min)) + min;
         List<Enchantment> possible = new GlueList<>();
         for(Enchantment ench : main.getItemHandle().getEnchantments()) {
@@ -55,7 +57,7 @@ public class EnchantFunction implements LootFunction {
             try {
                 meta.addEnchantment(chosen, FastMath.max(lvl, 1));
             } catch(IllegalArgumentException e) {
-                main.getLogger().warning("Attempted to enchant " + original.getType() + " with " + chosen + " at level " + FastMath.max(lvl, 1) + ", but an unexpected exception occurred! Usually this is caused by a misbehaving enchantment plugin.");
+                main.logger().warning("Attempted to enchant " + original.getType() + " with " + chosen + " at level " + FastMath.max(lvl, 1) + ", but an unexpected exception occurred! Usually this is caused by a misbehaving enchantment plugin.");
             }
         }
         original.setItemMeta(meta);

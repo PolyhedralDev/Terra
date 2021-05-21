@@ -2,12 +2,11 @@ package com.dfsek.terra.bukkit.world;
 
 import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.generator.ChunkGenerator;
+import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.entity.Entity;
-import com.dfsek.terra.api.platform.world.entity.EntityType;
+import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
@@ -38,17 +37,14 @@ public class BukkitWorld implements World {
         return new BukkitChunkGenerator(delegate.getGenerator());
     }
 
-    @Override
     public String getName() {
         return delegate.getName();
     }
 
-    @Override
     public UUID getUID() {
         return delegate.getUID();
     }
 
-    @Override
     public boolean isChunkGenerated(int x, int z) {
         return delegate.isChunkGenerated(x, z);
     }
@@ -58,7 +54,6 @@ public class BukkitWorld implements World {
         return BukkitAdapter.adapt(delegate.getChunkAt(x, z));
     }
 
-    @Override
     public File getWorldFolder() {
         return delegate.getWorldFolder();
     }
@@ -69,18 +64,13 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public Block getBlockAt(Location l) {
-        return new BukkitBlock(delegate.getBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
-    }
-
-    @Override
-    public boolean generateTree(Location l, Tree vanillaTreeType) {
-        return delegate.generateTree(new org.bukkit.Location(delegate, l.getX(), l.getY(), l.getZ()), ((BukkitTree) vanillaTreeType).getHandle());
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         return new BukkitEntity(delegate.spawnEntity(BukkitAdapter.adapt(location), ((BukkitEntityType) entityType).getHandle()));
+    }
+
+    @Override
+    public int getMinHeight() {
+        return 0;
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.dfsek.terra.bukkit.world.inventory;
 
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.inventory.Item;
 import com.dfsek.terra.api.platform.inventory.ItemStack;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
-import com.dfsek.terra.bukkit.world.block.BukkitMaterialData;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitItemStack implements ItemStack {
-    private org.bukkit.inventory.ItemStack delegate;
+    private final org.bukkit.inventory.ItemStack delegate;
 
     public BukkitItemStack(org.bukkit.inventory.ItemStack delegate) {
         this.delegate = delegate;
@@ -23,20 +23,8 @@ public class BukkitItemStack implements ItemStack {
     }
 
     @Override
-    public MaterialData getType() {
-        return new BukkitMaterialData(delegate.getType());
-    }
-
-    @Override
-    public ItemStack clone() {
-        BukkitItemStack clone;
-        try {
-            clone = (BukkitItemStack) super.clone();
-            clone.delegate = delegate.clone();
-        } catch(CloneNotSupportedException e) {
-            throw new Error(e);
-        }
-        return clone;
+    public Item getType() {
+        return BukkitAdapter.adapt(delegate.getType());
     }
 
     @Override

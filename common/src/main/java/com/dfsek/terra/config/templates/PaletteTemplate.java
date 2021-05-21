@@ -3,51 +3,50 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.biome.palette.PaletteLayer;
+import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 
 import java.util.List;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class PaletteTemplate extends AbstractableTemplate {
+    @Value("noise")
+    @Abstractable
+    @Default
+    private NoiseSeeded noise;
+
     @Value("id")
     private String id;
 
     @Value("layers")
     @Abstractable
-    private List<PaletteLayer> palette;
+    private List<PaletteLayerHolder> palette;
 
-    @Value("simplex")
-    @Abstractable
-    @Default
-    private boolean simplex = false;
+    public PaletteTemplate() {
+        this.noise = new NoiseSeeded() {
+            @Override
+            public NoiseSampler apply(Long seed) {
+                return new WhiteNoiseSampler((int) (long) seed);
+            }
 
-    @Value("frequency")
-    @Abstractable
-    @Default
-    private double frequency = 0.02D;
-
-    @Value("seed")
-    @Abstractable
-    @Default
-    private long seed = 0;
+            @Override
+            public int getDimensions() {
+                return 3;
+            }
+        };
+    }
 
     public String getID() {
         return id;
     }
 
-    public double getFrequency() {
-        return frequency;
-    }
-
-    public long getSeed() {
-        return seed;
-    }
-
-    public List<PaletteLayer> getPalette() {
+    public List<PaletteLayerHolder> getPalette() {
         return palette;
     }
 
-    public boolean isSimplex() {
-        return simplex;
+    public NoiseSeeded getNoise() {
+        return noise;
     }
 }

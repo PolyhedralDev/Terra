@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders.config;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.population.items.ores.OreConfig;
+import com.dfsek.terra.world.population.items.ores.OreConfig;
 
 import java.lang.reflect.Type;
 import java.util.Map;

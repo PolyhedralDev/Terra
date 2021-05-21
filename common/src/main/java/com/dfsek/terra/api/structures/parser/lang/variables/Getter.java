@@ -4,25 +4,31 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
-public class Getter implements Returnable<Object> {
-    private final Variable<?> delegate;
+import java.util.Map;
 
-    public Getter(Variable<?> delegate) {
-        this.delegate = delegate;
+public class Getter implements Returnable<Object> {
+    private final String identifier;
+    private final Position position;
+    private final ReturnType type;
+
+    public Getter(String identifier, Position position, ReturnType type) {
+        this.identifier = identifier;
+        this.position = position;
+        this.type = type;
     }
 
     @Override
     public ReturnType returnType() {
-        return delegate.getType();
+        return type;
     }
 
     @Override
-    public synchronized Object apply(ImplementationArguments implementationArguments) {
-        return delegate.getValue();
+    public synchronized Object apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+        return variableMap.get(identifier).getValue();
     }
 
     @Override
     public Position getPosition() {
-        return delegate.getPosition();
+        return position;
     }
 }

@@ -7,17 +7,21 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParserTest {
     @Test
     public void parse() throws IOException, ParseException {
-        Parser parser = new Parser(IOUtils.toString(getClass().getResourceAsStream("/test.tesf")));
+        Parser parser = new Parser(IOUtils.toString(getClass().getResourceAsStream("/test.tesf"), Charset.defaultCharset()));
 
         parser.registerFunction("test", new FunctionBuilder<Test1>() {
             @Override
@@ -49,9 +53,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(null);
+        block.apply(null, new HashMap<>());
 
-        block.apply(null);
+        block.apply(null, new HashMap<>());
     }
 
     private static class Test1 implements Function<Void> {
@@ -66,8 +70,8 @@ public class ParserTest {
         }
 
         @Override
-        public Void apply(ImplementationArguments implementationArguments) {
-            System.out.println("string: " + a.apply(implementationArguments) + ", double: " + b.apply(implementationArguments));
+        public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+            System.out.println("string: " + a.apply(implementationArguments, variableMap) + ", double: " + b.apply(implementationArguments, variableMap));
             return null;
         }
 

@@ -1,9 +1,11 @@
 package com.dfsek.terra.bukkit.world;
 
 import com.dfsek.terra.api.platform.block.Block;
+import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitChunk implements Chunk {
     private final org.bukkit.Chunk delegate;
@@ -35,5 +37,15 @@ public class BukkitChunk implements Chunk {
     @Override
     public org.bukkit.Chunk getHandle() {
         return delegate;
+    }
+
+    @Override
+    public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
+        delegate.getBlock(x, y, z).setBlockData(BukkitAdapter.adapt(blockData));
+    }
+
+    @Override
+    public @NotNull BlockData getBlockData(int x, int y, int z) {
+        return getBlock(x, y, z).getBlockData();
     }
 }

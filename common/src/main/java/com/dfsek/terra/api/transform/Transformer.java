@@ -1,7 +1,5 @@
 package com.dfsek.terra.api.transform;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -28,7 +26,7 @@ public class Transformer<F, T> {
      * @return Result
      */
     public T translate(F from) {
-        List<Exception> exceptions = new ArrayList<>();
+        List<Throwable> exceptions = new ArrayList<>();
         for(Map.Entry<Transform<F, T>, List<Validator<T>>> transform : transformers.entrySet()) {
             try {
                 T result = transform.getKey().transform(from);
@@ -42,13 +40,7 @@ public class Transformer<F, T> {
                 exceptions.add(exception);
             }
         }
-        StringBuilder exBuilder = new StringBuilder("Could not transform input; all attempts failed: ").append(from.toString()).append("\n");
-        for(Exception exception : exceptions) {
-            StringWriter writer = new StringWriter();
-            exception.printStackTrace(new PrintWriter(writer));
-            exBuilder.append("\n").append(writer.toString());
-        }
-        throw new AttemptsFailedException(exBuilder.toString());
+        throw new AttemptsFailedException("Could not transform input; all attempts failed: " + from.toString() + "\n", exceptions);
     }
 
     /**
@@ -61,12 +53,13 @@ public class Transformer<F, T> {
         private final LinkedHashMap<Transform<F, T>, List<Validator<T>>> transforms = new LinkedHashMap<>();
 
         @SafeVarargs
+        @SuppressWarnings("varargs")
         public final Builder<F, T> addTransform(Transform<F, T> transform, Validator<T>... validators) {
             transforms.put(transform, Arrays.asList(validators));
             return this;
         }
 
-        public final Transformer<F, T> build() {
+        public Transformer<F, T> build() {
             return new Transformer<>(transforms);
         }
     }

@@ -4,7 +4,7 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.MaterialData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
@@ -53,8 +53,8 @@ public class BukkitBlock implements Block {
     }
 
     @Override
-    public MaterialData getType() {
-        return new BukkitMaterialData(delegate.getType());
+    public BlockType getType() {
+        return BukkitAdapter.adapt(delegate.getType());
     }
 
     @Override

@@ -1,21 +1,23 @@
 package com.dfsek.terra.api.structures.script.functions;
 
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.vector.Vector2;
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.TerraPlugin;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
+import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.IntermediateBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.registry.ScriptRegistry;
+import com.dfsek.terra.registry.config.ScriptRegistry;
 import net.jafama.FastMath;
 
 import java.util.List;
+import java.util.Map;
 
 public class StructureFunction implements Function<Boolean> {
     private final ScriptRegistry registry;
@@ -42,33 +44,33 @@ public class StructureFunction implements Function<Boolean> {
     }
 
     @Override
-    public Boolean apply(ImplementationArguments implementationArguments) {
+    public Boolean apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
         if(arguments.getRecursions() > main.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
 
-        Vector2 xz = new Vector2(x.apply(implementationArguments).doubleValue(), z.apply(implementationArguments).doubleValue());
+        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        String app = id.apply(implementationArguments);
+        String app = id.apply(implementationArguments, variableMap);
         StructureScript script = registry.get(app);
         if(script == null) {
-            main.getLogger().severe("No such structure " + app);
+            main.logger().severe("No such structure " + app);
             return null;
         }
 
         Rotation rotation1;
-        String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments);
+        String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, variableMap);
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
-            main.getLogger().severe("Invalid rotation " + rotString);
+            main.logger().severe("Invalid rotation " + rotString);
             return null;
         }
 
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments).doubleValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
 
         return script.executeInBuffer(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }

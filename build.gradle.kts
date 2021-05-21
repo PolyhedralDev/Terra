@@ -1,10 +1,27 @@
 import com.dfsek.terra.getGitHash
 
-val versionObj = Version("3", "0", "0", true)
+val versionObj = Version("5", "3", "3", true)
 
 allprojects {
     version = versionObj
     group = "com.dfsek.terra"
+
+    tasks.withType<JavaCompile>().configureEach {
+        options.isFork = true
+        options.isIncremental = true
+    }
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+
+        maxHeapSize = "2G"
+        ignoreFailures = false
+        failFast = true
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).takeIf { it > 0 } ?: 1
+
+        reports.html.isEnabled = false
+        reports.junitXml.isEnabled = false
+    }
+
 }
 /**
  * Version class that does version stuff.
