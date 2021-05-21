@@ -19,6 +19,7 @@ assignees: ""
 <!--
   Please go through this checklist item by item and make sure you have successfully completed each of these steps.
     - You must be on the LATEST version of Terra to receive any support. There is no support for older versions of Terra.
+    - Make sure that this is not a compatibility issue with another terrain generation mod. For that, you can use an addon to make them compatible.
     - Make sure that there are no already existing issues open with your problem. If you open a duplicate, it will be closed as such.
     - Make sure that it is actually Terra causing the issue, and not another mod/plugin.
       You can do this by testing to see if you can recreate the issue without Terra installed.
