@@ -80,6 +80,21 @@ assignees: ""
 <!-- Describe what *actually* happens here: -->
 <!-- example: When I do _______, it actually does _______ -->
 
+### Full stacktrace
+
+<details>
+<summary>Exception Stacktrace</summary>
+
+<!--
+If Terra logs an exception, please put it in the following section: (You will find any error logs in your console, or your latest.log)
+Note: this *must* be included, in ADDITION to the latest.log file.
+-->
+```
+
+```
+
+</details>
+
 ### Additional details
 
 <!-- Any other information you think should be added -->
