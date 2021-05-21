@@ -22,7 +22,7 @@ assignees: ""
     - Make sure that there are no already existing issues open with your problem. If you open a duplicate, it will be closed as such.
     - Make sure that it is actually Terra causing the issue, and not another mod/plugin.
       You can do this by testing to see if you can recreate the issue without Terra installed.
-    - Make sure that this is not an issue with a specific Terra *pack*, and instead applies to all of Terra.
+    - Make sure that this is not an issue with a specific Terra *pack* or Terra *addon*, and instead applies to all of Terra.
     - Make sure that you attach a copy of the latest.log file.
       Putting *just* the exception IS NOT ENOUGH. We need to be able to check that there wasn't anything else before that caused it.
     - Make sure that you have filled out all the required information and given descriptions of everything.
@@ -49,7 +49,8 @@ assignees: ""
 | Terra Version                | <!-- Put your Terra version here. (remove the comment) -->
 | Platform / Platform Version  | <!-- Put your platform and platform version here. (remove the comment) (eg. Spigot, Fabric, Paper, etc.) (If you are using the Region generator, put that here instead) -->
 | Any External Plugins or Mods | <!-- Put a list of all the plugins or mods you have installed here. (remove the comment) (Make sure to NOT include any new lines) -->
-| Terra Packs In Use           | <!-- Put a list of all the Terra packs you have installed here. (remove the comment) (Make sure to NOT include any new lines) -->
+| Terra Packs In Use           | <!-- Put a list of all the Terra packs you have installed here. (remove the comment) (Make sure to NOT include any new lines) (/te packs may be used to get a list) -->
+| Terra Addons In Use          | <!-- Put a list of all the Terra addons you have installed here. (remove the comment) (Make sure to NOT include any new lines) (/te addons may be used to get a list) -->
 
 ## Issue Description
 
