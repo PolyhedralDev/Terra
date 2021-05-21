@@ -19,13 +19,16 @@ assignees: ""
 <!--
   Please go through this checklist item by item and make sure you have successfully completed each of these steps.
     - You must be on the LATEST version of Terra to receive any support. There is no support for older versions of Terra.
-    - Make sure that this is not a compatibility issue with another terrain generation mod. For that, you can use an addon to make them compatible.
+    - Make sure that this is not a *specific* compatibility issue with another terrain generation mod.
+        Do not request *specific* compatibility with mods or plugins (e.g. "Compatibility with TechCraft v7").
+        That should be implemented in an addon, **not** in the main project.
+        *General* compatibility (e.g. "Ability to pull Vanilla/Modded features from parent biomes") will be considered in the main project.
     - Make sure that there are no already existing issues open with your problem. If you open a duplicate, it will be closed as such.
     - Make sure that it is actually Terra causing the issue, and not another mod/plugin.
-      You can do this by testing to see if you can recreate the issue without Terra installed.
+        You can do this by testing to see if you can recreate the issue without Terra installed.
     - Make sure that this is not an issue with a specific Terra *pack* or Terra *addon*, and instead applies to all of Terra.
     - Make sure that you attach a copy of the latest.log file.
-      Putting *just* the exception IS NOT ENOUGH. We need to be able to check that there wasn't anything else before that caused it.
+        Putting *just* the exception IS NOT ENOUGH. We need to be able to check that there wasn't anything else before that caused it.
     - Make sure that you have filled out all the required information and given descriptions of everything.
     
     You must put an x in all the boxes you have completed. (Like this: [x])
@@ -89,6 +92,7 @@ assignees: ""
 If Terra logs an exception, please put it in the following section: (You will find any error logs in your console, or your latest.log)
 Note: this *must* be included, in ADDITION to the latest.log file.
 -->
+
 ```
 
 ```
