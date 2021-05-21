@@ -46,11 +46,10 @@ assignees: ""
 
 | Name                         | Value |
 |------------------------------|-------|
-| Terra Version                | <!-- Put your Terra version here (remove the comment) -->
-| Server Software              | <!-- Put your server software here (remove the comment) (eg. Spigot, Fabric, Paper, Geyser, etc.) (If you are using the Region generator, put that here instead.) -->
-| Server Software Version      | <!-- Put the version of your server software here. (remove the comment) -->
-| Any External Plugins or Mods | <!-- Put a list of all the plugins or mods you have installed here. (remove the comment) (Make sure to NOT include any new lines.) -->
-| Terra Packs In Use           | <!-- Put a list of all the Terra packs you have installed here. (remove the comment) (Make sure to NOT include any new lines.) -->
+| Terra Version                | <!-- Put your Terra version here. (remove the comment) -->
+| Platform / Platform Version  | <!-- Put your platform and platform version here. (remove the comment) (eg. Spigot, Fabric, Paper, etc.) (If you are using the Region generator, put that here instead) -->
+| Any External Plugins or Mods | <!-- Put a list of all the plugins or mods you have installed here. (remove the comment) (Make sure to NOT include any new lines) -->
+| Terra Packs In Use           | <!-- Put a list of all the Terra packs you have installed here. (remove the comment) (Make sure to NOT include any new lines) -->
 
 ## Issue Description
 
