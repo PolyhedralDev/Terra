@@ -205,7 +205,7 @@ public class ConfigPack implements LoaderRegistrar {
             varScope.create(var.getKey(), var.getValue());
         }
 
-        loader.open("structures/data", ".tesf").thenEntries(entries -> {
+        loader.open("", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try(InputStream stream = entry.getValue()) {
                     StructureScript structureScript = new StructureScript(stream, main, getRegistry(StructureScript.class), getRegistry(LootTable.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
