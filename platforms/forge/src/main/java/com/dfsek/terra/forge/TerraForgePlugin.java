@@ -54,8 +54,10 @@ import net.minecraft.world.gen.placement.DecoratedPlacement;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.Type;
@@ -143,7 +145,7 @@ public class TerraForgePlugin implements TerraPlugin {
         });
     }
 
-    public void setup() {
+    public void init() {
         logger.info("Initializing Terra...");
 
         if(!addonRegistry.loadAll()) {
@@ -153,6 +155,10 @@ public class TerraForgePlugin implements TerraPlugin {
 
         registry.loadAll(this);
         logger.info("Loaded packs.");
+
+        ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).unfreeze(); // Evil
+        getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> ForgeRegistries.BIOMES.register(ForgeUtil.createBiome(biome)))); // Register all Terra biomes.
+        ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).freeze();
     }
 
     @Override
