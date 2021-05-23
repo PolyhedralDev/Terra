@@ -13,7 +13,7 @@ public class ModDependentConfigSection<T> {
     private final Map<String, T> results = new HashMap<>();
     private final T defaultValue;
 
-    public ModDependentConfigSection(TerraPlugin main, T defaultValue) {
+    protected ModDependentConfigSection(TerraPlugin main, T defaultValue) {
         this.main = main;
         this.defaultValue = defaultValue;
     }
@@ -22,10 +22,16 @@ public class ModDependentConfigSection<T> {
         results.put(id, value);
     }
 
+    public static <T1> ModDependentConfigSection<T1> withDefault(T1 defaultValue) {
+        return new ModDependentConfigSection<>(null, defaultValue);
+    }
+
     public T get() {
-        Set<String> mods = main.getMods().stream().map(Mod::getID).collect(Collectors.toSet());
-        for(Map.Entry<String, T> entry : results.entrySet()) {
-            if(mods.contains(entry.getKey())) return entry.getValue();
+        if(main != null) {
+            Set<String> mods = main.getMods().stream().map(Mod::getID).collect(Collectors.toSet());
+            for(Map.Entry<String, T> entry : results.entrySet()) {
+                if(mods.contains(entry.getKey())) return entry.getValue();
+            }
         }
         return defaultValue;
     }
