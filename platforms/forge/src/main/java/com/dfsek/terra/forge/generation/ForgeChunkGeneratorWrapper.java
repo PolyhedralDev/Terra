@@ -19,6 +19,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistries;
@@ -27,6 +28,7 @@ import net.minecraft.world.Blockreader;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -38,6 +40,7 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.spawner.WorldEntitySpawner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -169,6 +172,17 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
         return new Blockreader(array);
     }
 
+    @Override
+    public void spawnOriginalMobs(WorldGenRegion region) {
+        if(pack.getTemplate().vanillaMobs()) {
+            int cx = region.getCenterX();
+            int cy = region.getCenterZ();
+            Biome biome = region.getBiome((new ChunkPos(cx, cy)).getWorldPosition());
+            SharedSeedRandom chunkRandom = new SharedSeedRandom();
+            chunkRandom.setDecorationSeed(region.getSeed(), cx << 4, cy << 4);
+            WorldEntitySpawner.spawnMobsForChunkGeneration(region, biome, cx, cy, chunkRandom);
+        }
+    }
 
     @Override
     public TerraChunkGenerator getHandle() {
