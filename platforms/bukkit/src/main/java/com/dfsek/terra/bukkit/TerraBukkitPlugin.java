@@ -14,6 +14,7 @@ import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.platform.modloader.Mod;
 import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -57,9 +58,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
@@ -304,6 +308,11 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
                 .registerLoader(Biome.class, (t, o, l) -> new BukkitBiome(org.bukkit.block.Biome.valueOf((String) o)))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         genericLoaders.register(registry);
+    }
+
+    @Override
+    public Set<Mod> getMods() {
+        return Arrays.stream(Bukkit.getPluginManager().getPlugins()).map(BukkitPlugin::new).collect(Collectors.toSet());
     }
 
     @Override

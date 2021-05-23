@@ -79,7 +79,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
 @Mod("terra")
@@ -302,6 +304,11 @@ public class TerraForgePlugin implements TerraPlugin {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public Set<com.dfsek.terra.api.platform.modloader.Mod> getMods() {
+        return net.minecraftforge.fml.ModList.get().getMods().stream().map(ForgeMod::new).collect(Collectors.toSet());
     }
 
     @Override

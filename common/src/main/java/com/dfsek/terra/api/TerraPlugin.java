@@ -4,6 +4,7 @@ import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.platform.modloader.Mod;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
@@ -19,6 +20,8 @@ import com.dfsek.terra.world.TerraWorld;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Set;
 import java.util.jar.JarFile;
 
 /**
@@ -74,5 +77,9 @@ public interface TerraPlugin extends LoaderRegistrar {
 
     default JarFile getModJar() throws URISyntaxException, IOException {
         return JarUtil.getJarFile();
+    }
+
+    default Set<Mod> getMods() {
+        return Collections.emptySet();
     }
 }

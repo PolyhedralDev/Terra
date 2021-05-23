@@ -21,6 +21,7 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.platform.modloader.Mod;
 import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -74,6 +75,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -283,6 +286,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public Set<Mod> getMods() {
+        return FabricLoader.getInstance().getAllMods().stream().map(FabricMod::new).collect(Collectors.toSet());
     }
 
     @Override
