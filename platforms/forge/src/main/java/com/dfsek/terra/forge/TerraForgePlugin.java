@@ -1,6 +1,7 @@
 package com.dfsek.terra.forge;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
@@ -293,7 +294,12 @@ public class TerraForgePlugin implements TerraPlugin {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o));
+                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
+                .registerLoader(ResourceLocation.class, (t, o, l) -> {
+                    ResourceLocation identifier = ResourceLocation.tryParse((String) o);
+                    if(identifier == null) throw new LoadException("Invalid identifier: " + o);
+                    return identifier;
+                });
     }
 
     @Override
