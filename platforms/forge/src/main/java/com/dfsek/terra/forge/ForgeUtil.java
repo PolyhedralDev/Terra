@@ -27,7 +27,6 @@ public final class ForgeUtil {
         return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, TerraForgePlugin.ForgeAddon forgeAddon) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();

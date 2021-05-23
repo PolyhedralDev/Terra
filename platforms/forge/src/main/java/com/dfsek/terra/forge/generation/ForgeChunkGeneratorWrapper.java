@@ -5,18 +5,23 @@ import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.forge.ForgeAdapter;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Blockreader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -26,10 +31,17 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
+import net.minecraft.world.server.ServerWorld;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     private final long seed;
@@ -73,6 +85,29 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     @Override
     public void buildSurfaceAndBedrock(@NotNull WorldGenRegion p_225551_1_, @NotNull IChunk p_225551_2_) {
 
+    }
+
+    @Nullable
+    @Override
+    public BlockPos findNearestMapFeature(@NotNull ServerWorld world, @NotNull Structure<?> feature, @NotNull BlockPos center, int radius, boolean skipExistingChunks) {
+        if(!pack.getTemplate().disableStructures()) {
+            String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getKey(feature)).toString();
+            TerraWorld terraWorld = TerraForgePlugin.getInstance().getWorld((World) world);
+            TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
+            if(located != null) {
+                CompletableFuture<BlockPos> result = new CompletableFuture<>();
+                AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, ForgeAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
+                    result.complete(ForgeAdapter.adapt(location));
+                }, TerraForgePlugin.getInstance());
+                finder.run(); // Do this synchronously.
+                try {
+                    return result.get();
+                } catch(InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return super.findNearestMapFeature(world, feature, center, radius, skipExistingChunks);
     }
 
     @Override
