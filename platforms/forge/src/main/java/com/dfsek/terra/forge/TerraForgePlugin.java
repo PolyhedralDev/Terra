@@ -1,5 +1,7 @@
 package com.dfsek.terra.forge;
 
+import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
@@ -14,6 +16,7 @@ import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.TerraEventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
+import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
@@ -25,6 +28,7 @@ import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.util.JarUtil;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
@@ -32,6 +36,8 @@ import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.forge.config.PostLoadCompatibilityOptions;
+import com.dfsek.terra.forge.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.generation.PopulatorFeature;
 import com.dfsek.terra.forge.generation.TerraBiomeSource;
@@ -45,6 +51,9 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Features;
@@ -52,10 +61,12 @@ import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.DecoratedPlacement;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.Type;
@@ -78,7 +89,7 @@ public class TerraForgePlugin implements TerraPlugin {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configured(IFeatureConfig.NONE).decorated(DecoratedPlacement.NOPE.configured(NoPlacementConfig.INSTANCE));
 
     private static TerraForgePlugin INSTANCE;
-    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
+    private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
@@ -109,7 +120,10 @@ public class TerraForgePlugin implements TerraPlugin {
     private final WorldHandle worldHandle = new ForgeWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
-    private final AddonRegistry addonRegistry = new AddonRegistry(new ForgeAddon(this), this);
+
+    private final ForgeAddon addon = new ForgeAddon(this);
+
+    private final AddonRegistry addonRegistry = new AddonRegistry(addon, this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
     private final PluginConfig config = new PluginConfig();
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
@@ -123,6 +137,7 @@ public class TerraForgePlugin implements TerraPlugin {
         this.dataFolder = Paths.get("config", "Terra").toFile();
         saveDefaultConfig();
         config.load(this);
+        debugLogger.setDebug(config.isDebug());
         LangUtil.load(config.getLanguage(), this);
         try {
             CommandUtil.registerAll(manager);
@@ -143,7 +158,7 @@ public class TerraForgePlugin implements TerraPlugin {
         });
     }
 
-    public void setup() {
+    public void init() {
         logger.info("Initializing Terra...");
 
         if(!addonRegistry.loadAll()) {
@@ -153,6 +168,10 @@ public class TerraForgePlugin implements TerraPlugin {
 
         registry.loadAll(this);
         logger.info("Loaded packs.");
+
+        ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).unfreeze(); // Evil
+        getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> ForgeRegistries.BIOMES.register(ForgeUtil.createBiome(biome, pack, addon)))); // Register all Terra biomes.
+        ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).freeze();
     }
 
     @Override
@@ -162,10 +181,13 @@ public class TerraForgePlugin implements TerraPlugin {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return worldMap.computeIfAbsent(world.getSeed(), w -> {
-            logger.info("Loading world " + w);
-            return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) world.getGenerator()).getPack(), this);
-        });
+        return getWorld(((IWorld) world).dimensionType());
+    }
+
+    public TerraWorld getWorld(DimensionType type) {
+        TerraWorld world = worldMap.get(type).getRight();
+        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
+        return world;
     }
 
     /**
@@ -189,12 +211,6 @@ public class TerraForgePlugin implements TerraPlugin {
             }
         }
         return JarUtil.getJarFile();
-    }
-
-    public TerraWorld getWorld(long seed) {
-        TerraWorld world = worldMap.get(seed);
-        if(world == null) throw new IllegalArgumentException("No world exists with seed " + seed);
-        return world;
     }
 
     @Override
@@ -237,14 +253,11 @@ public class TerraForgePlugin implements TerraPlugin {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = registry.loadAll(this);
-        Map<Long, TerraWorld> newMap = new HashMap<>();
-        worldMap.forEach((seed, tw) -> {
-            tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getTemplate().getID();
-            newMap.put(seed, new TerraWorld(tw.getWorld(), registry.get(packID), this));
+        worldMap.forEach((seed, pair) -> {
+            pair.getRight().getConfig().getSamplerCache().clear();
+            String packID = pair.getRight().getConfig().getTemplate().getID();
+            pair.setRight(new TerraWorld(pair.getRight().getWorld(), registry.get(packID), this));
         });
-        worldMap.clear();
-        worldMap.putAll(newMap);
         return succeed;
     }
 
@@ -278,7 +291,12 @@ public class TerraForgePlugin implements TerraPlugin {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o));
+                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
+                .registerLoader(ResourceLocation.class, (t, o, l) -> {
+                    ResourceLocation identifier = ResourceLocation.tryParse((String) o);
+                    if(identifier == null) throw new LoadException("Invalid identifier: " + o);
+                    return identifier;
+                });
     }
 
     @Override
@@ -295,10 +313,16 @@ public class TerraForgePlugin implements TerraPlugin {
         return manager;
     }
 
+    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
+        return worldMap;
+    }
+
     @Addon("Terra-Forge")
     @Author("Terra")
     @Version("1.0.0")
-    private static final class ForgeAddon extends TerraAddon implements EventListener {
+    public static final class ForgeAddon extends TerraAddon implements EventListener {
+
+        private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
 
         private final TerraPlugin main;
 
@@ -334,6 +358,39 @@ public class TerraForgePlugin implements TerraPlugin {
             injectTree(treeRegistry, "MEGA_SPRUCE", Features.MEGA_SPRUCE);
             injectTree(treeRegistry, "CRIMSON_FUNGUS", Features.CRIMSON_FUNGI);
             injectTree(treeRegistry, "WARPED_FUNGUS", Features.WARPED_FUNGI);
+            PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
+            try {
+                event.loadTemplate(template);
+            } catch(ConfigException e) {
+                e.printStackTrace();
+            }
+
+            if(template.doRegistryInjection()) {
+                WorldGenRegistries.CONFIGURED_FEATURE.entrySet().forEach(entry -> {
+                    if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getRegistryName())) {
+                        try {
+                            event.getPack().getTreeRegistry().add(entry.getKey().getRegistryName().toString(), (Tree) entry.getValue());
+                            main.getDebugLogger().info("Injected ConfiguredFeature " + entry.getKey().getRegistryName() + " as Tree: " + entry.getValue());
+                        } catch(DuplicateEntryException ignored) {
+                        }
+                    }
+                });
+            }
+            templates.put(event.getPack(), Pair.of(template, null));
+        }
+
+        @Priority(Priority.HIGHEST)
+        @Global
+        public void createInjectionOptions(ConfigPackPostLoadEvent event) {
+            PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
+
+            try {
+                event.loadTemplate(template);
+            } catch(ConfigException e) {
+                e.printStackTrace();
+            }
+
+            templates.get(event.getPack()).setRight(template);
         }
 
 
@@ -342,6 +399,10 @@ public class TerraForgePlugin implements TerraPlugin {
                 registry.add(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
+        }
+
+        public Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
+            return templates;
         }
     }
 }

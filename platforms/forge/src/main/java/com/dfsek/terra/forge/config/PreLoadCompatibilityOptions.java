@@ -1,9 +1,9 @@
-package com.dfsek.terra.fabric.config;
+package com.dfsek.terra.forge.config;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,15 +20,15 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate {
 
     @Value("features.inject-registry.excluded-features")
     @Default
-    private Set<Identifier> excludedRegistryFeatures = new HashSet<>();
+    private Set<ResourceLocation> excludedRegistryFeatures = new HashSet<>();
 
     @Value("features.inject-biome.excluded-features")
     @Default
-    private Set<Identifier> excludedBiomeFeatures = new HashSet<>();
+    private Set<ResourceLocation> excludedBiomeFeatures = new HashSet<>();
 
     @Value("structures.inject-biome.excluded-features")
     @Default
-    private Set<Identifier> excludedBiomeStructures = new HashSet<>();
+    private Set<ResourceLocation> excludedBiomeStructures = new HashSet<>();
 
     public boolean doBiomeInjection() {
         return doBiomeInjection;
@@ -38,15 +38,15 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate {
         return doRegistryInjection;
     }
 
-    public Set<Identifier> getExcludedBiomeFeatures() {
+    public Set<ResourceLocation> getExcludedBiomeFeatures() {
         return excludedBiomeFeatures;
     }
 
-    public Set<Identifier> getExcludedRegistryFeatures() {
+    public Set<ResourceLocation> getExcludedRegistryFeatures() {
         return excludedRegistryFeatures;
     }
 
-    public Set<Identifier> getExcludedBiomeStructures() {
+    public Set<ResourceLocation> getExcludedBiomeStructures() {
         return excludedBiomeStructures;
     }
 }
