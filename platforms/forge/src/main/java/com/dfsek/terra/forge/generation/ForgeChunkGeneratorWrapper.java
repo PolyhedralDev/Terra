@@ -23,6 +23,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Blockreader;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.BiomeManager;
@@ -60,6 +61,8 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     public ConfigPack getPack() {
         return pack;
     }
+
+    private DimensionType dimensionType;
 
     public ForgeChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new DimensionStructuresSettings(false));
@@ -133,7 +136,7 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
 
     @Override
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Type p_222529_3_) {
-        TerraWorld world = TerraForgePlugin.getInstance().getWorld(seed);
+        TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
         Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
         int cx = FastMath.floorMod(x, 16);
         int cz = FastMath.floorMod(z, 16);
@@ -170,5 +173,9 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     @Override
     public TerraChunkGenerator getHandle() {
         return delegate;
+    }
+
+    public void setDimensionType(DimensionType dimensionType) {
+        this.dimensionType = dimensionType;
     }
 }

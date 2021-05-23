@@ -52,6 +52,8 @@ import com.dfsek.terra.world.TerraWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Features;
@@ -59,6 +61,7 @@ import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.DecoratedPlacement;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -86,7 +89,7 @@ public class TerraForgePlugin implements TerraPlugin {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configured(IFeatureConfig.NONE).decorated(DecoratedPlacement.NOPE.configured(NoPlacementConfig.INSTANCE));
 
     private static TerraForgePlugin INSTANCE;
-    private final Map<Long, TerraWorld> worldMap = new HashMap<>();
+    private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
@@ -178,10 +181,13 @@ public class TerraForgePlugin implements TerraPlugin {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return worldMap.computeIfAbsent(world.getSeed(), w -> {
-            logger.info("Loading world " + w);
-            return new TerraWorld(world, ((ForgeChunkGeneratorWrapper) world.getGenerator()).getPack(), this);
-        });
+        return getWorld(((IWorld) world).dimensionType());
+    }
+
+    public TerraWorld getWorld(DimensionType type) {
+        TerraWorld world = worldMap.get(type).getRight();
+        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
+        return world;
     }
 
     /**
@@ -205,12 +211,6 @@ public class TerraForgePlugin implements TerraPlugin {
             }
         }
         return JarUtil.getJarFile();
-    }
-
-    public TerraWorld getWorld(long seed) {
-        TerraWorld world = worldMap.get(seed);
-        if(world == null) throw new IllegalArgumentException("No world exists with seed " + seed);
-        return world;
     }
 
     @Override
@@ -253,14 +253,11 @@ public class TerraForgePlugin implements TerraPlugin {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = registry.loadAll(this);
-        Map<Long, TerraWorld> newMap = new HashMap<>();
-        worldMap.forEach((seed, tw) -> {
-            tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getTemplate().getID();
-            newMap.put(seed, new TerraWorld(tw.getWorld(), registry.get(packID), this));
+        worldMap.forEach((seed, pair) -> {
+            pair.getRight().getConfig().getSamplerCache().clear();
+            String packID = pair.getRight().getConfig().getTemplate().getID();
+            pair.setRight(new TerraWorld(pair.getRight().getWorld(), registry.get(packID), this));
         });
-        worldMap.clear();
-        worldMap.putAll(newMap);
         return succeed;
     }
 
@@ -314,6 +311,10 @@ public class TerraForgePlugin implements TerraPlugin {
 
     public CommandManager getManager() {
         return manager;
+    }
+
+    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
+        return worldMap;
     }
 
     @Addon("Terra-Forge")

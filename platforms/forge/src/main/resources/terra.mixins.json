@@ -5,6 +5,7 @@
   "refmap": "terra-refmap.json",
   "mixins": [
     "DimensionGeneratorSettingsMixin",
+    "ServerWorldMixin",
     "access.AbstractSpawnerAccessor",
     "access.BiomeGeneratorTypeScreensAccessor",
     "implementations.BiomeMixin",
@@ -31,7 +32,6 @@
     "implementations.world.ServerWorldMixin",
     "implementations.world.WorldGenRegionMixin"
   ],
-
   "client": [
     "init.MinecraftClientMixin"
   ],
