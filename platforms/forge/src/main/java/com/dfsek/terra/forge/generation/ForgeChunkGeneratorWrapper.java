@@ -4,6 +4,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -143,20 +144,19 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
 
         int height = world.getWorld().getMaxHeight();
 
-        while (height >= 0 && sampler.sample(cx, height - 1, cz) < 0) {
-            height--;
-        }
+        while(height >= 0 && sampler.sample(cx, height - 1, cz) < 0) height--;
 
         return height;
     }
 
     @Override
-    public @NotNull IBlockReader getBaseColumn(int p_230348_1_, int p_230348_2_) {
-        int height = 64; // TODO: implementation
+    public @NotNull IBlockReader getBaseColumn(int x, int z) {
+        TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
+        int height = getBaseHeight(x, z, Heightmap.Type.WORLD_SURFACE);
         BlockState[] array = new BlockState[256];
         for(int y = 255; y >= 0; y--) {
             if(y > height) {
-                if(y > getSeaLevel()) {
+                if(y > ((UserDefinedBiome) world.getBiomeProvider().getBiome(x, z)).getConfig().getSeaLevel()) {
                     array[y] = Blocks.AIR.defaultBlockState();
                 } else {
                     array[y] = Blocks.WATER.defaultBlockState();
