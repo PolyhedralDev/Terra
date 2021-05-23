@@ -112,6 +112,7 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
 
     @Override
     public boolean hasStronghold(@NotNull ChunkPos p_235952_1_) {
+        if(pack.getTemplate().vanillaStructures()) return super.hasStronghold(p_235952_1_);
         return false;
     }
 
