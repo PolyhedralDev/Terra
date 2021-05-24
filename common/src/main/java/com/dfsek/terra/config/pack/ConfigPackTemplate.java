@@ -6,12 +6,14 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
+import com.dfsek.terra.config.loaders.mod.ModDependentConfigSection;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class ConfigPackTemplate implements ConfigTemplate {
@@ -39,7 +41,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("structures.locatable")
     @Default
-    private Map<String, String> locatable = new HashMap<>();
+    private Map<String, ModDependentConfigSection<String>> locatable = new HashMap<>();
 
     @Value("blend.terrain.elevation")
     @Default
@@ -47,19 +49,19 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("vanilla.mobs")
     @Default
-    private boolean vanillaMobs = true;
+    private ModDependentConfigSection<Boolean> vanillaMobs = ModDependentConfigSection.withDefault(true);
 
     @Value("vanilla.caves")
     @Default
-    private boolean vanillaCaves = false;
+    private ModDependentConfigSection<Boolean> vanillaCaves = ModDependentConfigSection.withDefault(false);
 
     @Value("vanilla.decorations")
     @Default
-    private boolean vanillaDecorations = false;
+    private ModDependentConfigSection<Boolean> vanillaDecorations = ModDependentConfigSection.withDefault(false);
 
     @Value("vanilla.structures")
     @Default
-    private boolean vanillaStructures = false;
+    private ModDependentConfigSection<Boolean> vanillaStructures = ModDependentConfigSection.withDefault(false);
 
     @Value("author")
     @Default
@@ -67,7 +69,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("disable.sapling")
     @Default
-    private boolean disableSaplings = false;
+    private ModDependentConfigSection<Boolean> disableSaplings = ModDependentConfigSection.withDefault(false);
 
     @Value("version")
     @Default
@@ -75,42 +77,42 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("disable.carvers")
     @Default
-    private boolean disableCarvers = false;
+    private ModDependentConfigSection<Boolean> disableCarvers = ModDependentConfigSection.withDefault(false);
 
     @Value("disable.structures")
     @Default
-    private boolean disableStructures = false;
+    private ModDependentConfigSection<Boolean> disableStructures = ModDependentConfigSection.withDefault(false);
 
     @Value("disable.ores")
     @Default
-    private boolean disableOres = false;
+    private ModDependentConfigSection<Boolean> disableOres = ModDependentConfigSection.withDefault(false);
 
     @Value("disable.trees")
     @Default
-    private boolean disableTrees = false;
+    private ModDependentConfigSection<Boolean> disableTrees = ModDependentConfigSection.withDefault(false);
 
     @Value("disable.flora")
     @Default
-    private boolean disableFlora = false;
+    private ModDependentConfigSection<Boolean> disableFlora = ModDependentConfigSection.withDefault(false);
 
     public boolean disableCarvers() {
-        return disableCarvers;
+        return disableCarvers.get();
     }
 
     public boolean disableFlora() {
-        return disableFlora;
+        return disableFlora.get();
     }
 
     public boolean disableOres() {
-        return disableOres;
+        return disableOres.get();
     }
 
     public boolean disableStructures() {
-        return disableStructures;
+        return disableStructures.get();
     }
 
     public boolean disableTrees() {
-        return disableTrees;
+        return disableTrees.get();
     }
 
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
@@ -122,7 +124,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     }
 
     public boolean isDisableSaplings() {
-        return disableSaplings;
+        return disableSaplings.get();
     }
 
     public String getID() {
@@ -134,19 +136,19 @@ public class ConfigPackTemplate implements ConfigTemplate {
     }
 
     public boolean vanillaMobs() {
-        return vanillaMobs;
+        return vanillaMobs.get();
     }
 
     public boolean vanillaCaves() {
-        return vanillaCaves;
+        return vanillaCaves.get();
     }
 
     public boolean vanillaDecorations() {
-        return vanillaDecorations;
+        return vanillaDecorations.get();
     }
 
     public boolean vanillaStructures() {
-        return vanillaStructures;
+        return vanillaStructures.get();
     }
 
     public Map<String, NoiseSeeded> getNoiseBuilderMap() {
@@ -162,7 +164,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     }
 
     public Map<String, String> getLocatable() {
-        return locatable;
+        return locatable.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get()));
     }
 
     public boolean doBetaCarvers() {
