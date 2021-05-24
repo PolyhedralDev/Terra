@@ -46,6 +46,8 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTempl
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
+import com.dfsek.terra.config.loaders.mod.ModDependentConfigSection;
+import com.dfsek.terra.config.loaders.mod.ModDependentConfigSectionLoader;
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
@@ -108,7 +110,8 @@ public class GenericLoaders implements LoaderRegistrar {
 
         if(main != null) {
             registry.registerLoader(TerraAddon.class, main.getAddons())
-                    .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType());
+                    .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType())
+                    .registerLoader(ModDependentConfigSection.class, new ModDependentConfigSectionLoader(main));
         }
     }
 }
