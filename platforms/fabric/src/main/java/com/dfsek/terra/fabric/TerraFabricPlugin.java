@@ -2,6 +2,7 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
@@ -36,6 +37,7 @@ import com.dfsek.terra.config.PluginConfig;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.fabric.config.DimensionConfig;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
@@ -70,6 +72,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -120,6 +124,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
     private final PluginConfig config = new PluginConfig();
+
+    private final DimensionConfig dimensionConfig = new DimensionConfig();
 
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), Validator.notNull())
@@ -242,6 +248,18 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         registry.loadAll(this);
 
         registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(fabricAddon, biome, pack)))); // Register all Terra biomes.
+
+        File configFile = new File(getDataFolder(), "config.yml");
+        ConfigLoader loader = new ConfigLoader();
+        loader.registerLoader(ConfigPack.class, registry);
+        register(loader);
+        try {
+            logger.info("Loading dimension config...");
+            loader.load(dimensionConfig, new FileInputStream(configFile));
+            logger.info("Loaded " + dimensionConfig.getDimensionPacks().size() + " dimension overrides.");
+        } catch(ConfigException | FileNotFoundException e) {
+            throw new RuntimeException("Failed to load dimension config", e);
+        }
 
         logger.info("Loaded packs.");
     }
