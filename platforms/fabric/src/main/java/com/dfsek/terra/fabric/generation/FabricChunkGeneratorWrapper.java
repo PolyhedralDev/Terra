@@ -10,15 +10,14 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.SpawnGroup;
@@ -164,14 +163,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
-        int cx = FastMath.floorMod(x, 16);
-        int cz = FastMath.floorMod(z, 16);
-
         int height = world.getWorld().getMaxHeight();
-
-        while(height >= 0 && sampler.sample(cx, height-1, cz) < 0) height--;
-
+        while(height >= world.getWorld().getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+            height--;
+        }
         return height;
     }
 
@@ -179,8 +174,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         int height = getHeight(x, z, Heightmap.Type.WORLD_SURFACE, view);
-        BlockState[] array = new BlockState[256];
-        for(int y = view.getBottomY()+view.getHeight(); y >= view.getBottomY(); y--) {
+        BlockState[] array = new BlockState[view.getHeight()];
+        for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
             if(y > height) {
                 if(y > ((UserDefinedBiome) world.getBiomeProvider().getBiome(x, z)).getConfig().getSeaLevel()) {
                     array[y] = Blocks.AIR.getDefaultState();

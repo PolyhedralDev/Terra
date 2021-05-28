@@ -6,10 +6,8 @@ import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.WorldConfig;
@@ -70,7 +68,7 @@ public class TerraWorld {
         double noise = sampler.sample(fdX, y, fdZ);
         if(noise > 0) {
             int level = 0;
-            for(int yi = world.getMaxHeight(); yi > y; yi--) {
+            for(int yi = world.getMaxHeight() - 1; yi > y; yi--) {
                 if(sampler.sample(fdX, yi, fdZ) > 0) level++;
                 else level = 0;
             }
