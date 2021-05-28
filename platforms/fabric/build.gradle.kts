@@ -7,7 +7,7 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     `java-library`
     `maven-publish`
-    id("fabric-loom").version("0.6-SNAPSHOT")
+    id("fabric-loom").version("0.8-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
@@ -23,8 +23,8 @@ group = "com.dfsek.terra.fabric"
 dependencies {
     "shadedApi"(project(":common"))
 
-    "minecraft"("com.mojang:minecraft:21w11a")
-    "mappings"("net.fabricmc:yarn:21w11a+build.3:v2")
+    "minecraft"("com.mojang:minecraft:1.17-pre1")
+    "mappings"("net.fabricmc:yarn:1.17-pre1+build.4:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
 
     "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
