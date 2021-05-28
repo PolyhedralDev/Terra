@@ -34,7 +34,7 @@ public class SpigotListener implements Listener {
         Entity entity = e.getEntity();
         if(e.getEntityType().equals(EntityType.ENDER_SIGNAL)) {
             main.getDebugLogger().info("Detected Ender Signal...");
-            if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
+            if(!BukkitAdapter.adapt(e.getEntity().getWorld()).isTerraWorld()) return;
             TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getEntity().getWorld()));
             EnderSignal signal = (EnderSignal) entity;
             TerraStructure config = tw.getConfig().getStructureRegistry().get(tw.getConfig().getTemplate().getLocatable().get("STRONGHOLD"));
@@ -53,7 +53,7 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
-        if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
+        if(!BukkitAdapter.adapt(e.getEntity().getWorld()).isTerraWorld()) return;
         if(!(e.getEntity() instanceof Villager)) return;
         if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
             main.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
@@ -65,7 +65,7 @@ public class SpigotListener implements Listener {
 
     @EventHandler
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
-        if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getEntity().getWorld()))) return;
+        if(!BukkitAdapter.adapt(e.getEntity().getWorld()).isTerraWorld()) return;
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
             main.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
             main.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");

@@ -65,7 +65,7 @@ public class TerraCommandManager implements CommandManager {
             return;
         }
 
-        if(commandClass.isAnnotationPresent(WorldCommand.class) && (!(sender instanceof Player) || !TerraWorld.isTerraWorld(((Player) sender).getWorld()))) {
+        if(commandClass.isAnnotationPresent(WorldCommand.class) && (!(sender instanceof Player) || !(((Player) sender).getWorld()).isTerraWorld())) {
             sender.sendMessage("Command must be executed in a Terra world.");
             return;
         }
@@ -160,7 +160,6 @@ public class TerraCommandManager implements CommandManager {
                 if(field.isAnnotationPresent(SwitchTarget.class)) {
                     SwitchTarget switchTarget = field.getAnnotation(SwitchTarget.class);
                     if(!holder.switches.containsValue(switchTarget.value())) {
-                        System.out.println(holder.switches);
                         throw new MalformedCommandException("Switch Target specifies nonexistent switch \"" + switchTarget.value() + "\"");
                     }
 

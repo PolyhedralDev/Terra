@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.population;
 
 
 import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class ChunkCoordinate implements Serializable {
     public ChunkCoordinate(Chunk c) {
         this.x = c.getX();
         this.z = c.getZ();
-        this.worldID = c.getWorld().getUID();
+        this.worldID = ((BukkitWorld) c.getWorld()).getUID();
     }
 
     public UUID getWorldID() {

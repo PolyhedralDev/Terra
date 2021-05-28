@@ -18,8 +18,7 @@ public class PaperListener implements Listener {
 
     @EventHandler
     public void onStructureLocate(StructureLocateEvent e) {
-        if(!TerraWorld.isTerraWorld(BukkitAdapter.adapt(e.getWorld()))) return;
-        e.setResult(null); // Assume no result.
+        if(!BukkitAdapter.adapt(e.getWorld()).isTerraWorld()) return;
         String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
         TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getWorld()));
@@ -32,10 +31,8 @@ public class PaperListener implements Listener {
             }, main);
             finder.run(); // Do this synchronously.
         } else {
-            main.logger().warning("No overrides are defined for \"" + name + "\"");
+            e.setResult(e.getOrigin());
+            main.logger().warning("No overrides are defined for \"" + name + "\". Locating this structure will NOT work properly!");
         }
-
     }
-
-
 }

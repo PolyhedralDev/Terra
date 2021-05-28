@@ -2,6 +2,7 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
+import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
@@ -110,6 +111,8 @@ public class ConfigPack implements LoaderRegistrar {
     private final TerraPlugin main;
     private final Loader loader;
 
+    private final Configuration configuration;
+
     private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
 
@@ -130,15 +133,20 @@ public class ConfigPack implements LoaderRegistrar {
             File pack = new File(folder, "pack.yml");
 
             try {
-                selfLoader.load(template, new FileInputStream(pack));
+                configuration = new Configuration(new FileInputStream(pack));
+                selfLoader.load(template, configuration);
 
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+
                 load(l, main);
+
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, new FileInputStream(pack));
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                checkDeadEntries(main);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
@@ -173,8 +181,11 @@ public class ConfigPack implements LoaderRegistrar {
 
                 if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
-                selfLoader.load(template, file.getInputStream(pack));
+                configuration = new Configuration(file.getInputStream(pack));
+                selfLoader.load(template, configuration);
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
+
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
 
                 load(l, main);
 
@@ -183,6 +194,7 @@ public class ConfigPack implements LoaderRegistrar {
                 selfLoader.load(packPostTemplate, file.getInputStream(pack));
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                checkDeadEntries(main);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
@@ -198,9 +210,17 @@ public class ConfigPack implements LoaderRegistrar {
         for(C template : configTemplates) registry.add(template.getID(), factory.build(template, main));
     }
 
-    private void load(long start, TerraPlugin main) throws ConfigException {
-        main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));
+    private void checkDeadEntries(TerraPlugin main) {
+        biomeRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in biome registry: '" + id + "'"));
+        paletteRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in palette registry: '" + id + "'"));
+        floraRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in flora registry: '" + id + "'"));
+        carverRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in carver registry: '" + id + "'"));
+        treeRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in tree registry: '" + id + "'"));
+        oreRegistry.getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in ore registry: '" + id + "'"));
+    }
 
+
+    private void load(long start, TerraPlugin main) throws ConfigException {
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey(), var.getValue());
         }
@@ -225,15 +245,15 @@ public class ConfigPack implements LoaderRegistrar {
         }).close();
 
         loader
-                .open("carving", ".yml").then(streams -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.load(streams, CarverTemplate::new), main)).close()
-                .open("palettes", ".yml").then(streams -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.load(streams, PaletteTemplate::new), main)).close()
-                .open("ores", ".yml").then(streams -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.load(streams, OreTemplate::new), main)).close()
-                .open("structures/trees", ".yml").then(streams -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.load(streams, TreeTemplate::new), main)).close()
-                .open("structures/structures", ".yml").then(streams -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.load(streams, StructureTemplate::new), main)).close()
-                .open("flora", ".yml").then(streams -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.load(streams, FloraTemplate::new), main)).close()
-                .open("biomes", ".yml").then(streams -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.load(streams, () -> new BiomeTemplate(this, main)), main)).close();
+                .open("carving", ".yml").then(configs -> buildAll(new CarverFactory(this), carverRegistry, abstractConfigLoader.loadConfigs(configs, CarverTemplate::new), main)).close()
+                .open("palettes", ".yml").then(configs -> buildAll(new PaletteFactory(), paletteRegistry, abstractConfigLoader.loadConfigs(configs, PaletteTemplate::new), main)).close()
+                .open("ores", ".yml").then(configs -> buildAll(new OreFactory(), oreRegistry, abstractConfigLoader.loadConfigs(configs, OreTemplate::new), main)).close()
+                .open("structures/trees", ".yml").then(configs -> buildAll(new TreeFactory(), treeRegistry, abstractConfigLoader.loadConfigs(configs, TreeTemplate::new), main)).close()
+                .open("structures/structures", ".yml").then(configs -> buildAll(new StructureFactory(), structureRegistry, abstractConfigLoader.loadConfigs(configs, StructureTemplate::new), main)).close()
+                .open("flora", ".yml").then(configs -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.loadConfigs(configs, FloraTemplate::new), main)).close()
+                .open("biomes", ".yml").then(configs -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.loadConfigs(configs, () -> new BiomeTemplate(this, main)), main)).close();
 
-        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
+        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 

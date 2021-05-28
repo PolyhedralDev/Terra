@@ -65,7 +65,6 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
         Map<String, Function> noiseFunctionMap = new HashMap<>();
 
         for(Map.Entry<String, FunctionTemplate> entry : expressions.entrySet()) {
-            System.out.println(entry);
             noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
         }
 

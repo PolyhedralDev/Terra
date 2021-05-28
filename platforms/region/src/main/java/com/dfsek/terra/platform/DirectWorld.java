@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class DirectWorld implements World {
     private final long seed;
@@ -47,21 +46,6 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public UUID getUID() {
-        return null;
-    }
-
-    @Override
-    public boolean isChunkGenerated(int x, int z) {
-        return false;
-    }
-
-    @Override
     public Chunk getChunkAt(int x, int z) {
         MCAFile file = compute(x, z);
         net.querz.mca.Chunk chunk = file.getChunk(x, z);
@@ -70,11 +54,6 @@ public class DirectWorld implements World {
             file.setChunk(x, z, chunk);
         }
         return new DirectChunkData(chunk, this, x, z);
-    }
-
-    @Override
-    public File getWorldFolder() {
-        return null;
     }
 
     @Override

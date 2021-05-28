@@ -22,7 +22,9 @@ public class TerraListener implements EventListener {
     public void injectTrees(ConfigPackPreLoadEvent event) {
         for(TreeType value : TreeType.values()) {
             try {
-                event.getPack().getTreeRegistry().add(BukkitAdapter.TREE_TRANSFORMER.translate(value), new BukkitTree(value, main));
+                String id = BukkitAdapter.TREE_TRANSFORMER.translate(value);
+                event.getPack().getTreeRegistry().add(id, new BukkitTree(value, main));
+                event.getPack().getTreeRegistry().get(id); // Platform trees should never be marked "dead"
             } catch(DuplicateEntryException ignore) { // If another addon has already registered trees, do nothing.
             }
         }

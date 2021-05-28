@@ -9,10 +9,10 @@ import com.dfsek.terra.api.structures.structure.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.pack.WorldConfig;
-import com.dfsek.terra.profiler.ProfileFuture;
+import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import net.jafama.FastMath;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class StructurePopulator implements TerraBlockPopulator {
+public class StructurePopulator implements TerraBlockPopulator, Chunkified {
     private final TerraPlugin main;
 
     public StructurePopulator(TerraPlugin main) {
@@ -31,7 +31,9 @@ public class StructurePopulator implements TerraBlockPopulator {
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
-        try(ProfileFuture ignored = tw.getProfiler().measure("StructureTime")) {
+        try(ProfileFrame ignore = main.getProfiler().profile("structure")) {
+            if(tw.getConfig().getTemplate().disableStructures()) return;
+
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             if(!tw.isSafe()) return;
