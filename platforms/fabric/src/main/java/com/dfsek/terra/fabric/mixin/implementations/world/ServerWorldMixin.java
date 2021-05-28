@@ -13,6 +13,7 @@ import com.dfsek.terra.fabric.block.FabricBlock;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -27,7 +28,7 @@ public abstract class ServerWorldMixin {
     public abstract long getSeed();
 
     public int terra$getMaxHeight() {
-        return ((ServerWorld) (Object) this).getDimensionHeight();
+        return (((ServerWorld) (Object) this).getBottomY()) + ((ServerWorld) (Object) this).getHeight();
     }
 
     public ChunkGenerator terra$getGenerator() {
@@ -55,7 +56,7 @@ public abstract class ServerWorldMixin {
     }
 
     public int terra$getMinHeight() {
-        return 0;
+        return ((ServerWorld) (Object) this).getBottomY();
     }
 
     @Intrinsic

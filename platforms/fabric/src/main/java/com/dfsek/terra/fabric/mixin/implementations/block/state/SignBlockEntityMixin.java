@@ -20,18 +20,18 @@ public abstract class SignBlockEntityMixin {
 
     @Shadow
     @Final
-    private Text[] text;
+    private Text[] texts;
 
     public @NotNull String[] terra$getLines() {
-        String[] lines = new String[text.length];
-        for(int i = 0; i < text.length; i++) {
-            lines[i] = text[i].asString();
+        String[] lines = new String[texts.length];
+        for(int i = 0; i < texts.length; i++) {
+            lines[i] = texts[i].asString();
         }
         return lines;
     }
 
     public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
-        return text[index].asString();
+        return texts[index].asString();
     }
 
     public void terra$setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
