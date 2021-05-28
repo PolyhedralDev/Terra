@@ -23,13 +23,21 @@ public class ModDependentConfigSectionLoader implements TypeLoader<ModDependentC
             ParameterizedType pType = (ParameterizedType) type;
             Type generic = pType.getActualTypeArguments()[0];
 
-            Map<String, Object> map = (Map<String, Object>) c;
+            if(c instanceof Map && ((Map<?, ?>) c).containsKey("default")) {
+                Map<String, ?> map = (Map<String, ?>) c;
 
-            ModDependentConfigSection<Object> configSection = new ModDependentConfigSection<>(main, loader.loadType(generic, map.get("default")));
+                ModDependentConfigSection<Object> configSection = new ModDependentConfigSection<>(main, loader.loadType(generic, map.get("default")));
 
-            ((Map<String, Object>) ((Map<?, ?>) c).get("mods")).forEach(configSection::add);
+                if(map.containsKey("mods")) {
+                    for(Map.Entry<String, ?> modEntry : ((Map<String, ?>) map.get("mods")).entrySet()) {
+                        configSection.add(modEntry.getKey(), loader.loadType(generic, modEntry.getValue()));
+                    }
+                }
 
-            return configSection;
+                return configSection;
+            } else {
+                return ModDependentConfigSection.withDefault(loader.loadType(generic, c)); // Load the original type otherwise.
+            }
         } else throw new LoadException("Unable to load config! Could not retrieve parameterized type: " + type);
     }
 }
