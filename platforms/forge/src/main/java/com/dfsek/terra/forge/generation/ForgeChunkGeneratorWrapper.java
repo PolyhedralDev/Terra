@@ -146,7 +146,7 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Type type) {
         TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
         int height = world.getWorld().getMaxHeight();
-        while(height >= 0 && !type.isOpaque().test(((ForgeBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+        while(height >= 0 && !type.isOpaque().test(((ForgeBlockData) world.getUngeneratedBlock(x, height-1, z)).getHandle())) {
             height--;
         }
         return height;

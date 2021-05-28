@@ -150,7 +150,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         int height = world.getWorld().getMaxHeight();
-        while(height >= 0 && !heightmapType.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+        while(height >= 0 && !heightmapType.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height-1, z)).getHandle())) {
             height--;
         }
         return height;
