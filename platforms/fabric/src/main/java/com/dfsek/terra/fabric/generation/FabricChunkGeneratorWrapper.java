@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
@@ -19,6 +20,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.util.math.BlockPos;
@@ -31,6 +33,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
@@ -43,6 +46,7 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.StructureFeature;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -67,7 +71,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
-        super(biomeSource, new StructuresConfig(false));
+        super(biomeSource, new StructuresConfig(configPack.getTemplate().vanillaStructures()));
         this.pack = configPack;
 
         this.delegate = new DefaultChunkGenerator3D(pack, TerraFabricPlugin.getInstance());
@@ -145,14 +149,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
-        int cx = FastMath.floorMod(x, 16);
-        int cz = FastMath.floorMod(z, 16);
-
         int height = world.getWorld().getMaxHeight();
-
-        while(height >= 0 && sampler.sample(cx, height-1, cz) < 0) height--;
-
+        while(height >= 0 && !heightmapType.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+            height--;
+        }
         return height;
     }
 
@@ -174,6 +174,27 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         }
 
         return new VerticalBlockSample(array);
+    }
+
+    @Override
+    public List<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
+        if(pack.getTemplate().vanillaStructures()) {
+            if(accessor.getStructureAt(pos, true, StructureFeature.SWAMP_HUT).hasChildren()) {
+                if(group == SpawnGroup.MONSTER) return StructureFeature.SWAMP_HUT.getMonsterSpawns();
+                if(group == SpawnGroup.CREATURE) return StructureFeature.SWAMP_HUT.getCreatureSpawns();
+            }
+
+            if(group == SpawnGroup.MONSTER) {
+                if(accessor.getStructureAt(pos, false, StructureFeature.PILLAGER_OUTPOST).hasChildren()) {
+                    return StructureFeature.PILLAGER_OUTPOST.getMonsterSpawns();
+                } else if(accessor.getStructureAt(pos, false, StructureFeature.MONUMENT).hasChildren()) {
+                    return StructureFeature.MONUMENT.getMonsterSpawns();
+                } else if(accessor.getStructureAt(pos, true, StructureFeature.FORTRESS).hasChildren()) {
+                    return StructureFeature.FORTRESS.getMonsterSpawns();
+                }
+            }
+        }
+        return super.getEntitySpawnList(biome, accessor, group, pos);
     }
 
     @Override

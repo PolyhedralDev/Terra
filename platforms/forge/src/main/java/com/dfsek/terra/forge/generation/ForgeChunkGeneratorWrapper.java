@@ -10,6 +10,7 @@ import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.forge.ForgeAdapter;
 import com.dfsek.terra.forge.TerraForgePlugin;
+import com.dfsek.terra.forge.block.ForgeBlockData;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
@@ -19,6 +20,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -30,6 +32,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
@@ -44,6 +47,7 @@ import net.minecraft.world.spawner.WorldEntitySpawner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -69,7 +73,7 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     private DimensionType dimensionType;
 
     public ForgeChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
-        super(biomeSource, new DimensionStructuresSettings(false));
+        super(biomeSource, new DimensionStructuresSettings(configPack.getTemplate().vanillaStructures()));
         this.pack = configPack;
 
         this.delegate = new DefaultChunkGenerator3D(pack, TerraForgePlugin.getInstance());
@@ -139,16 +143,12 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.@NotNull Type p_222529_3_) {
+    public int getBaseHeight(int x, int z, Heightmap.@NotNull Type type) {
         TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
-        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
-        int cx = FastMath.floorMod(x, 16);
-        int cz = FastMath.floorMod(z, 16);
-
         int height = world.getWorld().getMaxHeight();
-
-        while(height >= 0 && sampler.sample(cx, height - 1, cz) < 0) height--;
-
+        while(height >= 0 && !type.isOpaque().test(((ForgeBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+            height--;
+        }
         return height;
     }
 
@@ -182,6 +182,13 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
             chunkRandom.setDecorationSeed(region.getSeed(), cx << 4, cy << 4);
             WorldEntitySpawner.spawnMobsForChunkGeneration(region, biome, cx, cy, chunkRandom);
         }
+    }
+
+    @Override
+    public List<MobSpawnInfo.Spawners> getMobsAt(Biome p_230353_1_, StructureManager p_230353_2_, EntityClassification p_230353_3_, BlockPos p_230353_4_) {
+        List<MobSpawnInfo.Spawners> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(p_230353_2_, p_230353_3_, p_230353_4_);
+        if(spawns != null) return spawns;
+        return super.getMobsAt(p_230353_1_, p_230353_2_, p_230353_3_, p_230353_4_);
     }
 
     @Override
