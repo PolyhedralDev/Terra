@@ -69,7 +69,7 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     private DimensionType dimensionType;
 
     public ForgeChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
-        super(biomeSource, new DimensionStructuresSettings(false));
+        super(biomeSource, new DimensionStructuresSettings(configPack.getTemplate().vanillaStructures()));
         this.pack = configPack;
 
         this.delegate = new DefaultChunkGenerator3D(pack, TerraForgePlugin.getInstance());
