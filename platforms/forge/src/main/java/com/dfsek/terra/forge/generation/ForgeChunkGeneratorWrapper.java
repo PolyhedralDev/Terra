@@ -10,6 +10,7 @@ import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.forge.ForgeAdapter;
 import com.dfsek.terra.forge.TerraForgePlugin;
+import com.dfsek.terra.forge.block.ForgeBlockData;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
@@ -139,16 +140,12 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.@NotNull Type p_222529_3_) {
+    public int getBaseHeight(int x, int z, Heightmap.@NotNull Type type) {
         TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
-        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
-        int cx = FastMath.floorMod(x, 16);
-        int cz = FastMath.floorMod(z, 16);
-
         int height = world.getWorld().getMaxHeight();
-
-        while(height >= 0 && sampler.sample(cx, height - 1, cz) < 0) height--;
-
+        while(height >= 0 && !type.isOpaque().test(((ForgeBlockData) world.getUngeneratedBlock(x, height-1, z)).getHandle())) {
+            height--;
+        }
         return height;
     }
 

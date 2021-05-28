@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
@@ -145,14 +146,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmapType) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
-        int cx = FastMath.floorMod(x, 16);
-        int cz = FastMath.floorMod(z, 16);
-
         int height = world.getWorld().getMaxHeight();
-
-        while(height >= 0 && sampler.sample(cx, height-1, cz) < 0) height--;
-
+        while(height >= 0 && !heightmapType.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height-1, z)).getHandle())) {
+            height--;
+        }
         return height;
     }
 
