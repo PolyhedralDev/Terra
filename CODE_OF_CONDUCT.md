@@ -245,7 +245,6 @@ Terra has a global moderation team which is currently comprised of the following
 
 - solonovamax
     - discord: [@solonovamax#6983](https://discord.com/channels/@me/566146322273402881)*
-    - twitter: [@catboys_are_hot](https://twitter.com/catboys_are_hot)
     - github: [@solonovamax](https://github.com/solonovamax)
     - email: [solonovamax@12oclockpoint.com](mailto:solonovamax@12oclockpoint.com)
 - dfsek
