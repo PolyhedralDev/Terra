@@ -1,6 +1,7 @@
 # Pull Request
 
 ## Brief description.
+
 <!-- Please provide a brief description of the goals of your PR -->
 
 <!--
@@ -20,6 +21,7 @@
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
 
 ### What Issues Does This Fix?
+
 <!--
     Put Fix #XXXX or Closes #XXXX here if there are any open issues that this PR fixes.
     This is to automatically close the relevant issues.
@@ -30,8 +32,10 @@
 ## Licensing
 
 <!-- In order to be accepted, your changes must be under the GPLv3 license. Please check one of the following: -->
+
 - [ ] I am the original author of this code, and I am willing to release it under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
-- [ ] I am not the original author of this code, but it is in public domain or released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or a compatible license.
+- [ ] I am not the original author of this code, but it is in public domain or released
+  under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or a compatible license.
     <!--
       Please provide reliable evidence of this.
       NOTE: for compatible licenses, you must make sure to add the included license somewhere in the program, if so required.
@@ -48,6 +52,7 @@
     Note: this is only required for PRs that add new features.
     If your PR is not adding new features, only fixing bugs or adding translations, then you may delete this section.
 -->
+
 - [ ] <!-- First thing -->
     - [ ] <!-- A requirement of the first thing. -->
     - [ ] <!-- A second requirement of the first thing. -->
@@ -60,12 +65,20 @@
     What types of changes does your code introduce? (Select any that apply. You may select multiple.)
     You must put an x in all the boxes that it applies to. (Like this: [x])
 -->
+
 #### Types of changes
 
-- [ ] Bug fix <!-- Anything which fixes an issue in Terra. -->
-- [ ] New feature <!-- Anything which adds new functionality to Terra. -->
-- [ ] Documentation change <!-- Anything which adds or improves documentation for existing features. -->
-- [ ] Translation <!-- Anything which is internationalizing the Terra program to other languages -->
+- [ ] Bug Fix <!-- Anything which fixes an issue in Terra. -->
+- [ ] Build system <!-- Anything which pretain to the build system. -->
+- [ ] Documentation <!-- Anything which adds or improves documentation for existing features. -->
+- [ ] New Feature <!-- Anything which adds new functionality to Terra. -->
+- [ ] Performance <!-- Anything which is imrpoves the performance of Terra. -->
+- [ ] Refactoring <!-- Anything which does not add any new code, only moves code around. -->
+- [ ] Repository <!-- Anything which affects the repository. Eg. changes to the `README.md` file. -->
+- [ ] Revert <!-- Anything which reverts previous commits. -->
+- [ ] Style <!-- Anything which updates style. -->
+- [ ] Tests <!-- Anything which adds or updates tests. -->
+- [ ] Translation <!-- Anything which is internationalizing the Terra program to other languages. -->
 
 #### Compatiblity
 
@@ -81,8 +94,10 @@
 
 #### Contribution Guidelines.
 
-- [ ] I have read the [`CONTRIBUTING.md`](https://github.com/PolyhedralDev/Terra/blob/master/CONTRIBUTING.md) document in the root of the git repository.
-- [ ] My code follows the code style for this project. <!-- There is an included `.editorconfig` file in the base of the repo. Please use a plugin for your IDE of choice that follows those settings. -->
+- [ ] I have read the [`CONTRIBUTING.md`](https://github.com/PolyhedralDev/Terra/blob/master/CONTRIBUTING.md) document in the root of the
+  git repository.
+- [ ] My code follows the code style for this
+  project. <!-- There is an included `.editorconfig` file in the base of the repo. Please use a plugin for your IDE of choice that follows those settings. -->
 
 #### Documentation
 

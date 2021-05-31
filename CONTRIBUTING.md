@@ -229,17 +229,18 @@ should probably™ be two commits.
 #### Git Commit Messages
 
 - Subject line must fit the following format: `<type>: <short summary>`. Type must be one of the following:
+    - Build: Changes that affect the build system or external dependencies.
+    - Docs: Documentation only changes.
     - Feat: A new feature.
     - Fix: A bug fix.
-    - Docs: Documentation only changes.
-    - Style: Code style updates.
-    - Refactor: Refactoring sections of the codebase.
-    - Test: Anything related to testing.
     - Perf: Performance improvements.
-    - Build: Changes that affect the build system or external dependencies.
-    - Revert: Revert a previous commit.
-    - WIP: Work in progress.
+    - Refactor: Refactoring sections of the codebase.
     - Repo: Changes to the repository structure that do not affect code. (Eg. modification of the `README.md` file, etc.)
+    - Revert: Revert a previous commit.
+    - Style: Code style updates.
+    - Test: Anything related to testing.
+    - Trans: Translation and localization of Terra to other languages.
+    - WIP: Work in progress.
 - Separate the subject line from the body with a single blank line.
 - Do not end subject line with a period.
 - Limit the subject line to 50 or less.
