@@ -1,13 +1,13 @@
 # Contributing to Terra
 
-First off, thank you for considering contributing to Active Admin. It's people like you that make Active Admin such a great tool.
+First off, thank you for considering contributing to Terra. It's people like you that make Terra such a great tool.
 
 Following these guidelines helps to effectively use the time of the developers managing and developing this open source project, making it
 more enjoyable for all of us.
 
 Terra is an open source project and we love to receive contributions from our community, you! There are many ways to contribute, from
 writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code which can be
-incorporated into Elasticsearch itself.
+incorporated into Terra.
 
 The following is a set of guidelines for contributing to Terra and its packages, which are hosted in
 the [PolyhedralDev Organization](https://github.com/PolyhedralDev) on GitHub. These are mostly guidelines, not rules. Use your best
@@ -88,9 +88,7 @@ This section guides you through submitting a bug report for Terra. Following the
 your report, and spend their time fixing the issue instead of understanding what you mean.
 
 Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create
-one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill
-out [the required template](https://github.com/atom/.github/blob/master/.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for
-helps us resolve issues faster.
+one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report).
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
@@ -137,15 +135,13 @@ Include details about your configuration and environment:
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for Atom, including completely new features and minor improvements to
+This section guides you through submitting an enhancement suggestion for Terra, including completely new features and minor improvements to
 existing functionality. Following these guidelines helps maintainers and the community understand your suggestion and find related
 suggestions.
 
 Before creating enhancement suggestions, please check [this list](#before-submitting-an-enhancement-suggestion) as you might find out that
 you don't need to create one. When you are creating an enhancement suggestion,
-please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion). Fill
-in [the template](https://github.com/atom/.github/blob/master/.github/ISSUE_TEMPLATE/feature_request.md), including the steps that you
-imagine you would take if the feature you're requesting existed.
+please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion).
 
 #### Before Submitting An Enhancement Suggestion
 
@@ -171,18 +167,7 @@ and provide the following information:
 
 ### Pull Requests
 
-This section guides you through submitting a bug report for Terra. Following these guidelines helps maintainers and the community understand
-your report, and spend their time fixing the issue instead of understanding what you mean.
-
-This section guides you through submitting an enhancement suggestion for Atom, including completely new features and minor improvements to
-existing functionality. Following these guidelines helps maintainers and the community understand your suggestion and find related
-suggestions.
-
-- Your pull request must be either on the latest version of Terra, or on a branch for a future release.
-- Make sure that there are no already existing PRs that fix this. If so, it will be closed as a duplicate.
-- Make sure that this change is actually within the scope of Terra and is something a terrain generator should be doing.
-- Make sure that this is not an issue with a specific Terra *pack*, and instead applies to all of Terra.
-- Make sure that you have filled out all the required information and given descriptions of everything.
+This section guides you through submitting a pull request for Terra.
 
 While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete
 additional design work, tests, or other changes before your pull request can be ultimately accepted.
@@ -200,12 +185,11 @@ additional design work, tests, or other changes before your pull request can be 
 
 #### How Do I Submit A (Good) Pull Request?
 
-Pull Requests are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on our main repository and provide
-the following information:
-
+Pull Requests are tracked as [GitHub Pull Requests](https://guides.github.com/activities/forking/#making-a-pull-request). Create a pr on our
+main repository and provide the following information:
 
 - **Use a clear and descriptive title** to identify the pull request.
-- **State what issue this pull request fixes**.
+- **State what this pull request adds/fixes**.
 - **Be sure that you are the owner of the code you contributed** or that it can be licensed under the GPLv3.
 - **Provide a description goals and non-goals of the pull request** in as many details as possible.
 - **Describe the current behavior** and **explain which behavior you expected to see instead** and why.
@@ -290,8 +274,6 @@ automatically use the correct code style settings.
 TODO
 
 ## Coding Practices
-
-remember to write up detailed explanations of:
 
 ### Compatibility
 
