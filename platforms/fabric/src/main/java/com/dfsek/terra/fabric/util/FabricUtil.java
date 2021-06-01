@@ -17,11 +17,13 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public final class FabricUtil {
@@ -64,24 +66,23 @@ public final class FabricUtil {
         TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
 
         for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
-            Identifier key = BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(structureFeature.get());
-            if(!compatibilityOptions.getExcludedBiomeStructures().contains(key) && !postLoadCompatibilityOptions.getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
+            Identifier key = Objects.requireNonNull(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(structureFeature.get()));
+            if(compatibilityOptions.getStructureNamespaces().contains(key.getNamespace()) && !postLoadCompatibilityOptions.getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
                 generationSettings.structureFeature(structureFeature.get());
                 TerraFabricPlugin.getInstance().getDebugLogger().info("Injected structure " + key);
             }
         }
 
-        if(compatibilityOptions.doBiomeInjection()) {
-            for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
-                for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
-                    Identifier key = BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get());
-                    if(!compatibilityOptions.getExcludedBiomeFeatures().contains(key) && !postLoadCompatibilityOptions.getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
-                        generationSettings.feature(step, featureSupplier);
-                        TerraFabricPlugin.getInstance().getDebugLogger().info("Injected feature " + key + " at stage " + step);
-                    }
+        for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
+            for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
+                Identifier key = Objects.requireNonNull(BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get()));
+                if(compatibilityOptions.getFeatureNamespaces().contains(key.getNamespace()) && !postLoadCompatibilityOptions.getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
+                    generationSettings.feature(step, featureSupplier);
+                    TerraFabricPlugin.getInstance().getDebugLogger().info("Injected feature " + key + " at stage " + step);
                 }
             }
         }
+
 
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()

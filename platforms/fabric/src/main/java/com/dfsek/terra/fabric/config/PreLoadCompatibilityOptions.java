@@ -14,39 +14,32 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate {
     @Default
     private boolean doRegistryInjection = false;
 
-    @Value("features.inject-biome.enable")
+    @Value("features.inject-namespaces")
     @Default
-    private boolean doBiomeInjection = false;
+    private Set<String> featureNamespaces = new HashSet<>();
+
+    @Value("structures.inject-namespaces")
+    @Default
+    private Set<String> structureNamespaces = new HashSet<>();
 
     @Value("features.inject-registry.excluded-features")
     @Default
     private Set<Identifier> excludedRegistryFeatures = new HashSet<>();
 
-    @Value("features.inject-biome.excluded-features")
-    @Default
-    private Set<Identifier> excludedBiomeFeatures = new HashSet<>();
 
-    @Value("structures.inject-biome.excluded-features")
-    @Default
-    private Set<Identifier> excludedBiomeStructures = new HashSet<>();
+    public Set<String> getFeatureNamespaces() {
+        return featureNamespaces;
+    }
 
-    public boolean doBiomeInjection() {
-        return doBiomeInjection;
+    public Set<String> getStructureNamespaces() {
+        return structureNamespaces;
     }
 
     public boolean doRegistryInjection() {
         return doRegistryInjection;
     }
 
-    public Set<Identifier> getExcludedBiomeFeatures() {
-        return excludedBiomeFeatures;
-    }
-
     public Set<Identifier> getExcludedRegistryFeatures() {
         return excludedRegistryFeatures;
-    }
-
-    public Set<Identifier> getExcludedBiomeStructures() {
-        return excludedBiomeStructures;
     }
 }
