@@ -9,9 +9,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ModDependentConfigSection<T> {
+    private static final Object NULL = new Object(); // Null object
     private final TerraPlugin main;
     private final Map<String, T> results = new HashMap<>();
     private final T defaultValue;
+    @SuppressWarnings("unchecked")
+    private T value = (T) NULL;
 
     protected ModDependentConfigSection(TerraPlugin main, T defaultValue) {
         this.main = main;
@@ -27,6 +30,11 @@ public class ModDependentConfigSection<T> {
     }
 
     public T get() {
+        if(value == NULL) value = compute(); // Cache the value.
+        return value;
+    }
+
+    private T compute() {
         if(main != null) {
             Set<String> mods = main.getMods().stream().map(Mod::getID).collect(Collectors.toSet());
             for(Map.Entry<String, T> entry : results.entrySet()) {
