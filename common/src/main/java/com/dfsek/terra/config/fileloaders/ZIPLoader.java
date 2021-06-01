@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.fileloaders;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -20,7 +21,7 @@ public class ZIPLoader extends Loader {
             ZipEntry entry = entries.nextElement();
             if(!entry.isDirectory() && entry.getName().equals(singleFile)) return file.getInputStream(entry);
         }
-        throw new IllegalArgumentException("No such file: " + singleFile);
+        throw new FileNotFoundException("No such file: " + singleFile);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.dfsek.terra.fabric;
 
+import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
@@ -71,6 +73,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -307,8 +310,13 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
 
+        private final Map<ConfigPack, Configuration> compatConfigs = new HashMap<>();
+
+        private final ConfigLoader compatLoader = new ConfigLoader();
+
         private FabricAddon(TerraPlugin main) {
             this.main = main;
+            main.register(compatLoader);
         }
 
         @Override
@@ -340,9 +348,24 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
             injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
 
-            PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
+            Configuration compat;
+
             try {
-                event.loadTemplate(template);
+                compat = new Configuration(event.getLoader().get("compat.yml"));
+                main.logger().info("Loading compatibility options from compat.yml.");
+            } catch(FileNotFoundException e) {
+                compat = new Configuration(new HashMap<>()); // blank config
+                main.logger().info("No compat.yml found, not loading compatibility options.");
+            } catch(IOException e) {
+                throw new RuntimeException("Failed to load compatibility config", e); // Something went wrong.
+            }
+
+            compatConfigs.put(event.getPack(), compat);
+
+            PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
+
+            try {
+                compatLoader.load(template, compat);
             } catch(ConfigException e) {
                 e.printStackTrace();
             }
@@ -359,6 +382,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 });
             }
             templates.put(event.getPack(), Pair.of(template, null));
+
         }
 
         @Priority(Priority.HIGHEST)
@@ -367,7 +391,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
 
             try {
-                event.loadTemplate(template);
+                compatLoader.load(template, compatConfigs.get(event.getPack()));
             } catch(ConfigException e) {
                 e.printStackTrace();
             }
