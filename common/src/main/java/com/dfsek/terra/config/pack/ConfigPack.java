@@ -138,7 +138,7 @@ public class ConfigPack implements LoaderRegistrar {
 
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
-                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration), loader));
 
                 load(l, main);
 
@@ -185,7 +185,7 @@ public class ConfigPack implements LoaderRegistrar {
                 selfLoader.load(template, configuration);
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
-                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration), loader));
 
                 load(l, main);
 
@@ -253,7 +253,7 @@ public class ConfigPack implements LoaderRegistrar {
                 .open("flora", ".yml").then(configs -> buildAll(new FloraFactory(), floraRegistry, abstractConfigLoader.loadConfigs(configs, FloraTemplate::new), main)).close()
                 .open("biomes", ".yml").then(configs -> buildAll(new BiomeFactory(this), biomeRegistry, abstractConfigLoader.loadConfigs(configs, () -> new BiomeTemplate(this, main)), main)).close();
 
-        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
+        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration), loader));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 

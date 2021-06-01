@@ -3,6 +3,7 @@ package com.dfsek.terra.api.event.events.config;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.event.events.PackEvent;
+import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.pack.ConfigPack;
 
 /**
@@ -11,10 +12,12 @@ import com.dfsek.terra.config.pack.ConfigPack;
 public abstract class ConfigPackLoadEvent implements PackEvent {
     private final ConfigPack pack;
     private final ExceptionalConsumer<ConfigTemplate> configLoader;
+    private final Loader loader;
 
-    public ConfigPackLoadEvent(ConfigPack pack, ExceptionalConsumer<ConfigTemplate> configLoader) {
+    public ConfigPackLoadEvent(ConfigPack pack, ExceptionalConsumer<ConfigTemplate> configLoader, Loader loader) {
         this.pack = pack;
         this.configLoader = configLoader;
+        this.loader = loader;
     }
 
     @Override
@@ -33,5 +36,9 @@ public abstract class ConfigPackLoadEvent implements PackEvent {
 
     public interface ExceptionalConsumer<T extends ConfigTemplate> {
         void accept(T value) throws ConfigException;
+    }
+
+    public Loader getLoader() {
+        return loader;
     }
 }
