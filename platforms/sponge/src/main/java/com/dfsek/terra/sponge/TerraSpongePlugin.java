@@ -72,9 +72,8 @@ public class TerraSpongePlugin implements TerraPlugin {
 
 
     @Listener
-    public void initialize(StartedEngineEvent<Server> event) {
+    public void initialize(org.spongepowered.api.event.lifecycle.StartingEngineEvent<Server> event) {
         plugin.logger().info("Loading Terra...");
-        plugin.logger().info("Config: " + getDataFolder());
         addonRegistry.loadAll();
         configRegistry.loadAll(this);
     }
