@@ -1,4 +1,4 @@
-package com.dfsek.terra.sponge.world;
+package com.dfsek.terra.sponge.handle;
 
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.entity.EntityType;
