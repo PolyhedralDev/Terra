@@ -14,10 +14,12 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.handle.ItemHandle;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.platform.world.Biome;
 import com.dfsek.terra.api.platform.world.Tree;
 import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
@@ -30,19 +32,28 @@ import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.sponge.handle.SpongeItemHandle;
 import com.dfsek.terra.sponge.handle.SpongeWorldHandle;
+import com.dfsek.terra.sponge.intern.util.SpongeUtil;
 import com.dfsek.terra.sponge.world.SpongeTree;
 import com.dfsek.terra.world.TerraWorld;
 import com.google.inject.Inject;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.dimension.DimensionType;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
+import org.spongepowered.api.event.lifecycle.StartingEngineEvent;
+import org.spongepowered.api.registry.Registry;
+import org.spongepowered.api.world.biome.Biomes;
+import org.spongepowered.api.world.server.ServerWorld;
 import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.jvm.Plugin;
 
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Plugin("terra")
 public class TerraSpongePlugin implements TerraPlugin {
@@ -53,7 +64,9 @@ public class TerraSpongePlugin implements TerraPlugin {
     private final AddonRegistry addonRegistry;
     private final LockedRegistry<TerraAddon> addonLockedRegistry;
 
+    private static TerraSpongePlugin INSTANCE;
 
+    private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
 
     private final PluginContainer plugin;
 
@@ -61,18 +74,22 @@ public class TerraSpongePlugin implements TerraPlugin {
 
     private final WorldHandle worldHandle = new SpongeWorldHandle();
 
-    Profiler profiler = new ProfilerImpl();
+    private final Profiler profiler = new ProfilerImpl();
 
     @Inject
     public TerraSpongePlugin(PluginContainer plugin) {
         this.plugin = plugin;
         this.addonRegistry = new AddonRegistry(new SpongeAddon(this), this);
         this.addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+        INSTANCE = this;
     }
 
+    public static TerraSpongePlugin getInstance() {
+        return INSTANCE;
+    }
 
     @Listener
-    public void initialize(org.spongepowered.api.event.lifecycle.StartingEngineEvent<Server> event) {
+    public void initialize(StartingEngineEvent<Server> event) {
         plugin.logger().info("Loading Terra...");
         addonRegistry.loadAll();
         configRegistry.loadAll(this);
@@ -81,7 +98,8 @@ public class TerraSpongePlugin implements TerraPlugin {
     @Override
     public void register(TypeRegistry registry) {
         loaders.register(registry);
-        registry.registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o));
+        registry.registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
+        .registerLoader(Biome.class, (t, o, l) -> SpongeUtil.BIOME_FIXER.translate((String) o));
     }
 
     @Override
@@ -91,7 +109,13 @@ public class TerraSpongePlugin implements TerraPlugin {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return null;
+        return getWorld(((LevelReader) world).dimensionType());
+    }
+
+    public TerraWorld getWorld(DimensionType type) {
+        TerraWorld world = worldMap.get(type).getRight();
+        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
+        return world;
     }
 
     @Override
