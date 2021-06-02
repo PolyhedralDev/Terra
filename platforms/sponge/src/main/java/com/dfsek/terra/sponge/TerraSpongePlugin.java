@@ -20,17 +20,21 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.sponge.world.SpongeWorldHandle;
 import com.dfsek.terra.world.TerraWorld;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.spongepowered.api.Server;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
-import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
+import org.spongepowered.plugin.PluginContainer;
+import org.spongepowered.plugin.jvm.Plugin;
+
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Plugin(id = "terra", name = "Terra-Sponge", version = "", description = "Terra")
+@Plugin("terra")
 public class TerraSpongePlugin implements TerraPlugin {
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> packCheckedRegistry = new CheckedRegistry<>(configRegistry);
@@ -42,16 +46,18 @@ public class TerraSpongePlugin implements TerraPlugin {
 
     private final EventManager eventManager = new TerraEventManager(this);
 
-    @Inject
-    @ConfigDir(sharedRoot = false)
-    private Path privateConfigDir;
+    private final PluginContainer plugin;
 
     @Inject
-    private Logger logger;
+    public TerraSpongePlugin(PluginContainer plugin) {
+        this.plugin = plugin;
+    }
 
 
     @Listener
-    public void initialize(GameStartedServerEvent event) {
+    public void initialize(StartedEngineEvent<Server> event) {
+        plugin.logger().info("Loading Terra...");
+        plugin.logger().info("Config: " + getDataFolder());
         addonRegistry.loadAll();
         configRegistry.loadAll(this);
     }
@@ -73,7 +79,7 @@ public class TerraSpongePlugin implements TerraPlugin {
 
     @Override
     public com.dfsek.terra.api.util.logging.Logger logger() {
-        return new SpongeLogger(logger);
+        return new SpongeLogger(plugin.logger());
     }
 
     @Override
@@ -83,7 +89,7 @@ public class TerraSpongePlugin implements TerraPlugin {
 
     @Override
     public File getDataFolder() {
-        return privateConfigDir.toFile();
+        return Sponge.configManager().pluginConfig(plugin).directory().toFile();
     }
 
     @Override

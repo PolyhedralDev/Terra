@@ -10,7 +10,7 @@ import org.spongepowered.api.block.BlockState;
 public class SpongeWorldHandle implements WorldHandle {
     @Override
     public BlockData createBlockData(String data) {
-        return SpongeAdapter.adapt(Sponge.getRegistry().getType(BlockState.class, data).orElseThrow(() -> new IllegalArgumentException("Invalid block data \"" + data + "\"")));
+        return SpongeAdapter.adapt(BlockState.fromString(data));
     }
 
     @Override
