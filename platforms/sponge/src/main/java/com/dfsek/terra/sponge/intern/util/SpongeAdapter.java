@@ -1,7 +1,10 @@
 package com.dfsek.terra.sponge.intern.util;
 
 import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.sponge.world.block.data.SpongeBlockData;
 import net.minecraft.core.BlockPos;
+import org.spongepowered.api.block.BlockState;
 
 public final class SpongeAdapter {
     public static Vector3 adapt(BlockPos pos) {
@@ -10,5 +13,9 @@ public final class SpongeAdapter {
 
     public static BlockPos adapt(Vector3 vec) {
         return new BlockPos(vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());
+    }
+
+    public static BlockData adapt(BlockState state) {
+        return new SpongeBlockData(state);
     }
 }

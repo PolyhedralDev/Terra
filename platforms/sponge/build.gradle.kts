@@ -17,6 +17,10 @@ repositories {
 
 dependencies {
     "compileOnly"("org.spongepowered:spongeapi:8.0.0-SNAPSHOT")
+
+    "annotationProcessor"("org.spongepowered:mixin:0.8.2:processor")
+
+    "compileOnly"("org.spongepowered:mixin:0.8.2")
     "shadedApi"(project(":common"))
     "shadedImplementation"("org.yaml:snakeyaml:1.27")
     "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
@@ -33,5 +37,13 @@ minecraft {
     runs {
         server()
         client()
+    }
+}
+
+tasks.named<Jar>("jar") {
+    manifest {
+        attributes(
+                mapOf("MixinConfigs" to "terra.mixins.json")
+        )
     }
 }

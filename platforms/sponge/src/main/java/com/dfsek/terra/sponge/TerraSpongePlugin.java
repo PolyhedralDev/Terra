@@ -192,6 +192,10 @@ public class TerraSpongePlugin implements TerraPlugin {
         return profiler;
     }
 
+    public Map<DimensionType,Pair<ServerWorld, TerraWorld>> getWorldMap() {
+        return worldMap;
+    }
+
     @Addon("Terra-Sponge")
     @Author("Terra")
     @Version("1.0.0")

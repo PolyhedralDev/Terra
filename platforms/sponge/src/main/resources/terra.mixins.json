@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.dfsek.terra.sponge.intern.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "terra-refmap.json",
+  "mixins": [
+    "ServerLevelMixin"
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

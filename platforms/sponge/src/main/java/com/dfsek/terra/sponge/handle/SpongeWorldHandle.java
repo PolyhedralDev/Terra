@@ -3,7 +3,7 @@ package com.dfsek.terra.sponge.handle;
 import com.dfsek.terra.api.platform.block.BlockData;
 import com.dfsek.terra.api.platform.entity.EntityType;
 import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.sponge.SpongeAdapter;
+import com.dfsek.terra.sponge.intern.util.SpongeAdapter;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockState;
 
