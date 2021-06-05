@@ -5,18 +5,20 @@ import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.vector.Vector3;
 import com.dfsek.terra.api.platform.block.Block;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.platform.world.Chunk;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import net.jafama.FastMath;
 
+import java.util.Map;
 import java.util.Random;
 
 
 public class VanillaOre extends Ore {
     private final Range sizeRange;
 
-    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, TerraPlugin main) {
-        super(material, replaceable, applyGravity, main);
+    public VanillaOre(BlockData material, MaterialSet replaceable, boolean applyGravity, Range size, TerraPlugin main, Map<BlockType, BlockData> materials) {
+        super(material, replaceable, applyGravity, main, materials);
         this.sizeRange = size;
     }
 
@@ -67,8 +69,9 @@ public class VanillaOre extends Ore {
                                 double d15 = (z + 0.5D - (d3 + (d4 - d3) * iFactor)) / (d11 / 2.0D);
                                 if(x > 15 || z > 15 || y > 255 || x < 0 || z < 0 || y < 0) continue;
                                 Block block = chunk.getBlock(x, y, z);
-                                if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block.getType())) {
-                                    block.setBlockData(getMaterial(), isApplyGravity());
+                                BlockType type = block.getType();
+                                if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(type)) {
+                                    block.setBlockData(getMaterial(type), isApplyGravity());
                                 }
                             }
                         }
