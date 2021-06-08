@@ -98,7 +98,7 @@ public abstract class Worm {
                     if(!(FastMath.floorDiv(origin.getBlockZ() + z, 16) == chunkZ)) continue;
                     for(int y = -yRad - 1; y <= yRad + 1; y++) {
                         Vector3 position = origin.clone().add(new Vector3(x, y, z));
-                        if(position.getY() < world.getMinHeight() || position.getY() > 255) continue;
+                        if(position.getY() < world.getMinHeight() || position.getY() > world.getMaxHeight()) continue;
                         double eq = ellipseEquation(x, y, z, xRad, yRad, zRad);
                         if(eq <= 1 &&
                                 y >= -yRad - 1 + bottomCut && y <= yRad + 1 - topCut) {
