@@ -35,12 +35,12 @@ public class DeformedSphereOre extends Ore {
             for(int y = -rad; y <= rad; y++) {
                 for(int z = -rad; z <= rad; z++) {
                     Vector3 oreLoc = origin.clone().add(new Vector3(x, y, z));
-                    if(oreLoc.getBlockX() > 15 || oreLoc.getBlockZ() > 15 || oreLoc.getBlockY() > 255 || oreLoc.getBlockX() < 0 || oreLoc.getBlockZ() < 0 || oreLoc.getBlockY() < 0)
+                    if(oreLoc.getBlockX() > 15 || oreLoc.getBlockZ() > 15 || oreLoc.getBlockY() > c.getWorld().getMaxHeight() || oreLoc.getBlockX() < 0 || oreLoc.getBlockZ() < 0 || oreLoc.getBlockY() < c.getWorld().getMinHeight())
                         continue;
                     if(oreLoc.distance(origin) < (rad + 0.5) * ((ore.getNoise(x, y, z) + 1) * deform)) {
                         Block b = c.getBlock(oreLoc.getBlockX(), oreLoc.getBlockY(), oreLoc.getBlockZ());
                         BlockType type = b.getType();
-                        if(getReplaceable().contains(type) && b.getLocation().getY() >= 0)
+                        if(getReplaceable().contains(type) && b.getLocation().getY() >= c.getWorld().getMinHeight())
                             b.setBlockData(getMaterial(type), isApplyGravity());
                     }
                 }
