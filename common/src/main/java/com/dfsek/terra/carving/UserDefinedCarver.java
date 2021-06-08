@@ -116,7 +116,7 @@ public class UserDefinedCarver extends Carver {
                         Vector3 origin = point.getOrigin();
                         if(FastMath.floorDiv(origin.getBlockX(), 16) != chunkX && FastMath.floorDiv(origin.getBlockZ(), 16) != chunkZ) // We only want to carve this chunk.
                             return;
-                        point.carve(chunkX, chunkZ, consumer);
+                        point.carve(chunkX, chunkZ, consumer, w);
                     });
                 }
             }

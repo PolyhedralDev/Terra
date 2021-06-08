@@ -9,6 +9,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(BlockEntity.class)
 @Implements(@Interface(iface = BlockState.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockEntityMixin {
+    @Final
     @Shadow
     protected BlockPos pos;
     @Shadow
@@ -56,7 +58,7 @@ public abstract class BlockEntityMixin {
     }
 
     public boolean terra$update(boolean applyPhysics) {
-        if(hasWorld()) world.getChunk(pos).setBlockEntity(pos, (BlockEntity) (Object) this);
+        if(hasWorld()) world.getChunk(pos).setBlockEntity((BlockEntity) (Object) this);
         return true;
     }
 }

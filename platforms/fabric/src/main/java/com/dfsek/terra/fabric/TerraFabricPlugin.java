@@ -264,7 +264,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
 
         Registry.register(Registry.FEATURE, new Identifier("terra", "populator"), POPULATOR_FEATURE);
-        RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("terra", "populator"));
+        RegistryKey<ConfiguredFeature<?, ?>> floraKey = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("terra", "populator"));
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, floraKey.getValue(), POPULATOR_CONFIGURED_FEATURE);
 
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
@@ -319,7 +319,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "LARGE_OAK", ConfiguredFeatures.FANCY_OAK);
             injectTree(treeRegistry, "LARGE_SPRUCE", ConfiguredFeatures.PINE);
             injectTree(treeRegistry, "SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE);
-            injectTree(treeRegistry, "SWAMP_OAK", ConfiguredFeatures.SWAMP_TREE);
+            injectTree(treeRegistry, "SWAMP_OAK", ConfiguredFeatures.SWAMP_OAK);
             injectTree(treeRegistry, "TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL);
             injectTree(treeRegistry, "ACACIA", ConfiguredFeatures.ACACIA);
             injectTree(treeRegistry, "BIRCH", ConfiguredFeatures.BIRCH);

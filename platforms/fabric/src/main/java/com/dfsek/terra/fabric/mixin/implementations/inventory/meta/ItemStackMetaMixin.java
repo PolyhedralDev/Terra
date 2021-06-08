@@ -3,8 +3,8 @@ package com.dfsek.terra.fabric.mixin.implementations.inventory.meta;
 import com.dfsek.terra.api.platform.inventory.item.Enchantment;
 import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -23,7 +23,7 @@ public abstract class ItemStackMetaMixin {
     public abstract boolean hasEnchantments();
 
     @Shadow
-    public abstract ListTag getEnchantments();
+    public abstract NbtList getEnchantments();
 
     @Shadow
     public abstract void addEnchantment(net.minecraft.enchantment.Enchantment enchantment, int level);
@@ -39,7 +39,7 @@ public abstract class ItemStackMetaMixin {
         Map<Enchantment, Integer> map = new HashMap<>();
 
         getEnchantments().forEach(enchantment -> {
-            CompoundTag eTag = (CompoundTag) enchantment;
+            NbtCompound eTag = (NbtCompound) enchantment;
             map.put((Enchantment) Registry.ENCHANTMENT.get(eTag.getInt("id")), eTag.getInt("lvl"));
         });
         return map;

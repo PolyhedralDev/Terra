@@ -90,7 +90,7 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                     Location mut = l.clone();
                     BlockData orig = l.getBlock().getBlockData();
                     do mut.subtract(0, 1, 0);
-                    while(mut.getY() > 0 && mut.getBlock().getBlockData().matches(orig));
+                    while(mut.getY() > world.getMinHeight() && mut.getBlock().getBlockData().matches(orig));
                     try {
                         if(template.getShift().get(entry.getValue().getBlockType()).contains(mut.getBlock().getBlockData().getBlockType())) {
                             mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);

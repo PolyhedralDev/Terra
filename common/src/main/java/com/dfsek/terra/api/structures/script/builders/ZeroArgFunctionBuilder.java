@@ -42,7 +42,7 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
 
     @Override
     public int argNumber() {
-        return 1;
+        return 0;
     }
 
     @Override

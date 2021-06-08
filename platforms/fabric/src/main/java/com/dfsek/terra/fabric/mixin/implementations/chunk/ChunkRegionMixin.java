@@ -7,6 +7,7 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.fabric.block.FabricBlock;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ChunkRegion;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
@@ -20,18 +21,14 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class ChunkRegionMixin {
     @Final
     @Shadow
-    private int centerChunkX;
-
-    @Final
-    @Shadow
-    private int centerChunkZ;
+    private ChunkPos centerPos;
 
     public int terra$getX() {
-        return centerChunkX;
+        return centerPos.x;
     }
 
     public int terra$getZ() {
-        return centerChunkZ;
+        return centerPos.z;
     }
 
     public World terra$getWorld() {
@@ -39,7 +36,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public Block terra$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4));
+        BlockPos pos = new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4));
         return new FabricBlock(pos, (ChunkRegion) (Object) this);
     }
 
@@ -48,7 +45,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerChunkX << 4), y, z + (centerChunkZ << 4)), ((FabricBlockData) blockData).getHandle(), 0);
+        ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4)), ((FabricBlockData) blockData).getHandle(), 0);
     }
 
     // getHandle already added in world/ChunkRegionMixin.

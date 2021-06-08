@@ -7,7 +7,7 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     `java-library`
     `maven-publish`
-    id("fabric-loom").version("0.6-SNAPSHOT")
+    id("fabric-loom").version("0.8-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
@@ -23,9 +23,9 @@ group = "com.dfsek.terra.fabric"
 dependencies {
     "shadedApi"(project(":common"))
 
-    "minecraft"("com.mojang:minecraft:1.16.5")
-    "mappings"("net.fabricmc:yarn:1.16.5+build.5:v2")
-    "modImplementation"("net.fabricmc:fabric-loader:0.11.2")
+    "minecraft"("com.mojang:minecraft:1.17")
+    "mappings"("net.fabricmc:yarn:1.17+build.1:v2")
+    "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
 
     "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
         exclude(group = "com.google.guava", module = "guava")
@@ -34,6 +34,11 @@ dependencies {
         exclude(group = "org.apache.logging.log4j", module = "log4j-api")
         exclude(group = "org.apache.logging.log4j", module = "log4j-core")
     }
+}
+
+tasks.named<ShadowJar>("shadowJar") {
+    relocate("org.json", "com.dfsek.terra.lib.json")
+    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
 
