@@ -5,6 +5,7 @@ import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -30,11 +31,9 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ProtoChunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
@@ -137,7 +136,13 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
-            delegate.generateChunkData((World) ((StructureAccessorAccessor) accessor).getWorld(), new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
+            World world = (World) ((StructureAccessorAccessor) accessor).getWorld();
+            delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
+            delegate.getPopulators().forEach(populator -> {
+                if(populator instanceof Chunkified) {
+                    populator.populate(world, (com.dfsek.terra.api.platform.world.Chunk) world);
+                }
+            });
             return chunk;
         }, executor);
     }
