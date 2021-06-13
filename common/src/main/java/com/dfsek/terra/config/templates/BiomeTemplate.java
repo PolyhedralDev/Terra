@@ -30,6 +30,7 @@ import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -39,11 +40,14 @@ import java.util.Set;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
-
     private final ConfigPack pack;
 
     @Value("id")
     private String id;
+
+    @Value("extends")
+    @Default
+    private List<String> extended = Collections.emptyList();
 
     @Value("variables")
     @Abstractable
@@ -190,6 +194,10 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
     @Abstractable
     @Default
     private Map<String, Integer> colors = new HashMap<>(); // Plain ol' map, so platforms can decide what to do with colors (if anything).
+
+    public List<String> getExtended() {
+        return extended;
+    }
 
     public Set<String> getTags() {
         return tags;
