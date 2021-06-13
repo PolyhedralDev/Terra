@@ -36,8 +36,6 @@ public class BiomeInfoCommand implements CommandTemplate {
         if(biome instanceof UserDefinedBiome) {
             BiomeTemplate bio = ((UserDefinedBiome) biome).getConfig();
 
-            if(bio.getExtend() != null) sender.sendMessage("Extends: " + bio.getExtend());
-
             List<TerraStructure> structureConfigs = bio.getStructures();
 
             if(structureConfigs.size() == 0) sender.sendMessage("No Structures");
