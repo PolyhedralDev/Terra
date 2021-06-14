@@ -4,6 +4,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.terra.api.config.meta.MetaValue;
 import com.dfsek.terra.api.math.noise.NoiseSampler;
 import com.dfsek.terra.api.math.noise.samplers.KernelSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
@@ -14,18 +15,18 @@ import java.util.List;
 public class KernelTemplate extends SamplerTemplate<KernelSampler> implements ValidatedConfigTemplate {
 
     @Value("kernel")
-    private List<List<Double>> kernel;
+    private List<List<MetaValue<Double>>> kernel;
 
     @Value("factor")
     @Default
-    private double factor = 1;
+    private MetaValue<Double> factor = MetaValue.of(1d);
 
     @Value("function")
-    private NoiseSeeded function;
+    private MetaValue<NoiseSeeded> function;
 
     @Value("frequency")
     @Default
-    private double frequency = 1;
+    private MetaValue<Double> frequency = MetaValue.of(1d);
 
     @Override
     public NoiseSampler apply(Long seed) {
@@ -33,12 +34,12 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
 
         for(int x = 0; x < kernel.size(); x++) {
             for(int y = 0; y < kernel.get(x).size(); y++) {
-                k[x][y] = kernel.get(x).get(y) * factor;
+                k[x][y] = kernel.get(x).get(y).get() * factor.get();
             }
         }
 
-        KernelSampler sampler = new KernelSampler(k, function.apply(seed));
-        sampler.setFrequency(frequency);
+        KernelSampler sampler = new KernelSampler(k, function.get().apply(seed));
+        sampler.setFrequency(frequency.get());
         return sampler;
     }
 
