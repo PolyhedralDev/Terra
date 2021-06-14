@@ -4,6 +4,9 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.config.meta.MetaValue;
+import com.dfsek.terra.api.util.MapUtil;
+import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
@@ -12,14 +15,24 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class ConfigPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
 
+    @Value("version")
+    @Default
+    private String version = "0.1.0";
+
+    @Value("author")
+    @Default
+    private String author = "Anon Y. Mous";
+
     @Value("noise")
-    private Map<String, NoiseSeeded> noiseBuilderMap;
+    private Map<String, MetaValue<NoiseSeeded>> noiseBuilderMap;
+    private final Lazy<Map<String, NoiseSeeded>> lazyNoiseBuilderMap = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, noiseBuilderMap));
 
     @Value("addons")
     @Default
@@ -27,94 +40,89 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("variables")
     @Default
-    private Map<String, Double> variables = new HashMap<>();
+    private Map<String, MetaValue<Double>> variables = new HashMap<>();
+    private final Lazy<Map<String, Double>> lazyVariables = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, variables));
 
     @Value("beta.carving")
     @Default
-    private boolean betaCarvers = false;
+    private MetaValue<Boolean> betaCarvers = MetaValue.of(false);
 
     @Value("functions")
     @Default
-    private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
+    private LinkedHashMap<String, MetaValue<FunctionTemplate>> functions = new LinkedHashMap<>();
+    private final Lazy<LinkedHashMap<String, FunctionTemplate>> lazyFunctions = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, functions, LinkedHashMap::new));
 
     @Value("structures.locatable")
     @Default
-    private Map<String, String> locatable = new HashMap<>();
+    private Map<String, MetaValue<String>> locatable = new HashMap<>();
+    private final Lazy<Map<String, String>> lazyLocatable = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, locatable));
 
     @Value("blend.terrain.elevation")
     @Default
-    private int elevationBlend = 4;
+    private MetaValue<Integer> elevationBlend = MetaValue.of(4);
 
     @Value("vanilla.mobs")
     @Default
-    private boolean vanillaMobs = true;
+    private MetaValue<Boolean> vanillaMobs = MetaValue.of(true);
 
     @Value("vanilla.caves")
     @Default
-    private boolean vanillaCaves = false;
+    private MetaValue<Boolean> vanillaCaves = MetaValue.of(false);
 
     @Value("vanilla.decorations")
     @Default
-    private boolean vanillaDecorations = false;
+    private MetaValue<Boolean> vanillaDecorations = MetaValue.of(false);
 
     @Value("vanilla.structures")
     @Default
-    private boolean vanillaStructures = false;
-
-    @Value("author")
-    @Default
-    private String author = "Anon Y. Mous";
+    private MetaValue<Boolean> vanillaStructures = MetaValue.of(false);
 
     @Value("disable.sapling")
     @Default
-    private boolean disableSaplings = false;
-
-    @Value("version")
-    @Default
-    private String version = "0.1.0";
+    private MetaValue<Boolean> disableSaplings = MetaValue.of(false);
 
     @Value("disable.carvers")
     @Default
-    private boolean disableCarvers = false;
+    private MetaValue<Boolean> disableCarvers = MetaValue.of(false);
 
     @Value("disable.structures")
     @Default
-    private boolean disableStructures = false;
+    private MetaValue<Boolean> disableStructures = MetaValue.of(false);
 
     @Value("disable.ores")
     @Default
-    private boolean disableOres = false;
+    private MetaValue<Boolean> disableOres = MetaValue.of(false);
 
     @Value("disable.trees")
     @Default
-    private boolean disableTrees = false;
+    private MetaValue<Boolean> disableTrees = MetaValue.of(false);
 
     @Value("disable.flora")
     @Default
-    private boolean disableFlora = false;
+    private MetaValue<Boolean> disableFlora = MetaValue.of(false);
 
     public boolean disableCarvers() {
-        return disableCarvers;
+        return disableCarvers.get();
     }
 
     public boolean disableFlora() {
-        return disableFlora;
+        return disableFlora.get();
     }
 
     public boolean disableOres() {
-        return disableOres;
+        return disableOres.get();
     }
 
     public boolean disableStructures() {
-        return disableStructures;
+        return disableStructures.get();
     }
 
     public boolean disableTrees() {
-        return disableTrees;
+        return disableTrees.get();
     }
 
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
-        return functions;
+        return lazyFunctions.get();
     }
 
     public String getVersion() {
@@ -122,7 +130,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     }
 
     public boolean isDisableSaplings() {
-        return disableSaplings;
+        return disableSaplings.get();
     }
 
     public String getID() {
@@ -134,39 +142,39 @@ public class ConfigPackTemplate implements ConfigTemplate {
     }
 
     public boolean vanillaMobs() {
-        return vanillaMobs;
+        return vanillaMobs.get();
     }
 
     public boolean vanillaCaves() {
-        return vanillaCaves;
+        return vanillaCaves.get();
     }
 
     public boolean vanillaDecorations() {
-        return vanillaDecorations;
+        return vanillaDecorations.get();
     }
 
     public boolean vanillaStructures() {
-        return vanillaStructures;
+        return vanillaStructures.get();
     }
 
     public Map<String, NoiseSeeded> getNoiseBuilderMap() {
-        return noiseBuilderMap;
+        return lazyNoiseBuilderMap.get();
     }
 
     public Map<String, Double> getVariables() {
-        return variables;
+        return lazyVariables.get();
     }
 
     public int getElevationBlend() {
-        return elevationBlend;
+        return elevationBlend.get();
     }
 
     public Map<String, String> getLocatable() {
-        return locatable;
+        return lazyLocatable.get();
     }
 
     public boolean doBetaCarvers() {
-        return betaCarvers;
+        return betaCarvers.get();
     }
 
     public Set<TerraAddon> getAddons() {

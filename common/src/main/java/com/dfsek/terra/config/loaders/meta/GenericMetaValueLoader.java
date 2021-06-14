@@ -22,7 +22,7 @@ public class GenericMetaValueLoader extends MetaValueLoader<MetaValue<Object>, O
                 String possibleMeta = (String) c;
                 if(possibleMeta.startsWith("$")) {
                     String meta = possibleMeta.substring(1);
-                    return context.load(meta, generic);
+                    return MetaValue.of(context.load(meta, generic));
                 }
             }
 
