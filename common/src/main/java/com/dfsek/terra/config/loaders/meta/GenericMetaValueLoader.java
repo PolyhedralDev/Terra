@@ -8,8 +8,6 @@ import com.dfsek.terra.api.util.collections.ProbabilityCollection;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
 
 public class GenericMetaValueLoader extends MetaValueLoader<MetaValue<Object>, Object> {
     protected GenericMetaValueLoader(MetaContext context) {
@@ -24,8 +22,7 @@ public class GenericMetaValueLoader extends MetaValueLoader<MetaValue<Object>, O
             ParameterizedType pType = (ParameterizedType) type;
             Type generic = pType.getActualTypeArguments()[0];
             if(c instanceof String) {
-                String possibleMeta = ((String) c).trim();
-                // TODO: parse meta string
+
             }
 
             return MetaValue.of(loader.loadType(generic, c));
