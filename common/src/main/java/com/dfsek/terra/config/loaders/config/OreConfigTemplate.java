@@ -6,6 +6,7 @@ import com.dfsek.terra.api.config.meta.MetaValue;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.world.population.items.ores.OreConfig;
 
+@SuppressWarnings("unused")
 public class OreConfigTemplate implements ObjectTemplate<OreConfig> {
     @Value("min")
     private MetaValue<Integer> min;
