@@ -27,7 +27,7 @@ import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
 import com.dfsek.terra.config.loaders.config.FloraLayerTemplate;
 import com.dfsek.terra.config.loaders.config.GridSpawnTemplate;
-import com.dfsek.terra.config.loaders.config.OreConfigLoader;
+import com.dfsek.terra.config.loaders.config.OreConfigTemplate;
 import com.dfsek.terra.config.loaders.config.OreHolderLoader;
 import com.dfsek.terra.config.loaders.config.TreeLayerLoader;
 import com.dfsek.terra.config.loaders.config.biome.BiomeProviderBuilderLoader;
@@ -74,7 +74,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(PaletteLayerHolder.class, new PaletteLayerLoader())
                 .registerLoader(FloraLayer.class, FloraLayerTemplate::new)
                 .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf(o.toString()))
-                .registerLoader(OreConfig.class, new OreConfigLoader())
+                .registerLoader(OreConfig.class, OreConfigTemplate::new)
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
