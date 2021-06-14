@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.config.meta.specific.number;
+package com.dfsek.terra.api.config.meta.type.number;
 
 import com.dfsek.terra.api.config.meta.MetaValue;
 

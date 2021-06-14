@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.config.meta.specific;
+package com.dfsek.terra.api.config.meta.type;
 
 import com.dfsek.terra.api.config.meta.MetaValue;
 

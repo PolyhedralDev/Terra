@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders.meta;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.config.meta.MetaContext;
-import com.dfsek.terra.api.config.meta.specific.MetaList;
+import com.dfsek.terra.api.config.meta.type.MetaList;
 import com.dfsek.terra.api.util.GlueList;
 
 import java.lang.reflect.Type;
