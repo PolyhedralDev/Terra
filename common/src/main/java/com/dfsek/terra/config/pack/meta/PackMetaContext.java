@@ -1,13 +1,13 @@
 package com.dfsek.terra.config.pack.meta;
 
 import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.config.meta.MetaContext;
 import com.dfsek.terra.config.fileloaders.Loader;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,8 +21,9 @@ public class PackMetaContext implements MetaContext {
         this.loader = loader;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T> T load(String meta, Class<T> clazz) throws ConfigException {
+    public <T> T load(String meta, Type clazz) throws LoadException {
         if(meta.indexOf(":") != meta.lastIndexOf(":")) { // We just need to know if there are >1.
             throw new LoadException("Malformed metavalue string: " + meta);
         }
@@ -42,6 +43,6 @@ public class PackMetaContext implements MetaContext {
             throw new LoadException("Failed to load config file \"" + file + "\":", e);
         }
 
-        return loader.loadClass(clazz, configuration.get(key));
+        return (T) loader.loadType(clazz, configuration.get(key));
     }
 }

@@ -10,6 +10,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.meta.MetaValue;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.platform.block.BlockData;
@@ -42,6 +43,8 @@ import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProvi
 import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
+import com.dfsek.terra.config.loaders.meta.GenericMetaValueLoader;
+import com.dfsek.terra.config.pack.meta.PackMetaContext;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -115,6 +118,8 @@ public class ConfigPack implements LoaderRegistrar {
 
     private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
+    private final PackMetaContext context;
+
 
     public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
         try {
@@ -124,6 +129,9 @@ public class ConfigPack implements LoaderRegistrar {
             floraRegistry = new FloraRegistry(main);
             paletteRegistry = new PaletteRegistry(main);
             treeRegistry = new TreeRegistry();
+
+            context = new PackMetaContext(loader, selfLoader);
+
             register(abstractConfigLoader);
             register(selfLoader);
 
@@ -165,6 +173,9 @@ public class ConfigPack implements LoaderRegistrar {
             floraRegistry = new FloraRegistry(main);
             paletteRegistry = new PaletteRegistry(main);
             treeRegistry = new TreeRegistry();
+
+            context = new PackMetaContext(loader, selfLoader);
+
             register(abstractConfigLoader);
             register(selfLoader);
 
@@ -295,7 +306,8 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
                 .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(biomeRegistry))
-                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry));
+                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(biomeRegistry))
+                .registerLoader(MetaValue.class, new GenericMetaValueLoader(context));
     }
 
     public Set<UserDefinedCarver> getCarvers() {
