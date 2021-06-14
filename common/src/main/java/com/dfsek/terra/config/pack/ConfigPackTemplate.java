@@ -32,7 +32,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("noise")
     private Map<String, MetaValue<NoiseSeeded>> noiseBuilderMap;
-    private final Lazy<Map<String, NoiseSeeded>> lazyNoiseBuilderMap = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, noiseBuilderMap));
+    private final Lazy<Map<String, NoiseSeeded>> lazyNoiseBuilderMap = new Lazy<>(() -> MapUtil.remapValues(MetaValue::get, noiseBuilderMap));
 
     @Value("addons")
     @Default
@@ -41,7 +41,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("variables")
     @Default
     private Map<String, MetaValue<Double>> variables = new HashMap<>();
-    private final Lazy<Map<String, Double>> lazyVariables = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, variables));
+    private final Lazy<Map<String, Double>> lazyVariables = new Lazy<>(() -> MapUtil.remapValues(MetaValue::get, variables));
 
     @Value("beta.carving")
     @Default
@@ -55,7 +55,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("structures.locatable")
     @Default
     private Map<String, MetaValue<String>> locatable = new HashMap<>();
-    private final Lazy<Map<String, String>> lazyLocatable = new Lazy<>(() -> MapUtil.remap(Function.identity(), MetaValue::get, locatable));
+    private final Lazy<Map<String, String>> lazyLocatable = new Lazy<>(() -> MapUtil.remapValues(MetaValue::get, locatable));
 
     @Value("blend.terrain.elevation")
     @Default

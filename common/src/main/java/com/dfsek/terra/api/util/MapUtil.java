@@ -15,4 +15,8 @@ public final class MapUtil {
     public static <K1, V1, K2, V2> Map<K2, V2> remap(Function<K1, K2> keys, Function<V1, V2> values, Map<K1, V1> in) {
         return remap(keys, values, in, HashMap::new);
     }
+
+    public static <K, V1, V2> Map<K, V2> remapValues(Function<V1, V2> values, Map<K, V1> in) {
+        return remap(Function.identity(), values, in);
+    }
 }
