@@ -29,19 +29,24 @@ public class BiomeInfoCommand implements CommandTemplate {
 
     @Override
     public void execute(CommandSender sender) {
-
         sender.sendMessage("Biome info for \"" + biome.getID() + "\".");
         sender.sendMessage("Vanilla biome: " + biome.getVanillaBiomes());
 
         if(biome instanceof UserDefinedBiome) {
             BiomeTemplate bio = ((UserDefinedBiome) biome).getConfig();
 
-            if(bio.getExtend() != null) sender.sendMessage("Extends: " + bio.getExtend());
+            if(bio.getExtended().size() == 0) {
+                sender.sendMessage("No Parent Biomes");
+            } else {
+                sender.sendMessage("------Parent Biomes-----");
+                bio.getExtended().forEach(id -> sender.sendMessage(" - " + id));
+            }
 
             List<TerraStructure> structureConfigs = bio.getStructures();
 
-            if(structureConfigs.size() == 0) sender.sendMessage("No Structures");
-            else {
+            if(structureConfigs.size() == 0) {
+                sender.sendMessage("No Structures");
+            } else {
                 sender.sendMessage("-------Structures-------");
                 for(TerraStructure c : structureConfigs) {
                     sender.sendMessage(" - " + c.getTemplate().getID());
