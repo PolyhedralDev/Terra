@@ -4,7 +4,6 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
@@ -19,7 +18,6 @@ import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
@@ -173,20 +171,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        int height = getHeight(x, z, Heightmap.Type.WORLD_SURFACE, view);
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
-            if(y > height) {
-                if(y > ((UserDefinedBiome) world.getBiomeProvider().getBiome(x, z)).getConfig().getSeaLevel()) {
-                    array[y] = Blocks.AIR.getDefaultState();
-                } else {
-                    array[y] = Blocks.WATER.getDefaultState();
-                }
-            } else {
-                array[y] = Blocks.STONE.getDefaultState();
-            }
+            array[y] = ((FabricBlockData) world.getUngeneratedBlock(x, y, z)).getHandle();
         }
-
         return new VerticalBlockSample(view.getBottomY(), array);
     }
 
