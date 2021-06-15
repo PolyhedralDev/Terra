@@ -23,7 +23,7 @@ public class ProbabilityCollection<E> implements Collection<E> {
 
     public ProbabilityCollection<E> add(E item, int probability) {
         if(!cont.containsKey(item)) size++;
-        cont.computeIfAbsent(item, i -> new MutableInteger(0)).increment();
+        cont.computeIfAbsent(item, i -> new MutableInteger(0)).add(probability);
         int oldLength = array.length;
         Object[] newArray = new Object[array.length + probability];
         System.arraycopy(array, 0, newArray, 0, array.length); // Expand array.
