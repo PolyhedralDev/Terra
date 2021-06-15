@@ -6,6 +6,6 @@ import com.dfsek.terra.api.world.biome.pipeline.mutator.SmoothMutator;
 public class SmoothMutatorTemplate extends MutatorStageTemplate {
     @Override
     public BiomeMutator build(long seed) {
-        return new SmoothMutator(noise.apply(seed));
+        return new SmoothMutator(noise.get().apply(seed));
     }
 }
