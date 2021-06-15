@@ -21,8 +21,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
@@ -32,6 +34,7 @@ import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
@@ -202,6 +205,34 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             chunkRandom.setPopulationSeed(region.getSeed(), cx << 4, cy << 4);
             SpawnHelper.populateEntities(region, biome, region.getCenterPos(), chunkRandom);
         }
+    }
+
+    public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
+        if(accessor.getStructureAt(pos, true, StructureFeature.SWAMP_HUT).hasChildren()) {
+            if(group == SpawnGroup.MONSTER) {
+                return StructureFeature.SWAMP_HUT.getMonsterSpawns();
+            }
+
+            if(group == SpawnGroup.CREATURE) {
+                return StructureFeature.SWAMP_HUT.getCreatureSpawns();
+            }
+        }
+
+        if(group == SpawnGroup.MONSTER) {
+            if(accessor.getStructureAt(pos, false, StructureFeature.PILLAGER_OUTPOST).hasChildren()) {
+                return StructureFeature.PILLAGER_OUTPOST.getMonsterSpawns();
+            }
+
+            if(accessor.getStructureAt(pos, false, StructureFeature.MONUMENT).hasChildren()) {
+                return StructureFeature.MONUMENT.getMonsterSpawns();
+            }
+
+            if(accessor.getStructureAt(pos, true, StructureFeature.FORTRESS).hasChildren()) {
+                return StructureFeature.FORTRESS.getMonsterSpawns();
+            }
+        }
+
+        return group == SpawnGroup.UNDERGROUND_WATER_CREATURE && accessor.getStructureAt(pos, false, StructureFeature.MONUMENT).hasChildren() ? StructureFeature.MONUMENT.getUndergroundWaterCreatureSpawns() : super.getEntitySpawnList(biome, accessor, group, pos);
     }
 
     @Override
