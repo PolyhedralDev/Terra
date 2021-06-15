@@ -17,6 +17,6 @@ public class ReplaceMutatorTemplate extends MutatorStageTemplate {
 
     @Override
     public BiomeMutator build(long seed) {
-        return new ReplaceMutator(from.get(), to.map(biomeBuilder -> biomeBuilder.get().apply(seed), true), noise.get().apply(seed));
+        return new ReplaceMutator(from.get(), to.map(MetaValue::get).map(biomeBuilder -> biomeBuilder.apply(seed)), noise.get().apply(seed));
     }
 }

@@ -30,8 +30,8 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
     public BiomeMutator build(long seed) {
         Map<TerraBiome, ProbabilityCollection<TerraBiome>> replaceMap = new HashMap<>();
 
-        replace.forEach((keyBuilder, replacements) -> replaceMap.put(keyBuilder.apply(seed), replacements.map(replacement -> replacement.get().apply(seed), true)));
+        replace.forEach((keyBuilder, replacements) -> replaceMap.put(keyBuilder.apply(seed), replacements.map(MetaValue::get).map(replacement -> replacement.apply(seed))));
 
-        return new BorderListMutator(replaceMap, from.get(), defaultReplace.get(), noise.get().apply(seed), defaultTo.map(biomeBuilder -> biomeBuilder.get().apply(seed), true));
+        return new BorderListMutator(replaceMap, from.get(), defaultReplace.get(), noise.get().apply(seed), defaultTo.map(MetaValue::get).map(biomeBuilder -> biomeBuilder.apply(seed)));
     }
 }

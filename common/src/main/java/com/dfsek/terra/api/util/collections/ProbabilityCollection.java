@@ -49,7 +49,10 @@ public class ProbabilityCollection<E> implements Collection<E> {
 
     public <T> ProbabilityCollection<T> map(Function<E, T> mapper, boolean carryNull) {
         ProbabilityCollection<T> newCollection = new ProbabilityCollection<>();
-        cont.forEach((o, count) -> newCollection.add(mapper.apply(o), count.get()));
+        cont.forEach((o, count) -> {
+            if(o != null) newCollection.add(mapper.apply(o), count.get());
+            else if(carryNull) newCollection.add(null, count.get());
+        });
         return newCollection;
     }
 
