@@ -8,6 +8,6 @@ import com.dfsek.terra.config.loaders.config.biome.templates.stage.StageTemplate
 public class ExpanderStageTemplate extends StageTemplate {
     @Override
     public Stage apply(Long seed) {
-        return new ExpanderStage(new FractalExpander(noise.apply(seed)));
+        return new ExpanderStage(new FractalExpander(noise.get().apply(seed)));
     }
 }
