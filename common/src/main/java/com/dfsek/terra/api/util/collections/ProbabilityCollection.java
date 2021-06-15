@@ -58,6 +58,10 @@ public class ProbabilityCollection<E> implements Collection<E> {
         return newCollection;
     }
 
+    public <T> ProbabilityCollection<T> map(Function<E, T> mapper) {
+        return map(mapper, true);
+    }
+
     public int getTotalProbability() {
         return array.length;
     }
