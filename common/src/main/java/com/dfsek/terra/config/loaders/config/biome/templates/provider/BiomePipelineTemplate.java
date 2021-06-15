@@ -34,6 +34,6 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
         BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize.get());
         stages.stream().map(MetaValue::get).forEach(biomePipelineBuilder::addStage);
         BiomePipeline pipeline = biomePipelineBuilder.build(source.get().apply(seed), seed);
-        return new StandardBiomeProvider(pipeline, main, resolution, blend.apply(seed), blendAmp, (int) seed);
+        return new StandardBiomeProvider(pipeline, main, resolution.get(), blend.get().apply(seed), blendAmp.get(), (int) seed);
     }
 }

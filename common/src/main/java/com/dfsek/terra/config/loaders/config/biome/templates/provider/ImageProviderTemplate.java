@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.provider;
 
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.config.meta.MetaValue;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.ImageBiomeProvider;
@@ -9,13 +10,14 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 import java.awt.image.BufferedImage;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public class ImageProviderTemplate extends BiomeProviderTemplate {
     private final Registry<BiomeBuilder> biomes;
     @Value("image.name")
-    private BufferedImage image;
+    private MetaValue<BufferedImage> image;
 
     @Value("image.align")
-    private ImageBiomeProvider.Align align;
+    private MetaValue<ImageBiomeProvider.Align> align;
 
     public ImageProviderTemplate(Registry<BiomeBuilder> set) {
         this.biomes = set;
@@ -23,6 +25,6 @@ public class ImageProviderTemplate extends BiomeProviderTemplate {
 
     @Override
     public BiomeProvider build(long seed) {
-        return new ImageBiomeProvider(biomes.entries().stream().map(biomeBuilder -> biomeBuilder.apply(seed)).collect(Collectors.toSet()), image, resolution, align);
+        return new ImageBiomeProvider(biomes.entries().stream().map(biomeBuilder -> biomeBuilder.apply(seed)).collect(Collectors.toSet()), image.get(), resolution.get(), align.get());
     }
 }
