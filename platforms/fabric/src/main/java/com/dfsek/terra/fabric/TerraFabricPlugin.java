@@ -43,7 +43,6 @@ import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
-import com.dfsek.terra.fabric.util.FabricUtil;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
@@ -176,6 +175,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return LangUtil.getLanguage();
     }
 
+    public FabricAddon getFabricAddon() {
+        return fabricAddon;
+    }
+
     @Override
     public CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedRegistry;
@@ -240,9 +243,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public void packInit() {
         logger.info("Loading config packs...");
         registry.loadAll(this);
-
-        registry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(BuiltinRegistries.BIOME, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(fabricAddon, biome, pack)))); // Register all Terra biomes.
-
         logger.info("Loaded packs.");
     }
 
