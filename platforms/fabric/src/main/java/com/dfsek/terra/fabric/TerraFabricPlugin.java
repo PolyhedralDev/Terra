@@ -43,6 +43,7 @@ import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
+import com.dfsek.terra.fabric.util.ProtoBiome;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.exception.DuplicateEntryException;
@@ -120,9 +121,16 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final PluginConfig config = new PluginConfig();
 
-    private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
-            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse(id)), Validator.notNull())
-            .addTransform(id -> BuiltinRegistries.BIOME.get(Identifier.tryParse("minecraft:" + id.toLowerCase())), Validator.notNull()).build();
+    private final Transformer<String, ProtoBiome> biomeFixer = new Transformer.Builder<String, ProtoBiome>()
+            .addTransform(this::parseBiome, Validator.notNull())
+            .addTransform(id -> parseBiome("minecraft:" + id.toLowerCase()), Validator.notNull()).build();
+
+    private ProtoBiome parseBiome(String id) {
+        Identifier identifier = Identifier.tryParse(id);
+        if(BuiltinRegistries.BIOME.get(identifier) == null) return null; // failure.
+        return new ProtoBiome(identifier);
+    }
+
     private File dataFolder;
     private final CommandManager manager = new TerraCommandManager(this);
 

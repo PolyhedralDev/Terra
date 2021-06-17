@@ -9,7 +9,8 @@ import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -37,11 +38,12 @@ public final class FabricUtil {
      * @param pack        The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack) {
+    public static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager.Impl registryManager) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
-        Biome vanilla = (Biome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0)).getHandle();
+        Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
+        Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
 
@@ -63,8 +65,9 @@ public final class FabricUtil {
 
         TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
 
+        Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatureRegistry = registryManager.get(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY);
         for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
-            Identifier key = BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(structureFeature.get());
+            Identifier key = configuredStructureFeatureRegistry.getId(structureFeature.get());
             if(!compatibilityOptions.getExcludedBiomeStructures().contains(key) && !postLoadCompatibilityOptions.getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
                 generationSettings.structureFeature(structureFeature.get());
                 TerraFabricPlugin.getInstance().getDebugLogger().info("Injected structure " + key);
@@ -72,9 +75,10 @@ public final class FabricUtil {
         }
 
         if(compatibilityOptions.doBiomeInjection()) {
+            Registry<ConfiguredFeature<?, ?>> configuredFeatureRegistry = registryManager.get(Registry.CONFIGURED_FEATURE_KEY);
             for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
                 for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
-                    Identifier key = BuiltinRegistries.CONFIGURED_FEATURE.getId(featureSupplier.get());
+                    Identifier key = configuredFeatureRegistry.getId(featureSupplier.get());
                     if(!compatibilityOptions.getExcludedBiomeFeatures().contains(key) && !postLoadCompatibilityOptions.getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
                         generationSettings.feature(step, featureSupplier);
                         TerraFabricPlugin.getInstance().getDebugLogger().info("Injected feature " + key + " at stage " + step);
