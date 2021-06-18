@@ -33,14 +33,15 @@ public final class FabricUtil {
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
      *
-     * @param fabricAddon The Fabric addon instance.
      * @param biome       The Terra BiomeBuilder.
      * @param pack        The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
+    public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
+
+        TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
 
         Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
         Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);

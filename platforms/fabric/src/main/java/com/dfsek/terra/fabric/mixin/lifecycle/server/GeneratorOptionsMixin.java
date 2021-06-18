@@ -1,7 +1,8 @@
-package com.dfsek.terra.fabric.mixin;
+package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.util.FabricUtil;
@@ -61,11 +62,7 @@ public abstract class GeneratorOptionsMixin {
 
             if(config == null) throw new IllegalArgumentException("No such pack " + prop);
 
-
-            main.logger().info("Registering biomes...");
-            main.getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> Registry.register(biomeRegistry, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(main.getFabricAddon(), biome, pack, registryManager)))); // Register all Terra biomes.
-            main.logger().info("Biomes registered.");
-
+            main.getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
 
             cir.setReturnValue(new GeneratorOptions(l, generateStructures, false, GeneratorOptions.getRegistryWithReplacedOverworldGenerator(dimensionTypes, dimensionOptions, new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, l, config), l, config))));
         }
