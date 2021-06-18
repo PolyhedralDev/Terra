@@ -50,23 +50,29 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
+    public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
+            config -> config.group(
+                    Codec.STRING.fieldOf("pack")
+                            .forGetter(pack -> pack.getTemplate().getID())
+            ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get)));
+
+    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    TerraBiomeSource.CODEC.fieldOf("biome_source")
+                            .forGetter(generator -> generator.biomeSource),
+                    Codec.LONG.fieldOf("seed").stable()
+                            .forGetter(generator -> generator.seed),
+                    PACK_CODEC.fieldOf("pack").stable()
+                            .forGetter(generator -> generator.pack)
+            ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
+    );
+
     private final long seed;
     private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
-    public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
-            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
-    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
-            Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),
-            PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
-            .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
+
     private final ConfigPack pack;
     private DimensionType dimensionType;
-
-    public ConfigPack getPack() {
-        return pack;
-    }
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
@@ -90,9 +96,13 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
+    public ConfigPack getPack() {
+        return pack;
+    }
+
     @Override
     public void buildSurface(ChunkRegion region, Chunk chunk) {
-
+        // No-op
     }
 
     public void setDimensionType(DimensionType dimensionType) {
@@ -124,13 +134,16 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
-        if(pack.getTemplate().vanillaCaves()) super.carve(seed, access, chunk, carver);
+        if(pack.getTemplate().vanillaCaves()) {
+            super.carve(seed, access, chunk, carver);
+        }
     }
 
     @Override
     public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) {
-        if(pack.getTemplate().vanillaStructures())
+        if(pack.getTemplate().vanillaStructures()) {
             super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
+        }
     }
 
     @Override
@@ -149,7 +162,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
-        if(pack.getTemplate().vanillaStructures()) return super.isStrongholdStartingChunk(chunkPos);
+        if(pack.getTemplate().vanillaStructures()) {
+            return super.isStrongholdStartingChunk(chunkPos);
+        }
         return false;
     }
 
