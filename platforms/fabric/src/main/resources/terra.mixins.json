@@ -6,7 +6,6 @@
   "mixins": [
     "StructureAccessorAccessor",
     "CommandManagerMixin",
-    "lifecycle.server.GeneratorOptionsMixin",
     "ServerWorldMixin",
     "access.BiomeEffectsAccessor",
     "access.MobSpawnerLogicAccessor",
@@ -40,6 +39,7 @@
     "lifecycle.client.MinecraftClientMixin"
   ],
   "server": [
+    "lifecycle.server.GeneratorOptionsMixin",
     "lifecycle.server.ServerMainMixin"
   ],
   "injectors": {
