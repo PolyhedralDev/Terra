@@ -38,7 +38,7 @@ public final class FabricUtil {
      * @param pack        The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager.Impl registryManager) {
+    public static Biome createBiome(TerraFabricPlugin.FabricAddon fabricAddon, BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
