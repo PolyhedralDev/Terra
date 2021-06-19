@@ -8,9 +8,12 @@ import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -118,5 +121,13 @@ public final class FabricUtil {
                 .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
+    }
+
+    public static <T> void registerOrOverwrite(Registry<T> registry, RegistryKey<Registry<T>> key, Identifier identifier, T item) {
+        if(registry.containsId(identifier)) {
+            ((MutableRegistry<T>) registry).set(registry.getRawId(registry.get(identifier)), RegistryKey.of(key, identifier), item, Lifecycle.stable());
+        } else {
+            Registry.register(registry, identifier, item);
+        }
     }
 }
