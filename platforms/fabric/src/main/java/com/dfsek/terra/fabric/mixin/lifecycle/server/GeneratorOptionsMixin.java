@@ -1,10 +1,13 @@
-package com.dfsek.terra.fabric.mixin;
+package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.util.FabricUtil;
 import com.google.common.base.MoreObjects;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -24,10 +27,12 @@ import java.util.Random;
 @Mixin(GeneratorOptions.class)
 public abstract class GeneratorOptionsMixin {
     @Inject(method = "fromProperties(Lnet/minecraft/util/registry/DynamicRegistryManager;Ljava/util/Properties;)Lnet/minecraft/world/gen/GeneratorOptions;", at = @At("HEAD"), cancellable = true)
-    private static void fromProperties(DynamicRegistryManager dynamicRegistryManager, Properties properties, CallbackInfoReturnable<GeneratorOptions> cir) {
+    private static void fromProperties(DynamicRegistryManager registryManager, Properties properties, CallbackInfoReturnable<GeneratorOptions> cir) {
         if(properties.get("level-type") == null) {
             return;
         }
+
+        TerraFabricPlugin main = TerraFabricPlugin.getInstance();
 
         String prop = properties.get("level-type").toString().trim();
         if(prop.startsWith("Terra")) {
@@ -46,18 +51,20 @@ public abstract class GeneratorOptionsMixin {
 
             String generate_structures = (String) properties.get("generate-structures");
             boolean generateStructures = generate_structures == null || Boolean.parseBoolean(generate_structures);
-            Registry<DimensionType> dimensionTypes = dynamicRegistryManager.get(Registry.DIMENSION_TYPE_KEY);
-            Registry<Biome> biomes = dynamicRegistryManager.get(Registry.BIOME_KEY);
-            Registry<ChunkGeneratorSettings> chunkGeneratorSettings = dynamicRegistryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
-            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(dimensionTypes, biomes, chunkGeneratorSettings, l);
+            Registry<DimensionType> dimensionTypes = registryManager.get(Registry.DIMENSION_TYPE_KEY);
+            Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
+            Registry<ChunkGeneratorSettings> chunkGeneratorSettings = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
+            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(dimensionTypes, biomeRegistry, chunkGeneratorSettings, l);
 
             prop = prop.substring(prop.indexOf(":") + 1);
 
-            ConfigPack pack = TerraFabricPlugin.getInstance().getConfigRegistry().get(prop);
+            ConfigPack config = main.getConfigRegistry().get(prop);
 
-            if(pack == null) throw new IllegalArgumentException("No such pack " + prop);
+            if(config == null) throw new IllegalArgumentException("No such pack " + prop);
 
-            cir.setReturnValue(new GeneratorOptions(l, generateStructures, false, GeneratorOptions.getRegistryWithReplacedOverworldGenerator(dimensionTypes, dimensionOptions, new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomes, l, pack), l, pack))));
+            main.getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
+
+            cir.setReturnValue(new GeneratorOptions(l, generateStructures, false, GeneratorOptions.getRegistryWithReplacedOverworldGenerator(dimensionTypes, dimensionOptions, new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, l, config), l, config))));
         }
     }
 }

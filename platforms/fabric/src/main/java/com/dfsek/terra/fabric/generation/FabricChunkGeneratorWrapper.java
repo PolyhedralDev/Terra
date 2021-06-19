@@ -4,25 +4,24 @@ import com.dfsek.terra.api.platform.world.World;
 import com.dfsek.terra.api.platform.world.generator.ChunkData;
 import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.jafama.FastMath;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
@@ -32,6 +31,7 @@ import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
@@ -50,23 +50,29 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
+    public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
+            config -> config.group(
+                    Codec.STRING.fieldOf("pack")
+                            .forGetter(pack -> pack.getTemplate().getID())
+            ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get)));
+
+    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    TerraBiomeSource.CODEC.fieldOf("biome_source")
+                            .forGetter(generator -> generator.biomeSource),
+                    Codec.LONG.fieldOf("seed").stable()
+                            .forGetter(generator -> generator.seed),
+                    PACK_CODEC.fieldOf("pack").stable()
+                            .forGetter(generator -> generator.pack)
+            ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
+    );
+
     private final long seed;
     private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
-    public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
-            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
-    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
-            Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),
-            PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
-            .apply(instance, instance.stable(FabricChunkGeneratorWrapper::new)));
+
     private final ConfigPack pack;
     private DimensionType dimensionType;
-
-    public ConfigPack getPack() {
-        return pack;
-    }
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
@@ -90,9 +96,13 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
+    public ConfigPack getPack() {
+        return pack;
+    }
+
     @Override
     public void buildSurface(ChunkRegion region, Chunk chunk) {
-
+        // No-op
     }
 
     public void setDimensionType(DimensionType dimensionType) {
@@ -124,13 +134,16 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
-        if(pack.getTemplate().vanillaCaves()) super.carve(seed, access, chunk, carver);
+        if(pack.getTemplate().vanillaCaves()) {
+            super.carve(seed, access, chunk, carver);
+        }
     }
 
     @Override
     public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) {
-        if(pack.getTemplate().vanillaStructures())
+        if(pack.getTemplate().vanillaStructures()) {
             super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
+        }
     }
 
     @Override
@@ -149,7 +162,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
-        if(pack.getTemplate().vanillaStructures()) return super.isStrongholdStartingChunk(chunkPos);
+        if(pack.getTemplate().vanillaStructures()) {
+            return super.isStrongholdStartingChunk(chunkPos);
+        }
         return false;
     }
 
@@ -161,34 +176,20 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
-        int cx = FastMath.floorMod(x, 16);
-        int cz = FastMath.floorMod(z, 16);
-
         int height = world.getWorld().getMaxHeight();
-
-        while(height >= 0 && sampler.sample(cx, height-1, cz) < 0) height--;
-
+        while(height >= world.getWorld().getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+            height--;
+        }
         return height;
     }
 
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        int height = getHeight(x, z, Heightmap.Type.WORLD_SURFACE, view);
-        BlockState[] array = new BlockState[256];
-        for(int y = view.getBottomY()+view.getHeight(); y >= view.getBottomY(); y--) {
-            if(y > height) {
-                if(y > ((UserDefinedBiome) world.getBiomeProvider().getBiome(x, z)).getConfig().getSeaLevel()) {
-                    array[y] = Blocks.AIR.getDefaultState();
-                } else {
-                    array[y] = Blocks.WATER.getDefaultState();
-                }
-            } else {
-                array[y] = Blocks.STONE.getDefaultState();
-            }
+        BlockState[] array = new BlockState[view.getHeight()];
+        for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
+            array[y] = ((FabricBlockData) world.getUngeneratedBlock(x, y, z)).getHandle();
         }
-
         return new VerticalBlockSample(view.getBottomY(), array);
     }
 
@@ -202,6 +203,34 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             chunkRandom.setPopulationSeed(region.getSeed(), cx << 4, cy << 4);
             SpawnHelper.populateEntities(region, biome, region.getCenterPos(), chunkRandom);
         }
+    }
+
+    public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
+        if(accessor.getStructureAt(pos, true, StructureFeature.SWAMP_HUT).hasChildren()) {
+            if(group == SpawnGroup.MONSTER) {
+                return StructureFeature.SWAMP_HUT.getMonsterSpawns();
+            }
+
+            if(group == SpawnGroup.CREATURE) {
+                return StructureFeature.SWAMP_HUT.getCreatureSpawns();
+            }
+        }
+
+        if(group == SpawnGroup.MONSTER) {
+            if(accessor.getStructureAt(pos, false, StructureFeature.PILLAGER_OUTPOST).hasChildren()) {
+                return StructureFeature.PILLAGER_OUTPOST.getMonsterSpawns();
+            }
+
+            if(accessor.getStructureAt(pos, false, StructureFeature.MONUMENT).hasChildren()) {
+                return StructureFeature.MONUMENT.getMonsterSpawns();
+            }
+
+            if(accessor.getStructureAt(pos, true, StructureFeature.FORTRESS).hasChildren()) {
+                return StructureFeature.FORTRESS.getMonsterSpawns();
+            }
+        }
+
+        return group == SpawnGroup.UNDERGROUND_WATER_CREATURE && accessor.getStructureAt(pos, false, StructureFeature.MONUMENT).hasChildren() ? StructureFeature.MONUMENT.getUndergroundWaterCreatureSpawns() : super.getEntitySpawnList(biome, accessor, group, pos);
     }
 
     @Override
