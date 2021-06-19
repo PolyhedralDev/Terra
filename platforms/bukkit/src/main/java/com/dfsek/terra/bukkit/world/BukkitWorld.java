@@ -70,7 +70,7 @@ public class BukkitWorld implements World {
 
     @Override
     public int getMinHeight() {
-        return 0;
+        return delegate.getMinHeight();
     }
 
     @Override
