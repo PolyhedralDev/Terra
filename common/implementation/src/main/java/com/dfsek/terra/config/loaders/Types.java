@@ -4,7 +4,7 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.flora.Flora;
+import com.dfsek.terra.api.world.Flora;
 
 import java.lang.reflect.Type;
 import java.util.Map;

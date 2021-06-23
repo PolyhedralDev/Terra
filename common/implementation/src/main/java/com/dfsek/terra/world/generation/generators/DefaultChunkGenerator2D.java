@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
@@ -15,7 +15,7 @@ import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
@@ -50,7 +50,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
         blockPopulators.add(new OrePopulator(main));
         blockPopulators.add(new TreePopulator(main));
         blockPopulators.add(new TreePopulator(main));
-        carver = new NoiseCarver(new Range(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
+        carver = new NoiseCarver(new ConstantRange(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
         this.cache = cache;
     }
 

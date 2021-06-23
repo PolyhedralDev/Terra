@@ -1,4 +1,4 @@
-package com.dfsek.terra.profiler;
+package com.dfsek.terra.api.profiler;
 
 import java.util.Map;
 

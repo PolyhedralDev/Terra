@@ -14,7 +14,7 @@ import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 

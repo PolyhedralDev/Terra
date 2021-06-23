@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.structures.structure;
+package com.dfsek.terra.api.structure.rotation;
 
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.block.Axis;

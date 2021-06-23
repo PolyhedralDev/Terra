@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population.items.ores;
 
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.util.Range;
 
 public class OreConfig {
     private final Range amount;

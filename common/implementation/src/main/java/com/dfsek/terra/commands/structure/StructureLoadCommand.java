@@ -15,7 +15,7 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.commands.structure.argument.ScriptArgumentParser;
 import com.dfsek.terra.commands.structure.completer.RotationCompleter;

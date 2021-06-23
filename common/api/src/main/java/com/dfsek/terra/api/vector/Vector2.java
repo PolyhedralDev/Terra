@@ -11,6 +11,8 @@ public interface Vector2 extends Cloneable {
      */
     double getX();
 
+    Vector2 clone();
+
     Vector2 setX(double x);
 
     /**

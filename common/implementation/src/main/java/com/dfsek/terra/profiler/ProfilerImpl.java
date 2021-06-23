@@ -1,5 +1,7 @@
 package com.dfsek.terra.profiler;
 
+import com.dfsek.terra.api.profiler.Profiler;
+import com.dfsek.terra.api.profiler.Timings;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.profiler.exception.MalformedStackException;
 

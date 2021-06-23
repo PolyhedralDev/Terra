@@ -48,7 +48,7 @@ import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import com.dfsek.terra.fabric.util.ProtoBiome;
-import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.api.registry.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;

@@ -1,16 +1,16 @@
 package com.dfsek.terra.world.population.items.flora;
 
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
-import com.dfsek.terra.api.world.flora.Flora;
+import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.world.population.items.PlaceableLayer;
 
 public class FloraLayer extends PlaceableLayer<Flora> {
 
-    public FloraLayer(double density, Range level, ProbabilityCollectionImpl<Flora> layer, NoiseSampler noise) {
+    public FloraLayer(double density, ConstantRange level, ProbabilityCollectionImpl<Flora> layer, NoiseSampler noise) {
         super(density, level, layer, noise);
     }
 

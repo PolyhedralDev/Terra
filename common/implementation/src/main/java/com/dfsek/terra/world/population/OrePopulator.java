@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 

@@ -4,7 +4,7 @@ import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.StructureWorldAccess;

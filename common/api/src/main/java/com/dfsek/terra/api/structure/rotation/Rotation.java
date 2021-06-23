@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.structures.structure;
+package com.dfsek.terra.api.structure.rotation;
 
 import net.jafama.FastMath;
 

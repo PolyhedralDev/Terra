@@ -5,7 +5,7 @@ import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.noise.samplers.ImageSampler;
 import com.dfsek.terra.api.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.api.block.BlockType;
@@ -70,7 +70,7 @@ public class GenericLoaders implements LoaderRegistrar {
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(ProbabilityCollectionImpl.class, new ProbabilityCollectionLoader())
-                .registerLoader(Range.class, new RangeLoader())
+                .registerLoader(ConstantRange.class, new RangeLoader())
                 .registerLoader(GridSpawn.class, new GridSpawnLoader())
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayerHolder.class, new PaletteLayerLoader())

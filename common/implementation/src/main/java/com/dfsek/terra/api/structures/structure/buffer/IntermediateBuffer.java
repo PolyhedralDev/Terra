@@ -1,8 +1,9 @@
 package com.dfsek.terra.api.structures.structure.buffer;
 
+import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.structures.structure.buffer.items.BufferedItem;
+import com.dfsek.terra.api.structure.buffer.BufferedItem;
 
 public class IntermediateBuffer implements Buffer {
     private final Buffer original;

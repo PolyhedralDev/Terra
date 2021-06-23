@@ -3,7 +3,7 @@ package com.dfsek.terra.world.population.items.tree;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 

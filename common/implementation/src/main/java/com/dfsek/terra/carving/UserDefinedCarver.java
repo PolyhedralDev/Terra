@@ -5,10 +5,11 @@ import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.world.World;
@@ -43,7 +44,7 @@ public class UserDefinedCarver extends Carver {
     private final Map<Long, CarverCache> cacheMap = new ConcurrentHashMap<>();
     private final TerraPlugin main;
     private double step = 2;
-    private Range recalc = new Range(8, 10);
+    private Range recalc = new ConstantRange(8, 10);
     private double recalcMagnitude = 3;
 
     public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraPlugin main, Map<String, NoiseSeeded> functions, Map<String, FunctionTemplate> definedFunctions) throws ParseException {

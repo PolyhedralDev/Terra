@@ -28,11 +28,11 @@ import com.dfsek.terra.api.structures.script.builders.UnaryBooleanFunctionBuilde
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.ZeroArgFunctionBuilder;
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;

@@ -8,7 +8,7 @@ import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 import net.jafama.FastMath;

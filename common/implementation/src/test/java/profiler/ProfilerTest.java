@@ -1,6 +1,6 @@
 package profiler;
 
-import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 
 public class ProfilerTest {

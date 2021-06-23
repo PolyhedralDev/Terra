@@ -8,7 +8,7 @@ import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.profiler.ProfileFrame;
+import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;

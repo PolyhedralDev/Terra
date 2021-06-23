@@ -5,9 +5,9 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.util.List;

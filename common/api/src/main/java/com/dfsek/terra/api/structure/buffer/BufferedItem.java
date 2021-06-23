@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.structures.structure.buffer.items;
+package com.dfsek.terra.api.structure.buffer;
 
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.Chunk;

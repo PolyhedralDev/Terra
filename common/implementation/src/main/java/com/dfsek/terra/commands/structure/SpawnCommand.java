@@ -13,7 +13,7 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
-import com.dfsek.terra.api.structures.structure.Rotation;
+import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.FastRandom;

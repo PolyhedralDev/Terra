@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population.items.ores;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;

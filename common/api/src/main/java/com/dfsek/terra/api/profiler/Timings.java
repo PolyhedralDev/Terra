@@ -1,4 +1,4 @@
-package com.dfsek.terra.profiler;
+package com.dfsek.terra.api.profiler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +41,7 @@ public class Timings {
         return subItems.computeIfAbsent(id, s -> new Timings());
     }
 
-    public String toString(int indent, Timings parent, Set<Integer> branches) {
+    private String toString(int indent, Timings parent, Set<Integer> branches) {
         StringBuilder builder = new StringBuilder();
 
         builder.append((double) min() / 1000000).append("ms min / ").append(average() / 1000000).append("ms avg / ")

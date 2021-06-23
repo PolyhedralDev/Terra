@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.script;
 
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
-import com.dfsek.terra.api.structures.structure.Rotation;
-import com.dfsek.terra.api.structures.structure.buffer.Buffer;
+import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.structure.buffer.Buffer;
 
 import java.util.Random;
 

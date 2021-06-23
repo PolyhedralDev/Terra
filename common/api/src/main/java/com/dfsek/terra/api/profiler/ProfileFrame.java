@@ -1,4 +1,4 @@
-package com.dfsek.terra.profiler;
+package com.dfsek.terra.api.profiler;
 
 public class ProfileFrame implements AutoCloseable {
     private final Runnable action;

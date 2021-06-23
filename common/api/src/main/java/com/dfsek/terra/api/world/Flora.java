@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.flora;
+package com.dfsek.terra.api.world;
 
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.vector.Location;

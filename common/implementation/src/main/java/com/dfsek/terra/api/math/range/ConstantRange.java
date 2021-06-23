@@ -1,75 +1,88 @@
-package com.dfsek.terra.api.math;
+package com.dfsek.terra.api.math.range;
 
+import com.dfsek.terra.api.util.Range;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.Random;
 
-public class Range implements Iterable<Integer> {
+public class ConstantRange implements Range {
     private int min;
     private int max;
 
-    public Range(int min, int max) {
+    public ConstantRange(int min, int max) {
         if(min > max) throw new IllegalArgumentException("Minimum must not be grater than maximum!");
         this.max = max;
         this.min = min;
     }
 
+    @Override
     public boolean isInRange(int test) {
         return test >= min && test < max;
     }
 
+    @Override
     public int getMax() {
         return max;
     }
 
+    @Override
     public Range setMax(int max) {
         this.max = max;
         return this;
     }
 
+    @Override
     public int getMin() {
         return min;
     }
 
+    @Override
     public Range setMin(int min) {
         this.min = min;
         return this;
     }
 
+    @Override
     public int getRange() {
         return max - min;
     }
 
+    @Override
     public Range multiply(int mult) {
         min *= mult;
         max *= mult;
         return this;
     }
 
+    @Override
     public Range reflect(int pt) {
-        return new Range(2 * pt - this.getMax(), 2 * pt - this.getMin());
+        return new ConstantRange(2 * pt - this.getMax(), 2 * pt - this.getMin());
     }
 
+    @Override
     public int get(Random r) {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    public Range intersects(com.dfsek.terra.api.math.Range other) {
+    @Override
+    public Range intersects(Range other) {
         try {
-            return new Range(FastMath.max(this.getMin(), other.getMin()), FastMath.min(this.getMax(), other.getMax()));
+            return new ConstantRange(FastMath.max(this.getMin(), other.getMin()), FastMath.min(this.getMax(), other.getMax()));
         } catch(IllegalArgumentException e) {
             return null;
         }
     }
 
+    @Override
     public Range add(int add) {
         this.min += add;
         this.max += add;
         return this;
     }
 
+    @Override
     public Range sub(int sub) {
         this.min -= sub;
         this.max -= sub;
@@ -88,8 +101,8 @@ public class Range implements Iterable<Integer> {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof com.dfsek.terra.api.math.Range)) return false;
-        Range other = (com.dfsek.terra.api.math.Range) obj;
+        if(!(obj instanceof ConstantRange)) return false;
+        Range other = (Range) obj;
         return other.getMin() == this.getMin() && other.getMax() == this.getMax();
     }
 

@@ -1,7 +1,6 @@
-package com.dfsek.terra.api.structures.structure.buffer;
+package com.dfsek.terra.api.structure.buffer;
 
 import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.api.structures.structure.buffer.items.BufferedItem;
 
 public interface Buffer {
     Buffer addItem(BufferedItem item, Location location);

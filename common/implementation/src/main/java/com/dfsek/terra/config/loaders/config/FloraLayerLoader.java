@@ -4,11 +4,11 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.Range;
+import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.api.world.flora.Flora;
+import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 
@@ -21,7 +21,7 @@ public class FloraLayerLoader implements TypeLoader<FloraLayer> {
     public FloraLayer load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
         double density = ((Number) map.get("density")).doubleValue();
-        Range range = configLoader.loadClass(Range.class, map.get("y"));
+        ConstantRange range = configLoader.loadClass(ConstantRange.class, map.get("y"));
         if(range == null) throw new LoadException("Flora range unspecified");
         ProbabilityCollectionImpl<Flora> items = (ProbabilityCollectionImpl<Flora>) configLoader.loadType(Types.FLORA_PROBABILITY_COLLECTION_TYPE, map.get("items"));
 
