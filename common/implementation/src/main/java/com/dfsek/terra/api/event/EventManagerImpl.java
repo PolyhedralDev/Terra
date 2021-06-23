@@ -36,8 +36,7 @@ public class EventManagerImpl implements EventManager {
                             PackEvent packEvent = (PackEvent) event;
                             if(packEvent
                                     .getPack()
-                                    .getTemplate()
-                                    .getAddons()
+                                    .addons()
                                     .contains(listenerHolder.addon)) {
                                 listenerHolder.method.invoke(listenerHolder.listener, event);
                             }

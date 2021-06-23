@@ -28,7 +28,7 @@ public class OrePopulator implements TerraBlockPopulator {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
-            if(tw.getConfig().getTemplate().disableOres()) return;
+            if(tw.getConfig().disableOres()) return;
 
             if(!tw.isSafe()) return;
             for(int cx = -1; cx <= 1; cx++) {

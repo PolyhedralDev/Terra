@@ -1,6 +1,7 @@
 package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
@@ -37,7 +38,7 @@ public class BlockFlora implements Flora {
     }
 
     @Override
-    public boolean plant(LocationImpl location) {
+    public boolean plant(Location location) {
         location.add(0, 1, 0).getBlock().setBlockData(data, true);
         return true;
     }

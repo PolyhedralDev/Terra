@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.world.locate;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class AsyncBiomeFinder extends AsyncFeatureFinder<TerraBiome> {
 
-    public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull LocationImpl origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
+    public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
         super(provider, target, origin, startRadius, maxRadius, callback, main);
     }
 

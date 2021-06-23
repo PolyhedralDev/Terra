@@ -47,7 +47,7 @@ public class LootFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
         String id = data.apply(implementationArguments, variableMap);
-        LootTableImpl table = registry.get(id);
+        LootTable table = registry.get(id);
 
         if(table == null) {
             main.logger().severe("No such loot table " + id);

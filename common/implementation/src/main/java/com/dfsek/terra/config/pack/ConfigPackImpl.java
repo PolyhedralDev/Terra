@@ -9,6 +9,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
@@ -316,5 +317,25 @@ public class ConfigPackImpl implements ConfigPack {
                 if(contains(identifier)) throw new UnsupportedOperationException("Cannot override values in ConfigTypeRegistry!");
             }
         };
+    }
+
+    @Override
+    public Set<TerraAddon> addons() {
+        return template.getAddons();
+    }
+
+    @Override
+    public String getID() {
+        return template.getID();
+    }
+
+    @Override
+    public String getAuthor() {
+        return template.getAuthor();
+    }
+
+    @Override
+    public String getVersion() {
+        return template.getVersion();
     }
 }

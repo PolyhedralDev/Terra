@@ -2,6 +2,7 @@ package com.dfsek.terra.api.world.locate;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.PopulationUtil;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.structure.rotation.Rotation;
@@ -16,7 +17,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
-    public AsyncStructureFinder(BiomeProvider provider, TerraStructure target, @NotNull LocationImpl origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
+    public AsyncStructureFinder(BiomeProvider provider, TerraStructure target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
         super(provider, target, origin, startRadius, maxRadius, callback, main);
         setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
     }
@@ -28,7 +29,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
 
     @Override
     public boolean isValid(int x, int z, TerraStructure target) {
-        LocationImpl spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
+        Location spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
         if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(target)) return false;
         Random random = new FastRandom(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
         return target.getStructure().get(random).test(spawn.setY(target.getSpawnStart().get(random)), random, Rotation.fromDegrees(90 * random.nextInt(4)));

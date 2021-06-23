@@ -1,7 +1,10 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.WorldConfig;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.PopulationUtil;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -32,15 +35,15 @@ public class StructurePopulator implements TerraBlockPopulator, Chunkified {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("structure")) {
-            if(tw.getConfig().getTemplate().disableStructures()) return;
+            if(tw.getConfig().disableStructures()) return;
 
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
-            WorldConfigImpl config = tw.getConfig();
-            for(TerraStructure conf : config.getStructures()) {
-                LocationImpl spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
+            WorldConfig config = tw.getConfig();
+            for(TerraStructure conf : config.getRegistry(TerraStructure.class).entries()) {
+                Location spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed()).toLocation(world);
 
                 if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))
                     continue;

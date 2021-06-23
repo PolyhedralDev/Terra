@@ -49,7 +49,7 @@ import java.util.concurrent.ExecutionException;
 public class StructureScript implements Structure {
     private final Block block;
     private final String id;
-    private final Cache<LocationImpl, StructureBuffer> cache;
+    private final Cache<Location, StructureBuffer> cache;
     private final TerraPlugin main;
     private String tempID;
 

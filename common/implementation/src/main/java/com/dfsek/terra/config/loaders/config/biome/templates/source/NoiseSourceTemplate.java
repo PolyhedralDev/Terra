@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.source;
 
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
@@ -12,7 +13,7 @@ public class NoiseSourceTemplate extends SourceTemplate {
     private NoiseSeeded noise;
 
     @Value("biomes")
-    private ProbabilityCollectionImpl<BiomeBuilder> biomes;
+    private ProbabilityCollection<BiomeBuilder> biomes;
 
     @Override
     public BiomeSource apply(Long seed) {

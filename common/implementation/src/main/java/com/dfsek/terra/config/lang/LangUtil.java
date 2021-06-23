@@ -21,7 +21,7 @@ public final class LangUtil {
         try(JarFile jar = main.getModJar()) {
             copyResourcesToDirectory(jar, "lang", file.toString());
         } catch(IOException | URISyntaxException e) {
-            main.getDebugLogger().error("Failed to dump language files!");
+            main.getDebugLogger().severe("Failed to dump language files!");
             main.getDebugLogger().stack(e);
         }
         try {

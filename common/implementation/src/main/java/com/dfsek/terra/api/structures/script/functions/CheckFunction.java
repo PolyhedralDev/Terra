@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector2;
@@ -47,12 +48,12 @@ public class CheckFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        LocationImpl location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getBuffer().getOrigin().getWorld());
     }
 
-    private String apply(LocationImpl vector, World world) {
+    private String apply(Location vector, World world) {
         TerraWorld tw = main.getWorld(world);
         SamplerCache cache = tw.getConfig().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);

@@ -2,6 +2,7 @@ package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.state.BlockState;
 
@@ -15,7 +16,7 @@ public class BufferedStateManipulator implements BufferedItem {
     }
 
     @Override
-    public void paste(LocationImpl origin) {
+    public void paste(Location origin) {
         try {
             BlockState state = origin.getBlock().getState();
             state.applyState(data);

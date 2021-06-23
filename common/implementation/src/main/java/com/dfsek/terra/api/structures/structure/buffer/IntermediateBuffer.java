@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.structures.structure.buffer;
 
 import com.dfsek.terra.api.structure.buffer.Buffer;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
@@ -15,22 +16,22 @@ public class IntermediateBuffer implements Buffer {
     }
 
     @Override
-    public Buffer addItem(BufferedItem item, LocationImpl location) {
+    public Buffer addItem(BufferedItem item, Location location) {
         return original.addItem(item, location.add(offset));
     }
 
     @Override
-    public LocationImpl getOrigin() {
+    public Location getOrigin() {
         return original.getOrigin().clone().add(offset);
     }
 
     @Override
-    public String getMark(LocationImpl location) {
+    public String getMark(Location location) {
         return original.getMark(location.add(offset));
     }
 
     @Override
-    public Buffer setMark(String mark, LocationImpl location) {
+    public Buffer setMark(String mark, Location location) {
         original.setMark(mark, location.add(offset));
         return this;
     }

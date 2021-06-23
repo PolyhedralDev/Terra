@@ -9,6 +9,7 @@ import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.block.Block;
@@ -45,10 +46,10 @@ public class StructureExportCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
 
-        Pair<LocationImpl, LocationImpl> l = main.getWorldHandle().getSelectedLocation(player);
+        Pair<Location, Location> l = main.getWorldHandle().getSelectedLocation(player);
 
-        LocationImpl l1 = l.getLeft();
-        LocationImpl l2 = l.getRight();
+        Location l1 = l.getLeft();
+        Location l2 = l.getRight();
 
         StringBuilder scriptBuilder = new StringBuilder("id \"" + id + "\";\nnum y = 0;\n");
 

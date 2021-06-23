@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.world.biome.pipeline.mutator;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
@@ -8,10 +9,10 @@ import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
 public class BorderMutator implements BiomeMutator {
     private final String border;
     private final NoiseSampler noiseSampler;
-    private final ProbabilityCollectionImpl<TerraBiome> replace;
+    private final ProbabilityCollection<TerraBiome> replace;
     private final String replaceTag;
 
-    public BorderMutator(String border, String replaceTag, NoiseSampler noiseSampler, ProbabilityCollectionImpl<TerraBiome> replace) {
+    public BorderMutator(String border, String replaceTag, NoiseSampler noiseSampler, ProbabilityCollection<TerraBiome> replace) {
         this.border = border;
         this.noiseSampler = noiseSampler;
         this.replace = replace;

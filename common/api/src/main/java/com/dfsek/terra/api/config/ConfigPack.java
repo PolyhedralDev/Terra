@@ -1,9 +1,12 @@
 package com.dfsek.terra.api.config;
 
 import com.dfsek.terra.api.LoaderRegistrar;
+import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
+import java.util.Set;
 
 public interface ConfigPack extends LoaderRegistrar {
     @SuppressWarnings("unchecked")
@@ -14,4 +17,12 @@ public interface ConfigPack extends LoaderRegistrar {
     WorldConfig toWorldConfig(TerraWorld world);
 
     CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry();
+
+    Set<TerraAddon> addons();
+
+    String getID();
+
+    String getAuthor();
+
+    String getVersion();
 }

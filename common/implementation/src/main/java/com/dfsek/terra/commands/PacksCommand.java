@@ -28,8 +28,7 @@ public class PacksCommand implements CommandTemplate {
 
         LangUtil.send("command.packs.main", sender);
         registry.entries().forEach(entry -> {
-            ConfigPackTemplate template = entry.getTemplate();
-            LangUtil.send("command.packs.pack", sender, template.getID(), template.getAuthor(), template.getVersion());
+            LangUtil.send("command.packs.pack", sender, entry.getID(), entry.getAuthor(), entry.getVersion());
         });
     }
 }
