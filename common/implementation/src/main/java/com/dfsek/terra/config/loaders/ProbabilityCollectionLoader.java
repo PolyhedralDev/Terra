@@ -3,6 +3,7 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.lang.reflect.ParameterizedType;
@@ -11,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollectionImpl<Object>> {
+public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollection<Object>> {
     @Override
-    public ProbabilityCollectionImpl<Object> load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
-        ProbabilityCollectionImpl<Object> collection = new ProbabilityCollectionImpl<>();
+    public ProbabilityCollection<Object> load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+        ProbabilityCollection<Object> collection = new ProbabilityCollectionImpl<>();
 
         if(type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;

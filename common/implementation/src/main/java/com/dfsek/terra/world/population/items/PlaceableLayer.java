@@ -1,19 +1,19 @@
 package com.dfsek.terra.world.population.items;
 
-import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 public abstract class PlaceableLayer<T> {
     protected final double density;
-    protected final ConstantRange level;
-    protected final ProbabilityCollectionImpl<T> layer;
+    protected final Range level;
+    protected final ProbabilityCollection<T> layer;
     protected final NoiseSampler noise;
 
-    public PlaceableLayer(double density, ConstantRange level, ProbabilityCollectionImpl<T> layer, NoiseSampler noise) {
+    public PlaceableLayer(double density, Range level, ProbabilityCollection<T> layer, NoiseSampler noise) {
         this.density = density;
         this.level = level;
         this.layer = layer;
@@ -32,7 +32,7 @@ public abstract class PlaceableLayer<T> {
         return level;
     }
 
-    public ProbabilityCollectionImpl<T> getLayer() {
+    public ProbabilityCollection<T> getLayer() {
         return layer;
     }
 

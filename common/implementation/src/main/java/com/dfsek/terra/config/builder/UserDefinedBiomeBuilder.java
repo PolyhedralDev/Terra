@@ -3,6 +3,7 @@ package com.dfsek.terra.config.builder;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.noise.samplers.ExpressionSampler;
 import com.dfsek.terra.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -63,7 +64,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
     }
 
     @Override
-    public ProbabilityCollectionImpl<Biome> getVanillaBiomes() {
+    public ProbabilityCollection<Biome> getVanillaBiomes() {
         return template.getVanilla();
     }
 

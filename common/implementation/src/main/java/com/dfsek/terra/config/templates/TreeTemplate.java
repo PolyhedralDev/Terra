@@ -4,6 +4,7 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
@@ -11,7 +12,7 @@ import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 public class TreeTemplate extends AbstractableTemplate {
     @Value("scripts")
     @Abstractable
-    private ProbabilityCollectionImpl<Structure> structure;
+    private ProbabilityCollection<Structure> structure;
 
     @Value("id")
     private String id;
@@ -25,7 +26,7 @@ public class TreeTemplate extends AbstractableTemplate {
     @Abstractable
     private MaterialSet spawnable;
 
-    public ProbabilityCollectionImpl<Structure> getStructures() {
+    public ProbabilityCollection<Structure> getStructures() {
         return structure;
     }
 

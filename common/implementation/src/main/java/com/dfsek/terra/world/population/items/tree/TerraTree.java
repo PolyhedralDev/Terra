@@ -1,6 +1,7 @@
 package com.dfsek.terra.world.population.items.tree;
 
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Tree;
@@ -13,9 +14,9 @@ import java.util.Random;
 public class TerraTree implements Tree {
     private final MaterialSet spawnable;
     private final int yOffset;
-    private final ProbabilityCollectionImpl<Structure> structure;
+    private final ProbabilityCollection<Structure> structure;
 
-    public TerraTree(MaterialSet spawnable, int yOffset, ProbabilityCollectionImpl<Structure> structure) {
+    public TerraTree(MaterialSet spawnable, int yOffset, ProbabilityCollection<Structure> structure) {
         this.spawnable = spawnable;
         this.yOffset = yOffset;
         this.structure = structure;

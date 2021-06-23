@@ -231,7 +231,7 @@ public class ConfigPackImpl implements ConfigPack {
         }).close().open("structures/loot", ".json").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
-                    getOpenRegistry(LootTableImpl.class).add(entry.getKey(), new LootTableImpl(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
+                    getOpenRegistry(LootTable.class).add(entry.getKey(), new LootTableImpl(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
                 } catch(ParseException | IOException | NullPointerException e) {
                     throw new LoadException("Unable to load loot table \"" + entry.getKey() + "\"", e);
                 }

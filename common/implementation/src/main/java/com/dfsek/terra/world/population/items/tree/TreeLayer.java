@@ -2,6 +2,8 @@ package com.dfsek.terra.world.population.items.tree;
 
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockFace;
@@ -13,7 +15,7 @@ import com.dfsek.terra.world.population.items.PlaceableLayer;
 
 public class TreeLayer extends PlaceableLayer<Tree> {
 
-    public TreeLayer(double density, ConstantRange level, ProbabilityCollectionImpl<Tree> layer, NoiseSampler noise) {
+    public TreeLayer(double density, Range level, ProbabilityCollection<Tree> layer, NoiseSampler noise) {
         super(density, level, layer, noise);
     }
 

@@ -17,7 +17,7 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
     private String defaultFrom;
 
     @Value("default-to")
-    private ProbabilityCollectionImpl<BiomeBuilder> defaultTo;
+    private ProbabilityCollection<BiomeBuilder> defaultTo;
 
     @Value("to")
     private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;

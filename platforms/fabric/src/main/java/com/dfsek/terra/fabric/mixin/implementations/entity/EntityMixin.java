@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.util.FabricAdapter;
@@ -35,11 +36,11 @@ public abstract class EntityMixin {
         return this;
     }
 
-    public LocationImpl terra$getLocation() {
+    public Location terra$getLocation() {
         return new LocationImpl((World) world, FabricAdapter.adapt(blockPos));
     }
 
-    public void terra$setLocation(LocationImpl location) {
+    public void terra$setLocation(Location location) {
         teleport(location.getX(), location.getY(), location.getZ());
     }
 

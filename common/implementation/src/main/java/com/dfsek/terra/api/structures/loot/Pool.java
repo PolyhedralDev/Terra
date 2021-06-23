@@ -3,6 +3,7 @@ package com.dfsek.terra.api.structures.loot;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
@@ -17,7 +18,7 @@ import java.util.Random;
 public class Pool {
     private final int max;
     private final int min;
-    private final ProbabilityCollectionImpl<Entry> entries;
+    private final ProbabilityCollection<Entry> entries;
 
     /**
      * Instantiates a Pool from a JSON representation.

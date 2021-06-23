@@ -3,6 +3,7 @@ package noise;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.GenericLoaders;
@@ -99,7 +100,7 @@ public class NoiseTool {
         ConfigLoader loader = new ConfigLoader();
         loader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NoiseRegistry()))
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(folderLoader))
-                .registerLoader(ProbabilityCollectionImpl.class, new ProbabilityCollectionLoader());
+                .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader());
 
         new GenericLoaders(null).register(loader);
         NoiseConfigTemplate template = new NoiseConfigTemplate();

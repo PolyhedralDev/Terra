@@ -2,6 +2,7 @@ package com.dfsek.terra.carving;
 
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import net.jafama.FastMath;
@@ -13,8 +14,8 @@ import java.util.TreeMap;
 public class CarverPalette {
     private final boolean blacklist;
     private final MaterialSet replace;
-    private final TreeMap<Integer, ProbabilityCollectionImpl<BlockData>> map = new TreeMap<>();
-    private ProbabilityCollectionImpl<BlockData>[] layers;
+    private final TreeMap<Integer, ProbabilityCollection<BlockData>> map = new TreeMap<>();
+    private ProbabilityCollection<BlockData>[] layers;
     private int offset = 0;
 
     public CarverPalette(MaterialSet replaceable, boolean blacklist) {
@@ -22,12 +23,12 @@ public class CarverPalette {
         this.replace = replaceable;
     }
 
-    public CarverPalette add(ProbabilityCollectionImpl<BlockData> collection, int y) {
+    public CarverPalette add(ProbabilityCollection<BlockData> collection, int y) {
         map.put(y, collection);
         return this;
     }
 
-    public ProbabilityCollectionImpl<BlockData> get(int y) {
+    public ProbabilityCollection<BlockData> get(int y) {
         int index = y + offset;
         return index >= 0
                 ? index < layers.length
@@ -47,10 +48,10 @@ public class CarverPalette {
         int min = FastMath.min(map.keySet().stream().min(Integer::compareTo).orElse(0), 0);
         int max = FastMath.max(map.keySet().stream().max(Integer::compareTo).orElse(255), 255);
 
-        layers = new ProbabilityCollectionImpl[map.lastKey() + 1 - min];
+        layers = new ProbabilityCollection[map.lastKey() + 1 - min];
         for(int y = min; y <= FastMath.max(map.lastKey(), max); y++) {
-            ProbabilityCollectionImpl<BlockData> d = null;
-            for(Map.Entry<Integer, ProbabilityCollectionImpl<BlockData>> e : map.entrySet()) {
+            ProbabilityCollection<BlockData> d = null;
+            for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : map.entrySet()) {
                 if(e.getKey() >= y) {
                     d = e.getValue();
                     break;

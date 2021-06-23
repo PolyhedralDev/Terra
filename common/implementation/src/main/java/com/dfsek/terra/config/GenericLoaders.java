@@ -4,19 +4,17 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.math.range.ConstantRange;
-import com.dfsek.terra.noise.samplers.ImageSampler;
-import com.dfsek.terra.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.math.GridSpawn;
+import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 import com.dfsek.terra.api.world.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.api.world.biome.pipeline.stages.MutatorStage;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
@@ -51,6 +49,8 @@ import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.config.loaders.palette.slant.SlantHolderLoader;
+import com.dfsek.terra.noise.samplers.ImageSampler;
+import com.dfsek.terra.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
 import com.dfsek.terra.world.population.items.ores.Ore;
@@ -69,8 +69,8 @@ public class GenericLoaders implements LoaderRegistrar {
 
     @Override
     public void register(TypeRegistry registry) {
-        registry.registerLoader(ProbabilityCollectionImpl.class, new ProbabilityCollectionLoader())
-                .registerLoader(ConstantRange.class, new RangeLoader())
+        registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
+                .registerLoader(Range.class, new RangeLoader())
                 .registerLoader(GridSpawn.class, new GridSpawnLoader())
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())
                 .registerLoader(PaletteLayerHolder.class, new PaletteLayerLoader())
