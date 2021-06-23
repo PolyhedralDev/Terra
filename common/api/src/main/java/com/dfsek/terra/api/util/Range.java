@@ -10,25 +10,25 @@ public interface Range extends Iterable<Integer> {
 
     int getMax();
 
-    ConstantRange setMax(int max);
+    Range setMax(int max);
 
     int getMin();
 
-    ConstantRange setMin(int min);
+    Range setMin(int min);
 
     int getRange();
 
-    ConstantRange multiply(int mult);
+    Range multiply(int mult);
 
-    ConstantRange reflect(int pt);
+    Range reflect(int pt);
 
     int get(Random r);
 
-    ConstantRange intersects(ConstantRange other);
+    Range intersects(Range other);
 
-    ConstantRange add(int add);
+    Range add(int add);
 
-    ConstantRange sub(int sub);
+    Range sub(int sub);
 
     @NotNull
     @Override
