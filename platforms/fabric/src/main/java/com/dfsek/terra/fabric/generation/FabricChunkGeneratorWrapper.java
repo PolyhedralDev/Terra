@@ -115,7 +115,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         if(!pack.getTemplate().disableStructures()) {
             String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
             TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
-            TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
+            TerraStructure located = pack.getRegistry(TerraStructure.class).get(pack.getTemplate().getLocatable().get(name));
             if(located != null) {
                 CompletableFuture<BlockPos> result = new CompletableFuture<>();
                 AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {

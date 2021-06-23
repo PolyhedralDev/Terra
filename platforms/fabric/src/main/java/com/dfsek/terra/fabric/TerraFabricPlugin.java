@@ -33,6 +33,7 @@ import com.dfsek.terra.api.util.logging.Logger;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
@@ -180,11 +181,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public File getDataFolder() {
         return dataFolder;
-    }
-
-    @Override
-    public boolean isDebug() {
-        return config.isDebug();
     }
 
     @Override
@@ -349,7 +345,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
                     if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
                         try {
-                            event.getPack().getTreeRegistry().add(entry.getKey().getValue().toString(), (Tree) entry.getValue());
+                            event.getPack().getRegistry(Tree.class).add(entry.getKey().getValue().toString(), (Tree) entry.getValue());
                             debugLogger.info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
                         } catch(DuplicateEntryException ignored) {
                         }
@@ -377,7 +373,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         public void injectBiomes(BiomeRegistrationEvent event) {
             logger.info("Registering biomes...");
             Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
-            configRegistry.forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(biome, pack, event.getRegistryManager())))); // Register all Terra biomes.
+            configRegistry.forEach(pack -> pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(biome, pack, event.getRegistryManager())))); // Register all Terra biomes.
             logger.info("Biomes registered.");
         }
 
