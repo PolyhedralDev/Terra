@@ -4,6 +4,7 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -18,7 +19,7 @@ import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.factories.StructureFactory;
 import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.config.prototype.ConfigType;
+import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
@@ -27,7 +28,7 @@ import com.dfsek.terra.config.templates.OreTemplate;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
-import com.dfsek.terra.registry.OpenRegistry;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.ores.Ore;
 
@@ -35,7 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?, ?>> {
+public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     private final BiConsumer<String, ConfigType<?, ?>> callback;
 
     public ConfigTypeRegistry(ConfigPackImpl pack, TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
@@ -52,7 +53,7 @@ public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?, ?>> {
     }
 
     @Override
-    protected boolean add(String identifier, Entry<ConfigType<?, ?>> value) {
+    public boolean add(String identifier, Entry<ConfigType<?, ?>> value) {
         callback.accept(identifier, value.getValue());
         return super.add(identifier, value);
     }
@@ -72,12 +73,12 @@ public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?, ?>> {
 
         @Override
         public Class<ConfigPack> getTypeClass() {
-            return ConfigPackImpl.class;
+            return ConfigPack.class;
         }
 
         @Override
         public Supplier<OpenRegistry<ConfigPack>> registrySupplier() {
-            return OpenRegistry::new;
+            return OpenRegistryImpl::new;
         }
     }
 

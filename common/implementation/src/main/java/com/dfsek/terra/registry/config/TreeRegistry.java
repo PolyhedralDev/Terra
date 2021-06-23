@@ -1,11 +1,7 @@
 package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.world.Tree;
-import com.dfsek.terra.registry.OpenRegistry;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 
-public class TreeRegistry extends OpenRegistry<Tree> {
-    @Override
-    public boolean add(String identifier, Tree value) {
-        return super.add(identifier, value);
-    }
+public class TreeRegistry extends OpenRegistryImpl<Tree> {
 }

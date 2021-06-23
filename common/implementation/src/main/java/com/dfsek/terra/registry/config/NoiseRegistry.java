@@ -23,9 +23,9 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.Rid
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
-import com.dfsek.terra.registry.OpenRegistry;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 
-public class NoiseRegistry extends OpenRegistry<NoiseProvider> {
+public class NoiseRegistry extends OpenRegistryImpl<NoiseProvider> {
     public NoiseRegistry() {
         add("LINEAR", LinearNormalizerTemplate::new);
         add("NORMAL", NormalNormalizerTemplate::new);

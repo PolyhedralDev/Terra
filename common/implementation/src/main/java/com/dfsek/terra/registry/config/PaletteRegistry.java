@@ -3,9 +3,9 @@ package com.dfsek.terra.registry.config;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
-import com.dfsek.terra.registry.OpenRegistry;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 
-public class PaletteRegistry extends OpenRegistry<Palette> {
+public class PaletteRegistry extends OpenRegistryImpl<Palette> {
     private final TerraPlugin main;
 
     public PaletteRegistry(TerraPlugin main) {
