@@ -23,7 +23,7 @@ val paperURL = "https://papermc.io/api/v1/paper/%version%/latest/download/"
 val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/final/purpurclip.jar"
 
 dependencies {
-    "shadedApi"(project(":common"))
+    "shadedApi"(project(":common:implementation"))
 
     "compileOnly"("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
     "shadedImplementation"("io.papermc:paperlib:1.0.5")

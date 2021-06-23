@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    "shadedApi"(project(":common"))
+    "shadedApi"(project(":common:implementation"))
     "shadedImplementation"("com.github.Querz:NBT:5.2") // Standalone NBT API
     "shadedImplementation"("org.yaml:snakeyaml:1.27")
     "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")

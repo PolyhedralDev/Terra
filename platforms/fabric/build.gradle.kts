@@ -21,7 +21,7 @@ tasks.named<ShadowJar>("shadowJar") {
 group = "com.dfsek.terra.fabric"
 
 dependencies {
-    "shadedApi"(project(":common"))
+    "shadedApi"(project(":common:implementation"))
 
     "minecraft"("com.mojang:minecraft:1.17")
     "mappings"("net.fabricmc:yarn:1.17+build.1:v2")
