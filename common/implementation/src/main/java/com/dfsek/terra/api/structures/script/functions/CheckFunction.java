@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -12,12 +13,11 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
-import com.dfsek.terra.api.structure.rotation.RotationUtil;
+import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.world.generation.math.SamplerCache;
 import net.jafama.FastMath;
 
 import java.util.Map;

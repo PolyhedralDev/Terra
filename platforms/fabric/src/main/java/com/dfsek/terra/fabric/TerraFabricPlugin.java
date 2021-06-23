@@ -12,6 +12,7 @@ import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.EventManagerImpl;
@@ -22,6 +23,7 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
@@ -31,13 +33,12 @@ import com.dfsek.terra.api.transform.TransformerImpl;
 import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.logging.DebugLogger;
-import com.dfsek.terra.api.util.logging.Logger;
+import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
-import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -124,7 +125,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final AddonRegistry addonRegistry = new AddonRegistry(fabricAddon, this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
-    private final PluginConfig config = new PluginConfig();
+    private final PluginConfig config = new PluginConfigImpl();
 
     private final TransformerImpl<String, ProtoBiome> biomeFixer = new TransformerImpl.Builder<String, ProtoBiome>()
             .addTransform(this::parseBiome, Validator.notNull())

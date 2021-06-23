@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.math;
 
-import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.util.FastRandom;
@@ -57,7 +57,7 @@ public class GridSpawn {
      * @return Vector representing spawnpoint
      */
     public Vector3 getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
-        Random r = new FastRandom(MathUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed + salt));
+        Random r = new FastRandom(PopulationUtil.getCarverChunkSeed(structureChunkX, structureChunkZ, seed + salt));
         int offsetX = r.nextInt(width);
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;

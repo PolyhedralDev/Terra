@@ -7,16 +7,16 @@ import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.Container;
-import com.dfsek.terra.api.structures.loot.LootTable;
+import com.dfsek.terra.api.structures.loot.LootTableImpl;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.FastRandom;
 
 public class BufferedLootApplication implements BufferedItem {
-    private final LootTable table;
+    private final LootTableImpl table;
     private final TerraPlugin main;
     private final StructureScript structure;
 
-    public BufferedLootApplication(LootTable table, TerraPlugin main, StructureScript structure) {
+    public BufferedLootApplication(LootTableImpl table, TerraPlugin main, StructureScript structure) {
         this.table = table;
         this.main = main;
         this.structure = structure;

@@ -2,10 +2,10 @@ package com.dfsek.terra.api.structures.script.builders;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.script.functions.StructureFunction;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StructureFunctionBuilder implements FunctionBuilder<StructureFunction> {
-    private final Registry<StructureScript> registry;
+    private final Registry<Structure> registry;
     private final TerraPlugin main;
 
-    public StructureFunctionBuilder(Registry<StructureScript> registry, TerraPlugin main) {
+    public StructureFunctionBuilder(Registry<Structure> registry, TerraPlugin main) {
         this.registry = registry;
         this.main = main;
     }

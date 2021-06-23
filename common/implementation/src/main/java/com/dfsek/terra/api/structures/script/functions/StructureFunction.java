@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.api.vector.Vector3;
@@ -10,10 +11,9 @@ import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
-import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.structure.rotation.RotationUtil;
+import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.IntermediateBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 public class StructureFunction implements Function<Boolean> {
-    private final Registry<StructureScript> registry;
+    private final Registry<Structure> registry;
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
     private final Position position;
     private final TerraPlugin main;
     private final List<Returnable<String>> rotations;
 
-    public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id, List<Returnable<String>> rotations, Registry<StructureScript> registry, Position position, TerraPlugin main) {
+    public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id, List<Returnable<String>> rotations, Registry<Structure> registry, Position position, TerraPlugin main) {
         this.registry = registry;
         this.id = id;
         this.position = position;
@@ -57,7 +57,7 @@ public class StructureFunction implements Function<Boolean> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
         String app = id.apply(implementationArguments, variableMap);
-        StructureScript script = registry.get(app);
+        Structure script = registry.get(app);
         if(script == null) {
             main.logger().severe("No such structure " + app);
             return null;
@@ -74,7 +74,7 @@ public class StructureFunction implements Function<Boolean> {
 
         Vector3 offset = new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
 
-        return script.executeInBuffer(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+        return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }
 
     @Override

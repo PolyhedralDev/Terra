@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population.items.ores;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.noise.samplers.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.terra.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector3Impl;

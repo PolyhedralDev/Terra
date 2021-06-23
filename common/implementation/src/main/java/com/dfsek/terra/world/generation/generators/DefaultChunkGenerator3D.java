@@ -17,7 +17,7 @@ import com.dfsek.terra.api.block.data.Waterlogged;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
-import com.dfsek.terra.api.util.world.PaletteUtil;
+import com.dfsek.terra.api.util.PaletteUtil;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

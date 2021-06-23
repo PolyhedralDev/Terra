@@ -14,7 +14,7 @@ import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
-import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.commands.structure.argument.ScriptArgumentParser;
@@ -56,7 +56,7 @@ public class StructureLoadCommand implements CommandTemplate {
     private boolean chunk;
 
     @ArgumentTarget("structure")
-    private StructureScript script;
+    private Structure script;
 
     @Inject
     private TerraPlugin main;
@@ -79,9 +79,9 @@ public class StructureLoadCommand implements CommandTemplate {
             return;
         }
         if(this.chunk) {
-            script.execute(player.getLocation(), player.getWorld().getChunkAt(player.getLocation()), random, r);
+            script.generate(player.getLocation(), player.getWorld().getChunkAt(player.getLocation()), random, r);
         } else {
-            script.execute(player.getLocation(), random, r);
+            script.generate(player.getLocation(), random, r);
         }
         long l = System.nanoTime() - t;
 

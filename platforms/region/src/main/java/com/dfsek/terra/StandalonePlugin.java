@@ -4,11 +4,13 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.EventManagerImpl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.World;
@@ -17,9 +19,9 @@ import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.config.GenericLoaders;
-import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.lang.Language;
+import com.dfsek.terra.config.lang.LanguageImpl;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
 import com.dfsek.terra.api.profiler.Profiler;
@@ -38,7 +40,7 @@ public class StandalonePlugin implements TerraPlugin {
 
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
-    private final PluginConfig config = new PluginConfig();
+    private final PluginConfig config = new PluginConfigImpl();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
     private final EventManager eventManager = new EventManagerImpl(this);
 
@@ -55,7 +57,7 @@ public class StandalonePlugin implements TerraPlugin {
     }
 
     @Override
-    public com.dfsek.terra.api.util.logging.Logger logger() {
+    public com.dfsek.terra.api.Logger logger() {
         return new JavaLogger(Logger.getLogger("Terra"));
     }
 
@@ -72,7 +74,7 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public Language getLanguage() {
         try {
-            return new Language(new File(getDataFolder(), "lang/en_us.yml"));
+            return new LanguageImpl(new File(getDataFolder(), "lang/en_us.yml"));
         } catch(IOException e) {
             throw new IllegalArgumentException();
         }
@@ -111,7 +113,7 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public DebugLogger getDebugLogger() {
         Logger logger = Logger.getLogger("Terra");
-        return new DebugLogger(new com.dfsek.terra.api.util.logging.Logger() {
+        return new DebugLogger(new com.dfsek.terra.api.Logger() {
             @Override
             public void info(String message) {
                 logger.info(message);

@@ -67,20 +67,6 @@ public enum BlockFace {
         return modZ;
     }
 
-    /**
-     * Gets the normal vector corresponding to this block face.
-     *
-     * @return the normal vector
-     */
-    @NotNull
-    public Vector3 getDirection() {
-        Vector3 direction = new Vector3Impl(modX, modY, modZ);
-        if(modX != 0 || modY != 0 || modZ != 0) {
-            direction.normalize();
-        }
-        return direction;
-    }
-
     @NotNull
     public BlockFace getOppositeFace() {
         switch(this) {

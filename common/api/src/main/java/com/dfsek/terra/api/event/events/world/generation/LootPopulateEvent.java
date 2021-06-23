@@ -6,6 +6,8 @@ import com.dfsek.terra.api.event.events.Cancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.structure.LootTable;
+import com.dfsek.terra.api.structure.Structure;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,14 +18,14 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent,
     private final Container container;
     private LootTable table;
     private final ConfigPack pack;
-    private final StructureScript script;
+    private final Structure structure;
 
-    public LootPopulateEvent(Block block, Container container, LootTable table, ConfigPack pack, StructureScript script) {
+    public LootPopulateEvent(Block block, Container container, LootTable table, ConfigPack pack, Structure structure) {
         this.block = block;
         this.container = container;
         this.table = table;
         this.pack = pack;
-        this.script = script;
+        this.structure = structure;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent,
      *
      * @return Structure script.
      */
-    public StructureScript getStructureScript() {
-        return script;
+    public Structure getStructure() {
+        return structure;
     }
 }

@@ -2,12 +2,15 @@ package com.dfsek.terra.api;
 
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.util.JarUtil;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 
@@ -44,7 +47,7 @@ public interface TerraPlugin extends LoaderRegistrar {
 
     String platformName();
 
-    DebugLogger getDebugLogger();
+    Logger getDebugLogger();
 
     EventManager getEventManager();
 

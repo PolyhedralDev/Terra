@@ -15,7 +15,8 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structures.loot.LootTable;
+import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.structures.loot.LootTableImpl;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
@@ -190,7 +191,7 @@ public class ConfigPackImpl implements ConfigPack {
 
         putPair(map, NoiseProvider.class, new NoiseRegistry());
         putPair(map, FunctionBuilder.class, (OpenRegistry<FunctionBuilder>) (Object) new FunctionRegistry());
-        putPair(map, LootTable.class, new LootRegistry());
+        putPair(map, LootTableImpl.class, new LootRegistry());
         putPair(map, StructureScript.class, new ScriptRegistry());
 
         return map;
@@ -217,8 +218,8 @@ public class ConfigPackImpl implements ConfigPack {
         loader.open("", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try(InputStream stream = entry.getValue()) {
-                    StructureScript structureScript = new StructureScript(stream, main, getRegistry(StructureScript.class), getRegistry(LootTable.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
-                    getOpenRegistry(StructureScript.class).add(structureScript.getId(), structureScript);
+                    Structure structure = new StructureScript(stream, main, getRegistry(StructureScript.class), getRegistry(LootTableImpl.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
+                    getOpenRegistry(StructureScript.class).add(structure.getId(), structure);
                 } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException | IOException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
                 }
@@ -226,7 +227,7 @@ public class ConfigPackImpl implements ConfigPack {
         }).close().open("structures/loot", ".json").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {
-                    getOpenRegistry(LootTable.class).add(entry.getKey(), new LootTable(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
+                    getOpenRegistry(LootTableImpl.class).add(entry.getKey(), new LootTableImpl(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
                 } catch(ParseException | IOException | NullPointerException e) {
                     throw new LoadException("Unable to load loot table \"" + entry.getKey() + "\"", e);
                 }

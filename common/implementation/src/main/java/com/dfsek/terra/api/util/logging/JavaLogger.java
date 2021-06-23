@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.util.logging;
 
+import com.dfsek.terra.api.Logger;
+
 public class JavaLogger implements Logger {
     private final java.util.logging.Logger logger;
 

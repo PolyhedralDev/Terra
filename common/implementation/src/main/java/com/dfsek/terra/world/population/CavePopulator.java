@@ -9,7 +9,7 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.util.world.PopulationUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;

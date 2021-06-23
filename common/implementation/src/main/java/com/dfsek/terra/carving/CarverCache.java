@@ -2,6 +2,7 @@ package com.dfsek.terra.carving;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.util.FastRandom;
@@ -33,8 +34,8 @@ public class CarverCache {
                         int chunkX = (int) (key >> 32);
                         int chunkZ = (int) key.longValue();
                         BiomeProvider provider = main.getWorld(w).getBiomeProvider();
-                        if(CarverCache.this.carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + CarverCache.this.carver.hashCode())))) {
-                            long seed = MathUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
+                        if(CarverCache.this.carver.isChunkCarved(w, chunkX, chunkZ, new FastRandom(PopulationUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + CarverCache.this.carver.hashCode())))) {
+                            long seed = PopulationUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
                             Random r = new FastRandom(seed);
                             Worm carving = CarverCache.this.carver.getWorm(seed, new Vector3Impl((chunkX << 4) + r.nextInt(16), CarverCache.this.carver.getConfig().getHeight().get(r), (chunkZ << 4) + r.nextInt(16)));
                             List<Worm.WormPoint> points = new GlueList<>();

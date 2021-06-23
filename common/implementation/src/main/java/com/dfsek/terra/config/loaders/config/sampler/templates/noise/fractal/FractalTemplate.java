@@ -2,7 +2,7 @@ package com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.noise.samplers.noise.fractal.FractalNoiseFunction;
+import com.dfsek.terra.noise.samplers.noise.fractal.FractalNoiseFunction;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.sampler.templates.SamplerTemplate;
 

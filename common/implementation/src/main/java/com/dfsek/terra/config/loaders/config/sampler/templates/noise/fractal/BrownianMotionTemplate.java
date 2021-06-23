@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.noise.samplers.noise.fractal.BrownianMotionSampler;
+import com.dfsek.terra.noise.samplers.noise.fractal.BrownianMotionSampler;
 
 public class BrownianMotionTemplate extends FractalTemplate<BrownianMotionSampler> {
     @Override

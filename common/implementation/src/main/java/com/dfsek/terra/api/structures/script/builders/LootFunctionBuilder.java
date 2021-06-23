@@ -2,7 +2,7 @@ package com.dfsek.terra.api.structures.script.builders;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structures.loot.LootTable;
+import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;

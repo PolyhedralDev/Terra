@@ -5,6 +5,7 @@ import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structures.script.StructureScript;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public class ScriptCompleter implements TabCompleter {
 
     @Override
     public List<String> complete(CommandSender sender) {
-        return main.getWorld(((Player) sender).getWorld()).getConfig().getRegistry(StructureScript.class).entries().stream().map(StructureScript::getId).collect(Collectors.toList());
+        return main.getWorld(((Player) sender).getWorld()).getConfig().getRegistry(StructureScript.class).entries().stream().map(Structure::getId).collect(Collectors.toList());
     }
 }

@@ -1,18 +1,19 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structures.loot.LootTable;
+import com.dfsek.terra.api.structures.loot.LootTableImpl;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
-import com.dfsek.terra.api.structure.rotation.RotationUtil;
+import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedLootApplication;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import net.jafama.FastMath;
@@ -46,7 +47,7 @@ public class LootFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
         String id = data.apply(implementationArguments, variableMap);
-        LootTable table = registry.get(id);
+        LootTableImpl table = registry.get(id);
 
         if(table == null) {
             main.logger().severe("No such loot table " + id);

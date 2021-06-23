@@ -8,7 +8,7 @@ import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
-import com.dfsek.terra.api.util.world.PopulationUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.world.population.items.PlaceableLayer;
 
 public class TreeLayer extends PlaceableLayer<Tree> {

@@ -9,7 +9,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.noise.samplers.noise.ExpressionFunction;
+import com.dfsek.terra.noise.samplers.noise.ExpressionFunction;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;

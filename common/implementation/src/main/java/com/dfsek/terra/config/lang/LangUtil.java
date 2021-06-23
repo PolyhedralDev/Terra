@@ -2,7 +2,8 @@ package com.dfsek.terra.config.lang;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.util.logging.Logger;
+import com.dfsek.terra.api.Logger;
+import com.dfsek.terra.api.lang.Language;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public final class LangUtil {
         try {
             File file1 = new File(file, langID + ".yml");
             logger.info(file1.getAbsolutePath());
-            language = new Language(file1);
+            language = new LanguageImpl(file1);
             logger.info("Loaded language " + langID);
         } catch(IOException e) {
             logger.severe("Unable to load language: " + langID);

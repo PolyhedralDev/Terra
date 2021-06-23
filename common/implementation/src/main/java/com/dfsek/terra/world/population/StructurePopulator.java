@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -44,8 +44,8 @@ public class StructurePopulator implements TerraBlockPopulator, Chunkified {
 
                 if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))
                     continue;
-                Random random = new FastRandom(MathUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
-                conf.getStructure().get(random).execute(spawn.setY(conf.getSpawnStart().get(random)), chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));
+                Random random = new FastRandom(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
+                conf.getStructure().get(random).generate(spawn.setY(conf.getSpawnStart().get(random)), chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));
             }
         }
     }

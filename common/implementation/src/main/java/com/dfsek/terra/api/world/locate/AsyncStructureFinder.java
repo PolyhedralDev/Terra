@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.locate;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.structure.rotation.Rotation;
@@ -30,7 +30,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<TerraStructure> {
     public boolean isValid(int x, int z, TerraStructure target) {
         LocationImpl spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed()).toLocation(world);
         if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(target)) return false;
-        Random random = new FastRandom(MathUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
+        Random random = new FastRandom(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
         return target.getStructure().get(random).test(spawn.setY(target.getSpawnStart().get(random)), random, Rotation.fromDegrees(90 * random.nextInt(4)));
     }
 }

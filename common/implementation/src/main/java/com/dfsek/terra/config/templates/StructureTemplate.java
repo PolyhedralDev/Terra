@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
@@ -19,7 +19,7 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
 
     @Value("scripts")
     @Abstractable
-    private ProbabilityCollectionImpl<StructureScript> structure;
+    private ProbabilityCollectionImpl<Structure> structure;
 
     @Value("spawn.start")
     @Abstractable
@@ -38,7 +38,7 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
         return id;
     }
 
-    public ProbabilityCollectionImpl<StructureScript> getStructures() {
+    public ProbabilityCollectionImpl<Structure> getStructures() {
         return structure;
     }
 

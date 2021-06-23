@@ -6,11 +6,11 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.carving.UserDefinedCarver;
+import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
-import com.dfsek.terra.world.generation.math.SamplerCache;
+import com.dfsek.terra.world.generation.math.SamplerCacheImpl;
 import com.dfsek.terra.world.population.items.TerraStructure;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class WorldConfigImpl implements com.dfsek.terra.api.config.WorldConfig {
     public WorldConfigImpl(TerraWorld world, ConfigPackImpl pack, TerraPlugin main) {
         this.world = world;
         this.pack = pack;
-        this.samplerCache = new SamplerCache(main, world);
+        this.samplerCache = new SamplerCacheImpl(main, world);
 
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
 
@@ -56,11 +56,6 @@ public class WorldConfigImpl implements com.dfsek.terra.api.config.WorldConfig {
     @Override
     public SamplerCache getSamplerCache() {
         return samplerCache;
-    }
-
-    @Override
-    public Set<UserDefinedCarver> getCarvers() {
-        return new HashSet<>(getRegistry(UserDefinedCarver.class).entries());
     }
 
     @Override

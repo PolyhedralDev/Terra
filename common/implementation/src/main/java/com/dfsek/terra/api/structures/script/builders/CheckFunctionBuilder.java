@@ -6,7 +6,6 @@ import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
 import com.dfsek.terra.api.structures.tokenizer.Position;
-import com.dfsek.terra.world.generation.math.SamplerCache;
 
 import java.util.List;
 

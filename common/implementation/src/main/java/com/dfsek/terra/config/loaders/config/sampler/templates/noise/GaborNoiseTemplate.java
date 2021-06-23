@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders.config.sampler.templates.noise;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.noise.samplers.noise.GaborNoiseSampler;
+import com.dfsek.terra.noise.samplers.noise.GaborNoiseSampler;
 
 public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     @Value("rotation")

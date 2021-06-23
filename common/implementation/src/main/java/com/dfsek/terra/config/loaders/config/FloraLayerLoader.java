@@ -5,7 +5,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.range.ConstantRange;
-import com.dfsek.terra.api.noise.samplers.noise.random.WhiteNoiseSampler;
+import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.Flora;

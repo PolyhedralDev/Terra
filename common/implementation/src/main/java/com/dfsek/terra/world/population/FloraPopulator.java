@@ -6,7 +6,7 @@ import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.util.world.PopulationUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;

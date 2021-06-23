@@ -1,18 +1,18 @@
 package com.dfsek.terra.world.population.items;
 
 import com.dfsek.terra.api.math.GridSpawn;
-import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.config.templates.StructureTemplate;
 
 public class TerraStructure {
-    private final ProbabilityCollectionImpl<StructureScript> structure;
+    private final ProbabilityCollectionImpl<Structure> structure;
     private final Range spawnStart;
     private final GridSpawn spawn;
     private final StructureTemplate template;
 
-    public TerraStructure(ProbabilityCollectionImpl<StructureScript> structures, Range spawnStart, GridSpawn spawn, StructureTemplate template) {
+    public TerraStructure(ProbabilityCollectionImpl<Structure> structures, Range spawnStart, GridSpawn spawn, StructureTemplate template) {
         this.structure = structures;
         this.spawnStart = spawnStart;
         this.spawn = spawn;
@@ -23,7 +23,7 @@ public class TerraStructure {
         return template;
     }
 
-    public ProbabilityCollectionImpl<StructureScript> getStructure() {
+    public ProbabilityCollectionImpl<Structure> getStructure() {
         return structure;
     }
 

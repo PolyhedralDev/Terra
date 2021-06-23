@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.world.Chunk;
@@ -33,7 +33,7 @@ public class OrePopulator implements TerraBlockPopulator {
             if(!tw.isSafe()) return;
             for(int cx = -1; cx <= 1; cx++) {
                 for(int cz = -1; cz <= 1; cz++) {
-                    Random random = new FastRandom(MathUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
+                    Random random = new FastRandom(PopulationUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
                     int originX = ((chunk.getX() + cx) << 4);
                     int originZ = ((chunk.getZ() + cz) << 4);
                     TerraBiome b = tw.getBiomeProvider().getBiome(originX + 8, originZ + 8);

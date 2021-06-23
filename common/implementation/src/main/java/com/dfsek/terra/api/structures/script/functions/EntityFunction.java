@@ -12,7 +12,7 @@ import com.dfsek.terra.api.structures.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
-import com.dfsek.terra.api.structure.rotation.RotationUtil;
+import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedEntity;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 

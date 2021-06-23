@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders.config.sampler.templates;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.noise.samplers.DomainWarpedSampler;
+import com.dfsek.terra.noise.samplers.DomainWarpedSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})

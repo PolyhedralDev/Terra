@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.util.logging;
 
+import com.dfsek.terra.api.Logger;
+
 public class DebugLogger {
     private final Logger logger;
     private boolean debug = false;

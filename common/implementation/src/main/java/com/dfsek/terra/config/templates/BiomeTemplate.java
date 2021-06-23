@@ -11,7 +11,7 @@ import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.noise.samplers.noise.ConstantSampler;
+import com.dfsek.terra.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.block.BlockType;

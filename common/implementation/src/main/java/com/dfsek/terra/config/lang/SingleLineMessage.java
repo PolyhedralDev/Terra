@@ -2,6 +2,7 @@ package com.dfsek.terra.config.lang;
 
 
 import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.lang.Message;
 
 import java.util.Arrays;
 import java.util.logging.Level;
