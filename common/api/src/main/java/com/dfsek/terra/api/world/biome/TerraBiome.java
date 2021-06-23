@@ -2,6 +2,7 @@ package com.dfsek.terra.api.world.biome;
 
 
 import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.world.World;
 
 import java.util.Set;
 

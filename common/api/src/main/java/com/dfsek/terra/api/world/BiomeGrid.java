@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.world;
 
 import com.dfsek.terra.api.Handle;
+import com.dfsek.terra.api.world.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 
 public interface BiomeGrid extends Handle {

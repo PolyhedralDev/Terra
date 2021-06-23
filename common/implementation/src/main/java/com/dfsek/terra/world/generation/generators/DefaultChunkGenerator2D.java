@@ -20,7 +20,7 @@ import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
 import com.dfsek.terra.world.generation.math.SamplerCache;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.world.generation.math.samplers.Sampler2D;
 import com.dfsek.terra.world.population.CavePopulator;
 import com.dfsek.terra.world.population.OrePopulator;

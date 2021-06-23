@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.event.events.config;
 
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.api.config.ConfigPack;
 
 /**
  * Called when a config pack has finished loading.

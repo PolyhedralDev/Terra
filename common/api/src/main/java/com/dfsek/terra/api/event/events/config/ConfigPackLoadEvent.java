@@ -2,8 +2,8 @@ package com.dfsek.terra.api.event.events.config;
 
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.PackEvent;
-import com.dfsek.terra.config.pack.ConfigPack;
 
 /**
  * An event related to the loading process of config packs.

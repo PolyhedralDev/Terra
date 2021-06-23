@@ -3,7 +3,7 @@ package com.dfsek.terra.world.generation.math;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.world.TerraWorld;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.api.world.generator.Sampler;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;

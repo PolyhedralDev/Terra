@@ -94,8 +94,6 @@ public class TerraFlora implements Flora {
 
     @Override
     public boolean plant(Location location) {
-        WorldHandle handle = main.getWorldHandle();
-
         boolean doRotation = testRotation.size() > 0;
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;

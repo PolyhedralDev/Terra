@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.block;
 
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.vector.Vector3Impl;
 import org.jetbrains.annotations.NotNull;
 
 public enum BlockFace {

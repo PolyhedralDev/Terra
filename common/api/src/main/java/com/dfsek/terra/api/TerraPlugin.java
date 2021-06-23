@@ -1,20 +1,14 @@
 package com.dfsek.terra.api;
 
-import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.util.JarUtil;
-import com.dfsek.terra.api.util.logging.DebugLogger;
-import com.dfsek.terra.api.util.logging.Logger;
-import com.dfsek.terra.config.PluginConfig;
-import com.dfsek.terra.config.lang.Language;
-import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.profiler.Profiler;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.world.World;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +33,7 @@ public interface TerraPlugin extends LoaderRegistrar {
 
     CheckedRegistry<ConfigPack> getConfigRegistry();
 
-    LockedRegistry<TerraAddon> getAddons();
+    Registry<TerraAddon> getAddons();
 
     boolean reload();
 

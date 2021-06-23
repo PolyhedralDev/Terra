@@ -1,13 +1,12 @@
 package com.dfsek.terra.api.event.events.world.generation;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.PackEvent;
-import com.dfsek.terra.api.math.vector.Location;
 import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.structures.structure.buffer.items.BufferedEntity;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.api.vector.Location;
 
 /**
- * Called when an entity is spawned via {@link BufferedEntity}.
+ * Called when an entity is spawned.
  */
 public class EntitySpawnEvent implements PackEvent {
     private final ConfigPack pack;

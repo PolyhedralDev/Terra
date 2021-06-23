@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 public interface ProbabilityCollection<E> extends Collection<E> {
-    ProbabilityCollectionImpl<E> add(E item, int probability);
+    ProbabilityCollection<E> add(E item, int probability);
 
     E get(Random r);
 
@@ -16,7 +16,7 @@ public interface ProbabilityCollection<E> extends Collection<E> {
 
     E get(NoiseSampler n, double x, double z);
 
-    <T> ProbabilityCollectionImpl<T> map(Function<E, T> mapper, boolean carryNull);
+    <T> ProbabilityCollection<T> map(Function<E, T> mapper, boolean carryNull);
 
     int getTotalProbability();
 

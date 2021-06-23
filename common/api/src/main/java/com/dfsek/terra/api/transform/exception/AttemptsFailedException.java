@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.transform.exception;
 
-import com.dfsek.terra.api.util.GlueList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AttemptsFailedException extends RuntimeException {
@@ -14,6 +14,6 @@ public class AttemptsFailedException extends RuntimeException {
     }
 
     public List<Throwable> getCauses() {
-        return new GlueList<>(causes);
+        return new ArrayList<>(causes);
     }
 }

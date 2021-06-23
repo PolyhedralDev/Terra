@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.biome;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.palette.Palette;
+import com.dfsek.terra.api.world.generator.Palette;
 
 public interface Generator {
     /**

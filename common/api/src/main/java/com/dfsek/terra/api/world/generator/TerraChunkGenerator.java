@@ -5,8 +5,6 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

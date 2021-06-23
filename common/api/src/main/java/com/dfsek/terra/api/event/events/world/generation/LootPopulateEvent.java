@@ -1,18 +1,15 @@
 package com.dfsek.terra.api.event.events.world.generation;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.AbstractCancellable;
 import com.dfsek.terra.api.event.events.Cancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.state.Container;
-import com.dfsek.terra.api.structures.loot.LootTable;
-import com.dfsek.terra.api.structures.script.StructureScript;
-import com.dfsek.terra.api.structures.structure.buffer.items.BufferedLootApplication;
-import com.dfsek.terra.config.pack.ConfigPack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Called when loot is populated via {@link BufferedLootApplication}.
+ * Called when loot is populated.
  */
 public class LootPopulateEvent extends AbstractCancellable implements PackEvent, Cancellable {
     private final Block block;

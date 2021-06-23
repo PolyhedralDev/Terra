@@ -11,7 +11,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.pack.WorldConfig;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.api.world.generator.Sampler;
 import net.jafama.FastMath;
 
 public class TerraWorld {

@@ -2,8 +2,8 @@ package com.dfsek.terra.api.noise.samplers.noise;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.noise.samplers.noise.simplex.OpenSimplex2Sampler;
-import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 
 /**
  * NoiseSampler implementation for Cellular (Voronoi/Worley) Noise.

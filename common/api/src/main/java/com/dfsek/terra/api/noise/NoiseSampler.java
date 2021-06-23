@@ -1,7 +1,8 @@
 package com.dfsek.terra.api.noise;
 
-import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.math.vector.Vector3;
+
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 
 public interface NoiseSampler {
     /**

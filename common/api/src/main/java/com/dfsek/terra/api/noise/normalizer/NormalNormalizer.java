@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.noise.normalizer;
 
-import com.dfsek.terra.api.math.MathUtil;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
 import net.jafama.FastMath;
 
 /**

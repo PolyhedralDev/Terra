@@ -28,7 +28,7 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.carving.NoiseCarver;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.world.population.CavePopulator;
 import com.dfsek.terra.world.population.FloraPopulator;

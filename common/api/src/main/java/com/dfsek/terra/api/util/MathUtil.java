@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.util;
 
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.world.generation.math.samplers.Sampler;
+import com.dfsek.terra.api.world.generator.Sampler;
 import net.jafama.FastMath;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.generation.math.samplers;
+package com.dfsek.terra.api.world.generator;
 
 @FunctionalInterface
 public interface Sampler {
