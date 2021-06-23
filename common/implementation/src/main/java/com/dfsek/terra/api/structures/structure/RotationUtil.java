@@ -1,16 +1,16 @@
 package com.dfsek.terra.api.structures.structure;
 
-import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.data.Directional;
-import com.dfsek.terra.api.platform.block.data.MultipleFacing;
-import com.dfsek.terra.api.platform.block.data.Orientable;
-import com.dfsek.terra.api.platform.block.data.Rail;
-import com.dfsek.terra.api.platform.block.data.RedstoneWire;
-import com.dfsek.terra.api.platform.block.data.Rotatable;
-import com.dfsek.terra.api.platform.block.data.Wall;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.data.Directional;
+import com.dfsek.terra.api.block.data.MultipleFacing;
+import com.dfsek.terra.api.block.data.Orientable;
+import com.dfsek.terra.api.block.data.Rail;
+import com.dfsek.terra.api.block.data.RedstoneWire;
+import com.dfsek.terra.api.block.data.Rotatable;
+import com.dfsek.terra.api.block.data.Wall;
 import com.google.common.collect.Sets;
 import net.jafama.FastMath;
 

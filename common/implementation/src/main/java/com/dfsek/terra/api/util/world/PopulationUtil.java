@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.util.world;
 
-import com.dfsek.terra.api.math.MathUtil;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.util.FastRandom;
 
 public final class PopulationUtil {

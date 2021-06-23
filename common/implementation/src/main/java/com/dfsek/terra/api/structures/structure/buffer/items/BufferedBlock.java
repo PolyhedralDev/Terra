@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.data.Waterlogged;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.data.Waterlogged;
 
 public class BufferedBlock implements BufferedItem {
     private final BlockData data;

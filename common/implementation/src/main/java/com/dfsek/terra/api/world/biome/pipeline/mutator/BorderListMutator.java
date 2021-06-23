@@ -1,19 +1,20 @@
 package com.dfsek.terra.api.world.biome.pipeline.mutator;
 
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
 
 import java.util.Map;
 
 public class BorderListMutator implements BiomeMutator {
     private final String border;
     private final NoiseSampler noiseSampler;
-    private final ProbabilityCollection<TerraBiome> replaceDefault;
+    private final ProbabilityCollectionImpl<TerraBiome> replaceDefault;
     private final String defaultReplace;
-    private final Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace;
+    private final Map<TerraBiome, ProbabilityCollectionImpl<TerraBiome>> replace;
 
-    public BorderListMutator(Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace, String border, String defaultReplace, NoiseSampler noiseSampler, ProbabilityCollection<TerraBiome> replaceDefault) {
+    public BorderListMutator(Map<TerraBiome, ProbabilityCollectionImpl<TerraBiome>> replace, String border, String defaultReplace, NoiseSampler noiseSampler, ProbabilityCollectionImpl<TerraBiome> replaceDefault) {
         this.border = border;
         this.noiseSampler = noiseSampler;
         this.replaceDefault = replaceDefault;

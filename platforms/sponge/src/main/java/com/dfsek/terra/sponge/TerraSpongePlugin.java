@@ -2,12 +2,12 @@ package com.dfsek.terra.sponge;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.TerraEventManager;
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.event.EventManagerImpl;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
@@ -40,7 +40,7 @@ public class TerraSpongePlugin implements TerraPlugin {
 
     private final SpongeWorldHandle spongeWorldHandle = new SpongeWorldHandle();
 
-    private final EventManager eventManager = new TerraEventManager(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
 
     @Inject
     @ConfigDir(sharedRoot = false)

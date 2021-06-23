@@ -11,10 +11,10 @@ import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.locate.AsyncBiomeFinder;
 import com.dfsek.terra.commands.biome.arg.BiomeArgumentParser;
@@ -67,7 +67,7 @@ public class BiomeLocateCommand implements CommandTemplate {
 
         new Thread(new AsyncBiomeFinder(main.getWorld(player.getWorld()).getBiomeProvider(), biome, player.getLocation().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), 0, radius, location -> {
             if(location != null) {
-                sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", biome.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3(0, player.getLocation().getY(), 0)).distance(player.getLocation().toVector())));
+                sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", biome.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3Impl(0, player.getLocation().getY(), 0)).distance(player.getLocation().toVector())));
                 if(teleport) {
                     main.runPossiblyUnsafeTask(() -> player.setLocation(new Location(player.getWorld(), location.getX(), player.getLocation().getY(), location.getZ())));
                 }

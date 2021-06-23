@@ -1,8 +1,8 @@
 package com.dfsek.terra.forge.mixin.implementations.block;
 
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.state.BlockState;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.forge.ForgeAdapter;
 import com.dfsek.terra.forge.block.ForgeBlock;
 import net.minecraft.tileentity.TileEntity;

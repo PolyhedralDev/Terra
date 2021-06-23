@@ -1,6 +1,6 @@
 package com.dfsek.terra.forge.block.data;
 
-import com.dfsek.terra.api.platform.block.data.AnaloguePowerable;
+import com.dfsek.terra.api.block.data.AnaloguePowerable;
 import com.dfsek.terra.forge.block.ForgeBlockData;
 import net.minecraft.block.BlockState;
 

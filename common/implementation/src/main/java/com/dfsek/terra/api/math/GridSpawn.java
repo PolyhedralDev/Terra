@@ -1,6 +1,8 @@
 package com.dfsek.terra.api.math;
 
-import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 
@@ -38,9 +40,9 @@ public class GridSpawn {
                 zones.add(getChunkSpawn(xi, zi, seed));
             }
         }
-        Vector3 shortest = zones.get(0);
-        Vector3 compare = new Vector3(x, 0, z);
-        for(Vector3 v : zones) {
+        Vector3Impl shortest = zones.get(0);
+        Vector3 compare = new Vector3Impl(x, 0, z);
+        for(Vector3Impl v : zones) {
             if(compare.distanceSquared(shortest) > compare.distanceSquared(v)) shortest = v.clone();
         }
         return shortest;
@@ -60,7 +62,7 @@ public class GridSpawn {
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;
         int sz = structureChunkZ * (width + 2 * separation) + offsetZ;
-        return new Vector3(sx, 0, sz);
+        return new Vector3Impl(sx, 0, sz);
     }
 
     public int getWidth() {

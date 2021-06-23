@@ -2,9 +2,9 @@ package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.entity.Entity;
-import com.dfsek.terra.api.platform.entity.EntityType;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
 
 public class BufferedEntity implements BufferedItem {
 

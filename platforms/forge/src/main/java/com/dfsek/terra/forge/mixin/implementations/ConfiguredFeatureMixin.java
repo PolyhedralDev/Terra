@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.mixin.implementations;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Tree;
+import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.dfsek.terra.profiler.ProfileFrame;

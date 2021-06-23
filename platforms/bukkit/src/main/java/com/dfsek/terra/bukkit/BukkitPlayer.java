@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.entity.Player;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitPlayer implements Player {

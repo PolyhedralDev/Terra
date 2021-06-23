@@ -1,12 +1,12 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitChunkGenerator implements com.dfsek.terra.api.platform.world.generator.ChunkGenerator {
+public class BukkitChunkGenerator implements com.dfsek.terra.api.world.generator.ChunkGenerator {
     private final ChunkGenerator delegate;
 
     public BukkitChunkGenerator(ChunkGenerator delegate) {

@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.platform.block.state.Container;
-import com.dfsek.terra.api.platform.inventory.Inventory;
+import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.forge.mixin.implementations.block.TileEntityMixin;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import org.spongepowered.asm.mixin.Implements;

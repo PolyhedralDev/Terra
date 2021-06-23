@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.transform;
 
+import com.dfsek.terra.api.transform.exception.TransformException;
+
 import java.util.HashMap;
 import java.util.Map;
 

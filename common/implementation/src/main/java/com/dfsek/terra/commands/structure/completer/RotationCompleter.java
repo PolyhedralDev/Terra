@@ -1,7 +1,7 @@
 package com.dfsek.terra.commands.structure.completer;
 
 import com.dfsek.terra.api.command.tab.TabCompleter;
-import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.entity.CommandSender;
 
 import java.util.Arrays;
 import java.util.List;

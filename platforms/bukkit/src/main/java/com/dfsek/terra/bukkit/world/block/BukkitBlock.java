@@ -1,11 +1,11 @@
 package com.dfsek.terra.bukkit.world.block;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.block.state.BlockState;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;

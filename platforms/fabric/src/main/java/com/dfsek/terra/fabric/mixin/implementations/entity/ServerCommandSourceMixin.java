@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
-import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.entity.CommandSender;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

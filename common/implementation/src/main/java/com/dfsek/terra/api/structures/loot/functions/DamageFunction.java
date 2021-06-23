@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.loot.functions;
 
-import com.dfsek.terra.api.platform.inventory.ItemStack;
-import com.dfsek.terra.api.platform.inventory.item.Damageable;
-import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.Damageable;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 import java.util.Random;
 

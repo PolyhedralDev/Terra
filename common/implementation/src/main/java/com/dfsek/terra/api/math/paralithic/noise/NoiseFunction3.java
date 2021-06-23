@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.math.paralithic.noise;
 
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class NoiseFunction3 implements NoiseFunction {
     private final NoiseSampler gen;

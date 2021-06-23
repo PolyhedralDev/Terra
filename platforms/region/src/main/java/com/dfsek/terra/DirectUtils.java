@@ -1,6 +1,6 @@
 package com.dfsek.terra;
 
-import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.terra.api.util.MathUtil;
 import net.querz.mca.MCAUtil;
 
 public final class DirectUtils {

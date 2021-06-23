@@ -2,11 +2,11 @@ package com.dfsek.terra.config.builder;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.noise.samplers.ExpressionSampler;
-import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
-import com.dfsek.terra.api.platform.world.Biome;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.samplers.ExpressionSampler;
+import com.dfsek.terra.api.noise.samplers.noise.ConstantSampler;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
@@ -63,7 +63,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
     }
 
     @Override
-    public ProbabilityCollection<Biome> getVanillaBiomes() {
+    public ProbabilityCollectionImpl<Biome> getVanillaBiomes() {
         return template.getVanilla();
     }
 

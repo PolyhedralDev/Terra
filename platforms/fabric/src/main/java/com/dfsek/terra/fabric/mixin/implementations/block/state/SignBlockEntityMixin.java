@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.platform.block.state.SerialState;
-import com.dfsek.terra.api.platform.block.state.Sign;
+import com.dfsek.terra.api.block.state.SerialState;
+import com.dfsek.terra.api.block.state.Sign;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

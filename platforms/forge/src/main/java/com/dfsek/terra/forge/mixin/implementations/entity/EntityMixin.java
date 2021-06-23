@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.mixin.implementations.entity;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.forge.ForgeAdapter;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.UUID;
 
 @Mixin(Entity.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.Entity.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.entity.Entity.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class EntityMixin {
     @Shadow
     public net.minecraft.world.World level;

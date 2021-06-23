@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.loot;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.inventory.Item;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.Item;
+import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.structures.loot.functions.AmountFunction;
 import com.dfsek.terra.api.structures.loot.functions.DamageFunction;
 import com.dfsek.terra.api.structures.loot.functions.EnchantFunction;

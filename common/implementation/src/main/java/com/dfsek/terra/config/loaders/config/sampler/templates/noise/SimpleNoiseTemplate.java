@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.loaders.config.sampler.templates.noise;
 
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.noise.samplers.noise.NoiseFunction;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.samplers.noise.NoiseFunction;
 
 import java.util.function.Function;
 

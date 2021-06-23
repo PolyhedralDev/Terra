@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings("FieldMayBeFinal")

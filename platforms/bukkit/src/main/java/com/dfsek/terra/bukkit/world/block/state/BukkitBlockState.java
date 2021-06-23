@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.state.BlockState;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.block.BukkitBlock;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import org.bukkit.block.Container;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.block.BlockData;
 
 public class SinglePalette extends Palette {
     private final BlockData item;

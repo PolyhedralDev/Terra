@@ -1,7 +1,7 @@
 package com.dfsek.terra.sponge.world.block.data;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
 import org.spongepowered.api.block.BlockState;
 
 public class SpongeBlockData implements BlockData {

@@ -2,7 +2,7 @@ package com.dfsek.terra.api.command;
 
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
-import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.entity.CommandSender;
 
 import java.util.List;
 

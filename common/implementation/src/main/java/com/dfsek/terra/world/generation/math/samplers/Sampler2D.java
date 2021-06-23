@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.generation.math.samplers;
 
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator2D;
 import com.dfsek.terra.world.generation.math.interpolation.ElevationInterpolator;
 import net.jafama.FastMath;

@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.structure.buffer;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedItem;
 import net.jafama.FastMath;
 

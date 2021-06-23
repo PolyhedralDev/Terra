@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.generation;
 
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;

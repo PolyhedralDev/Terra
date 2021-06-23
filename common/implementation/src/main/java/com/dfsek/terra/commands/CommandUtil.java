@@ -3,7 +3,6 @@ package com.dfsek.terra.commands;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.commands.biome.BiomeCommand;
-import com.dfsek.terra.commands.geometry.GeometryCommand;
 import com.dfsek.terra.commands.profiler.ProfileCommand;
 import com.dfsek.terra.commands.structure.StructureCommand;
 
@@ -17,6 +16,5 @@ public final class CommandUtil {
         manager.register("getblock", GetBlockCommand.class);
         manager.register("packs", PacksCommand.class);
         manager.register("biome", BiomeCommand.class);
-        manager.register("geometry", GeometryCommand.class);
     }
 }

@@ -1,10 +1,10 @@
 package com.dfsek.terra.forge;
 
 import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.state.Container;
-import com.dfsek.terra.api.platform.block.state.MobSpawner;
-import com.dfsek.terra.api.platform.block.state.Sign;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.block.state.MobSpawner;
+import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.forge.block.ForgeBlockData;
 import com.dfsek.terra.forge.block.data.ForgeDirectional;
 import com.dfsek.terra.forge.block.data.ForgeMultipleFacing;
@@ -55,7 +55,7 @@ public final class ForgeAdapter {
         return new ForgeBlockData(state);
     }
 
-    public static com.dfsek.terra.api.platform.block.state.BlockState adapt(com.dfsek.terra.api.platform.block.Block block) {
+    public static com.dfsek.terra.api.block.state.BlockState adapt(com.dfsek.terra.api.block.Block block) {
         IWorld worldAccess = (IWorld) block.getLocation().getWorld();
 
         TileEntity entity = worldAccess.getBlockEntity(adapt(block.getLocation().toVector()));

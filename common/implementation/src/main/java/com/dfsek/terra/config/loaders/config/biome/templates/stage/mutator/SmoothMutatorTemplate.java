@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator;
 
-import com.dfsek.terra.api.world.biome.pipeline.mutator.BiomeMutator;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
 import com.dfsek.terra.api.world.biome.pipeline.mutator.SmoothMutator;
 
 public class SmoothMutatorTemplate extends MutatorStageTemplate {

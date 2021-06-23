@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;

@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.world.biome.provider;
 
 import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 public class SingleBiomeProvider implements BiomeProvider, BiomeProvider.BiomeProviderBuilder {
     private final TerraBiome biome;

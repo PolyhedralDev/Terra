@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Material;

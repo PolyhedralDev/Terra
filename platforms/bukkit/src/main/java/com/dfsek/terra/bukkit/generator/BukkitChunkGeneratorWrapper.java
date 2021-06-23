@@ -1,13 +1,12 @@
 package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
-import com.dfsek.terra.world.TerraWorld;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -23,7 +22,7 @@ import java.util.Random;
 
 public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
 
-    private static final Map<com.dfsek.terra.api.platform.world.World, PopulationManager> popMap = new HashMap<>();
+    private static final Map<com.dfsek.terra.api.world.World, PopulationManager> popMap = new HashMap<>();
 
     private final PopulationManager popMan;
 
@@ -42,7 +41,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
 
     public static synchronized void saveAll() {
-        for(Map.Entry<com.dfsek.terra.api.platform.world.World, PopulationManager> e : popMap.entrySet()) {
+        for(Map.Entry<com.dfsek.terra.api.world.World, PopulationManager> e : popMap.entrySet()) {
             try {
                 e.getValue().saveBlocks(e.getKey());
             } catch(IOException ioException) {
@@ -56,7 +55,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 
-    private void load(com.dfsek.terra.api.platform.world.World w) {
+    private void load(com.dfsek.terra.api.world.World w) {
         try {
             popMan.loadBlocks(w);
         } catch(FileNotFoundException ignore) {
@@ -70,7 +69,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
-        com.dfsek.terra.api.platform.world.World bukkitWorld = BukkitAdapter.adapt(world);
+        com.dfsek.terra.api.world.World bukkitWorld = BukkitAdapter.adapt(world);
         if(needsLoad) load(bukkitWorld); // Load population data for world.
         delegate.generateBiomes(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome));
         return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkGenerator.BukkitChunkData(createChunkData(world))).getHandle();

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Biome.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.world.Biome.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.world.Biome.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BiomeMixin {
     @Intrinsic
     public Object terra$getHandle() {

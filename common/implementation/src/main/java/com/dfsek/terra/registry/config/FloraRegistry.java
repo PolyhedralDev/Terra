@@ -1,7 +1,7 @@
 package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.registry.OpenRegistry;

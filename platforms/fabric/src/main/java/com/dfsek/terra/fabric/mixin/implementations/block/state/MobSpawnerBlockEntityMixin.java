@@ -1,8 +1,8 @@
 package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.platform.block.state.MobSpawner;
-import com.dfsek.terra.api.platform.block.state.SerialState;
-import com.dfsek.terra.api.platform.entity.EntityType;
+import com.dfsek.terra.api.block.state.MobSpawner;
+import com.dfsek.terra.api.block.state.SerialState;
+import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.mixin.access.MobSpawnerLogicAccessor;
 import net.minecraft.block.BlockState;
@@ -12,7 +12,6 @@ import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.MobSpawnerLogic;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;

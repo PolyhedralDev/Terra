@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.handle;
 
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.forge.ForgeAdapter;
 import com.dfsek.terra.forge.block.ForgeBlockData;
 import com.mojang.brigadier.StringReader;

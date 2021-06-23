@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.util.seeded;
 
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 public interface NoiseSeeded extends SeededBuilder<NoiseSampler> {
     @Override

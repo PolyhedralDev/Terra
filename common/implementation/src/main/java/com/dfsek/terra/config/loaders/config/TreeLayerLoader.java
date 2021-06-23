@@ -4,9 +4,9 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.api.platform.world.Tree;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.noise.samplers.noise.random.WhiteNoiseSampler;
+import com.dfsek.terra.api.world.Tree;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
@@ -22,7 +22,7 @@ public class TreeLayerLoader implements TypeLoader<TreeLayer> {
         double density = ((Number) map.get("density")).doubleValue();
         Range range = configLoader.loadClass(Range.class, map.get("y"));
         if(range == null) throw new LoadException("Tree range unspecified");
-        ProbabilityCollection<Tree> items = (ProbabilityCollection<Tree>) configLoader.loadType(Types.TREE_PROBABILITY_COLLECTION_TYPE, map.get("items"));
+        ProbabilityCollectionImpl<Tree> items = (ProbabilityCollectionImpl<Tree>) configLoader.loadType(Types.TREE_PROBABILITY_COLLECTION_TYPE, map.get("items"));
 
         if(map.containsKey("distribution")) {
             NoiseSeeded noise = configLoader.loadClass(NoiseSeeded.class, map.get("distribution"));

@@ -9,14 +9,14 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.noise.samplers.noise.ConstantSampler;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.world.Biome;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
@@ -75,7 +75,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
 
     @Value("vanilla")
     @Abstractable
-    private ProbabilityCollection<Biome> vanilla;
+    private ProbabilityCollectionImpl<Biome> vanilla;
 
     @Value("biome-noise")
     @Default
@@ -302,7 +302,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return trees;
     }
 
-    public ProbabilityCollection<Biome> getVanilla() {
+    public ProbabilityCollectionImpl<Biome> getVanilla() {
         return vanilla;
     }
 

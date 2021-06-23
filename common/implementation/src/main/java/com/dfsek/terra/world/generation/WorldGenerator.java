@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.generation;
 
-import com.dfsek.terra.api.math.noise.NoiseSampler;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;

@@ -17,12 +17,11 @@ import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.command.exception.SwitchFormatException;
 import com.dfsek.terra.api.command.tab.TabCompleter;
-import com.dfsek.terra.api.injection.Injector;
+import com.dfsek.terra.api.inject.InjectorImpl;
 import com.dfsek.terra.api.injection.exception.InjectionException;
-import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.ReflectionUtil;
-import com.dfsek.terra.world.TerraWorld;
 import net.jafama.FastMath;
 
 import java.lang.reflect.Field;
@@ -37,12 +36,12 @@ import java.util.stream.Collectors;
 
 public class TerraCommandManager implements CommandManager {
     private final Map<String, CommandHolder> commands = new HashMap<>();
-    private final Injector<TerraPlugin> pluginInjector;
+    private final InjectorImpl<TerraPlugin> pluginInjector;
     private final TerraPlugin main;
 
     public TerraCommandManager(TerraPlugin main) {
         this.main = main;
-        this.pluginInjector = new Injector<>(main);
+        this.pluginInjector = new InjectorImpl<>(main);
         pluginInjector.addExplicitTarget(TerraPlugin.class);
     }
 

@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.loot;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.inventory.Inventory;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.Inventory;
+import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.GlueList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

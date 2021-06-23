@@ -1,11 +1,11 @@
 package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.world.flora.Flora;
 

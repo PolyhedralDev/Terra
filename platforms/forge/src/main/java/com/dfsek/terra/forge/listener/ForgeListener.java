@@ -3,7 +3,7 @@ package com.dfsek.terra.forge.listener;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.entity.Entity;
+import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;

@@ -5,11 +5,11 @@ import com.dfsek.terra.addon.AddonPool;
 import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
-import com.dfsek.terra.api.injection.Injector;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.inject.InjectorImpl;
 import com.dfsek.terra.api.injection.exception.InjectionException;
-import com.dfsek.terra.registry.OpenRegistry;
-import com.dfsek.terra.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.registry.DuplicateEntryException;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,11 +18,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class AddonRegistry extends OpenRegistry<TerraAddon> {
+public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     private final TerraPlugin main;
 
     public AddonRegistry(TerraPlugin main) {
-
         this.main = main;
     }
 
@@ -45,7 +44,7 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
     }
 
     public boolean loadAll() {
-        Injector<TerraPlugin> pluginInjector = new Injector<>(main);
+        InjectorImpl<TerraPlugin> pluginInjector = new InjectorImpl<>(main);
         pluginInjector.addExplicitTarget(TerraPlugin.class);
 
         boolean valid = true;
@@ -75,7 +74,7 @@ public class AddonRegistry extends OpenRegistry<TerraAddon> {
                     addonLogger = LogManager.getLogManager().getLogger(logPrefix);
                 }
 
-                Injector<Logger> loggerInjector = new Injector<>(addonLogger);
+                InjectorImpl<Logger> loggerInjector = new InjectorImpl<>(addonLogger);
                 loggerInjector.addExplicitTarget(Logger.class);
 
                 try {

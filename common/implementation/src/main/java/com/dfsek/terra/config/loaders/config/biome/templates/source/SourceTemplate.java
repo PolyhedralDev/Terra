@@ -2,7 +2,6 @@ package com.dfsek.terra.config.loaders.config.biome.templates.source;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
-import com.dfsek.terra.api.world.biome.pipeline.source.BiomeSource;
 
 public abstract class SourceTemplate implements ObjectTemplate<SourceSeeded>, SourceSeeded {
     @Override

@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.structures.loot;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,7 +17,7 @@ import java.util.Random;
 public class Pool {
     private final int max;
     private final int min;
-    private final ProbabilityCollection<Entry> entries;
+    private final ProbabilityCollectionImpl<Entry> entries;
 
     /**
      * Instantiates a Pool from a JSON representation.
@@ -25,7 +25,7 @@ public class Pool {
      * @param pool The JSON Object to instantiate from.
      */
     public Pool(JSONObject pool, TerraPlugin main) {
-        entries = new ProbabilityCollection<>();
+        entries = new ProbabilityCollectionImpl<>();
         Object amount = pool.get("rolls");
         if(amount instanceof Long) {
             max = FastMath.toIntExact((Long) amount);

@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.platform.block.state.SerialState;
-import com.dfsek.terra.api.platform.block.state.Sign;
+import com.dfsek.terra.api.block.state.SerialState;
+import com.dfsek.terra.api.block.state.Sign;
 import net.minecraft.tileentity.SignTileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;

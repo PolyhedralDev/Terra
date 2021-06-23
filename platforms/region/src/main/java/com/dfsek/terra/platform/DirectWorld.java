@@ -1,14 +1,14 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.DirectUtils;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.entity.Entity;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
@@ -58,7 +58,7 @@ public class DirectWorld implements World {
 
     @Override
     public Block getBlockAt(int x, int y, int z) {
-        return new DirectBlock(this, new Vector3(x, y, z));
+        return new DirectBlock(this, new Vector3Impl(x, y, z));
     }
 
     @Override

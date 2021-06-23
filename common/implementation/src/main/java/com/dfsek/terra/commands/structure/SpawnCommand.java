@@ -7,9 +7,9 @@ import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
@@ -40,7 +40,7 @@ public class SpawnCommand implements CommandTemplate {
         Position dummy = new Position(0, 0);
 
         String check = new CheckFunction(main, new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
-                new com.dfsek.terra.api.math.vector.Location(player.getWorld(), x, y, z)
+                new Location(player.getWorld(), x, y, z)
         ), Rotation.NONE, new FastRandom(), 0), new HashMap<>());
 
         sender.sendMessage("Found: " + check);

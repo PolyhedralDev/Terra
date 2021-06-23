@@ -1,11 +1,13 @@
 package com.dfsek.terra.api.world.biome.provider;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.math.vector.Vector2;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.pipeline.BiomeHolder;
-import com.dfsek.terra.api.world.biome.pipeline.BiomePipeline;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
+import com.dfsek.terra.api.world.biome.pipeline.BiomePipelineImpl;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -14,13 +16,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class StandardBiomeProvider implements BiomeProvider {
     private final LoadingCache<Vector2, BiomeHolder> holderCache;
-    private final BiomePipeline pipeline;
+    private final BiomePipelineImpl pipeline;
     private final int resolution;
     private final NoiseSampler mutator;
     private final double noiseAmp;
     private final int seed;
 
-    public StandardBiomeProvider(BiomePipeline pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp, int seed) {
+    public StandardBiomeProvider(BiomePipelineImpl pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp, int seed) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
@@ -50,6 +52,6 @@ public class StandardBiomeProvider implements BiomeProvider {
 
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
-        return holderCache.getUnchecked(new Vector2(fdX, fdZ)).getBiome(x - fdX * pipeline.getSize(), z - fdZ * pipeline.getSize());
+        return holderCache.getUnchecked(new Vector2Impl(fdX, fdZ)).getBiome(x - fdX * pipeline.getSize(), z - fdZ * pipeline.getSize());
     }
 }

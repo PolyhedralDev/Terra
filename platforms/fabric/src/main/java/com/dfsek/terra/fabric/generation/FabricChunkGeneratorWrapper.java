@@ -1,8 +1,8 @@
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
@@ -153,7 +153,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
             delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
             delegate.getPopulators().forEach(populator -> {
                 if(populator instanceof Chunkified) {
-                    populator.populate(world, (com.dfsek.terra.api.platform.world.Chunk) world);
+                    populator.populate(world, (com.dfsek.terra.api.world.Chunk) world);
                 }
             });
             return chunk;

@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.mixin.implementations.inventory.meta;
 
-import com.dfsek.terra.api.platform.inventory.item.Enchantment;
-import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;

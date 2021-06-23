@@ -1,6 +1,6 @@
 package com.dfsek.terra.forge.mixin.implementations.inventory.meta;
 
-import com.dfsek.terra.api.platform.inventory.item.Damageable;
+import com.dfsek.terra.api.inventory.item.Damageable;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;

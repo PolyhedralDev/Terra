@@ -1,12 +1,12 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.vector.Vector2Impl;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;
@@ -43,7 +43,7 @@ public class TreePopulator implements TerraBlockPopulator {
                     UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     for(TreeLayer layer : biome.getConfig().getTrees()) {
                         if(layer.getDensity() >= random.nextDouble() * 100) {
-                            layer.place(chunk, new Vector2(offset(random, x), offset(random, z)));
+                            layer.place(chunk, new Vector2Impl(offset(random, x), offset(random, z)));
                         }
                     }
                 }

@@ -2,9 +2,9 @@ package com.dfsek.terra.world.carving;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.ChunkAccess;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.world.ChunkAccess;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator;
 import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator3D;

@@ -1,7 +1,8 @@
 package com.dfsek.terra.api.world.biome.pipeline.stages;
 
-import com.dfsek.terra.api.world.biome.pipeline.BiomeHolder;
-import com.dfsek.terra.api.world.biome.pipeline.expand.BiomeExpander;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
+import com.dfsek.terra.api.world.biome.generation.pipeline.Stage;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeExpander;
 
 public class ExpanderStage implements Stage {
     private final BiomeExpander expander;

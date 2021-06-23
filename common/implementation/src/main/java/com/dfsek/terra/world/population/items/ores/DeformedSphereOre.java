@@ -2,12 +2,13 @@ package com.dfsek.terra.world.population.items.ores;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.noise.simplex.OpenSimplex2Sampler;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.noise.samplers.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 
 import java.util.Map;
@@ -27,14 +28,14 @@ public class DeformedSphereOre extends Ore {
 
 
     @Override
-    public void generate(Vector3 origin, Chunk c, Random r) {
+    public void generate(Vector3Impl origin, Chunk c, Random r) {
         OpenSimplex2Sampler ore = new OpenSimplex2Sampler(r.nextInt());
         ore.setFrequency(deformFrequency);
         int rad = size.get(r);
         for(int x = -rad; x <= rad; x++) {
             for(int y = -rad; y <= rad; y++) {
                 for(int z = -rad; z <= rad; z++) {
-                    Vector3 oreLoc = origin.clone().add(new Vector3(x, y, z));
+                    Vector3 oreLoc = origin.clone().add(new Vector3Impl(x, y, z));
                     if(oreLoc.getBlockX() > 15 || oreLoc.getBlockZ() > 15 || oreLoc.getBlockY() > c.getWorld().getMaxHeight() || oreLoc.getBlockX() < 0 || oreLoc.getBlockZ() < 0 || oreLoc.getBlockY() < c.getWorld().getMinHeight())
                         continue;
                     if(oreLoc.distance(origin) < (rad + 0.5) * ((ore.getNoise(x, y, z) + 1) * deform)) {

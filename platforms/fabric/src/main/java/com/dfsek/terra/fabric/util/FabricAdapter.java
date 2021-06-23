@@ -1,14 +1,15 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.data.Bisected;
-import com.dfsek.terra.api.platform.block.data.Slab;
-import com.dfsek.terra.api.platform.block.data.Stairs;
-import com.dfsek.terra.api.platform.block.state.Container;
-import com.dfsek.terra.api.platform.block.state.MobSpawner;
-import com.dfsek.terra.api.platform.block.state.Sign;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.data.Bisected;
+import com.dfsek.terra.api.block.data.Slab;
+import com.dfsek.terra.api.block.data.Stairs;
+import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.block.state.MobSpawner;
+import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.block.data.FabricDirectional;
 import com.dfsek.terra.fabric.block.data.FabricMultipleFacing;
@@ -38,7 +39,7 @@ public final class FabricAdapter {
     }
 
     public static Vector3 adapt(BlockPos pos) {
-        return new Vector3(pos.getX(), pos.getY(), pos.getZ());
+        return new Vector3Impl(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static FabricBlockData adapt(BlockState state) {
@@ -81,7 +82,7 @@ public final class FabricAdapter {
     }
 
 
-    public static com.dfsek.terra.api.platform.block.state.BlockState adapt(com.dfsek.terra.api.platform.block.Block block) {
+    public static com.dfsek.terra.api.block.state.BlockState adapt(com.dfsek.terra.api.block.Block block) {
         WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();
 
         BlockEntity entity = worldAccess.getBlockEntity(adapt(block.getLocation().toVector()));

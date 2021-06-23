@@ -5,8 +5,8 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
-import com.dfsek.terra.api.world.biome.pipeline.BiomePipeline;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.pipeline.BiomePipelineImpl;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.StandardBiomeProvider;
 
 import java.util.List;
@@ -30,9 +30,9 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
 
     @Override
     public BiomeProvider build(long seed) {
-        BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize);
+        BiomePipelineImpl.BiomePipelineBuilder biomePipelineBuilder = new BiomePipelineImpl.BiomePipelineBuilder(initialSize);
         stages.forEach(biomePipelineBuilder::addStage);
-        BiomePipeline pipeline = biomePipelineBuilder.build(source.apply(seed), seed);
+        BiomePipelineImpl pipeline = biomePipelineBuilder.build(source.apply(seed), seed);
         return new StandardBiomeProvider(pipeline, main, resolution, blend.apply(seed), blendAmp, (int) seed);
     }
 }

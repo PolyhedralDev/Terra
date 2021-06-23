@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 
 import java.lang.reflect.Type;

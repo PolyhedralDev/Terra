@@ -14,7 +14,7 @@ import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
-import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.entity.CommandSender;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

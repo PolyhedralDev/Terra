@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.biome.provider;
 
-import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.registry.OpenRegistry;
 import net.jafama.FastMath;
 

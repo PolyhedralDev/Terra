@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.world.flora;
 
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.world.Chunk;
 
 import java.util.List;
 

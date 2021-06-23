@@ -3,7 +3,7 @@ package com.dfsek.terra.registry.config;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.world.Tree;
+import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.flora.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.carving.UserDefinedCarver;

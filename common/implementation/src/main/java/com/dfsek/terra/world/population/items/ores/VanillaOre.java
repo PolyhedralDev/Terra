@@ -2,11 +2,11 @@ package com.dfsek.terra.world.population.items.ores;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import net.jafama.FastMath;
 
@@ -23,7 +23,7 @@ public class VanillaOre extends Ore {
     }
 
     @Override
-    public void generate(Vector3 location, Chunk chunk, Random random) {
+    public void generate(Vector3Impl location, Chunk chunk, Random random) {
         double size = sizeRange.get(random);
 
         int centerX = location.getBlockX();

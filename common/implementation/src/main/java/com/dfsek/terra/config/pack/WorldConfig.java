@@ -3,7 +3,7 @@ package com.dfsek.terra.config.pack;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.registry.OpenRegistry;

@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.handles;
 
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.inventory.Item;
-import com.dfsek.terra.api.platform.inventory.item.Enchantment;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.inventory.Item;
+import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.bukkit.util.MinecraftUtils;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Material;

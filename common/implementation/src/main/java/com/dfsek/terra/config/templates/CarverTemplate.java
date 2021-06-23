@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.carving.CarverPalette;
 

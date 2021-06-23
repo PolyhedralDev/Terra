@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.inventory.meta;
 
-import com.dfsek.terra.api.platform.inventory.ItemStack;
-import com.dfsek.terra.api.platform.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 
 public class BukkitEnchantment implements Enchantment {

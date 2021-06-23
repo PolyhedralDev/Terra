@@ -2,7 +2,7 @@ package com.dfsek.terra.config.lang;
 
 
 import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.entity.CommandSender;
 
 import java.io.File;
 import java.io.FileInputStream;

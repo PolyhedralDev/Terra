@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.world.generation;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.platform.world.BiomeGrid;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.BiomeGrid;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import org.jetbrains.annotations.NotNull;

@@ -3,8 +3,8 @@ package com.dfsek.terra.commands.structure.completer;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.world.population.items.TerraStructure;
 
 import java.util.ArrayList;

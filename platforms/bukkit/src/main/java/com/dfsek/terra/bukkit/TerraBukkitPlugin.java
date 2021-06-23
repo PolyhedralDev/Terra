@@ -2,20 +2,20 @@ package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
-import com.dfsek.terra.api.addons.annotations.Addon;
-import com.dfsek.terra.api.addons.annotations.Author;
-import com.dfsek.terra.api.addons.annotations.Version;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.annotations.Addon;
+import com.dfsek.terra.api.addon.annotations.Author;
+import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.TerraEventManager;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.Biome;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.event.EventManagerImpl;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
@@ -79,7 +79,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private DebugLogger debugLogger;
 
 
-    private final EventManager eventManager = new TerraEventManager(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
     public static final BukkitVersion BUKKIT_VERSION;
 
     static {

@@ -3,9 +3,9 @@ package com.dfsek.terra.addon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.addon.exception.CircularDependencyException;
 import com.dfsek.terra.addon.exception.DependencyMissingException;
-import com.dfsek.terra.api.addons.TerraAddon;
-import com.dfsek.terra.api.addons.annotations.Addon;
-import com.dfsek.terra.api.addons.annotations.Depends;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.annotations.Addon;
+import com.dfsek.terra.api.addon.annotations.Depends;
 
 import java.io.File;
 import java.util.ArrayList;

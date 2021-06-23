@@ -2,21 +2,22 @@ package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.block.data.Bisected;
-import com.dfsek.terra.api.platform.block.data.Slab;
-import com.dfsek.terra.api.platform.block.data.Stairs;
-import com.dfsek.terra.api.platform.block.data.Waterlogged;
-import com.dfsek.terra.api.platform.world.BiomeGrid;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.data.Bisected;
+import com.dfsek.terra.api.block.data.Slab;
+import com.dfsek.terra.api.block.data.Stairs;
+import com.dfsek.terra.api.block.data.Waterlogged;
+import com.dfsek.terra.api.world.BiomeGrid;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.util.world.PaletteUtil;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -134,20 +135,20 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                             data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, y, cz);
                             chunk.setBlock(x, y, z, data);
                             if(paletteLevel == 0 && c.doSlabs() && y < 255) {
-                                prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector3(x, y + 1, z), c.getSlabPalettes(),
+                                prepareBlockPartFloor(data, chunk.getBlockData(x, y + 1, z), chunk, new Vector3Impl(x, y + 1, z), c.getSlabPalettes(),
                                         c.getStairPalettes(), c.getSlabThreshold(), sampler);
                             }
                             paletteLevel++;
                         } else if(y <= sea) {
                             chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig));
                             if(justSet && c.doSlabs()) {
-                                prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                                prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3Impl(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                             }
                             justSet = false;
                             paletteLevel = 0;
                         } else {
                             if(justSet && c.doSlabs()) {
-                                prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                                prepareBlockPartCeiling(data, chunk.getBlockData(x, y, z), chunk, new Vector3Impl(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                             }
                             justSet = false;
                             paletteLevel = 0;

@@ -4,28 +4,28 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
-import com.dfsek.terra.api.addons.annotations.Addon;
-import com.dfsek.terra.api.addons.annotations.Author;
-import com.dfsek.terra.api.addons.annotations.Version;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.annotations.Addon;
+import com.dfsek.terra.api.addon.annotations.Author;
+import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.TerraEventManager;
+import com.dfsek.terra.api.event.EventManagerImpl;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.Tree;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.Tree;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.transform.TransformerImpl;
 import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.logging.DebugLogger;
@@ -37,7 +37,6 @@ import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.config.lang.Language;
 import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -45,18 +44,13 @@ import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.event.GameInitializationEvent;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.generation.PopulatorFeature;
-import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
-import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
-import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import com.dfsek.terra.fabric.util.ProtoBiome;
 import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
-import com.dfsek.terra.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.registry.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
@@ -97,7 +91,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return worldMap;
     }
 
-    private final EventManager eventManager = new TerraEventManager(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
 
     private final Profiler profiler = new ProfilerImpl();
@@ -131,7 +125,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final PluginConfig config = new PluginConfig();
 
-    private final Transformer<String, ProtoBiome> biomeFixer = new Transformer.Builder<String, ProtoBiome>()
+    private final TransformerImpl<String, ProtoBiome> biomeFixer = new TransformerImpl.Builder<String, ProtoBiome>()
             .addTransform(this::parseBiome, Validator.notNull())
             .addTransform(id -> parseBiome("minecraft:" + id.toLowerCase()), Validator.notNull()).build();
 
@@ -245,7 +239,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.platform.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
+                .registerLoader(com.dfsek.terra.api.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);

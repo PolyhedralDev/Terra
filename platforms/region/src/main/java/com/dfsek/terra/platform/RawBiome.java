@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.platform.world.Biome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 public class RawBiome implements Biome {
     private final String id;

@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.script;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.Parser;
@@ -33,9 +33,6 @@ import com.dfsek.terra.api.structures.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.profiler.ProfileFrame;
-import com.dfsek.terra.registry.config.FunctionRegistry;
-import com.dfsek.terra.registry.config.LootRegistry;
-import com.dfsek.terra.registry.config.ScriptRegistry;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;

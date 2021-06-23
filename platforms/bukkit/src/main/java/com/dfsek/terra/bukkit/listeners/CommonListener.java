@@ -1,11 +1,11 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.Tree;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.world.Tree;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
-import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.transform.TransformerImpl;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.config.pack.WorldConfig;
@@ -29,7 +29,7 @@ public class CommonListener implements Listener {
         this.main = main;
     }
 
-    private static final Transformer<TreeType, String> TREE_TYPE_STRING_TRANSFORMER = new Transformer.Builder<TreeType, String>()
+    private static final TransformerImpl<TreeType, String> TREE_TYPE_STRING_TRANSFORMER = new TransformerImpl.Builder<TreeType, String>()
             .addTransform(new MapTransform<TreeType, String>()
                     .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
                     .add(TreeType.BIG_TREE, "LARGE_OAK")

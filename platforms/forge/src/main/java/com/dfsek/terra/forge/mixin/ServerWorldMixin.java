@@ -28,7 +28,7 @@ public abstract class ServerWorldMixin {
         if(chunkSource.getGenerator() instanceof ForgeChunkGeneratorWrapper) {
             ForgeChunkGeneratorWrapper chunkGeneratorWrapper = (ForgeChunkGeneratorWrapper) chunkSource.getGenerator();
             DimensionType dimensionType = ((World) (Object) this).dimensionType();
-            TerraForgePlugin.getInstance().getWorldMap().put(dimensionType, Pair.of((ServerWorld) (Object) this, new TerraWorld((com.dfsek.terra.api.platform.world.World) this, chunkGeneratorWrapper.getPack(), TerraForgePlugin.getInstance())));
+            TerraForgePlugin.getInstance().getWorldMap().put(dimensionType, Pair.of((ServerWorld) (Object) this, new TerraWorld((com.dfsek.terra.api.world.World) this, chunkGeneratorWrapper.getPack(), TerraForgePlugin.getInstance())));
             chunkGeneratorWrapper.setDimensionType(dimensionType);
             TerraForgePlugin.getInstance().logger().info("Registered world " + this + " to dimension type " + dimensionType);
         }

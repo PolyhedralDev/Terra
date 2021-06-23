@@ -1,10 +1,11 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.vector.Vector2Impl;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
@@ -13,7 +14,7 @@ import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.structure.RotationUtil;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.math.SamplerCache;
@@ -42,11 +43,11 @@ public class CheckFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
 
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2Impl(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getBuffer().getOrigin().getWorld());
     }

@@ -9,8 +9,9 @@ import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
@@ -154,7 +155,7 @@ public class UserDefinedCarver extends Carver {
             this.seed = seed;
             super.setTopCut(topCut);
             super.setBottomCut(bottomCut);
-            direction = new Vector3((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
+            direction = new Vector3Impl((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
             double[] args = {origin.getX(), origin.getY(), origin.getZ(), length, 0, seed};
             setRadius(new int[] {(int) (xRad.evaluate(args)), (int) (yRad.evaluate(args)), (int) (zRad.evaluate(args))});
         }

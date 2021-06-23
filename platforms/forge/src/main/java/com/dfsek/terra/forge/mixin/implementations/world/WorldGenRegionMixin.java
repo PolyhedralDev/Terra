@@ -1,13 +1,13 @@
 package com.dfsek.terra.forge.mixin.implementations.world;
 
 import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.entity.Entity;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.forge.block.ForgeBlock;
 import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;

@@ -8,7 +8,7 @@ import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
 
     @Value("scripts")
     @Abstractable
-    private ProbabilityCollection<StructureScript> structure;
+    private ProbabilityCollectionImpl<StructureScript> structure;
 
     @Value("spawn.start")
     @Abstractable
@@ -38,7 +38,7 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
         return id;
     }
 
-    public ProbabilityCollection<StructureScript> getStructures() {
+    public ProbabilityCollectionImpl<StructureScript> getStructures() {
         return structure;
     }
 

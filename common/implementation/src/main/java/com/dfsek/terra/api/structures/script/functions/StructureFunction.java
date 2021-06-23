@@ -1,8 +1,10 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.vector.Vector2;
-import com.dfsek.terra.api.math.vector.Vector3;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.vector.Vector2Impl;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
@@ -50,7 +52,7 @@ public class StructureFunction implements Function<Boolean> {
         if(arguments.getRecursions() > main.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
 
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2Impl(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
@@ -70,7 +72,7 @@ public class StructureFunction implements Function<Boolean> {
             return null;
         }
 
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
 
         return script.executeInBuffer(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }

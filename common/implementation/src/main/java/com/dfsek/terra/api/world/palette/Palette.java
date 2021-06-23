@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.util.List;
 import java.util.Random;
@@ -29,7 +29,7 @@ public abstract class Palette {
         return this;
     }
 
-    public com.dfsek.terra.api.world.palette.Palette add(ProbabilityCollection<BlockData> m, int layers, NoiseSampler sampler) {
+    public com.dfsek.terra.api.world.palette.Palette add(ProbabilityCollectionImpl<BlockData> m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
             pallet.add(new PaletteLayer(m, sampler));
         }
@@ -58,7 +58,7 @@ public abstract class Palette {
      */
     public static class PaletteLayer {
         private final boolean col; // Is layer using a collection?
-        private ProbabilityCollection<BlockData> collection;
+        private ProbabilityCollectionImpl<BlockData> collection;
         private final NoiseSampler sampler;
         private BlockData m;
 
@@ -68,7 +68,7 @@ public abstract class Palette {
          * @param type    The collection of materials to choose from.
          * @param sampler Noise sampler to use
          */
-        public PaletteLayer(ProbabilityCollection<BlockData> type, NoiseSampler sampler) {
+        public PaletteLayer(ProbabilityCollectionImpl<BlockData> type, NoiseSampler sampler) {
             this.sampler = sampler;
             this.col = true;
             this.collection = type;
@@ -106,7 +106,7 @@ public abstract class Palette {
             return m;
         }
 
-        public ProbabilityCollection<BlockData> getCollection() {
+        public ProbabilityCollectionImpl<BlockData> getCollection() {
             return collection;
         }
     }

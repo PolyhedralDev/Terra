@@ -2,8 +2,8 @@ package noise;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
@@ -99,7 +99,7 @@ public class NoiseTool {
         ConfigLoader loader = new ConfigLoader();
         loader.registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(new NoiseRegistry()))
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(folderLoader))
-                .registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader());
+                .registerLoader(ProbabilityCollectionImpl.class, new ProbabilityCollectionLoader());
 
         new GenericLoaders(null).register(loader);
         NoiseConfigTemplate template = new NoiseConfigTemplate();
@@ -124,7 +124,7 @@ public class NoiseTool {
             loader.load(color, new FileInputStream(colorFile));
             colors = color.enable();
         }
-        ProbabilityCollection<Integer> colorCollection = color.getColors();
+        ProbabilityCollectionImpl<Integer> colorCollection = color.getColors();
 
         loader.load(template, new FileInputStream(file));
         System.out.println(template.getBuilder().getDimensions());

@@ -3,20 +3,20 @@ package com.dfsek.terra.config;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.math.GridSpawn;
 import com.dfsek.terra.api.math.Range;
-import com.dfsek.terra.api.math.noise.samplers.ImageSampler;
-import com.dfsek.terra.api.math.noise.samplers.noise.CellularSampler;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.noise.samplers.ImageSampler;
+import com.dfsek.terra.api.noise.samplers.noise.CellularSampler;
+import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
-import com.dfsek.terra.api.world.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 import com.dfsek.terra.api.world.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.api.world.biome.pipeline.stages.MutatorStage;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.provider.ImageBiomeProvider;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
@@ -69,7 +69,7 @@ public class GenericLoaders implements LoaderRegistrar {
 
     @Override
     public void register(TypeRegistry registry) {
-        registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
+        registry.registerLoader(ProbabilityCollectionImpl.class, new ProbabilityCollectionLoader())
                 .registerLoader(Range.class, new RangeLoader())
                 .registerLoader(GridSpawn.class, new GridSpawnLoader())
                 .registerLoader(PaletteHolder.class, new PaletteHolderLoader())

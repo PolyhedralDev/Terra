@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.world.block;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.inventory.Item;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.inventory.Item;
+import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Material;
 

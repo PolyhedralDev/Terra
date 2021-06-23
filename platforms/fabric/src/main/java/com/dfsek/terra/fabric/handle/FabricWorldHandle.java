@@ -1,9 +1,9 @@
 package com.dfsek.terra.fabric.handle;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.entity.Player;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.util.FabricAdapter;

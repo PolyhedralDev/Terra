@@ -3,9 +3,9 @@ package com.dfsek.terra.config.loaders.palette;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.noise.NoiseSampler;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.util.collections.ProbabilityCollection;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.loaders.Types;
@@ -18,7 +18,7 @@ public class PaletteLayerLoader implements TypeLoader<PaletteLayerHolder> {
     @Override
     public PaletteLayerHolder load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
-        ProbabilityCollection<BlockData> collection = (ProbabilityCollection<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
+        ProbabilityCollectionImpl<BlockData> collection = (ProbabilityCollectionImpl<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
 
         NoiseSampler sampler = null;
         if(map.containsKey("noise")) {
