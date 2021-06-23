@@ -5,8 +5,12 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.math.Range;
 import com.dfsek.terra.api.platform.block.BlockData;
+import com.dfsek.terra.api.platform.block.BlockType;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.world.population.items.ores.Ore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class OreTemplate extends AbstractableTemplate {
@@ -16,6 +20,11 @@ public class OreTemplate extends AbstractableTemplate {
     @Value("material")
     @Abstractable
     private BlockData material;
+
+    @Value("material-overrides")
+    @Default
+    @Abstractable
+    private Map<BlockType, BlockData> materials = new HashMap<>();
 
     @Value("algorithm")
     @Abstractable
@@ -75,5 +84,9 @@ public class OreTemplate extends AbstractableTemplate {
 
     public Ore.Type getType() {
         return oreType;
+    }
+
+    public Map<BlockType, BlockData> getMaterialOverrides() {
+        return materials;
     }
 }

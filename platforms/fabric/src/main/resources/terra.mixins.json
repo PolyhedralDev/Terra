@@ -2,9 +2,11 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.dfsek.terra.fabric.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "GeneratorOptionsMixin",
+    "StructureAccessorAccessor",
+    "CommandManagerMixin",
+    "ServerWorldMixin",
     "access.BiomeEffectsAccessor",
     "access.MobSpawnerLogicAccessor",
     "access.StateAccessor",
@@ -33,9 +35,13 @@
     "implementations.world.ServerWorldMixin"
   ],
   "client": [
-    "access.GeneratorTypeAccessor"
+    "access.GeneratorTypeAccessor",
+    "lifecycle.client.MinecraftClientMixin"
   ],
-  "server": [],
+  "server": [
+    "lifecycle.server.GeneratorOptionsMixin",
+    "lifecycle.server.ServerMainMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

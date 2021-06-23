@@ -84,7 +84,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     static {
         String ver = Bukkit.getServer().getClass().getPackage().getName();
-        if(ver.contains("1_16")) BUKKIT_VERSION = BukkitVersion.V1_16;
+        if(ver.contains("1_17")) BUKKIT_VERSION = BukkitVersion.V1_17;
+        else if(ver.contains("1_16")) BUKKIT_VERSION = BukkitVersion.V1_16;
         else if(ver.contains("1_15")) BUKKIT_VERSION = BukkitVersion.V1_15;
         else if(ver.contains("1_14")) BUKKIT_VERSION = BukkitVersion.V1_14;
         else if(ver.contains("1_13")) BUKKIT_VERSION = BukkitVersion.V1_13;
@@ -315,6 +316,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         V1_15(15),
 
         V1_16(16),
+
+        V1_17(17),
 
         UNKNOWN(Integer.MAX_VALUE); // Assume unknown version is latest.
 

@@ -4,6 +4,7 @@ import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.Configuration;
+import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
@@ -74,6 +75,9 @@ public class ConfigPack implements LoaderRegistrar {
     private final Scope varScope = new Scope();
     private final TerraPlugin main;
     private final Loader loader;
+
+    private final Configuration configuration;
+
     private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
 
 
@@ -99,11 +103,15 @@ public class ConfigPack implements LoaderRegistrar {
             File pack = new File(folder, "pack.yml");
 
             try {
-                selfLoader.load(template, new FileInputStream(pack));
+                configuration = new Configuration(new FileInputStream(pack));
+                selfLoader.load(template, configuration);
 
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+
                 load(l, main);
+
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, new FileInputStream(pack));
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
@@ -142,8 +150,11 @@ public class ConfigPack implements LoaderRegistrar {
 
                 if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
-                selfLoader.load(template, file.getInputStream(pack));
+                configuration = new Configuration(file.getInputStream(pack));
+                selfLoader.load(template, configuration);
                 main.logger().info("Loading config pack \"" + template.getID() + "\"");
+
+                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
 
                 load(l, main);
 
@@ -199,8 +210,6 @@ public class ConfigPack implements LoaderRegistrar {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {
-        main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this));
-
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey(), var.getValue());
         }
@@ -242,7 +251,7 @@ public class ConfigPack implements LoaderRegistrar {
             }
         }
 
-        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this));
+        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 

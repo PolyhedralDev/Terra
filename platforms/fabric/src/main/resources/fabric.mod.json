@@ -3,15 +3,16 @@
   "id": "terra",
   "version": "@VERSION@",
   "name": "Terra",
-  "description": "An insanely powerful free & open-source data-driven world generator.",
+  "description": "@DESCRIPTION@",
   "authors": [
     "dfsek"
   ],
   "contact": {
-    "homepage": "https://github.com/PolyhedralDev/Terra/wiki",
-    "sources": "https://github.com/PolyhedralDev/Terra"
+    "homepage": "@WIKI@",
+    "sources": "@SOURCE@",
+    "issues": "@ISSUES@"
   },
-  "license": "GPL-3.0",
+  "license": "@LICENSE@",
   "icon": "assets/terra/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -24,8 +25,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.7.4",
-    "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.17.x"
   },
   "accessWidener": "terra.accesswidener"
 }

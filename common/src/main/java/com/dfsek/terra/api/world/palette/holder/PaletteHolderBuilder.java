@@ -16,8 +16,12 @@ public class PaletteHolderBuilder {
 
     @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     public PaletteHolder build() {
-        Palette[] palettes = new Palette[paletteMap.lastKey() + 1];
-        for(int y = 0; y <= FastMath.max(paletteMap.lastKey(), 255); y++) {
+
+        int min = FastMath.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
+        int max = FastMath.max(paletteMap.keySet().stream().max(Integer::compareTo).orElse(255), 255);
+
+        Palette[] palettes = new Palette[paletteMap.lastKey() + 1 - min];
+        for(int y = min; y <= FastMath.max(paletteMap.lastKey(), max); y++) {
             Palette d = null;
             for(Map.Entry<Integer, Palette> e : paletteMap.entrySet()) {
                 if(e.getKey() >= y) {
@@ -26,8 +30,8 @@ public class PaletteHolderBuilder {
                 }
             }
             if(d == null) throw new IllegalArgumentException("No palette for Y=" + y);
-            palettes[y] = d;
+            palettes[y - min] = d;
         }
-        return new PaletteHolder(palettes);
+        return new PaletteHolder(palettes, -min);
     }
 }

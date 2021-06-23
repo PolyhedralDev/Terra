@@ -11,7 +11,6 @@ cache:
   carver: 512
   structure: 32
   sampler: 128
-master-disable:
-  caves: false
+  biome-provider: 32
 script:
   max-recursion: 1000

@@ -14,8 +14,8 @@ fun Project.configureCompilation() {
     apply(plugin = "idea")
 
     configure<JavaPluginConvention> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
     }
 
     tasks.withType<JavaCompile> {
@@ -29,7 +29,12 @@ fun Project.configureCompilation() {
         include("**/*.*")
         filter<org.apache.tools.ant.filters.ReplaceTokens>(
                 "tokens" to mapOf(
-                        "VERSION" to project.version.toString()
+                        "VERSION" to project.version.toString(),
+                        "DESCRIPTION" to project.properties["terra.description"],
+                        "WIKI" to project.properties["terra.wiki"],
+                        "SOURCE" to project.properties["terra.source"],
+                        "ISSUES" to project.properties["terra.issues"],
+                        "LICENSE" to project.properties["terra.license"]
                 )
         )
     }

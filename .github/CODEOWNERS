@@ -1,0 +1,19 @@
+# Global owners, automatically request review when pull request is submitted
+*                   @dfsek @solonovamax
+
+# Platforms
+## dfsek wrote the majority of the platform impls
+/platforms/bukkit/  @dfsek
+/platforms/fabric/  @dfsek
+/platforms/forge/   @dfsek
+/platforms/sponge/  @dfsek
+## solonovamax is working on the region generator (unless duplexsystem takes it over)
+/platforms/region/  @solonovamax
+
+# Common
+/common/            @dfsek @solonovamax
+
+# Gradle Stuff
+## Most gradle stuff was written by solonovamax
+/buildSrc/           @solonovamax
+*.gradle.kts        @solonovamax

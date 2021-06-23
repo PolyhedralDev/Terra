@@ -34,7 +34,7 @@ public abstract class ChunkRegionMixin {
     private long seed;
 
     public int terra$getMaxHeight() {
-        return ((ChunkRegion) (Object) this).getDimensionHeight();
+        return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
     }
 
     @SuppressWarnings("deprecation")
@@ -64,9 +64,10 @@ public abstract class ChunkRegionMixin {
     }
 
     public int terra$getMinHeight() {
-        return 0;
+        return ((ChunkRegion) (Object) this).getBottomY();
     }
 
+    @Intrinsic
     public Object terra$getHandle() {
         return this;
     }

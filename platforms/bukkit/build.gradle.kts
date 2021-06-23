@@ -15,7 +15,7 @@ configureCommon()
 
 group = "com.dfsek.terra.bukkit"
 
-val mcVersion = "1.16.5"
+val mcVersion = "1.17"
 val testDir = "target/server"
 val testMem = "3G"
 
@@ -25,7 +25,7 @@ val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/fin
 dependencies {
     "shadedApi"(project(":common"))
 
-    "compileOnly"("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
+    "compileOnly"("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
     "shadedImplementation"("io.papermc:paperlib:1.0.5")
 
     "shadedImplementation"("org.bstats:bstats-bukkit:1.7")

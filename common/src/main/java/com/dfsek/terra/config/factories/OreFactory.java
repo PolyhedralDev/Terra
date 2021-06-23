@@ -13,9 +13,9 @@ public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
         BlockData m = config.getMaterial();
         switch(config.getType()) {
             case SPHERE:
-                return new DeformedSphereOre(m, config.getReplaceable(), config.doPhysics(), config.getDeform(), config.getDeformFrequency(), config.getSize(), main);
+                return new DeformedSphereOre(m, config.getReplaceable(), config.doPhysics(), config.getDeform(), config.getDeformFrequency(), config.getSize(), main, config.getMaterialOverrides());
             case VANILLA:
-                return new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), main);
+                return new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), main, config.getMaterialOverrides());
         }
         return null;
     }

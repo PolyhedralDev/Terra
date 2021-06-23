@@ -15,7 +15,7 @@ public class BufferedPulledBlock implements BufferedItem {
     @Override
     public void paste(Location origin) {
         Block pos = origin.getBlock();
-        while(pos.getY() > 0) {
+        while(pos.getY() > origin.getWorld().getMinHeight()) {
             if(!pos.isEmpty()) {
                 pos.setBlockData(data, false);
                 break;
