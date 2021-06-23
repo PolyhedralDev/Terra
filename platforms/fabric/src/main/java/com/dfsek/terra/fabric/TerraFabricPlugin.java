@@ -22,6 +22,7 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -53,7 +54,7 @@ import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.api.registry.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.TerraWorldImpl;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
@@ -204,7 +205,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         worldMap.forEach((seed, pair) -> {
             pair.getRight().getConfig().getSamplerCache().clear();
             String packID = pair.getRight().getConfig().getTemplate().getID();
-            pair.setRight(new TerraWorld(pair.getRight().getWorld(), configRegistry.get(packID), this));
+            pair.setRight(new TerraWorldImpl(pair.getRight().getWorld(), configRegistry.get(packID), this));
         });
         return succeed;
     }

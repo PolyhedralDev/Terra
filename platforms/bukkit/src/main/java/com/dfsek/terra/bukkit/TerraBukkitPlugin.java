@@ -15,6 +15,7 @@ import com.dfsek.terra.api.event.EventManagerImpl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -45,7 +46,7 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.TerraWorldImpl;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
@@ -105,7 +106,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         worldMap.forEach((world, tw) -> {
             tw.getConfig().getSamplerCache().clear();
             String packID = tw.getConfig().getTemplate().getID();
-            newMap.put(world, new TerraWorld(world, registry.get(packID), this));
+            newMap.put(world, new TerraWorldImpl(world, registry.get(packID), this));
         });
         worldMap.clear();
         worldMap.putAll(newMap);
@@ -272,9 +273,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
+            return new TerraWorldImpl(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
         }
-        return worldMap.computeIfAbsent(w, w2 -> new TerraWorld(w, worlds.get(w.getName()), this));
+        return worldMap.computeIfAbsent(w, w2 -> new TerraWorldImpl(w, worlds.get(w.getName()), this));
     }
 
     @Override

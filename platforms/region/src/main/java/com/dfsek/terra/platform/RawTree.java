@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 
@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class RawTree implements Tree { // TODO: implement
     @Override
-    public boolean plant(Location l, Random r) {
+    public boolean plant(LocationImpl l, Random r) {
         return false;
     }
 

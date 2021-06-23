@@ -1,6 +1,6 @@
 package com.dfsek.terra.world.population.items.tree;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structure.rotation.Rotation;
@@ -21,7 +21,7 @@ public class TerraTree implements Tree {
     }
 
     @Override
-    public synchronized boolean plant(Location location, Random random) {
+    public synchronized boolean plant(LocationImpl location, Random random) {
         return structure.get(random).executeDirect(location.clone().add(0, yOffset, 0), random, Rotation.fromDegrees(90 * random.nextInt(4)));
     }
 

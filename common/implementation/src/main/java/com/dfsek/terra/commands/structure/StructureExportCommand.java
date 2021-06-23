@@ -9,7 +9,7 @@ import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
@@ -45,10 +45,10 @@ public class StructureExportCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
 
-        Pair<Location, Location> l = main.getWorldHandle().getSelectedLocation(player);
+        Pair<LocationImpl, LocationImpl> l = main.getWorldHandle().getSelectedLocation(player);
 
-        Location l1 = l.getLeft();
-        Location l2 = l.getRight();
+        LocationImpl l1 = l.getLeft();
+        LocationImpl l2 = l.getRight();
 
         StringBuilder scriptBuilder = new StringBuilder("id \"" + id + "\";\nnum y = 0;\n");
 
@@ -59,7 +59,7 @@ public class StructureExportCommand implements CommandTemplate {
         for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
-                    Block block = new Location(l1.getWorld(), x, y, z).getBlock();
+                    Block block = new LocationImpl(l1.getWorld(), x, y, z).getBlock();
                     BlockState state = block.getState();
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
@@ -77,7 +77,7 @@ public class StructureExportCommand implements CommandTemplate {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
 
-                    Block block = new Location(l1.getWorld(), x, y, z).getBlock();
+                    Block block = new LocationImpl(l1.getWorld(), x, y, z).getBlock();
                     BlockData data = block.getBlockData();
                     if(block.getBlockData().isStructureVoid()) continue;
                     BlockState state = block.getState();

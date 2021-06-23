@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.handle;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -39,7 +39,7 @@ public class FabricWorldHandle implements WorldHandle {
     }
 
     @Override
-    public Pair<Location, Location> getSelectedLocation(Player player) {
+    public Pair<LocationImpl, LocationImpl> getSelectedLocation(Player player) {
         try {
             Class.forName("com.sk89q.worldedit.WorldEdit");
         } catch(ClassNotFoundException e) {

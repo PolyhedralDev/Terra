@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.dummy;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -41,7 +41,7 @@ public class DummyWorld implements World {
     }
 
     @Override
-    public Entity spawnEntity(Location location, EntityType entityType) {
+    public Entity spawnEntity(LocationImpl location, EntityType entityType) {
         throw new UnsupportedOperationException("Cannot spawn entity in DummyWorld");
     }
 

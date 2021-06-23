@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -64,7 +64,7 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public Entity spawnEntity(Location location, EntityType entityType) {
+    public Entity spawnEntity(LocationImpl location, EntityType entityType) {
         return new BukkitEntity(delegate.spawnEntity(BukkitAdapter.adapt(location), ((BukkitEntityType) entityType).getHandle()));
     }
 

@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.handle;
 
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.vector.Location;
 
 /**
  * Interface to be implemented for world manipulation.

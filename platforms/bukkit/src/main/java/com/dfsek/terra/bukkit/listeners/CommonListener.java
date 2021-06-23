@@ -1,15 +1,15 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.TransformerImpl;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.config.pack.WorldConfig;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.config.pack.WorldConfigImpl;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
@@ -46,7 +46,7 @@ public class CommonListener implements Listener {
         World bukkit = BukkitAdapter.adapt(e.getWorld());
         if(!bukkit.isTerraWorld()) return;
         TerraWorld tw = main.getWorld(bukkit);
-        WorldConfig c = tw.getConfig();
+        WorldConfigImpl c = tw.getConfig();
         if(c.getTemplate().isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();
@@ -54,6 +54,6 @@ public class CommonListener implements Listener {
         block.setType(Material.AIR);
         Tree tree = c.getRegistry(Tree.class).get(TREE_TYPE_STRING_TRANSFORMER.translate(e.getSpecies()));
         org.bukkit.Location location = e.getLocation();
-        if(!tree.plant(new Location(bukkit, location.getX(), location.getY(), location.getZ()), new FastRandom())) block.setBlockData(data);
+        if(!tree.plant(new LocationImpl(bukkit, location.getX(), location.getY(), location.getZ()), new FastRandom())) block.setBlockData(data);
     }
 }

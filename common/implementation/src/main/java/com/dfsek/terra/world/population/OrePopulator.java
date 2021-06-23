@@ -2,6 +2,7 @@ package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
@@ -11,7 +12,6 @@ import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;

@@ -1,13 +1,15 @@
 package com.dfsek.terra.config.pack;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.registry.OpenRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.registry.LockedRegistryImpl;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.world.generation.math.SamplerCache;
 import com.dfsek.terra.world.population.items.TerraStructure;
 
@@ -16,7 +18,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WorldConfig {
+public class WorldConfigImpl implements com.dfsek.terra.api.config.WorldConfig {
     private final SamplerCache samplerCache;
 
     private final BiomeProvider provider;
@@ -24,39 +26,44 @@ public class WorldConfig {
     private final TerraWorld world;
     private final ConfigPackImpl pack;
 
-    private final Map<Class<?>, LockedRegistry<?>> registryMap = new HashMap<>();
+    private final Map<Class<?>, Registry<?>> registryMap = new HashMap<>();
 
-    public WorldConfig(TerraWorld world, ConfigPackImpl pack, TerraPlugin main) {
+    public WorldConfigImpl(TerraWorld world, ConfigPackImpl pack, TerraPlugin main) {
         this.world = world;
         this.pack = pack;
         this.samplerCache = new SamplerCache(main, world);
 
-        pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistry<>(pair.getLeft())));
+        pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
 
-        OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistry<>();
+        OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistryImpl<>();
         pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
-        registryMap.put(TerraBiome.class, new LockedRegistry<>(biomeOpenRegistry));
+        registryMap.put(TerraBiome.class, new LockedRegistryImpl<>(biomeOpenRegistry));
 
         this.provider = pack.getBiomeProviderBuilder().build(world.getWorld().getSeed());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
-    public <T> LockedRegistry<T> getRegistry(Class<T> clazz) {
-        return (LockedRegistry<T>) registryMap.get(clazz);
+    public <T> Registry<T> getRegistry(Class<T> clazz) {
+        return (LockedRegistryImpl<T>) registryMap.get(clazz);
     }
 
+    @Override
     public TerraWorld getWorld() {
         return world;
     }
 
+    @Override
     public SamplerCache getSamplerCache() {
         return samplerCache;
     }
 
+    @Override
     public Set<UserDefinedCarver> getCarvers() {
         return new HashSet<>(getRegistry(UserDefinedCarver.class).entries());
     }
 
+    @Override
     public BiomeProvider getProvider() {
         return provider;
     }

@@ -21,6 +21,7 @@ import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
@@ -40,7 +41,7 @@ import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.registry.config.ScriptRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.TerraWorldImpl;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
@@ -123,7 +124,7 @@ public class ConfigPackImpl implements ConfigPack {
             main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
             throw e;
         }
-        toWorldConfig(new TerraWorld(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+        toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
     public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
@@ -171,7 +172,7 @@ public class ConfigPackImpl implements ConfigPack {
             throw e;
         }
 
-        toWorldConfig(new TerraWorld(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+        toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -298,8 +299,8 @@ public class ConfigPackImpl implements ConfigPack {
 
 
     @Override
-    public WorldConfig toWorldConfig(TerraWorld world) {
-        return new WorldConfig(world, this, main);
+    public WorldConfigImpl toWorldConfig(TerraWorld world) {
+        return new WorldConfigImpl(world, this, main);
     }
 
     @Override

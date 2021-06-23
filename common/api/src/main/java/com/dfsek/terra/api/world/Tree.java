@@ -1,12 +1,12 @@
 package com.dfsek.terra.api.world;
 
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.LocationImpl;
 
 import java.util.Random;
 
 public interface Tree {
-    boolean plant(Location l, Random r);
+    boolean plant(LocationImpl l, Random r);
 
     MaterialSet getSpawnable();
 }

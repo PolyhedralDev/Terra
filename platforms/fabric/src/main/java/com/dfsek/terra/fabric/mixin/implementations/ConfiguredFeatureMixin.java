@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
@@ -25,7 +25,7 @@ public abstract class ConfiguredFeatureMixin {
     public abstract boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos);
 
     @SuppressWarnings({"ConstantConditions", "try"})
-    public boolean terra$plant(Location l, Random r) {
+    public boolean terra$plant(LocationImpl l, Random r) {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
         try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             StructureWorldAccess fabricWorldAccess = ((StructureWorldAccess) l.getWorld());

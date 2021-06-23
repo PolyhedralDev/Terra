@@ -1,21 +1,21 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.util.world.PopulationUtil;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.pack.WorldConfig;
+import com.dfsek.terra.config.pack.WorldConfigImpl;
 import com.dfsek.terra.config.templates.CarverTemplate;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.world.TerraWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -41,12 +41,12 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
         try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
-            WorldConfig config = tw.getConfig();
+            WorldConfigImpl config = tw.getConfig();
             if(config.getTemplate().disableCarvers()) return;
 
             for(UserDefinedCarver c : config.getCarvers()) {
                 CarverTemplate template = c.getConfig();
-                Map<Location, BlockData> shiftCandidate = new HashMap<>();
+                Map<LocationImpl, BlockData> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
@@ -85,9 +85,9 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                         }
                     }
                 });
-                for(Map.Entry<Location, BlockData> entry : shiftCandidate.entrySet()) {
-                    Location l = entry.getKey();
-                    Location mut = l.clone();
+                for(Map.Entry<LocationImpl, BlockData> entry : shiftCandidate.entrySet()) {
+                    LocationImpl l = entry.getKey();
+                    LocationImpl mut = l.clone();
                     BlockData orig = l.getBlock().getBlockData();
                     do mut.subtract(0, 1, 0);
                     while(mut.getY() > world.getMinHeight() && mut.getBlock().getBlockData().matches(orig));

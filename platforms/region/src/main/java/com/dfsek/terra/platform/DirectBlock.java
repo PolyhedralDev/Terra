@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
@@ -51,7 +51,7 @@ public class DirectBlock implements Block {
     }
 
     @Override
-    public Location getLocation() {
+    public LocationImpl getLocation() {
         return pos.toLocation(world);
     }
 

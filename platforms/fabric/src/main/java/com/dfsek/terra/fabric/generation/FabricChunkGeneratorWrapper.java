@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
@@ -13,7 +14,6 @@ import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.util.FabricAdapter;
-import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;

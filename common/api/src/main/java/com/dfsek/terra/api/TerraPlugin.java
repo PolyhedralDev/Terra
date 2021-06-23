@@ -8,6 +8,7 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 
 import java.io.File;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.block;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
@@ -49,7 +49,7 @@ public class FabricBlock implements Block {
     }
 
     @Override
-    public Location getLocation() {
+    public LocationImpl getLocation() {
         return FabricAdapter.adapt(delegate.position).toLocation((World) delegate.worldAccess);
     }
 

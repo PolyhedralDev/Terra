@@ -1,8 +1,9 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.world.World;
@@ -16,7 +17,6 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.math.SamplerCache;
 import net.jafama.FastMath;
 
@@ -47,12 +47,12 @@ public class CheckFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        LocationImpl location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getBuffer().getOrigin().getWorld());
     }
 
-    private String apply(Location vector, World world) {
+    private String apply(LocationImpl vector, World world) {
         TerraWorld tw = main.getWorld(world);
         SamplerCache cache = tw.getConfig().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);

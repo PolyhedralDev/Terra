@@ -9,6 +9,7 @@ import com.dfsek.terra.api.event.EventManagerImpl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -25,7 +26,7 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.TerraWorldImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return new TerraWorld(world, registry.get("DEFAULT"), this);
+        return new TerraWorldImpl(world, registry.get("DEFAULT"), this);
     }
 
     @Override

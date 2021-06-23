@@ -1,7 +1,9 @@
 package com.dfsek.terra.api.event.events.world;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.event.events.PackEvent;
+import com.dfsek.terra.api.world.TerraWorld;
 
 
 /**

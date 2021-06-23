@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.entity.CommandSender;
@@ -337,12 +338,12 @@ public final class BukkitAdapter {
         }
     }
 
-    public static Location adapt(com.dfsek.terra.api.vector.Location location) {
+    public static Location adapt(LocationImpl location) {
         return new Location(((BukkitWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
     }
 
-    public static com.dfsek.terra.api.vector.Location adapt(Location location) {
-        return new com.dfsek.terra.api.vector.Location(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+    public static LocationImpl adapt(Location location) {
+        return new LocationImpl(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
     }
 
     public static Vector adapt(Vector3 vector3) {

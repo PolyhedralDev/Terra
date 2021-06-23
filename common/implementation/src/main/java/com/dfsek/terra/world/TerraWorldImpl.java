@@ -2,7 +2,7 @@ package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.World;
@@ -10,19 +10,19 @@ import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.config.pack.WorldConfig;
+import com.dfsek.terra.config.pack.WorldConfigImpl;
 import com.dfsek.terra.api.world.generator.Sampler;
 import net.jafama.FastMath;
 
-public class TerraWorld {
+public class TerraWorldImpl implements com.dfsek.terra.api.world.TerraWorld {
     private final BiomeProvider provider;
-    private final WorldConfig config;
+    private final WorldConfigImpl config;
     private final boolean safe;
     private final World world;
     private final BlockData air;
 
 
-    public TerraWorld(World w, ConfigPackImpl c, TerraPlugin main) {
+    public TerraWorldImpl(World w, ConfigPackImpl c, TerraPlugin main) {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
         config = c.toWorldConfig(this);
@@ -33,32 +33,29 @@ public class TerraWorld {
     }
 
 
+    @Override
     public World getWorld() {
         return world;
     }
 
 
+    @Override
     public BiomeProvider getBiomeProvider() {
         return provider;
     }
 
-    public WorldConfig getConfig() {
+    @Override
+    public WorldConfigImpl getConfig() {
         return config;
     }
 
+    @Override
     public boolean isSafe() {
         return safe;
     }
 
 
-    /**
-     * Get a block at an ungenerated location
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param z Z coordinate
-     * @return BlockData
-     */
+    @Override
     public BlockData getUngeneratedBlock(int x, int y, int z) {
         UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(x, z);
         Palette palette = biome.getGenerator(world).getPalette(y);
@@ -78,10 +75,12 @@ public class TerraWorld {
         } else return air;
     }
 
-    public BlockData getUngeneratedBlock(Location l) {
+    @Override
+    public BlockData getUngeneratedBlock(LocationImpl l) {
         return getUngeneratedBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
+    @Override
     public BlockData getUngeneratedBlock(Vector3 v) {
         return getUngeneratedBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
     }

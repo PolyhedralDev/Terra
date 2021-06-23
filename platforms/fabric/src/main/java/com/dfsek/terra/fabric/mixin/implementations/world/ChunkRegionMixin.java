@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -51,7 +51,7 @@ public abstract class ChunkRegionMixin {
     }
 
     @SuppressWarnings("deprecation")
-    public Entity terra$spawnEntity(Location location, EntityType entityType) {
+    public Entity terra$spawnEntity(LocationImpl location, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ChunkRegion) (Object) this).toServerWorld());
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ChunkRegion) (Object) this).spawnEntity(entity);

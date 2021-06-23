@@ -1,7 +1,7 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.DirectUtils;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.entity.Entity;
@@ -62,7 +62,7 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public Entity spawnEntity(Location location, EntityType entityType) {
+    public Entity spawnEntity(LocationImpl location, EntityType entityType) {
         return null;
     }
 

@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.loot.LootTable;
@@ -47,7 +47,7 @@ import java.util.concurrent.ExecutionException;
 public class StructureScript {
     private final Block block;
     private final String id;
-    private final Cache<Location, StructureBuffer> cache;
+    private final Cache<LocationImpl, StructureBuffer> cache;
     private final TerraPlugin main;
     private String tempID;
 
@@ -118,7 +118,7 @@ public class StructureScript {
      * @return Whether generation was successful
      */
     @SuppressWarnings("try")
-    public boolean execute(Location location, Random random, Rotation rotation) {
+    public boolean execute(LocationImpl location, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript:" + id)) {
             StructureBuffer buffer = new StructureBuffer(location);
             boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));
@@ -128,7 +128,7 @@ public class StructureScript {
     }
 
     @SuppressWarnings("try")
-    public boolean execute(Location location, Chunk chunk, Random random, Rotation rotation) {
+    public boolean execute(LocationImpl location, Chunk chunk, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_chunk:" + id)) {
             StructureBuffer buffer = computeBuffer(location, random, rotation);
             buffer.paste(chunk);
@@ -137,14 +137,14 @@ public class StructureScript {
     }
 
     @SuppressWarnings("try")
-    public boolean test(Location location, Random random, Rotation rotation) {
+    public boolean test(LocationImpl location, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {
             StructureBuffer buffer = computeBuffer(location, random, rotation);
             return buffer.succeeded();
         }
     }
 
-    private StructureBuffer computeBuffer(Location location, Random random, Rotation rotation) {
+    private StructureBuffer computeBuffer(LocationImpl location, Random random, Rotation rotation) {
         try {
             return cache.get(location, () -> {
                 StructureBuffer buf = new StructureBuffer(location);
@@ -164,7 +164,7 @@ public class StructureScript {
     }
 
     @SuppressWarnings("try")
-    public boolean executeDirect(Location location, Random random, Rotation rotation) {
+    public boolean executeDirect(LocationImpl location, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
             DirectBuffer buffer = new DirectBuffer(location);
             return applyBlock(new TerraImplementationArguments(buffer, rotation, random, 0));

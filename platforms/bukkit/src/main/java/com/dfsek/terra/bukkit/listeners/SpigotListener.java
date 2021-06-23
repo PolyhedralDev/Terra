@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Entity;
