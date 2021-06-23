@@ -37,7 +37,7 @@ public class SpigotListener implements Listener {
             if(!BukkitAdapter.adapt(e.getEntity().getWorld()).isTerraWorld()) return;
             TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getEntity().getWorld()));
             EnderSignal signal = (EnderSignal) entity;
-            TerraStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getTemplate().getLocatable().get("STRONGHOLD"));
+            TerraStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get("STRONGHOLD"));
             if(config != null) {
                 main.getDebugLogger().info("Overriding Ender Signal...");
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation()), 0, 500, location -> {

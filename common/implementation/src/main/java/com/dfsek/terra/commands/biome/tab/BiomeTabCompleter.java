@@ -17,6 +17,6 @@ public class BiomeTabCompleter implements TabCompleter {
     @Override
     public List<String> complete(CommandSender sender) {
         Player player = (Player) sender;
-        return main.getWorld(player.getWorld()).getConfig().getRegistry(TerraBiome.class).entries().stream().map(TerraBiome::getID).collect(Collectors.toList());
+        return main.getWorld(player.world()).getConfig().getRegistry(TerraBiome.class).entries().stream().map(TerraBiome::getID).collect(Collectors.toList());
     }
 }

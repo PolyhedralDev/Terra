@@ -1,5 +1,6 @@
 package com.dfsek.terra.bukkit.handles;
 
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.EntityType;
@@ -26,7 +27,7 @@ public class BukkitWorldHandle implements WorldHandle {
     }
 
     @Override
-    public Pair<LocationImpl, LocationImpl> getSelectedLocation(Player player) {
+    public Pair<Location, Location> getSelectedLocation(Player player) {
         org.bukkit.Location[] locations = WorldEditUtil.getSelectionLocations(BukkitAdapter.adapt(player));
         return Pair.of(BukkitAdapter.adapt(locations[0]), BukkitAdapter.adapt(locations[1]));
     }

@@ -17,11 +17,11 @@ public final class WorldEditUtil {
         try {
             Region selection = worldEdit.getSessionManager()
                     .get(com.sk89q.worldedit.fabric.FabricAdapter.adaptPlayer((ServerPlayerEntity) player))
-                    .getSelection(com.sk89q.worldedit.fabric.FabricAdapter.adapt((World) player.getWorld()));
+                    .getSelection(com.sk89q.worldedit.fabric.FabricAdapter.adapt((World) player.world()));
             BlockVector3 min = selection.getMinimumPoint();
             BlockVector3 max = selection.getMaximumPoint();
-            LocationImpl l1 = new LocationImpl(player.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
-            LocationImpl l2 = new LocationImpl(player.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
+            LocationImpl l1 = new LocationImpl(player.world(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
+            LocationImpl l2 = new LocationImpl(player.world(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
             return Pair.of(l1, l2);
         } catch(IncompleteRegionException e) {
             throw new IllegalStateException("No selection has been made", e);

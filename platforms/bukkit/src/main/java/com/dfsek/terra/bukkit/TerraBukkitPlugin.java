@@ -17,11 +17,11 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.Logger;
@@ -45,6 +45,8 @@ import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
@@ -72,7 +74,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final Profiler profiler = new ProfilerImpl();
 
     private final ConfigRegistry registry = new ConfigRegistry();
-    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
+    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(registry);
 
     private final PluginConfig config = new PluginConfigImpl();
     private final ItemHandle itemHandle = new BukkitItemHandle();
@@ -95,7 +97,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     private final AddonRegistry addonRegistry = new AddonRegistry(new BukkitAddon(this), this);
-    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+    private final LockedRegistryImpl<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
 
 
 
@@ -106,7 +108,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
             tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getTemplate().getID();
+            String packID = tw.getConfig().getID();
             newMap.put(world, new TerraWorldImpl(world, registry.get(packID), this));
         });
         worldMap.clear();
@@ -306,7 +308,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     @Override
-    public LockedRegistry<TerraAddon> getAddons() {
+    public Registry<TerraAddon> getAddons() {
         return addonLockedRegistry;
     }
 

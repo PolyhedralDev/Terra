@@ -4,6 +4,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 
 /**
  * Called when an entity is spawned.
@@ -11,12 +12,10 @@ import com.dfsek.terra.api.vector.Location;
 public class EntitySpawnEvent implements PackEvent {
     private final ConfigPack pack;
     private final Entity entity;
-    private final Location location;
 
-    public EntitySpawnEvent(ConfigPack pack, Entity entity, Location location) {
+    public EntitySpawnEvent(ConfigPack pack, Entity entity) {
         this.pack = pack;
         this.entity = entity;
-        this.location = location;
     }
 
     @Override
@@ -31,14 +30,5 @@ public class EntitySpawnEvent implements PackEvent {
      */
     public Entity getEntity() {
         return entity;
-    }
-
-    /**
-     * Get the location of the entity.
-     *
-     * @return Location of the entity.
-     */
-    public Location getLocation() {
-        return location;
     }
 }

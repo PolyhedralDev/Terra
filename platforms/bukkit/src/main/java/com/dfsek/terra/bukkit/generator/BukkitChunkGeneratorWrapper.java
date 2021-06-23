@@ -82,27 +82,27 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean isParallelCapable() {
-        return delegate.isParallelCapable();
+        return true;
     }
 
     @Override
     public boolean shouldGenerateCaves() {
-        return delegate.shouldGenerateCaves();
+        return delegate.getConfigPack().vanillaCaves();
     }
 
     @Override
     public boolean shouldGenerateDecorations() {
-        return delegate.shouldGenerateDecorations();
+        return delegate.getConfigPack().vanillaFlora();
     }
 
     @Override
     public boolean shouldGenerateMobs() {
-        return delegate.shouldGenerateMobs();
+        return delegate.getConfigPack().vanillaMobs();
     }
 
     @Override
     public boolean shouldGenerateStructures() {
-        return delegate.shouldGenerateStructures();
+        return delegate.getConfigPack().vanillaStructures();
     }
 
     @Override

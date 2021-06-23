@@ -64,7 +64,7 @@ public class TerraCommandManager implements CommandManager {
             return;
         }
 
-        if(commandClass.isAnnotationPresent(WorldCommand.class) && (!(sender instanceof Player) || !(((Player) sender).getWorld()).isTerraWorld())) {
+        if(commandClass.isAnnotationPresent(WorldCommand.class) && (!(sender instanceof Player) || !(((Player) sender).world()).isTerraWorld())) {
             sender.sendMessage("Command must be executed in a Terra world.");
             return;
         }

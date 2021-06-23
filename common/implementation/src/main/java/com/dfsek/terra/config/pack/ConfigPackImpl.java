@@ -368,4 +368,9 @@ public class ConfigPackImpl implements ConfigPack {
     public boolean doBetaCarvers() {
         return template.doBetaCarvers();
     }
+
+    @Override
+    public boolean vanillaFlora() {
+        return template.vanillaDecorations();
+    }
 }

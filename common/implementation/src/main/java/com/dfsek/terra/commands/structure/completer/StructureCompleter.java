@@ -17,6 +17,6 @@ public class StructureCompleter implements TabCompleter {
     @Override
     public List<String> complete(CommandSender sender) {
         Player player = (Player) sender;
-        return new ArrayList<>(main.getWorld(player.getWorld()).getConfig().getRegistry(TerraStructure.class).keys());
+        return new ArrayList<>(main.getWorld(player.world()).getConfig().getRegistry(TerraStructure.class).keys());
     }
 }

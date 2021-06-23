@@ -8,6 +8,7 @@ import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
@@ -34,14 +35,14 @@ public class SpawnCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-        Location p = player.getLocation();
+        Vector3 p = player.position();
         int x = p.getBlockX();
         int y = p.getBlockY();
         int z = p.getBlockZ();
         Position dummy = new Position(0, 0);
 
         String check = new CheckFunction(main, new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
-                new LocationImpl(player.getWorld(), x, y, z)
+                new LocationImpl(player.world(), x, y, z)
         ), Rotation.NONE, new FastRandom(), 0), new HashMap<>());
 
         sender.sendMessage("Found: " + check);

@@ -79,9 +79,9 @@ public class StructureLoadCommand implements CommandTemplate {
             return;
         }
         if(this.chunk) {
-            script.generate(player.getLocation(), player.getWorld().getChunkAt(player.getLocation()), random, r);
+            script.generate(player.position().toLocation(player.world()), player.world().getChunkAt(player.position().toLocation(player.world())), random, r);
         } else {
-            script.generate(player.getLocation(), random, r);
+            script.generate(player.position().toLocation(player.world()), random, r);
         }
         long l = System.nanoTime() - t;
 

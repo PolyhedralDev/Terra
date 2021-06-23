@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
@@ -46,8 +47,8 @@ public class CommonListener implements Listener {
         World bukkit = BukkitAdapter.adapt(e.getWorld());
         if(!bukkit.isTerraWorld()) return;
         TerraWorld tw = main.getWorld(bukkit);
-        WorldConfigImpl c = tw.getConfig();
-        if(c.getTemplate().isDisableSaplings()) return;
+        WorldConfig c = tw.getConfig();
+        if(c.isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();
         BlockData data = block.getBlockData();

@@ -15,6 +15,6 @@ public class FixChunkCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-        BukkitChunkGeneratorWrapper.fixChunk(player.getWorld().getChunkAt(player.getLocation()));
+        BukkitChunkGeneratorWrapper.fixChunk(player.world().getChunkAt(player.position().toLocation(player.world())));
     }
 }

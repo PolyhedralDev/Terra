@@ -1,10 +1,12 @@
 package com.dfsek.terra.api.config;
 
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface WorldConfig {
@@ -34,4 +36,8 @@ public interface WorldConfig {
     String getAuthor();
 
     String getVersion();
+
+    Map<String, String> getLocatable();
+
+    boolean isDisableSaplings();
 }

@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.world;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.Tree;
@@ -43,7 +44,7 @@ public class BukkitTree implements Tree {
 
     @Override
     @SuppressWarnings("try")
-    public boolean plant(LocationImpl l, Random r) {
+    public boolean plant(Location l, Random r) {
         try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
             return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
         }

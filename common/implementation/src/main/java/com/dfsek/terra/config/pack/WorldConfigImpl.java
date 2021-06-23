@@ -109,6 +109,16 @@ public class WorldConfigImpl implements WorldConfig {
         return pack.getVersion();
     }
 
+    @Override
+    public Map<String, String> getLocatable() {
+        return pack.getLocatable();
+    }
+
+    @Override
+    public boolean isDisableSaplings() {
+        return getTemplate().isDisableSaplings();
+    }
+
     public Set<TerraStructure> getStructures() {
         return new HashSet<>(getRegistry(TerraStructure.class).entries());
     }

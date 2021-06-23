@@ -54,7 +54,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
-                            .forGetter(pack -> pack.getID())
+                            .forGetter(ConfigPack::getID)
             ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get)));
 
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(

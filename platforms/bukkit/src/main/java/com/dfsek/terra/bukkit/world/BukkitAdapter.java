@@ -338,7 +338,7 @@ public final class BukkitAdapter {
         }
     }
 
-    public static Location adapt(LocationImpl location) {
+    public static Location adapt(com.dfsek.terra.api.vector.Location location) {
         return new Location(((BukkitWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
     }
 

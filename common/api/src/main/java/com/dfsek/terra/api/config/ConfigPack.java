@@ -38,4 +38,6 @@ public interface ConfigPack extends LoaderRegistrar {
     Map<String, String> getLocatable();
 
     boolean doBetaCarvers();
+
+    boolean vanillaFlora();
 }

@@ -1,9 +1,12 @@
 package com.dfsek.terra.bukkit;
 
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.dfsek.terra.vector.Vector3Impl;
+import org.bukkit.Location;
 
 public class BukkitPlayer implements Player {
     private final org.bukkit.entity.Player delegate;
@@ -18,18 +21,25 @@ public class BukkitPlayer implements Player {
     }
 
     @Override
-    public LocationImpl getLocation() {
+    public Vector3 position() {
         org.bukkit.Location bukkit = delegate.getLocation();
-        return new LocationImpl(BukkitAdapter.adapt(bukkit.getWorld()), bukkit.getX(), bukkit.getY(), bukkit.getZ());
+        return new Vector3Impl(bukkit.getX(), bukkit.getY(), bukkit.getZ());
     }
 
     @Override
-    public void setLocation(LocationImpl location) {
-        delegate.teleport(BukkitAdapter.adapt(location));
+    public void position(Vector3 location) {
+        delegate.teleport(BukkitAdapter.adapt(location).toLocation(delegate.getWorld()));
     }
 
     @Override
-    public World getWorld() {
+    public void world(World world) {
+        Location newLoc = delegate.getLocation().clone();
+        newLoc.setWorld(BukkitAdapter.adapt(world));
+        delegate.teleport(newLoc);
+    }
+
+    @Override
+    public World world() {
         return BukkitAdapter.adapt(delegate.getWorld());
     }
 

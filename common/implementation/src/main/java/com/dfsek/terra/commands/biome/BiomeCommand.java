@@ -38,8 +38,8 @@ public class BiomeCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
 
-        BiomeProvider provider = main.getWorld(player.getWorld()).getBiomeProvider();
-        UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(player.getLocation());
+        BiomeProvider provider = main.getWorld(player.world()).getBiomeProvider();
+        UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(player.position());
         LangUtil.send("command.biome.in", sender, biome.getID());
     }
 }
