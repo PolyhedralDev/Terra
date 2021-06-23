@@ -22,11 +22,11 @@ public class WorldConfig {
     private final BiomeProvider provider;
 
     private final TerraWorld world;
-    private final ConfigPack pack;
+    private final ConfigPackImpl pack;
 
     private final Map<Class<?>, LockedRegistry<?>> registryMap = new HashMap<>();
 
-    public WorldConfig(TerraWorld world, ConfigPack pack, TerraPlugin main) {
+    public WorldConfig(TerraWorld world, ConfigPackImpl pack, TerraPlugin main) {
         this.world = world;
         this.pack = pack;
         this.samplerCache = new SamplerCache(main, world);

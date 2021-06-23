@@ -9,6 +9,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.api.math.paralithic.BlankFunction;
@@ -24,7 +25,7 @@ import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
@@ -40,7 +41,7 @@ import java.util.Set;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class BiomeTemplate extends AbstractableTemplate implements ValidatedConfigTemplate {
-    private final ConfigPack pack;
+    private final ConfigPackImpl pack;
 
     @Value("id")
     private String id;
@@ -242,7 +243,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         return doSlabs;
     }
 
-    public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
+    public BiomeTemplate(ConfigPackImpl pack, TerraPlugin main) {
         this.pack = pack;
         biomeNoise = new NoiseSeeded() {
             @Override

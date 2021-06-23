@@ -5,16 +5,16 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.CarverTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CarverFactory implements ConfigFactory<CarverTemplate, UserDefinedCarver> {
-    private final ConfigPack pack;
+    private final ConfigPackImpl pack;
 
-    public CarverFactory(ConfigPack pack) {
+    public CarverFactory(ConfigPackImpl pack) {
         this.pack = pack;
     }
 

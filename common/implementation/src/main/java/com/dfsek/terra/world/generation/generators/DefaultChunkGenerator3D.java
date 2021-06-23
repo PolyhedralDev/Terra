@@ -3,6 +3,7 @@ package com.dfsek.terra.world.generation.generators;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
@@ -22,7 +23,6 @@ import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.SinglePalette;
-import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class DefaultChunkGenerator3D implements TerraChunkGenerator {
-    private final ConfigPack configPack;
+    private final ConfigPackImpl configPack;
     private final TerraPlugin main;
     private final BlockType water;
     private final SinglePalette blank;
@@ -51,7 +51,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
     private final Carver carver;
 
-    public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
+    public DefaultChunkGenerator3D(ConfigPackImpl c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
 
@@ -92,7 +92,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     }
 
     @Override
-    public ConfigPack getConfigPack() {
+    public ConfigPackImpl getConfigPack() {
         return configPack;
     }
 

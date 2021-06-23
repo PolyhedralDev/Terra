@@ -13,7 +13,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 public class DefaultChunkGenerator2D implements TerraChunkGenerator {
-    private final ConfigPack configPack;
+    private final ConfigPackImpl configPack;
     private final TerraPlugin main;
 
     private final Carver carver;
@@ -42,7 +42,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
 
     private final SamplerCache cache;
 
-    public DefaultChunkGenerator2D(ConfigPack c, TerraPlugin main, SamplerCache cache) {
+    public DefaultChunkGenerator2D(ConfigPackImpl c, TerraPlugin main, SamplerCache cache) {
         this.configPack = c;
         this.main = main;
         blockPopulators.add(new CavePopulator(main));
@@ -80,7 +80,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
     }
 
     @Override
-    public ConfigPack getConfigPack() {
+    public ConfigPackImpl getConfigPack() {
         return configPack;
     }
 

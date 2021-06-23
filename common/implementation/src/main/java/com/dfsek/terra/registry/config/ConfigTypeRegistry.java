@@ -3,6 +3,7 @@ package com.dfsek.terra.registry.config;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.palette.Palette;
@@ -16,7 +17,7 @@ import com.dfsek.terra.config.factories.OreFactory;
 import com.dfsek.terra.config.factories.PaletteFactory;
 import com.dfsek.terra.config.factories.StructureFactory;
 import com.dfsek.terra.config.factories.TreeFactory;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.prototype.ConfigType;
 import com.dfsek.terra.config.templates.AbstractableTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
@@ -37,7 +38,7 @@ import java.util.function.Supplier;
 public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?, ?>> {
     private final BiConsumer<String, ConfigType<?, ?>> callback;
 
-    public ConfigTypeRegistry(ConfigPack pack, TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
+    public ConfigTypeRegistry(ConfigPackImpl pack, TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
         add("PALETTE", new ConfigBuilder<>(new PaletteFactory(), PaletteTemplate::new, Palette.class, () -> new PaletteRegistry(main)));
@@ -71,7 +72,7 @@ public class ConfigTypeRegistry extends OpenRegistry<ConfigType<?, ?>> {
 
         @Override
         public Class<ConfigPack> getTypeClass() {
-            return ConfigPack.class;
+            return ConfigPackImpl.class;
         }
 
         @Override

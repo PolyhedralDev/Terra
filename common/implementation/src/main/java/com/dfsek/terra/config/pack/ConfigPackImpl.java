@@ -10,9 +10,11 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structures.loot.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
@@ -34,7 +36,6 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.prototype.ConfigType;
 import com.dfsek.terra.config.prototype.ProtoConfig;
-import com.dfsek.terra.registry.OpenRegistry;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
 import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
@@ -66,7 +67,7 @@ import java.util.zip.ZipFile;
 /**
  * Represents a Terra configuration pack.
  */
-public class ConfigPack implements LoaderRegistrar {
+public class ConfigPackImpl implements ConfigPack {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
@@ -83,7 +84,7 @@ public class ConfigPack implements LoaderRegistrar {
     private final ConfigTypeRegistry configTypeRegistry;
     private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = newRegistryMap();
 
-    public ConfigPack(File folder, TerraPlugin main) throws ConfigException {
+    public ConfigPackImpl(File folder, TerraPlugin main) throws ConfigException {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
@@ -126,7 +127,7 @@ public class ConfigPack implements LoaderRegistrar {
         toWorldConfig(new TerraWorld(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
-    public ConfigPack(ZipFile file, TerraPlugin main) throws ConfigException {
+    public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
@@ -267,6 +268,7 @@ public class ConfigPack implements LoaderRegistrar {
         return varScope;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> CheckedRegistry<T> getRegistry(Class<T> clazz) {
         return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
@@ -290,15 +292,18 @@ public class ConfigPack implements LoaderRegistrar {
                 .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(getOpenRegistry(NoiseProvider.class)));
     }
 
+    @Override
     public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
         return biomeProviderBuilder;
     }
 
 
+    @Override
     public WorldConfig toWorldConfig(TerraWorld world) {
         return new WorldConfig(world, this, main);
     }
 
+    @Override
     public CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry() {
         return new CheckedRegistry<ConfigType<?, ?>>(configTypeRegistry) {
             @Override

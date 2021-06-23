@@ -9,7 +9,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.pack.WorldConfig;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import net.jafama.FastMath;
@@ -22,7 +22,7 @@ public class TerraWorld {
     private final BlockData air;
 
 
-    public TerraWorld(World w, ConfigPack c, TerraPlugin main) {
+    public TerraWorld(World w, ConfigPackImpl c, TerraPlugin main) {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
         config = c.toWorldConfig(this);

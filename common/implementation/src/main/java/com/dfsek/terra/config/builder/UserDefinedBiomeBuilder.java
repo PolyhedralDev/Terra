@@ -10,7 +10,7 @@ import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
@@ -20,11 +20,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UserDefinedBiomeBuilder implements BiomeBuilder {
     private final BiomeTemplate template;
-    private final ConfigPack pack;
+    private final ConfigPackImpl pack;
 
     private final Map<Long, UserDefinedBiome> biomeMap = new ConcurrentHashMap<>();
 
-    public UserDefinedBiomeBuilder(BiomeTemplate template, ConfigPack pack) {
+    public UserDefinedBiomeBuilder(BiomeTemplate template, ConfigPackImpl pack) {
         this.template = template;
         this.pack = pack;
     }

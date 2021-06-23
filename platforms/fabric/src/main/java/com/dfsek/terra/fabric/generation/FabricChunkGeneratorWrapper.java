@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
@@ -7,7 +8,7 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.generation.Chunkified;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
@@ -71,10 +72,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
 
-    private final ConfigPack pack;
+    private final ConfigPackImpl pack;
     private DimensionType dimensionType;
 
-    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
+    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPackImpl configPack) {
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
 
@@ -96,7 +97,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
-    public ConfigPack getPack() {
+    public ConfigPackImpl getPack() {
         return pack;
     }
 

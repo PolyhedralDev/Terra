@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.util;
 
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public final class FabricUtil {
-    public static String createBiomeID(ConfigPack pack, String biomeID) {
+    public static String createBiomeID(ConfigPackImpl pack, String biomeID) {
         return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
@@ -40,7 +40,7 @@ public final class FabricUtil {
      * @param pack        The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
+    public static Biome createBiome(BiomeBuilder biome, ConfigPackImpl pack, DynamicRegistryManager registryManager) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
