@@ -38,7 +38,7 @@ public interface Vector2 extends Cloneable {
      * @param other Vector to add
      * @return Mutated vector, for chaining.
      */
-    Vector2 add(Vector2Impl other);
+    Vector2 add(Vector2 other);
 
     /**
      * Subtract a vector from this vector,
@@ -46,7 +46,7 @@ public interface Vector2 extends Cloneable {
      * @param other Vector to subtract
      * @return Mutated vector, for chaining.
      */
-    Vector2 subtract(Vector2Impl other);
+    Vector2 subtract(Vector2 other);
 
     /**
      * Normalize this vector to length 1
@@ -83,7 +83,7 @@ public interface Vector2 extends Cloneable {
      * @param other Another vector
      * @return Distance between vectors
      */
-    double distance(Vector2Impl other);
+    double distance(Vector2 other);
 
     /**
      * Get the squared distance between 2 vectors.
@@ -91,7 +91,7 @@ public interface Vector2 extends Cloneable {
      * @param other Another vector
      * @return Squared distance
      */
-    double distanceSquared(Vector2Impl other);
+    double distanceSquared(Vector2 other);
 
     Vector2 add(double x, double z);
 

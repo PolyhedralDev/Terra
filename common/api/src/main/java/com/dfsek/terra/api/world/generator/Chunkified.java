@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.generation;
+package com.dfsek.terra.api.world.generator;
 
 /**
  * Marker interface that marks a feature as "chunkified" (only modifying one chunk at a time)

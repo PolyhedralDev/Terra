@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.util.world;
 
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.world.palette.Palette;
+import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;

@@ -15,7 +15,7 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.world.Flora;
-import com.dfsek.terra.api.world.palette.Palette;
+import com.dfsek.terra.api.world.generator.Palette;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;

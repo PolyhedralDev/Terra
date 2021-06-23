@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.palette.holder;
 
-import com.dfsek.terra.api.world.palette.Palette;
+import com.dfsek.terra.api.world.generator.Palette;
 
 public class PaletteHolder {
     private final Palette[] palettes;

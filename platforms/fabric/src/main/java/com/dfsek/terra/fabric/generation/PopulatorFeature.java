@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generation.Chunkified;
+import com.dfsek.terra.api.world.generator.Chunkified;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;

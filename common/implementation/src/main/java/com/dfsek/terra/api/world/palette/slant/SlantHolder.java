@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.world.palette.slant;
 
-import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 
 import java.util.TreeMap;

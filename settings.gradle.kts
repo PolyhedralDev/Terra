@@ -10,6 +10,9 @@
 rootProject.name = "Terra"
 include("common:api")
 include("common:implementation")
+include("common:platform")
+
+
 include("platforms:bukkit")
 include("platforms:fabric")
 include("platforms:region")

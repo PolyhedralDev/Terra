@@ -1,8 +1,8 @@
 package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.palette.SinglePalette;
+import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 public class PaletteRegistry extends OpenRegistryImpl<Palette> {
@@ -15,7 +15,7 @@ public class PaletteRegistry extends OpenRegistryImpl<Palette> {
     @Override
     public Palette get(String identifier) {
         if(identifier.startsWith("BLOCK:"))
-            return new SinglePalette(main.getWorldHandle().createBlockData(identifier.substring(6))); // Return single palette for BLOCK: shortcut.
+            return new PaletteImpl.Singleton(main.getWorldHandle().createBlockData(identifier.substring(6))); // Return single palette for BLOCK: shortcut.
         return super.get(identifier);
     }
 }

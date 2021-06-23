@@ -19,8 +19,8 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.palette.SinglePalette;
+import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.carving.UserDefinedCarver;
@@ -256,7 +256,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
                 return 2;
             }
         };
-        oceanPalette = new SinglePalette(main.getWorldHandle().createBlockData("minecraft:water"));
+        oceanPalette = new PaletteImpl.Singleton(main.getWorldHandle().createBlockData("minecraft:water"));
     }
 
     public Map<BlockType, Palette> getSlabPalettes() {

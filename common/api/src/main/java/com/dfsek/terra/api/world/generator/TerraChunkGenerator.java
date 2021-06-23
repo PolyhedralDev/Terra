@@ -1,9 +1,9 @@
-package com.dfsek.terra.api.world.generation;
+package com.dfsek.terra.api.world.generator;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
@@ -17,17 +17,7 @@ public interface TerraChunkGenerator {
 
     void generateBiomes(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome);
 
-    boolean isParallelCapable();
-
-    boolean shouldGenerateCaves();
-
-    boolean shouldGenerateDecorations();
-
-    boolean shouldGenerateMobs();
-
-    boolean shouldGenerateStructures();
-
-    ConfigPackImpl getConfigPack();
+    ConfigPack getConfigPack();
 
     TerraPlugin getMain();
 

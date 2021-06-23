@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit.generator;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;

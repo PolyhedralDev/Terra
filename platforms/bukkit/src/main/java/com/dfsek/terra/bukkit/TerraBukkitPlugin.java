@@ -22,7 +22,7 @@ import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.util.logging.Logger;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.command.FixChunkCommand;
 import com.dfsek.terra.bukkit.command.SaveDataCommand;

@@ -3,6 +3,7 @@ package com.dfsek.terra.world.generation.generators;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.BlockData;
@@ -19,10 +20,9 @@ import com.dfsek.terra.api.util.world.PaletteUtil;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.api.world.palette.Palette;
-import com.dfsek.terra.api.world.palette.SinglePalette;
+import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.Carver;
@@ -46,7 +46,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPackImpl configPack;
     private final TerraPlugin main;
     private final BlockType water;
-    private final SinglePalette blank;
+    private final PaletteImpl.Singleton blank;
     private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
     private final Carver carver;
@@ -63,7 +63,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
         carver = new NoiseCarver(new ConstantRange(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
         water = main.getWorldHandle().createBlockData("minecraft:water").getBlockType();
-        blank = new SinglePalette(main.getWorldHandle().createBlockData("minecraft:air"));
+        blank = new PaletteImpl.Singleton(main.getWorldHandle().createBlockData("minecraft:air"));
     }
 
     @Override

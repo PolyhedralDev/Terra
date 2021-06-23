@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.generation;
+package com.dfsek.terra.api.world.generator;
 
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;

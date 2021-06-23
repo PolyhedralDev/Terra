@@ -163,7 +163,7 @@ public class Location implements Cloneable {
         return hash;
     }
 
-    public Vector3Impl toVector() {
+    public Vector3 toVector() {
         return vector.clone();
     }
 

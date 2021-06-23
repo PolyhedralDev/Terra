@@ -40,9 +40,9 @@ public class GridSpawn {
                 zones.add(getChunkSpawn(xi, zi, seed));
             }
         }
-        Vector3Impl shortest = zones.get(0);
+        Vector3 shortest = zones.get(0);
         Vector3 compare = new Vector3Impl(x, 0, z);
-        for(Vector3Impl v : zones) {
+        for(Vector3 v : zones) {
             if(compare.distanceSquared(shortest) > compare.distanceSquared(v)) shortest = v.clone();
         }
         return shortest;

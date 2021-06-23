@@ -3,7 +3,9 @@ package com.dfsek.terra.api.world.palette;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
+import com.dfsek.terra.api.world.generator.Palette;
 
 import java.util.List;
 import java.util.Random;
@@ -12,39 +14,34 @@ import java.util.Random;
  * A class representation of a "slice" of the world.
  * Used to get a section of blocks, based on the depth at which they are found.
  */
-public abstract class Palette {
+public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator.Palette {
     private final List<PaletteLayer> pallet = new GlueList<>();
 
     /**
      * Constructs a blank palette.
      */
-    public Palette() {
+    public PaletteImpl() {
 
     }
 
-    public com.dfsek.terra.api.world.palette.Palette add(BlockData m, int layers, NoiseSampler sampler) {
+    @Override
+    public Palette add(BlockData m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
             pallet.add(new PaletteLayer(m, sampler));
         }
         return this;
     }
 
-    public com.dfsek.terra.api.world.palette.Palette add(ProbabilityCollectionImpl<BlockData> m, int layers, NoiseSampler sampler) {
+    @Override
+    public Palette add(ProbabilityCollection<BlockData> m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
             pallet.add(new PaletteLayer(m, sampler));
         }
         return this;
     }
 
-    /**
-     * Fetches a material from the palette, at a given layer.
-     *
-     * @param layer - The layer at which to fetch the material.
-     * @return BlockData - The material fetched.
-     */
-    public abstract BlockData get(int layer, double x, double y, double z);
 
-
+    @Override
     public int getSize() {
         return pallet.size();
     }
@@ -58,7 +55,7 @@ public abstract class Palette {
      */
     public static class PaletteLayer {
         private final boolean col; // Is layer using a collection?
-        private ProbabilityCollectionImpl<BlockData> collection;
+        private ProbabilityCollection<BlockData> collection;
         private final NoiseSampler sampler;
         private BlockData m;
 
@@ -68,7 +65,7 @@ public abstract class Palette {
          * @param type    The collection of materials to choose from.
          * @param sampler Noise sampler to use
          */
-        public PaletteLayer(ProbabilityCollectionImpl<BlockData> type, NoiseSampler sampler) {
+        public PaletteLayer(ProbabilityCollection<BlockData> type, NoiseSampler sampler) {
             this.sampler = sampler;
             this.col = true;
             this.collection = type;
@@ -106,8 +103,21 @@ public abstract class Palette {
             return m;
         }
 
-        public ProbabilityCollectionImpl<BlockData> getCollection() {
+        public ProbabilityCollection<BlockData> getCollection() {
             return collection;
+        }
+    }
+
+    public static class Singleton extends PaletteImpl {
+        private final BlockData item;
+
+        public Singleton(BlockData item) {
+            this.item = item;
+        }
+
+        @Override
+        public BlockData get(int layer, double x, double y, double z) {
+            return item;
         }
     }
 }

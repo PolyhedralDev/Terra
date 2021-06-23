@@ -5,7 +5,7 @@ import com.dfsek.terra.api.block.BlockData;
 
 import java.util.List;
 
-public class NoisePalette extends Palette {
+public class NoisePalette extends PaletteImpl {
     private final NoiseSampler sampler;
     private final boolean is2D;
 

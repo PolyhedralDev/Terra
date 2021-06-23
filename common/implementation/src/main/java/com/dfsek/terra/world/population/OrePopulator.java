@@ -8,7 +8,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.generation.TerraBlockPopulator;
+import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.world.TerraWorld;

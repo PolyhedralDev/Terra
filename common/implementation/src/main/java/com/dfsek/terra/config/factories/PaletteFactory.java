@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.palette.NoisePalette;
-import com.dfsek.terra.api.world.palette.Palette;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.templates.PaletteTemplate;
 

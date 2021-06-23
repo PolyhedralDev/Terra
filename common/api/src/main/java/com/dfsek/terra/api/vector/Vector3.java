@@ -95,7 +95,7 @@ public interface Vector3 extends Cloneable {
      * @param o The other vector
      * @return the distance
      */
-    double distance(@NotNull Vector3Impl o);
+    double distance(@NotNull Vector3 o);
 
     /**
      * Get the squared distance between this vector and another.
@@ -103,7 +103,7 @@ public interface Vector3 extends Cloneable {
      * @param o The other vector
      * @return the distance
      */
-    double distanceSquared(@NotNull Vector3Impl o);
+    double distanceSquared(@NotNull Vector3 o);
 
     /**
      * Rotates the vector around a given arbitrary axis in 3 dimensional space.
@@ -117,7 +117,7 @@ public interface Vector3 extends Cloneable {
      *
      * @param axis  the axis to rotate the vector around. If the passed vector is
      *              not of length 1, it gets copied and normalized before using it for the
-     *              rotation. Please use {@link Vector3Impl#normalize()} on the instance before
+     *              rotation. Please use {@link Vector3#normalize()} on the instance before
      *              passing it to this method
      * @param angle the angle to rotate the vector around the axis
      * @return the same vector
@@ -144,7 +144,7 @@ public interface Vector3 extends Cloneable {
      * @throws IllegalArgumentException if the provided axis vector instance is
      *                                  null
      */
-    @NotNull Vector3 rotateAroundNonUnitAxis(@NotNull Vector3Impl axis, double angle) throws IllegalArgumentException;
+    @NotNull Vector3 rotateAroundNonUnitAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException;
 
     /**
      * Calculates the dot product of this vector with another. The dot product
@@ -153,7 +153,7 @@ public interface Vector3 extends Cloneable {
      * @param other The other vector
      * @return dot product
      */
-    double dot(@NotNull Vector3Impl other);
+    double dot(@NotNull Vector3 other);
 
     Location toLocation(World world);
 
@@ -161,5 +161,7 @@ public interface Vector3 extends Cloneable {
 
     Vector3 subtract(int x, int y, int z);
 
-    Vector3 subtract(Vector3Impl end);
+    Vector3 subtract(Vector3 end);
+
+    public Vector3 clone();
 }
