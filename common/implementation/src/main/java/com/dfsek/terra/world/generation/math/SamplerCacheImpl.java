@@ -20,7 +20,7 @@ public class SamplerCacheImpl implements com.dfsek.terra.api.world.generator.Sam
                     public Sampler load(@NotNull Long key) {
                         int cx = (int) (key >> 32);
                         int cz = (int) key.longValue();
-                        return world.getWorld().getTerraGenerator().createSampler(cx, cz, world.getBiomeProvider(), world.getWorld(), world.getConfig().getTemplate().getElevationBlend());
+                        return world.getWorld().getTerraGenerator().createSampler(cx, cz, world.getBiomeProvider(), world.getWorld(), world.getConfig().elevationBlend());
                     }
                 });
     }

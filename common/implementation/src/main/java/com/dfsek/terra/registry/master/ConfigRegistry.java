@@ -3,7 +3,7 @@ package com.dfsek.terra.registry.master;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.registry.OpenRegistry;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.zip.ZipFile;
 /**
  * Class to hold config packs
  */
-public class ConfigRegistry extends OpenRegistry<ConfigPackImpl> {
+public class ConfigRegistry extends OpenRegistryImpl<ConfigPackImpl> {
     public void load(File folder, TerraPlugin main) throws ConfigException {
         ConfigPackImpl pack = new ConfigPackImpl(folder, main);
         add(pack.getTemplate().getID(), pack);

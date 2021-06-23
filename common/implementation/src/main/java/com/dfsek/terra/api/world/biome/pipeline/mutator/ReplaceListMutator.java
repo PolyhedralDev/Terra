@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.world.biome.pipeline.mutator;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
@@ -8,12 +9,12 @@ import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
 import java.util.Map;
 
 public class ReplaceListMutator implements BiomeMutator {
-    private final Map<TerraBiome, ProbabilityCollectionImpl<TerraBiome>> replace;
+    private final Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace;
     private final NoiseSampler sampler;
-    private final ProbabilityCollectionImpl<TerraBiome> replaceDefault;
+    private final ProbabilityCollection<TerraBiome> replaceDefault;
     private final String defaultTag;
 
-    public ReplaceListMutator(Map<TerraBiome, ProbabilityCollectionImpl<TerraBiome>> replace, String defaultTag, ProbabilityCollectionImpl<TerraBiome> replaceDefault, NoiseSampler sampler) {
+    public ReplaceListMutator(Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace, String defaultTag, ProbabilityCollection<TerraBiome> replaceDefault, NoiseSampler sampler) {
         this.replace = replace;
         this.sampler = sampler;
         this.defaultTag = defaultTag;

@@ -16,4 +16,16 @@ public interface WorldConfig {
     SamplerCache getSamplerCache();
 
     BiomeProvider getProvider();
+
+    int elevationBlend();
+
+    boolean disableTrees();
+
+    boolean disableCarving();
+
+    boolean disableOres();
+
+    boolean disableFlora();
+
+    boolean disableStructures();
 }

@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.pack;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -18,7 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WorldConfigImpl implements com.dfsek.terra.api.config.WorldConfig {
+public class WorldConfigImpl implements WorldConfig {
     private final SamplerCache samplerCache;
 
     private final BiomeProvider provider;
@@ -61,6 +62,36 @@ public class WorldConfigImpl implements com.dfsek.terra.api.config.WorldConfig {
     @Override
     public BiomeProvider getProvider() {
         return provider;
+    }
+
+    @Override
+    public int elevationBlend() {
+        return pack.getTemplate().getElevationBlend();
+    }
+
+    @Override
+    public boolean disableTrees() {
+        return pack.getTemplate().disableTrees();
+    }
+
+    @Override
+    public boolean disableCarving() {
+        return pack.getTemplate().disableCarvers();
+    }
+
+    @Override
+    public boolean disableOres() {
+        return pack.getTemplate().disableOres();
+    }
+
+    @Override
+    public boolean disableFlora() {
+        return pack.getTemplate().disableFlora();
+    }
+
+    @Override
+    public boolean disableStructures() {
+        return pack.getTemplate().disableStructures();
     }
 
     public Set<TerraStructure> getStructures() {

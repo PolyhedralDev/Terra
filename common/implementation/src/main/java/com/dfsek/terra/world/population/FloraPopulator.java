@@ -34,7 +34,7 @@ public class FloraPopulator implements TerraBlockPopulator {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("flora")) {
-            if(tw.getConfig().getTemplate().disableFlora()) return;
+            if(tw.getConfig().disableFlora()) return;
 
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();

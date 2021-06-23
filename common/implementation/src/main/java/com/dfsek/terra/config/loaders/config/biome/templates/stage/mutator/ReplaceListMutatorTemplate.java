@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator;
 
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
@@ -19,11 +20,11 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
     private ProbabilityCollectionImpl<BiomeBuilder> defaultTo;
 
     @Value("to")
-    private Map<BiomeBuilder, ProbabilityCollectionImpl<BiomeBuilder>> replace;
+    private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
 
     @Override
     public BiomeMutator build(long seed) {
-        Map<TerraBiome, ProbabilityCollectionImpl<TerraBiome>> replaceMap = new HashMap<>();
+        Map<TerraBiome, ProbabilityCollection<TerraBiome>> replaceMap = new HashMap<>();
 
         replace.forEach((biomeBuilder, biomeBuilders) -> replaceMap.put(biomeBuilder.apply(seed), biomeBuilders.map(builder -> builder.apply(seed), true)));
 

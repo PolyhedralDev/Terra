@@ -67,31 +67,6 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     }
 
     @Override
-    public boolean isParallelCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean shouldGenerateCaves() {
-        return configPack.getTemplate().vanillaCaves();
-    }
-
-    @Override
-    public boolean shouldGenerateDecorations() {
-        return configPack.getTemplate().vanillaDecorations();
-    }
-
-    @Override
-    public boolean shouldGenerateMobs() {
-        return configPack.getTemplate().vanillaMobs();
-    }
-
-    @Override
-    public boolean shouldGenerateStructures() {
-        return configPack.getTemplate().vanillaStructures();
-    }
-
-    @Override
     public ConfigPackImpl getConfigPack() {
         return configPack;
     }

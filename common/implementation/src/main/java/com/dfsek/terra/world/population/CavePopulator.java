@@ -1,6 +1,8 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.WorldConfig;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
@@ -41,12 +43,12 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
         try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
-            WorldConfigImpl config = tw.getConfig();
-            if(config.getTemplate().disableCarvers()) return;
+            WorldConfig config = tw.getConfig();
+            if(config.disableCarving()) return;
 
-            for(UserDefinedCarver c : config.getCarvers()) {
+            for(UserDefinedCarver c : config.getRegistry(UserDefinedCarver.class).entries()) {
                 CarverTemplate template = c.getConfig();
-                Map<LocationImpl, BlockData> shiftCandidate = new HashMap<>();
+                Map<Location, BlockData> shiftCandidate = new HashMap<>();
                 Set<Block> updateNeeded = new HashSet<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
@@ -85,9 +87,9 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                         }
                     }
                 });
-                for(Map.Entry<LocationImpl, BlockData> entry : shiftCandidate.entrySet()) {
-                    LocationImpl l = entry.getKey();
-                    LocationImpl mut = l.clone();
+                for(Map.Entry<Location, BlockData> entry : shiftCandidate.entrySet()) {
+                    Location l = entry.getKey();
+                    Location mut = l.clone();
                     BlockData orig = l.getBlock().getBlockData();
                     do mut.subtract(0, 1, 0);
                     while(mut.getY() > world.getMinHeight() && mut.getBlock().getBlockData().matches(orig));

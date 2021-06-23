@@ -1,6 +1,7 @@
 package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
@@ -43,7 +44,7 @@ public class ConstantFlora implements Flora {
     }
 
     @Override
-    public boolean plant(LocationImpl l) {
+    public boolean plant(Location l) {
         for(int i = 1; i < data.size() + 1; i++) {
             l.clone().add(0, i, 0).getBlock().setBlockData(data.get(i - 1), false);
         }

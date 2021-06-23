@@ -1,6 +1,7 @@
 package com.dfsek.terra.vector;
 
-import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
@@ -163,13 +164,13 @@ public class Vector3Impl implements Vector3 {
     }
 
     @Override
-    public double distance(@NotNull Vector3Impl o) {
-        return FastMath.sqrt(FastMath.pow2(x - o.x) + FastMath.pow2(y - o.y) + FastMath.pow2(z - o.z));
+    public double distance(@NotNull Vector3 o) {
+        return FastMath.sqrt(FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ()));
     }
 
     @Override
-    public double distanceSquared(@NotNull Vector3Impl o) {
-        return FastMath.pow2(x - o.x) + FastMath.pow2(y - o.y) + FastMath.pow2(z - o.z);
+    public double distanceSquared(@NotNull Vector3 o) {
+        return FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ());
     }
 
     @Override
@@ -180,7 +181,7 @@ public class Vector3Impl implements Vector3 {
 
     @Override
     @NotNull
-    public Vector3 rotateAroundNonUnitAxis(@NotNull Vector3Impl axis, double angle) throws IllegalArgumentException {
+    public Vector3 rotateAroundNonUnitAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException {
         double x = getX(), y = getY(), z = getZ();
         double x2 = axis.getX(), y2 = axis.getY(), z2 = axis.getZ();
 
@@ -202,12 +203,12 @@ public class Vector3Impl implements Vector3 {
     }
 
     @Override
-    public double dot(@NotNull Vector3Impl other) {
-        return x * other.x + y * other.y + z * other.z;
+    public double dot(@NotNull Vector3 other) {
+        return x * other.getX() + y * other.getY() + z * other.getZ();
     }
 
     @Override
-    public LocationImpl toLocation(World world) {
+    public Location toLocation(World world) {
         return new LocationImpl(world, this.clone());
     }
 
@@ -225,10 +226,10 @@ public class Vector3Impl implements Vector3 {
     }
 
     @Override
-    public Vector3 subtract(Vector3Impl end) {
-        x -= end.x;
-        y -= end.y;
-        z -= end.z;
+    public Vector3 subtract(Vector3 end) {
+        x -= end.getX();
+        y -= end.getY();
+        z -= end.getZ();
         return this;
     }
 

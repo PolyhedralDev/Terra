@@ -7,6 +7,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.Flora;
+import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.builder.BiomeBuilder;
@@ -42,7 +43,7 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     public ConfigTypeRegistry(ConfigPackImpl pack, TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
-        add("PALETTE", new ConfigBuilder<>(new PaletteFactory(), PaletteTemplate::new, PaletteImpl.class, () -> new PaletteRegistry(main)));
+        add("PALETTE", new ConfigBuilder<>(new PaletteFactory(), PaletteTemplate::new, Palette.class, () -> new PaletteRegistry(main)));
         add("ORE", new ConfigBuilder<>(new OreFactory(), OreTemplate::new, Ore.class, OreRegistry::new));
         add("FLORA", new ConfigBuilder<>(new FloraFactory(), FloraTemplate::new, Flora.class, () -> new FloraRegistry(main)));
         add("CARVER", new ConfigBuilder<>(new CarverFactory(pack), CarverTemplate::new, UserDefinedCarver.class, CarverRegistry::new));

@@ -2,6 +2,8 @@ package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.block.BlockData;
@@ -14,7 +16,7 @@ import com.dfsek.terra.config.pack.WorldConfigImpl;
 import com.dfsek.terra.api.world.generator.Sampler;
 import net.jafama.FastMath;
 
-public class TerraWorldImpl implements com.dfsek.terra.api.world.TerraWorld {
+public class TerraWorldImpl implements TerraWorld {
     private final BiomeProvider provider;
     private final WorldConfigImpl config;
     private final boolean safe;
@@ -76,7 +78,7 @@ public class TerraWorldImpl implements com.dfsek.terra.api.world.TerraWorld {
     }
 
     @Override
-    public BlockData getUngeneratedBlock(LocationImpl l) {
+    public BlockData getUngeneratedBlock(Location l) {
         return getUngeneratedBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 

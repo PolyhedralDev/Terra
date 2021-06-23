@@ -4,6 +4,8 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.Vector2Impl;
+import com.dfsek.terra.vector.Vector3Impl;
 
 /**
  * NoiseSampler implementation for Cellular (Voronoi/Worley) Noise.
@@ -229,7 +231,7 @@ public class CellularSampler extends NoiseFunction {
         int xPrimed = (xr - 1) * PRIME_X;
         int yPrimedBase = (yr - 1) * PRIME_Y;
 
-        Vector2 center = new Vector2(x, y);
+        Vector2 center = new Vector2Impl(x, y);
 
         switch(distanceFunction) {
             default:
@@ -382,7 +384,7 @@ public class CellularSampler extends NoiseFunction {
         int yPrimedBase = (yr - 1) * PRIME_Y;
         int zPrimedBase = (zr - 1) * PRIME_Z;
 
-        Vector3 center = new Vector3(x, y, z);
+        Vector3 center = new Vector3Impl(x, y, z);
 
         switch(distanceFunction) {
             case Euclidean:

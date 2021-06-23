@@ -1,6 +1,6 @@
 package com.dfsek.terra.vector;
 
-import com.dfsek.terra.api.math.MathUtil;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import net.jafama.FastMath;
 
@@ -52,16 +52,16 @@ public class Vector2Impl implements Vector2 {
     }
 
     @Override
-    public Vector2 add(Vector2Impl other) {
-        x += other.x;
-        z += other.z;
+    public Vector2 add(Vector2 other) {
+        x += other.getX();
+        z += other.getZ();
         return this;
     }
 
     @Override
-    public Vector2 subtract(Vector2Impl other) {
-        x -= other.x;
-        z -= other.z;
+    public Vector2 subtract(Vector2 other) {
+        x -= other.getX();
+        z -= other.getZ();
         return this;
     }
 
@@ -89,14 +89,14 @@ public class Vector2Impl implements Vector2 {
     }
 
     @Override
-    public double distance(Vector2Impl other) {
+    public double distance(Vector2 other) {
         return FastMath.sqrt(distanceSquared(other));
     }
 
     @Override
-    public double distanceSquared(Vector2Impl other) {
-        double dx = other.x - x;
-        double dz = other.z - z;
+    public double distanceSquared(Vector2 other) {
+        double dx = other.getX() - x;
+        double dz = other.getZ() - z;
         return dx * dx + dz * dz;
     }
 

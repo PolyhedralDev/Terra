@@ -15,6 +15,7 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structures.loot.LootTableImpl;
 import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
@@ -37,6 +38,8 @@ import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.config.prototype.ProtoConfig;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
 import com.dfsek.terra.registry.config.FunctionRegistry;
 import com.dfsek.terra.registry.config.LootRegistry;
@@ -89,7 +92,7 @@ public class ConfigPackImpl implements ConfigPack {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistry<>(openRegistry)));
+                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
@@ -132,7 +135,7 @@ public class ConfigPackImpl implements ConfigPack {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistry<>(openRegistry)));
+                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
             this.loader = new ZIPLoader(file);
             this.main = main;
@@ -191,18 +194,18 @@ public class ConfigPackImpl implements ConfigPack {
 
         putPair(map, NoiseProvider.class, new NoiseRegistry());
         putPair(map, FunctionBuilder.class, (OpenRegistry<FunctionBuilder>) (Object) new FunctionRegistry());
-        putPair(map, LootTableImpl.class, new LootRegistry());
-        putPair(map, StructureScript.class, new ScriptRegistry());
+        putPair(map, LootTable.class, new LootRegistry());
+        putPair(map, Structure.class, new ScriptRegistry());
 
         return map;
     }
 
     private <R> void putPair(Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map, Class<R> key, OpenRegistry<R> l) {
-        map.put(key, ImmutablePair.of(l, new CheckedRegistry<>(l)));
+        map.put(key, ImmutablePair.of(l, new CheckedRegistryImpl<>(l)));
     }
 
     private void checkDeadEntries(TerraPlugin main) {
-        registryMap.forEach((clazz, pair) -> pair.getLeft().getDeadEntries().forEach((id, value) -> main.getDebugLogger().warn("Dead entry in '" + clazz + "' registry: '" + id + "'")));
+        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + clazz + "' registry: '" + id + "'")));
     }
 
     protected Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
@@ -218,8 +221,8 @@ public class ConfigPackImpl implements ConfigPack {
         loader.open("", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try(InputStream stream = entry.getValue()) {
-                    Structure structure = new StructureScript(stream, main, getRegistry(StructureScript.class), getRegistry(LootTableImpl.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
-                    getOpenRegistry(StructureScript.class).add(structure.getId(), structure);
+                    Structure structure = new StructureScript(stream, main, getRegistry(Structure.class), getRegistry(LootTable.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
+                    getOpenRegistry(Structure.class).add(structure.getId(), structure);
                 } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException | IOException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
                 }
@@ -306,7 +309,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     @Override
     public CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry() {
-        return new CheckedRegistry<ConfigType<?, ?>>(configTypeRegistry) {
+        return new CheckedRegistryImpl<>(configTypeRegistry) {
             @Override
             @SuppressWarnings("deprecation")
             public void addUnchecked(String identifier, ConfigType<?, ?> value) {
