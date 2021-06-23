@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
@@ -56,7 +57,7 @@ public abstract class GeneratorOptionsMixin {
 
             prop = prop.substring(prop.indexOf(":") + 1);
 
-            ConfigPackImpl config = main.getConfigRegistry().get(prop);
+            ConfigPack config = main.getConfigRegistry().get(prop);
 
             if(config == null) throw new IllegalArgumentException("No such pack " + prop);
 

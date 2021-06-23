@@ -94,6 +94,21 @@ public class WorldConfigImpl implements WorldConfig {
         return pack.getTemplate().disableStructures();
     }
 
+    @Override
+    public String getID() {
+        return pack.getID();
+    }
+
+    @Override
+    public String getAuthor() {
+        return pack.getAuthor();
+    }
+
+    @Override
+    public String getVersion() {
+        return pack.getVersion();
+    }
+
     public Set<TerraStructure> getStructures() {
         return new HashSet<>(getRegistry(TerraStructure.class).entries());
     }

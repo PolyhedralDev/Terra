@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.generic.pair.Pair;
@@ -11,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
 public final class WorldEditUtil {
-    public static Pair<LocationImpl, LocationImpl> getSelection(Player player) {
+    public static Pair<Location, Location> getSelection(Player player) {
         WorldEdit worldEdit = WorldEdit.getInstance();
         try {
             Region selection = worldEdit.getSessionManager()

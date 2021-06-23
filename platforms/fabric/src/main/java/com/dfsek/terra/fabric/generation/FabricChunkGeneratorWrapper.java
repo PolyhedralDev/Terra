@@ -54,7 +54,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
-                            .forGetter(pack -> pack.getTemplate().getID())
+                            .forGetter(pack -> pack.getID())
             ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get)));
 
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
@@ -72,15 +72,15 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
 
-    private final ConfigPackImpl pack;
+    private final ConfigPack pack;
     private DimensionType dimensionType;
 
-    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPackImpl configPack) {
+    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
 
         this.delegate = new DefaultChunkGenerator3D(pack, TerraFabricPlugin.getInstance());
-        delegate.getMain().logger().info("Loading world with config pack " + pack.getTemplate().getID());
+        delegate.getMain().logger().info("Loading world with config pack " + pack.getID());
         this.biomeSource = biomeSource;
 
         this.seed = seed;
@@ -97,7 +97,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
-    public ConfigPackImpl getPack() {
+    public ConfigPack getPack() {
         return pack;
     }
 
@@ -113,10 +113,10 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Nullable
     @Override
     public BlockPos locateStructure(ServerWorld world, StructureFeature<?> feature, BlockPos center, int radius, boolean skipExistingChunks) {
-        if(!pack.getTemplate().disableStructures()) {
+        if(!pack.disableStructures()) {
             String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
             TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
-            TerraStructure located = pack.getRegistry(TerraStructure.class).get(pack.getTemplate().getLocatable().get(name));
+            TerraStructure located = pack.getRegistry(TerraStructure.class).get(pack.getLocatable().get(name));
             if(located != null) {
                 CompletableFuture<BlockPos> result = new CompletableFuture<>();
                 AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
@@ -135,14 +135,14 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
-        if(pack.getTemplate().vanillaCaves()) {
+        if(pack.vanillaCaves()) {
             super.carve(seed, access, chunk, carver);
         }
     }
 
     @Override
     public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) {
-        if(pack.getTemplate().vanillaStructures()) {
+        if(pack.vanillaStructures()) {
             super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
         }
     }
@@ -163,7 +163,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
-        if(pack.getTemplate().vanillaStructures()) {
+        if(pack.vanillaStructures()) {
             return super.isStrongholdStartingChunk(chunkPos);
         }
         return false;
@@ -196,7 +196,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public void populateEntities(ChunkRegion region) {
-        if(pack.getTemplate().vanillaMobs()) {
+        if(pack.vanillaMobs()) {
             int cx = region.getCenterPos().x;
             int cy = region.getCenterPos().z;
             Biome biome = region.getBiome((new ChunkPos(cx, cy)).getStartPos());

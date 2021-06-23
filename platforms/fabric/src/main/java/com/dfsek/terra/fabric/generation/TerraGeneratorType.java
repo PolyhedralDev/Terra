@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
@@ -15,10 +16,10 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 @Environment(EnvType.CLIENT)
 public class TerraGeneratorType extends GeneratorType {
-    private final ConfigPackImpl pack;
+    private final ConfigPack pack;
 
-    public TerraGeneratorType(ConfigPackImpl pack) {
-        super("terra." + pack.getTemplate().getID());
+    public TerraGeneratorType(ConfigPack pack) {
+        super("terra." + pack.getID());
         this.pack = pack;
     }
 

@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
@@ -29,8 +30,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public final class FabricUtil {
-    public static String createBiomeID(ConfigPackImpl pack, String biomeID) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
+    public static String createBiomeID(ConfigPack pack, String biomeID) {
+        return pack.getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -40,7 +41,7 @@ public final class FabricUtil {
      * @param pack        The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(BiomeBuilder biome, ConfigPackImpl pack, DynamicRegistryManager registryManager) {
+    public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
         BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = template.getColors();
 
@@ -55,7 +56,7 @@ public final class FabricUtil {
 
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, TerraFabricPlugin.POPULATOR_CONFIGURED_FEATURE);
 
-        if(pack.getTemplate().vanillaCaves()) {
+        if(pack.vanillaCaves()) {
             for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
                 for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {
                     generationSettings.carver(carver, configuredCarverSupplier.get());

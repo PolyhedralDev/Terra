@@ -1,6 +1,7 @@
 package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -24,10 +25,10 @@ public class TerraWorldImpl implements TerraWorld {
     private final BlockData air;
 
 
-    public TerraWorldImpl(World w, ConfigPackImpl c, TerraPlugin main) {
+    public TerraWorldImpl(World w, ConfigPack c, TerraPlugin main) {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
-        config = c.toWorldConfig(this);
+        config = (WorldConfigImpl) c.toWorldConfig(this);
         this.provider = config.getProvider();
         air = main.getWorldHandle().createBlockData("minecraft:air");
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));

@@ -1,6 +1,7 @@
 package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -43,7 +44,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class DefaultChunkGenerator3D implements TerraChunkGenerator {
-    private final ConfigPackImpl configPack;
+    private final ConfigPack configPack;
     private final TerraPlugin main;
     private final BlockType water;
     private final PaletteImpl.Singleton blank;
@@ -51,7 +52,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
 
     private final Carver carver;
 
-    public DefaultChunkGenerator3D(ConfigPackImpl c, TerraPlugin main) {
+    public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
 
@@ -67,7 +68,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     }
 
     @Override
-    public ConfigPackImpl getConfigPack() {
+    public ConfigPack getConfigPack() {
         return configPack;
     }
 
@@ -131,7 +132,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                     }
                 }
             }
-            if(configPack.getTemplate().doBetaCarvers()) {
+            if(configPack.doBetaCarvers()) {
                 carver.carve(world, chunkX, chunkZ, chunk);
             }
             return chunk;

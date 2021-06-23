@@ -28,7 +28,6 @@ import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.TransformerImpl;
 import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.util.generic.pair.Pair;
@@ -53,6 +52,8 @@ import com.dfsek.terra.fabric.util.ProtoBiome;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.api.registry.DuplicateEntryException;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
@@ -119,11 +120,11 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
-    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(configRegistry);
+    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(configRegistry);
 
     private final FabricAddon fabricAddon = new FabricAddon();
     private final AddonRegistry addonRegistry = new AddonRegistry(fabricAddon, this);
-    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+    private final com.dfsek.terra.api.registry.Registry<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
 
     private final PluginConfig config = new PluginConfigImpl();
 
@@ -194,7 +195,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
-    public LockedRegistry<TerraAddon> getAddons() {
+    public com.dfsek.terra.api.registry.Registry<TerraAddon> getAddons() {
         return addonLockedRegistry;
     }
 
@@ -205,7 +206,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         boolean succeed = configRegistry.loadAll(this);
         worldMap.forEach((seed, pair) -> {
             pair.getRight().getConfig().getSamplerCache().clear();
-            String packID = pair.getRight().getConfig().getTemplate().getID();
+            String packID = pair.getRight().getConfig().getID();
             pair.setRight(new TerraWorldImpl(pair.getRight().getWorld(), configRegistry.get(packID), this));
         });
         return succeed;
@@ -232,7 +233,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     @Override
-    public DebugLogger getDebugLogger() {
+    public Logger getDebugLogger() {
         return debugLogger;
     }
 
@@ -241,7 +242,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.world.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
+                .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);

@@ -28,4 +28,10 @@ public interface WorldConfig {
     boolean disableFlora();
 
     boolean disableStructures();
+
+    String getID();
+
+    String getAuthor();
+
+    String getVersion();
 }

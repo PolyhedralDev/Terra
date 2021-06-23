@@ -338,4 +338,34 @@ public class ConfigPackImpl implements ConfigPack {
     public String getVersion() {
         return template.getVersion();
     }
+
+    @Override
+    public boolean vanillaMobs() {
+        return template.vanillaMobs();
+    }
+
+    @Override
+    public boolean vanillaStructures() {
+        return template.vanillaStructures();
+    }
+
+    @Override
+    public boolean vanillaCaves() {
+        return template.vanillaCaves();
+    }
+
+    @Override
+    public boolean disableStructures() {
+        return template.disableStructures();
+    }
+
+    @Override
+    public Map<String, String> getLocatable() {
+        return template.getLocatable();
+    }
+
+    @Override
+    public boolean doBetaCarvers() {
+        return template.doBetaCarvers();
+    }
 }

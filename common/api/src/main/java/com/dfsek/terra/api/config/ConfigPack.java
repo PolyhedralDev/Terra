@@ -6,6 +6,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface ConfigPack extends LoaderRegistrar {
@@ -25,4 +26,16 @@ public interface ConfigPack extends LoaderRegistrar {
     String getAuthor();
 
     String getVersion();
+
+    boolean vanillaMobs();
+
+    boolean vanillaStructures();
+
+    boolean vanillaCaves();
+
+    boolean disableStructures();
+
+    Map<String, String> getLocatable();
+
+    boolean doBetaCarvers();
 }

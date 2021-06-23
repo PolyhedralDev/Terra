@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class TerraBiomeSource extends BiomeSource {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
-            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
+            Codec.STRING.fieldOf("pack").forGetter(ConfigPack::getID)
     ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
@@ -30,9 +30,9 @@ public class TerraBiomeSource extends BiomeSource {
     private final Registry<Biome> biomeRegistry;
     private final long seed;
     private final BiomeProvider grid;
-    private final ConfigPackImpl pack;
+    private final ConfigPack pack;
 
-    public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPackImpl pack) {
+    public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream()
                 .filter(biome -> Objects.requireNonNull(biomes.getId(biome)).getNamespace().equals("terra")) // Filter out non-Terra biomes.
                 .collect(Collectors.toList()));
