@@ -43,11 +43,11 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
         add("PALETTE", new ConfigBuilder<>(new PaletteFactory(), PaletteTemplate::new, Palette.class, () -> new PaletteRegistry(main)));
-        add("ORE", new ConfigBuilder<>(new OreFactory(), OreTemplate::new, Ore.class, OreRegistry::new));
-        add("FLORA", new ConfigBuilder<>(new FloraFactory(), FloraTemplate::new, Flora.class, FloraRegistry::new));
-        add("CARVER", new ConfigBuilder<>(new CarverFactory(pack), CarverTemplate::new, UserDefinedCarver.class, CarverRegistry::new));
-        add("STRUCTURE", new ConfigBuilder<>(new StructureFactory(), StructureTemplate::new, TerraStructure.class, StructureRegistry::new));
-        add("TREE", new ConfigBuilder<>(new TreeFactory(), TreeTemplate::new, Tree.class, TreeRegistry::new));
+        add("ORE", new ConfigBuilder<>(new OreFactory(), OreTemplate::new, Ore.class, OpenRegistryImpl::new));
+        add("FLORA", new ConfigBuilder<>(new FloraFactory(), FloraTemplate::new, Flora.class, OpenRegistryImpl::new));
+        add("CARVER", new ConfigBuilder<>(new CarverFactory(pack), CarverTemplate::new, UserDefinedCarver.class, OpenRegistryImpl::new));
+        add("STRUCTURE", new ConfigBuilder<>(new StructureFactory(), StructureTemplate::new, TerraStructure.class, OpenRegistryImpl::new));
+        add("TREE", new ConfigBuilder<>(new TreeFactory(), TreeTemplate::new, Tree.class, OpenRegistryImpl::new));
         add("BIOME", new ConfigBuilder<>(new BiomeFactory(pack), () -> new BiomeTemplate(pack, main), BiomeBuilder.class, BiomeRegistry::new));
         add("PACK", new PackBuilder());
     }

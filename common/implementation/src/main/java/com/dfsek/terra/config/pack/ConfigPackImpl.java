@@ -42,10 +42,7 @@ import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
-import com.dfsek.terra.registry.config.FunctionRegistry;
-import com.dfsek.terra.registry.config.LootRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
-import com.dfsek.terra.registry.config.ScriptRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import org.apache.commons.io.IOUtils;
@@ -194,9 +191,9 @@ public class ConfigPackImpl implements ConfigPack {
         };
 
         putPair(map, NoiseProvider.class, new NoiseRegistry());
-        putPair(map, FunctionBuilder.class, (OpenRegistry<FunctionBuilder>) (Object) new FunctionRegistry());
-        putPair(map, LootTable.class, new LootRegistry());
-        putPair(map, Structure.class, new ScriptRegistry());
+        putPair(map, FunctionBuilder.class, new OpenRegistryImpl<>());
+        putPair(map, LootTable.class, new OpenRegistryImpl<>());
+        putPair(map, Structure.class, new OpenRegistryImpl<>());
 
         return map;
     }
