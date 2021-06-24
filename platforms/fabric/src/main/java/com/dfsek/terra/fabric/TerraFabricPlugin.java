@@ -27,7 +27,7 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.DuplicateEntryException;
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.transform.TransformerImpl;
 import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.util.generic.pair.Pair;

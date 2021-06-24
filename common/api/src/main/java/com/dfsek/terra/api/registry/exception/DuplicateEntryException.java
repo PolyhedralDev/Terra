@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.registry;
+package com.dfsek.terra.api.registry.exception;
 
 /**
  * Thrown when a duplicate entry is found in a registry.

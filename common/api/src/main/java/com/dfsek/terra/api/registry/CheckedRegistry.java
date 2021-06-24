@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.registry;
 
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+
 public interface CheckedRegistry<T> extends Registry<T> {
     /**
      * Add a value to this registry, checking whether it is present first.

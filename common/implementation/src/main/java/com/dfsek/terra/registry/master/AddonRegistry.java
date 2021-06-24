@@ -8,7 +8,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.inject.InjectorImpl;
 import com.dfsek.terra.api.injection.exception.InjectionException;
-import com.dfsek.terra.api.registry.DuplicateEntryException;
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import java.io.File;
