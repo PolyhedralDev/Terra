@@ -1,9 +1,11 @@
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.util.FabricAdapter;
+import com.dfsek.terra.vector.Vector3Impl;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -36,15 +38,15 @@ public abstract class EntityMixin {
         return this;
     }
 
-    public Location terra$getLocation() {
-        return new LocationImpl((World) world, FabricAdapter.adapt(blockPos));
+    public Vector3 terra$position() {
+        return FabricAdapter.adapt(blockPos);
     }
 
-    public void terra$setLocation(Location location) {
+    public void terra$position(Vector3 location) {
         teleport(location.getX(), location.getY(), location.getZ());
     }
 
-    public World terra$getWorld() {
+    public World terra$world() {
         return (World) world;
     }
 
