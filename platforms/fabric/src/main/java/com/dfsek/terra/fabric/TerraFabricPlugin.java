@@ -128,10 +128,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final PluginConfig config = new PluginConfigImpl();
 
-    private final TransformerImpl<String, ProtoBiome> biomeFixer = new TransformerImpl.Builder<String, ProtoBiome>()
-            .addTransform(this::parseBiome, Validator.notNull())
-            .addTransform(id -> parseBiome("minecraft:" + id.toLowerCase()), Validator.notNull()).build();
-
     private ProtoBiome parseBiome(String id) {
         Identifier identifier = Identifier.tryParse(id);
         if(BuiltinRegistries.BIOME.get(identifier) == null) return null; // failure.
@@ -242,7 +238,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         genericLoaders.register(registry);
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
-                .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> biomeFixer.translate((String) o))
+                .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);

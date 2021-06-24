@@ -1,5 +1,6 @@
 package com.dfsek.terra.bukkit;
 
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
@@ -62,6 +63,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -301,9 +303,14 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> handle.createBlockData((String) o))
-                .registerLoader(Biome.class, (t, o, l) -> new BukkitBiome(org.bukkit.block.Biome.valueOf((String) o)))
+                .registerLoader(Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         genericLoaders.register(registry);
+    }
+
+    private BukkitBiome parseBiome(String id) throws LoadException {
+        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id);
+        return new BukkitBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
 
     @Override
