@@ -2,8 +2,8 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.DuplicateEntryException;
+import com.dfsek.terra.api.registry.OpenRegistry;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Registry implementation with read/write access. For internal use only.
+ *
  * @param <T>
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {

@@ -1,12 +1,12 @@
 package com.dfsek.terra.config.factories;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.palette.NoisePalette;
 import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.config.templates.FloraTemplate;
+import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
 
 public class FloraFactory implements ConfigFactory<FloraTemplate, Flora> {

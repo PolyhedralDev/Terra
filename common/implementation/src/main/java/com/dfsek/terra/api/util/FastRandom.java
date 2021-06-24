@@ -22,7 +22,7 @@ public class FastRandom extends Random {
         SplittableRandom randomseed = new SplittableRandom(seed);
         this.random = new XoRoShiRo128PlusPlus(randomseed.nextLong(), randomseed.nextLong());
     }
-    
+
     @Override
     public boolean nextBoolean() {
         return random.nextBoolean();

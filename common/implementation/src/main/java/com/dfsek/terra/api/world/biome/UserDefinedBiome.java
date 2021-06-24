@@ -2,7 +2,6 @@ package com.dfsek.terra.api.world.biome;
 
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.generation.WorldGenerator;
 

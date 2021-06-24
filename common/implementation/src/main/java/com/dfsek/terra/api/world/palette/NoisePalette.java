@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.List;
 

@@ -4,7 +4,6 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.hash.HashMapDoubleDouble;
 
 
-
 public class NoiseFunction2 implements NoiseFunction {
     private final NoiseSampler gen;
     private final Cache cache = new Cache();

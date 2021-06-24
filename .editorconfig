@@ -105,7 +105,7 @@ ij_java_for_statement_wrap = off
 ij_java_generate_final_locals = false
 ij_java_generate_final_parameters = false
 ij_java_if_brace_force = never
-ij_java_imports_layout = *,|,javax.**,java.**,|,$*
+ij_java_imports_layout = *, |, javax.**, java.**, |, $*
 ij_java_indent_case_from_switch = true
 ij_java_insert_inner_class_imports = false
 ij_java_insert_override_annotation = true
@@ -137,7 +137,7 @@ ij_java_method_parameters_wrap = off
 ij_java_modifier_list_wrap = false
 ij_java_names_count_to_use_import_on_demand = 3
 ij_java_new_line_after_lparen_in_record_header = false
-ij_java_packages_to_use_import_on_demand = java.awt.*,javax.swing.*
+ij_java_packages_to_use_import_on_demand = java.awt.*, javax.swing.*
 ij_java_parameter_annotation_wrap = off
 ij_java_parentheses_expression_new_line_after_left_paren = false
 ij_java_parentheses_expression_right_paren_on_new_line = false
@@ -246,7 +246,7 @@ ij_java_wrap_comments = false
 ij_java_wrap_first_method_in_call_chain = false
 ij_java_wrap_long_lines = false
 
-[{*.gradle.kts,*.kt,*.kts,*.main.kts}]
+[{*.gradle.kts, *.kt, *.kts, *.main.kts}]
 ij_kotlin_align_in_columns_case_branch = false
 ij_kotlin_align_multiline_binary_operation = false
 ij_kotlin_align_multiline_extends_list = false
@@ -325,7 +325,7 @@ ij_kotlin_wrap_elvis_expressions = 1
 ij_kotlin_wrap_expression_body_functions = 0
 ij_kotlin_wrap_first_method_in_call_chain = false
 
-[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.stylelintrc,bowerrc,jest.config}]
+[{*.har, *.jsb2, *.jsb3, *.json, .babelrc, .eslintrc, .stylelintrc, bowerrc, jest.config}]
 indent_size = 2
 ij_json_keep_blank_lines_in_code = 0
 ij_json_keep_indents_on_empty_lines = false
@@ -338,7 +338,7 @@ ij_json_spaces_within_braces = false
 ij_json_spaces_within_brackets = false
 ij_json_wrap_long_lines = false
 
-[{*.yaml,*.yml}]
+[{*.yaml, *.yml}]
 indent_size = 2
 ij_yaml_keep_indents_on_empty_lines = true
 ij_yaml_keep_line_breaks = true

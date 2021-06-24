@@ -10,19 +10,21 @@ import java.util.logging.Logger;
 
 public class MultiLineMessage implements Message {
     private final List<String> message;
+
     public MultiLineMessage(List<String> message) {
         this.message = message;
     }
+
     @Override
     public void log(Logger logger, Level level, String... args) {
-        for(String line: message) {
+        for(String line : message) {
             logger.log(level, String.format(line, Arrays.asList(args).toArray()));
         }
     }
 
     @Override
     public void send(CommandSender sender, String... args) {
-        for(String line: message) {
+        for(String line : message) {
             sender.sendMessage(String.format(line, Arrays.asList(args).toArray()));
         }
     }

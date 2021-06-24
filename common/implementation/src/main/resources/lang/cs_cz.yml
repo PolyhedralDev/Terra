@@ -112,7 +112,7 @@ warning:
 error:
   severe-config: "Vážná konfigurační chyba zabránila Terra ze správné generace terénu na koordinátech: %1$s, %2$s. Prosíme zkontrolujte konfiguraci pro chyby. Jakékoli konfigurační chyby jsou vypsány výše."
 debug:
-  data-save : "Uložena populační data."
+  data-save: "Uložena populační data."
 use-paper:
   - "Vypadá to, že používáte Spigot/CraftBukkit."
   - "Ačkoli Terra &ofunguje&r na Spigot, některé funkce budou ztraceny. (Terra je netestována na CraftBukkit; žádná podpora nebude dána pro CraftBukkit)."

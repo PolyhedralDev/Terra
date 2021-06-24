@@ -1,20 +1,18 @@
 package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.config.pack.WorldConfigImpl;
 import com.dfsek.terra.api.world.generator.Sampler;
+import com.dfsek.terra.config.pack.WorldConfigImpl;
 import net.jafama.FastMath;
 
 public class TerraWorldImpl implements TerraWorld {

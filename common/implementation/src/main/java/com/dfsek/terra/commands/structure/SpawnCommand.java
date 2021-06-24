@@ -6,19 +6,18 @@ import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
-import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.structures.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.script.functions.CheckFunction;
-import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.LocationImpl;
 
 import java.util.HashMap;
 

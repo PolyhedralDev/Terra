@@ -5,10 +5,10 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.registry.DuplicateEntryException;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitTree;
-import com.dfsek.terra.api.registry.DuplicateEntryException;
 import org.bukkit.TreeType;
 
 public class TerraListener implements EventListener {

@@ -4,7 +4,6 @@ import com.dfsek.terra.api.world.generator.Sampler;
 import net.jafama.FastMath;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Utility class for mathematical functions.

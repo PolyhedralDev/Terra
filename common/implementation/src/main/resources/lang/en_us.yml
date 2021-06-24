@@ -112,7 +112,7 @@ warning:
 error:
   severe-config: "A severe configuration error has prevented Terra from properly generating terrain at coordinates: %1$s, %2$s. Please check your configuration for errors. Any config errors will have been reported above."
 debug:
-  data-save : "Saved population data."
+  data-save: "Saved population data."
 use-paper:
   - "You appear to be using Spigot/CraftBukkit."
   - "While Terra &odoes&r work on Spigot, some functionality will be lost. (Terra is untested on CraftBukkit; no support will be given for CraftBukkit)."

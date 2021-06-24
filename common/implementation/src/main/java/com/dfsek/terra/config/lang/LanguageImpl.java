@@ -14,9 +14,11 @@ import java.util.logging.Logger;
 
 public class LanguageImpl implements com.dfsek.terra.api.lang.Language {
     private final Configuration configuration;
+
     public LanguageImpl(File file) throws IOException {
         configuration = new Configuration(new FileInputStream(file));
     }
+
     @Override
     @SuppressWarnings("unchecked")
     public Message getMessage(String id) {
@@ -33,10 +35,12 @@ public class LanguageImpl implements com.dfsek.terra.api.lang.Language {
         if(temp == null || temp.isEmpty()) return new SingleLineMessage("message:" + id + ":translation_undefined");
         return temp;
     }
+
     @Override
     public void log(String messageID, Level level, Logger logger, String... args) {
         getMessage(messageID).log(logger, level, args);
     }
+
     @Override
     public void send(String messageID, CommandSender sender, String... args) {
         getMessage(messageID).send(sender, args);

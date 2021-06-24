@@ -1,7 +1,6 @@
 package com.dfsek.terra.region;
 
 import com.dfsek.terra.StandalonePlugin;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
 import com.dfsek.terra.platform.GenWrapper;
@@ -68,7 +67,6 @@ public class Generator {
                 }
             }
         }
-
 
 
         System.out.println("Saving...");

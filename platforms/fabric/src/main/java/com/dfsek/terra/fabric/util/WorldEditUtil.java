@@ -1,9 +1,9 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.vector.LocationImpl;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.math.BlockVector3;

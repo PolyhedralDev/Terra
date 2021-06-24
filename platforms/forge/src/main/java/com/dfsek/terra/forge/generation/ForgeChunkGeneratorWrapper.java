@@ -80,12 +80,14 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    protected @NotNull Codec<? extends ChunkGenerator> codec() {
+    protected @NotNull
+    Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull ChunkGenerator withSeed(long seed) {
+    public @NotNull
+    ChunkGenerator withSeed(long seed) {
         return new ForgeChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
@@ -153,7 +155,8 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    public @NotNull IBlockReader getBaseColumn(int x, int z) {
+    public @NotNull
+    IBlockReader getBaseColumn(int x, int z) {
         TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
         int height = getBaseHeight(x, z, Heightmap.Type.WORLD_SURFACE);
         BlockState[] array = new BlockState[256];

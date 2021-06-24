@@ -346,7 +346,7 @@ public class Parser {
             Token token = tokens.get();
             if(token.getType().equals(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
             Item<?> parsedItem = parseItem(tokens, parsedVariables, loop);
-            if (parsedItem != Function.NULL) {
+            if(parsedItem != Function.NULL) {
                 parsedItems.add(parsedItem);
             }
             if(tokens.hasNext() && !token.isLoopLike()) ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
@@ -407,7 +407,7 @@ public class Parser {
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END); // Remove body end
 
         if(fullStatement) ParserUtil.checkType(tokens.get(), Token.Type.STATEMENT_END);
-        
+
         if(ignoredFunctions.contains(identifier.getContent())) {
             return Function.NULL;
         }

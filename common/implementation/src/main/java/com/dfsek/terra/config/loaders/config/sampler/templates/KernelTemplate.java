@@ -5,8 +5,8 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.noise.samplers.KernelSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.noise.samplers.KernelSampler;
 
 import java.util.List;
 

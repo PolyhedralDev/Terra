@@ -22,7 +22,7 @@ public abstract class Loader {
     public Loader then(ExceptionalConsumer<List<Configuration>> consumer) throws ConfigException {
         List<Configuration> list = new GlueList<>();
         streams.forEach((id, stream) -> {
-                    list.add(new Configuration(stream, id));
+            list.add(new Configuration(stream, id));
         });
         consumer.accept(list);
         return this;

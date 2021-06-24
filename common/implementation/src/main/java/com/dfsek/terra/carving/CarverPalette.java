@@ -4,7 +4,6 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import net.jafama.FastMath;
 
 import java.util.Map;

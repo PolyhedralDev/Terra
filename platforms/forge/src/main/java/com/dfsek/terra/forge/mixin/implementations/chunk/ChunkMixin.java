@@ -40,7 +40,8 @@ public abstract class ChunkMixin {
         return new ForgeBlock(pos, level);
     }
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull
+    BlockData terra$getBlockData(int x, int y, int z) {
         return terra$getBlock(x, y, z).getBlockData();
     }
 

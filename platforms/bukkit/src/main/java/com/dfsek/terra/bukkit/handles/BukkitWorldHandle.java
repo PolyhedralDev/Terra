@@ -1,12 +1,11 @@
 package com.dfsek.terra.bukkit.handles;
 
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.bukkit.structure.WorldEditUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;

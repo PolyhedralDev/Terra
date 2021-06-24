@@ -1,16 +1,14 @@
 package com.dfsek.terra.world.population.items.tree;
 
-import com.dfsek.terra.api.math.range.ConstantRange;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.vector.Vector2;
-import com.dfsek.terra.api.block.Block;
-import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Tree;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
-import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.world.population.items.PlaceableLayer;
 
 public class TreeLayer extends PlaceableLayer<Tree> {

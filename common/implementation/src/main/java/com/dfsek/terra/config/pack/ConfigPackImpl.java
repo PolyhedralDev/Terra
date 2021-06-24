@@ -11,6 +11,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -37,7 +38,6 @@ import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProvi
 import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
-import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;

@@ -2,11 +2,10 @@ package com.dfsek.terra.api.world.locate;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.vector.Vector3Impl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;

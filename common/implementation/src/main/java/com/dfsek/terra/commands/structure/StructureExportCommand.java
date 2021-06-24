@@ -1,6 +1,10 @@
 package com.dfsek.terra.commands.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
@@ -8,16 +12,12 @@ import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
 import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.block.Block;
-import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.state.Sign;
-import com.dfsek.terra.api.entity.Player;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 
 import java.io.BufferedWriter;
 import java.io.File;

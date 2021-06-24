@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.world;
 
+import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.api.block.Block;
 
 import java.util.List;
 

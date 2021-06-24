@@ -3,7 +3,6 @@ package com.dfsek.terra.fabric.util;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
@@ -37,8 +36,8 @@ public final class FabricUtil {
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
      *
-     * @param biome       The Terra BiomeBuilder.
-     * @param pack        The ConfigPack this biome belongs to.
+     * @param biome The Terra BiomeBuilder.
+     * @param pack  The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
     public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {

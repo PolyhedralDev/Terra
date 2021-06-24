@@ -43,7 +43,8 @@ public abstract class WorldGenRegionMixin {
         return new ForgeBlock(pos, (WorldGenRegion) (Object) this);
     }
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull
+    BlockData terra$getBlockData(int x, int y, int z) {
         return terra$getBlock(x, y, z).getBlockData();
     }
 

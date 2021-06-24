@@ -4,14 +4,12 @@ import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.config.loaders.Types;
+import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 
 import java.lang.reflect.Type;

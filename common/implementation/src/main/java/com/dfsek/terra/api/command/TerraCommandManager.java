@@ -17,10 +17,10 @@ import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.command.exception.SwitchFormatException;
 import com.dfsek.terra.api.command.tab.TabCompleter;
-import com.dfsek.terra.api.inject.InjectorImpl;
-import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.inject.InjectorImpl;
+import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.api.util.ReflectionUtil;
 import net.jafama.FastMath;
 

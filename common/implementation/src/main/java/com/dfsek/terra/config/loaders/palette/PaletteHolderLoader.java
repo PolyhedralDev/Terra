@@ -4,7 +4,6 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolder;
 import com.dfsek.terra.api.world.palette.holder.PaletteHolderBuilder;
 

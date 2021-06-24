@@ -19,7 +19,8 @@ public abstract class ChunkPrimerMixin {
     @Shadow
     public abstract BlockState getBlockState(BlockPos pos);
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull
+    BlockData terra$getBlockData(int x, int y, int z) {
         return new ForgeBlockData(getBlockState(new BlockPos(x, y, z)));
     }
 

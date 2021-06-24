@@ -1,7 +1,5 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.block.Axis;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
@@ -12,6 +10,8 @@ import com.dfsek.terra.api.block.data.Rail;
 import com.dfsek.terra.api.block.data.RedstoneWire;
 import com.dfsek.terra.api.block.data.Rotatable;
 import com.dfsek.terra.api.block.data.Wall;
+import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.vector.Vector2;
 import com.google.common.collect.Sets;
 import net.jafama.FastMath;
 

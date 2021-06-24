@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.lang;
 
+import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.lang.Language;
 
 import java.io.File;

@@ -7,7 +7,6 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.carving.CarverPalette;
 import com.dfsek.terra.config.loaders.Types;
 

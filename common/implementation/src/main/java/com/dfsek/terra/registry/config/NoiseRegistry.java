@@ -1,13 +1,5 @@
 package com.dfsek.terra.registry.config;
 
-import com.dfsek.terra.noise.samplers.noise.random.GaussianNoiseSampler;
-import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.noise.samplers.noise.simplex.OpenSimplex2SSampler;
-import com.dfsek.terra.noise.samplers.noise.simplex.OpenSimplex2Sampler;
-import com.dfsek.terra.noise.samplers.noise.simplex.PerlinSampler;
-import com.dfsek.terra.noise.samplers.noise.simplex.SimplexSampler;
-import com.dfsek.terra.noise.samplers.noise.value.ValueCubicSampler;
-import com.dfsek.terra.noise.samplers.noise.value.ValueSampler;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
@@ -23,6 +15,14 @@ import com.dfsek.terra.config.loaders.config.sampler.templates.noise.fractal.Rid
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
+import com.dfsek.terra.noise.samplers.noise.random.GaussianNoiseSampler;
+import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
+import com.dfsek.terra.noise.samplers.noise.simplex.OpenSimplex2SSampler;
+import com.dfsek.terra.noise.samplers.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.terra.noise.samplers.noise.simplex.PerlinSampler;
+import com.dfsek.terra.noise.samplers.noise.simplex.SimplexSampler;
+import com.dfsek.terra.noise.samplers.noise.value.ValueCubicSampler;
+import com.dfsek.terra.noise.samplers.noise.value.ValueSampler;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 public class NoiseRegistry extends OpenRegistryImpl<NoiseProvider> {

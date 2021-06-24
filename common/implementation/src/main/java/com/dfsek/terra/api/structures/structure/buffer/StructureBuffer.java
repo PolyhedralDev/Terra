@@ -1,10 +1,9 @@
 package com.dfsek.terra.api.structures.structure.buffer;
 
 import com.dfsek.terra.api.structure.buffer.Buffer;
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.world.Chunk;
 import net.jafama.FastMath;
 
 import java.util.LinkedHashMap;

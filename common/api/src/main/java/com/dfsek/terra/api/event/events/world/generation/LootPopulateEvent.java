@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.event.events.world.generation;
 
+import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.state.Container;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.AbstractCancellable;
 import com.dfsek.terra.api.event.events.Cancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
-import com.dfsek.terra.api.block.Block;
-import com.dfsek.terra.api.block.state.Container;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +53,7 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent,
 
     /**
      * Get the loot table to be populated.
+     *
      * @return Loot table.
      */
     public LootTable getTable() {

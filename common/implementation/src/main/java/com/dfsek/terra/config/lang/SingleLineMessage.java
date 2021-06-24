@@ -10,9 +10,11 @@ import java.util.logging.Logger;
 
 public class SingleLineMessage implements Message {
     private final String message;
+
     public SingleLineMessage(String message) {
         this.message = message;
     }
+
     @Override
     public void log(Logger logger, Level level, String... args) {
         logger.log(level, String.format(message, Arrays.asList(args).toArray()));

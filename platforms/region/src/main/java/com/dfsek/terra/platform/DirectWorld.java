@@ -1,14 +1,14 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.DirectUtils;
-import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
+import com.dfsek.terra.vector.LocationImpl;
+import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;

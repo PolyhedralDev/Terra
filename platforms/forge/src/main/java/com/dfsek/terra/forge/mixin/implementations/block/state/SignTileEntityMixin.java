@@ -22,7 +22,8 @@ public abstract class SignTileEntityMixin {
     @Shadow
     public abstract void setMessage(int p_212365_1_, ITextComponent p_212365_2_);
 
-    public @NotNull String[] terra$getLines() {
+    public @NotNull
+    String[] terra$getLines() {
         String[] lines = new String[messages.length];
         for(int i = 0; i < messages.length; i++) {
             lines[i] = messages[i].getString();
@@ -30,7 +31,8 @@ public abstract class SignTileEntityMixin {
         return lines;
     }
 
-    public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
+    public @NotNull
+    String terra$getLine(int index) throws IndexOutOfBoundsException {
 
         return messages[index].getString();
     }

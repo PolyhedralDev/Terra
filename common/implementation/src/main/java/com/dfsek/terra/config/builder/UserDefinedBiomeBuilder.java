@@ -4,15 +4,14 @@ import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.ProbabilityCollection;
-import com.dfsek.terra.noise.samplers.ExpressionSampler;
-import com.dfsek.terra.noise.samplers.noise.ConstantSampler;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.noise.samplers.ExpressionSampler;
+import com.dfsek.terra.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
 import java.util.LinkedHashMap;

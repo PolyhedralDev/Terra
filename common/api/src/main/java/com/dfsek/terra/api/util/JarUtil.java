@@ -16,7 +16,7 @@ public class JarUtil {
     public static void copyResourcesToDirectory(JarFile fromJar, String sourceDir, String destDir) throws IOException {
         for(Enumeration<JarEntry> entries = fromJar.entries(); entries.hasMoreElements(); ) {
             JarEntry entry = entries.nextElement();
-            if(entry.getName().startsWith(sourceDir + "/") && ! entry.isDirectory()) {
+            if(entry.getName().startsWith(sourceDir + "/") && !entry.isDirectory()) {
                 File dest = new File(destDir + File.separator + entry.getName().substring(sourceDir.length() + 1));
                 if(dest.exists()) continue;
                 File parent = dest.getParentFile();

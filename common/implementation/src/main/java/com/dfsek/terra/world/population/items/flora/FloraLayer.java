@@ -1,12 +1,10 @@
 package com.dfsek.terra.world.population.items.flora;
 
-import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.world.population.items.PlaceableLayer;
 

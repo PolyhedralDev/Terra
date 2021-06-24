@@ -1,8 +1,8 @@
 package com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator;
 
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
-import com.dfsek.terra.api.world.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.world.biome.generation.pipeline.Stage;
+import com.dfsek.terra.api.world.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.StageTemplate;
 
 public abstract class MutatorStageTemplate extends StageTemplate {

@@ -9,7 +9,6 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.util.List;
 

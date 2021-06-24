@@ -21,7 +21,7 @@ public class SlantHolderLoader implements TypeLoader<SlantHolder> {
 
         for(Map<Object, Object> layer : layers) {
             double threshold = ((Number) layer.get("threshold")).doubleValue();
-            if (threshold < minThreshold) minThreshold = threshold;
+            if(threshold < minThreshold) minThreshold = threshold;
             slantLayers.put(threshold, (PaletteHolder) configLoader.loadType(PaletteHolder.class, layer.get("palette")));
         }
 

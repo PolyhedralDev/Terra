@@ -1,12 +1,12 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.vector.LocationImpl;
 import net.jafama.FastMath;
 
 public class DirectBlock implements Block {

@@ -1,21 +1,20 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.structure.LootTable;
-import com.dfsek.terra.api.vector.Vector2;
-import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structures.loot.LootTableImpl;
+import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.functions.Function;
 import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
-import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.structures.structure.buffer.items.BufferedLootApplication;
 import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.api.util.RotationUtil;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.vector.Vector2Impl;
+import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;

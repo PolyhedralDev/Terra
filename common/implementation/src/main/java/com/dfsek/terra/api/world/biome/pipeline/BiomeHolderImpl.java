@@ -2,8 +2,8 @@ package com.dfsek.terra.api.world.biome.pipeline;
 
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeExpander;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 

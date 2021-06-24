@@ -1,11 +1,11 @@
 package com.dfsek.terra.world.population.items.ores;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.vector.Vector3Impl;
 
 import java.util.Map;
 import java.util.Random;

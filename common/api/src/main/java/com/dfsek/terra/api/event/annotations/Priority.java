@@ -31,6 +31,7 @@ public @interface Priority {
      * Low Priority.
      */
     int LOW = -1;
+
     /**
      * @return Priority of this event. Events are executed from lowest to highest priorities.
      */

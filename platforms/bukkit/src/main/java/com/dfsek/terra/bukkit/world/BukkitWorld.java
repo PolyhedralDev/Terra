@@ -1,10 +1,9 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;

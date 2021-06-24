@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.math;
 
+import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector3Impl;
-import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.api.util.GlueList;
 
 import java.util.List;
 import java.util.Random;

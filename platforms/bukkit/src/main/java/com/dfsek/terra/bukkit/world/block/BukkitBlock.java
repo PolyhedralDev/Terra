@@ -1,6 +1,5 @@
 package com.dfsek.terra.bukkit.world.block;
 
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
@@ -9,6 +8,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;
+import com.dfsek.terra.vector.LocationImpl;
 
 public class BukkitBlock implements Block {
     private final org.bukkit.block.Block delegate;

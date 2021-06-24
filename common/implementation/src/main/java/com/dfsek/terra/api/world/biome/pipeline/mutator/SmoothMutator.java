@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.biome.pipeline.mutator;
 
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
 

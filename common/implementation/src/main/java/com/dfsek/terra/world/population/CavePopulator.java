@@ -1,23 +1,21 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.util.PopulationUtil;
+import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.pack.WorldConfigImpl;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.api.profiler.ProfileFrame;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

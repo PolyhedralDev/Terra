@@ -1,11 +1,8 @@
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.util.FabricAdapter;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

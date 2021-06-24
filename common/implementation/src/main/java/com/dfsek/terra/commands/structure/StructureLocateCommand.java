@@ -10,15 +10,14 @@ import com.dfsek.terra.api.command.annotation.inject.SwitchTarget;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
-import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.commands.structure.argument.StructureArgumentParser;
 import com.dfsek.terra.commands.structure.completer.StructureCompleter;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.world.population.items.TerraStructure;
 
 import java.util.Locale;

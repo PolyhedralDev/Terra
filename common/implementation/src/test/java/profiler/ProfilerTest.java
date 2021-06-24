@@ -5,6 +5,7 @@ import com.dfsek.terra.profiler.ProfilerImpl;
 
 public class ProfilerTest {
     private static final Profiler PROFILER = new ProfilerImpl();
+
     //@Test
     public static void main(String... a) throws InterruptedException {
         //PROFILER.start();

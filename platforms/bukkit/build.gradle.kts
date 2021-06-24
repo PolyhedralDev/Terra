@@ -4,7 +4,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 plugins {
@@ -55,7 +54,7 @@ fun downloadPaperclip(url: String, dir: String) {
 
 fun copyTerra(dir: String) {
     file("$testDir/$dir").walk().forEach {
-        if(it.name.startsWith("Terra-") && it.name.endsWith(".jar")) it.delete() // Delete old Terra jar(s)
+        if (it.name.startsWith("Terra-") && it.name.endsWith(".jar")) it.delete() // Delete old Terra jar(s)
     }
     copy {
         from("$buildDir/libs/Terra-bukkit-$version-shaded.jar")
@@ -87,11 +86,11 @@ fun installServer(dir: String) {
 }
 
 fun deleteFolder(folder: File) {
-    if(folder.exists()) folder.deleteRecursively()
+    if (folder.exists()) folder.deleteRecursively()
 }
 
 fun deleteFile(file: File) {
-    if(file.exists()) file.delete()
+    if (file.exists()) file.delete()
 }
 
 tasks.create("cleanWorlds") {

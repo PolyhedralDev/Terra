@@ -1,12 +1,12 @@
 package com.dfsek.terra.api.structures.script;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.api.world.Chunk;
-import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structure.buffer.Buffer;
+import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.structures.parser.Parser;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.Block;
@@ -30,11 +30,10 @@ import com.dfsek.terra.api.structures.script.builders.UnaryBooleanFunctionBuilde
 import com.dfsek.terra.api.structures.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.api.structures.script.builders.ZeroArgFunctionBuilder;
-import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.world.Chunk;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;

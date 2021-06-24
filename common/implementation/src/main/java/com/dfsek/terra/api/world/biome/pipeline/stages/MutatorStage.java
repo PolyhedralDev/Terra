@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.world.biome.pipeline.stages;
 
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
-import com.dfsek.terra.api.world.biome.generation.pipeline.Stage;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeMutator;
+import com.dfsek.terra.api.world.biome.generation.pipeline.Stage;
 
 public class MutatorStage implements Stage {
     private final BiomeMutator mutator;

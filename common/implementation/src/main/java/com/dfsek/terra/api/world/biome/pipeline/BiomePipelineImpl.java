@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.world.biome.pipeline;
 
-import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
-import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 import com.dfsek.terra.api.world.biome.generation.pipeline.Stage;
+import com.dfsek.terra.vector.Vector2Impl;
 
 import java.util.List;
 import java.util.stream.Collectors;

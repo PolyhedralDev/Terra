@@ -1,9 +1,8 @@
 package com.dfsek.terra.api.world.palette.holder;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.ProbabilityCollection;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import org.jetbrains.annotations.NotNull;
 
 public class PaletteLayerHolder {

@@ -2,9 +2,9 @@ package com.dfsek.terra.vector;
 
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

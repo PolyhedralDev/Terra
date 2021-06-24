@@ -1,10 +1,10 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.vector.Vector3Impl;
 import net.querz.mca.Chunk;
 import net.querz.nbt.tag.CompoundTag;
 import org.jetbrains.annotations.NotNull;

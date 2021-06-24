@@ -1,17 +1,15 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
-import com.dfsek.terra.api.structure.LootTable;
-import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.api.vector.Location;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.Container;
-import com.dfsek.terra.api.structures.loot.LootTableImpl;
+import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
+import com.dfsek.terra.api.structure.LootTable;
+import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.vector.Location;
 
 public class BufferedLootApplication implements BufferedItem {
     private final LootTable table;

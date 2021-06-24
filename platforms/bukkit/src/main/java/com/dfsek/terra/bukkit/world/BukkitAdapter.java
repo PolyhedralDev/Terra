@@ -1,10 +1,6 @@
 package com.dfsek.terra.bukkit.world;
 
 
-import com.dfsek.terra.vector.LocationImpl;
-import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector3Impl;
-import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.block.Axis;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
@@ -14,12 +10,14 @@ import com.dfsek.terra.api.block.data.Rail;
 import com.dfsek.terra.api.block.data.RedstoneWire;
 import com.dfsek.terra.api.block.data.Slab;
 import com.dfsek.terra.api.block.data.Stairs;
+import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.terra.api.world.Chunk;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.transform.MapTransform;
 import com.dfsek.terra.api.transform.TransformerImpl;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
@@ -27,6 +25,8 @@ import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
+import com.dfsek.terra.vector.LocationImpl;
+import com.dfsek.terra.vector.Vector3Impl;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;

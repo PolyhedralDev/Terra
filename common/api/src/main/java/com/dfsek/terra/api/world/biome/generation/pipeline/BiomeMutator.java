@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.world.biome.generation.pipeline;
 
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
 
 public interface BiomeMutator {
     TerraBiome mutate(ViewPoint viewPoint, double x, double z);
