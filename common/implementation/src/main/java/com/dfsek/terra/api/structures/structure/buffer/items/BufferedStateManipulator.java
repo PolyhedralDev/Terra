@@ -17,9 +17,11 @@ public class BufferedStateManipulator implements BufferedItem {
     @Override
     public void paste(Location origin) {
         try {
-            BlockState state = origin.getBlock().getState();
+            BlockState state = origin.getWorld().getBlockState(origin.getVector());
             state.applyState(data);
             state.update(false);
+
+            origin.getWorld().setBlockState(origin.getVector(), state);
         } catch(Exception e) {
             main.logger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
             e.printStackTrace();

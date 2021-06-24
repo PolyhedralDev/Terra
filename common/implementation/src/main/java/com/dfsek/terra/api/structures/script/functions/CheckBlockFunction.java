@@ -34,7 +34,7 @@ public class CheckBlockFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        String data = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()))).getBlock().getBlockData().getAsString();
+        String data  = arguments.getBuffer().getOrigin().getWorld().getBlockData(arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()))).getVector()).getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;
     }

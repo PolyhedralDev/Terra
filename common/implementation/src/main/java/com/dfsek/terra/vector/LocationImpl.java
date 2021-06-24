@@ -1,6 +1,5 @@
 package com.dfsek.terra.vector;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
@@ -106,11 +105,6 @@ public class LocationImpl implements Location {
     public Location add(double x, double y, double z) {
         vector.add(x, y, z);
         return this;
-    }
-
-    @Override
-    public Block getBlock() {
-        return world.getBlockAt(this);
     }
 
     @Override

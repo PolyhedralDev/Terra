@@ -76,7 +76,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(PaletteLayerHolder.class, new PaletteLayerLoader())
                 .registerLoader(SlantHolder.class, new SlantHolderLoader())
                 .registerLoader(FloraLayer.class, new FloraLayerLoader())
-                .registerLoader(Ore.Type.class, (t, o, l) -> Ore.Type.valueOf(o.toString()))
                 .registerLoader(OreConfig.class, new OreConfigLoader())
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())

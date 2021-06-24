@@ -21,6 +21,6 @@ public class FloraLayer extends PlaceableLayer<Flora> {
     @Override
     public void place(Chunk chunk, Vector2 coords) {
         Flora item = layer.get(noise, (chunk.getX() << 4) + coords.getX(), (chunk.getZ() << 4) + coords.getZ());
-        item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block.getLocation()));
+        item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block.toLocation(chunk.getWorld())));
     }
 }

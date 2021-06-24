@@ -1,7 +1,6 @@
 package com.dfsek.terra.commands.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.Sign;
@@ -60,8 +59,7 @@ public class StructureExportCommand implements CommandTemplate {
         for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
-                    Block block = new LocationImpl(l1.getWorld(), x, y, z).getBlock();
-                    BlockState state = block.getState();
+                    BlockState state = l1.getWorld().getBlockState(x, y, z);
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]") && sign.getLine(1).equals("[CENTER]")) {
@@ -78,10 +76,9 @@ public class StructureExportCommand implements CommandTemplate {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
 
-                    Block block = new LocationImpl(l1.getWorld(), x, y, z).getBlock();
-                    BlockData data = block.getBlockData();
-                    if(block.getBlockData().isStructureVoid()) continue;
-                    BlockState state = block.getState();
+                    BlockData data = l1.getWorld().getBlockData(x, y, z);
+                    if(data.isStructureVoid()) continue;
+                    BlockState state = l1.getWorld().getBlockState(x, y, z);
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]")) {

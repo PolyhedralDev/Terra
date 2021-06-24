@@ -1,7 +1,6 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.WorldConfig;
@@ -9,6 +8,7 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
@@ -46,62 +46,51 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
 
             for(UserDefinedCarver c : config.getRegistry(UserDefinedCarver.class).entries()) {
                 CarverTemplate template = c.getConfig();
-                Map<Location, BlockData> shiftCandidate = new HashMap<>();
-                Set<Block> updateNeeded = new HashSet<>();
+                Map<Vector3, BlockData> shiftCandidate = new HashMap<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
-                        Block b = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
-                        BlockData m = b.getBlockData();
+                        BlockData m = chunk.getBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                         BlockType re = m.getBlockType();
                         switch(type) {
                             case CENTER:
                                 if(template.getInner().canReplace(re)) {
-                                    b.setBlockData(template.getInner().get(v.getBlockY()).get(random), false);
-                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getInner().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                             case WALL:
                                 if(template.getOuter().canReplace(re)) {
-                                    b.setBlockData(template.getOuter().get(v.getBlockY()).get(random), false);
-                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getOuter().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                             case TOP:
                                 if(template.getTop().canReplace(re)) {
-                                    b.setBlockData(template.getTop().get(v.getBlockY()).get(random), false);
-                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getTop().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                             case BOTTOM:
                                 if(template.getBottom().canReplace(re)) {
-                                    b.setBlockData(template.getBottom().get(v.getBlockY()).get(random), false);
-                                    if(template.getUpdate().contains(re)) updateNeeded.add(b);
-                                    if(template.getShift().containsKey(re)) shiftCandidate.put(b.getLocation(), m);
+                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getBottom().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                         }
                     }
                 });
-                for(Map.Entry<Location, BlockData> entry : shiftCandidate.entrySet()) {
-                    Location l = entry.getKey();
-                    Location mut = l.clone();
-                    BlockData orig = l.getBlock().getBlockData();
+                for(Map.Entry<Vector3, BlockData> entry : shiftCandidate.entrySet()) {
+                    Vector3 l = entry.getKey();
+                    Vector3 mut = l.clone();
+                    BlockData orig = chunk.getBlockData(l.getBlockX(), l.getBlockY(), l.getBlockZ());
                     do mut.subtract(0, 1, 0);
-                    while(mut.getY() > world.getMinHeight() && mut.getBlock().getBlockData().matches(orig));
+                    while(mut.getY() > world.getMinHeight() && chunk.getBlockData(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).matches(orig));
                     try {
-                        if(template.getShift().get(entry.getValue().getBlockType()).contains(mut.getBlock().getBlockData().getBlockType())) {
-                            mut.getBlock().setBlockData(shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
+                        if(template.getShift().get(entry.getValue().getBlockType()).contains(chunk.getBlockData(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).getBlockType())) {
+                            chunk.setBlockData(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ(), shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
                         }
                     } catch(NullPointerException ignored) {
                     }
-                }
-                for(Block b : updateNeeded) {
-                    BlockData orig = b.getBlockData();
-                    b.setBlockData(AIR, false);
-                    b.setBlockData(orig, true);
                 }
             }
 

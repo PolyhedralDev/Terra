@@ -39,8 +39,4 @@ public abstract class Ore {
     public boolean isApplyGravity() {
         return applyGravity;
     }
-
-    public enum Type {
-        VANILLA, SPHERE
-    }
 }

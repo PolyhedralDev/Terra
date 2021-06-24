@@ -98,4 +98,6 @@ public interface Vector2 extends Cloneable {
     int getBlockX();
 
     int getBlockZ();
+
+    Vector3 extrude(double y);
 }

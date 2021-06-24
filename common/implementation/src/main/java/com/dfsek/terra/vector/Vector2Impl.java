@@ -2,6 +2,7 @@ package com.dfsek.terra.vector;
 
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import net.jafama.FastMath;
 
 /**
@@ -139,6 +140,11 @@ public class Vector2Impl implements Vector2 {
     @Override
     public int getBlockZ() {
         return FastMath.floorToInt(z);
+    }
+
+    @Override
+    public Vector3 extrude(double y) {
+        return new Vector3Impl(this.x, y, this.z);
     }
 
     @Override

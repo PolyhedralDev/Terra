@@ -1,10 +1,9 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 
 public class BufferedPulledBlock implements BufferedItem {
     private final BlockData data;
@@ -15,13 +14,13 @@ public class BufferedPulledBlock implements BufferedItem {
 
     @Override
     public void paste(Location origin) {
-        Block pos = origin.getBlock();
-        while(pos.getY() > origin.getWorld().getMinHeight()) {
-            if(!pos.isEmpty()) {
-                pos.setBlockData(data, false);
+        Vector3 mutable = origin.toVector();
+        while(mutable.getY() > origin.getWorld().getMinHeight()) {
+            if(!origin.getWorld().getBlockData(mutable).isAir()) {
+                origin.getWorld().setBlockData(mutable, data);
                 break;
             }
-            pos = pos.getRelative(BlockFace.DOWN);
+            mutable.subtract(0, 1, 0);
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
@@ -12,9 +11,12 @@ import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Flora;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;
@@ -58,14 +60,14 @@ public class TerraFlora implements Flora {
     }
 
     @Override
-    public List<Block> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
+    public List<Vector3> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
         int size = floraPalette.getSize();
-        Block current = chunk.getBlock(x, search.equals(Search.UP) ? range.getMin() : range.getMax(), z);
-        List<Block> blocks = new ArrayList<>();
+        Vector3 current = new Vector3Impl(x, search.equals(Search.UP) ? range.getMin() : range.getMax(), z);
+        List<Vector3> blocks = new ArrayList<>();
         for(int y : range) {
             if(y > 255 || y < 0) continue;
-            current = current.getRelative(search.equals(Search.UP) ? BlockFace.UP : BlockFace.DOWN);
-            if((spawnBlacklist != spawnable.contains(current.getType())) && isIrrigated(current.getRelative(BlockFace.UP, irrigableOffset)) && valid(size, current)) {
+            current = current.add(0, search.equals(Search.UP) ? 1 : -1, 0);
+            if((spawnBlacklist != spawnable.contains(chunk.getBlockData(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getBlockType())) && isIrrigated(current.add(0, irrigableOffset, 0), chunk) && valid(size, current.clone(), chunk)) {
                 blocks.add(current);
                 if(maxPlacements > 0 && blocks.size() >= maxPlacements) break;
             }
@@ -73,21 +75,21 @@ public class TerraFlora implements Flora {
         return blocks;
     }
 
-    private boolean valid(int size, Block block) {
+    private boolean valid(int size, Vector3 block, Chunk chunk) {
         for(int i = 0; i < size; i++) { // Down if ceiling, up if floor
             if(block.getY() + 1 > 255 || block.getY() < 0) return false;
-            block = block.getRelative(ceiling ? BlockFace.DOWN : BlockFace.UP);
-            if(!replaceable.contains(block.getType())) return false;
+            block.add(0, ceiling ? -1 : 1, 0);
+            if(!replaceable.contains(chunk.getBlockData(block.getBlockX(), block.getBlockY(), block.getBlockZ()).getBlockType())) return false;
         }
         return true;
     }
 
-    private boolean isIrrigated(Block b) {
+    private boolean isIrrigated(Vector3 b, Chunk chunk) {
         if(irrigable == null) return true;
-        return irrigable.contains(b.getRelative(BlockFace.NORTH).getType())
-                || irrigable.contains(b.getRelative(BlockFace.SOUTH).getType())
-                || irrigable.contains(b.getRelative(BlockFace.EAST).getType())
-                || irrigable.contains(b.getRelative(BlockFace.WEST).getType());
+        return irrigable.contains(chunk.getBlockData(b.getBlockX()+1, b.getBlockY(), b.getBlockZ()).getBlockType())
+                || irrigable.contains(chunk.getBlockData(b.getBlockX()-1, b.getBlockY(), b.getBlockZ()).getBlockType())
+                || irrigable.contains(chunk.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ()+1).getBlockType())
+                || irrigable.contains(chunk.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ()-1).getBlockType());
     }
 
 
@@ -97,7 +99,7 @@ public class TerraFlora implements Flora {
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;
 
-        List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0).getBlock()) : new GlueList<>();
+        List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0).toVector(), location.getWorld()) : new GlueList<>();
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
@@ -115,22 +117,22 @@ public class TerraFlora implements Flora {
                     ((Rotatable) data).setRotation(oneFace);
                 }
             }
-            location.clone().add(0, i + c, 0).getBlock().setBlockData(data, physics);
+            location.getWorld().setBlockData(location.toVector().add(0, i + c, 0), data, physics);
         }
         return true;
     }
 
-    private List<BlockFace> getFaces(Block b) {
+    private List<BlockFace> getFaces(Vector3 b, World world) {
         List<BlockFace> faces = new GlueList<>();
-        test(faces, BlockFace.NORTH, b);
-        test(faces, BlockFace.SOUTH, b);
-        test(faces, BlockFace.EAST, b);
-        test(faces, BlockFace.WEST, b);
+        test(faces, BlockFace.NORTH, b, world);
+        test(faces, BlockFace.SOUTH, b, world);
+        test(faces, BlockFace.EAST, b, world);
+        test(faces, BlockFace.WEST, b, world);
         return faces;
     }
 
-    private void test(List<BlockFace> faces, BlockFace f, Block b) {
-        if(testRotation.contains(b.getRelative(f).getType())) faces.add(f);
+    private void test(List<BlockFace> faces, BlockFace f, Vector3 b, World world) {
+        if(testRotation.contains(world.getBlockData(b.getBlockX()+f.getModX(), b.getBlockY()+f.getModY(), b.getBlockZ()+f.getModZ()).getBlockType())) faces.add(f);
     }
 
     public enum Search {

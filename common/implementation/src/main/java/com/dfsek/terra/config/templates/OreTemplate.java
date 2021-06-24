@@ -26,11 +26,6 @@ public class OreTemplate extends AbstractableTemplate {
     @Abstractable
     private Map<BlockType, BlockData> materials = new HashMap<>();
 
-    @Value("algorithm")
-    @Abstractable
-    @Default
-    private Ore.Type oreType = Ore.Type.VANILLA;
-
     @Value("replace")
     @Abstractable
     private MaterialSet replaceable;
@@ -80,10 +75,6 @@ public class OreTemplate extends AbstractableTemplate {
 
     public String getID() {
         return id;
-    }
-
-    public Ore.Type getType() {
-        return oreType;
     }
 
     public Map<BlockType, BlockData> getMaterialOverrides() {

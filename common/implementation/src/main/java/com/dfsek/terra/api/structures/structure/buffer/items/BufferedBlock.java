@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.data.Waterlogged;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
@@ -22,12 +21,12 @@ public class BufferedBlock implements BufferedItem {
 
     @Override
     public void paste(Location origin) {
-        Block block = origin.getBlock();
         try {
-            if(overwrite || block.isEmpty()) {
-                if(waterlog && data instanceof Waterlogged && block.getBlockData().getBlockType().isWater())
+            BlockData data = origin.getWorld().getBlockData(origin.toVector());
+            if(overwrite || data.isAir()) {
+                if(waterlog && data instanceof Waterlogged && data.getBlockType().isWater())
                     ((Waterlogged) data).setWaterlogged(true);
-                block.setBlockData(data, false);
+                origin.getWorld().setBlockData(origin.getVector(), data);
             }
         } catch(RuntimeException e) {
             main.logger().severe("Failed to place block at location " + origin + ": " + e.getMessage());
