@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.inventory;
 
-import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.vector.Vector3;
 
 public interface BlockInventoryHolder extends InventoryHolder {
-    Block getBlock();
+    Vector3 getPosition();
 }

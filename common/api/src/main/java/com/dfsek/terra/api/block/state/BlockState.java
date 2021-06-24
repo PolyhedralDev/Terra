@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.block.state;
 
 import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.vector.Vector3;
 
 public interface BlockState extends Handle {
-    Block getBlock();
+    Vector3 getPosition();
 
     int getX();
 

@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.vector;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.world.World;
 
 public interface Location extends Cloneable {
@@ -33,8 +32,6 @@ public interface Location extends Cloneable {
     World getWorld();
 
     Location add(double x, double y, double z);
-
-    Block getBlock();
 
     Location subtract(int x, int y, int z);
 

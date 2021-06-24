@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.event.events.world.generation;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.state.Container;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.AbstractCancellable;
@@ -8,20 +7,19 @@ import com.dfsek.terra.api.event.events.Cancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.vector.Vector3;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Called when loot is populated.
  */
 public class LootPopulateEvent extends AbstractCancellable implements PackEvent, Cancellable {
-    private final Block block;
     private final Container container;
     private LootTable table;
     private final ConfigPack pack;
     private final Structure structure;
 
-    public LootPopulateEvent(Block block, Container container, LootTable table, ConfigPack pack, Structure structure) {
-        this.block = block;
+    public LootPopulateEvent(Container container, LootTable table, ConfigPack pack, Structure structure) {
         this.container = container;
         this.table = table;
         this.pack = pack;
@@ -33,13 +31,8 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent,
         return pack;
     }
 
-    /**
-     * Get the block containing the tile entity loot is applied to.
-     *
-     * @return Block at which loot is applied.
-     */
-    public Block getBlock() {
-        return block;
+    public Vector3 getPosition() {
+        return container.getPosition();
     }
 
     /**
