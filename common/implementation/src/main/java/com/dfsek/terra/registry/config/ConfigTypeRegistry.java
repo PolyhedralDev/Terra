@@ -44,7 +44,7 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
         this.callback = callback;
         add("PALETTE", new ConfigBuilder<>(new PaletteFactory(), PaletteTemplate::new, Palette.class, () -> new PaletteRegistry(main)));
         add("ORE", new ConfigBuilder<>(new OreFactory(), OreTemplate::new, Ore.class, OreRegistry::new));
-        add("FLORA", new ConfigBuilder<>(new FloraFactory(), FloraTemplate::new, Flora.class, () -> new FloraRegistry(main)));
+        add("FLORA", new ConfigBuilder<>(new FloraFactory(), FloraTemplate::new, Flora.class, FloraRegistry::new));
         add("CARVER", new ConfigBuilder<>(new CarverFactory(pack), CarverTemplate::new, UserDefinedCarver.class, CarverRegistry::new));
         add("STRUCTURE", new ConfigBuilder<>(new StructureFactory(), StructureTemplate::new, TerraStructure.class, StructureRegistry::new));
         add("TREE", new ConfigBuilder<>(new TreeFactory(), TreeTemplate::new, Tree.class, TreeRegistry::new));
