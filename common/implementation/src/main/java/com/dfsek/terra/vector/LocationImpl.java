@@ -7,7 +7,6 @@ import com.dfsek.terra.api.world.World;
 
 import java.util.Objects;
 
-@Deprecated
 public class LocationImpl implements Location {
     private World world;
     private Vector3 vector;

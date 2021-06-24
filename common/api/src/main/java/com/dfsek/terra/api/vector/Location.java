@@ -3,7 +3,6 @@ package com.dfsek.terra.api.vector;
 import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.world.World;
 
-@Deprecated
 public interface Location extends Cloneable {
     void setWorld(World world);
 

@@ -4,7 +4,6 @@ import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.state.BlockState;
 
-@Deprecated
 public interface Block extends Handle {
     void setBlockData(BlockData data, boolean physics);
 
