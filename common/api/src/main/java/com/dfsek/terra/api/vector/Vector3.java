@@ -163,5 +163,5 @@ public interface Vector3 extends Cloneable {
 
     Vector3 subtract(Vector3 end);
 
-    public Vector3 clone();
+    Vector3 clone();
 }

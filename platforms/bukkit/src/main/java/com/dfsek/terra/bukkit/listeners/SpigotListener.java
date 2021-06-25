@@ -40,9 +40,9 @@ public class SpigotListener implements Listener {
             TerraStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get("STRONGHOLD"));
             if(config != null) {
                 main.getDebugLogger().info("Overriding Ender Signal...");
-                AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation()), 0, 500, location -> {
+                AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation().toVector()), tw.getWorld(), 0, 500, location -> {
                     if(location != null)
-                        signal.setTargetLocation(BukkitAdapter.adapt(location.toLocation(BukkitAdapter.adapt(signal.getWorld()))));
+                        signal.setTargetLocation(BukkitAdapter.adapt(location).toLocation(e.getLocation().getWorld()));
                     main.getDebugLogger().info("Location: " + location);
                 }, main);
                 finder.run(); // Do this synchronously so eye doesn't change direction several ticks after spawning.

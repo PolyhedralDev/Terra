@@ -4,7 +4,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.fabric.util.WorldEditUtil;
@@ -39,7 +39,7 @@ public class FabricWorldHandle implements WorldHandle {
     }
 
     @Override
-    public Pair<Location, Location> getSelectedLocation(Player player) {
+    public Pair<Vector3, Vector3> getSelectedLocation(Player player) {
         try {
             Class.forName("com.sk89q.worldedit.WorldEdit");
         } catch(ClassNotFoundException e) {

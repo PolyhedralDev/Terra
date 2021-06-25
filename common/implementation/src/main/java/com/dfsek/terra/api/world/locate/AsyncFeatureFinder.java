@@ -22,7 +22,7 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
     protected int searchSize = 1;
     protected final TerraPlugin main;
 
-    public AsyncFeatureFinder(BiomeProvider provider, T target, @NotNull Location origin, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
+    public AsyncFeatureFinder(BiomeProvider provider, T target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
         this.provider = provider;
         this.target = target;
         this.main = main;
@@ -30,7 +30,7 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
         this.maxRadius = maxRadius;
         this.centerX = origin.getBlockX();
         this.centerZ = origin.getBlockZ();
-        this.world = origin.getWorld();
+        this.world = world;
         this.callback = callback;
     }
 

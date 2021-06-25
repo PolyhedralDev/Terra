@@ -16,10 +16,6 @@ public interface BiomeProvider {
         return getBiome(vector3.getBlockX(), vector3.getBlockZ());
     }
 
-    default TerraBiome getBiome(Location location) {
-        return getBiome(location.getBlockX(), location.getBlockZ());
-    }
-
     interface BiomeProviderBuilder {
         BiomeProvider build(long seed);
     }

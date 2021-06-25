@@ -20,7 +20,7 @@ public interface World extends Handle {
 
     Chunk getChunkAt(int x, int z);
 
-    default Chunk getChunkAt(Location location) {
+    default Chunk getChunkAt(Vector3 location) {
         return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
@@ -50,7 +50,7 @@ public interface World extends Handle {
         return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
 
-    Entity spawnEntity(Location location, EntityType entityType);
+    Entity spawnEntity(Vector3 location, EntityType entityType);
 
     int getMinHeight();
 

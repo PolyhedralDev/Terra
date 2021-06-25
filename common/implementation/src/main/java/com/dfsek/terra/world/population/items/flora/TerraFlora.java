@@ -10,7 +10,6 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Flora;
@@ -69,7 +68,7 @@ public class TerraFlora implements Flora {
         for(int y : range) {
             if(y > 255 || y < 0) continue;
             current = current.add(0, search.equals(Search.UP) ? 1 : -1, 0);
-            if((spawnBlacklist != spawnable.contains(chunk.getBlock(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getBlockType())) && isIrrigated(current.add(0, irrigableOffset, 0), chunk.getWorld()) && valid(size, current.clone().add(cx, 0, cz), chunk.getWorld())) {
+            if((spawnBlacklist != spawnable.contains(chunk.getBlock(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getBlockType())) && isIrrigated(current.clone().add(cx, irrigableOffset, cz), chunk.getWorld()) && valid(size, current.clone().add(cx, 0, cz), chunk.getWorld())) {
                 blocks.add(current.clone());
                 if(maxPlacements > 0 && blocks.size() >= maxPlacements) break;
             }
@@ -96,12 +95,12 @@ public class TerraFlora implements Flora {
 
 
     @Override
-    public boolean plant(Location location) {
+    public boolean plant(Vector3 location, World world) {
         boolean doRotation = testRotation.size() > 0;
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;
 
-        List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0).toVector(), location.getWorld()) : new GlueList<>();
+        List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0), world) : new GlueList<>();
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
@@ -119,7 +118,7 @@ public class TerraFlora implements Flora {
                     ((Rotatable) data).setRotation(oneFace);
                 }
             }
-            location.getWorld().setBlockData(location.toVector().add(0, i + c, 0), data, physics);
+            world.setBlockData(location.clone().add(0, i + c, 0), data, physics);
         }
         return true;
     }

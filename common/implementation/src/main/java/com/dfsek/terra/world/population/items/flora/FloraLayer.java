@@ -23,6 +23,6 @@ public class FloraLayer extends PlaceableLayer<Flora> {
         int cx = chunk.getX() << 4;
         int cz = chunk.getZ() << 4;
         Flora item = layer.get(noise, coords.getX() + cx, coords.getZ() + cz);
-        item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block.toLocation(chunk.getWorld()).add(cx, 0, cz)));
+        item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block.add(cx, 0, cz), chunk.getWorld()));
     }
 }

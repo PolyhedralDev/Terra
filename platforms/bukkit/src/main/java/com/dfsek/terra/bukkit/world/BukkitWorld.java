@@ -4,7 +4,7 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
@@ -75,8 +75,8 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public Entity spawnEntity(Location location, EntityType entityType) {
-        return new BukkitEntity(delegate.spawnEntity(BukkitAdapter.adapt(location), ((BukkitEntityType) entityType).getHandle()));
+    public Entity spawnEntity(Vector3 location, EntityType entityType) {
+        return new BukkitEntity(delegate.spawnEntity(BukkitAdapter.adapt(location).toLocation(delegate), ((BukkitEntityType) entityType).getHandle()));
     }
 
     @Override

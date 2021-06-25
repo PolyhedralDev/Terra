@@ -4,6 +4,7 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
@@ -64,7 +65,7 @@ public abstract class ChunkRegionMixin {
     }
 
     @SuppressWarnings("deprecation")
-    public Entity terraWorld$spawnEntity(Location location, EntityType entityType) {
+    public Entity terraWorld$spawnEntity(Vector3 location, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ChunkRegion) (Object) this).toServerWorld());
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ChunkRegion) (Object) this).spawnEntity(entity);

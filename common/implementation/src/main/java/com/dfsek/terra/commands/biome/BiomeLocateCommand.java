@@ -64,7 +64,7 @@ public class BiomeLocateCommand implements CommandTemplate {
 
         Player player = (Player) sender;
 
-        new Thread(new AsyncBiomeFinder(main.getWorld(player.world()).getBiomeProvider(), biome, player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())).toLocation(player.world()), 0, radius, location -> {
+        new Thread(new AsyncBiomeFinder(main.getWorld(player.world()).getBiomeProvider(), biome, player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), player.world(), 0, radius, location -> {
             if(location != null) {
                 sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", biome.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3Impl(0, player.position().getY(), 0)).distance(player.position())));
                 if(teleport) {

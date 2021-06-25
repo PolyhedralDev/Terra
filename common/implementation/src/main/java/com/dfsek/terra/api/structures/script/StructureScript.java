@@ -32,7 +32,6 @@ import com.dfsek.terra.api.structures.script.builders.UnaryStringFunctionBuilder
 import com.dfsek.terra.api.structures.script.builders.ZeroArgFunctionBuilder;
 import com.dfsek.terra.api.structures.structure.buffer.DirectBuffer;
 import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
@@ -115,30 +114,30 @@ public class StructureScript implements Structure {
 
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Location location, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript:" + id)) {
-            StructureBuffer buffer = new StructureBuffer(location.toVector());
-            boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, location.getWorld(), 0));
-            buffer.paste(location.toVector(), location.getWorld());
+            StructureBuffer buffer = new StructureBuffer(location);
+            boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
+            buffer.paste(location, world);
             return level;
         }
     }
 
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Location location, Chunk chunk, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_chunk:" + id)) {
-            StructureBuffer buffer = computeBuffer(location.toVector(), location.getWorld(), random, rotation);
-            buffer.paste(location.toVector(), chunk);
+            StructureBuffer buffer = computeBuffer(location, world, random, rotation);
+            buffer.paste(location, chunk);
             return buffer.succeeded();
         }
     }
 
     @Override
     @SuppressWarnings("try")
-    public boolean test(Location location, Random random, Rotation rotation) {
+    public boolean test(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {
-            StructureBuffer buffer = computeBuffer(location.toVector(), location.getWorld(), random, rotation);
+            StructureBuffer buffer = computeBuffer(location, world, random, rotation);
             return buffer.succeeded();
         }
     }

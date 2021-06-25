@@ -16,6 +16,7 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.LocationImpl;
 
 import java.io.BufferedWriter;
@@ -45,10 +46,10 @@ public class StructureExportCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
 
-        Pair<Location, Location> l = main.getWorldHandle().getSelectedLocation(player);
+        Pair<Vector3, Vector3> l = main.getWorldHandle().getSelectedLocation(player);
 
-        Location l1 = l.getLeft();
-        Location l2 = l.getRight();
+        Vector3 l1 = l.getLeft();
+        Vector3 l2 = l.getRight();
 
         StringBuilder scriptBuilder = new StringBuilder("id \"" + id + "\";\nnum y = 0;\n");
 
@@ -59,7 +60,7 @@ public class StructureExportCommand implements CommandTemplate {
         for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
-                    BlockState state = l1.getWorld().getBlockState(x, y, z);
+                    BlockState state = player.world().getBlockState(x, y, z);
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]") && sign.getLine(1).equals("[CENTER]")) {
@@ -76,9 +77,9 @@ public class StructureExportCommand implements CommandTemplate {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
 
-                    BlockData data = l1.getWorld().getBlockData(x, y, z);
+                    BlockData data = player.world().getBlockData(x, y, z);
                     if(data.isStructureVoid()) continue;
-                    BlockState state = l1.getWorld().getBlockState(x, y, z);
+                    BlockState state = player.world().getBlockState(x, y, z);
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]")) {
