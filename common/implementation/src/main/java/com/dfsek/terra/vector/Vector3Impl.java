@@ -257,9 +257,9 @@ public class Vector3Impl implements Vector3 {
      */
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Vector3Impl)) return false;
-        Vector3Impl other = (Vector3Impl) obj;
-        return MathUtil.equals(x, other.x) && MathUtil.equals(y, other.y) && MathUtil.equals(x, other.z);
+        if(!(obj instanceof Vector3)) return false;
+        Vector3 other = (Vector3) obj;
+        return MathUtil.equals(x, other.getX()) && MathUtil.equals(y, other.getY()) && MathUtil.equals(z, other.getZ());
     }
 
     @Override
