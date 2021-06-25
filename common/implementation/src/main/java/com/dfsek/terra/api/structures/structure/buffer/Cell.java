@@ -14,7 +14,7 @@ public class Cell implements BufferedItem {
 
     @Override
     public void paste(Vector3 origin, World world) {
-        items.forEach(item -> item.paste(origin, world));
+        items.forEach(item -> item.paste(origin.clone(), world));
     }
 
     public void add(BufferedItem item) {

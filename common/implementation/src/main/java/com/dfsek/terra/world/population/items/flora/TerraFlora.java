@@ -68,7 +68,7 @@ public class TerraFlora implements Flora {
             if(y > 255 || y < 0) continue;
             current = current.add(0, search.equals(Search.UP) ? 1 : -1, 0);
             if((spawnBlacklist != spawnable.contains(chunk.getBlockData(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getBlockType())) && isIrrigated(current.add(0, irrigableOffset, 0), chunk) && valid(size, current.clone(), chunk)) {
-                blocks.add(current);
+                blocks.add(current.clone());
                 if(maxPlacements > 0 && blocks.size() >= maxPlacements) break;
             }
         }
