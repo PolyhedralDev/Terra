@@ -5,9 +5,6 @@ import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Bisected;
 import com.dfsek.terra.api.block.data.Slab;
 import com.dfsek.terra.api.block.data.Stairs;
-import com.dfsek.terra.api.block.state.Container;
-import com.dfsek.terra.api.block.state.MobSpawner;
-import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.block.data.FabricDirectional;
@@ -19,17 +16,12 @@ import com.dfsek.terra.fabric.block.data.FabricStairs;
 import com.dfsek.terra.fabric.block.data.FabricWaterlogged;
 import com.dfsek.terra.vector.Vector3Impl;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.block.entity.MobSpawnerBlockEntity;
-import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldAccess;
 
 import java.util.Arrays;
 

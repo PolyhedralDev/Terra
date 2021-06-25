@@ -2,7 +2,6 @@ package com.dfsek.terra.api.world;
 
 
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 
 import java.util.Random;

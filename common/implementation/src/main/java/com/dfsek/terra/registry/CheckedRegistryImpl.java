@@ -3,8 +3,8 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.Type;
 import java.util.Collection;

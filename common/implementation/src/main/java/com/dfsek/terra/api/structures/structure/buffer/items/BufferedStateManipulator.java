@@ -3,7 +3,6 @@ package com.dfsek.terra.api.structures.structure.buffer.items;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 

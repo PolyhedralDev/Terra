@@ -87,10 +87,10 @@ public class TerraFlora implements Flora {
 
     private boolean isIrrigated(Vector3 b, World world) {
         if(irrigable == null) return true;
-        return irrigable.contains(world.getBlockData(b.getBlockX()+1, b.getBlockY(), b.getBlockZ()).getBlockType())
-                || irrigable.contains(world.getBlockData(b.getBlockX()-1, b.getBlockY(), b.getBlockZ()).getBlockType())
-                || irrigable.contains(world.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ()+1).getBlockType())
-                || irrigable.contains(world.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ()-1).getBlockType());
+        return irrigable.contains(world.getBlockData(b.getBlockX() + 1, b.getBlockY(), b.getBlockZ()).getBlockType())
+                || irrigable.contains(world.getBlockData(b.getBlockX() - 1, b.getBlockY(), b.getBlockZ()).getBlockType())
+                || irrigable.contains(world.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ() + 1).getBlockType())
+                || irrigable.contains(world.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ() - 1).getBlockType());
     }
 
 
@@ -133,7 +133,8 @@ public class TerraFlora implements Flora {
     }
 
     private void test(List<BlockFace> faces, BlockFace f, Vector3 b, World world) {
-        if(testRotation.contains(world.getBlockData(b.getBlockX()+f.getModX(), b.getBlockY()+f.getModY(), b.getBlockZ()+f.getModZ()).getBlockType())) faces.add(f);
+        if(testRotation.contains(world.getBlockData(b.getBlockX() + f.getModX(), b.getBlockY() + f.getModY(), b.getBlockZ() + f.getModZ()).getBlockType()))
+            faces.add(f);
     }
 
     public enum Search {

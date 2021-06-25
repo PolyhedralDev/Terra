@@ -8,7 +8,6 @@ import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
 import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;

@@ -5,7 +5,6 @@ import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 

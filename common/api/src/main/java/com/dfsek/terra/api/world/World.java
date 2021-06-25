@@ -5,7 +5,6 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;

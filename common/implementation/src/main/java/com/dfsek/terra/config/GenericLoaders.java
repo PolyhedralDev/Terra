@@ -53,7 +53,6 @@ import com.dfsek.terra.noise.samplers.ImageSampler;
 import com.dfsek.terra.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
-import com.dfsek.terra.world.population.items.ores.Ore;
 import com.dfsek.terra.world.population.items.ores.OreConfig;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;

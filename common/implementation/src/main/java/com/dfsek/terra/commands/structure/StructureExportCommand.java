@@ -15,9 +15,7 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.LocationImpl;
 
 import java.io.BufferedWriter;
 import java.io.File;

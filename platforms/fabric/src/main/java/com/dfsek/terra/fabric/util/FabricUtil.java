@@ -6,7 +6,6 @@ import com.dfsek.terra.api.block.state.MobSpawner;
 import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;

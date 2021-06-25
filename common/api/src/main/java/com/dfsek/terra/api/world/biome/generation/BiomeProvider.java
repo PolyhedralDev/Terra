@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.world.biome.generation;
 
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.TerraBiome;

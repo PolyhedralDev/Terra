@@ -4,7 +4,6 @@ import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.vector.LocationImpl;
 
 import java.util.Random;
 

@@ -3,7 +3,6 @@ package com.dfsek.terra.fabric.mixin.implementations.world;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
@@ -28,7 +27,6 @@ import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = World.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))

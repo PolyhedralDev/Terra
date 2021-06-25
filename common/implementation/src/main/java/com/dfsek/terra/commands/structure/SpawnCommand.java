@@ -17,7 +17,6 @@ import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.vector.Vector3Impl;
 
 import java.util.HashMap;

@@ -8,7 +8,6 @@ import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 

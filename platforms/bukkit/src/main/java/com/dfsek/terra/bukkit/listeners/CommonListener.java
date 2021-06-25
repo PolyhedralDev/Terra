@@ -9,7 +9,6 @@ import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.vector.Vector3Impl;
 import org.bukkit.Material;
 import org.bukkit.TreeType;

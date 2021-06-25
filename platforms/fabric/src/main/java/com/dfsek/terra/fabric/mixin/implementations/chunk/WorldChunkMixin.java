@@ -5,7 +5,6 @@ import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.block.BlockState;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;

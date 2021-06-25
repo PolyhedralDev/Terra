@@ -4,7 +4,6 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.PopulationUtil;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;

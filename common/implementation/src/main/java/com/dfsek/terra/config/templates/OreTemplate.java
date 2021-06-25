@@ -7,7 +7,6 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.world.population.items.ores.Ore;
 
 import java.util.HashMap;
 import java.util.Map;

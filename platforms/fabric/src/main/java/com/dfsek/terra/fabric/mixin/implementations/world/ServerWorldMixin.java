@@ -3,7 +3,6 @@ package com.dfsek.terra.fabric.mixin.implementations.world;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
