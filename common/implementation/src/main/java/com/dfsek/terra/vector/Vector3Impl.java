@@ -1,10 +1,8 @@
 package com.dfsek.terra.vector;
 
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.world.World;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -205,11 +203,6 @@ public class Vector3Impl implements Vector3 {
     @Override
     public double dot(@NotNull Vector3 other) {
         return x * other.getX() + y * other.getY() + z * other.getZ();
-    }
-
-    @Override
-    public Location toLocation(World world) {
-        return new LocationImpl(world, this.clone());
     }
 
     @Override

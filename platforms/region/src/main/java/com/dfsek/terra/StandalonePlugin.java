@@ -13,7 +13,7 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -26,6 +26,8 @@ import com.dfsek.terra.config.lang.LanguageImpl;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
 import com.dfsek.terra.profiler.ProfilerImpl;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
@@ -38,7 +40,7 @@ public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
 
-    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+    private final Registry<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
 
     private final PluginConfig config = new PluginConfigImpl();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
@@ -82,11 +84,11 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return new CheckedRegistry<>(registry);
+        return new CheckedRegistryImpl<>(registry);
     }
 
     @Override
-    public LockedRegistry<TerraAddon> getAddons() {
+    public Registry<TerraAddon> getAddons() {
         return addonLockedRegistry;
     }
 

@@ -4,7 +4,6 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
@@ -74,11 +73,6 @@ public class TerraWorldImpl implements TerraWorld {
         } else if(y <= biome.getConfig().getSeaLevel()) {
             return biome.getConfig().getOceanPalette().get(biome.getConfig().getSeaLevel() - y, x, y, z);
         } else return air;
-    }
-
-    @Override
-    public BlockData getUngeneratedBlock(Location l) {
-        return getUngeneratedBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
     @Override

@@ -155,8 +155,6 @@ public interface Vector3 extends Cloneable {
      */
     double dot(@NotNull Vector3 other);
 
-    Location toLocation(World world);
-
     Vector3 normalize();
 
     Vector3 subtract(int x, int y, int z);

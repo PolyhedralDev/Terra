@@ -1,10 +1,8 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.querz.mca.Chunk;
 import net.querz.nbt.tag.CompoundTag;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +43,11 @@ public class DirectChunkData implements ChunkData, com.dfsek.terra.api.world.Chu
     }
 
     @Override
+    public void setBlock(int x, int y, int z, BlockData data, boolean physics) {
+        setBlock(x, y, z, data);
+    }
+
+    @Override
     public int getX() {
         return x;
     }
@@ -59,8 +62,4 @@ public class DirectChunkData implements ChunkData, com.dfsek.terra.api.world.Chu
         return world;
     }
 
-    @Override
-    public Block getBlock(int x, int y, int z) {
-        return new DirectBlock(world, new Vector3Impl(x + (this.x << 4), y, z + (this.z << 4)));
-    }
 }

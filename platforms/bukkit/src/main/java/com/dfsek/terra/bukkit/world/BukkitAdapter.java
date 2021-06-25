@@ -25,7 +25,6 @@ import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
-import com.dfsek.terra.vector.LocationImpl;
 import com.dfsek.terra.vector.Vector3Impl;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -338,12 +337,8 @@ public final class BukkitAdapter {
         }
     }
 
-    public static Location adapt(com.dfsek.terra.api.vector.Location location) {
-        return new Location(((BukkitWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
-    }
-
-    public static LocationImpl adapt(Location location) {
-        return new LocationImpl(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+    public static Vector3 adapt(Location location) {
+        return new Vector3Impl(location.getX(), location.getY(), location.getZ());
     }
 
     public static Vector adapt(Vector3 vector3) {
