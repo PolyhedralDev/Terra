@@ -1,9 +1,7 @@
 package com.dfsek.terra.fabric.mixin.implementations.block;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.fabric.block.FabricBlock;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
@@ -35,10 +33,6 @@ public abstract class BlockEntityMixin {
     @Intrinsic
     public Object terra$getHandle() {
         return this;
-    }
-
-    public Block terra$getBlock() {
-        return new FabricBlock(pos, world);
     }
 
     public int terra$getX() {

@@ -81,21 +81,6 @@ public final class FabricAdapter {
         }
     }
 
-
-    public static com.dfsek.terra.api.block.state.BlockState adapt(com.dfsek.terra.api.block.Block block) {
-        WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();
-
-        BlockEntity entity = worldAccess.getBlockEntity(adapt(block.getLocation().toVector()));
-        if(entity instanceof SignBlockEntity) {
-            return (Sign) entity;
-        } else if(entity instanceof MobSpawnerBlockEntity) {
-            return (MobSpawner) entity;
-        } else if(entity instanceof LootableContainerBlockEntity) {
-            return (Container) entity;
-        }
-        return null;
-    }
-
     public static Stairs.Shape adapt(StairShape shape) {
         switch(shape) {
             case OUTER_RIGHT:

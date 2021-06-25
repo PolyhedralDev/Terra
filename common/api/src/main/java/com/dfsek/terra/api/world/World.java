@@ -50,14 +50,6 @@ public interface World extends Handle {
         return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
 
-    void setBlockState(int x, int y, int z, BlockState state);
-
-    default void setBlockState(Vector3 position, BlockState state) {
-        setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), state);
-    }
-
-
-
     Entity spawnEntity(Location location, EntityType entityType);
 
     int getMinHeight();

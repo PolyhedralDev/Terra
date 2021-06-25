@@ -128,9 +128,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private final PluginConfig config = new PluginConfigImpl();
 
-    private ProtoBiome parseBiome(String id) {
+    private ProtoBiome parseBiome(String id) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(BuiltinRegistries.BIOME.get(identifier) == null) return null; // failure.
+        if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier); // failure.
         return new ProtoBiome(identifier);
     }
 

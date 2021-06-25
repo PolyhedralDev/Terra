@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Location;
@@ -9,12 +9,18 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
-import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.util.FabricUtil;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.TickScheduler;
+import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -33,6 +39,12 @@ public abstract class ChunkRegionMixin {
     @Final
     private long seed;
 
+    @Shadow
+    public abstract boolean setBlockState(BlockPos pos, BlockState state, int flags, int maxUpdateDepth);
+
+    @Shadow
+    public abstract TickScheduler<Fluid> getFluidTickScheduler();
+
     public int terra$getMaxHeight() {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
     }
@@ -46,8 +58,8 @@ public abstract class ChunkRegionMixin {
         return (Chunk) ((ChunkRegion) (Object) this).getChunk(x, z);
     }
 
-    public Block terra$getBlockAt(int x, int y, int z) {
-        return new FabricBlock(new BlockPos(x, y, z), ((ChunkRegion) (Object) this));
+    public com.dfsek.terra.api.block.state.BlockState terra$getBlockState(int x, int y, int z) {
+        return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
 
     @SuppressWarnings("deprecation")
@@ -56,6 +68,18 @@ public abstract class ChunkRegionMixin {
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;
+    }
+
+    public BlockData terra$getBlockData(int x, int y, int z) {
+        return new FabricBlockData(((ChunkRegion) (Object) this).getBlockState(new BlockPos(x, y, z)));
+    }
+
+    public void terra$setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+        BlockPos pos = new BlockPos(x, y, z);
+        ((ChunkRegion) (Object) this).setBlockState(pos, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042);
+        if(physics && ((FabricBlockData) data).getHandle().getBlock() instanceof FluidBlock) {
+            getFluidTickScheduler().schedule(pos, ((FluidBlock) ((FabricBlockData) data).getHandle().getBlock()).getFluidState(((FabricBlockData) data).getHandle()).getFluid(), 0);
+        }
     }
 
     @Intrinsic

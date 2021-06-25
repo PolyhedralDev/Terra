@@ -1,7 +1,12 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.block.state.MobSpawner;
+import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
@@ -9,11 +14,17 @@ import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.mojang.serialization.Lifecycle;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -47,6 +58,7 @@ public final class FabricUtil {
         TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
 
         Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
+        System.out.println(new ArrayList<>(biome.getVanillaBiomes().getContents()));
         Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
@@ -129,5 +141,17 @@ public final class FabricUtil {
         } else {
             Registry.register(registry, identifier, item);
         }
+    }
+
+    public static BlockState createState(WorldAccess worldAccess, BlockPos pos) {
+        BlockEntity entity = worldAccess.getBlockEntity(pos);
+        if(entity instanceof SignBlockEntity) {
+            return (Sign) entity;
+        } else if(entity instanceof MobSpawnerBlockEntity) {
+            return (MobSpawner) entity;
+        } else if(entity instanceof LootableContainerBlockEntity) {
+            return (Container) entity;
+        }
+        return null;
     }
 }

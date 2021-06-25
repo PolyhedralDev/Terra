@@ -1,10 +1,8 @@
 package com.dfsek.terra.fabric.mixin.implementations.chunk;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.fabric.block.FabricBlock;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -35,16 +33,11 @@ public abstract class ChunkRegionMixin {
         return (World) this;
     }
 
-    public Block terra$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4));
-        return new FabricBlock(pos, (ChunkRegion) (Object) this);
-    }
-
     public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
-        return terra$getBlock(x, y, z).getBlockData();
+        return new FabricBlockData(((ChunkRegion) (Object) this).getBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4))));
     }
 
-    public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
+    public void terra$setBlockData(int x, int y, int z, @NotNull BlockData blockData, boolean physics) {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4)), ((FabricBlockData) blockData).getHandle(), 0);
     }
 

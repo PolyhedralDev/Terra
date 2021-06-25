@@ -52,11 +52,6 @@ public class DummyWorld implements World {
     }
 
     @Override
-    public void setBlockState(int x, int y, int z, BlockState state) {
-
-    }
-
-    @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
         throw new UnsupportedOperationException("Cannot spawn entity in DummyWorld");
     }

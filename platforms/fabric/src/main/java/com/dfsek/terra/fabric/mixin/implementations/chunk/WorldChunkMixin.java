@@ -1,14 +1,15 @@
 package com.dfsek.terra.fabric.mixin.implementations.chunk;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.fabric.block.FabricBlock;
 import com.dfsek.terra.fabric.block.FabricBlockData;
+import net.minecraft.block.BlockState;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -23,6 +24,13 @@ public abstract class WorldChunkMixin {
     @Shadow
     private net.minecraft.world.World world;
 
+    @Shadow
+    public abstract BlockState getBlockState(BlockPos pos);
+
+    @Shadow
+    @Nullable
+    public abstract BlockState setBlockState(BlockPos pos, BlockState state, boolean moved);
+
     public int terra$getX() {
         return ((net.minecraft.world.chunk.Chunk) this).getPos().x;
     }
@@ -35,13 +43,12 @@ public abstract class WorldChunkMixin {
         return (World) world;
     }
 
-    public Block terra$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (terra$getX() << 4), y, z + (terra$getZ() << 4));
-        return new FabricBlock(pos, world);
+    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+        return new FabricBlockData(getBlockState(new BlockPos(x, y, z)));
     }
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
-        return terra$getBlock(x, y, z).getBlockData();
+    public void terra$setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+        setBlockState(new BlockPos(x, y, z), ((FabricBlockData) data).getHandle(), false);
     }
 
     public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
