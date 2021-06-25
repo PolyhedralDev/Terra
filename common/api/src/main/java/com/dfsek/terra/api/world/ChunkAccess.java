@@ -27,5 +27,5 @@ public interface ChunkAccess extends Handle {
      * @param z the z location in the chunk from 0-15 inclusive
      * @return the data of the block or the BlockData for air if x, y or z are outside the chunk's bounds
      */
-    @NotNull BlockData getBlockData(int x, int y, int z);
+    @NotNull BlockData getBlock(int x, int y, int z);
 }

@@ -165,10 +165,10 @@ public class StructureScript implements Structure {
 
     @Override
     @SuppressWarnings("try")
-    public boolean generateDirect(Location location, Random random, Rotation rotation) {
+    public boolean generateDirect(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
-            DirectBuffer buffer = new DirectBuffer(location.toVector(), location.getWorld());
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, location.getWorld(), 0));
+            DirectBuffer buffer = new DirectBuffer(location, world);
+            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
         }
     }
 

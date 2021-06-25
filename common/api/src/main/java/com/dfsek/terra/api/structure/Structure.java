@@ -3,6 +3,7 @@ package com.dfsek.terra.api.structure;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 
@@ -29,7 +30,7 @@ public interface Structure {
     boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
 
     @SuppressWarnings("try")
-    boolean generateDirect(Location location, Random random, Rotation rotation);
+    boolean generateDirect(Vector3 location, World world, Random random, Rotation rotation);
 
     String getId();
 }

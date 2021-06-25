@@ -42,7 +42,7 @@ public class BiomeFunction implements Function<String> {
 
         BiomeProvider grid = main.getWorld(arguments.getWorld()).getBiomeProvider();
 
-        return ((UserDefinedBiome) grid.getBiome(arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ()))))).getID();
+        return grid.getBiome(arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())))).getID();
     }
 
 

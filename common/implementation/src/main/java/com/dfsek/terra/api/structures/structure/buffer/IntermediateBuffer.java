@@ -28,7 +28,7 @@ public class IntermediateBuffer implements Buffer {
 
     @Override
     public Buffer addItem(BufferedItem item, Vector3 location) {
-        return original.addItem(item, location.add(offset));
+        return original.addItem(item, location.clone().add(offset));
     }
 
     @Override
@@ -38,12 +38,12 @@ public class IntermediateBuffer implements Buffer {
 
     @Override
     public String getMark(Vector3 location) {
-        return original.getMark(location.add(offset));
+        return original.getMark(location.clone().add(offset));
     }
 
     @Override
     public Buffer setMark(String mark, Vector3 location) {
-        original.setMark(mark, location.add(offset));
+        original.setMark(mark, location.clone().add(offset));
         return this;
     }
 }

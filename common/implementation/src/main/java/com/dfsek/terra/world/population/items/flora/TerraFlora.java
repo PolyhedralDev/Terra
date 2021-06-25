@@ -67,7 +67,7 @@ public class TerraFlora implements Flora {
         for(int y : range) {
             if(y > 255 || y < 0) continue;
             current = current.add(0, search.equals(Search.UP) ? 1 : -1, 0);
-            if((spawnBlacklist != spawnable.contains(chunk.getBlockData(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getBlockType())) && isIrrigated(current.add(0, irrigableOffset, 0), chunk) && valid(size, current.clone(), chunk)) {
+            if((spawnBlacklist != spawnable.contains(chunk.getBlock(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getBlockType())) && isIrrigated(current.add(0, irrigableOffset, 0), chunk) && valid(size, current.clone(), chunk)) {
                 blocks.add(current.clone());
                 if(maxPlacements > 0 && blocks.size() >= maxPlacements) break;
             }
@@ -79,17 +79,17 @@ public class TerraFlora implements Flora {
         for(int i = 0; i < size; i++) { // Down if ceiling, up if floor
             if(block.getY() + 1 > 255 || block.getY() < 0) return false;
             block.add(0, ceiling ? -1 : 1, 0);
-            if(!replaceable.contains(chunk.getBlockData(block.getBlockX(), block.getBlockY(), block.getBlockZ()).getBlockType())) return false;
+            if(!replaceable.contains(chunk.getBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ()).getBlockType())) return false;
         }
         return true;
     }
 
     private boolean isIrrigated(Vector3 b, Chunk chunk) {
         if(irrigable == null) return true;
-        return irrigable.contains(chunk.getBlockData(b.getBlockX()+1, b.getBlockY(), b.getBlockZ()).getBlockType())
-                || irrigable.contains(chunk.getBlockData(b.getBlockX()-1, b.getBlockY(), b.getBlockZ()).getBlockType())
-                || irrigable.contains(chunk.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ()+1).getBlockType())
-                || irrigable.contains(chunk.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ()-1).getBlockType());
+        return irrigable.contains(chunk.getBlock(b.getBlockX()+1, b.getBlockY(), b.getBlockZ()).getBlockType())
+                || irrigable.contains(chunk.getBlock(b.getBlockX()-1, b.getBlockY(), b.getBlockZ()).getBlockType())
+                || irrigable.contains(chunk.getBlock(b.getBlockX(), b.getBlockY(), b.getBlockZ()+1).getBlockType())
+                || irrigable.contains(chunk.getBlock(b.getBlockX(), b.getBlockY(), b.getBlockZ()-1).getBlockType());
     }
 
 

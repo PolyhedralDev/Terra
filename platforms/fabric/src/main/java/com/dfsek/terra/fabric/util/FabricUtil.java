@@ -58,7 +58,6 @@ public final class FabricUtil {
         TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
 
         Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-        System.out.println(new ArrayList<>(biome.getVanillaBiomes().getContents()));
         Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();

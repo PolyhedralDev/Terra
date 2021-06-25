@@ -44,7 +44,7 @@ public class BukkitChunkGenerator implements com.dfsek.terra.api.world.generator
 
 
         @Override
-        public @NotNull BlockData getBlockData(int x, int y, int z) {
+        public @NotNull BlockData getBlock(int x, int y, int z) {
             return BukkitBlockData.newInstance(delegate.getBlockData(x, y, z));
         }
     }

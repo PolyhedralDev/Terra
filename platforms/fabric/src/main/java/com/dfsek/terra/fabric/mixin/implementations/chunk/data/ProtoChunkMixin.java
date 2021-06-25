@@ -19,7 +19,7 @@ public abstract class ProtoChunkMixin {
     @Shadow
     public abstract BlockState getBlockState(BlockPos pos);
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull BlockData terra$getBlock(int x, int y, int z) {
         return new FabricBlockData(getBlockState(new BlockPos(x, y, z)));
     }
 

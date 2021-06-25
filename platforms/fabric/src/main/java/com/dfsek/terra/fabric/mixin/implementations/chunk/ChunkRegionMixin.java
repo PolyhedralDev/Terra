@@ -11,33 +11,35 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = Chunk.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Chunk.class, prefix = "terraChunk$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     @Final
     @Shadow
     private ChunkPos centerPos;
 
-    public int terra$getX() {
+    public int terraChunk$getX() {
         return centerPos.x;
     }
 
-    public int terra$getZ() {
+    public int terraChunk$getZ() {
         return centerPos.z;
     }
 
-    public World terra$getWorld() {
+    public World terraChunk$getWorld() {
         return (World) this;
     }
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull BlockData terraChunk$getBlock(int x, int y, int z) {
         return new FabricBlockData(((ChunkRegion) (Object) this).getBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4))));
     }
 
-    public void terra$setBlockData(int x, int y, int z, @NotNull BlockData blockData, boolean physics) {
+    public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockData blockData, boolean physics) {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4)), ((FabricBlockData) blockData).getHandle(), 0);
     }
 

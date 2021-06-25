@@ -7,7 +7,6 @@ import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
-import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -19,10 +18,8 @@ import com.dfsek.terra.config.templates.CarverTemplate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class CavePopulator implements TerraBlockPopulator, Chunkified {
     private static final Map<BlockType, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
@@ -49,30 +46,30 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                 Map<Vector3, BlockData> shiftCandidate = new HashMap<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
-                        BlockData m = chunk.getBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ());
+                        BlockData m = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                         BlockType re = m.getBlockType();
                         switch(type) {
                             case CENTER:
                                 if(template.getInner().canReplace(re)) {
-                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getInner().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    chunk.setBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getInner().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
                                     if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                             case WALL:
                                 if(template.getOuter().canReplace(re)) {
-                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getOuter().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    chunk.setBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getOuter().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
                                     if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                             case TOP:
                                 if(template.getTop().canReplace(re)) {
-                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getTop().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    chunk.setBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getTop().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
                                     if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
                             case BOTTOM:
                                 if(template.getBottom().canReplace(re)) {
-                                    chunk.setBlockData(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getBottom().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
+                                    chunk.setBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ(), template.getBottom().get(v.getBlockY()).get(random), template.getUpdate().contains(re));
                                     if(template.getShift().containsKey(re)) shiftCandidate.put(v, m);
                                 }
                                 break;
@@ -82,12 +79,12 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                 for(Map.Entry<Vector3, BlockData> entry : shiftCandidate.entrySet()) {
                     Vector3 l = entry.getKey();
                     Vector3 mut = l.clone();
-                    BlockData orig = chunk.getBlockData(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+                    BlockData orig = chunk.getBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ());
                     do mut.subtract(0, 1, 0);
-                    while(mut.getY() > world.getMinHeight() && chunk.getBlockData(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).matches(orig));
+                    while(mut.getY() > world.getMinHeight() && chunk.getBlock(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).matches(orig));
                     try {
-                        if(template.getShift().get(entry.getValue().getBlockType()).contains(chunk.getBlockData(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).getBlockType())) {
-                            chunk.setBlockData(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ(), shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
+                        if(template.getShift().get(entry.getValue().getBlockType()).contains(chunk.getBlock(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).getBlockType())) {
+                            chunk.setBlock(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ(), shiftStorage.computeIfAbsent(entry.getValue().getBlockType(), BlockType::getDefaultData), false);
                         }
                     } catch(NullPointerException ignored) {
                     }

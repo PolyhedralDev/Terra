@@ -24,8 +24,8 @@ public class TreeLayer extends PlaceableLayer<Tree> {
         Vector3 running = coords.extrude(level.getMax());
         for(int ignored : level) {
             running.subtract(0,1,0);
-            if(item.getSpawnable().contains(chunk.getBlockData(running.getBlockX(), running.getBlockY(), running.getBlockZ()).getBlockType())) {
-                item.plant(running.toLocation(chunk.getWorld()).add(cx, 1, cz), PopulationUtil.getRandom(chunk, coords.hashCode()));
+            if(item.getSpawnable().contains(chunk.getBlock(running.getBlockX(), running.getBlockY(), running.getBlockZ()).getBlockType())) {
+                item.plant(running.clone().add(cx, 1, cz), chunk.getWorld(), PopulationUtil.getRandom(chunk, coords.hashCode()));
             }
         }
     }

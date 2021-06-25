@@ -54,7 +54,7 @@ public class CommonListener implements Listener {
         block.setType(Material.AIR);
         Tree tree = c.getRegistry(Tree.class).get(TREE_TYPE_STRING_TRANSFORMER.translate(e.getSpecies()));
         org.bukkit.Location location = e.getLocation();
-        if(!tree.plant(new LocationImpl(bukkit, location.getX(), location.getY(), location.getZ()), new FastRandom()))
+        if(!tree.plant(new LocationImpl(bukkit, location.getX(), location.getY(), location.getZ()), , new FastRandom()))
             block.setBlockData(data);
     }
 }

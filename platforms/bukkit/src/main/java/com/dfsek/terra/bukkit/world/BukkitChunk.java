@@ -45,7 +45,7 @@ public class BukkitChunk implements Chunk {
     }
 
     @Override
-    public @NotNull BlockData getBlockData(int x, int y, int z) {
+    public @NotNull BlockData getBlock(int x, int y, int z) {
         return getBlock(x, y, z).getBlockData();
     }
 }

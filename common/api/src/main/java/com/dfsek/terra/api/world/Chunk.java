@@ -9,11 +9,11 @@ public interface Chunk extends ChunkAccess {
 
     World getWorld();
 
-    BlockData getBlockData(int x, int y, int z);
+    BlockData getBlock(int x, int y, int z);
 
-    void setBlockData(int x, int y, int z, BlockData data, boolean physics);
+    void setBlock(int x, int y, int z, BlockData data, boolean physics);
 
-    default void setBlockData(int x, int y, int z, BlockData data) {
-        setBlockData(x, y, z, data, false);
+    default void setBlock(int x, int y, int z, BlockData data) {
+        setBlock(x, y, z, data, false);
     }
 }

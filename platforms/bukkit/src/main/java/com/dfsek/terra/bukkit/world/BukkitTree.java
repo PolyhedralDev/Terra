@@ -4,8 +4,9 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
+import com.dfsek.terra.api.world.World;
 import org.bukkit.TreeType;
 
 import java.util.Locale;
@@ -43,7 +44,7 @@ public class BukkitTree implements Tree {
 
     @Override
     @SuppressWarnings("try")
-    public boolean plant(Location l, Random r) {
+    public boolean plant(Vector3 l, World world, Random r) {
         try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
             return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
         }

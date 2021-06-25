@@ -43,11 +43,11 @@ public abstract class WorldChunkMixin {
         return (World) world;
     }
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull BlockData terra$getBlock(int x, int y, int z) {
         return new FabricBlockData(getBlockState(new BlockPos(x, y, z)));
     }
 
-    public void terra$setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+    public void terra$setBlock(int x, int y, int z, BlockData data, boolean physics) {
         setBlockState(new BlockPos(x, y, z), ((FabricBlockData) data).getHandle(), false);
     }
 
