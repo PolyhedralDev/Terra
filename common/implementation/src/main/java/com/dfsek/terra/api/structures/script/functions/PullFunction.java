@@ -42,7 +42,7 @@ public class PullFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         BlockData rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
+        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

@@ -4,6 +4,7 @@ import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 
 import java.util.Random;
 
@@ -25,7 +26,7 @@ public interface Structure {
     boolean test(Location location, Random random, Rotation rotation);
 
     @SuppressWarnings("try")
-    boolean generate(Buffer buffer, Random random, Rotation rotation, int recursions);
+    boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
 
     @SuppressWarnings("try")
     boolean generateDirect(Location location, Random random, Rotation rotation);

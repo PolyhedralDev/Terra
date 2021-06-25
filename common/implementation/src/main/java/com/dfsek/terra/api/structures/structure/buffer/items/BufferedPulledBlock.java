@@ -4,6 +4,7 @@ import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 
 public class BufferedPulledBlock implements BufferedItem {
     private final BlockData data;
@@ -13,11 +14,11 @@ public class BufferedPulledBlock implements BufferedItem {
     }
 
     @Override
-    public void paste(Location origin) {
-        Vector3 mutable = origin.toVector();
-        while(mutable.getY() > origin.getWorld().getMinHeight()) {
-            if(!origin.getWorld().getBlockData(mutable).isAir()) {
-                origin.getWorld().setBlockData(mutable, data);
+    public void paste(Vector3 origin, World world) {
+        Vector3 mutable = origin.clone();
+        while(mutable.getY() > world.getMinHeight()) {
+            if(!world.getBlockData(mutable).isAir()) {
+                world.setBlockData(mutable, data);
                 break;
             }
             mutable.subtract(0, 1, 0);

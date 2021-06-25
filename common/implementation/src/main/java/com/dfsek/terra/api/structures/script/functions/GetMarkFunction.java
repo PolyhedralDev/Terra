@@ -31,7 +31,7 @@ public class GetMarkFunction implements Function<String> {
         Vector2 xz = new Vector2Impl(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
-        String mark = arguments.getBuffer().getMark(new Vector3Impl(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
+        String mark = arguments.getBuffer().getMark(new Vector3Impl(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
         return mark == null ? "" : mark;
     }
 

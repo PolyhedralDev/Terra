@@ -9,6 +9,8 @@ import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 
 public class BufferedLootApplication implements BufferedItem {
     private final LootTable table;
@@ -22,16 +24,16 @@ public class BufferedLootApplication implements BufferedItem {
     }
 
     @Override
-    public void paste(Location origin) {
+    public void paste(Vector3 origin, World world) {
         try {
-            BlockState data = origin.getWorld().getBlockState(origin.getVector());
+            BlockState data = world.getBlockState(origin);
             if(!(data instanceof Container)) {
                 main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
                 return;
             }
             Container container = (Container) data;
 
-            LootPopulateEvent event = new LootPopulateEvent(container, table, origin.getWorld().getTerraGenerator().getConfigPack(), structure);
+            LootPopulateEvent event = new LootPopulateEvent(container, table, world.getTerraGenerator().getConfigPack(), structure);
             main.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
 

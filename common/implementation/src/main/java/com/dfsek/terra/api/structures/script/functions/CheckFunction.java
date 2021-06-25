@@ -10,6 +10,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Location;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
@@ -47,12 +48,12 @@ public class CheckFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Location location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        Vector3 location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
-        return apply(location, arguments.getBuffer().getOrigin().getWorld());
+        return apply(location, arguments.getWorld());
     }
 
-    private String apply(Location vector, World world) {
+    private String apply(Vector3 vector, World world) {
         TerraWorld tw = main.getWorld(world);
         SamplerCache cache = tw.getConfig().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);

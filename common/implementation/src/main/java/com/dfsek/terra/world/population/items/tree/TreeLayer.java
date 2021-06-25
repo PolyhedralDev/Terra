@@ -1,6 +1,5 @@
 package com.dfsek.terra.world.population.items.tree;
 
-import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.ProbabilityCollection;
@@ -19,12 +18,14 @@ public class TreeLayer extends PlaceableLayer<Tree> {
 
     @Override
     public void place(Chunk chunk, Vector2 coords) {
-        Tree item = layer.get(noise, coords.getX(), coords.getZ());
+        int cx = chunk.getX() << 4;
+        int cz = chunk.getZ() << 4;
+        Tree item = layer.get(noise, coords.getX() + cx, coords.getZ() + cz);
         Vector3 running = coords.extrude(level.getMax());
         for(int ignored : level) {
             running.subtract(0,1,0);
             if(item.getSpawnable().contains(chunk.getBlockData(running.getBlockX(), running.getBlockY(), running.getBlockZ()).getBlockType())) {
-                item.plant(running.toLocation(chunk.getWorld()).add(0, 1, 0), PopulationUtil.getRandom(chunk, coords.hashCode()));
+                item.plant(running.toLocation(chunk.getWorld()).add(cx, 1, cz), PopulationUtil.getRandom(chunk, coords.hashCode()));
             }
         }
     }

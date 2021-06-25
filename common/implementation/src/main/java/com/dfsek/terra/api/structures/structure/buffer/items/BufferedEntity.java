@@ -6,6 +6,8 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 
 public class BufferedEntity implements BufferedItem {
 
@@ -18,8 +20,8 @@ public class BufferedEntity implements BufferedItem {
     }
 
     @Override
-    public void paste(Location origin) {
-        Entity entity = origin.clone().add(0.5, 0, 0.5).getWorld().spawnEntity(origin, type);
+    public void paste(Vector3 origin, World world) {
+        Entity entity = world.spawnEntity(origin.clone().add(0.5, 0, 0.5).toLocation(world), type);
         main.getEventManager().callEvent(new EntitySpawnEvent(entity.world().getTerraGenerator().getConfigPack(), entity));
     }
 }

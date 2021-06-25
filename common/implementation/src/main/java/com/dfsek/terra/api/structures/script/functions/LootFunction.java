@@ -53,7 +53,7 @@ public class LootFunction implements Function<Void> {
             return null;
         }
 
-        arguments.getBuffer().addItem(new BufferedLootApplication(table, main, script), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
+        arguments.getBuffer().addItem(new BufferedLootApplication(table, main, script), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

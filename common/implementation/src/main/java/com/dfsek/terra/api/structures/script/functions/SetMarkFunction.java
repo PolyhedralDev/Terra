@@ -34,7 +34,7 @@ public class SetMarkFunction implements Function<Void> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().setMark(mark.apply(implementationArguments, variableMap), new Vector3Impl(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())).toLocation(arguments.getBuffer().getOrigin().getWorld()));
+        arguments.getBuffer().setMark(mark.apply(implementationArguments, variableMap), new Vector3Impl(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
         return null;
     }
 

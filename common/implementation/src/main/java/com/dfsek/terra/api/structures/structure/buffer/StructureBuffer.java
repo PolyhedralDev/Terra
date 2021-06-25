@@ -3,42 +3,44 @@ package com.dfsek.terra.api.structures.structure.buffer;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.vector.Location;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import net.jafama.FastMath;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StructureBuffer implements Buffer {
-    private final Map<Location, Cell> bufferedItemMap = new LinkedHashMap<>();
-    private final Location origin;
+    private final Map<Vector3, Cell> bufferedItemMap = new LinkedHashMap<>();
+    private final Vector3 origin;
     private boolean succeeded;
 
-    public StructureBuffer(Location origin) {
+    public StructureBuffer(Vector3 origin) {
         this.origin = origin;
     }
 
-    public void paste() {
-        bufferedItemMap.forEach(((vector3, item) -> item.paste(origin.clone().add(vector3))));
+    public void paste(Vector3 origin, World world) {
+        bufferedItemMap.forEach(((vector3, item) -> item.paste(origin.clone().add(vector3), world)));
     }
 
-    public void paste(Chunk chunk) {
+    public void paste(Vector3 origin, Chunk chunk) {
         bufferedItemMap.forEach(((location, item) -> {
-            Location current = origin.clone().add(location);
+            Vector3 current = origin.clone().add(location);
             if(FastMath.floorDiv(current.getBlockX(), 16) != chunk.getX() || FastMath.floorDiv(current.getBlockZ(), 16) != chunk.getZ())
                 return;
-            item.paste(chunk, current);
+            item.paste(current, chunk.getWorld());
         }));
     }
 
     @Override
-    public Buffer addItem(BufferedItem item, Location location) {
+    public Buffer addItem(BufferedItem item, Vector3 location) {
         bufferedItemMap.computeIfAbsent(location, l -> new Cell()).add(item);
         return this;
     }
 
     @Override
-    public String getMark(Location location) {
+    public String getMark(Vector3 location) {
         Cell cell = bufferedItemMap.get(location);
         if(cell != null) {
             return cell.getMark();
@@ -47,7 +49,7 @@ public class StructureBuffer implements Buffer {
     }
 
     @Override
-    public Buffer setMark(String mark, Location location) {
+    public Buffer setMark(String mark, Vector3 location) {
         bufferedItemMap.computeIfAbsent(location, l -> new Cell()).setMark(mark);
         return this;
     }
@@ -61,7 +63,7 @@ public class StructureBuffer implements Buffer {
     }
 
     @Override
-    public Location getOrigin() {
+    public Vector3 getOrigin() {
         return origin.clone();
     }
 }
