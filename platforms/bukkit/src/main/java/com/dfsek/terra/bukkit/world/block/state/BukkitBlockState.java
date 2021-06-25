@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.bukkit.world.block.BukkitBlock;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import org.bukkit.block.Container;
 import org.bukkit.block.CreatureSpawner;
@@ -29,8 +29,8 @@ public class BukkitBlockState implements BlockState {
     }
 
     @Override
-    public Block getBlock() {
-        return new BukkitBlock(delegate.getBlock());
+    public Vector3 getPosition() {
+        return BukkitAdapter.adapt(delegate.getBlock().getLocation().toVector());
     }
 
     @Override

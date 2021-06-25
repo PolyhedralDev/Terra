@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.block.Block;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Location;
@@ -9,7 +10,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
-import com.dfsek.terra.bukkit.world.block.BukkitBlock;
+import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 import java.io.File;
@@ -54,13 +55,23 @@ public class BukkitWorld implements World {
         return BukkitAdapter.adapt(delegate.getChunkAt(x, z));
     }
 
-    public File getWorldFolder() {
-        return delegate.getWorldFolder();
+    @Override
+    public BlockData getBlockData(int x, int y, int z) {
+        return BukkitAdapter.adapt(delegate.getBlockAt(x, y, z).getBlockData());
     }
 
     @Override
-    public Block getBlockAt(int x, int y, int z) {
-        return new BukkitBlock(delegate.getBlockAt(x, y, z));
+    public void setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+        delegate.getBlockAt(x, y, z).setBlockData(BukkitAdapter.adapt(data), physics);
+    }
+
+    @Override
+    public BlockState getBlockState(int x, int y, int z) {
+        return BukkitBlockState.newInstance(delegate.getBlockAt(x, y, z).getState());
+    }
+
+    public File getWorldFolder() {
+        return delegate.getWorldFolder();
     }
 
     @Override

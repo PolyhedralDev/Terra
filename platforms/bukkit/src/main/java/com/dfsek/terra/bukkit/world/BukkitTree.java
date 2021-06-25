@@ -46,7 +46,7 @@ public class BukkitTree implements Tree {
     @SuppressWarnings("try")
     public boolean plant(Vector3 l, World world, Random r) {
         try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
-            return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
+            return BukkitAdapter.adapt(world).generateTree(BukkitAdapter.adapt(l).toLocation(BukkitAdapter.adapt(world)), delegate);
         }
     }
 
