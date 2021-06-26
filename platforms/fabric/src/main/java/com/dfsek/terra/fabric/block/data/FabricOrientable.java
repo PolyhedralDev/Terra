@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.block.data;
 
-import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.data.properties.enums.Axis;
 import com.dfsek.terra.api.block.data.Orientable;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;

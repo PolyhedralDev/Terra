@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.block.data.Rail;
+import com.dfsek.terra.api.block.data.properties.enums.RailShape;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitRail extends BukkitBlockState implements Rail {
@@ -9,12 +10,12 @@ public class BukkitRail extends BukkitBlockState implements Rail {
     }
 
     @Override
-    public Shape getShape() {
+    public RailShape getShape() {
         return BukkitAdapter.adapt(((org.bukkit.block.data.Rail) getHandle()).getShape());
     }
 
     @Override
-    public void setShape(Shape newShape) {
+    public void setShape(RailShape newShape) {
         ((org.bukkit.block.data.Rail) getHandle()).setShape(BukkitAdapter.adapt(newShape));
     }
 }

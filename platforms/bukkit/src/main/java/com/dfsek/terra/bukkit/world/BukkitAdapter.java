@@ -1,12 +1,12 @@
 package com.dfsek.terra.bukkit.world;
 
 
-import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.data.properties.enums.RailShape;
+import com.dfsek.terra.api.block.data.properties.enums.Axis;
 import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.data.Bisected;
-import com.dfsek.terra.api.block.data.Rail;
 import com.dfsek.terra.api.block.data.RedstoneWire;
 import com.dfsek.terra.api.block.data.Slab;
 import com.dfsek.terra.api.block.data.Stairs;
@@ -200,34 +200,34 @@ public final class BukkitAdapter {
         }
     }
 
-    public static Rail.Shape adapt(org.bukkit.block.data.Rail.Shape shape) {
+    public static RailShape adapt(org.bukkit.block.data.Rail.Shape shape) {
         switch(shape) {
             case SOUTH_WEST:
-                return Rail.Shape.SOUTH_WEST;
+                return RailShape.SOUTH_WEST;
             case SOUTH_EAST:
-                return Rail.Shape.SOUTH_EAST;
+                return RailShape.SOUTH_EAST;
             case NORTH_EAST:
-                return Rail.Shape.NORTH_EAST;
+                return RailShape.NORTH_EAST;
             case NORTH_WEST:
-                return Rail.Shape.NORTH_WEST;
+                return RailShape.NORTH_WEST;
             case ASCENDING_EAST:
-                return Rail.Shape.ASCENDING_EAST;
+                return RailShape.ASCENDING_EAST;
             case ASCENDING_WEST:
-                return Rail.Shape.ASCENDING_WEST;
+                return RailShape.ASCENDING_WEST;
             case ASCENDING_SOUTH:
-                return Rail.Shape.ASCENDING_SOUTH;
+                return RailShape.ASCENDING_SOUTH;
             case ASCENDING_NORTH:
-                return Rail.Shape.ASCENDING_NORTH;
+                return RailShape.ASCENDING_NORTH;
             case NORTH_SOUTH:
-                return Rail.Shape.NORTH_SOUTH;
+                return RailShape.NORTH_SOUTH;
             case EAST_WEST:
-                return Rail.Shape.EAST_WEST;
+                return RailShape.EAST_WEST;
             default:
                 throw new IllegalStateException();
         }
     }
 
-    public static org.bukkit.block.data.Rail.Shape adapt(Rail.Shape shape) {
+    public static org.bukkit.block.data.Rail.Shape adapt(RailShape shape) {
         switch(shape) {
             case EAST_WEST:
                 return org.bukkit.block.data.Rail.Shape.EAST_WEST;

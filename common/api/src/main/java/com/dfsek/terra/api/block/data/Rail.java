@@ -1,22 +1,11 @@
 package com.dfsek.terra.api.block.data;
 
 import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.data.properties.enums.RailShape;
 
 public interface Rail extends BlockState {
-    Shape getShape();
+    RailShape getShape();
 
-    void setShape(Shape newShape);
+    void setShape(RailShape newShape);
 
-    enum Shape {
-        ASCENDING_EAST,
-        ASCENDING_NORTH,
-        ASCENDING_SOUTH,
-        ASCENDING_WEST,
-        EAST_WEST,
-        NORTH_EAST,
-        NORTH_SOUTH,
-        NORTH_WEST,
-        SOUTH_EAST,
-        SOUTH_WEST
-    }
 }

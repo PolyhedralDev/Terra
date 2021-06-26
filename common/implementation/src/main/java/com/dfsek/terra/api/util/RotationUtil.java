@@ -1,6 +1,7 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.data.properties.enums.RailShape;
+import com.dfsek.terra.api.block.data.properties.enums.Axis;
 import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
@@ -174,76 +175,76 @@ public class RotationUtil {
      * @return Rotated/mirrored shape
      */
     @SuppressWarnings("fallthrough")
-    public static Rail.Shape getRotatedRail(Rail.Shape orig, Rotation r) {
+    public static RailShape getRotatedRail(RailShape orig, Rotation r) {
         switch(r) {
             case CCW_90:
                 switch(orig) {
                     case NORTH_WEST:
-                        return Rail.Shape.SOUTH_WEST;
+                        return RailShape.SOUTH_WEST;
                     case NORTH_SOUTH:
-                        return Rail.Shape.EAST_WEST;
+                        return RailShape.EAST_WEST;
                     case SOUTH_WEST:
-                        return Rail.Shape.SOUTH_EAST;
+                        return RailShape.SOUTH_EAST;
                     case SOUTH_EAST:
-                        return Rail.Shape.NORTH_EAST;
+                        return RailShape.NORTH_EAST;
                     case EAST_WEST:
-                        return Rail.Shape.NORTH_SOUTH;
+                        return RailShape.NORTH_SOUTH;
                     case NORTH_EAST:
-                        return Rail.Shape.NORTH_WEST;
+                        return RailShape.NORTH_WEST;
                     case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_NORTH;
+                        return RailShape.ASCENDING_NORTH;
                     case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_SOUTH;
+                        return RailShape.ASCENDING_SOUTH;
                     case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_WEST;
+                        return RailShape.ASCENDING_WEST;
                     case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_EAST;
+                        return RailShape.ASCENDING_EAST;
                 }
             case CW_90:
                 switch(orig) {
                     case NORTH_WEST:
-                        return Rail.Shape.NORTH_EAST;
+                        return RailShape.NORTH_EAST;
                     case NORTH_SOUTH:
-                        return Rail.Shape.EAST_WEST;
+                        return RailShape.EAST_WEST;
                     case SOUTH_WEST:
-                        return Rail.Shape.NORTH_WEST;
+                        return RailShape.NORTH_WEST;
                     case SOUTH_EAST:
-                        return Rail.Shape.SOUTH_WEST;
+                        return RailShape.SOUTH_WEST;
                     case EAST_WEST:
-                        return Rail.Shape.NORTH_SOUTH;
+                        return RailShape.NORTH_SOUTH;
                     case NORTH_EAST:
-                        return Rail.Shape.SOUTH_EAST;
+                        return RailShape.SOUTH_EAST;
                     case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_SOUTH;
+                        return RailShape.ASCENDING_SOUTH;
                     case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_NORTH;
+                        return RailShape.ASCENDING_NORTH;
                     case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_EAST;
+                        return RailShape.ASCENDING_EAST;
                     case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_WEST;
+                        return RailShape.ASCENDING_WEST;
                 }
             case CW_180:
                 switch(orig) {
                     case NORTH_WEST:
-                        return Rail.Shape.SOUTH_EAST;
+                        return RailShape.SOUTH_EAST;
                     case NORTH_SOUTH:
-                        return Rail.Shape.NORTH_SOUTH;
+                        return RailShape.NORTH_SOUTH;
                     case SOUTH_WEST:
-                        return Rail.Shape.NORTH_EAST;
+                        return RailShape.NORTH_EAST;
                     case SOUTH_EAST:
-                        return Rail.Shape.NORTH_WEST;
+                        return RailShape.NORTH_WEST;
                     case EAST_WEST:
-                        return Rail.Shape.EAST_WEST;
+                        return RailShape.EAST_WEST;
                     case NORTH_EAST:
-                        return Rail.Shape.SOUTH_WEST;
+                        return RailShape.SOUTH_WEST;
                     case ASCENDING_EAST:
-                        return Rail.Shape.ASCENDING_WEST;
+                        return RailShape.ASCENDING_WEST;
                     case ASCENDING_WEST:
-                        return Rail.Shape.ASCENDING_EAST;
+                        return RailShape.ASCENDING_EAST;
                     case ASCENDING_NORTH:
-                        return Rail.Shape.ASCENDING_SOUTH;
+                        return RailShape.ASCENDING_SOUTH;
                     case ASCENDING_SOUTH:
-                        return Rail.Shape.ASCENDING_NORTH;
+                        return RailShape.ASCENDING_NORTH;
                 }
         }
         return orig;
@@ -266,7 +267,7 @@ public class RotationUtil {
                 mfData.setFace(getRotatedFace(face.getKey(), r), face.getValue());
             }
         } else if(data instanceof Rail) {
-            Rail.Shape newShape = getRotatedRail(((Rail) data).getShape(), r);
+            RailShape newShape = getRotatedRail(((Rail) data).getShape(), r);
             ((Rail) data).setShape(newShape);
         } else if(data instanceof Orientable) {
             Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);

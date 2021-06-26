@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.data.properties.enums.Axis;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Bisected;
 import com.dfsek.terra.api.block.data.Slab;
