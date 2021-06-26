@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.block.state;
+package com.dfsek.terra.api.block.entity;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.block.state.SerialState;
-import com.dfsek.terra.api.block.state.Sign;
+import com.dfsek.terra.api.block.entity.SerialState;
+import com.dfsek.terra.api.block.entity.Sign;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")

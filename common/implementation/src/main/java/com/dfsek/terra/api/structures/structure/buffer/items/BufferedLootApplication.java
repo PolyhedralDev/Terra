@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.state.BlockEntity;
-import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;

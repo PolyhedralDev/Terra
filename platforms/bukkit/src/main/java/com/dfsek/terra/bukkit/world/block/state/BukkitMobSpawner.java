@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.block.state.MobSpawner;
-import com.dfsek.terra.api.block.state.SerialState;
+import com.dfsek.terra.api.block.entity.MobSpawner;
+import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 import org.bukkit.block.CreatureSpawner;

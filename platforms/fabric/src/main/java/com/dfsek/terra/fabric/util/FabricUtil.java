@@ -1,9 +1,9 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.state.BlockEntity;
-import com.dfsek.terra.api.block.state.Container;
-import com.dfsek.terra.api.block.state.MobSpawner;
-import com.dfsek.terra.api.block.state.Sign;
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.entity.Container;
+import com.dfsek.terra.api.block.entity.MobSpawner;
+import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.config.builder.BiomeBuilder;

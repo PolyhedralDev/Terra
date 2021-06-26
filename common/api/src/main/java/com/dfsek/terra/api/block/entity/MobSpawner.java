@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.block.state;
+package com.dfsek.terra.api.block.entity;
 
 import com.dfsek.terra.api.entity.EntityType;
 import org.jetbrains.annotations.NotNull;

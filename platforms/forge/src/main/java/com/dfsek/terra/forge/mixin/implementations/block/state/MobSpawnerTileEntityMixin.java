@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.block.state.MobSpawner;
-import com.dfsek.terra.api.block.state.SerialState;
+import com.dfsek.terra.api.block.entity.MobSpawner;
+import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.forge.TerraForgePlugin;
 import com.dfsek.terra.forge.mixin.access.AbstractSpawnerAccessor;
