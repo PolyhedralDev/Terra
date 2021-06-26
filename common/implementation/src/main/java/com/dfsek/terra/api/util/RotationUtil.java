@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.util;
 
 import com.dfsek.terra.api.block.Axis;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
 import com.dfsek.terra.api.block.data.MultipleFacing;
@@ -249,7 +249,7 @@ public class RotationUtil {
         return orig;
     }
 
-    public static void rotateBlockData(BlockData data, Rotation r) {
+    public static void rotateBlockData(BlockState data, Rotation r) {
         if(data instanceof Rotatable) {
             BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
             ((Rotatable) data).setRotation(rt);

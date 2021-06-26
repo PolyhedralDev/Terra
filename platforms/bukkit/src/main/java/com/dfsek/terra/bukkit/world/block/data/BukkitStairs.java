@@ -4,7 +4,7 @@ import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Stairs;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
-public class BukkitStairs extends BukkitBlockData implements Stairs {
+public class BukkitStairs extends BukkitBlockState implements Stairs {
 
     public BukkitStairs(org.bukkit.block.data.type.Stairs delegate) {
         super(delegate);

@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
@@ -177,7 +177,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         int height = world.getWorld().getMaxHeight();
-        while(height >= world.getWorld().getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockData) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+        while(height >= world.getWorld().getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockState) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
             height--;
         }
         return height;
@@ -188,7 +188,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
-            array[y] = ((FabricBlockData) world.getUngeneratedBlock(x, y, z)).getHandle();
+            array[y] = ((FabricBlockState) world.getUngeneratedBlock(x, y, z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }

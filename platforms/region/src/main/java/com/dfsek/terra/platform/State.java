@@ -1,14 +1,14 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import net.querz.nbt.tag.CompoundTag;
 
-public class Data implements BlockData, BlockType {
+public class State implements BlockState, BlockType {
     private final CompoundTag data;
     private final String noProp;
 
-    public Data(String data) {
+    public State(String data) {
         this.data = new CompoundTag();
         if(data.contains("[")) {
             noProp = data.substring(0, data.indexOf('[')); // Strip properties
@@ -26,7 +26,7 @@ public class Data implements BlockData, BlockType {
         this.data.putString("Name", noProp);
     }
 
-    public Data(CompoundTag tag) {
+    public State(CompoundTag tag) {
         if(tag == null) {
             this.data = new CompoundTag();
             data.putString("Name", "minecraft:air");
@@ -43,8 +43,8 @@ public class Data implements BlockData, BlockType {
     }
 
     @Override
-    public boolean matches(BlockData other) {
-        return ((Data) other).noProp.equals(noProp);
+    public boolean matches(BlockState other) {
+        return ((State) other).noProp.equals(noProp);
     }
 
     @Override
@@ -59,9 +59,9 @@ public class Data implements BlockData, BlockType {
 
 
     @Override
-    public BlockData clone() {
+    public BlockState clone() {
         try {
-            return (BlockData) super.clone();
+            return (BlockState) super.clone();
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
@@ -84,12 +84,12 @@ public class Data implements BlockData, BlockType {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Data)) return false;
-        return ((Data) obj).noProp.equals(noProp);
+        if(!(obj instanceof State)) return false;
+        return ((State) obj).noProp.equals(noProp);
     }
 
     @Override
-    public BlockData getDefaultData() {
+    public BlockState getDefaultData() {
         return this;
     }
 

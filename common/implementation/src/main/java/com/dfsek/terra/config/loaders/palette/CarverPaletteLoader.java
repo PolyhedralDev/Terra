@@ -4,7 +4,7 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.carving.CarverPalette;
@@ -24,7 +24,7 @@ public class CarverPaletteLoader implements TypeLoader<CarverPalette> {
         CarverPalette palette = new CarverPalette((MaterialSet) configLoader.loadType(MaterialSet.class, configuration.get("replace")), (Boolean) configuration.get("replace-blacklist"));
 
         for(Map<String, Object> map : (List<Map<String, Object>>) configuration.get("layers")) {
-            ProbabilityCollection<BlockData> layer = (ProbabilityCollection<BlockData>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
+            ProbabilityCollection<BlockState> layer = (ProbabilityCollection<BlockState>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
             palette.add(layer, (Integer) map.get("y"));
         }
         palette.build();

@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
@@ -49,8 +49,8 @@ public class BukkitBlockEntity implements BlockEntity {
     }
 
     @Override
-    public BlockData getBlockData() {
-        return BukkitBlockData.newInstance(delegate.getBlockData());
+    public BlockState getBlockData() {
+        return BukkitBlockState.newInstance(delegate.getBlockData());
     }
 
     @Override

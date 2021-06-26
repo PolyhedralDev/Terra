@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import net.minecraft.server.world.ServerWorld;
@@ -45,13 +45,13 @@ public abstract class ServerWorldMixin {
         return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
 
-    public BlockData terra$getBlockData(int x, int y, int z) {
-        return new FabricBlockData(((ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z)));
+    public BlockState terra$getBlockData(int x, int y, int z) {
+        return new FabricBlockState(((ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z)));
     }
 
-    public void terra$setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+    public void terra$setBlockData(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
-        ((ServerWorld) (Object) this).setBlockState(pos, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042);
+        ((ServerWorld) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(), physics ? 3 : 1042);
     }
 
     public Entity terra$spawnEntity(Vector3 location, EntityType entityType) {

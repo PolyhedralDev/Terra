@@ -1,18 +1,17 @@
 package com.dfsek.terra.fabric.block;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.fabric.mixin.access.StateAccessor;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.registry.Registry;
 
 import java.util.stream.Collectors;
 
-public class FabricBlockData implements BlockData {
-    protected BlockState delegate;
+public class FabricBlockState implements BlockState {
+    protected net.minecraft.block.BlockState delegate;
 
-    public FabricBlockData(BlockState delegate) {
+    public FabricBlockState(net.minecraft.block.BlockState delegate) {
         this.delegate = delegate;
     }
 
@@ -22,14 +21,14 @@ public class FabricBlockData implements BlockData {
     }
 
     @Override
-    public boolean matches(BlockData other) {
-        return delegate.getBlock() == ((FabricBlockData) other).delegate.getBlock();
+    public boolean matches(BlockState other) {
+        return delegate.getBlock() == ((FabricBlockState) other).delegate.getBlock();
     }
 
     @Override
-    public BlockData clone() {
+    public BlockState clone() {
         try {
-            return (FabricBlockData) super.clone();
+            return (FabricBlockState) super.clone();
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
@@ -57,7 +56,7 @@ public class FabricBlockData implements BlockData {
     }
 
     @Override
-    public BlockState getHandle() {
+    public net.minecraft.block.BlockState getHandle() {
         return delegate;
     }
 }

@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.world;
 
 
 import com.dfsek.terra.api.block.Axis;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.data.Bisected;
@@ -22,7 +22,7 @@ import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import com.dfsek.terra.vector.Vector3Impl;
@@ -67,12 +67,12 @@ public final class BukkitAdapter {
         }
     }
 
-    public static BlockData adapt(org.bukkit.block.data.BlockData data) {
-        return BukkitBlockData.newInstance(data);
+    public static BlockState adapt(org.bukkit.block.data.BlockData data) {
+        return BukkitBlockState.newInstance(data);
     }
 
-    public static org.bukkit.block.data.BlockData adapt(BlockData data) {
-        return ((BukkitBlockData) data).getHandle();
+    public static org.bukkit.block.data.BlockData adapt(BlockState data) {
+        return ((BukkitBlockState) data).getHandle();
     }
 
     public static Axis adapt(org.bukkit.Axis axis) {

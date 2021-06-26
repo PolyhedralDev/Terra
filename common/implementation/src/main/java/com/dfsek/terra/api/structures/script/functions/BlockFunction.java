@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
@@ -13,7 +13,7 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import java.util.Map;
 
 public class BlockFunction extends AbstractBlockFunction {
-    private final BlockData data;
+    private final BlockState data;
 
     public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Returnable<Boolean> overwrite, TerraPlugin main, Position position) throws ParseException {
         super(x, y, z, data, overwrite, main, position);
@@ -29,7 +29,7 @@ public class BlockFunction extends AbstractBlockFunction {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        BlockData rot = data.clone();
+        BlockState rot = data.clone();
         setBlock(implementationArguments, variableMap, arguments, rot);
         return null;
     }

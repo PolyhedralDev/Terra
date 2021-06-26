@@ -1,18 +1,17 @@
 package com.dfsek.terra.sponge.world.block.data;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
-import org.spongepowered.api.block.BlockState;
 
-public class SpongeBlockData implements BlockData {
-    private final BlockState delegate;
+public class SpongeBlockState implements BlockState {
+    private final org.spongepowered.api.block.BlockState delegate;
 
-    public SpongeBlockData(BlockState delegate) {
+    public SpongeBlockState(org.spongepowered.api.block.BlockState delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    public BlockState getHandle() {
+    public org.spongepowered.api.block.BlockState getHandle() {
         return delegate;
     }
 
@@ -22,12 +21,12 @@ public class SpongeBlockData implements BlockData {
     }
 
     @Override
-    public boolean matches(BlockData other) {
+    public boolean matches(BlockState other) {
         return false;
     }
 
     @Override
-    public BlockData clone() {
+    public BlockState clone() {
         return null;
     }
 

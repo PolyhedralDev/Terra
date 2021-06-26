@@ -7,7 +7,7 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BukkitMultipleFacing extends BukkitBlockData implements MultipleFacing {
+public class BukkitMultipleFacing extends BukkitBlockState implements MultipleFacing {
 
     public BukkitMultipleFacing(org.bukkit.block.data.MultipleFacing delegate) {
         super(delegate);

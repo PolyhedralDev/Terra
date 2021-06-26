@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.world.generator.ChunkData;
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,14 +38,14 @@ public class BukkitChunkGenerator implements com.dfsek.terra.api.world.generator
 
 
         @Override
-        public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-            delegate.setBlock(x, y, z, ((BukkitBlockData) blockData).getHandle());
+        public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+            delegate.setBlock(x, y, z, ((BukkitBlockState) blockState).getHandle());
         }
 
 
         @Override
-        public @NotNull BlockData getBlock(int x, int y, int z) {
-            return BukkitBlockData.newInstance(delegate.getBlockData(x, y, z));
+        public @NotNull BlockState getBlock(int x, int y, int z) {
+            return BukkitBlockState.newInstance(delegate.getBlockData(x, y, z));
         }
     }
 }

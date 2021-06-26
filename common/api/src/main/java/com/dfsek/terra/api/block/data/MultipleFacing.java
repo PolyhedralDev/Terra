@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.block.data;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 
 import java.util.Set;
 
-public interface MultipleFacing extends BlockData {
+public interface MultipleFacing extends BlockState {
     Set<BlockFace> getFaces();
 
     void setFace(BlockFace face, boolean facing);

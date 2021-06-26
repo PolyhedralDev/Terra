@@ -3,7 +3,7 @@ package com.dfsek.terra;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
@@ -136,7 +136,7 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public void register(TypeRegistry registry) {
         registry
-                .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
+                .registerLoader(BlockState.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(Biome.class, (t, o, l) -> new RawBiome(o.toString()));
         new GenericLoaders(this).register(registry);
     }

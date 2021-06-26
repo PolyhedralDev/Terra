@@ -4,7 +4,7 @@ import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
-public class BukkitDirectional extends BukkitBlockData implements Directional {
+public class BukkitDirectional extends BukkitBlockState implements Directional {
     public BukkitDirectional(org.bukkit.block.data.Directional delegate) {
         super(delegate);
     }

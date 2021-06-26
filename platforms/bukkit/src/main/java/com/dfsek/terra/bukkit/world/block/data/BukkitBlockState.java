@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -17,14 +17,14 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Wall;
 
-public class BukkitBlockData implements BlockData {
+public class BukkitBlockState implements BlockState {
     private org.bukkit.block.data.BlockData delegate;
 
-    protected BukkitBlockData(org.bukkit.block.data.BlockData delegate) {
+    protected BukkitBlockState(org.bukkit.block.data.BlockData delegate) {
         this.delegate = delegate;
     }
 
-    public static BukkitBlockData newInstance(org.bukkit.block.data.BlockData bukkitData) {
+    public static BukkitBlockState newInstance(org.bukkit.block.data.BlockData bukkitData) {
 
         if(bukkitData instanceof Rail) return new BukkitRail((Rail) bukkitData);
         if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
@@ -43,7 +43,7 @@ public class BukkitBlockData implements BlockData {
 
         if(bukkitData instanceof Waterlogged) return new BukkitWaterlogged((Waterlogged) bukkitData);
 
-        return new BukkitBlockData(bukkitData);
+        return new BukkitBlockState(bukkitData);
     }
 
 
@@ -58,14 +58,14 @@ public class BukkitBlockData implements BlockData {
     }
 
     @Override
-    public boolean matches(BlockData data) {
-        return delegate.getMaterial() == ((BukkitBlockData) data).getHandle().getMaterial();
+    public boolean matches(BlockState data) {
+        return delegate.getMaterial() == ((BukkitBlockState) data).getHandle().getMaterial();
     }
 
     @Override
-    public BukkitBlockData clone() {
+    public BukkitBlockState clone() {
         try {
-            BukkitBlockData n = (BukkitBlockData) super.clone();
+            BukkitBlockState n = (BukkitBlockState) super.clone();
             n.delegate = delegate.clone();
             return n;
         } catch(CloneNotSupportedException e) {

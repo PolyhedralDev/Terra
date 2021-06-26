@@ -6,7 +6,7 @@ import com.dfsek.terra.api.block.data.Bisected;
 import com.dfsek.terra.api.block.data.Slab;
 import com.dfsek.terra.api.block.data.Stairs;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.block.data.FabricDirectional;
 import com.dfsek.terra.fabric.block.data.FabricMultipleFacing;
 import com.dfsek.terra.fabric.block.data.FabricOrientable;
@@ -34,7 +34,7 @@ public final class FabricAdapter {
         return new Vector3Impl(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public static FabricBlockData adapt(BlockState state) {
+    public static FabricBlockState adapt(BlockState state) {
         if(state.contains(Properties.STAIR_SHAPE)) return new FabricStairs(state);
 
         if(state.contains(Properties.SLAB_TYPE)) return new FabricSlab(state);
@@ -51,7 +51,7 @@ public final class FabricAdapter {
         if(state.getProperties().containsAll(Arrays.asList(Properties.NORTH, Properties.SOUTH, Properties.EAST, Properties.WEST)))
             return new FabricMultipleFacing(state);
         if(state.contains(Properties.WATERLOGGED)) return new FabricWaterlogged(state);
-        return new FabricBlockData(state);
+        return new FabricBlockState(state);
     }
 
     public static Direction adapt(BlockFace face) {

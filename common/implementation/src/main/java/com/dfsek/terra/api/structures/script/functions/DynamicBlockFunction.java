@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
 import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DynamicBlockFunction extends AbstractBlockFunction {
-    private final Map<String, BlockData> data = new HashMap<>();
+    private final Map<String, BlockState> data = new HashMap<>();
     private final Position position;
 
 
@@ -24,7 +24,7 @@ public class DynamicBlockFunction extends AbstractBlockFunction {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        BlockData rot = data.computeIfAbsent(blockData.apply(implementationArguments, variableMap), main.getWorldHandle()::createBlockData).clone();
+        BlockState rot = data.computeIfAbsent(blockData.apply(implementationArguments, variableMap), main.getWorldHandle()::createBlockData).clone();
         setBlock(implementationArguments, variableMap, arguments, rot);
         return null;
     }

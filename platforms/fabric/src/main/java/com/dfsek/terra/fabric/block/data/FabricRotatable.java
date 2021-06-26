@@ -2,11 +2,11 @@ package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Rotatable;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;
 
-public class FabricRotatable extends FabricBlockData implements Rotatable {
+public class FabricRotatable extends FabricBlockState implements Rotatable {
     public FabricRotatable(BlockState delegate) {
         super(delegate);
     }

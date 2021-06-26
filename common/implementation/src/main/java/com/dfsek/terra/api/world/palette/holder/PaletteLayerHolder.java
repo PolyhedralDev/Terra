@@ -1,23 +1,23 @@
 package com.dfsek.terra.api.world.palette.holder;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import org.jetbrains.annotations.NotNull;
 
 public class PaletteLayerHolder {
-    private final ProbabilityCollection<BlockData> layer;
+    private final ProbabilityCollection<BlockState> layer;
     private final NoiseSampler sampler;
     private final int size;
 
-    public PaletteLayerHolder(@NotNull ProbabilityCollection<BlockData> layer, NoiseSampler sampler, int size) {
+    public PaletteLayerHolder(@NotNull ProbabilityCollection<BlockState> layer, NoiseSampler sampler, int size) {
         this.layer = layer;
         this.sampler = sampler;
         this.size = size;
     }
 
     @NotNull
-    public ProbabilityCollection<BlockData> getLayer() {
+    public ProbabilityCollection<BlockState> getLayer() {
         return layer;
     }
 

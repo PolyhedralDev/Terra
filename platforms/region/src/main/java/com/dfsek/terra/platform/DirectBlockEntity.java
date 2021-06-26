@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.vector.Vector3;
 
@@ -26,7 +26,7 @@ public class DirectBlockEntity implements BlockEntity {
     }
 
     @Override
-    public BlockData getBlockData() {
+    public BlockState getBlockData() {
         return null;
     }
 

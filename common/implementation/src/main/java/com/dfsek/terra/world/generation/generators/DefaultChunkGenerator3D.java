@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.data.Bisected;
@@ -103,7 +103,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                     Palette seaPalette = c.getOceanPalette();
 
                     boolean justSet = false;
-                    BlockData data = null;
+                    BlockState data = null;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
                             justSet = true;
@@ -138,20 +138,20 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         }
     }
 
-    private void prepareBlockPartFloor(BlockData down, BlockData orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette> slabs,
+    private void prepareBlockPartFloor(BlockState down, BlockState orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette> slabs,
                                        Map<BlockType, Palette> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getX(), block.getY() - 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
                 Palette stairPalette = stairs.get(down.getBlockType());
                 if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
+                    BlockState stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
                     if(stair instanceof Stairs) {
                         Stairs stairNew = (Stairs) stair;
                         if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
                     }
                 }
             }
-            BlockData slab = slabs.getOrDefault(down.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ());
+            BlockState slab = slabs.getOrDefault(down.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ());
             if(slab instanceof Waterlogged) {
                 ((Waterlogged) slab).setWaterlogged(orig.getBlockType().equals(water));
             } else if(orig.getBlockType().equals(water)) return;
@@ -159,13 +159,13 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         }
     }
 
-    private void prepareBlockPartCeiling(BlockData up, BlockData orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette> slabs,
+    private void prepareBlockPartCeiling(BlockState up, BlockState orig, ChunkData chunk, Vector3 block, Map<BlockType, Palette> slabs,
                                          Map<BlockType, Palette> stairs, double thresh, Sampler sampler) {
         if(sampler.sample(block.getX(), block.getY() + 0.4, block.getZ()) > thresh) {
             if(stairs != null) {
                 Palette stairPalette = stairs.get(up.getBlockType());
                 if(stairPalette != null) {
-                    BlockData stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
+                    BlockState stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
                     if(stair instanceof Stairs) {
                         Stairs stairNew = (Stairs) stair.clone();
                         stairNew.setHalf(Bisected.Half.TOP);
@@ -173,7 +173,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                     }
                 }
             }
-            BlockData slab = slabs.getOrDefault(up.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ()).clone();
+            BlockState slab = slabs.getOrDefault(up.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ()).clone();
             if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
             if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
             if(slab instanceof Waterlogged) {
@@ -183,7 +183,7 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         }
     }
 
-    private boolean placeStair(BlockData orig, ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
+    private boolean placeStair(BlockState orig, ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
 
         if(sampler.sample(block.getBlockX() - 0.55, block.getY(), block.getZ()) > thresh) {
 

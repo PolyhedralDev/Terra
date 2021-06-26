@@ -1,10 +1,9 @@
 package com.dfsek.terra.fabric.mixin.implementations.block;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -16,14 +15,14 @@ import org.spongepowered.asm.mixin.Shadow;
 @Implements(@Interface(iface = BlockType.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockMixin {
     @Shadow
-    private BlockState defaultState;
+    private net.minecraft.block.BlockState defaultState;
 
     @Intrinsic
     public Object terra$getHandle() {
         return this;
     }
 
-    public BlockData terra$getDefaultData() {
+    public BlockState terra$getDefaultData() {
         return FabricAdapter.adapt(defaultState);
     }
 

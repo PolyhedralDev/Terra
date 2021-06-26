@@ -1,13 +1,13 @@
 package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.block.data.AnaloguePowerable;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.block.BlockState;
 
 /**
  * None of this actually has implementation, TODO: implement this if we ever end up needing it.
  */
-public class FabricAnaloguePowerable extends FabricBlockData implements AnaloguePowerable {
+public class FabricAnaloguePowerable extends FabricBlockState implements AnaloguePowerable {
     public FabricAnaloguePowerable(BlockState delegate) {
         super(delegate);
     }

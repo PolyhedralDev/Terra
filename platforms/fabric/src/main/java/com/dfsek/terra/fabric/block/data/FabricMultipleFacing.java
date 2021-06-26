@@ -2,14 +2,14 @@ package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.MultipleFacing;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class FabricMultipleFacing extends FabricBlockData implements MultipleFacing {
+public class FabricMultipleFacing extends FabricBlockState implements MultipleFacing {
     public FabricMultipleFacing(BlockState delegate) {
         super(delegate);
     }

@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.block.data;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 
-public interface Bisected extends BlockData {
+public interface Bisected extends BlockState {
     Half getHalf();
 
     void setHalf(Half half);

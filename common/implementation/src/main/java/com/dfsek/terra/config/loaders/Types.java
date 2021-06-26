@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.loaders;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.Tree;
@@ -28,7 +28,7 @@ public final class Types {
         TERRA_BIOME_TERRA_BIOME_PROBABILITY_COLLECTION_MAP = getType("terraBiomeProbabilityCollectionMap");
     }
 
-    private ProbabilityCollection<BlockData> blockDataProbabilityCollection;
+    private ProbabilityCollection<BlockState> blockStateProbabilityCollection;
     private ProbabilityCollection<Flora> floraProbabilityCollection;
     private ProbabilityCollection<Tree> treeProbabilityCollection;
     private ProbabilityCollection<TerraBiome> terraBiomeProbabilityCollection;

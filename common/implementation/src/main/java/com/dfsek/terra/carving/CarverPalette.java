@@ -1,6 +1,6 @@
 package com.dfsek.terra.carving;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
@@ -13,8 +13,8 @@ import java.util.TreeMap;
 public class CarverPalette {
     private final boolean blacklist;
     private final MaterialSet replace;
-    private final TreeMap<Integer, ProbabilityCollection<BlockData>> map = new TreeMap<>();
-    private ProbabilityCollection<BlockData>[] layers;
+    private final TreeMap<Integer, ProbabilityCollection<BlockState>> map = new TreeMap<>();
+    private ProbabilityCollection<BlockState>[] layers;
     private int offset = 0;
 
     public CarverPalette(MaterialSet replaceable, boolean blacklist) {
@@ -22,12 +22,12 @@ public class CarverPalette {
         this.replace = replaceable;
     }
 
-    public CarverPalette add(ProbabilityCollection<BlockData> collection, int y) {
+    public CarverPalette add(ProbabilityCollection<BlockState> collection, int y) {
         map.put(y, collection);
         return this;
     }
 
-    public ProbabilityCollection<BlockData> get(int y) {
+    public ProbabilityCollection<BlockState> get(int y) {
         int index = y + offset;
         return index >= 0
                 ? index < layers.length
@@ -49,8 +49,8 @@ public class CarverPalette {
 
         layers = new ProbabilityCollection[map.lastKey() + 1 - min];
         for(int y = min; y <= FastMath.max(map.lastKey(), max); y++) {
-            ProbabilityCollection<BlockData> d = null;
-            for(Map.Entry<Integer, ProbabilityCollection<BlockData>> e : map.entrySet()) {
+            ProbabilityCollection<BlockState> d = null;
+            for(Map.Entry<Integer, ProbabilityCollection<BlockState>> e : map.entrySet()) {
                 if(e.getKey() >= y) {
                     d = e.getValue();
                     break;

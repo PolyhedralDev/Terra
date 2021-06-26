@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.block.state;
 
 import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.vector.Vector3;
 
 public interface BlockEntity extends Handle {
@@ -13,7 +13,7 @@ public interface BlockEntity extends Handle {
 
     int getZ();
 
-    BlockData getBlockData();
+    BlockState getBlockData();
 
     boolean update(boolean applyPhysics);
 

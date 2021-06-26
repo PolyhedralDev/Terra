@@ -1,7 +1,7 @@
 package com.dfsek.terra.commands.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.block.state.Sign;
 import com.dfsek.terra.api.command.CommandTemplate;
@@ -75,7 +75,7 @@ public class StructureExportCommand implements CommandTemplate {
             for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
                 for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
 
-                    BlockData data = player.world().getBlockData(x, y, z);
+                    BlockState data = player.world().getBlockData(x, y, z);
                     if(data.isStructureVoid()) continue;
                     BlockEntity state = player.world().getBlockState(x, y, z);
                     if(state instanceof Sign) {

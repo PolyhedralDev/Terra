@@ -1,15 +1,14 @@
 package com.dfsek.terra.sponge;
 
-import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.sponge.world.block.data.SpongeBlockData;
-import org.spongepowered.api.block.BlockState;
+import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.sponge.world.block.data.SpongeBlockState;
 
 public final class SpongeAdapter {
-    public static BlockData adapt(BlockState state) {
-        return new SpongeBlockData(state);
+    public static BlockState adapt(org.spongepowered.api.block.BlockState state) {
+        return new SpongeBlockState(state);
     }
 
-    public static BlockState adapt(BlockData data) {
-        return ((SpongeBlockData) data).getHandle();
+    public static org.spongepowered.api.block.BlockState adapt(BlockState data) {
+        return ((SpongeBlockState) data).getHandle();
     }
 }

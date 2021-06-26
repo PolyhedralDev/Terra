@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PaletteUtil;
@@ -92,7 +92,7 @@ public class DefaultChunkGenerator2D implements TerraChunkGenerator {
                     int height = FastMath.min((int) sampler.sample(x, 0, z), world.getMaxHeight() - 1);
 
                     for(int y = FastMath.max(height, c.getSeaLevel()); y >= 0; y--) {
-                        BlockData data = y > height ? seaPalette.get(seaPaletteLevel++, cx, y, cz) : PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel++, cx, y, cz);
+                        BlockState data = y > height ? seaPalette.get(seaPaletteLevel++, cx, y, cz) : PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel++, cx, y, cz);
                         chunk.setBlock(x, y, z, data);
                     }
                 }

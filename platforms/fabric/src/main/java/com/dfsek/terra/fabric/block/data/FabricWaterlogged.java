@@ -1,11 +1,11 @@
 package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.block.data.Waterlogged;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Properties;
 
-public class FabricWaterlogged extends FabricBlockData implements Waterlogged {
+public class FabricWaterlogged extends FabricBlockState implements Waterlogged {
     public FabricWaterlogged(BlockState delegate) {
         super(delegate);
     }

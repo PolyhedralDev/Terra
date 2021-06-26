@@ -1,7 +1,7 @@
 package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.vector.Vector3;
@@ -19,7 +19,7 @@ public class TerraWorldImpl implements TerraWorld {
     private final WorldConfigImpl config;
     private final boolean safe;
     private final World world;
-    private final BlockData air;
+    private final BlockState air;
 
 
     public TerraWorldImpl(World w, ConfigPack c, TerraPlugin main) {
@@ -56,7 +56,7 @@ public class TerraWorldImpl implements TerraWorld {
 
 
     @Override
-    public BlockData getUngeneratedBlock(int x, int y, int z) {
+    public BlockState getUngeneratedBlock(int x, int y, int z) {
         UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(x, z);
         Palette palette = biome.getGenerator(world).getPalette(y);
         Sampler sampler = config.getSamplerCache().get(x, z);
@@ -76,7 +76,7 @@ public class TerraWorldImpl implements TerraWorld {
     }
 
     @Override
-    public BlockData getUngeneratedBlock(Vector3 v) {
+    public BlockState getUngeneratedBlock(Vector3 v) {
         return getUngeneratedBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
     }
 }

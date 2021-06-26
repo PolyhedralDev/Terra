@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.block.data.Waterlogged;
 
-public class BukkitWaterlogged extends BukkitBlockData implements Waterlogged {
+public class BukkitWaterlogged extends BukkitBlockState implements Waterlogged {
     public BukkitWaterlogged(org.bukkit.block.data.Waterlogged delegate) {
         super(delegate);
     }

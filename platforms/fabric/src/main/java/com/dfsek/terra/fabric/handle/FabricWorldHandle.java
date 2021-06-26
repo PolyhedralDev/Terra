@@ -5,7 +5,7 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.fabric.util.WorldEditUtil;
 import com.mojang.brigadier.StringReader;
@@ -20,7 +20,7 @@ import java.util.Locale;
 public class FabricWorldHandle implements WorldHandle {
 
     @Override
-    public FabricBlockData createBlockData(String data) {
+    public FabricBlockState createBlockData(String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
             BlockState state = parser.parse(true).getBlockState();

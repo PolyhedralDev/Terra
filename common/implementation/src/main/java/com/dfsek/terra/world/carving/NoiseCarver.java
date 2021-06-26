@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.carving;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.ChunkAccess;
 import com.dfsek.terra.api.world.World;
@@ -11,10 +11,10 @@ import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator3D;
 
 public class NoiseCarver implements Carver {
     private final Range range;
-    private final BlockData data;
+    private final BlockState data;
     private final TerraPlugin main;
 
-    public NoiseCarver(Range range, BlockData data, TerraPlugin main) {
+    public NoiseCarver(Range range, BlockState data, TerraPlugin main) {
         this.range = range;
         this.data = data;
         this.main = main;

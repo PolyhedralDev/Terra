@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
 import com.dfsek.terra.api.block.data.MultipleFacing;
@@ -105,7 +105,7 @@ public class TerraFlora implements Flora {
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
-            BlockData data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
+            BlockState data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
             if(doRotation) {
                 BlockFace oneFace = faces.get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
                 if(data instanceof Directional) {

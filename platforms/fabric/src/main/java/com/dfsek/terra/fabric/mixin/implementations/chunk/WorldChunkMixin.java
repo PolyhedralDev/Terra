@@ -1,10 +1,9 @@
 package com.dfsek.terra.fabric.mixin.implementations.chunk;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.fabric.block.FabricBlockData;
-import net.minecraft.block.BlockState;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +23,11 @@ public abstract class WorldChunkMixin {
     private net.minecraft.world.World world;
 
     @Shadow
-    public abstract BlockState getBlockState(BlockPos pos);
+    public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
 
     @Shadow
     @Nullable
-    public abstract BlockState setBlockState(BlockPos pos, BlockState state, boolean moved);
+    public abstract net.minecraft.block.BlockState setBlockState(BlockPos pos, net.minecraft.block.BlockState state, boolean moved);
 
     public int terra$getX() {
         return ((net.minecraft.world.chunk.Chunk) this).getPos().x;
@@ -42,16 +41,16 @@ public abstract class WorldChunkMixin {
         return (World) world;
     }
 
-    public @NotNull BlockData terra$getBlock(int x, int y, int z) {
-        return new FabricBlockData(getBlockState(new BlockPos(x, y, z)));
+    public @NotNull BlockState terra$getBlock(int x, int y, int z) {
+        return new FabricBlockState(getBlockState(new BlockPos(x, y, z)));
     }
 
-    public void terra$setBlock(int x, int y, int z, BlockData data, boolean physics) {
-        setBlockState(new BlockPos(x, y, z), ((FabricBlockData) data).getHandle(), false);
+    public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
+        setBlockState(new BlockPos(x, y, z), ((FabricBlockState) data).getHandle(), false);
     }
 
-    public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockData) blockData).getHandle(), false);
+    public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+        ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(), false);
     }
 
     @Intrinsic

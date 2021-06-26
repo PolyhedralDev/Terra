@@ -3,7 +3,7 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
@@ -18,12 +18,12 @@ public class OreTemplate extends AbstractableTemplate {
 
     @Value("material")
     @Abstractable
-    private BlockData material;
+    private BlockState material;
 
     @Value("material-overrides")
     @Default
     @Abstractable
-    private Map<BlockType, BlockData> materials = new HashMap<>();
+    private Map<BlockType, BlockState> materials = new HashMap<>();
 
     @Value("replace")
     @Abstractable
@@ -60,7 +60,7 @@ public class OreTemplate extends AbstractableTemplate {
         return size;
     }
 
-    public BlockData getMaterial() {
+    public BlockState getMaterial() {
         return material;
     }
 
@@ -76,7 +76,7 @@ public class OreTemplate extends AbstractableTemplate {
         return id;
     }
 
-    public Map<BlockType, BlockData> getMaterialOverrides() {
+    public Map<BlockType, BlockState> getMaterialOverrides() {
         return materials;
     }
 }

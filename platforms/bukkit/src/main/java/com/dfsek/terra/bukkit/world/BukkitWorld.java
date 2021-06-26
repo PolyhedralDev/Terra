@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -56,12 +56,12 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public BlockData getBlockData(int x, int y, int z) {
+    public BlockState getBlockData(int x, int y, int z) {
         return BukkitAdapter.adapt(delegate.getBlockAt(x, y, z).getBlockData());
     }
 
     @Override
-    public void setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+    public void setBlockData(int x, int y, int z, BlockState data, boolean physics) {
         delegate.getBlockAt(x, y, z).setBlockData(BukkitAdapter.adapt(data), physics);
     }
 

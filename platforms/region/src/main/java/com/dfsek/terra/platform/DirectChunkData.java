@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import net.querz.mca.Chunk;
@@ -31,19 +31,19 @@ public class DirectChunkData implements ChunkData, com.dfsek.terra.api.world.Chu
     }
 
     @Override
-    public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        delegate.setBlockStateAt(x, y, z, ((Data) blockData).getHandle(), false);
+    public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+        delegate.setBlockStateAt(x, y, z, ((State) blockState).getHandle(), false);
     }
 
     @Override
-    public @NotNull BlockData getBlock(int x, int y, int z) {
+    public @NotNull BlockState getBlock(int x, int y, int z) {
         CompoundTag tag = delegate.getBlockStateAt(x, y, z);
-        if(tag == null) return new Data("minecraft:air");
-        return new Data(tag.getString("Name"));
+        if(tag == null) return new State("minecraft:air");
+        return new State(tag.getString("Name"));
     }
 
     @Override
-    public void setBlock(int x, int y, int z, BlockData data, boolean physics) {
+    public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
         setBlock(x, y, z, data);
     }
 

@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.util.collections;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class MaterialSet extends HashSet<BlockType> {
         return set;
     }
 
-    public static MaterialSet get(BlockData... materials) {
+    public static MaterialSet get(BlockState... materials) {
         MaterialSet set = new MaterialSet();
         Arrays.stream(materials).forEach(set::add);
         return set;
@@ -31,7 +31,7 @@ public class MaterialSet extends HashSet<BlockType> {
         return new MaterialSet();
     }
 
-    private void add(BlockData data) {
+    private void add(BlockState data) {
         add(data.getBlockType());
     }
 }

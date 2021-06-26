@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.block.data.AnaloguePowerable;
 
-public class BukkitAnaloguePowerable extends BukkitBlockData implements AnaloguePowerable {
+public class BukkitAnaloguePowerable extends BukkitBlockState implements AnaloguePowerable {
     public BukkitAnaloguePowerable(org.bukkit.block.data.AnaloguePowerable delegate) {
         super(delegate);
     }

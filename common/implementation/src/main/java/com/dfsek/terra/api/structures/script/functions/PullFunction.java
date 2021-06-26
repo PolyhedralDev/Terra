@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.script.functions;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
 import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structures.parser.lang.Returnable;
@@ -20,7 +20,7 @@ import net.jafama.FastMath;
 import java.util.Map;
 
 public class PullFunction implements Function<Void> {
-    private final BlockData data;
+    private final BlockState data;
     private final Returnable<Number> x, y, z;
     private final Position position;
 
@@ -40,7 +40,7 @@ public class PullFunction implements Function<Void> {
         Vector2 xz = new Vector2Impl(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
-        BlockData rot = data.clone();
+        BlockState rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;

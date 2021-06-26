@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class CavePopulator implements TerraBlockPopulator, Chunkified {
-    private static final Map<BlockType, BlockData> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
+    private static final Map<BlockType, BlockState> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private final TerraPlugin main;
 
     public CavePopulator(TerraPlugin main) {
@@ -34,7 +34,7 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         WorldHandle handle = main.getWorldHandle();
-        BlockData AIR = handle.createBlockData("minecraft:air");
+        BlockState AIR = handle.createBlockData("minecraft:air");
         try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
             if(!tw.isSafe()) return;
@@ -43,10 +43,10 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
 
             for(UserDefinedCarver c : config.getRegistry(UserDefinedCarver.class).entries()) {
                 CarverTemplate template = c.getConfig();
-                Map<Vector3, BlockData> shiftCandidate = new HashMap<>();
+                Map<Vector3, BlockState> shiftCandidate = new HashMap<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
                     try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
-                        BlockData m = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
+                        BlockState m = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                         BlockType re = m.getBlockType();
                         switch(type) {
                             case CENTER:
@@ -76,10 +76,10 @@ public class CavePopulator implements TerraBlockPopulator, Chunkified {
                         }
                     }
                 });
-                for(Map.Entry<Vector3, BlockData> entry : shiftCandidate.entrySet()) {
+                for(Map.Entry<Vector3, BlockState> entry : shiftCandidate.entrySet()) {
                     Vector3 l = entry.getKey();
                     Vector3 mut = l.clone();
-                    BlockData orig = chunk.getBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+                    BlockState orig = chunk.getBlock(l.getBlockX(), l.getBlockY(), l.getBlockZ());
                     do mut.subtract(0, 1, 0);
                     while(mut.getY() > world.getMinHeight() && chunk.getBlock(mut.getBlockX(), mut.getBlockY(), mut.getBlockZ()).matches(orig));
                     try {

@@ -2,13 +2,13 @@ package com.dfsek.terra.api.block;
 
 import com.dfsek.terra.api.Handle;
 
-public interface BlockData extends Cloneable, Handle {
+public interface BlockState extends Cloneable, Handle {
 
     BlockType getBlockType();
 
-    boolean matches(BlockData other);
+    boolean matches(BlockState other);
 
-    BlockData clone();
+    BlockState clone();
 
     String getAsString();
 

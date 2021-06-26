@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -22,7 +22,7 @@ public interface TerraWorld {
      * @param z Z coordinate
      * @return BlockData
      */
-    BlockData getUngeneratedBlock(int x, int y, int z);
+    BlockState getUngeneratedBlock(int x, int y, int z);
 
-    BlockData getUngeneratedBlock(Vector3 v);
+    BlockState getUngeneratedBlock(Vector3 v);
 }

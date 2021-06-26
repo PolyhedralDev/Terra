@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.block.data;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 
-public interface Rail extends BlockData {
+public interface Rail extends BlockState {
     Shape getShape();
 
     void setShape(Shape newShape);

@@ -1,14 +1,14 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
 public class BufferedPulledBlock implements BufferedItem {
-    private final BlockData data;
+    private final BlockState data;
 
-    public BufferedPulledBlock(BlockData data) {
+    public BufferedPulledBlock(BlockState data) {
         this.data = data;
     }
 

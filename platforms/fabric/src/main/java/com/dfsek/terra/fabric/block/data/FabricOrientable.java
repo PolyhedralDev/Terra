@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.block.Axis;
 import com.dfsek.terra.api.block.data.Orientable;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.EnumProperty;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class FabricOrientable extends FabricBlockData implements Orientable {
+public class FabricOrientable extends FabricBlockState implements Orientable {
     private final EnumProperty<Direction.Axis> property;
 
     public FabricOrientable(BlockState delegate, EnumProperty<Direction.Axis> property) {

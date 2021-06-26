@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.ProbabilityCollection;
@@ -24,7 +24,7 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
     }
 
     @Override
-    public Palette add(BlockData m, int layers, NoiseSampler sampler) {
+    public Palette add(BlockState m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
             pallet.add(new PaletteLayer(m, sampler));
         }
@@ -32,7 +32,7 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
     }
 
     @Override
-    public Palette add(ProbabilityCollection<BlockData> m, int layers, NoiseSampler sampler) {
+    public Palette add(ProbabilityCollection<BlockState> m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
             pallet.add(new PaletteLayer(m, sampler));
         }
@@ -54,9 +54,9 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
      */
     public static class PaletteLayer {
         private final boolean col; // Is layer using a collection?
-        private ProbabilityCollection<BlockData> collection;
+        private ProbabilityCollection<BlockState> collection;
         private final NoiseSampler sampler;
-        private BlockData m;
+        private BlockState m;
 
         /**
          * Constructs a PaletteLayerHolder with a ProbabilityCollection of materials and a number of layers.
@@ -64,7 +64,7 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
          * @param type    The collection of materials to choose from.
          * @param sampler Noise sampler to use
          */
-        public PaletteLayer(ProbabilityCollection<BlockData> type, NoiseSampler sampler) {
+        public PaletteLayer(ProbabilityCollection<BlockState> type, NoiseSampler sampler) {
             this.sampler = sampler;
             this.col = true;
             this.collection = type;
@@ -76,7 +76,7 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
          * @param type    The material to use.
          * @param sampler Noise sampler to use
          */
-        public PaletteLayer(BlockData type, NoiseSampler sampler) {
+        public PaletteLayer(BlockState type, NoiseSampler sampler) {
             this.sampler = sampler;
             this.col = false;
             this.m = type;
@@ -91,31 +91,31 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
          *
          * @return Material - the material..
          */
-        public BlockData get(Random random) {
+        public BlockState get(Random random) {
             if(col) return this.collection.get(random);
             return m;
         }
 
-        public BlockData get(NoiseSampler random, double x, double y, double z, boolean is2D) {
+        public BlockState get(NoiseSampler random, double x, double y, double z, boolean is2D) {
             if(col && is2D) return this.collection.get(random, x, z);
             else if(col) return this.collection.get(random, x, y, z);
             return m;
         }
 
-        public ProbabilityCollection<BlockData> getCollection() {
+        public ProbabilityCollection<BlockState> getCollection() {
             return collection;
         }
     }
 
     public static class Singleton extends PaletteImpl {
-        private final BlockData item;
+        private final BlockState item;
 
-        public Singleton(BlockData item) {
+        public Singleton(BlockState item) {
             this.item = item;
         }
 
         @Override
-        public BlockData get(int layer, double x, double y, double z) {
+        public BlockState get(int layer, double x, double y, double z) {
             return item;
         }
     }

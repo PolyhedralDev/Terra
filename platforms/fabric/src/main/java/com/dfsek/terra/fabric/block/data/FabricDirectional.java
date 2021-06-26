@@ -2,12 +2,12 @@ package com.dfsek.terra.fabric.block.data;
 
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
-import com.dfsek.terra.fabric.block.FabricBlockData;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.DirectionProperty;
 
-public class FabricDirectional extends FabricBlockData implements Directional {
+public class FabricDirectional extends FabricBlockState implements Directional {
     private final DirectionProperty property;
 
     public FabricDirectional(BlockState delegate, DirectionProperty property) {

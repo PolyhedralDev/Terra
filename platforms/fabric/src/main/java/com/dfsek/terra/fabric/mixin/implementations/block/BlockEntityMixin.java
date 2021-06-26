@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.block;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ public abstract class BlockEntityMixin {
         return pos.getZ();
     }
 
-    public BlockData terra$getBlockData() {
+    public BlockState terra$getBlockData() {
         return FabricAdapter.adapt(getCachedState());
     }
 

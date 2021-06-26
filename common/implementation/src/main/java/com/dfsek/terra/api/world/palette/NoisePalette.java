@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.palette;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class NoisePalette extends PaletteImpl {
     }
 
     @Override
-    public BlockData get(int layer, double x, double y, double z) {
+    public BlockState get(int layer, double x, double y, double z) {
         PaletteLayer paletteLayer;
         if(layer > this.getSize()) paletteLayer = this.getLayers().get(this.getLayers().size() - 1);
         else {

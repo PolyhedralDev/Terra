@@ -4,7 +4,7 @@ import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Rotatable;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
-public class BukkitRotatable extends BukkitBlockData implements Rotatable {
+public class BukkitRotatable extends BukkitBlockState implements Rotatable {
     public BukkitRotatable(org.bukkit.block.data.Rotatable delegate) {
         super(delegate);
     }
