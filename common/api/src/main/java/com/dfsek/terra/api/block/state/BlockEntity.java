@@ -4,7 +4,7 @@ import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.vector.Vector3;
 
-public interface BlockState extends Handle {
+public interface BlockEntity extends Handle {
     Vector3 getPosition();
 
     int getX();

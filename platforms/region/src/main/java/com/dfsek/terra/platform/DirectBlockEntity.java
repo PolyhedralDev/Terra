@@ -1,10 +1,10 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.vector.Vector3;
 
-public class DirectBlockState implements BlockState {
+public class DirectBlockEntity implements BlockEntity {
     @Override
     public Vector3 getPosition() {
         return null;

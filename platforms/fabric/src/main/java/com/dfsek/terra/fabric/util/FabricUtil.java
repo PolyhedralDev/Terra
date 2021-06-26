@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.block.state.Container;
 import com.dfsek.terra.api.block.state.MobSpawner;
 import com.dfsek.terra.api.block.state.Sign;
@@ -13,7 +13,6 @@ import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -141,8 +140,8 @@ public final class FabricUtil {
         }
     }
 
-    public static BlockState createState(WorldAccess worldAccess, BlockPos pos) {
-        BlockEntity entity = worldAccess.getBlockEntity(pos);
+    public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
+        net.minecraft.block.entity.BlockEntity entity = worldAccess.getBlockEntity(pos);
         if(entity instanceof SignBlockEntity) {
             return (Sign) entity;
         } else if(entity instanceof MobSpawnerBlockEntity) {

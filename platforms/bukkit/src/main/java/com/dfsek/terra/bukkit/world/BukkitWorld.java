@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world;
 
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
-import com.dfsek.terra.bukkit.world.block.state.BukkitBlockState;
+import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 import java.io.File;
@@ -66,8 +66,8 @@ public class BukkitWorld implements World {
     }
 
     @Override
-    public BlockState getBlockState(int x, int y, int z) {
-        return BukkitBlockState.newInstance(delegate.getBlockAt(x, y, z).getState());
+    public BlockEntity getBlockState(int x, int y, int z) {
+        return BukkitBlockEntity.newInstance(delegate.getBlockAt(x, y, z).getState());
     }
 
     public File getWorldFolder() {

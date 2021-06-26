@@ -1,7 +1,7 @@
 package com.dfsek.terra.config.dummy;
 
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -47,7 +47,7 @@ public class DummyWorld implements World {
     }
 
     @Override
-    public BlockState getBlockState(int x, int y, int z) {
+    public BlockEntity getBlockState(int x, int y, int z) {
         throw new UnsupportedOperationException("Cannot get block in DummyWorld");
     }
 

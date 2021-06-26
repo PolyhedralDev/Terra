@@ -2,7 +2,7 @@ package com.dfsek.terra.platform;
 
 import com.dfsek.terra.DirectUtils;
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -67,7 +67,7 @@ public class DirectWorld implements World {
     }
 
     @Override
-    public BlockState getBlockState(int x, int y, int z) {
+    public BlockEntity getBlockState(int x, int y, int z) {
         return null;
     }
 

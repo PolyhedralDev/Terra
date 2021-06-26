@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
 import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -40,7 +41,7 @@ public abstract class ServerWorldMixin {
         return (Chunk) ((ServerWorld) (Object) this).getChunk(x, z);
     }
 
-    public com.dfsek.terra.api.block.state.BlockState terra$getBlockState(int x, int y, int z) {
+    public BlockEntity terra$getBlockState(int x, int y, int z) {
         return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
 

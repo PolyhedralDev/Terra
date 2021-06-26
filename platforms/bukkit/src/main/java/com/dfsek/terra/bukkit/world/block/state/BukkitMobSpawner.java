@@ -7,7 +7,7 @@ import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 import org.bukkit.block.CreatureSpawner;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitMobSpawner extends BukkitBlockState implements MobSpawner {
+public class BukkitMobSpawner extends BukkitBlockEntity implements MobSpawner {
     protected BukkitMobSpawner(CreatureSpawner block) {
         super(block);
     }

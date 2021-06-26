@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.block.state.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.structure.LootTable;
@@ -25,7 +25,7 @@ public class BufferedLootApplication implements BufferedItem {
     @Override
     public void paste(Vector3 origin, World world) {
         try {
-            BlockState data = world.getBlockState(origin);
+            BlockEntity data = world.getBlockState(origin);
             if(!(data instanceof Container)) {
                 main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
                 return;

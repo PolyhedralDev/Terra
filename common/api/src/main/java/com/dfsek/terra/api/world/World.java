@@ -2,7 +2,7 @@ package com.dfsek.terra.api.world;
 
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -43,9 +43,9 @@ public interface World extends Handle {
         setBlockData(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
     }
 
-    BlockState getBlockState(int x, int y, int z);
+    BlockEntity getBlockState(int x, int y, int z);
 
-    default BlockState getBlockState(Vector3 position) {
+    default BlockEntity getBlockState(Vector3 position) {
         return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
 

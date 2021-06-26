@@ -3,7 +3,7 @@ package com.dfsek.terra.api.block.state;
 import com.dfsek.terra.api.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
-public interface MobSpawner extends BlockState {
+public interface MobSpawner extends BlockEntity {
     EntityType getSpawnedType();
 
     void setSpawnedType(@NotNull EntityType creatureType);

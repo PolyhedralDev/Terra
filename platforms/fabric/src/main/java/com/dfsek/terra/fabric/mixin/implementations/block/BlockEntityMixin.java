@@ -1,9 +1,8 @@
 package com.dfsek.terra.fabric.mixin.implementations.block;
 
 import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockEntity;
 import com.dfsek.terra.fabric.util.FabricAdapter;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -14,8 +13,8 @@ import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(BlockEntity.class)
-@Implements(@Interface(iface = BlockState.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Mixin(net.minecraft.block.entity.BlockEntity.class)
+@Implements(@Interface(iface = BlockEntity.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockEntityMixin {
     @Final
     @Shadow
@@ -52,7 +51,7 @@ public abstract class BlockEntityMixin {
     }
 
     public boolean terra$update(boolean applyPhysics) {
-        if(hasWorld()) world.getChunk(pos).setBlockEntity((BlockEntity) (Object) this);
+        if(hasWorld()) world.getChunk(pos).setBlockEntity((net.minecraft.block.entity.BlockEntity) (Object) this);
         return true;
     }
 }
