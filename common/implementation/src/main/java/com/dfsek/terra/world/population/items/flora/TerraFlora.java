@@ -2,12 +2,9 @@ package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.BlockFace;
-import com.dfsek.terra.api.block.data.Directional;
-import com.dfsek.terra.api.block.data.MultipleFacing;
-import com.dfsek.terra.api.block.data.Rotatable;
+import com.dfsek.terra.api.block.state.properties.base.Properties;
+import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
@@ -19,6 +16,7 @@ import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class TerraFlora implements Flora {
@@ -100,39 +98,36 @@ public class TerraFlora implements Flora {
         int size = floraPalette.getSize();
         int c = ceiling ? -1 : 1;
 
-        List<BlockFace> faces = doRotation ? getFaces(location.clone().add(0, c, 0), world) : new GlueList<>();
+        EnumSet<Direction> faces = doRotation ? getFaces(location.clone().add(0, c, 0), world) : EnumSet.noneOf(Direction.class);
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
             BlockState data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
             if(doRotation) {
-                BlockFace oneFace = faces.get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
-                if(data instanceof Directional) {
-                    ((Directional) data).setFacing(oneFace.getOppositeFace());
-                } else if(data instanceof MultipleFacing) {
-                    MultipleFacing o = (MultipleFacing) data;
-                    for(BlockFace face : o.getFaces()) o.setFace(face, false);
-                    for(BlockFace face : faces) o.setFace(face, true);
-                } else if(data instanceof Rotatable) {
-                    ((Rotatable) data).setRotation(oneFace);
-                }
+                Direction oneFace = new ArrayList<>(faces).get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
+
+                data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
+                        .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))
+                        .setIfPresent(Properties.SOUTH, faces.contains(Direction.SOUTH))
+                        .setIfPresent(Properties.EAST, faces.contains(Direction.EAST))
+                        .setIfPresent(Properties.WEST, faces.contains(Direction.WEST));
             }
             world.setBlockData(location.clone().add(0, i + c, 0), data, physics);
         }
         return true;
     }
 
-    private List<BlockFace> getFaces(Vector3 b, World world) {
-        List<BlockFace> faces = new GlueList<>();
-        test(faces, BlockFace.NORTH, b, world);
-        test(faces, BlockFace.SOUTH, b, world);
-        test(faces, BlockFace.EAST, b, world);
-        test(faces, BlockFace.WEST, b, world);
+    private EnumSet<Direction> getFaces(Vector3 b, World world) {
+        EnumSet<Direction> faces = EnumSet.noneOf(Direction.class);
+        test(faces, Direction.NORTH, b, world);
+        test(faces, Direction.SOUTH, b, world);
+        test(faces, Direction.EAST, b, world);
+        test(faces, Direction.WEST, b, world);
         return faces;
     }
 
-    private void test(List<BlockFace> faces, BlockFace f, Vector3 b, World world) {
+    private void test(EnumSet<Direction> faces, Direction f, Vector3 b, World world) {
         if(testRotation.contains(world.getBlockData(b.getBlockX() + f.getModX(), b.getBlockY() + f.getModY(), b.getBlockZ() + f.getModZ()).getBlockType()))
             faces.add(f);
     }

@@ -2,7 +2,7 @@ package com.dfsek.terra.api.structures.structure.buffer.items;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.data.Waterlogged;
+import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
@@ -25,8 +25,9 @@ public class BufferedBlock implements BufferedItem {
         try {
             BlockState current = world.getBlockData(origin);
             if(overwrite || current.isAir()) {
-                if(waterlog && current instanceof Waterlogged && current.getBlockType().isWater())
-                    ((Waterlogged) current).setWaterlogged(true);
+                if(waterlog && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {
+                    current.set(Properties.WATERLOGGED, true);
+                }
                 world.setBlockData(origin, data);
             }
         } catch(RuntimeException e) {

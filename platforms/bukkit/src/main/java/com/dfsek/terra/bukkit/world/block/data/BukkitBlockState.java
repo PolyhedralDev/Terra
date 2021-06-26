@@ -25,24 +25,6 @@ public class BukkitBlockState implements BlockState {
     }
 
     public static BukkitBlockState newInstance(org.bukkit.block.data.BlockData bukkitData) {
-
-        if(bukkitData instanceof Rail) return new BukkitRail((Rail) bukkitData);
-        if(bukkitData instanceof Stairs) return new BukkitStairs((Stairs) bukkitData);
-        if(bukkitData instanceof Slab) return new BukkitSlab((Slab) bukkitData);
-        if(TerraBukkitPlugin.BUKKIT_VERSION.above(TerraBukkitPlugin.BukkitVersion.V1_16) && bukkitData instanceof Wall) { // Wall only exists on 1.16 and up.
-            return new BukkitWall((Wall) bukkitData);
-        }
-
-        if(bukkitData instanceof RedstoneWire) return new BukkitRedstoneWire((RedstoneWire) bukkitData);
-        if(bukkitData instanceof AnaloguePowerable) return new BukkitAnaloguePowerable((AnaloguePowerable) bukkitData);
-
-        if(bukkitData instanceof MultipleFacing) return new BukkitMultipleFacing((MultipleFacing) bukkitData);
-        if(bukkitData instanceof Rotatable) return new BukkitRotatable((Rotatable) bukkitData);
-        if(bukkitData instanceof Directional) return new BukkitDirectional((Directional) bukkitData);
-        if(bukkitData instanceof Orientable) return new BukkitOrientable((Orientable) bukkitData);
-
-        if(bukkitData instanceof Waterlogged) return new BukkitWaterlogged((Waterlogged) bukkitData);
-
         return new BukkitBlockState(bukkitData);
     }
 

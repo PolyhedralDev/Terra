@@ -1,27 +1,17 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.block.state.properties.enums.RailShape;
-import com.dfsek.terra.api.block.state.properties.enums.Axis;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.BlockFace;
-import com.dfsek.terra.api.block.data.Directional;
-import com.dfsek.terra.api.block.data.MultipleFacing;
-import com.dfsek.terra.api.block.data.Orientable;
-import com.dfsek.terra.api.block.data.Rail;
-import com.dfsek.terra.api.block.data.RedstoneWire;
-import com.dfsek.terra.api.block.data.Rotatable;
-import com.dfsek.terra.api.block.data.Wall;
+import com.dfsek.terra.api.block.state.properties.base.BooleanProperty;
+import com.dfsek.terra.api.block.state.properties.base.EnumProperty;
+import com.dfsek.terra.api.block.state.properties.base.Properties;
+import com.dfsek.terra.api.block.state.properties.enums.Axis;
+import com.dfsek.terra.api.block.state.properties.enums.RailShape;
+import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
+import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.vector.Vector2;
-import com.google.common.collect.Sets;
-import net.jafama.FastMath;
-
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
 
 public class RotationUtil {
-    private static final Set<BlockFace> CARDINALS = Sets.newHashSet(BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
 
     /**
      * Rotate and mirror a coordinate pair.
@@ -46,112 +36,8 @@ public class RotationUtil {
         orig.setZ(copy.getZ());
     }
 
-    /**
-     * Get the BlockFace with rotation and mirrors applied to it
-     *
-     * @param f BlockFace to apply rotation to
-     * @param r Rotation
-     * @return Rotated BlockFace
-     */
-    public static BlockFace getRotatedFace(BlockFace f, Rotation r) {
-        BlockFace n = f;
-        int rotateNum = r.getDegrees() / 90;
-        int rn = faceRotation(f);
-        if(rn >= 0) {
-            n = fromRotation(faceRotation(n) + 4 * rotateNum);
-        }
-        return n;
-    }
 
-    /**
-     * Get an integer representation of a BlockFace, to perform math on.
-     *
-     * @param f BlockFace to get integer for
-     * @return integer representation of BlockFace
-     */
-    public static int faceRotation(BlockFace f) {
-        switch(f) {
-            case NORTH:
-                return 0;
-            case NORTH_NORTH_EAST:
-                return 1;
-            case NORTH_EAST:
-                return 2;
-            case EAST_NORTH_EAST:
-                return 3;
-            case EAST:
-                return 4;
-            case EAST_SOUTH_EAST:
-                return 5;
-            case SOUTH_EAST:
-                return 6;
-            case SOUTH_SOUTH_EAST:
-                return 7;
-            case SOUTH:
-                return 8;
-            case SOUTH_SOUTH_WEST:
-                return 9;
-            case SOUTH_WEST:
-                return 10;
-            case WEST_SOUTH_WEST:
-                return 11;
-            case WEST:
-                return 12;
-            case WEST_NORTH_WEST:
-                return 13;
-            case NORTH_WEST:
-                return 14;
-            case NORTH_NORTH_WEST:
-                return 15;
-            default:
-                return -1;
-        }
-    }
 
-    /**
-     * Convert integer to BlockFace representation
-     *
-     * @param r integer to get BlockFace for
-     * @return BlockFace represented by integer.
-     */
-    public static BlockFace fromRotation(int r) {
-        switch(FastMath.floorMod(r, 16)) {
-            case 0:
-                return BlockFace.NORTH;
-            case 1:
-                return BlockFace.NORTH_NORTH_EAST;
-            case 2:
-                return BlockFace.NORTH_EAST;
-            case 3:
-                return BlockFace.EAST_NORTH_EAST;
-            case 4:
-                return BlockFace.EAST;
-            case 5:
-                return BlockFace.EAST_SOUTH_EAST;
-            case 6:
-                return BlockFace.SOUTH_EAST;
-            case 7:
-                return BlockFace.SOUTH_SOUTH_EAST;
-            case 8:
-                return BlockFace.SOUTH;
-            case 9:
-                return BlockFace.SOUTH_SOUTH_WEST;
-            case 10:
-                return BlockFace.SOUTH_WEST;
-            case 11:
-                return BlockFace.WEST_SOUTH_WEST;
-            case 12:
-                return BlockFace.WEST;
-            case 13:
-                return BlockFace.WEST_NORTH_WEST;
-            case 14:
-                return BlockFace.NORTH_WEST;
-            case 15:
-                return BlockFace.NORTH_NORTH_WEST;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
 
     public static Axis getRotatedAxis(Axis orig, Rotation r) {
         Axis other = orig;
@@ -250,44 +136,100 @@ public class RotationUtil {
         return orig;
     }
 
-    public static void rotateBlockData(BlockState data, Rotation r) {
-        if(data instanceof Rotatable) {
-            BlockFace rt = getRotatedFace(((Rotatable) data).getRotation(), r);
-            ((Rotatable) data).setRotation(rt);
-        } else if(data instanceof Directional) {
-            BlockFace rt = getRotatedFace(((Directional) data).getFacing(), r);
-            ((Directional) data).setFacing(rt);
-        } else if(data instanceof MultipleFacing) {
-            MultipleFacing mfData = (MultipleFacing) data;
-            Map<BlockFace, Boolean> faces = new EnumMap<>(BlockFace.class);
-            for(BlockFace f : mfData.getAllowedFaces()) {
-                faces.put(f, mfData.hasFace(f));
-            }
-            for(Map.Entry<BlockFace, Boolean> face : faces.entrySet()) {
-                mfData.setFace(getRotatedFace(face.getKey(), r), face.getValue());
-            }
-        } else if(data instanceof Rail) {
-            RailShape newShape = getRotatedRail(((Rail) data).getShape(), r);
-            ((Rail) data).setShape(newShape);
-        } else if(data instanceof Orientable) {
-            Axis newAxis = getRotatedAxis(((Orientable) data).getAxis(), r);
-            ((Orientable) data).setAxis(newAxis);
-        } else if(data instanceof RedstoneWire) {
-            Map<BlockFace, RedstoneWire.Connection> connections = new EnumMap<>(BlockFace.class);
-            RedstoneWire rData = (RedstoneWire) data;
-            for(BlockFace f : rData.getAllowedFaces()) {
-                connections.put(f, rData.getFace(f));
-            }
-            for(Map.Entry<BlockFace, RedstoneWire.Connection> e : connections.entrySet()) {
-                rData.setFace(getRotatedFace(e.getKey(), r), e.getValue());
-            }
-        } else if(data instanceof Wall) {
-            Wall wallData = (Wall) data;
-            Map<BlockFace, Wall.Height> faces = new EnumMap<>(BlockFace.class);
-            for(BlockFace b : CARDINALS) faces.put(b, wallData.getHeight(b));
-            for(Map.Entry<BlockFace, Wall.Height> face : faces.entrySet()) {
-                wallData.setHeight(getRotatedFace(face.getKey(), r), face.getValue());
-            }
+    private static BooleanProperty rotateCardinal(BooleanProperty property, Rotation r) {
+        switch(r) {
+            case NONE:
+                return property;
+            case CW_90:
+                if(property == Properties.NORTH) return Properties.EAST;
+                if(property == Properties.EAST) return Properties.SOUTH;
+                if(property == Properties.SOUTH) return Properties.WEST;
+                if(property == Properties.WEST) return Properties.NORTH;
+                throw new IllegalStateException();
+            case CW_180:
+                if(property == Properties.NORTH) return Properties.SOUTH;
+                if(property == Properties.EAST) return Properties.WEST;
+                if(property == Properties.SOUTH) return Properties.NORTH;
+                if(property == Properties.WEST) return Properties.EAST;
+                throw new IllegalStateException();
+            case CCW_90:
+                if(property == Properties.NORTH) return Properties.WEST;
+                if(property == Properties.EAST) return Properties.NORTH;
+                if(property == Properties.SOUTH) return Properties.EAST;
+                if(property == Properties.WEST) return Properties.SOUTH;
+                throw new IllegalStateException();
         }
+        throw new IllegalStateException();
+    }
+
+    private static EnumProperty<RedstoneConnection> rotateRedstone(EnumProperty<RedstoneConnection> property, Rotation r) {
+        switch(r) {
+            case NONE:
+                return property;
+            case CW_90:
+                if(property == Properties.NORTH_CONNECTION) return Properties.EAST_CONNECTION;
+                if(property == Properties.EAST_CONNECTION) return Properties.SOUTH_CONNECTION;
+                if(property == Properties.SOUTH_CONNECTION) return Properties.WEST_CONNECTION;
+                if(property == Properties.WEST_CONNECTION) return Properties.NORTH_CONNECTION;
+                throw new IllegalStateException();
+            case CW_180:
+                if(property == Properties.NORTH_CONNECTION) return Properties.SOUTH_CONNECTION;
+                if(property == Properties.EAST_CONNECTION) return Properties.WEST_CONNECTION;
+                if(property == Properties.SOUTH_CONNECTION) return Properties.NORTH_CONNECTION;
+                if(property == Properties.WEST_CONNECTION) return Properties.EAST_CONNECTION;
+                throw new IllegalStateException();
+            case CCW_90:
+                if(property == Properties.NORTH_CONNECTION) return Properties.WEST_CONNECTION;
+                if(property == Properties.EAST_CONNECTION) return Properties.NORTH_CONNECTION;
+                if(property == Properties.SOUTH_CONNECTION) return Properties.EAST_CONNECTION;
+                if(property == Properties.WEST_CONNECTION) return Properties.SOUTH_CONNECTION;
+                throw new IllegalStateException();
+        }
+        throw new IllegalStateException();
+    }
+
+    private static EnumProperty<WallHeight> rotateWall(EnumProperty<WallHeight> property, Rotation r) {
+        switch(r) {
+            case NONE:
+                return property;
+            case CW_90:
+                if(property == Properties.NORTH_HEIGHT) return Properties.EAST_HEIGHT;
+                if(property == Properties.EAST_HEIGHT) return Properties.SOUTH_HEIGHT;
+                if(property == Properties.SOUTH_HEIGHT) return Properties.WEST_HEIGHT;
+                if(property == Properties.WEST_HEIGHT) return Properties.NORTH_HEIGHT;
+                throw new IllegalStateException();
+            case CW_180:
+                if(property == Properties.NORTH_HEIGHT) return Properties.SOUTH_HEIGHT;
+                if(property == Properties.EAST_HEIGHT) return Properties.WEST_HEIGHT;
+                if(property == Properties.SOUTH_HEIGHT) return Properties.NORTH_HEIGHT;
+                if(property == Properties.WEST_HEIGHT) return Properties.EAST_HEIGHT;
+                throw new IllegalStateException();
+            case CCW_90:
+                if(property == Properties.NORTH_HEIGHT) return Properties.WEST_HEIGHT;
+                if(property == Properties.EAST_HEIGHT) return Properties.NORTH_HEIGHT;
+                if(property == Properties.SOUTH_HEIGHT) return Properties.EAST_HEIGHT;
+                if(property == Properties.WEST_HEIGHT) return Properties.SOUTH_HEIGHT;
+                throw new IllegalStateException();
+        }
+        throw new IllegalStateException();
+    }
+
+    public static void rotateBlockData(BlockState data, Rotation r) {
+        data
+                .ifProperty(Properties.NORTH, state -> state.set(rotateCardinal(Properties.NORTH, r), state.get(Properties.NORTH)))
+                .ifProperty(Properties.SOUTH, state -> state.set(rotateCardinal(Properties.SOUTH, r), state.get(Properties.SOUTH)))
+                .ifProperty(Properties.EAST, state -> state.set(rotateCardinal(Properties.EAST, r), state.get(Properties.EAST)))
+                .ifProperty(Properties.WEST, state -> state.set(rotateCardinal(Properties.WEST, r), state.get(Properties.WEST)))
+                .ifProperty(Properties.DIRECTION, state -> state.set(Properties.DIRECTION, state.get(Properties.DIRECTION).rotate(r)))
+                .ifProperty(Properties.AXIS, state -> state.set(Properties.AXIS, getRotatedAxis(state.get(Properties.AXIS), r)))
+                .ifProperty(Properties.RAIL_SHAPE, state -> state.set(Properties.RAIL_SHAPE, getRotatedRail(state.get(Properties.RAIL_SHAPE), r)))
+                .ifProperty(Properties.NORTH_CONNECTION, state -> state.set(rotateRedstone(Properties.NORTH_CONNECTION, r), state.get(Properties.NORTH_CONNECTION)))
+                .ifProperty(Properties.SOUTH_CONNECTION, state -> state.set(rotateRedstone(Properties.SOUTH_CONNECTION, r), state.get(Properties.SOUTH_CONNECTION)))
+                .ifProperty(Properties.EAST_CONNECTION, state -> state.set(rotateRedstone(Properties.EAST_CONNECTION, r), state.get(Properties.EAST_CONNECTION)))
+                .ifProperty(Properties.WEST_CONNECTION, state -> state.set(rotateRedstone(Properties.WEST_CONNECTION, r), state.get(Properties.WEST_CONNECTION)))
+                .ifProperty(Properties.NORTH_HEIGHT, state -> state.set(rotateWall(Properties.NORTH_HEIGHT, r), state.get(Properties.NORTH_HEIGHT)))
+                .ifProperty(Properties.SOUTH_HEIGHT, state -> state.set(rotateWall(Properties.SOUTH_HEIGHT, r), state.get(Properties.SOUTH_HEIGHT)))
+                .ifProperty(Properties.EAST_HEIGHT, state -> state.set(rotateWall(Properties.EAST_HEIGHT, r), state.get(Properties.EAST_HEIGHT)))
+                .ifProperty(Properties.WEST_HEIGHT, state -> state.set(rotateWall(Properties.WEST_HEIGHT, r), state.get(Properties.WEST_HEIGHT)));
     }
 }

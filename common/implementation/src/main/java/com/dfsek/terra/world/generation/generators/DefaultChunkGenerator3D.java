@@ -1,13 +1,11 @@
 package com.dfsek.terra.world.generation.generators;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.block.data.Bisected;
-import com.dfsek.terra.api.block.data.Slab;
-import com.dfsek.terra.api.block.data.Stairs;
-import com.dfsek.terra.api.block.data.Waterlogged;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.properties.base.Properties;
+import com.dfsek.terra.api.block.state.properties.enums.Direction;
+import com.dfsek.terra.api.block.state.properties.enums.Half;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.profiler.ProfileFrame;
@@ -145,16 +143,16 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                 Palette stairPalette = stairs.get(down.getBlockType());
                 if(stairPalette != null) {
                     BlockState stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
-                    if(stair instanceof Stairs) {
-                        Stairs stairNew = (Stairs) stair;
+                    if(stair.has(Properties.DIRECTION)) {
+                        BlockState stairNew = stair.clone();
                         if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
                     }
                 }
             }
-            BlockState slab = slabs.getOrDefault(down.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ());
-            if(slab instanceof Waterlogged) {
-                ((Waterlogged) slab).setWaterlogged(orig.getBlockType().equals(water));
-            } else if(orig.getBlockType().equals(water)) return;
+            BlockState slab = slabs.getOrDefault(down.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ())
+                    .setIfPresent(Properties.WATERLOGGED, orig.getBlockType().equals(water));
+
+            if(orig.getBlockType().equals(water)) return;
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
     }
@@ -166,37 +164,36 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                 Palette stairPalette = stairs.get(up.getBlockType());
                 if(stairPalette != null) {
                     BlockState stair = stairPalette.get(0, block.getX(), block.getY(), block.getZ()).clone();
-                    if(stair instanceof Stairs) {
-                        Stairs stairNew = (Stairs) stair.clone();
-                        stairNew.setHalf(Bisected.Half.TOP);
+                    stair.setIfPresent(Properties.HALF, Half.TOP);
+                    if(stair.has(Properties.DIRECTION)) {
+                        BlockState stairNew = stair.clone();
                         if(placeStair(orig, chunk, block, thresh, sampler, stairNew)) return; // Successfully placed part.
                     }
                 }
             }
             BlockState slab = slabs.getOrDefault(up.getBlockType(), blank).get(0, block.getX(), block.getY(), block.getZ()).clone();
-            if(slab instanceof Bisected) ((Bisected) slab).setHalf(Bisected.Half.TOP);
-            if(slab instanceof Slab) ((Slab) slab).setType(Slab.Type.TOP);
-            if(slab instanceof Waterlogged) {
-                ((Waterlogged) slab).setWaterlogged(orig.getBlockType().equals(water));
-            } else if(orig.getBlockType().equals(water)) return; // Only replace water if waterlogged.
+            slab.setIfPresent(Properties.HALF, Half.TOP);
+
+            slab.setIfPresent(Properties.WATERLOGGED, orig.getBlockType().isWater());
+            if(orig.getBlockType().equals(water)) return;
+
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), slab);
         }
     }
 
-    private boolean placeStair(BlockState orig, ChunkData chunk, Vector3 block, double thresh, Sampler sampler, Stairs stairNew) {
+    private boolean placeStair(BlockState orig, ChunkData chunk, Vector3 block, double thresh, Sampler sampler, BlockState stairNew) {
 
         if(sampler.sample(block.getBlockX() - 0.55, block.getY(), block.getZ()) > thresh) {
-
-            stairNew.setFacing(BlockFace.WEST);
+            stairNew.set(Properties.DIRECTION, Direction.WEST);
         } else if(sampler.sample(block.getBlockX(), block.getY(), block.getZ() - 0.55) > thresh) {
-            stairNew.setFacing(BlockFace.NORTH);
+            stairNew.set(Properties.DIRECTION, Direction.NORTH);
         } else if(sampler.sample(block.getBlockX(), block.getY(), block.getZ() + 0.55) > thresh) {
-            stairNew.setFacing(BlockFace.SOUTH);
+            stairNew.set(Properties.DIRECTION, Direction.SOUTH);
         } else if(sampler.sample(block.getX() + 0.55, block.getY(), block.getZ()) > thresh) {
-            stairNew.setFacing(BlockFace.EAST);
+            stairNew.set(Properties.DIRECTION, Direction.EAST);
         } else stairNew = null;
         if(stairNew != null) {
-            if(orig.getBlockType().equals(water)) stairNew.setWaterlogged(orig.getBlockType().equals(water));
+            stairNew.setIfPresent(Properties.WATERLOGGED, orig.getBlockType().equals(water));
             chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
             return true;
         }
