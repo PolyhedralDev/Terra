@@ -1,6 +1,6 @@
 package com.dfsek.terra.config.loaders;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.Tree;

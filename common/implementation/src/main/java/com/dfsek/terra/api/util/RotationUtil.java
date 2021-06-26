@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.block.data.properties.enums.RailShape;
-import com.dfsek.terra.api.block.data.properties.enums.Axis;
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.properties.enums.RailShape;
+import com.dfsek.terra.api.block.state.properties.enums.Axis;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
 import com.dfsek.terra.api.block.data.MultipleFacing;

@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import net.querz.mca.Chunk;

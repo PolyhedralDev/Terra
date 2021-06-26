@@ -1,7 +1,7 @@
-package com.dfsek.terra.api.block.data.properties.base;
+package com.dfsek.terra.api.block.state.properties.base;
 
-import com.dfsek.terra.api.block.data.properties.enums.Direction;
-import com.dfsek.terra.api.block.data.properties.enums.RailShape;
+import com.dfsek.terra.api.block.state.properties.enums.Direction;
+import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 
 public final class Properties {
     public static final EnumProperty<Direction> DIRECTION = EnumProperty.of("facing", Direction.class);

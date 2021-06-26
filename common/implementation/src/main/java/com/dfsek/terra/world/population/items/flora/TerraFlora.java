@@ -1,7 +1,7 @@
 package com.dfsek.terra.world.population.items.flora;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Directional;
 import com.dfsek.terra.api.block.data.MultipleFacing;

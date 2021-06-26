@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.block.data.Rail;
-import com.dfsek.terra.api.block.data.properties.enums.RailShape;
+import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitRail extends BukkitBlockState implements Rail {

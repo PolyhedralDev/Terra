@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.handle;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.generic.pair.Pair;

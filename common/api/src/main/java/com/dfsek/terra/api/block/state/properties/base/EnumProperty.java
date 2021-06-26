@@ -1,6 +1,6 @@
-package com.dfsek.terra.api.block.data.properties.base;
+package com.dfsek.terra.api.block.state.properties.base;
 
-import com.dfsek.terra.api.block.data.properties.Property;
+import com.dfsek.terra.api.block.state.properties.Property;
 import com.dfsek.terra.api.util.generic.Lazy;
 
 import java.util.Arrays;

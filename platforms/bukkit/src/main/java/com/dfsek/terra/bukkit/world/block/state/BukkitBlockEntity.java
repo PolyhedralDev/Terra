@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;

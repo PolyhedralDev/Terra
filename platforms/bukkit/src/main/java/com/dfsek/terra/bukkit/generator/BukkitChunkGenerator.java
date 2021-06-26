@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import org.bukkit.generator.ChunkGenerator;

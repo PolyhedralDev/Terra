@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.util.collections;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 
 import java.util.Arrays;

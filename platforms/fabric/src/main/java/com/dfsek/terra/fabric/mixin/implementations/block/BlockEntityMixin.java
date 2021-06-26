@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.block;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.util.math.BlockPos;

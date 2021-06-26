@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.block.data.properties.enums;
+package com.dfsek.terra.api.block.state.properties.enums;
 
 public enum RailShape {
     ASCENDING_EAST,

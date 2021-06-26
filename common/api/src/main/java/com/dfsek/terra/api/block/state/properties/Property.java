@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.block.data.properties;
+package com.dfsek.terra.api.block.state.properties;
 
 import java.util.Collection;
 

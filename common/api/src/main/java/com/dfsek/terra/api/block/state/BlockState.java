@@ -1,7 +1,8 @@
-package com.dfsek.terra.api.block;
+package com.dfsek.terra.api.block.state;
 
 import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.block.data.properties.Property;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.properties.Property;
 
 public interface BlockState extends Cloneable, Handle {
 

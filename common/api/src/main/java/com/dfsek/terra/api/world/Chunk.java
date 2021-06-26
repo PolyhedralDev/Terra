@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 
 public interface Chunk extends ChunkAccess {
     int getX();

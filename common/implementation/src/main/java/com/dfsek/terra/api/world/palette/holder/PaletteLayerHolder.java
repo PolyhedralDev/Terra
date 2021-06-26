@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world.palette.holder;
 
-import com.dfsek.terra.api.block.BlockState;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import org.jetbrains.annotations.NotNull;
