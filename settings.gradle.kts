@@ -14,7 +14,18 @@ include("common:implementation")
 include("common:loader:config")
 include("common:loader:addon")
 
+
 include("common:addons:noise")
+
+include("common:addons:biome:config")
+include("common:addons:biome:provider:pipeline")
+include("common:addons:biome:provider:image")
+include("common:addons:biome:provider:single")
+
+include("common:addons:carver")
+include("common:addons:flora")
+include("common:addons:palette")
+
 
 
 include("platforms:bukkit")
