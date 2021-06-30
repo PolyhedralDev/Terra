@@ -10,7 +10,6 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
-import com.dfsek.terra.vector.Vector2Impl;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +41,7 @@ public class FloraPopulator implements TerraBlockPopulator {
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    Vector2 l = new Vector2Impl(x, z);
+                    Vector2 l = new Vector2(x, z);
                     layers.put(l, biome.getConfig().getFlora());
                 }
             }

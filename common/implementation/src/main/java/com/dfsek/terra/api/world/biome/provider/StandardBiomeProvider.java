@@ -7,7 +7,6 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
 import com.dfsek.terra.api.world.biome.pipeline.BiomePipelineImpl;
-import com.dfsek.terra.vector.Vector2Impl;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -52,6 +51,6 @@ public class StandardBiomeProvider implements BiomeProvider {
 
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
-        return holderCache.getUnchecked(new Vector2Impl(fdX, fdZ)).getBiome(x - fdX * pipeline.getSize(), z - fdZ * pipeline.getSize());
+        return holderCache.getUnchecked(new Vector2(fdX, fdZ)).getBiome(x - fdX * pipeline.getSize(), z - fdZ * pipeline.getSize());
     }
 }

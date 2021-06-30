@@ -12,7 +12,6 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector2Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -35,7 +34,7 @@ public abstract class AbstractBlockFunction implements Function<Void> {
     }
 
     void setBlock(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap, TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = new Vector2Impl(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 

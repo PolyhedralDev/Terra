@@ -2,10 +2,10 @@ package com.dfsek.terra.api.world.biome.pipeline;
 
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.seeded.StageSeeded;
+import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 import com.dfsek.terra.api.world.biome.generation.pipeline.Stage;
-import com.dfsek.terra.vector.Vector2Impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ public class BiomePipelineImpl {
      * @return BiomeHolder containing biomes.
      */
     public BiomeHolder getBiomes(int x, int z) {
-        BiomeHolder holder = new BiomeHolderImpl(init, new Vector2Impl(x * (init - 1), z * (init - 1)));
+        BiomeHolder holder = new BiomeHolderImpl(init, new Vector2(x * (init - 1), z * (init - 1)));
         holder.fill(source);
         for(Stage stage : stages) holder = stage.apply(holder);
         return holder;

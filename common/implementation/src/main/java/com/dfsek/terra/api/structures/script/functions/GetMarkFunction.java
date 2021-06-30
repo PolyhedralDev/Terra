@@ -9,7 +9,6 @@ import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector2Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -28,7 +27,7 @@ public class GetMarkFunction implements Function<String> {
     @Override
     public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2Impl(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
         String mark = arguments.getBuffer().getMark(new Vector3(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
