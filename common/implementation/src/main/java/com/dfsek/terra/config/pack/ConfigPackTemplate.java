@@ -7,8 +7,6 @@ import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;

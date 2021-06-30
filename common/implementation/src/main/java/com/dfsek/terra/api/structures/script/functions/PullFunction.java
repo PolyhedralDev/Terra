@@ -13,8 +13,8 @@ import com.dfsek.terra.api.structures.structure.buffer.items.BufferedPulledBlock
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -42,7 +42,7 @@ public class PullFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         BlockState rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

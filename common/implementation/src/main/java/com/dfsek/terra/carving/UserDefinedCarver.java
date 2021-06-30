@@ -20,7 +20,6 @@ import com.dfsek.terra.api.world.carving.Worm;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.List;
@@ -156,7 +155,7 @@ public class UserDefinedCarver extends Carver {
             this.seed = seed;
             super.setTopCut(topCut);
             super.setBottomCut(bottomCut);
-            direction = new Vector3Impl((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
+            direction = new Vector3((r.nextDouble() - 0.5D) * start[0], (r.nextDouble() - 0.5D) * start[1], (r.nextDouble() - 0.5D) * start[2]).normalize().multiply(step);
             double[] args = {origin.getX(), origin.getY(), origin.getZ(), length, 0, seed};
             setRadius(new int[] {(int) (xRad.evaluate(args)), (int) (yRad.evaluate(args)), (int) (zRad.evaluate(args))});
         }

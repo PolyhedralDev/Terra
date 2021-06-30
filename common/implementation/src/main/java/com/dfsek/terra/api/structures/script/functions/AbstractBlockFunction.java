@@ -11,8 +11,8 @@ import com.dfsek.terra.api.structures.structure.buffer.items.BufferedBlock;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ public abstract class AbstractBlockFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(implementationArguments, variableMap), main, arguments.isWaterlog()), new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(implementationArguments, variableMap), main, arguments.isWaterlog()), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
     }
 
     @Override

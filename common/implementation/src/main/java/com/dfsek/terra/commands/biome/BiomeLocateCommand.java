@@ -13,12 +13,12 @@ import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.locate.AsyncBiomeFinder;
 import com.dfsek.terra.commands.biome.arg.BiomeArgumentParser;
 import com.dfsek.terra.commands.biome.tab.BiomeTabCompleter;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.vector.Vector3Impl;
 
 import java.util.Locale;
 
@@ -66,9 +66,9 @@ public class BiomeLocateCommand implements CommandTemplate {
 
         new Thread(new AsyncBiomeFinder(main.getWorld(player.world()).getBiomeProvider(), biome, player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), player.world(), 0, radius, location -> {
             if(location != null) {
-                sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", biome.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3Impl(0, player.position().getY(), 0)).distance(player.position())));
+                sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", biome.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3(0, player.position().getY(), 0)).distance(player.position())));
                 if(teleport) {
-                    main.runPossiblyUnsafeTask(() -> player.position(new Vector3Impl(location.getX(), player.position().getY(), location.getZ())));
+                    main.runPossiblyUnsafeTask(() -> player.position(new Vector3(location.getX(), player.position().getY(), location.getZ())));
                 }
             } else LangUtil.send("command.biome.unable-to-locate", sender);
         }, main), "Biome Location Thread").start();

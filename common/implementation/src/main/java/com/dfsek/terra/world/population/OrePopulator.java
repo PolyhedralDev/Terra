@@ -4,6 +4,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.PopulationUtil;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
@@ -11,7 +12,6 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.vector.Vector3Impl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -44,7 +44,7 @@ public class OrePopulator implements TerraBlockPopulator {
                         try(ProfileFrame ignored = main.getProfiler().profile("ore:" + id)) {
                             int amount = orePair.getRight().getAmount().get(random);
                             for(int i = 0; i < amount; i++) {
-                                Vector3Impl location = new Vector3Impl(random.nextInt(16) + 16 * finalCx, orePair.getRight().getHeight().get(random), random.nextInt(16) + 16 * finalCz);
+                                Vector3 location = new Vector3(random.nextInt(16) + 16 * finalCx, orePair.getRight().getHeight().get(random), random.nextInt(16) + 16 * finalCz);
                                 orePair.getLeft().generate(location, chunk, random);
                             }
                         }

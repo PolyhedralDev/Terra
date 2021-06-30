@@ -8,8 +8,8 @@ import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -34,7 +34,7 @@ public class SetMarkFunction implements Function<Void> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().setMark(mark.apply(implementationArguments, variableMap), new Vector3Impl(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
+        arguments.getBuffer().setMark(mark.apply(implementationArguments, variableMap), new Vector3(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
         return null;
     }
 

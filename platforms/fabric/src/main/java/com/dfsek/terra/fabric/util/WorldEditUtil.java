@@ -3,7 +3,6 @@ package com.dfsek.terra.fabric.util;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -20,8 +19,8 @@ public final class WorldEditUtil {
                     .getSelection(com.sk89q.worldedit.fabric.FabricAdapter.adapt((World) player.world()));
             BlockVector3 min = selection.getMinimumPoint();
             BlockVector3 max = selection.getMaximumPoint();
-            Vector3 l1 = new Vector3Impl(min.getBlockX(), min.getBlockY(), min.getBlockZ());
-            Vector3 l2 = new Vector3Impl(max.getBlockX(), max.getBlockY(), max.getBlockZ());
+            Vector3 l1 = new Vector3(min.getBlockX(), min.getBlockY(), min.getBlockZ());
+            Vector3 l2 = new Vector3(max.getBlockX(), max.getBlockY(), max.getBlockZ());
             return Pair.of(l1, l2);
         } catch(IncompleteRegionException e) {
             throw new IllegalStateException("No selection has been made", e);

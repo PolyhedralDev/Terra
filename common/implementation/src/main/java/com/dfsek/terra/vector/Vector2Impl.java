@@ -144,7 +144,7 @@ public class Vector2Impl implements Vector2 {
 
     @Override
     public Vector3 extrude(double y) {
-        return new Vector3Impl(this.x, y, this.z);
+        return new Vector3(this.x, y, this.z);
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.vector.Vector3Impl;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
@@ -54,7 +53,7 @@ public class CommonListener implements Listener {
         block.setType(Material.AIR);
         Tree tree = c.getRegistry(Tree.class).get(TREE_TYPE_STRING_TRANSFORMER.translate(e.getSpecies()));
         org.bukkit.Location location = e.getLocation();
-        if(!tree.plant(new Vector3Impl(location.getX(), location.getY(), location.getZ()), BukkitAdapter.adapt(e.getWorld()), new FastRandom()))
+        if(!tree.plant(new Vector3(location.getX(), location.getY(), location.getZ()), BukkitAdapter.adapt(e.getWorld()), new FastRandom()))
             block.setBlockData(data);
     }
 }

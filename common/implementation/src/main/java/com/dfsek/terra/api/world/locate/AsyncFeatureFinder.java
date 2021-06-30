@@ -4,7 +4,6 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.vector.Vector3Impl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -66,7 +65,7 @@ public abstract class AsyncFeatureFinder<T> implements Runnable {
             run++;
             toggle = !toggle;
         }
-        Vector3 finalSpawn = found ? finalizeVector(new Vector3Impl(x, 0, z)) : null;
+        Vector3 finalSpawn = found ? finalizeVector(new Vector3(x, 0, z)) : null;
         callback.accept(finalSpawn);
     }
 

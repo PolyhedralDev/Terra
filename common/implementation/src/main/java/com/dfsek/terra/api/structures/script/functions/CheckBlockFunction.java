@@ -8,8 +8,8 @@ import com.dfsek.terra.api.structures.script.TerraImplementationArguments;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -34,7 +34,7 @@ public class CheckBlockFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        String data = arguments.getWorld().getBlockData(arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())))).getAsString();
+        String data = arguments.getWorld().getBlockData(arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())))).getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;
     }

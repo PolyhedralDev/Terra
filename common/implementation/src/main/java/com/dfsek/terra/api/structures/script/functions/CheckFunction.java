@@ -17,7 +17,6 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -47,7 +46,7 @@ public class CheckFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Vector3 location = arguments.getBuffer().getOrigin().clone().add(new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        Vector3 location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getWorld());
     }

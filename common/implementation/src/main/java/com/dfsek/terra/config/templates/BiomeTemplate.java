@@ -25,7 +25,6 @@ import com.dfsek.terra.api.world.palette.slant.SlantHolder;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.ores.OreHolder;
@@ -248,7 +247,7 @@ public class BiomeTemplate extends AbstractableTemplate implements ValidatedConf
         biomeNoise = new NoiseSeeded() {
             @Override
             public NoiseSampler apply(Long seed) {
-                return new ConstantSampler(0);
+                return NoiseSampler.zero();
             }
 
             @Override

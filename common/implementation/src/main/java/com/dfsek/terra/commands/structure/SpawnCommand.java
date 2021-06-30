@@ -17,7 +17,6 @@ import com.dfsek.terra.api.structures.structure.buffer.StructureBuffer;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector3Impl;
 
 import java.util.HashMap;
 
@@ -41,7 +40,7 @@ public class SpawnCommand implements CommandTemplate {
         Position dummy = new Position(0, 0);
 
         String check = new CheckFunction(main, new NumericConstant(0, dummy), new NumericConstant(0, dummy), new NumericConstant(0, dummy), dummy).apply(new TerraImplementationArguments(new StructureBuffer(
-                new Vector3Impl(x, y, z)
+                new Vector3(x, y, z)
         ), Rotation.NONE, new FastRandom(), player.world(), 0), new HashMap<>());
 
         sender.sendMessage("Found: " + check);

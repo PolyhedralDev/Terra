@@ -17,7 +17,7 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     protected NoiseSeeded blend = new NoiseSeeded() {
         @Override
         public NoiseSampler apply(Long seed) {
-            return new ConstantSampler(0);
+            return NoiseSampler.zero();
         }
 
         @Override

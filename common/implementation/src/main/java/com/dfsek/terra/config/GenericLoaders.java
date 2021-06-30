@@ -1,11 +1,11 @@
 package com.dfsek.terra.config;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.math.GridSpawn;
+import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collections.MaterialSet;
@@ -40,17 +40,10 @@ import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.Repla
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.DomainWarpTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.ClampNormalizerTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.LinearNormalizerTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
 import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
 import com.dfsek.terra.config.loaders.palette.slant.SlantHolderLoader;
-import com.dfsek.terra.noise.samplers.ImageSampler;
-import com.dfsek.terra.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.world.population.items.flora.FloraLayer;
 import com.dfsek.terra.world.population.items.flora.TerraFlora;
 import com.dfsek.terra.world.population.items.ores.OreConfig;
@@ -79,11 +72,6 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(TreeLayer.class, new TreeLayerLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(OreHolder.class, new OreHolderLoader())
-                .registerLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
-                .registerLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
-                .registerLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
-                .registerLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
-                .registerLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
                 .registerLoader(ReplaceMutatorTemplate.class, ReplaceMutatorTemplate::new)
                 .registerLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
                 .registerLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
@@ -97,14 +85,11 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(SourceSeeded.class, new SourceBuilderLoader())
                 .registerLoader(StageSeeded.class, new StageBuilderLoader())
                 .registerLoader(BiomeProvider.BiomeProviderBuilder.class, new BiomeProviderBuilderLoader())
-                .registerLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .registerLoader(BiomeProvider.Type.class, (t, object, cf) -> BiomeProvider.Type.valueOf((String) object))
                 .registerLoader(BiomeSource.Type.class, (t, object, cf) -> BiomeSource.Type.valueOf((String) object))
                 .registerLoader(ImageBiomeProvider.Align.class, (t, object, cf) -> ImageBiomeProvider.Align.valueOf((String) object))
                 .registerLoader(ExpanderStage.Type.class, (t, object, cf) -> ExpanderStage.Type.valueOf((String) object))
                 .registerLoader(MutatorStage.Type.class, (t, object, cf) -> MutatorStage.Type.valueOf((String) object))
-                .registerLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
-                .registerLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object))
                 .registerLoader(TerraFlora.Search.class, (t, o, l) -> TerraFlora.Search.valueOf(o.toString()));
 
         if(main != null) {

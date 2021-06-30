@@ -7,7 +7,6 @@ import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockState;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.WallShape;
@@ -21,7 +20,7 @@ public final class FabricAdapter {
     }
 
     public static Vector3 adapt(BlockPos pos) {
-        return new Vector3Impl(pos.getX(), pos.getY(), pos.getZ());
+        return new Vector3(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static FabricBlockState adapt(BlockState state) {

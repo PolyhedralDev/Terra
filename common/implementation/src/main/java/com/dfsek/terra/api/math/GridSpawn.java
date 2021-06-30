@@ -4,7 +4,6 @@ import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.vector.Vector3Impl;
 
 import java.util.List;
 import java.util.Random;
@@ -41,7 +40,7 @@ public class GridSpawn {
             }
         }
         Vector3 shortest = zones.get(0);
-        Vector3 compare = new Vector3Impl(x, 0, z);
+        Vector3 compare = new Vector3(x, 0, z);
         for(Vector3 v : zones) {
             if(compare.distanceSquared(shortest) > compare.distanceSquared(v)) shortest = v.clone();
         }
@@ -62,7 +61,7 @@ public class GridSpawn {
         int offsetZ = r.nextInt(width);
         int sx = structureChunkX * (width + 2 * separation) + offsetX;
         int sz = structureChunkZ * (width + 2 * separation) + offsetZ;
-        return new Vector3Impl(sx, 0, sz);
+        return new Vector3(sx, 0, sz);
     }
 
     public int getWidth() {

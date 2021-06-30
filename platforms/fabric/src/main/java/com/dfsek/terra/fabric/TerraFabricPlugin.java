@@ -1,8 +1,11 @@
 package com.dfsek.terra.fabric;
 
+import com.dfsek.tectonic.abstraction.TemplateProvider;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -77,8 +80,13 @@ import org.apache.logging.log4j.LogManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -87,6 +95,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
     private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
+
+    private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
+    private final Map<Type, TemplateProvider<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
 
     public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
         return worldMap;
@@ -231,6 +242,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return debugLogger;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
@@ -242,6 +254,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);
                     return identifier;
                 });
+        loaders.forEach(registry::registerLoader);
+        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
     }
 
     @Override
@@ -288,6 +302,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public Profiler getProfiler() {
         return profiler;
+    }
+
+    @Override
+    public <T> TerraFabricPlugin applyLoader(Type type, TypeLoader<T> loader) {
+        loaders.put(type, loader);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TerraFabricPlugin applyLoader(Type type, TemplateProvider<ObjectTemplate<T>> loader) {
+        objectLoaders.put(type, (TemplateProvider<ObjectTemplate<?>>) ((Object) loader));
+        return this;
     }
 
     @Addon("Terra-Fabric")

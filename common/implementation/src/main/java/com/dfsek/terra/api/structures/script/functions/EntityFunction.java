@@ -13,8 +13,8 @@ import com.dfsek.terra.api.structures.structure.buffer.items.BufferedEntity;
 import com.dfsek.terra.api.structures.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class EntityFunction implements Function<Void> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().addItem(new BufferedEntity(data, main), new Vector3Impl(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()));
+        arguments.getBuffer().addItem(new BufferedEntity(data, main), new Vector3(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()));
         return null;
     }
 

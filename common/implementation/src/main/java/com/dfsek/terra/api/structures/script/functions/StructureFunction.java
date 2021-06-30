@@ -15,7 +15,6 @@ import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.vector.Vector2Impl;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public class StructureFunction implements Function<Boolean> {
             return null;
         }
 
-        Vector3 offset = new Vector3Impl(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
 
         return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getWorld(), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }

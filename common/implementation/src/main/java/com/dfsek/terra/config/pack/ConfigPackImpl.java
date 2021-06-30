@@ -2,12 +2,15 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
+import com.dfsek.tectonic.abstraction.TemplateProvider;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -24,7 +27,6 @@ import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.structures.script.StructureScript;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.builder.BiomeBuilder;
@@ -36,8 +38,6 @@ import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.loaders.config.biome.templates.provider.BiomePipelineTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProviderTemplate;
 import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
-import com.dfsek.terra.config.loaders.config.sampler.NoiseSamplerBuilderLoader;
-import com.dfsek.terra.config.loaders.config.sampler.templates.ImageSamplerTemplate;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
@@ -54,6 +54,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,6 +72,9 @@ import java.util.zip.ZipFile;
  */
 public class ConfigPackImpl implements ConfigPack {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
+
+    private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
+    private final Map<Type, TemplateProvider<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -205,6 +209,18 @@ public class ConfigPackImpl implements ConfigPack {
     private void checkDeadEntries(TerraPlugin main) {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + clazz + "' registry: '" + id + "'")));
     }
+    @Override
+    public <T> ConfigPackImpl applyLoader(Type type, TypeLoader<T> loader) {
+        loaders.put(type, loader);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> ConfigPackImpl applyLoader(Type type, TemplateProvider<ObjectTemplate<T>> loader) {
+        objectLoaders.put(type, (TemplateProvider<ObjectTemplate<?>>) ((Object) loader));
+        return this;
+    }
 
     protected Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;
@@ -282,6 +298,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public void register(TypeRegistry registry) {
         registry
@@ -289,9 +306,9 @@ public class ConfigPackImpl implements ConfigPack {
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
                 .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
                 .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
-                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)))
-                .registerLoader(ImageSamplerTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)))
-                .registerLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(getOpenRegistry(NoiseProvider.class)));
+                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)));
+        loaders.forEach(registry::registerLoader);
+        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
     }
 
     @Override

@@ -24,7 +24,6 @@ import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.api.world.palette.PaletteImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.vector.Vector3Impl;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.carving.NoiseCarver;
 import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
@@ -108,20 +107,20 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                             data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, y, cz);
                             chunk.setBlock(x, y, z, data);
                             if(paletteLevel == 0 && c.doSlabs() && y < 255) {
-                                prepareBlockPartFloor(data, chunk.getBlock(x, y + 1, z), chunk, new Vector3Impl(x, y + 1, z), c.getSlabPalettes(),
+                                prepareBlockPartFloor(data, chunk.getBlock(x, y + 1, z), chunk, new Vector3(x, y + 1, z), c.getSlabPalettes(),
                                         c.getStairPalettes(), c.getSlabThreshold(), sampler);
                             }
                             paletteLevel++;
                         } else if(y <= sea) {
                             chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig));
                             if(justSet && c.doSlabs()) {
-                                prepareBlockPartCeiling(data, chunk.getBlock(x, y, z), chunk, new Vector3Impl(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                                prepareBlockPartCeiling(data, chunk.getBlock(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                             }
                             justSet = false;
                             paletteLevel = 0;
                         } else {
                             if(justSet && c.doSlabs()) {
-                                prepareBlockPartCeiling(data, chunk.getBlock(x, y, z), chunk, new Vector3Impl(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
+                                prepareBlockPartCeiling(data, chunk.getBlock(x, y, z), chunk, new Vector3(x, y, z), c.getSlabPalettes(), c.getStairPalettes(), c.getSlabThreshold(), sampler);
                             }
                             justSet = false;
                             paletteLevel = 0;

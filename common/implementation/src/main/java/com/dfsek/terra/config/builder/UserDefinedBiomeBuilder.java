@@ -11,7 +11,6 @@ import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.noise.samplers.ExpressionSampler;
-import com.dfsek.terra.noise.samplers.noise.ConstantSampler;
 import com.dfsek.terra.world.generation.WorldGenerator;
 
 import java.util.LinkedHashMap;
@@ -48,7 +47,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
 
                         try {
                             noise = new ExpressionSampler(template.getNoiseEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
-                            elevation = template.getElevationEquation() == null ? new ConstantSampler(0) : new ExpressionSampler(template.getElevationEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
+                            elevation = template.getElevationEquation() == null ? NoiseSampler.zero() : new ExpressionSampler(template.getElevationEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
                             carving = new ExpressionSampler(template.getCarvingEquation(), varScope, seed, noiseBuilderMap, functionTemplateMap);
                         } catch(ParseException e) {
                             throw new RuntimeException(e);

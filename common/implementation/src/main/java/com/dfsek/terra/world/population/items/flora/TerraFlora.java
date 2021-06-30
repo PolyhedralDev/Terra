@@ -12,7 +12,6 @@ import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.vector.Vector3Impl;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class TerraFlora implements Flora {
     @Override
     public List<Vector3> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
         int size = floraPalette.getSize();
-        Vector3 current = new Vector3Impl(x, search.equals(Search.UP) ? range.getMin() : range.getMax(), z);
+        Vector3 current = new Vector3(x, search.equals(Search.UP) ? range.getMin() : range.getMax(), z);
         List<Vector3> blocks = new ArrayList<>();
         int cx = chunk.getX() << 4;
         int cz = chunk.getZ() << 4;
