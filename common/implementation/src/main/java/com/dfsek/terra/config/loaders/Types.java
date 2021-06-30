@@ -21,7 +21,7 @@ public final class Types {
     public static final Type TERRA_BIOME_TERRA_BIOME_PROBABILITY_COLLECTION_MAP;
 
     static {
-        BLOCK_DATA_PROBABILITY_COLLECTION_TYPE = getType("blockDataProbabilityCollection");
+        BLOCK_DATA_PROBABILITY_COLLECTION_TYPE = getType("blockStateProbabilityCollection");
         FLORA_PROBABILITY_COLLECTION_TYPE = getType("floraProbabilityCollection");
         TREE_PROBABILITY_COLLECTION_TYPE = getType("treeProbabilityCollection");
         TERRA_BIOME_PROBABILITY_COLLECTION_TYPE = getType("terraBiomeProbabilityCollection");
@@ -38,8 +38,7 @@ public final class Types {
         try {
             return Types.class.getDeclaredField(dummyFieldName).getGenericType();
         } catch(NoSuchFieldException e) {
-            e.printStackTrace();
-            return null;
+            throw new Error("this should never happen. i dont know what you did to make this happen but something is very wrong.");
         }
     }
 }
