@@ -8,13 +8,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Optional annotation that specifies the version of an addon.
+ * Optional annotation that specifies the version of an com.dfsek.terra.addon.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Version {
     /**
-     * @return Version of the addon.
+     * @return Version of the com.dfsek.terra.addon.
      */
     @NotNull String value();
 }

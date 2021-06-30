@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * Specifies that an event handler is to handle all {@link PackEvent}s, regardless of whether the pack
- * depends on the addon's listener.
+ * depends on the com.dfsek.terra.addon's listener.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

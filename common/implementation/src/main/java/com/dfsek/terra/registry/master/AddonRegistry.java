@@ -34,7 +34,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     public boolean add(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
-        main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
+        main.logger().info("Loaded com.dfsek.terra.addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
         return super.add(identifier, addon);
     }
 
@@ -88,15 +88,15 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                     pluginInjector.inject(loadedAddon);
                     loggerInjector.inject(loadedAddon);
                 } catch(InstantiationException | IllegalAccessException | InvocationTargetException | InjectionException e) {
-                    throw new AddonLoadException("Failed to load addon \" + " + addon.getId() + "\": ", e);
+                    throw new AddonLoadException("Failed to load com.dfsek.terra.addon \" + " + addon.getId() + "\": ", e);
                 }
                 try {
                     addChecked(loadedAddon.getName(), loadedAddon);
                 } catch(DuplicateEntryException e) {
                     valid = false;
-                    main.logger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
-                    main.logger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
-                    main.logger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
+                    main.logger().severe("Duplicate com.dfsek.terra.addon ID; com.dfsek.terra.addon with ID " + loadedAddon.getName() + " is already loaded.");
+                    main.logger().severe("Existing com.dfsek.terra.addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
+                    main.logger().severe("Duplicate com.dfsek.terra.addon class: " + addonClass.getCanonicalName());
                 }
             }
         } catch(AddonLoadException | IOException e) {

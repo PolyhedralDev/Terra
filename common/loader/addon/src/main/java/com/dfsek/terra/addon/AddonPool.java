@@ -12,7 +12,7 @@ public class AddonPool {
 
     public void add(PreLoadAddon addon) throws AddonLoadException {
         if(pool.containsKey(addon.getId())) {
-            String message = "Duplicate addon ID: " +
+            String message = "Duplicate com.dfsek.terra.addon ID: " +
                     addon.getId() + "; original ID from file: " +
                     pool.get(addon.getId()).getFile().getAbsolutePath() +
                     ", class: " +

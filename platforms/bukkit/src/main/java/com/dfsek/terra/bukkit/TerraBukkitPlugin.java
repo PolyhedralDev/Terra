@@ -129,10 +129,10 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     public void setHandle(WorldHandle handle) {
         getLogger().warning("|-------------------------------------------------------|");
-        getLogger().warning("A third-party addon has injected a custom WorldHandle!");
-        getLogger().warning("If you encounter issues, try *without* the addon before");
-        getLogger().warning("reporting to Terra. Report issues with the addon to the");
-        getLogger().warning("addon's maintainers!");
+        getLogger().warning("A third-party com.dfsek.terra.addon has injected a custom WorldHandle!");
+        getLogger().warning("If you encounter issues, try *without* the com.dfsek.terra.addon before");
+        getLogger().warning("reporting to Terra. Report issues with the com.dfsek.terra.addon to the");
+        getLogger().warning("com.dfsek.terra.addon's maintainers!");
         getLogger().warning("|-------------------------------------------------------|");
         this.handle = handle;
     }
@@ -183,7 +183,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         if(config.isDebugProfiler()) profiler.start();
 
         if(!addonRegistry.loadAll()) {
-            getLogger().severe("Failed to load addons. Please correct addon installations to continue.");
+            getLogger().severe("Failed to load addons. Please correct com.dfsek.terra.addon installations to continue.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }

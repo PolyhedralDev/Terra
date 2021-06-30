@@ -258,7 +258,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         if(config.isDebugProfiler()) profiler.start();
 
         if(!addonRegistry.loadAll()) {
-            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
+            throw new IllegalStateException("Failed to load addons. Please correct com.dfsek.terra.addon installations to continue.");
         }
         logger.info("Loaded addons.");
 

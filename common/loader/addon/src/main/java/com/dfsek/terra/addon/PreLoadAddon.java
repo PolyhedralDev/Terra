@@ -1,8 +1,8 @@
 package com.dfsek.terra.addon;
 
+import com.dfsek.terra.addon.exception.DependencyMissingException;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.addon.exception.CircularDependencyException;
-import com.dfsek.terra.addon.exception.DependencyMissingException;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Depends;
@@ -33,7 +33,7 @@ public class PreLoadAddon {
 
     public void rebuildDependencies(AddonPool pool, PreLoadAddon origin, boolean levelG1) throws AddonLoadException {
         if(this.equals(origin) && !levelG1)
-            throw new CircularDependencyException("Detected circular dependency in addon \"" + id + "\", dependencies: " + Arrays.toString(dependencies));
+            throw new CircularDependencyException("Detected circular dependency in com.dfsek.terra.addon \"" + id + "\", dependencies: " + Arrays.toString(dependencies));
 
         for(String dependency : dependencies) {
             PreLoadAddon preLoadAddon = pool.get(dependency);

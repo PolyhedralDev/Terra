@@ -26,7 +26,7 @@ public class TerraListener implements EventListener {
                 String id = BukkitAdapter.TREE_TRANSFORMER.translate(value);
                 event.getPack().getRegistry(Tree.class).add(id, new BukkitTree(value, main));
                 event.getPack().getRegistry(Tree.class).get(id); // Platform trees should never be marked "dead"
-            } catch(DuplicateEntryException ignore) { // If another addon has already registered trees, do nothing.
+            } catch(DuplicateEntryException ignore) { // If another com.dfsek.terra.addon has already registered trees, do nothing.
             }
         }
     }
