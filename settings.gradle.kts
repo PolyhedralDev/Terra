@@ -10,8 +10,11 @@
 rootProject.name = "Terra"
 include("common:api")
 include("common:implementation")
+
 include("common:loader:config")
 include("common:loader:addon")
+
+include("common:addons:noise")
 
 
 include("platforms:bukkit")
