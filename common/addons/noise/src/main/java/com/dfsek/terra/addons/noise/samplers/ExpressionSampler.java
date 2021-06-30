@@ -4,12 +4,12 @@ import com.dfsek.paralithic.Expression;
 import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
-import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
-import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
-import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
+import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
+import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
+import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
+import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
 import java.util.Map;
 
