@@ -292,6 +292,11 @@ public class ConfigPackImpl implements ConfigPack {
         return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
     }
 
+    @Override
+    public <T> CheckedRegistry<T> getCheckedRegistry(Class<T> clazz) throws IllegalStateException {
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     protected <T> OpenRegistry<T> getOpenRegistry(Class<T> clazz) {
         return (OpenRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getLeft();
@@ -323,14 +328,8 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry() {
-        return new CheckedRegistryImpl<>(configTypeRegistry) {
-            @Override
-            @SuppressWarnings("deprecation")
-            public void addUnchecked(String identifier, ConfigType<?, ?> value) {
-                if(contains(identifier)) throw new UnsupportedOperationException("Cannot override values in ConfigTypeRegistry!");
-            }
-        };
+    public void registerConfigType(ConfigType<?, ?> type, int priority) {
+
     }
 
     @Override

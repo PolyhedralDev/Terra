@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.config;
 
+import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -10,14 +11,14 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import java.util.Map;
 import java.util.Set;
 
-public interface ConfigPack extends LoaderRegistrar, LoaderHolder {
+public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
     <T> CheckedRegistry<T> getRegistry(Class<T> clazz);
 
     BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder();
 
     WorldConfig toWorldConfig(TerraWorld world);
 
-    CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry();
+    void registerConfigType(ConfigType<?, ?> type, int priority);
 
     Set<TerraAddon> addons();
 
