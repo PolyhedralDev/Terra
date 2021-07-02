@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.templates;
+package com.dfsek.terra.addons.tree;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;

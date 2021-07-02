@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.population.items.tree;
+package com.dfsek.terra.addons.tree.tree;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.PopulationUtil;

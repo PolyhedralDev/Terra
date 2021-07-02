@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.population.items.tree;
+package com.dfsek.terra.addons.tree.tree;
 
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;

@@ -48,7 +48,7 @@ import com.dfsek.terra.addons.flora.flora.FloraLayer;
 import com.dfsek.terra.addons.flora.flora.TerraFlora;
 import com.dfsek.terra.addons.ore.ores.OreConfig;
 import com.dfsek.terra.addons.ore.ores.OreHolder;
-import com.dfsek.terra.world.population.items.tree.TreeLayer;
+import com.dfsek.terra.addons.tree.tree.TreeLayer;
 
 import java.util.LinkedHashMap;
 

@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.population;
+package com.dfsek.terra.addons.tree;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
-import com.dfsek.terra.world.population.items.tree.TreeLayer;
+import com.dfsek.terra.addons.tree.tree.TreeLayer;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
