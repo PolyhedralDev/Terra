@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.structure;
+package com.dfsek.terra.addons.structure.command.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;
@@ -15,8 +15,8 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
-import com.dfsek.terra.commands.structure.argument.StructureArgumentParser;
-import com.dfsek.terra.commands.structure.completer.StructureCompleter;
+import com.dfsek.terra.addons.structure.command.structure.argument.StructureArgumentParser;
+import com.dfsek.terra.addons.structure.command.structure.completer.StructureCompleter;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.world.population.items.TerraStructure;
 

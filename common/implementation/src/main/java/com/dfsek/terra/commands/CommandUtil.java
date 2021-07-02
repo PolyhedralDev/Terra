@@ -4,11 +4,10 @@ import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.commands.biome.BiomeCommand;
 import com.dfsek.terra.commands.profiler.ProfileCommand;
-import com.dfsek.terra.commands.structure.StructureCommand;
+import com.dfsek.terra.addons.structure.command.structure.StructureCommand;
 
 public final class CommandUtil {
     public static void registerAll(CommandManager manager) throws MalformedCommandException {
-        manager.register("structure", StructureCommand.class);
         manager.register("profile", ProfileCommand.class);
         manager.register("reload", ReloadCommand.class);
         manager.register("addons", AddonsCommand.class);

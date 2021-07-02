@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.command;
+package com.dfsek.terra.commands;
 
 import com.dfsek.terra.api.entity.CommandSender;
 

@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.structure.argument;
+package com.dfsek.terra.addons.structure.command.structure.argument;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.arg.ArgumentParser;

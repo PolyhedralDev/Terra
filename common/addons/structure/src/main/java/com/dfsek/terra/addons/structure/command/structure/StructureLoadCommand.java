@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.structure;
+package com.dfsek.terra.addons.structure.command.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;
@@ -17,9 +17,9 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.commands.structure.argument.ScriptArgumentParser;
-import com.dfsek.terra.commands.structure.completer.RotationCompleter;
-import com.dfsek.terra.commands.structure.completer.ScriptCompleter;
+import com.dfsek.terra.addons.structure.command.structure.argument.ScriptArgumentParser;
+import com.dfsek.terra.addons.structure.command.structure.completer.RotationCompleter;
+import com.dfsek.terra.addons.structure.command.structure.completer.ScriptCompleter;
 
 import java.util.concurrent.ThreadLocalRandom;
 

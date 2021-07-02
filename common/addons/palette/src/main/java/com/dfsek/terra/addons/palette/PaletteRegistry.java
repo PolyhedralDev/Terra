@@ -1,4 +1,4 @@
-package com.dfsek.terra.registry.config;
+package com.dfsek.terra.addons.palette;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.world.generator.Palette;

@@ -2,7 +2,7 @@ package command;
 
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
-import com.dfsek.terra.api.command.TerraCommandManager;
+import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;

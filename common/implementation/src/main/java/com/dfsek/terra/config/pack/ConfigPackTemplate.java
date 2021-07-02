@@ -5,11 +5,9 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,10 +30,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("beta.carving")
     @Default
     private boolean betaCarvers = false;
-
-    @Value("functions")
-    @Default
-    private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
 
     @Value("structures.locatable")
     @Default
@@ -111,10 +105,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public boolean disableTrees() {
         return disableTrees;
-    }
-
-    public LinkedHashMap<String, FunctionTemplate> getFunctions() {
-        return functions;
     }
 
     public String getVersion() {

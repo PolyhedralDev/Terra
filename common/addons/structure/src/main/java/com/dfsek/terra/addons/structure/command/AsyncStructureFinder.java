@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.locate;
+package com.dfsek.terra.addons.structure.command;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.ConfiguredStructure;

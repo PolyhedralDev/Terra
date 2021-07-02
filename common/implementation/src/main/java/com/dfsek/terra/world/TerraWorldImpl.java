@@ -7,7 +7,7 @@ import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
@@ -57,7 +57,7 @@ public class TerraWorldImpl implements TerraWorld {
 
     @Override
     public BlockState getUngeneratedBlock(int x, int y, int z) {
-        UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(x, z);
+        TerraBiome biome = provider.getBiome(x, z);
         Palette palette = biome.getGenerator(world).getPalette(y);
         Sampler sampler = config.getSamplerCache().get(x, z);
         int fdX = FastMath.floorMod(x, 16);

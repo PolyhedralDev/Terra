@@ -8,29 +8,8 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
-import com.dfsek.terra.api.world.Flora;
-import com.dfsek.terra.api.world.Tree;
-import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.factories.BiomeFactory;
-import com.dfsek.terra.config.factories.CarverFactory;
-import com.dfsek.terra.config.factories.FloraFactory;
-import com.dfsek.terra.config.factories.OreFactory;
-import com.dfsek.terra.config.factories.PaletteFactory;
-import com.dfsek.terra.config.factories.StructureFactory;
-import com.dfsek.terra.config.factories.TreeFactory;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.config.templates.CarverTemplate;
-import com.dfsek.terra.config.templates.FloraTemplate;
-import com.dfsek.terra.config.templates.OreTemplate;
-import com.dfsek.terra.config.templates.PaletteTemplate;
-import com.dfsek.terra.config.templates.StructureTemplate;
-import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.registry.OpenRegistryImpl;
-import com.dfsek.terra.world.population.items.TerraStructure;
-import com.dfsek.terra.addons.ore.ores.Ore;
 
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
@@ -42,13 +21,6 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     public ConfigTypeRegistry(ConfigPackImpl pack, TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
-        add("PALETTE", new ConfigBuilder<>(new PaletteFactory(), PaletteTemplate::new, Palette.class, () -> new PaletteRegistry(main)));
-        add("ORE", new ConfigBuilder<>(new OreFactory(), OreTemplate::new, Ore.class, OpenRegistryImpl::new));
-        add("FLORA", new ConfigBuilder<>(new FloraFactory(), FloraTemplate::new, Flora.class, OpenRegistryImpl::new));
-        add("CARVER", new ConfigBuilder<>(new CarverFactory(pack), CarverTemplate::new, UserDefinedCarver.class, OpenRegistryImpl::new));
-        add("STRUCTURE", new ConfigBuilder<>(new StructureFactory(), StructureTemplate::new, TerraStructure.class, OpenRegistryImpl::new));
-        add("TREE", new ConfigBuilder<>(new TreeFactory(), TreeTemplate::new, Tree.class, OpenRegistryImpl::new));
-        add("BIOME", new ConfigBuilder<>(new BiomeFactory(pack), () -> new BiomeTemplate(pack, main), BiomeBuilder.class, BiomeRegistry::new));
         add("PACK", new PackBuilder());
     }
 

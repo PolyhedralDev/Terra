@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.structure;
+package com.dfsek.terra.addons.structure.command.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;

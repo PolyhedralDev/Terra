@@ -19,54 +19,40 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
-import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.addons.structure.structures.loot.LootTableImpl;
-import com.dfsek.terra.addons.structure.structures.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.structure.structures.script.StructureScript;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
-import com.dfsek.terra.config.loaders.config.biome.templates.provider.BiomePipelineTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.provider.ImageProviderTemplate;
-import com.dfsek.terra.config.loaders.config.biome.templates.provider.SingleBiomeProviderTemplate;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
-import com.dfsek.terra.world.population.items.TerraStructure;
-import org.apache.commons.io.IOUtils;
-import org.json.simple.parser.ParseException;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 
 /**
  * Represents a Terra configuration pack.
@@ -196,7 +182,6 @@ public class ConfigPackImpl implements ConfigPack {
         };
 
         putPair(map, NoiseProvider.class, new NoiseRegistry());
-        putPair(map, FunctionBuilder.class, new OpenRegistryImpl<>());
         putPair(map, LootTable.class, new OpenRegistryImpl<>());
         putPair(map, Structure.class, new OpenRegistryImpl<>());
 
@@ -233,25 +218,6 @@ public class ConfigPackImpl implements ConfigPack {
             varScope.create(var.getKey(), var.getValue());
         }
 
-        loader.open("", ".tesf").thenEntries(entries -> {
-            for(Map.Entry<String, InputStream> entry : entries) {
-                try(InputStream stream = entry.getValue()) {
-                    Structure structure = new StructureScript(stream, main, getRegistry(Structure.class), getRegistry(LootTable.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
-                    getOpenRegistry(Structure.class).add(structure.getId(), structure);
-                } catch(com.dfsek.terra.addons.structure.structures.parser.exceptions.ParseException | IOException e) {
-                    throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
-                }
-            }
-        }).close().open("structures/loot", ".json").thenEntries(entries -> {
-            for(Map.Entry<String, InputStream> entry : entries) {
-                try {
-                    getOpenRegistry(LootTable.class).add(entry.getKey(), new LootTableImpl(IOUtils.toString(entry.getValue(), StandardCharsets.UTF_8), main));
-                } catch(ParseException | IOException | NullPointerException e) {
-                    throw new LoadException("Unable to load loot table \"" + entry.getKey() + "\"", e);
-                }
-            }
-        }).close();
-
         List<Configuration> configurations = new ArrayList<>();
 
         loader.open("", ".yml").thenEntries(entries -> entries.forEach(stream -> configurations.add(new Configuration(stream.getValue(), stream.getKey()))));
@@ -275,9 +241,6 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
 
-    public Set<ConfiguredStructure> getStructures() {
-        return new HashSet<>(getRegistry(TerraStructure.class).entries());
-    }
 
     public ConfigPackTemplate getTemplate() {
         return template;
@@ -309,10 +272,7 @@ public class ConfigPackImpl implements ConfigPack {
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(ConfigType.class, configTypeRegistry)
-                .registerLoader(BufferedImage.class, new BufferedImageLoader(loader))
-                .registerLoader(SingleBiomeProviderTemplate.class, SingleBiomeProviderTemplate::new)
-                .registerLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
-                .registerLoader(ImageProviderTemplate.class, () -> new ImageProviderTemplate(getRegistry(BiomeBuilder.class)));
+                .registerLoader(BufferedImage.class, new BufferedImageLoader(loader));
         loaders.forEach(registry::registerLoader);
         objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
     }
