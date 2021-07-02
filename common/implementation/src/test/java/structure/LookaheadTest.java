@@ -1,6 +1,6 @@
 package structure;
 
-import com.dfsek.terra.api.structures.tokenizer.Lookahead;
+import com.dfsek.terra.addons.structure.structures.tokenizer.Lookahead;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;

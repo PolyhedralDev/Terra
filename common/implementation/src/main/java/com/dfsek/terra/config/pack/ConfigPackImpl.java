@@ -23,9 +23,9 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structures.loot.LootTableImpl;
-import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.addons.structure.structures.loot.LootTableImpl;
+import com.dfsek.terra.addons.structure.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.structure.structures.script.StructureScript;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -238,7 +238,7 @@ public class ConfigPackImpl implements ConfigPack {
                 try(InputStream stream = entry.getValue()) {
                     Structure structure = new StructureScript(stream, main, getRegistry(Structure.class), getRegistry(LootTable.class), (Registry<FunctionBuilder<?>>) (Object) getRegistry(FunctionBuilder.class));
                     getOpenRegistry(Structure.class).add(structure.getId(), structure);
-                } catch(com.dfsek.terra.api.structures.parser.exceptions.ParseException | IOException e) {
+                } catch(com.dfsek.terra.addons.structure.structures.parser.exceptions.ParseException | IOException e) {
                     throw new LoadException("Unable to load script \"" + entry.getKey() + "\"", e);
                 }
             }

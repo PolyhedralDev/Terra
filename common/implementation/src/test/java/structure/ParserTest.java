@@ -1,14 +1,14 @@
 package structure;
 
-import com.dfsek.terra.api.structures.parser.Parser;
-import com.dfsek.terra.api.structures.parser.exceptions.ParseException;
-import com.dfsek.terra.api.structures.parser.lang.Block;
-import com.dfsek.terra.api.structures.parser.lang.ImplementationArguments;
-import com.dfsek.terra.api.structures.parser.lang.Returnable;
-import com.dfsek.terra.api.structures.parser.lang.functions.Function;
-import com.dfsek.terra.api.structures.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.api.structures.parser.lang.variables.Variable;
-import com.dfsek.terra.api.structures.tokenizer.Position;
+import com.dfsek.terra.addons.structure.structures.parser.Parser;
+import com.dfsek.terra.addons.structure.structures.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.structure.structures.parser.lang.Block;
+import com.dfsek.terra.addons.structure.structures.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.structure.structures.parser.lang.Returnable;
+import com.dfsek.terra.addons.structure.structures.parser.lang.functions.Function;
+import com.dfsek.terra.addons.structure.structures.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.structure.structures.parser.lang.variables.Variable;
+import com.dfsek.terra.addons.structure.structures.tokenizer.Position;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 

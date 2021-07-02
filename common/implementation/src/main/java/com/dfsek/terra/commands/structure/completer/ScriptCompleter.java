@@ -6,7 +6,7 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structures.script.StructureScript;
+import com.dfsek.terra.addons.structure.structures.script.StructureScript;
 
 import java.util.List;
 import java.util.stream.Collectors;
