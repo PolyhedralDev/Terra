@@ -3,6 +3,7 @@ package com.dfsek.terra.world.population;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.PopulationUtil;
@@ -39,7 +40,7 @@ public class StructurePopulator implements TerraBlockPopulator, Chunkified {
             if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
             WorldConfig config = tw.getConfig();
-            for(TerraStructure conf : config.getRegistry(TerraStructure.class).entries()) {
+            for(ConfiguredStructure conf : config.getRegistry(TerraStructure.class).entries()) {
                 Vector3 spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed());
 
                 if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))

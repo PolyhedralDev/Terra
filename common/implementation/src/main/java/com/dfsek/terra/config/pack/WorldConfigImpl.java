@@ -4,11 +4,12 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
-import com.dfsek.terra.config.builder.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.world.generation.math.SamplerCacheImpl;
@@ -119,7 +120,7 @@ public class WorldConfigImpl implements WorldConfig {
         return getTemplate().isDisableSaplings();
     }
 
-    public Set<TerraStructure> getStructures() {
+    public Set<ConfiguredStructure> getStructures() {
         return new HashSet<>(getRegistry(TerraStructure.class).entries());
     }
 

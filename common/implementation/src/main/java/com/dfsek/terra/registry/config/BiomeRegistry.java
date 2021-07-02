@@ -2,7 +2,7 @@ package com.dfsek.terra.registry.config;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.terra.config.builder.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import java.lang.reflect.Type;

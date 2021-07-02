@@ -5,6 +5,7 @@ import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
 import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.commands.biome.arg.BiomeArgumentParser;
@@ -42,7 +43,7 @@ public class BiomeInfoCommand implements CommandTemplate {
                 bio.getExtended().forEach(id -> sender.sendMessage(" - " + id));
             }
 
-            List<TerraStructure> structureConfigs = bio.getStructures();
+            List<ConfiguredStructure> structureConfigs = bio.getStructures();
 
             if(structureConfigs.size() == 0) {
                 sender.sendMessage("No Structures");

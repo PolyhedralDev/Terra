@@ -37,8 +37,6 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
-import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
-
 @Addon("noise")
 @Author("Terra")
 @Version("1.0.0")
@@ -56,8 +54,7 @@ public class NoiseAddon extends TerraAddon {
                 .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
                 .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .applyLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
-                .applyLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object))
-        ;
+                .applyLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object));
     }
     
     @SuppressWarnings("deprecation")

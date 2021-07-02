@@ -39,7 +39,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
-import com.dfsek.terra.config.builder.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
@@ -81,12 +81,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {

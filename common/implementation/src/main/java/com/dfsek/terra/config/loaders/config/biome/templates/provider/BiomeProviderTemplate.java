@@ -14,17 +14,7 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     protected int resolution = 1;
     @Value("blend.noise")
     @Default
-    protected NoiseSeeded blend = new NoiseSeeded() {
-        @Override
-        public NoiseSampler apply(Long seed) {
-            return NoiseSampler.zero();
-        }
-
-        @Override
-        public int getDimensions() {
-            return 2;
-        }
-    };
+    protected NoiseSeeded blend = NoiseSeeded.zero(2);
     @Value("blend.amplitude")
     @Default
     protected double blendAmp = 0d;

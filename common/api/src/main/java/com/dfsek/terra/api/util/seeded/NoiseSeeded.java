@@ -7,4 +7,18 @@ public interface NoiseSeeded extends SeededBuilder<NoiseSampler> {
     NoiseSampler apply(Long seed);
 
     int getDimensions();
+
+    static NoiseSeeded zero(int dimensions) {
+        return new NoiseSeeded() {
+            @Override
+            public NoiseSampler apply(Long seed) {
+                return NoiseSampler.zero();
+            }
+
+            @Override
+            public int getDimensions() {
+                return dimensions;
+            }
+        };
+    }
 }

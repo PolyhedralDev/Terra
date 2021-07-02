@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Class to procedurally determine the spawn point of an object based on a grid with padding between cells.
  */
-public class GridSpawn {
+public class GridSpawn implements com.dfsek.terra.api.structure.StructureSpawn {
     private final int separation;
     private final int width;
     private final int salt;
@@ -22,14 +22,7 @@ public class GridSpawn {
         this.salt = salt;
     }
 
-    /**
-     * Get nearest spawn point
-     *
-     * @param x    X coordinate
-     * @param z    Z coordinate
-     * @param seed Seed for RNG
-     * @return Vector representing nearest spawnpoint
-     */
+    @Override
     public Vector3 getNearestSpawn(int x, int z, long seed) {
         int structureChunkX = x / (width + 2 * separation);
         int structureChunkZ = z / (width + 2 * separation);

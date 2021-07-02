@@ -20,6 +20,7 @@ import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structures.loot.LootTableImpl;
@@ -29,7 +30,7 @@ import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.config.builder.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.Loader;
@@ -274,7 +275,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
 
-    public Set<TerraStructure> getStructures() {
+    public Set<ConfiguredStructure> getStructures() {
         return new HashSet<>(getRegistry(TerraStructure.class).entries());
     }
 

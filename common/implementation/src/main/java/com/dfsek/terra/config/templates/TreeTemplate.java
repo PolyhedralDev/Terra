@@ -3,12 +3,13 @@ package com.dfsek.terra.config.templates;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class TreeTemplate extends AbstractableTemplate {
+public class TreeTemplate implements AbstractableTemplate {
     @Value("scripts")
     @Abstractable
     private ProbabilityCollection<Structure> structure;

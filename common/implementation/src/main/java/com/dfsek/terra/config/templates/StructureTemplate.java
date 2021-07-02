@@ -4,8 +4,9 @@ import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.api.math.GridSpawn;
+import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.structure.StructureSpawn;
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
@@ -13,7 +14,7 @@ import com.dfsek.terra.api.util.Range;
 import java.util.List;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
-public class StructureTemplate extends AbstractableTemplate implements ConfigTemplate {
+public class StructureTemplate implements AbstractableTemplate, ConfigTemplate {
     @Value("id")
     private String id;
 
@@ -27,7 +28,7 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
 
     @Value("spawn")
     @Abstractable
-    private GridSpawn spawn;
+    private StructureSpawn spawn;
 
     @Value("features")
     @Abstractable
@@ -50,7 +51,7 @@ public class StructureTemplate extends AbstractableTemplate implements ConfigTem
         return features;
     }
 
-    public GridSpawn getSpawn() {
+    public StructureSpawn getSpawn() {
         return spawn;
     }
 }

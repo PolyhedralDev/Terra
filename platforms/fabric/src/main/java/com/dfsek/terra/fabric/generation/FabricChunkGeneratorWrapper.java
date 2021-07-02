@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
@@ -115,7 +116,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         if(!pack.disableStructures()) {
             String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
             TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
-            TerraStructure located = pack.getRegistry(TerraStructure.class).get(pack.getLocatable().get(name));
+            ConfiguredStructure located = pack.getRegistry(TerraStructure.class).get(pack.getLocatable().get(name));
             if(located != null) {
                 CompletableFuture<BlockPos> result = new CompletableFuture<>();
                 AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt(center), terraWorld.getWorld(), 0, 500, location -> {
