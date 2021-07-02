@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config;
+package com.dfsek.terra.addons.flora;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
@@ -10,7 +10,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.world.population.items.flora.FloraLayer;
+import com.dfsek.terra.addons.flora.flora.FloraLayer;
 
 import java.lang.reflect.Type;
 import java.util.Map;
