@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.palette;
+package com.dfsek.terra.addons.palette.palette;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -6,6 +6,7 @@ import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.world.generator.Palette;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +15,7 @@ import java.util.Random;
  * Used to get a section of blocks, based on the depth at which they are found.
  */
 public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator.Palette {
-    private final List<PaletteLayer> pallet = new GlueList<>();
+    private final List<PaletteLayer> pallet = new ArrayList<>();
 
     /**
      * Constructs a blank palette.

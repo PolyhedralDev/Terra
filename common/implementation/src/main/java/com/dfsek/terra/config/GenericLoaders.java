@@ -40,10 +40,10 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMut
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.loaders.palette.CarverPaletteLoader;
-import com.dfsek.terra.config.loaders.palette.PaletteHolderLoader;
-import com.dfsek.terra.config.loaders.palette.PaletteLayerLoader;
-import com.dfsek.terra.config.loaders.palette.slant.SlantHolderLoader;
+import com.dfsek.terra.addons.palette.palette.CarverPaletteLoader;
+import com.dfsek.terra.addons.palette.palette.PaletteHolderLoader;
+import com.dfsek.terra.addons.palette.palette.PaletteLayerLoader;
+import com.dfsek.terra.addons.palette.palette.slant.SlantHolderLoader;
 import com.dfsek.terra.addons.flora.flora.FloraLayer;
 import com.dfsek.terra.addons.flora.flora.TerraFlora;
 import com.dfsek.terra.world.population.items.ores.OreConfig;

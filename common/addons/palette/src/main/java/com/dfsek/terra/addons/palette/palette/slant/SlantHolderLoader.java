@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.palette.slant;
+package com.dfsek.terra.addons.palette.palette.slant;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
