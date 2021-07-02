@@ -24,7 +24,7 @@ import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.carving.UserDefinedCarver;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import com.dfsek.terra.addons.flora.flora.FloraLayer;
-import com.dfsek.terra.world.population.items.ores.OreHolder;
+import com.dfsek.terra.addons.ore.ores.OreHolder;
 import com.dfsek.terra.world.population.items.tree.TreeLayer;
 
 import java.util.ArrayList;

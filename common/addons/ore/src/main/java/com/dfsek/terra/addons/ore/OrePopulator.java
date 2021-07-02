@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.population;
+package com.dfsek.terra.addons.ore;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;

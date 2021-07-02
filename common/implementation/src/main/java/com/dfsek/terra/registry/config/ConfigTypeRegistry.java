@@ -30,7 +30,7 @@ import com.dfsek.terra.config.templates.StructureTemplate;
 import com.dfsek.terra.config.templates.TreeTemplate;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.world.population.items.TerraStructure;
-import com.dfsek.terra.world.population.items.ores.Ore;
+import com.dfsek.terra.addons.ore.ores.Ore;
 
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;

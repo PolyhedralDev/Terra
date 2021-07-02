@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.population.items.ores;
+package com.dfsek.terra.addons.ore.ores;
 
 import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
