@@ -25,6 +25,9 @@ include("common:addons:biome:provider:single")
 include("common:addons:carver")
 include("common:addons:flora")
 include("common:addons:palette")
+include("common:addons:tree")
+include("common:addons:structure")
+include("common:addons:ore")
 
 
 
