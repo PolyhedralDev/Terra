@@ -28,6 +28,7 @@ include("common:addons:palette")
 include("common:addons:tree")
 include("common:addons:structure")
 include("common:addons:ore")
+include("common:addons:terrascript")
 
 
 
