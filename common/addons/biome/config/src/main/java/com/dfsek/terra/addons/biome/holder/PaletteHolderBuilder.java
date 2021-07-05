@@ -14,7 +14,6 @@ public class PaletteHolderBuilder {
         return this;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
     public PaletteHolder build() {
 
         int min = FastMath.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);

@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.biome;
 
+import com.dfsek.terra.addons.biome.holder.PaletteHolder;
+import com.dfsek.terra.addons.biome.holder.PaletteHolderLoader;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -19,6 +21,7 @@ public class BiomeConfigAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
+        main.applyLoader(PaletteHolder.class, new PaletteHolderLoader());
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
