@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
@@ -9,13 +8,10 @@ import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
-import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
-import com.dfsek.terra.fabric.util.FabricAdapter;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
-import com.dfsek.terra.world.population.items.TerraStructure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -26,7 +22,6 @@ import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
@@ -45,9 +40,7 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.StructureFeature;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
@@ -113,6 +106,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Nullable
     @Override
     public BlockPos locateStructure(ServerWorld world, StructureFeature<?> feature, BlockPos center, int radius, boolean skipExistingChunks) {
+        /*
         if(!pack.disableStructures()) {
             String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
             TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
@@ -130,6 +124,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
                 }
             }
         }
+         */
         return super.locateStructure(world, feature, center, radius, skipExistingChunks);
     }
 

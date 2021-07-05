@@ -7,7 +7,6 @@ import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.seeded.BiomeBuilder;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
@@ -33,6 +32,7 @@ import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -50,8 +50,8 @@ public final class FabricUtil {
      * @return The Minecraft delegate biome.
      */
     public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
-        BiomeTemplate template = biome.getTemplate();
-        Map<String, Integer> colors = template.getColors();
+        // BiomeTemplate template = biome.getTemplate();
+        Map<String, Integer> colors = new HashMap<>(); // template.getColors();
 
         TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
 
@@ -76,7 +76,7 @@ public final class FabricUtil {
         PreLoadCompatibilityOptions compatibilityOptions = pair.getLeft();
         PostLoadCompatibilityOptions postLoadCompatibilityOptions = pair.getRight();
 
-        TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
+        //TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
 
         Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatureRegistry = registryManager.get(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY);
         for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {

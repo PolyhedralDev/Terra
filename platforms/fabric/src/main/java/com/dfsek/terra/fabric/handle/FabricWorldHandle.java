@@ -11,6 +11,7 @@ import com.dfsek.terra.fabric.util.WorldEditUtil;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -19,6 +20,7 @@ import java.util.Locale;
 
 public class FabricWorldHandle implements WorldHandle {
 
+    private static final com.dfsek.terra.api.block.state.BlockState AIR = FabricAdapter.adapt(Blocks.AIR.getDefaultState());
     @Override
     public FabricBlockState createBlockData(String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
@@ -29,6 +31,11 @@ public class FabricWorldHandle implements WorldHandle {
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    @Override
+    public com.dfsek.terra.api.block.state.BlockState air() {
+        return AIR;
     }
 
     @Override
