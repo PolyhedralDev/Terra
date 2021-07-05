@@ -5,8 +5,6 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.world.generation.WorldGenerator;
 
 import java.util.Set;
 

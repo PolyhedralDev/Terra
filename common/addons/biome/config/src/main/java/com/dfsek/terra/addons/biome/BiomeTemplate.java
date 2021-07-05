@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.biome;
 
 import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
-import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
@@ -14,18 +13,11 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.math.paralithic.BlankFunction;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
-import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.world.population.items.TerraStructure;
-import com.dfsek.terra.addons.flora.flora.FloraLayer;
-import com.dfsek.terra.addons.ore.ores.OreHolder;
-import com.dfsek.terra.addons.tree.tree.TreeLayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +46,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("beta.carving.equation")
     @Abstractable
     @Default
-    private NoiseSeeded carvingEquation = NoiseSeeded.zero(2);
+    private NoiseSeeded carvingEquation = NoiseSeeded.zero(3);
 
     @Value("palette")
     @Abstractable
@@ -98,10 +90,10 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Abstractable
     private NoiseSeeded noiseEquation;
 
-    @Value("ores")
+    /*@Value("ores")
     @Abstractable
     @Default
-    private OreHolder oreHolder = new OreHolder();
+    private OreHolder oreHolder = new OreHolder();*/
 
     @Value("ocean.level")
     @Abstractable
@@ -115,22 +107,22 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("elevation.equation")
     @Default
     @Abstractable
-    private String elevationEquation = null;
+    private NoiseSeeded elevationEquation = NoiseSeeded.zero(2);
 
     @Value("elevation.weight")
     @Default
     @Abstractable
     private double elevationWeight = 1;
 
-    @Value("flora")
+    /*@Value("flora")
     @Abstractable
     @Default
-    private List<FloraLayer> flora = new GlueList<>();
+    private List<FloraLayer> flora = new ArrayList<>();
 
     @Value("trees")
     @Abstractable
     @Default
-    private List<TreeLayer> trees = new GlueList<>();
+    private List<TreeLayer> trees = new ArrayList<>();*/
 
     @Value("slabs.enable")
     @Abstractable
@@ -166,10 +158,10 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Abstractable
     private Set<String> tags = new HashSet<>();
 
-    @Value("carving")
+    /*@Value("carving")
     @Abstractable
     @Default
-    private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();
+    private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();*/
 
     @Value("colors")
     @Abstractable
@@ -186,10 +178,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     public Map<String, Integer> getColors() {
         return colors;
-    }
-
-    public Map<UserDefinedCarver, Integer> getCarvers() {
-        return carvers;
     }
 
     public double getBlendWeight() {
@@ -216,10 +204,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return slabThreshold;
     }
 
-    public List<FloraLayer> getFlora() {
-        return flora;
-    }
-
     public boolean doSlabs() {
         return doSlabs;
     }
@@ -240,11 +224,11 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return biomeNoise;
     }
 
-    public String getElevationEquation() {
+    public NoiseSeeded getElevationEquation() {
         return elevationEquation;
     }
 
-    public String getCarvingEquation() {
+    public NoiseSeeded getCarvingEquation() {
         return carvingEquation;
     }
 
@@ -268,10 +252,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return palette;
     }
 
-    public List<TreeLayer> getTrees() {
-        return trees;
-    }
-
     public ProbabilityCollection<Biome> getVanilla() {
         return vanilla;
     }
@@ -282,10 +262,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     public NoiseSeeded getNoiseEquation() {
         return noiseEquation;
-    }
-
-    public OreHolder getOreHolder() {
-        return oreHolder;
     }
 
     public double getElevationWeight() {
@@ -304,7 +280,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     public boolean validate() throws ValidationException {
         color |= 0xff000000; // Alpha adjustment
         Parser tester = new Parser();
-        Scope testScope = new Scope().withParent(pack.getVarScope());
+        Scope testScope = new Scope();
 
         variables.forEach(testScope::create);
 
@@ -313,24 +289,24 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         testScope.addInvocationVariable("z");
 
 
-        pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
+        //pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
 
         try {
-            tester.parse(noiseEquation, testScope);
-        } catch(ParseException e) {
-            throw new ValidationException("Invalid noise equation: ", e);
+            noiseEquation.apply(0L);
+        } catch(Exception e) {
+            throw new ValidationException("Invalid noise sampler: ", e);
         }
 
         try {
-            tester.parse(carvingEquation, testScope);
-        } catch(ParseException e) {
-            throw new ValidationException("Invalid carving equation: ", e);
+            carvingEquation.apply(0L);
+        } catch(Exception e) {
+            throw new ValidationException("Invalid carving sampler: ", e);
         }
 
         try {
-            if(elevationEquation != null) tester.parse(elevationEquation, testScope);
-        } catch(ParseException e) {
-            throw new ValidationException("Invalid elevation equation: ", e);
+            elevationEquation.apply(0L);
+        } catch(Exception e) {
+            throw new ValidationException("Invalid elevation sampler: ", e);
         }
 
         return true;

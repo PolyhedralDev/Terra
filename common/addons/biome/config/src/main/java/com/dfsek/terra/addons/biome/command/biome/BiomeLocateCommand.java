@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.biome.command.biome;
 
 import com.dfsek.terra.addons.biome.command.biome.arg.BiomeArgumentParser;
+import com.dfsek.terra.addons.biome.command.biome.tab.BiomeTabCompleter;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -16,9 +17,6 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.locate.AsyncBiomeFinder;
-import com.dfsek.terra.addons.biome.command.biome.tab.BiomeTabCompleter;
-import com.dfsek.terra.config.lang.LangUtil;
 
 import java.util.Locale;
 
@@ -70,7 +68,7 @@ public class BiomeLocateCommand implements CommandTemplate {
                 if(teleport) {
                     main.runPossiblyUnsafeTask(() -> player.position(new Vector3(location.getX(), player.position().getY(), location.getZ())));
                 }
-            } else LangUtil.send("command.biome.unable-to-locate", sender);
+            } else sender.sendMessage("Unable to locate biome \"" + biome.getID() + "\"");
         }, main), "Biome Location Thread").start();
 
     }

@@ -4,12 +4,10 @@ import com.dfsek.terra.addons.biome.holder.PaletteHolder;
 import com.dfsek.terra.addons.biome.slant.SlantHolder;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.biome.PaletteSettings;
 
 public class WorldGenerator implements Generator {
-    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
-    private final PaletteHolder palettes;
-    @SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
+    private final PaletteSettings paletteSettings;
     private final SlantHolder slantPalettes;
 
     private final NoiseSampler noise;
@@ -23,7 +21,7 @@ public class WorldGenerator implements Generator {
     private final double blendWeight;
 
     public WorldGenerator(PaletteHolder palettes, SlantHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
-        this.palettes = palettes;
+        this.paletteSettings = new PaletteSettingsImpl(palettes);
         this.slantPalettes = slantPalettes;
         this.noise = noise;
         this.elevation = elevation;
@@ -61,14 +59,9 @@ public class WorldGenerator implements Generator {
         return blendWeight;
     }
 
-    /**
-     * Gets the BlockPalette to generate the biome with.
-     *
-     * @return BlockPalette - The biome's palette.
-     */
     @Override
-    public Palette getPalette(int y) {
-        return palettes.getPalette(y);
+    public PaletteSettings getPaletteSettings() {
+        return paletteSettings;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.noise.paralithic;
+package com.dfsek.terra.addons.biome;
 
 
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;

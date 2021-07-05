@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.biome;
+package com.dfsek.terra.addons.biome.pipeline.config;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.util.ProbabilityCollection;

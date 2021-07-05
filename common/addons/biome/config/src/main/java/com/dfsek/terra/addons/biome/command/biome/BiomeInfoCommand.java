@@ -1,5 +1,9 @@
 package com.dfsek.terra.addons.biome.command.biome;
 
+import com.dfsek.terra.addons.biome.BiomeTemplate;
+import com.dfsek.terra.addons.biome.UserDefinedBiome;
+import com.dfsek.terra.addons.biome.command.biome.arg.BiomeArgumentParser;
+import com.dfsek.terra.addons.biome.command.biome.tab.BiomeTabCompleter;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
@@ -7,9 +11,6 @@ import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.config.templates.BiomeTemplate;
-import com.dfsek.terra.world.population.items.TerraStructure;
 
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class BiomeInfoCommand implements CommandTemplate {
                 sender.sendMessage("No Structures");
             } else {
                 sender.sendMessage("-------Structures-------");
-                for(TerraStructure c : structureConfigs) {
-                    sender.sendMessage(" - " + c.getTemplate().getID());
+                for(ConfiguredStructure c : structureConfigs) {
+                    sender.sendMessage(" - " + c);
                 }
             }
         }
