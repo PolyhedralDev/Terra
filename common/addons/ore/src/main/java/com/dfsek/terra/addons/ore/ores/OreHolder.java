@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.ore.ores;
 
-import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
  * Holds ordered list of ores mapped to their configs.
  */
 public class OreHolder {
-    private final List<Entry> entries = new GlueList<>();
+    private final List<Entry> entries = new ArrayList<>();
 
     public void forEach(BiConsumer<String, ImmutablePair<Ore, OreConfig>> consumer) {
         entries.forEach(entry -> consumer.accept(entry.getId(), ImmutablePair.of(entry.getOre(), entry.getConfig())));

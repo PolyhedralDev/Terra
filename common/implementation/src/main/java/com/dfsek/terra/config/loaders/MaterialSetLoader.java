@@ -4,17 +4,17 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSetImpl;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class MaterialSetLoader implements TypeLoader<MaterialSet> {
+public class MaterialSetLoader implements TypeLoader<MaterialSetImpl> {
     @Override
-    public MaterialSet load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+    public MaterialSetImpl load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         List<String> stringData = (List<String>) o;
-        MaterialSet set = new MaterialSet();
+        MaterialSetImpl set = new MaterialSetImpl();
 
         for(String string : stringData) {
             try {

@@ -5,12 +5,12 @@ import com.dfsek.terra.api.world.Chunk;
 import java.util.Random;
 
 public final class PopulationUtil {
-    public static FastRandom getRandom(Chunk c) {
+    public static Random getRandom(Chunk c) {
         return getRandom(c, 0);
     }
 
-    public static FastRandom getRandom(Chunk c, long salt) {
-        return new FastRandom(getCarverChunkSeed(c.getX(), c.getZ(), c.getWorld().getSeed() + salt));
+    public static Random getRandom(Chunk c, long salt) {
+        return new Random(getCarverChunkSeed(c.getX(), c.getZ(), c.getWorld().getSeed() + salt));
     }
 
     /**
@@ -22,7 +22,7 @@ public final class PopulationUtil {
      * @return long - The carver seed.
      */
     public static long getCarverChunkSeed(int chunkX, int chunkZ, long seed) {
-        Random r = new FastRandom(seed);
+        Random r = new Random(seed);
         return chunkX * r.nextLong() ^ chunkZ * r.nextLong() ^ seed;
     }
 }

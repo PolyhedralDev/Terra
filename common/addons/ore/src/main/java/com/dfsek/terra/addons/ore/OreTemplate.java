@@ -6,8 +6,8 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.util.MaterialSet;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.collections.MaterialSet;
 
 import java.util.HashMap;
 import java.util.Map;

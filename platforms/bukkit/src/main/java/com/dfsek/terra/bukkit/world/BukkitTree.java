@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit.world;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSetImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class BukkitTree implements Tree {
     private final TreeType delegate;
-    private final MaterialSet spawnable;
+    private final MaterialSetImpl spawnable;
     private final TerraPlugin main;
 
     public BukkitTree(TreeType delegate, TerraPlugin main) {
@@ -23,21 +23,21 @@ public class BukkitTree implements Tree {
         this.spawnable = getSpawnable(delegate);
     }
 
-    private MaterialSet getSpawnable(TreeType type) {
+    private MaterialSetImpl getSpawnable(TreeType type) {
         WorldHandle handle = main.getWorldHandle();
         switch(type) {
             case CRIMSON_FUNGUS:
-                return MaterialSet.get(handle.createBlockData("minecraft:crimson_nylium"));
+                return MaterialSetImpl.get(handle.createBlockData("minecraft:crimson_nylium"));
             case WARPED_FUNGUS:
-                return MaterialSet.get(handle.createBlockData("minecraft:warped_nylium"));
+                return MaterialSetImpl.get(handle.createBlockData("minecraft:warped_nylium"));
             case BROWN_MUSHROOM:
             case RED_MUSHROOM:
-                return MaterialSet.get(handle.createBlockData("minecraft:mycelium"), handle.createBlockData("minecraft:grass_block"),
+                return MaterialSetImpl.get(handle.createBlockData("minecraft:mycelium"), handle.createBlockData("minecraft:grass_block"),
                         handle.createBlockData("minecraft:podzol"));
             case CHORUS_PLANT:
-                return MaterialSet.get(handle.createBlockData("minecraft:end_stone"));
+                return MaterialSetImpl.get(handle.createBlockData("minecraft:end_stone"));
             default:
-                return MaterialSet.get(handle.createBlockData("minecraft:grass_block"), handle.createBlockData("minecraft:dirt"),
+                return MaterialSetImpl.get(handle.createBlockData("minecraft:grass_block"), handle.createBlockData("minecraft:dirt"),
                         handle.createBlockData("minecraft:podzol"));
         }
     }
@@ -51,7 +51,7 @@ public class BukkitTree implements Tree {
     }
 
     @Override
-    public MaterialSet getSpawnable() {
+    public MaterialSetImpl getSpawnable() {
         return spawnable;
     }
 }

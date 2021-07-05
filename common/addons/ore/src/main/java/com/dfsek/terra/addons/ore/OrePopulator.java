@@ -2,16 +2,12 @@ package com.dfsek.terra.addons.ore;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.PopulationUtil;
-import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -33,10 +29,11 @@ public class OrePopulator implements TerraBlockPopulator {
             if(!tw.isSafe()) return;
             for(int cx = -1; cx <= 1; cx++) {
                 for(int cz = -1; cz <= 1; cz++) {
-                    Random random = new FastRandom(PopulationUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
+                    Random random = new Random(PopulationUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
                     int originX = ((chunk.getX() + cx) << 4);
                     int originZ = ((chunk.getZ() + cz) << 4);
                     TerraBiome b = tw.getBiomeProvider().getBiome(originX + 8, originZ + 8);
+                    /*
                     BiomeTemplate config = ((UserDefinedBiome) b).getConfig();
                     int finalCx = cx;
                     int finalCz = cz;
@@ -49,6 +46,8 @@ public class OrePopulator implements TerraBlockPopulator {
                             }
                         }
                     });
+
+                     */
                 }
             }
         }

@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.mixin.implementations;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collections.MaterialSetImpl;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
@@ -38,7 +38,7 @@ public abstract class ConfiguredFeatureMixin {
     }
 
     public Set<BlockType> terra$getSpawnable() {
-        return MaterialSet.get(TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:grass_block"),
+        return MaterialSetImpl.get(TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:grass_block"),
                 TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:podzol"),
                 TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:mycelium"));
     }
