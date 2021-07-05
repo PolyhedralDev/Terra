@@ -2,8 +2,8 @@ package com.dfsek.terra.addons.tree.tree;
 
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.util.MaterialSet;
 import com.dfsek.terra.api.util.ProbabilityCollection;
-import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;

@@ -5,8 +5,8 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.MaterialSet;
 import com.dfsek.terra.api.util.ProbabilityCollection;
-import com.dfsek.terra.api.util.collections.MaterialSet;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class TreeTemplate implements AbstractableTemplate {
