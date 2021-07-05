@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.palette;
 
+import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
+import com.dfsek.terra.addons.palette.palette.PaletteLayerLoader;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -19,6 +21,7 @@ public class PaletteAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
+        main.applyLoader(PaletteLayerHolder.class, new PaletteLayerLoader());
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
