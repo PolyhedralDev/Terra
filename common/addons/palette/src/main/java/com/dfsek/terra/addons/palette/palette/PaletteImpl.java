@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.palette.palette;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.world.generator.Palette;
 

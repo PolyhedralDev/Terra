@@ -1,11 +1,10 @@
 package com.dfsek.terra.addons.palette;
 
+import com.dfsek.terra.addons.palette.palette.NoisePalette;
+import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.palette.NoisePalette;
-import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
-import com.dfsek.terra.config.templates.PaletteTemplate;
 
 public class PaletteFactory implements ConfigFactory<PaletteTemplate, Palette> {
     @Override

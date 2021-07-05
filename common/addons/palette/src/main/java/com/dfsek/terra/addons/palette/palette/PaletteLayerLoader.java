@@ -7,8 +7,6 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
-import com.dfsek.terra.config.loaders.Types;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -18,7 +16,7 @@ public class PaletteLayerLoader implements TypeLoader<PaletteLayerHolder> {
     @Override
     public PaletteLayerHolder load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
-        ProbabilityCollection<BlockState> collection = (ProbabilityCollection<BlockState>) configLoader.loadType(Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
+        ProbabilityCollection<BlockState> collection = (ProbabilityCollection<BlockState>) configLoader.loadType(/*Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE*/null, map.get("materials"));
 
         NoiseSampler sampler = null;
         if(map.containsKey("noise")) {

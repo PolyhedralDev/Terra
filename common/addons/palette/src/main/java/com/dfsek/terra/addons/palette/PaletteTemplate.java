@@ -3,11 +3,9 @@ package com.dfsek.terra.addons.palette;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
-import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class PaletteTemplate implements AbstractableTemplate {
     @Value("noise")
     @Abstractable
     @Default
-    private NoiseSeeded noise;
+    private NoiseSeeded noise = NoiseSeeded.zero(2);
 
     @Value("id")
     private String id;
@@ -24,20 +22,6 @@ public class PaletteTemplate implements AbstractableTemplate {
     @Value("layers")
     @Abstractable
     private List<PaletteLayerHolder> palette;
-
-    public PaletteTemplate() {
-        this.noise = new NoiseSeeded() {
-            @Override
-            public NoiseSampler apply(Long seed) {
-                return new WhiteNoiseSampler((int) (long) seed);
-            }
-
-            @Override
-            public int getDimensions() {
-                return 3;
-            }
-        };
-    }
 
     public String getID() {
         return id;
