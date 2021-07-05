@@ -1,13 +1,13 @@
 package com.dfsek.terra.api.util;
 
+import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
-import com.dfsek.terra.api.world.palette.slant.SlantHolder;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 
 public final class PaletteUtil {
-    public static Palette getPalette(int x, int y, int z, BiomeTemplate c, Sampler sampler) {
+    public static Palette getPalette(int x, int y, int z, Generator c, Sampler sampler) {
 
+        /*
         SlantHolder slant = c.getSlant();
         if(slant != null) {
             double slope = MathUtil.derivative(sampler, x, y, z);
@@ -16,6 +16,8 @@ public final class PaletteUtil {
             }
         }
 
-        return c.getPalette().getPalette(y);
+         */
+
+        return c.getPaletteSettings().getPalette(y);
     }
 }

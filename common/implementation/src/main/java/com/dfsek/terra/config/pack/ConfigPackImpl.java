@@ -256,9 +256,10 @@ public class ConfigPackImpl implements ConfigPack {
         return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getCheckedRegistry(Class<T> clazz) throws IllegalStateException {
-        return null;
+        return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
     }
 
     @SuppressWarnings("unchecked")
@@ -273,6 +274,7 @@ public class ConfigPackImpl implements ConfigPack {
         registry
                 .registerLoader(ConfigType.class, configTypeRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader));
+        registryMap.forEach((clazz, reg) -> registry.registerLoader(clazz, reg.getLeft()));
         loaders.forEach(registry::registerLoader);
         objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
     }

@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.biome.tab;
+package com.dfsek.terra.addons.biome.command.biome.tab;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.tab.TabCompleter;

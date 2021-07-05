@@ -12,6 +12,8 @@ import com.dfsek.terra.api.vector.Vector3;
 public interface WorldHandle {
     BlockState createBlockData(String data);
 
+    BlockState air();
+
     EntityType getEntity(String id);
 
     /**

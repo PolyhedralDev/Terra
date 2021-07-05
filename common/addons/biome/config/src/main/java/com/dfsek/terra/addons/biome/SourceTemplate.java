@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome.templates.source;
+package com.dfsek.terra.addons.biome;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;

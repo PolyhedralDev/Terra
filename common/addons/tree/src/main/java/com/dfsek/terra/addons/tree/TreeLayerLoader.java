@@ -1,15 +1,15 @@
-package com.dfsek.terra.config.loaders.config;
+package com.dfsek.terra.addons.tree;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.terra.addons.tree.tree.TreeLayer;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.config.loaders.Types;
 import com.dfsek.terra.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.addons.tree.tree.TreeLayer;
 
 import java.lang.reflect.Type;
 import java.util.Map;

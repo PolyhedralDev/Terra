@@ -14,16 +14,14 @@ import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
-import com.dfsek.terra.api.world.palette.PaletteImpl;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.Carver;
 import com.dfsek.terra.world.carving.NoiseCarver;
 import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
@@ -37,7 +35,6 @@ import java.util.Random;
 public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
-    private final PaletteImpl.Singleton blank;
     private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
     private final Carver carver;
@@ -47,7 +44,6 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
         this.main = main;
 
         carver = new NoiseCarver(new ConstantRange(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
-        blank = new PaletteImpl.Singleton(main.getWorldHandle().createBlockData("minecraft:air"));
     }
 
     @Override
@@ -81,26 +77,26 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                     int cz = zOrig + z;
 
                     TerraBiome b = grid.getBiome(cx, cz);
-                    BiomeTemplate c = ((UserDefinedBiome) b).getConfig();
+                    Generator g = b.getGenerator(world);
 
-                    int sea = c.getSeaLevel();
-                    Palette seaPalette = c.getOceanPalette();
+                    //int sea = c.getSeaLevel();
+                    //Palette seaPalette = c.getOceanPalette();
 
                     boolean justSet = false;
                     BlockState data = null;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
                             justSet = true;
-                            data = PaletteUtil.getPalette(x, y, z, c, sampler).get(paletteLevel, cx, y, cz);
+                            data = PaletteUtil.getPalette(x, y, z, g, sampler).get(paletteLevel, cx, y, cz);
                             chunk.setBlock(x, y, z, data);
 
                             paletteLevel++;
-                        } else if(y <= sea) {
+                        } /*else if(y <= sea) {
                             chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig));
 
                             justSet = false;
                             paletteLevel = 0;
-                        } else {
+                        } */else {
 
                             justSet = false;
                             paletteLevel = 0;

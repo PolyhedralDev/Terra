@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config;
+package com.dfsek.terra.addons.biome;
 
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;

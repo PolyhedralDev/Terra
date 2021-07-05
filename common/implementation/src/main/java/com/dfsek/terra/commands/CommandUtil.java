@@ -2,9 +2,7 @@ package com.dfsek.terra.commands;
 
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
-import com.dfsek.terra.commands.biome.BiomeCommand;
 import com.dfsek.terra.commands.profiler.ProfileCommand;
-import com.dfsek.terra.addons.structure.command.structure.StructureCommand;
 
 public final class CommandUtil {
     public static void registerAll(CommandManager manager) throws MalformedCommandException {
@@ -14,6 +12,6 @@ public final class CommandUtil {
         manager.register("version", VersionCommand.class);
         manager.register("getblock", GetBlockCommand.class);
         manager.register("packs", PacksCommand.class);
-        manager.register("biome", BiomeCommand.class);
+
     }
 }

@@ -1,5 +1,6 @@
-package com.dfsek.terra.commands.biome;
+package com.dfsek.terra.addons.biome.command.biome;
 
+import com.dfsek.terra.addons.biome.command.biome.arg.BiomeArgumentParser;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -16,8 +17,7 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.locate.AsyncBiomeFinder;
-import com.dfsek.terra.commands.biome.arg.BiomeArgumentParser;
-import com.dfsek.terra.commands.biome.tab.BiomeTabCompleter;
+import com.dfsek.terra.addons.biome.command.biome.tab.BiomeTabCompleter;
 import com.dfsek.terra.config.lang.LangUtil;
 
 import java.util.Locale;

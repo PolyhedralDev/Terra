@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.biome;
+package com.dfsek.terra.addons.biome.command.biome;
 
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -8,8 +8,6 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.commands.biome.arg.BiomeArgumentParser;
-import com.dfsek.terra.commands.biome.tab.BiomeTabCompleter;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.world.population.items.TerraStructure;
 

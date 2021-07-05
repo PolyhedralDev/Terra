@@ -1,4 +1,4 @@
-package com.dfsek.terra.commands.biome.arg;
+package com.dfsek.terra.addons.biome.command.biome.arg;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.arg.ArgumentParser;

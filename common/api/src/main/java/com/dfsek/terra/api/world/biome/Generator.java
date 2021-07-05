@@ -29,13 +29,7 @@ public interface Generator {
 
     double getWeight();
 
-    /**
-     * Gets the BlocPalette to generate the biome with.
-     *
-     * @return BlocPalette - The biome's palette.
-     */
-    Palette getPalette(int y);
-
+    PaletteSettings getPaletteSettings();
     NoiseSampler getBiomeNoise();
 
     double getElevationWeight();

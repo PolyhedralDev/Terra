@@ -27,8 +27,8 @@ public class TerraWorldImpl implements TerraWorld {
         this.world = w;
         config = (WorldConfigImpl) c.toWorldConfig(this);
         this.provider = config.getProvider();
-        air = main.getWorldHandle().createBlockData("minecraft:air");
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
+        this.air = main.getWorldHandle().air();
         safe = true;
     }
 
@@ -58,7 +58,7 @@ public class TerraWorldImpl implements TerraWorld {
     @Override
     public BlockState getUngeneratedBlock(int x, int y, int z) {
         TerraBiome biome = provider.getBiome(x, z);
-        Palette palette = biome.getGenerator(world).getPalette(y);
+        Palette palette = biome.getGenerator(world).getPaletteSettings().getPalette(y);
         Sampler sampler = config.getSamplerCache().get(x, z);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
@@ -70,9 +70,9 @@ public class TerraWorldImpl implements TerraWorld {
                 else level = 0;
             }
             return palette.get(level, x, y, z);
-        } else if(y <= biome.getConfig().getSeaLevel()) {
+        } /* else if(y <= biome.getConfig().getSeaLevel()) {
             return biome.getConfig().getOceanPalette().get(biome.getConfig().getSeaLevel() - y, x, y, z);
-        } else return air;
+        } */else return air;
     }
 
     @Override

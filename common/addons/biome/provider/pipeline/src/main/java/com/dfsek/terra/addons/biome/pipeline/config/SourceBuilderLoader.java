@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome;
+package com.dfsek.terra.addons.biome.pipeline.config;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
