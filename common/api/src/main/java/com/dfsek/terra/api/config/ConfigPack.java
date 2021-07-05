@@ -18,7 +18,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
 
     WorldConfig toWorldConfig(TerraWorld world);
 
-    void registerConfigType(ConfigType<?, ?> type, int priority);
+    void registerConfigType(ConfigType<?, ?> type, String id, int priority);
 
     Set<TerraAddon> addons();
 

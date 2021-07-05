@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     private final BiConsumer<String, ConfigType<?, ?>> callback;
 
-    public ConfigTypeRegistry(ConfigPackImpl pack, TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
+    public ConfigTypeRegistry(BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
         add("PACK", new PackBuilder());

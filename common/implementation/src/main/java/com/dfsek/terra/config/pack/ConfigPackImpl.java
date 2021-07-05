@@ -42,14 +42,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serial;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -77,9 +80,11 @@ public class ConfigPackImpl implements ConfigPack {
     private final ConfigTypeRegistry configTypeRegistry;
     private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = newRegistryMap();
 
+    private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
+
     public ConfigPackImpl(File folder, TerraPlugin main) throws ConfigException {
         try {
-            this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
+            this.configTypeRegistry = new ConfigTypeRegistry((id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
@@ -122,7 +127,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
-            this.configTypeRegistry = new ConfigTypeRegistry(this, main, (id, configType) -> {
+            this.configTypeRegistry = new ConfigTypeRegistry((id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
@@ -168,9 +173,9 @@ public class ConfigPackImpl implements ConfigPack {
         toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     private Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> newRegistryMap() {
         Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map = new HashMap<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>>() {
+            @Serial
             private static final long serialVersionUID = 4015855819914064466L;
 
             @Override
@@ -214,6 +219,8 @@ public class ConfigPackImpl implements ConfigPack {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {
+        configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.add(pair.getLeft(), pair.getRight())));
+
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
             varScope.create(var.getKey(), var.getValue());
         }
@@ -291,8 +298,13 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public void registerConfigType(ConfigType<?, ?> type, int priority) {
-
+    public void registerConfigType(ConfigType<?, ?> type, String id, int priority) {
+        Set<String> contained = new HashSet<>();
+        configTypes.forEach((p, configs) -> configs.forEach(pair -> {
+            if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config ID: " + id);
+            contained.add(id);
+        }));
+        configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(ImmutablePair.of(id, type));
     }
 
     @Override
