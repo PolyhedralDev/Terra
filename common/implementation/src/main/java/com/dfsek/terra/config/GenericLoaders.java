@@ -5,9 +5,9 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+import com.dfsek.terra.api.util.MaterialSet;
 import com.dfsek.terra.api.util.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.collections.MaterialSetImpl;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
@@ -27,7 +27,7 @@ public class GenericLoaders implements LoaderRegistrar {
     public void register(TypeRegistry registry) {
         registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(Range.class, new RangeLoader())
-                .registerLoader(MaterialSetImpl.class, new MaterialSetLoader())
+                .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
                 .registerLoader(BiomeSource.Type.class, (t, object, cf) -> BiomeSource.Type.valueOf((String) object));
 
