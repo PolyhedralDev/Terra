@@ -2,20 +2,17 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -57,11 +54,10 @@ public class CheckFunction implements Function<String> {
 
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
 
-        BiomeProvider provider = tw.getBiomeProvider();
-        UserDefinedBiome b = (UserDefinedBiome) provider.getBiome(vector.getBlockX(), vector.getBlockZ());
-        BiomeTemplate c = b.getConfig();
+        //BiomeProvider provider = tw.getBiomeProvider();
+        //TerraBiome b = provider.getBiome(vector.getBlockX(), vector.getBlockZ());
 
-        if(vector.getY() > c.getSeaLevel()) return "AIR"; // Above sea level
+        //if(vector.getY() > c.getSeaLevel()) return "AIR"; // Above sea level
         return "OCEAN"; // Below sea level
     }
 

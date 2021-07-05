@@ -41,8 +41,8 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.Getter;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 import com.dfsek.terra.addons.terrascript.tokenizer.Tokenizer;
-import com.dfsek.terra.api.util.GlueList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +52,7 @@ import java.util.Map;
 public class Parser {
     private final String data;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
-    private final List<String> ignoredFunctions = new GlueList<>();
+    private final List<String> ignoredFunctions = new ArrayList<>();
 
     private String id;
 
@@ -132,7 +132,7 @@ public class Parser {
         Block elseBlock = null;
         Block statement = parseStatementBlock(tokens, variableMap, loop);
 
-        List<IfKeyword.Pair<Returnable<Boolean>, Block>> elseIf = new GlueList<>();
+        List<IfKeyword.Pair<Returnable<Boolean>, Block>> elseIf = new ArrayList<>();
 
         while(tokens.hasNext() && tokens.get().getType().equals(Token.Type.ELSE)) {
             tokens.consume(); // Consume else.
@@ -336,7 +336,7 @@ public class Parser {
     }
 
     private Block parseBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> superVars, boolean loop) throws ParseException {
-        List<Item<?>> parsedItems = new GlueList<>();
+        List<Item<?>> parsedItems = new ArrayList<>();
 
         Map<String, Returnable.ReturnType> parsedVariables = new HashMap<>(superVars); // New hashmap as to not mutate parent scope's declarations.
 
@@ -431,7 +431,7 @@ public class Parser {
 
 
     private List<Returnable<?>> getArgs(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
-        List<Returnable<?>> args = new GlueList<>();
+        List<Returnable<?>> args = new ArrayList<>();
 
         while(!tokens.get().getType().equals(Token.Type.GROUP_END)) {
             args.add(parseExpression(tokens, true, variableMap));

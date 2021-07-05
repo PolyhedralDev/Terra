@@ -1,16 +1,16 @@
 package com.dfsek.terra.addons.terrascript.tokenizer;
 
-import com.dfsek.terra.api.util.GlueList;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Stream-like data structure that allows viewing future elements without consuming current.
  */
 public class Lookahead {
-    private final List<Char> buffer = new GlueList<>();
+    private final List<Char> buffer = new ArrayList<>();
     private final Reader input;
     private int index = 0;
     private int line = 0;

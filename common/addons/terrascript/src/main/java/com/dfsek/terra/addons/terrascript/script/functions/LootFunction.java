@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.buffer.items.BufferedLootApplication;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
@@ -9,7 +10,6 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.structure.structures.structure.buffer.items.BufferedLootApplication;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;

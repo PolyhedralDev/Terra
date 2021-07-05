@@ -1,14 +1,14 @@
 package com.dfsek.terra.addons.terrascript.buffer;
 
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cell implements BufferedItem {
-    private final List<BufferedItem> items = new GlueList<>();
+    private final List<BufferedItem> items = new ArrayList<>();
     private String mark = null;
 
     @Override

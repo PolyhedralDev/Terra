@@ -1,15 +1,16 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
+import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.addons.structure.structures.script.StructureScript;
-import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
+
+import java.util.Random;
 
 public class BufferedLootApplication implements BufferedItem {
     private final LootTable table;
@@ -36,7 +37,7 @@ public class BufferedLootApplication implements BufferedItem {
             main.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
 
-            event.getTable().fillInventory(container.getInventory(), new FastRandom(origin.hashCode()));
+            event.getTable().fillInventory(container.getInventory(), new Random(origin.hashCode()));
             data.update(false);
         } catch(Exception e) {
             main.logger().warning("Could not apply loot at " + origin + ": " + e.getMessage());
