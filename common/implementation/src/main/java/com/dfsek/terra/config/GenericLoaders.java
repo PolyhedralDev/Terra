@@ -4,6 +4,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.MaterialSet;
 import com.dfsek.terra.api.util.ProbabilityCollection;
@@ -33,7 +34,8 @@ public class GenericLoaders implements LoaderRegistrar {
 
         if(main != null) {
             registry.registerLoader(TerraAddon.class, main.getAddons())
-                    .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType());
+                    .registerLoader(BlockType.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType())
+                    .registerLoader(BlockState.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object));
         }
     }
 }

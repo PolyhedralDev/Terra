@@ -30,6 +30,7 @@ import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -100,10 +101,11 @@ public class ConfigPackImpl implements ConfigPack {
             long l = System.nanoTime();
 
             register(abstractConfigLoader);
-            register(selfLoader);
-
-            main.register(selfLoader);
             main.register(abstractConfigLoader);
+
+            register(selfLoader);
+            main.register(selfLoader);
+
 
             File pack = new File(folder, "pack.yml");
 
@@ -144,6 +146,9 @@ public class ConfigPackImpl implements ConfigPack {
 
             register(selfLoader);
             main.register(selfLoader);
+
+            register(abstractConfigLoader);
+            main.register(abstractConfigLoader);
 
             try {
                 ZipEntry pack = null;

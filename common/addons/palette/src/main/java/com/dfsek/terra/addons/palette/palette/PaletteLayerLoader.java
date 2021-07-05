@@ -13,10 +13,22 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class PaletteLayerLoader implements TypeLoader<PaletteLayerHolder> {
+    private static final Type BLOCK_DATA_PROBABILITY_COLLECTION_TYPE;
+    @SuppressWarnings("unused")
+    private ProbabilityCollection<BlockState> blockStateProbabilityCollection;
+
+    static {
+        try {
+            BLOCK_DATA_PROBABILITY_COLLECTION_TYPE =  PaletteLayerLoader.class.getDeclaredField("blockStateProbabilityCollection").getGenericType();
+        } catch(NoSuchFieldException e) {
+            throw new Error("this should never happen. i dont know what you did to make this happen but something is very wrong.", e);
+        }
+    }
+
     @Override
     public PaletteLayerHolder load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) o;
-        ProbabilityCollection<BlockState> collection = (ProbabilityCollection<BlockState>) configLoader.loadType(/*Types.BLOCK_DATA_PROBABILITY_COLLECTION_TYPE*/null, map.get("materials"));
+        ProbabilityCollection<BlockState> collection = (ProbabilityCollection<BlockState>) configLoader.loadType(BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
 
         NoiseSampler sampler = null;
         if(map.containsKey("noise")) {
