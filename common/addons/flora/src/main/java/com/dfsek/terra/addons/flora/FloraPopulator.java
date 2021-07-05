@@ -2,21 +2,11 @@ package com.dfsek.terra.addons.flora;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.PopulationUtil;
-import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
-import com.dfsek.terra.addons.flora.flora.FloraLayer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * Populates Flora
@@ -33,6 +23,7 @@ public class FloraPopulator implements TerraBlockPopulator {
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
         TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("flora")) {
+            /*
             if(tw.getConfig().disableFlora()) return;
 
             if(!tw.isSafe()) return;
@@ -60,6 +51,7 @@ public class FloraPopulator implements TerraBlockPopulator {
                 }
                 iter++;
             }
+            */
         }
     }
 }

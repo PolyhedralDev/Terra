@@ -4,9 +4,8 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
-import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.api.util.MaterialSet;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.collections.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Flora;
@@ -17,6 +16,7 @@ import net.jafama.FastMath;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 
 public class TerraFlora implements Flora {
     private final Palette floraPalette;
@@ -104,7 +104,7 @@ public class TerraFlora implements Flora {
             int lvl = (FastMath.abs(i));
             BlockState data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
             if(doRotation) {
-                Direction oneFace = new ArrayList<>(faces).get(new FastRandom(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
+                Direction oneFace = new ArrayList<>(faces).get(new Random(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
 
                 data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
                         .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))

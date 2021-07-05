@@ -3,12 +3,9 @@ package com.dfsek.terra.addons.flora;
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.util.collections.MaterialSet;
-import com.dfsek.terra.api.world.palette.holder.PaletteLayerHolder;
 import com.dfsek.terra.addons.flora.flora.TerraFlora;
-
-import java.util.List;
+import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.util.MaterialSet;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class FloraTemplate implements AbstractableTemplate {
@@ -28,7 +25,7 @@ public class FloraTemplate implements AbstractableTemplate {
     @Value("replaceable")
     @Abstractable
     @Default
-    private MaterialSet replaceable = new MaterialSet();
+    private MaterialSet replaceable = MaterialSet.empty();
 
     @Value("irrigable")
     @Abstractable
@@ -38,11 +35,7 @@ public class FloraTemplate implements AbstractableTemplate {
     @Value("rotatable")
     @Abstractable
     @Default
-    private MaterialSet rotatable = new MaterialSet();
-
-    @Value("layers")
-    @Abstractable
-    private List<PaletteLayerHolder> palette;
+    private MaterialSet rotatable = MaterialSet.empty();
 
     @Value("physics")
     @Abstractable
@@ -95,10 +88,6 @@ public class FloraTemplate implements AbstractableTemplate {
 
     public String getID() {
         return id;
-    }
-
-    public List<PaletteLayerHolder> getFloraPalette() {
-        return palette;
     }
 
     public boolean doPhysics() {
