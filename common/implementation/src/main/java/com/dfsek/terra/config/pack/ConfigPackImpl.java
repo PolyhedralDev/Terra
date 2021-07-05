@@ -17,6 +17,7 @@ import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
+import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -31,7 +32,6 @@ import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
-import com.dfsek.terra.config.fileloaders.Loader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.prototype.ProtoConfig;
@@ -316,6 +316,11 @@ public class ConfigPackImpl implements ConfigPack {
             contained.add(id);
         }));
         configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(ImmutablePair.of(id, type));
+    }
+
+    @Override
+    public Loader getLoader() {
+        return loader;
     }
 
     @Override

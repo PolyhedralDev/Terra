@@ -2,6 +2,8 @@ package com.dfsek.terra.config.fileloaders;
 
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.util.ExceptionalConsumer;
 import com.dfsek.terra.api.util.GlueList;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Loader {
+public abstract class LoaderImpl implements Loader {
     protected final Map<String, InputStream> streams = new HashMap<>();
 
     /**
@@ -19,6 +21,7 @@ public abstract class Loader {
      *
      * @param consumer Something to do with the streams.
      */
+    @Override
     public Loader then(ExceptionalConsumer<List<Configuration>> consumer) throws ConfigException {
         List<Configuration> list = new GlueList<>();
         streams.forEach((id, stream) -> {
@@ -28,23 +31,17 @@ public abstract class Loader {
         return this;
     }
 
+    @Override
     public Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException {
         consumer.accept(new GlueList<>(streams.keySet()));
         return this;
     }
 
+    @Override
     public Loader thenEntries(ExceptionalConsumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException {
         consumer.accept(streams.entrySet());
         return this;
     }
-
-    /**
-     * Get a single file from this Loader.
-     *
-     * @param singleFile File to get
-     * @return InputStream from file.
-     */
-    public abstract InputStream get(String singleFile) throws IOException;
 
     /**
      * Open a subdirectory.
@@ -52,17 +49,17 @@ public abstract class Loader {
      * @param directory Directory to open
      * @param extension
      */
-    public Loader open(String directory, String extension) {
+    @Override
+    public LoaderImpl open(String directory, String extension) {
         if(streams.size() != 0) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
         load(directory, extension);
         return this;
     }
 
-    protected abstract void load(String directory, String extension);
-
     /**
      * Close all InputStreams opened.
      */
+    @Override
     public Loader close() {
         streams.forEach((name, input) -> {
             try {

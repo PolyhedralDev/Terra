@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.fileloaders;
+package com.dfsek.terra.api.util;
 
 import com.dfsek.tectonic.exception.ConfigException;
 

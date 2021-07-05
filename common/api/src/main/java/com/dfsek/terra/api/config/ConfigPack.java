@@ -21,6 +21,8 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
 
     void registerConfigType(ConfigType<?, ?> type, String id, int priority);
 
+    Loader getLoader();
+
     Set<TerraAddon> addons();
 
     String getID();

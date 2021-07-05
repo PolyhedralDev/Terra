@@ -6,7 +6,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ZIPLoader extends Loader {
+public class ZIPLoader extends LoaderImpl {
     private final ZipFile file;
 
     public ZIPLoader(ZipFile file) {
@@ -23,7 +23,6 @@ public class ZIPLoader extends Loader {
         throw new IllegalArgumentException("No such file: " + singleFile);
     }
 
-    @Override
     protected void load(String directory, String extension) {
         Enumeration<? extends ZipEntry> entries = file.entries();
         while(entries.hasMoreElements()) {
