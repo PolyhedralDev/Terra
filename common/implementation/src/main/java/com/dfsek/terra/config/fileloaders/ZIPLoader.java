@@ -28,6 +28,7 @@ public class ZIPLoader extends Loader {
         Enumeration<? extends ZipEntry> entries = file.entries();
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
+            if(entry.getName().equals("pack.yml")) continue;
             if(!entry.isDirectory() && entry.getName().startsWith(directory) && entry.getName().endsWith(extension)) {
                 try {
                     String rel = entry.getName().substring(directory.length());

@@ -32,6 +32,7 @@ public class FolderLoader extends Loader {
             paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(extension)).forEach(file -> {
                 try {
                     String rel = newPath.toPath().relativize(file).toString();
+                    if(rel.equals("pack.yml")) return;
                     streams.put(rel, new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {
                     e.printStackTrace();

@@ -13,12 +13,16 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
@@ -33,6 +37,7 @@ import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
+import com.dfsek.terra.registry.RegistryFactoryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
 import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
@@ -63,6 +68,8 @@ import java.util.zip.ZipFile;
 public class ConfigPackImpl implements ConfigPack {
     private final ConfigPackTemplate template = new ConfigPackTemplate();
 
+    private final RegistryFactory registryFactory = new RegistryFactoryImpl();
+
     private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
     private final Map<Type, TemplateProvider<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
 
@@ -84,7 +91,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     public ConfigPackImpl(File folder, TerraPlugin main) throws ConfigException {
         try {
-            this.configTypeRegistry = new ConfigTypeRegistry((id, configType) -> {
+            this.configTypeRegistry = new ConfigTypeRegistry(main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
@@ -127,7 +134,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
-            this.configTypeRegistry = new ConfigTypeRegistry((id, configType) -> {
+            this.configTypeRegistry = new ConfigTypeRegistry(main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
@@ -238,8 +245,12 @@ public class ConfigPackImpl implements ConfigPack {
         }
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) {
-            for(ConfigTemplate config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()), () -> configType.getTemplate(this, main))) {
-                ((ConfigType) configType).callback(this, main, config);
+            for(AbstractableTemplate config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()), () -> configType.getTemplate(this, main))) {
+                try {
+                    ((CheckedRegistry) getRegistry(configType.getTypeClass())).add(config.getID(), ((ConfigFactory) configType.getFactory()).build(config, main));
+                } catch(DuplicateEntryException e) {
+                    throw new LoadException("Duplicate registry entry: ", e);
+                }
             }
         }
 
@@ -360,5 +371,10 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public boolean vanillaFlora() {
         return template.vanillaDecorations();
+    }
+
+    @Override
+    public RegistryFactory getRegistryFactory() {
+        return registryFactory;
     }
 }

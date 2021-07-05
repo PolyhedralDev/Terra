@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.config;
 
+import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
@@ -41,4 +42,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     boolean doBetaCarvers();
 
     boolean vanillaFlora();
+
+    RegistryFactory getRegistryFactory();
 }
