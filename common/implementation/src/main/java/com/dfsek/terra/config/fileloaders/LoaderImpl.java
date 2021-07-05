@@ -56,6 +56,8 @@ public abstract class LoaderImpl implements Loader {
         return this;
     }
 
+    protected abstract void load(String directory, String extension);
+
     /**
      * Close all InputStreams opened.
      */
