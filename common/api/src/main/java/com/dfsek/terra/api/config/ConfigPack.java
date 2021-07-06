@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
-    <T> CheckedRegistry<T> getRegistry(Class<T> clazz);
-
     BiomeProviderBuilder getBiomeProviderBuilder();
 
     WorldConfig toWorldConfig(TerraWorld world);

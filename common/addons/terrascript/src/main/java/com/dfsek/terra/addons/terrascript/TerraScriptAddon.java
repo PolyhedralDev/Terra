@@ -33,8 +33,8 @@ public class TerraScriptAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws ConfigException {
-        CheckedRegistry<Structure> structureRegistry = event.getPack().getRegistry(Structure.class);
-        CheckedRegistry<LootTable> lootRegistry = event.getPack().getRegistry(LootTable.class);
+        CheckedRegistry<Structure> structureRegistry = event.getPack().getCheckedRegistry(Structure.class);
+        CheckedRegistry<LootTable> lootRegistry = event.getPack().getCheckedRegistry(LootTable.class);
         event.getPack().getLoader().open("", ".tesf").thenEntries(entries -> {
             for(Map.Entry<String, InputStream> entry : entries) {
                 try {

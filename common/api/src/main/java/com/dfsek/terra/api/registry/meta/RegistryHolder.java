@@ -6,5 +6,5 @@ import com.dfsek.terra.api.registry.Registry;
 public interface RegistryHolder {
     <T> Registry<T> getRegistry(Class<T> clazz);
 
-    <T>CheckedRegistry<T> getCheckedRegistry(Class<T> clazz) throws IllegalStateException;
+    <T> CheckedRegistry<T> getCheckedRegistry(Class<T> clazz) throws IllegalStateException;
 }

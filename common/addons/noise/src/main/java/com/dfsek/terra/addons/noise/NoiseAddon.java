@@ -63,7 +63,7 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     
     @SuppressWarnings("deprecation")
     public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getRegistry(NoiseProvider.class);
+        CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getCheckedRegistry(NoiseProvider.class);
         event.getPack()
                 .applyLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry));
         
