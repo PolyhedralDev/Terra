@@ -91,7 +91,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                     throw new AddonLoadException("Failed to load com.dfsek.terra.addon \" + " + addon.getId() + "\": ", e);
                 }
                 try {
-                    addChecked(loadedAddon.getName(), loadedAddon);
+                    registerChecked(loadedAddon.getName(), loadedAddon);
                 } catch(DuplicateEntryException e) {
                     valid = false;
                     main.logger().severe("Duplicate com.dfsek.terra.addon ID; com.dfsek.terra.addon with ID " + loadedAddon.getName() + " is already loaded.");

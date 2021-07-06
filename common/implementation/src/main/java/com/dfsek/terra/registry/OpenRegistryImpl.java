@@ -52,7 +52,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
 
     @Override
-    public void addChecked(String identifier, T value) throws DuplicateEntryException {
+    public void registerChecked(String identifier, T value) throws DuplicateEntryException {
         if(objects.containsKey(identifier))
             throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
         register(identifier, value);

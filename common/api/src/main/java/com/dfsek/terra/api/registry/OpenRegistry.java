@@ -18,7 +18,7 @@ public interface OpenRegistry<T> extends Registry<T> {
      * @param value      Value to register.
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
-    void addChecked(String identifier, T value) throws DuplicateEntryException;
+    void registerChecked(String identifier, T value) throws DuplicateEntryException;
 
     /**
      * Clears all entries from the registry.
