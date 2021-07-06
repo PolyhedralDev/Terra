@@ -32,7 +32,7 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     @Override
     @Deprecated
     public void addUnchecked(String identifier, T value) {
-        registry.add(identifier, value);
+        registry.register(identifier, value);
     }
 
     @Override

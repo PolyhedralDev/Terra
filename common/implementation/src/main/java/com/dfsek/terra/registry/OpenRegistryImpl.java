@@ -41,7 +41,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
 
     @Override
-    public boolean add(String identifier, T value) {
+    public boolean register(String identifier, T value) {
         return add(identifier, new Entry<>(value));
     }
 
@@ -55,7 +55,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     public void addChecked(String identifier, T value) throws DuplicateEntryException {
         if(objects.containsKey(identifier))
             throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
-        add(identifier, value);
+        register(identifier, value);
     }
 
     @Override

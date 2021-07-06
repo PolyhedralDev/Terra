@@ -7,15 +7,15 @@ public interface OpenRegistry<T> extends Registry<T> {
      * Add a value to this registry.
      *
      * @param identifier Identifier to assign value.
-     * @param value      Value to add.
+     * @param value      Value to register.
      */
-    boolean add(String identifier, T value);
+    boolean register(String identifier, T value);
 
     /**
      * Add a value to this registry, checking whether it is present first.
      *
      * @param identifier Identifier to assign value.
-     * @param value      Value to add.
+     * @param value      Value to register.
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
     void addChecked(String identifier, T value) throws DuplicateEntryException;

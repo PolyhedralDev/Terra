@@ -27,15 +27,15 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
 
     public AddonRegistry(TerraAddon addon, TerraPlugin main) {
         this.main = main;
-        add(addon.getName(), addon);
+        register(addon.getName(), addon);
     }
 
     @Override
-    public boolean add(String identifier, TerraAddon addon) {
+    public boolean register(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
         main.logger().info("Loaded com.dfsek.terra.addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
-        return super.add(identifier, addon);
+        return super.register(identifier, addon);
     }
 
     @Override

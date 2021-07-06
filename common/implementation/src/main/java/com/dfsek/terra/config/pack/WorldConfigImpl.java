@@ -34,7 +34,7 @@ public class WorldConfigImpl implements WorldConfig {
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
 
         OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistryImpl<>();
-        pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.add(id, biome.apply(world.getWorld().getSeed())));
+        pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.register(id, biome.apply(world.getWorld().getSeed())));
         registryMap.put(TerraBiome.class, new LockedRegistryImpl<>(biomeOpenRegistry));
 
         this.provider = pack.getBiomeProviderBuilder().build(world.getWorld().getSeed());

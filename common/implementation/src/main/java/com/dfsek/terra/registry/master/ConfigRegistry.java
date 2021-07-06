@@ -16,7 +16,7 @@ import java.util.zip.ZipFile;
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     public void load(File folder, TerraPlugin main) throws ConfigException {
         ConfigPack pack = new ConfigPackImpl(folder, main);
-        add(pack.getID(), pack);
+        register(pack.getID(), pack);
     }
 
     public boolean loadAll(TerraPlugin main) {
@@ -45,6 +45,6 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
 
     public void load(ZipFile file, TerraPlugin main) throws ConfigException {
         ConfigPackImpl pack = new ConfigPackImpl(file, main);
-        add(pack.getTemplate().getID(), pack);
+        register(pack.getTemplate().getID(), pack);
     }
 }
