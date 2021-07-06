@@ -44,7 +44,10 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
         return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
             if(((String) c).startsWith("BLOCK:"))
                 return new PaletteImpl.Singleton(main.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
-            return registry.load(t, c, loader);
+            Palette obj = registry.get((String) c);
+            if(obj == null)
+                throw new LoadException("No such " + t.getTypeName() + " matching \"" + c + "\" was found in this registry.");
+            return obj;
         });
     }
 }
