@@ -39,6 +39,12 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Default
     private LinkedHashMap<String, FunctionTemplate> expressions = new LinkedHashMap<>();
 
+    private final Map<String, NoiseSeeded> otherFunctions;
+
+    public ExpressionFunctionTemplate(Map<String, NoiseSeeded> otherFunctions) {
+        this.otherFunctions = otherFunctions;
+    }
+
     @Override
     public NoiseSampler apply(Long seed) {
         try {
@@ -66,6 +72,12 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
         for(Map.Entry<String, FunctionTemplate> entry : expressions.entrySet()) {
             noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
         }
+
+        otherFunctions.forEach((id, function) -> {
+            if(function.getDimensions() == 2) {
+                noiseFunctionMap.put(id, new NoiseFunction2(function.apply(seed)));
+            } else noiseFunctionMap.put(id, new NoiseFunction3(function.apply(seed)));
+        });
 
         functions.forEach((id, function) -> {
             if(function.getDimensions() == 2) {

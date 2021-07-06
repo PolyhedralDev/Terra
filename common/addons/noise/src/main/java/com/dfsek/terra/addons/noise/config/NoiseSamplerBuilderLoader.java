@@ -26,6 +26,9 @@ public class NoiseSamplerBuilderLoader implements TypeLoader<NoiseSeeded> {
     public NoiseSeeded load(Type t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
         try {
+            if(!noiseRegistry.contains((String) map.get("type"))) {
+                throw new LoadException("No such noise function: " + map.get("type"));
+            }
             ObjectTemplate<NoiseSeeded> normalizerTemplate = noiseRegistry.get(((String) map.get("type")).toUpperCase(Locale.ROOT)).get();
             loader.load(normalizerTemplate, new Configuration(map));
             return normalizerTemplate.get();

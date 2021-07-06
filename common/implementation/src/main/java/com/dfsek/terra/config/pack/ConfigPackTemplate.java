@@ -16,9 +16,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
 
-    @Value("noise")
-    private Map<String, NoiseSeeded> noiseBuilderMap;
-
     @Value("addons")
     @Default
     private Set<TerraAddon> addons = new HashSet<>();
@@ -137,10 +134,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public boolean vanillaStructures() {
         return vanillaStructures;
-    }
-
-    public Map<String, NoiseSeeded> getNoiseBuilderMap() {
-        return noiseBuilderMap;
     }
 
     public Map<String, Double> getVariables() {
