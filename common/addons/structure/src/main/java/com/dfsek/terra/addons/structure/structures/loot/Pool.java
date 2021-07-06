@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.structure.structures.loot;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;

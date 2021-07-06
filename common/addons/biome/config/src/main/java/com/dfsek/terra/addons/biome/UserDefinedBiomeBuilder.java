@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.biome;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.api.world.biome.Biome;
 

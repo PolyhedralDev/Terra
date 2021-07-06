@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.biome;
 
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.Generator;

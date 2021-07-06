@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.util.seeded;
 
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 

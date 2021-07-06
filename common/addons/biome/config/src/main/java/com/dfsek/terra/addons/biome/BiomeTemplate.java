@@ -14,7 +14,7 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generator.Palette;

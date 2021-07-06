@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.lang.reflect.ParameterizedType;

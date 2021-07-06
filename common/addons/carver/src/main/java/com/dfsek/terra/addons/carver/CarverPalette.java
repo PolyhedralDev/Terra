@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.carver;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.collections.MaterialSet;
 import net.jafama.FastMath;
 

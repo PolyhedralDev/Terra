@@ -2,7 +2,7 @@ package com.dfsek.terra.fabric.mixin.implementations;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.MaterialSet;
+import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;

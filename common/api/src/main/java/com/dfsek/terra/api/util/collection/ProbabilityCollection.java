@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.api.util.collection;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 

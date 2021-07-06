@@ -1,15 +1,11 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.api.util.collection;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 
 import java.io.Serial;
-import java.util.AbstractSet;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class MaterialSet extends HashSet<BlockType> {
     @Serial

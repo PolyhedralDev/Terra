@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.palette.palette;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import org.jetbrains.annotations.NotNull;
 
 public class PaletteLayerHolder {

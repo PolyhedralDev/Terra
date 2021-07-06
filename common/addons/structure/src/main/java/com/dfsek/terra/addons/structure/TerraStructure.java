@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.structure;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.StructureSpawn;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.config.templates.StructureTemplate;
 

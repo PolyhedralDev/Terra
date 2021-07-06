@@ -2,7 +2,7 @@ package com.dfsek.terra.api.world.generator;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 public interface Palette {
     Palette add(BlockState m, int layers, NoiseSampler sampler);

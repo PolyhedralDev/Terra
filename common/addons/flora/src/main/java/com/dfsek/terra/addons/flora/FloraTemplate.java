@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.flora.flora.TerraFlora;
 import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.util.MaterialSet;
+import com.dfsek.terra.api.util.collection.MaterialSet;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class FloraTemplate implements AbstractableTemplate {

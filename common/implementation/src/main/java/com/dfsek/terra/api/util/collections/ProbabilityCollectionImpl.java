@@ -2,7 +2,7 @@ package com.dfsek.terra.api.util.collections;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import org.jetbrains.annotations.NotNull;
 

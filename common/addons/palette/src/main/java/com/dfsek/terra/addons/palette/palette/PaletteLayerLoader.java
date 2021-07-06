@@ -5,7 +5,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 import java.lang.reflect.Type;

@@ -4,7 +4,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.util.MaterialSet;
+import com.dfsek.terra.api.util.collection.MaterialSet;
 
 import java.lang.reflect.Type;
 import java.util.List;

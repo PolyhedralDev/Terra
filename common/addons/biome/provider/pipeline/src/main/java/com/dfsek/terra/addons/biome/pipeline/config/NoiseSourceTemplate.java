@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.config;
 
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.api.util.ProbabilityCollection;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 import com.dfsek.terra.addons.biome.pipeline.source.RandomSource;

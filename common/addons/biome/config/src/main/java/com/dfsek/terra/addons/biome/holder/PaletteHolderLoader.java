@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {
+    @SuppressWarnings("unchecked")
     @Override
     public PaletteHolder load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
         List<Map<String, Integer>> palette = (List<Map<String, Integer>>) o;
