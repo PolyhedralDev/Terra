@@ -1,10 +1,8 @@
 package com.dfsek.terra.fabric.mixin.implementations.chunk;
 
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -17,34 +15,29 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = Chunk.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Chunk.class, prefix = "terraChunk$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     @Final
     @Shadow
     private ChunkPos centerPos;
 
-    public int terra$getX() {
+    public int terraChunk$getX() {
         return centerPos.x;
     }
 
-    public int terra$getZ() {
+    public int terraChunk$getZ() {
         return centerPos.z;
     }
 
-    public World terra$getWorld() {
+    public World terraChunk$getWorld() {
         return (World) this;
     }
 
-    public Block terra$getBlock(int x, int y, int z) {
-        BlockPos pos = new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4));
-        return new FabricBlock(pos, (ChunkRegion) (Object) this);
+    public @NotNull BlockData terraChunk$getBlock(int x, int y, int z) {
+        return new FabricBlockData(((ChunkRegion) (Object) this).getBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4))));
     }
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
-        return terra$getBlock(x, y, z).getBlockData();
-    }
-
-    public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
+    public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockData blockData, boolean physics) {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4)), ((FabricBlockData) blockData).getHandle(), 0);
     }
 

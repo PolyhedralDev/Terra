@@ -1,20 +1,26 @@
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.entity.Entity;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.fabric.block.FabricBlock;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.util.FabricUtil;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.TickScheduler;
+import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -23,7 +29,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = World.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     @Shadow
     @Final
@@ -33,51 +39,72 @@ public abstract class ChunkRegionMixin {
     @Final
     private long seed;
 
-    public int terra$getMaxHeight() {
+    @Shadow
+    public abstract boolean setBlockState(BlockPos pos, BlockState state, int flags, int maxUpdateDepth);
+
+    @Shadow
+    public abstract TickScheduler<Fluid> getFluidTickScheduler();
+
+    public int terraWorld$getMaxHeight() {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
     }
 
     @SuppressWarnings("deprecation")
-    public ChunkGenerator terra$getGenerator() {
+    public ChunkGenerator terraWorld$getGenerator() {
         return (ChunkGenerator) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator();
     }
 
-    public Chunk terra$getChunkAt(int x, int z) {
+    public Chunk terraWorld$getChunkAt(int x, int z) {
         return (Chunk) ((ChunkRegion) (Object) this).getChunk(x, z);
     }
 
-    public Block terra$getBlockAt(int x, int y, int z) {
-        return new FabricBlock(new BlockPos(x, y, z), ((ChunkRegion) (Object) this));
+    public com.dfsek.terra.api.block.state.BlockState terraWorld$getBlockState(int x, int y, int z) {
+        return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
 
     @SuppressWarnings("deprecation")
-    public Entity terra$spawnEntity(Location location, EntityType entityType) {
+    public Entity terraWorld$spawnEntity(Vector3 location, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ChunkRegion) (Object) this).toServerWorld());
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;
     }
 
+    @Intrinsic(displace = true)
+    public BlockData terraWorld$getBlockData(int x, int y, int z) {
+        BlockPos pos = new BlockPos(x, y, z);
+        return new FabricBlockData(((ChunkRegion) (Object) this).getBlockState(pos));
+    }
+
+    @Intrinsic(displace = true)
+    public void terraWorld$setBlockData(int x, int y, int z, BlockData data, boolean physics) {
+        BlockPos pos = new BlockPos(x, y, z);
+        ((ChunkRegion) (Object) this).setBlockState(pos, ((FabricBlockData) data).getHandle(), physics ? 3 : 1042);
+        if(physics && ((FabricBlockData) data).getHandle().getBlock() instanceof FluidBlock) {
+            getFluidTickScheduler().schedule(pos, ((FluidBlock) ((FabricBlockData) data).getHandle().getBlock()).getFluidState(((FabricBlockData) data).getHandle()).getFluid(), 0);
+        }
+    }
+
     @Intrinsic
-    public long terra$getSeed() {
+    public long terraWorld$getSeed() {
         return seed;
     }
 
-    public int terra$getMinHeight() {
+    public int terraWorld$getMinHeight() {
         return ((ChunkRegion) (Object) this).getBottomY();
     }
 
     @Intrinsic
-    public Object terra$getHandle() {
+    public Object terraWorld$getHandle() {
         return this;
     }
 
-    public boolean terra$isTerraWorld() {
-        return terra$getGenerator() instanceof GeneratorWrapper;
+    public boolean terraWorld$isTerraWorld() {
+        return terraWorld$getGenerator() instanceof GeneratorWrapper;
     }
 
-    public TerraChunkGenerator terra$getTerraGenerator() {
-        return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
+    public TerraChunkGenerator terraWorld$getTerraGenerator() {
+        return ((FabricChunkGeneratorWrapper) terraWorld$getGenerator()).getHandle();
     }
 
     /**

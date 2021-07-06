@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.data.Rotatable;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.data.Rotatable;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitRotatable extends BukkitBlockData implements Rotatable {

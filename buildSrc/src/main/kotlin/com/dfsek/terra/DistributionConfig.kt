@@ -4,9 +4,10 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginConvention
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.javadoc.Javadoc
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.getPlugin
+import org.gradle.kotlin.dsl.named
 import java.io.File
 import java.net.URL
 

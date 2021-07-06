@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.data.Wall;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.data.Wall;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitWall extends BukkitWaterlogged implements Wall {
@@ -19,7 +19,7 @@ public class BukkitWall extends BukkitWaterlogged implements Wall {
         ((org.bukkit.block.data.type.Wall) getHandle()).setUp(up);
     }
 
-    public static org.bukkit.block.data.type.Wall.Height adapt(com.dfsek.terra.api.platform.block.data.Wall.Height height) {
+    public static org.bukkit.block.data.type.Wall.Height adapt(com.dfsek.terra.api.block.data.Wall.Height height) {
         switch(height) {
             case NONE:
                 return org.bukkit.block.data.type.Wall.Height.NONE;
@@ -32,14 +32,14 @@ public class BukkitWall extends BukkitWaterlogged implements Wall {
         }
     }
 
-    public static com.dfsek.terra.api.platform.block.data.Wall.Height adapt(org.bukkit.block.data.type.Wall.Height height) {
+    public static com.dfsek.terra.api.block.data.Wall.Height adapt(org.bukkit.block.data.type.Wall.Height height) {
         switch(height) {
             case TALL:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.TALL;
+                return com.dfsek.terra.api.block.data.Wall.Height.TALL;
             case LOW:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.LOW;
+                return com.dfsek.terra.api.block.data.Wall.Height.LOW;
             case NONE:
-                return com.dfsek.terra.api.platform.block.data.Wall.Height.NONE;
+                return com.dfsek.terra.api.block.data.Wall.Height.NONE;
             default:
                 throw new IllegalStateException();
         }

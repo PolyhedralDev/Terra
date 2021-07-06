@@ -2,23 +2,25 @@ package com.dfsek.terra.sponge;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.TerraEventManager;
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.event.EventManagerImpl;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
-import com.dfsek.terra.config.PluginConfig;
-import com.dfsek.terra.config.lang.Language;
-import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.profiler.Profiler;
+import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.config.PluginConfigImpl;
+import com.dfsek.terra.config.lang.LanguageImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.sponge.world.SpongeWorldHandle;
-import com.dfsek.terra.world.TerraWorld;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.spongepowered.api.config.ConfigDir;
@@ -34,13 +36,13 @@ import java.nio.file.Path;
 public class TerraSpongePlugin implements TerraPlugin {
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> packCheckedRegistry = new CheckedRegistry<>(configRegistry);
-    private final PluginConfig config = new PluginConfig();
+    private final PluginConfig config = new PluginConfigImpl();
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
 
     private final SpongeWorldHandle spongeWorldHandle = new SpongeWorldHandle();
 
-    private final EventManager eventManager = new TerraEventManager(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
 
     @Inject
     @ConfigDir(sharedRoot = false)
@@ -72,7 +74,7 @@ public class TerraSpongePlugin implements TerraPlugin {
     }
 
     @Override
-    public com.dfsek.terra.api.util.logging.Logger logger() {
+    public com.dfsek.terra.api.Logger logger() {
         return new SpongeLogger(logger);
     }
 
@@ -87,14 +89,9 @@ public class TerraSpongePlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isDebug() {
-        return true;
-    }
-
-    @Override
     public Language getLanguage() {
         try {
-            return new Language(new File(getDataFolder(), "lang/en_us.yml"));
+            return new LanguageImpl(new File(getDataFolder(), "lang/en_us.yml"));
         } catch(IOException e) {
             throw new IllegalArgumentException();
         }

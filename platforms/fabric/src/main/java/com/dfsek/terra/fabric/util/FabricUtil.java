@@ -1,19 +1,29 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.block.state.MobSpawner;
+import com.dfsek.terra.api.block.state.Sign;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.config.pack.ConfigPack;
 import com.dfsek.terra.config.templates.BiomeTemplate;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.mojang.serialization.Lifecycle;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -30,14 +40,14 @@ import java.util.function.Supplier;
 
 public final class FabricUtil {
     public static String createBiomeID(ConfigPack pack, String biomeID) {
-        return pack.getTemplate().getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
+        return pack.getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
 
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
      *
-     * @param biome       The Terra BiomeBuilder.
-     * @param pack        The ConfigPack this biome belongs to.
+     * @param biome The Terra BiomeBuilder.
+     * @param pack  The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
     public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
@@ -55,7 +65,7 @@ public final class FabricUtil {
 
         generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, TerraFabricPlugin.POPULATOR_CONFIGURED_FEATURE);
 
-        if(pack.getTemplate().vanillaCaves()) {
+        if(pack.vanillaCaves()) {
             for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
                 for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {
                     generationSettings.carver(carver, configuredCarverSupplier.get());
@@ -129,5 +139,17 @@ public final class FabricUtil {
         } else {
             Registry.register(registry, identifier, item);
         }
+    }
+
+    public static BlockState createState(WorldAccess worldAccess, BlockPos pos) {
+        BlockEntity entity = worldAccess.getBlockEntity(pos);
+        if(entity instanceof SignBlockEntity) {
+            return (Sign) entity;
+        } else if(entity instanceof MobSpawnerBlockEntity) {
+            return (MobSpawner) entity;
+        } else if(entity instanceof LootableContainerBlockEntity) {
+            return (Container) entity;
+        }
+        return null;
     }
 }

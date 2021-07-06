@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.mixin.implementations.chunk.data;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +19,7 @@ public abstract class ProtoChunkMixin {
     @Shadow
     public abstract BlockState getBlockState(BlockPos pos);
 
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
+    public @NotNull BlockData terra$getBlock(int x, int y, int z) {
         return new FabricBlockData(getBlockState(new BlockPos(x, y, z)));
     }
 

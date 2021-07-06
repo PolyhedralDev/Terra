@@ -1,9 +1,10 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.entity.Entity;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import org.bukkit.Location;
 
 public class BukkitEntity implements Entity {
     private final org.bukkit.entity.Entity entity;
@@ -18,17 +19,24 @@ public class BukkitEntity implements Entity {
     }
 
     @Override
-    public Location getLocation() {
-        return BukkitAdapter.adapt(entity.getLocation());
+    public Vector3 position() {
+        return BukkitAdapter.adapt(entity.getLocation().toVector());
     }
 
     @Override
-    public void setLocation(Location location) {
-        entity.teleport(BukkitAdapter.adapt(location));
+    public void position(Vector3 location) {
+        entity.teleport(BukkitAdapter.adapt(location).toLocation(entity.getWorld()));
     }
 
     @Override
-    public World getWorld() {
+    public void world(World world) {
+        Location newLoc = entity.getLocation().clone();
+        newLoc.setWorld(BukkitAdapter.adapt(world));
+        entity.teleport(newLoc);
+    }
+
+    @Override
+    public World world() {
         return BukkitAdapter.adapt(entity.getWorld());
     }
 

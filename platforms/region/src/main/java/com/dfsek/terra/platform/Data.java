@@ -1,7 +1,7 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
 import net.querz.nbt.tag.CompoundTag;
 
 public class Data implements BlockData, BlockType {

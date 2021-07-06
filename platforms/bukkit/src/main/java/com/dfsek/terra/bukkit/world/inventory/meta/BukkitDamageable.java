@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world.inventory.meta;
 
-import com.dfsek.terra.api.platform.inventory.item.Damageable;
+import com.dfsek.terra.api.inventory.item.Damageable;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 

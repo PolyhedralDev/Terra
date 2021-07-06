@@ -23,7 +23,7 @@ public class MinecraftClientMixin {
         TerraFabricPlugin.getInstance().getConfigRegistry().forEach(pack -> {
             final GeneratorType generatorType = new TerraGeneratorType(pack);
             //noinspection ConstantConditions
-            ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getTemplate().getID()));
+            ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getID()));
             GeneratorTypeAccessor.getValues().add(1, generatorType);
         });
     }

@@ -1,27 +1,33 @@
 package com.dfsek.terra.bukkit;
 
+import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
-import com.dfsek.terra.api.addons.annotations.Addon;
-import com.dfsek.terra.api.addons.annotations.Author;
-import com.dfsek.terra.api.addons.annotations.Version;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.annotations.Addon;
+import com.dfsek.terra.api.addon.annotations.Author;
+import com.dfsek.terra.api.addon.annotations.Version;
+import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.TerraEventManager;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.Biome;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.event.EventManagerImpl;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
-import com.dfsek.terra.api.util.logging.Logger;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
+import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.command.FixChunkCommand;
 import com.dfsek.terra.bukkit.command.SaveDataCommand;
@@ -37,15 +43,14 @@ import com.dfsek.terra.bukkit.world.BukkitBiome;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.config.GenericLoaders;
-import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.lang.Language;
-import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.TerraWorldImpl;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
@@ -58,6 +63,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -70,16 +76,16 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     private final Profiler profiler = new ProfilerImpl();
 
     private final ConfigRegistry registry = new ConfigRegistry();
-    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
+    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(registry);
 
-    private final PluginConfig config = new PluginConfig();
+    private final PluginConfig config = new PluginConfigImpl();
     private final ItemHandle itemHandle = new BukkitItemHandle();
     private WorldHandle handle = new BukkitWorldHandle();
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private DebugLogger debugLogger;
 
 
-    private final EventManager eventManager = new TerraEventManager(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
     public static final BukkitVersion BUKKIT_VERSION;
 
     static {
@@ -93,8 +99,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     private final AddonRegistry addonRegistry = new AddonRegistry(new BukkitAddon(this), this);
-    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
-
+    private final LockedRegistryImpl<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
 
 
     public boolean reload() {
@@ -104,8 +109,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
             tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getTemplate().getID();
-            newMap.put(world, new TerraWorld(world, registry.get(packID), this));
+            String packID = tw.getConfig().getID();
+            newMap.put(world, new TerraWorldImpl(world, registry.get(packID), this));
         });
         worldMap.clear();
         worldMap.putAll(newMap);
@@ -173,7 +178,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         config.load(this); // Load master config.yml
         LangUtil.load(config.getLanguage(), this); // Load language.
-        debugLogger.setDebug(isDebug());
+
+        debugLogger.setDebug(config.isDebugLogging());
+        if(config.isDebugProfiler()) profiler.start();
 
         if(!addonRegistry.loadAll()) {
             getLogger().severe("Failed to load addons. Please correct addon installations to continue.");
@@ -256,12 +263,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isDebug() {
-        return config.isDebug();
-    }
-
-
-    @Override
     public Language getLanguage() {
         return LangUtil.getLanguage();
     }
@@ -276,9 +277,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
         if(!worlds.containsKey(w.getName())) {
             getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorld(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
+            return new TerraWorldImpl(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
         }
-        return worldMap.computeIfAbsent(w, w2 -> new TerraWorld(w, worlds.get(w.getName()), this));
+        return worldMap.computeIfAbsent(w, w2 -> new TerraWorldImpl(w, worlds.get(w.getName()), this));
     }
 
     @Override
@@ -302,13 +303,18 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     public void register(TypeRegistry registry) {
         registry
                 .registerLoader(BlockData.class, (t, o, l) -> handle.createBlockData((String) o))
-                .registerLoader(Biome.class, (t, o, l) -> new BukkitBiome(org.bukkit.block.Biome.valueOf((String) o)))
+                .registerLoader(Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         genericLoaders.register(registry);
     }
 
+    private BukkitBiome parseBiome(String id) throws LoadException {
+        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id);
+        return new BukkitBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
+    }
+
     @Override
-    public LockedRegistry<TerraAddon> getAddons() {
+    public Registry<TerraAddon> getAddons() {
         return addonLockedRegistry;
     }
 

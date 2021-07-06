@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.command;
 
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
-import com.dfsek.terra.api.platform.CommandSender;
+import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.config.lang.LangUtil;
 

@@ -1,14 +1,11 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.data.Bisected;
-import com.dfsek.terra.api.platform.block.data.Slab;
-import com.dfsek.terra.api.platform.block.data.Stairs;
-import com.dfsek.terra.api.platform.block.state.Container;
-import com.dfsek.terra.api.platform.block.state.MobSpawner;
-import com.dfsek.terra.api.platform.block.state.Sign;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.data.Bisected;
+import com.dfsek.terra.api.block.data.Slab;
+import com.dfsek.terra.api.block.data.Stairs;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockData;
 import com.dfsek.terra.fabric.block.data.FabricDirectional;
 import com.dfsek.terra.fabric.block.data.FabricMultipleFacing;
@@ -17,18 +14,14 @@ import com.dfsek.terra.fabric.block.data.FabricRotatable;
 import com.dfsek.terra.fabric.block.data.FabricSlab;
 import com.dfsek.terra.fabric.block.data.FabricStairs;
 import com.dfsek.terra.fabric.block.data.FabricWaterlogged;
+import com.dfsek.terra.vector.Vector3Impl;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.block.entity.MobSpawnerBlockEntity;
-import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldAccess;
 
 import java.util.Arrays;
 
@@ -38,7 +31,7 @@ public final class FabricAdapter {
     }
 
     public static Vector3 adapt(BlockPos pos) {
-        return new Vector3(pos.getX(), pos.getY(), pos.getZ());
+        return new Vector3Impl(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static FabricBlockData adapt(BlockState state) {
@@ -78,21 +71,6 @@ public final class FabricAdapter {
             default:
                 throw new IllegalArgumentException("Illegal direction: " + face);
         }
-    }
-
-
-    public static com.dfsek.terra.api.platform.block.state.BlockState adapt(com.dfsek.terra.api.platform.block.Block block) {
-        WorldAccess worldAccess = (WorldAccess) block.getLocation().getWorld();
-
-        BlockEntity entity = worldAccess.getBlockEntity(adapt(block.getLocation().toVector()));
-        if(entity instanceof SignBlockEntity) {
-            return (Sign) entity;
-        } else if(entity instanceof MobSpawnerBlockEntity) {
-            return (MobSpawner) entity;
-        } else if(entity instanceof LootableContainerBlockEntity) {
-            return (Container) entity;
-        }
-        return null;
     }
 
     public static Stairs.Shape adapt(StairShape shape) {

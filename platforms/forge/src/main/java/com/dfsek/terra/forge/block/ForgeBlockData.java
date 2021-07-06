@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.block;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockType;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.state.Property;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ForgeBlockData implements BlockData {
     private static final Function<Map.Entry<Property<?>, Comparable<?>>, String> PROPERTY_MAPPER = new Function<Map.Entry<Property<?>, Comparable<?>>, String>() {
         public String apply(@Nullable Map.Entry<Property<?>, Comparable<?>> entry) {
-            if (entry == null) {
+            if(entry == null) {
                 return "<NULL>";
             } else {
                 Property<?> property = entry.getKey();
@@ -26,7 +26,7 @@ public class ForgeBlockData implements BlockData {
 
         @SuppressWarnings("unchecked")
         private <T extends Comparable<T>> String getName(Property<T> property, Comparable<?> comparable) {
-            return property.getName((T)comparable);
+            return property.getName((T) comparable);
         }
     };
 

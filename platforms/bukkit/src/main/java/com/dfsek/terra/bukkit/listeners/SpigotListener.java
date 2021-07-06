@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.population.items.TerraStructure;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Entity;
@@ -37,12 +37,12 @@ public class SpigotListener implements Listener {
             if(!BukkitAdapter.adapt(e.getEntity().getWorld()).isTerraWorld()) return;
             TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getEntity().getWorld()));
             EnderSignal signal = (EnderSignal) entity;
-            TerraStructure config = tw.getConfig().getStructureRegistry().get(tw.getConfig().getTemplate().getLocatable().get("STRONGHOLD"));
+            TerraStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get("STRONGHOLD"));
             if(config != null) {
                 main.getDebugLogger().info("Overriding Ender Signal...");
-                AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation()), 0, 500, location -> {
+                AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation().toVector()), tw.getWorld(), 0, 500, location -> {
                     if(location != null)
-                        signal.setTargetLocation(BukkitAdapter.adapt(location.toLocation(BukkitAdapter.adapt(signal.getWorld()))));
+                        signal.setTargetLocation(BukkitAdapter.adapt(location).toLocation(e.getLocation().getWorld()));
                     main.getDebugLogger().info("Location: " + location);
                 }, main);
                 finder.run(); // Do this synchronously so eye doesn't change direction several ticks after spawning.

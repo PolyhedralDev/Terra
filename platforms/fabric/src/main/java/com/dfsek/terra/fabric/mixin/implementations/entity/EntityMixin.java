@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.LiteralText;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.UUID;
 
 @Mixin(Entity.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.platform.entity.Entity.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.entity.Entity.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class EntityMixin {
     @Shadow
     public net.minecraft.world.World world;
@@ -35,15 +35,15 @@ public abstract class EntityMixin {
         return this;
     }
 
-    public Location terra$getLocation() {
-        return new Location((World) world, FabricAdapter.adapt(blockPos));
+    public Vector3 terra$position() {
+        return FabricAdapter.adapt(blockPos);
     }
 
-    public void terra$setLocation(Location location) {
+    public void terra$position(Vector3 location) {
         teleport(location.getX(), location.getY(), location.getZ());
     }
 
-    public World terra$getWorld() {
+    public World terra$world() {
         return (World) world;
     }
 

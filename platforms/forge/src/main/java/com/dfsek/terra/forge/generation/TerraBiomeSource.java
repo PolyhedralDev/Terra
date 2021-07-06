@@ -40,7 +40,8 @@ public class TerraBiomeSource extends net.minecraft.world.biome.provider.BiomePr
     }
 
     @Override
-    protected @NotNull Codec<? extends net.minecraft.world.biome.provider.BiomeProvider> codec() {
+    protected @NotNull
+    Codec<? extends net.minecraft.world.biome.provider.BiomeProvider> codec() {
         return CODEC;
     }
 
@@ -50,7 +51,8 @@ public class TerraBiomeSource extends net.minecraft.world.biome.provider.BiomePr
     }
 
     @Override
-    public @NotNull Biome getNoiseBiome(int biomeX, int biomeY, int biomeZ) {
+    public @NotNull
+    Biome getNoiseBiome(int biomeX, int biomeY, int biomeZ) {
         UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
         return Objects.requireNonNull(biomeRegistry.get(new ResourceLocation("terra", ForgeUtil.createBiomeID(pack, biome.getID()))));
     }

@@ -1,7 +1,7 @@
 package com.dfsek.terra.forge.block.data;
 
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.data.Orientable;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.data.Orientable;
 import com.dfsek.terra.forge.block.ForgeBlockData;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.EnumProperty;

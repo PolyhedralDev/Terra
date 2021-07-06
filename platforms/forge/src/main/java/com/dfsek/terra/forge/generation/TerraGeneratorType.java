@@ -18,7 +18,8 @@ public class TerraGeneratorType extends BiomeGeneratorTypeScreens {
     }
 
     @Override
-    protected @NotNull ChunkGenerator generator(@NotNull Registry<Biome> biomeRegistry, @NotNull Registry<DimensionSettings> chunkGeneratorSettingsRegistry, long seed) {
+    protected @NotNull
+    ChunkGenerator generator(@NotNull Registry<Biome> biomeRegistry, @NotNull Registry<DimensionSettings> chunkGeneratorSettingsRegistry, long seed) {
         return new ForgeChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
     }
 }

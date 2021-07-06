@@ -1,13 +1,11 @@
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-import com.dfsek.terra.fabric.util.FabricUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.world.GeneratorType;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -20,7 +18,7 @@ public class TerraGeneratorType extends GeneratorType {
     private final ConfigPack pack;
 
     public TerraGeneratorType(ConfigPack pack) {
-        super("terra." + pack.getTemplate().getID());
+        super("terra." + pack.getID());
         this.pack = pack;
     }
 

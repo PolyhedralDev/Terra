@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.world.entity;
 
-import com.dfsek.terra.api.platform.entity.EntityType;
+import com.dfsek.terra.api.entity.EntityType;
 
 public class BukkitEntityType implements EntityType {
     private final org.bukkit.entity.EntityType delegate;

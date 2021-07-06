@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.world.inventory;
 
-import com.dfsek.terra.api.platform.inventory.Item;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
-import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
+import com.dfsek.terra.api.inventory.Item;
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitItemStack implements ItemStack {

@@ -1,6 +1,6 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 
 public class GenWrapper implements ChunkGenerator {

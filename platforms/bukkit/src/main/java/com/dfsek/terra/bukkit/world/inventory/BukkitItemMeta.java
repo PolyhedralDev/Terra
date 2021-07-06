@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.inventory;
 
-import com.dfsek.terra.api.platform.inventory.item.Enchantment;
-import com.dfsek.terra.api.platform.inventory.item.ItemMeta;
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitDamageable;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;

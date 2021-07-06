@@ -1,8 +1,8 @@
 package com.dfsek.terra.sponge.world;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.sponge.SpongeAdapter;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockState;

@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.population;
 
 
-import com.dfsek.terra.api.platform.world.Chunk;
+import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 
 import java.io.Serializable;

@@ -1,10 +1,10 @@
 package com.dfsek.terra.forge.block.data;
 
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.data.Bisected;
-import com.dfsek.terra.api.platform.block.data.Slab;
-import com.dfsek.terra.api.platform.block.data.Stairs;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.data.Bisected;
+import com.dfsek.terra.api.block.data.Slab;
+import com.dfsek.terra.api.block.data.Stairs;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.state.properties.StairsShape;

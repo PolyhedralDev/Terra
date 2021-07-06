@@ -1,23 +1,23 @@
 package com.dfsek.terra.bukkit.world;
 
 
-import com.dfsek.terra.api.math.vector.Vector3;
-import com.dfsek.terra.api.platform.CommandSender;
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.block.BlockFace;
-import com.dfsek.terra.api.platform.block.BlockType;
-import com.dfsek.terra.api.platform.block.data.Bisected;
-import com.dfsek.terra.api.platform.block.data.Rail;
-import com.dfsek.terra.api.platform.block.data.RedstoneWire;
-import com.dfsek.terra.api.platform.block.data.Slab;
-import com.dfsek.terra.api.platform.block.data.Stairs;
-import com.dfsek.terra.api.platform.inventory.ItemStack;
-import com.dfsek.terra.api.platform.inventory.item.Enchantment;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.BlockFace;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.data.Bisected;
+import com.dfsek.terra.api.block.data.Rail;
+import com.dfsek.terra.api.block.data.RedstoneWire;
+import com.dfsek.terra.api.block.data.Slab;
+import com.dfsek.terra.api.block.data.Stairs;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.transform.MapTransform;
-import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.transform.TransformerImpl;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
@@ -25,6 +25,7 @@ import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockData;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
+import com.dfsek.terra.vector.Vector3Impl;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -36,7 +37,7 @@ import org.bukkit.util.Vector;
  * Utility class to adapt Bukkit enums to Terra enums.
  */
 public final class BukkitAdapter {
-    public static Transformer<TreeType, String> TREE_TRANSFORMER = new Transformer.Builder<TreeType, String>()
+    public static TransformerImpl<TreeType, String> TREE_TRANSFORMER = new TransformerImpl.Builder<TreeType, String>()
             .addTransform(new MapTransform<TreeType, String>()
                     .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
                     .add(TreeType.BIG_TREE, "LARGE_OAK")
@@ -336,12 +337,8 @@ public final class BukkitAdapter {
         }
     }
 
-    public static Location adapt(com.dfsek.terra.api.math.vector.Location location) {
-        return new Location(((BukkitWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
-    }
-
-    public static com.dfsek.terra.api.math.vector.Location adapt(Location location) {
-        return new com.dfsek.terra.api.math.vector.Location(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+    public static Vector3 adapt(Location location) {
+        return new Vector3Impl(location.getX(), location.getY(), location.getZ());
     }
 
     public static Vector adapt(Vector3 vector3) {
@@ -349,7 +346,7 @@ public final class BukkitAdapter {
     }
 
     public static Vector3 adapt(Vector vector) {
-        return new Vector3(vector.getX(), vector.getY(), vector.getZ());
+        return new Vector3Impl(vector.getX(), vector.getY(), vector.getZ());
     }
 
     public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
@@ -386,11 +383,11 @@ public final class BukkitAdapter {
         return ((BukkitEnchantment) enchantment).getHandle();
     }
 
-    public static Player adapt(com.dfsek.terra.api.platform.entity.Player player) {
+    public static Player adapt(com.dfsek.terra.api.entity.Player player) {
         return ((BukkitPlayer) player).getHandle();
     }
 
-    public static com.dfsek.terra.api.platform.entity.Player adapt(Player player) {
+    public static com.dfsek.terra.api.entity.Player adapt(Player player) {
         return new BukkitPlayer(player);
     }
 

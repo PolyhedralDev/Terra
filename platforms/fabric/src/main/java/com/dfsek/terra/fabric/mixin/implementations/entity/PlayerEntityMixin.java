@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
-import com.dfsek.terra.api.platform.entity.Player;
+import com.dfsek.terra.api.entity.Player;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;

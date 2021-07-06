@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.platform.block.Axis;
-import com.dfsek.terra.api.platform.block.data.Orientable;
+import com.dfsek.terra.api.block.Axis;
+import com.dfsek.terra.api.block.data.Orientable;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 import java.util.Set;

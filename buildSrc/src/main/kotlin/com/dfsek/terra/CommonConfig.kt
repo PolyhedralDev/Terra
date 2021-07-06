@@ -1,9 +1,6 @@
 package com.dfsek.terra
 
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.withType
 import java.io.ByteArrayOutputStream
 
 fun Project.configureCommon() {

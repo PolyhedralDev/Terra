@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.platform.world.Biome;
+import com.dfsek.terra.api.world.biome.Biome;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

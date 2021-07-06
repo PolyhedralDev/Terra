@@ -1,6 +1,6 @@
 package com.dfsek.terra.sponge;
 
-import com.dfsek.terra.api.util.logging.Logger;
+import com.dfsek.terra.api.Logger;
 
 public class SpongeLogger implements Logger {
     private final org.slf4j.Logger logger;

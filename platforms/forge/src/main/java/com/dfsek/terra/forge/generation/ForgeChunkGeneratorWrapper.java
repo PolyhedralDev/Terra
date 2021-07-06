@@ -1,8 +1,8 @@
 package com.dfsek.terra.forge.generation;
 
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
@@ -80,12 +80,14 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    protected @NotNull Codec<? extends ChunkGenerator> codec() {
+    protected @NotNull
+    Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull ChunkGenerator withSeed(long seed) {
+    public @NotNull
+    ChunkGenerator withSeed(long seed) {
         return new ForgeChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
@@ -153,7 +155,8 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
     }
 
     @Override
-    public @NotNull IBlockReader getBaseColumn(int x, int z) {
+    public @NotNull
+    IBlockReader getBaseColumn(int x, int z) {
         TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
         int height = getBaseHeight(x, z, Heightmap.Type.WORLD_SURFACE);
         BlockState[] array = new BlockState[256];

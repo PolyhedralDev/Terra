@@ -2,30 +2,35 @@ package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.addons.TerraAddon;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.TerraEventManager;
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.handle.ItemHandle;
-import com.dfsek.terra.api.platform.handle.WorldHandle;
-import com.dfsek.terra.api.platform.world.Biome;
-import com.dfsek.terra.api.platform.world.World;
+import com.dfsek.terra.api.event.EventManagerImpl;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.LockedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.JavaLogger;
+import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.config.GenericLoaders;
-import com.dfsek.terra.config.PluginConfig;
+import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
-import com.dfsek.terra.config.lang.Language;
-import com.dfsek.terra.config.pack.ConfigPack;
+import com.dfsek.terra.config.lang.LanguageImpl;
 import com.dfsek.terra.platform.RawBiome;
 import com.dfsek.terra.platform.RawWorldHandle;
-import com.dfsek.terra.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.world.TerraWorld;
+import com.dfsek.terra.world.TerraWorldImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +40,11 @@ public class StandalonePlugin implements TerraPlugin {
     private final ConfigRegistry registry = new ConfigRegistry();
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
 
-    private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
+    private final Registry<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
 
-    private final PluginConfig config = new PluginConfig();
+    private final PluginConfig config = new PluginConfigImpl();
     private final RawWorldHandle worldHandle = new RawWorldHandle();
-    private final EventManager eventManager = new TerraEventManager(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
 
     private final Profiler profiler = new ProfilerImpl();
 
@@ -50,11 +55,11 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public TerraWorld getWorld(World world) {
-        return new TerraWorld(world, registry.get("DEFAULT"), this);
+        return new TerraWorldImpl(world, registry.get("DEFAULT"), this);
     }
 
     @Override
-    public com.dfsek.terra.api.util.logging.Logger logger() {
+    public com.dfsek.terra.api.Logger logger() {
         return new JavaLogger(Logger.getLogger("Terra"));
     }
 
@@ -69,14 +74,9 @@ public class StandalonePlugin implements TerraPlugin {
     }
 
     @Override
-    public boolean isDebug() {
-        return true;
-    }
-
-    @Override
     public Language getLanguage() {
         try {
-            return new Language(new File(getDataFolder(), "lang/en_us.yml"));
+            return new LanguageImpl(new File(getDataFolder(), "lang/en_us.yml"));
         } catch(IOException e) {
             throw new IllegalArgumentException();
         }
@@ -84,11 +84,11 @@ public class StandalonePlugin implements TerraPlugin {
 
     @Override
     public CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return new CheckedRegistry<>(registry);
+        return new CheckedRegistryImpl<>(registry);
     }
 
     @Override
-    public LockedRegistry<TerraAddon> getAddons() {
+    public Registry<TerraAddon> getAddons() {
         return addonLockedRegistry;
     }
 
@@ -115,7 +115,7 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public DebugLogger getDebugLogger() {
         Logger logger = Logger.getLogger("Terra");
-        return new DebugLogger(new com.dfsek.terra.api.util.logging.Logger() {
+        return new DebugLogger(new com.dfsek.terra.api.Logger() {
             @Override
             public void info(String message) {
                 logger.info(message);
