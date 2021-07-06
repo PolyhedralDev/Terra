@@ -31,7 +31,7 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
 
     @Override
     @Deprecated
-    public void addUnchecked(String identifier, T value) {
+    public void registerUnchecked(String identifier, T value) {
         registry.register(identifier, value);
     }
 

@@ -22,5 +22,5 @@ public interface CheckedRegistry<T> extends Registry<T> {
      * @deprecated Use of {@link #register(String, Object)} is encouraged.
      */
     @Deprecated
-    void addUnchecked(String identifier, T value);
+    void registerUnchecked(String identifier, T value);
 }

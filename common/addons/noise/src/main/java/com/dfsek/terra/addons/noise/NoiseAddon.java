@@ -66,36 +66,36 @@ public class NoiseAddon extends TerraAddon {
 
         CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getRegistry(NoiseProvider.class);
         
-        noiseRegistry.addUnchecked("LINEAR", LinearNormalizerTemplate::new);
-        noiseRegistry.addUnchecked("NORMAL", NormalNormalizerTemplate::new);
-        noiseRegistry.addUnchecked("CLAMP", ClampNormalizerTemplate::new);
-        noiseRegistry.addUnchecked("EXPRESSION", ExpressionFunctionTemplate::new);
+        noiseRegistry.registerUnchecked("LINEAR", LinearNormalizerTemplate::new);
+        noiseRegistry.registerUnchecked("NORMAL", NormalNormalizerTemplate::new);
+        noiseRegistry.registerUnchecked("CLAMP", ClampNormalizerTemplate::new);
+        noiseRegistry.registerUnchecked("EXPRESSION", ExpressionFunctionTemplate::new);
 
-        noiseRegistry.addUnchecked("IMAGE", ImageSamplerTemplate::new);
+        noiseRegistry.registerUnchecked("IMAGE", ImageSamplerTemplate::new);
 
-        noiseRegistry.addUnchecked("DOMAINWARP", DomainWarpTemplate::new);
+        noiseRegistry.registerUnchecked("DOMAINWARP", DomainWarpTemplate::new);
 
-        noiseRegistry.addUnchecked("FBM", BrownianMotionTemplate::new);
-        noiseRegistry.addUnchecked("PINGPONG", PingPongTemplate::new);
-        noiseRegistry.addUnchecked("RIDGED", RidgedFractalTemplate::new);
+        noiseRegistry.registerUnchecked("FBM", BrownianMotionTemplate::new);
+        noiseRegistry.registerUnchecked("PINGPONG", PingPongTemplate::new);
+        noiseRegistry.registerUnchecked("RIDGED", RidgedFractalTemplate::new);
 
-        noiseRegistry.addUnchecked("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
-        noiseRegistry.addUnchecked("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
-        noiseRegistry.addUnchecked("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
-        noiseRegistry.addUnchecked("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
-        noiseRegistry.addUnchecked("GABOR", GaborNoiseTemplate::new);
+        noiseRegistry.registerUnchecked("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
+        noiseRegistry.registerUnchecked("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
+        noiseRegistry.registerUnchecked("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
+        noiseRegistry.registerUnchecked("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
+        noiseRegistry.registerUnchecked("GABOR", GaborNoiseTemplate::new);
 
 
-        noiseRegistry.addUnchecked("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
-        noiseRegistry.addUnchecked("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
+        noiseRegistry.registerUnchecked("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
+        noiseRegistry.registerUnchecked("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
 
-        noiseRegistry.addUnchecked("CELLULAR", CellularNoiseTemplate::new);
+        noiseRegistry.registerUnchecked("CELLULAR", CellularNoiseTemplate::new);
 
-        noiseRegistry.addUnchecked("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
-        noiseRegistry.addUnchecked("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+        noiseRegistry.registerUnchecked("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+        noiseRegistry.registerUnchecked("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
 
-        noiseRegistry.addUnchecked("CONSTANT", ConstantNoiseTemplate::new);
+        noiseRegistry.registerUnchecked("CONSTANT", ConstantNoiseTemplate::new);
 
-        noiseRegistry.addUnchecked("KERNEL", KernelTemplate::new);
+        noiseRegistry.registerUnchecked("KERNEL", KernelTemplate::new);
     }
 }
