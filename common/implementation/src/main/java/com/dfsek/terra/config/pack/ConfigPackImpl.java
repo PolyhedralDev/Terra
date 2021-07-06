@@ -29,7 +29,7 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -78,7 +78,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final Configuration configuration;
 
-    private final BiomeProvider.BiomeProviderBuilder biomeProviderBuilder;
+    private final BiomeProviderBuilder biomeProviderBuilder;
 
 
     private final ConfigTypeRegistry configTypeRegistry;
@@ -298,7 +298,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder() {
+    public BiomeProviderBuilder getBiomeProviderBuilder() {
         return biomeProviderBuilder;
     }
 

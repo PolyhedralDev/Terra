@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.biome.image;
 
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import net.jafama.FastMath;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ImageBiomeProvider implements BiomeProvider, BiomeProvider.BiomeProviderBuilder { // This provider does not need a seed, so it is its own builder.
+public class ImageBiomeProvider implements BiomeProvider, BiomeProviderBuilder { // This provider does not need a seed, so it is its own builder.
     private final Map<Color, TerraBiome> colorBiomeMap = new HashMap<>();
     private final BufferedImage image;
     private final int resolution;
