@@ -27,6 +27,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
 import com.dfsek.terra.api.transform.Transformer;
 import com.dfsek.terra.api.transform.Validator;
+import com.dfsek.terra.api.util.JarUtil;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.logging.Logger;
@@ -73,10 +74,18 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.jar.JarFile;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -136,6 +145,35 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     private File dataFolder;
     private final CommandManager manager = new TerraCommandManager(this);
+
+    private final AtomicReference<File> terraModJar = new AtomicReference<>(null);
+
+    @Override
+    public JarFile getModJar() throws URISyntaxException, IOException {
+        if(!FabricLoader.getInstance().isDevelopmentEnvironment()) return TerraPlugin.super.getModJar();
+        final File _jarFile1 = terraModJar.get();
+        if(_jarFile1 != null) return new JarFile(_jarFile1);
+        synchronized(terraModJar) {
+            final File _jarFile2 = terraModJar.get();
+            if(_jarFile2 != null) return new JarFile(_jarFile2);
+
+            // uncached here
+            final URI jarURI = JarUtil.getJarURL().toURI();
+            if(jarURI.getScheme() == null || !jarURI.getScheme().equalsIgnoreCase("file")) {
+                final File tempFile = File.createTempFile("terra-jar-" + UUID.randomUUID(), ".jar");
+                try(final FileOutputStream out = new FileOutputStream(tempFile)) {
+                    Files.copy(Paths.get(jarURI), out);
+                }
+                tempFile.deleteOnExit();
+                terraModJar.set(tempFile);
+                return new JarFile(tempFile);
+            } else {
+                final File jarFile = new File(jarURI);
+                terraModJar.set(jarFile);
+                return new JarFile(jarFile);
+            }
+        }
+    }
 
     public CommandManager getManager() {
         return manager;
