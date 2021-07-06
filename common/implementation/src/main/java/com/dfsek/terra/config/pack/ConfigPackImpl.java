@@ -24,10 +24,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
-import com.dfsek.terra.api.structure.LootTable;
-import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.util.seeded.NoiseProvider;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.config.dummy.DummyWorld;
@@ -39,7 +36,6 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.RegistryFactoryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
-import com.dfsek.terra.registry.config.NoiseRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
 
 import java.awt.image.BufferedImage;
@@ -58,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -82,7 +79,7 @@ public class ConfigPackImpl implements ConfigPack {
 
 
     private final ConfigTypeRegistry configTypeRegistry;
-    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = newRegistryMap();
+    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
     private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
 
@@ -90,6 +87,8 @@ public class ConfigPackImpl implements ConfigPack {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
+                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
+                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
             this.loader = new FolderLoader(folder.toPath());
@@ -101,7 +100,6 @@ public class ConfigPackImpl implements ConfigPack {
 
             register(selfLoader);
             main.register(selfLoader);
-
 
             File pack = new File(folder, "pack.yml");
 
@@ -134,6 +132,8 @@ public class ConfigPackImpl implements ConfigPack {
         try {
             this.configTypeRegistry = new ConfigTypeRegistry(main, (id, configType) -> {
                 OpenRegistry<?> openRegistry = configType.registrySupplier().get();
+                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
+                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
                 registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
             });
             this.loader = new ZIPLoader(file);
@@ -179,29 +179,6 @@ public class ConfigPackImpl implements ConfigPack {
         }
 
         toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
-    }
-
-    private Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> newRegistryMap() {
-        Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map = new HashMap<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>>() {
-            @Serial
-            private static final long serialVersionUID = 4015855819914064466L;
-
-            @Override
-            public ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>> put(Class<?> key, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>> value) {
-                selfLoader.registerLoader(key, value.getLeft());
-                abstractConfigLoader.registerLoader(key, value.getLeft());
-                return super.put(key, value);
-            }
-        };
-
-        putPair(map, LootTable.class, new OpenRegistryImpl<>());
-        putPair(map, Structure.class, new OpenRegistryImpl<>());
-
-        return map;
-    }
-
-    private <R> void putPair(Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map, Class<R> key, OpenRegistry<R> l) {
-        map.put(key, ImmutablePair.of(l, new CheckedRegistryImpl<>(l)));
     }
 
     private void checkDeadEntries(TerraPlugin main) {
@@ -259,14 +236,8 @@ public class ConfigPackImpl implements ConfigPack {
         main.logger().info("Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " + (System.nanoTime() - start) / 1000000D + "ms.");
     }
 
-
-
     public ConfigPackTemplate getTemplate() {
         return template;
-    }
-
-    public Scope getVarScope() {
-        return varScope;
     }
 
     @Override
@@ -286,8 +257,6 @@ public class ConfigPackImpl implements ConfigPack {
         return (OpenRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getLeft();
     }
 
-
-    @SuppressWarnings("unchecked")
     @Override
     public void register(TypeRegistry registry) {
         registry
@@ -306,6 +275,9 @@ public class ConfigPackImpl implements ConfigPack {
     public <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
         return (CheckedRegistry<T>) registryMap.computeIfAbsent(clazz, c -> {
             OpenRegistry<T> registry = new OpenRegistryImpl<>();
+            selfLoader.registerLoader(c, registry);
+            abstractConfigLoader.registerLoader(c, registry);
+            main.getDebugLogger().info("Registered loader for registry of class " + c);
             return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }

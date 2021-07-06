@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.biome.pipeline.config.stage;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.util.seeded.StageSeeded;
+import com.dfsek.terra.addons.biome.pipeline.StageSeeded;
 import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;

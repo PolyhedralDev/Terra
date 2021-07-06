@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.seeded.StageSeeded;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
