@@ -12,7 +12,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class JarUtil {
+public final class JarUtil {
     public static void copyResourcesToDirectory(JarFile fromJar, String sourceDir, String destDir) throws IOException {
         for(Enumeration<JarEntry> entries = fromJar.entries(); entries.hasMoreElements(); ) {
             JarEntry entry = entries.nextElement();

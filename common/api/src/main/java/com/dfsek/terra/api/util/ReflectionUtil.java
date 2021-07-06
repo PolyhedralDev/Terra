@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class ReflectionUtil {
+public final class ReflectionUtil {
     public static Field[] getFields(@NotNull Class<?> type) {
         Field[] result = type.getDeclaredFields();
         Class<?> parentClass = type.getSuperclass();
