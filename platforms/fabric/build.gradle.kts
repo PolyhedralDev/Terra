@@ -23,8 +23,8 @@ group = "com.dfsek.terra.fabric"
 dependencies {
     "shadedApi"(project(":common"))
 
-    "minecraft"("com.mojang:minecraft:1.17")
-    "mappings"("net.fabricmc:yarn:1.17+build.1:v2")
+    "minecraft"("com.mojang:minecraft:1.17.1")
+    "mappings"("net.fabricmc:yarn:1.17.1+build.1:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
 
     "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
