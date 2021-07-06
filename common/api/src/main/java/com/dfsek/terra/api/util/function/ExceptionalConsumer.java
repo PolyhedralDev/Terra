@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.api.util.function;
 
 import com.dfsek.tectonic.exception.ConfigException;
 

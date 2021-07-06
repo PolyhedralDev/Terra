@@ -3,7 +3,7 @@ package com.dfsek.terra.config.fileloaders;
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.config.Loader;
-import com.dfsek.terra.api.util.ExceptionalConsumer;
+import com.dfsek.terra.api.util.function.ExceptionalConsumer;
 import com.dfsek.terra.api.util.GlueList;
 
 import java.io.IOException;

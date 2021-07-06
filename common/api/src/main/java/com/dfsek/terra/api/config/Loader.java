@@ -2,7 +2,7 @@ package com.dfsek.terra.api.config;
 
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.api.util.ExceptionalConsumer;
+import com.dfsek.terra.api.util.function.ExceptionalConsumer;
 
 import java.io.IOException;
 import java.io.InputStream;
