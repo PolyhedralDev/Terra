@@ -15,6 +15,8 @@ import java.util.Set;
 public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
     BiomeProviderBuilder getBiomeProviderBuilder();
 
+    <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz);
+
     WorldConfig toWorldConfig(TerraWorld world);
 
     void registerConfigType(ConfigType<?, ?> type, String id, int priority);

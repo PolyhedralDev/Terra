@@ -194,7 +194,6 @@ public class ConfigPackImpl implements ConfigPack {
             }
         };
 
-        putPair(map, NoiseProvider.class, new NoiseRegistry());
         putPair(map, LootTable.class, new OpenRegistryImpl<>());
         putPair(map, Structure.class, new OpenRegistryImpl<>());
 
@@ -300,6 +299,15 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public BiomeProviderBuilder getBiomeProviderBuilder() {
         return biomeProviderBuilder;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
+        return (CheckedRegistry<T>) registryMap.computeIfAbsent(clazz, c -> {
+            OpenRegistry<T> registry = new OpenRegistryImpl<>();
+            return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
+        }).getRight();
     }
 
 
