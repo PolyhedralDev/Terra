@@ -30,6 +30,7 @@ import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
+import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
@@ -40,12 +41,13 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 @Addon("noise")
 @Author("Terra")
 @Version("1.0.0")
-public class NoiseAddon extends TerraAddon {
+public class NoiseAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin plugin;
 
     @Override
     public void initialize() {
+        plugin.getEventManager().registerListener(this, this);
         plugin.applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
@@ -58,7 +60,6 @@ public class NoiseAddon extends TerraAddon {
     }
     
     @SuppressWarnings("deprecation")
-    @Global
     public void packPreLoad(ConfigPackPreLoadEvent event) {
 
         event.getPack()

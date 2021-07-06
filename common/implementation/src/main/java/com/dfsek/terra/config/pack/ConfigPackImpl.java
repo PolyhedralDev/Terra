@@ -184,6 +184,12 @@ public class ConfigPackImpl implements ConfigPack {
         toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
+    @SuppressWarnings("unchecked")
+    private void applyLoaders(TypeRegistry registry) {
+        loaders.forEach(registry::registerLoader);
+        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
+    }
+
     private Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> newRegistryMap() {
         Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> map = new HashMap<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>>() {
             @Serial
@@ -230,6 +236,8 @@ public class ConfigPackImpl implements ConfigPack {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void load(long start, TerraPlugin main) throws ConfigException {
+        applyLoaders(abstractConfigLoader);
+        applyLoaders(selfLoader);
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
 
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
@@ -297,8 +305,6 @@ public class ConfigPackImpl implements ConfigPack {
                 .registerLoader(ConfigType.class, configTypeRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader));
         registryMap.forEach((clazz, reg) -> registry.registerLoader(clazz, reg.getLeft()));
-        loaders.forEach(registry::registerLoader);
-        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
     }
 
     @Override
