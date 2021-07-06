@@ -251,7 +251,7 @@ public class ConfigPackImpl implements ConfigPack {
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) {
             for(AbstractableTemplate config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()), () -> configType.getTemplate(this, main))) {
                 try {
-                    ((CheckedRegistry) getRegistry(configType.getTypeClass())).add(config.getID(), ((ConfigFactory) configType.getFactory()).build(config, main));
+                    ((CheckedRegistry) getRegistry(configType.getTypeClass())).register(config.getID(), ((ConfigFactory) configType.getFactory()).build(config, main));
                 } catch(DuplicateEntryException e) {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }

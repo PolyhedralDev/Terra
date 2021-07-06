@@ -13,7 +13,6 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
@@ -41,7 +40,7 @@ public class TerraScriptAddon extends TerraAddon implements EventListener {
                 try {
                     StructureScript structureScript = new StructureScript(entry.getValue(), main, structureRegistry, lootRegistry, event.getPack().getRegistryFactory().create());
                     try {
-                        structureRegistry.add(structureScript.getId(), structureScript);
+                        structureRegistry.register(structureScript.getId(), structureScript);
                     } catch(DuplicateEntryException e) {
                         throw new LoadException("Duplicate structure: ", e);
                     }

@@ -25,7 +25,7 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
 
     @Override
-    public void add(String identifier, T value) throws DuplicateEntryException {
+    public void register(String identifier, T value) throws DuplicateEntryException {
         registry.registerChecked(identifier, value);
     }
 

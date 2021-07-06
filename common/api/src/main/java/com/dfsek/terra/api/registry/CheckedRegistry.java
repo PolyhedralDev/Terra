@@ -10,7 +10,7 @@ public interface CheckedRegistry<T> extends Registry<T> {
      * @param value      Value to register.
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
-    void add(String identifier, T value) throws DuplicateEntryException;
+    void register(String identifier, T value) throws DuplicateEntryException;
 
     /**
      * Add a value to the registry, without checking presence beforehand.
@@ -19,7 +19,7 @@ public interface CheckedRegistry<T> extends Registry<T> {
      *
      * @param identifier Identifier to assign value.
      * @param value      Value to register.
-     * @deprecated Use of {@link #add(String, Object)} is encouraged.
+     * @deprecated Use of {@link #register(String, Object)} is encouraged.
      */
     @Deprecated
     void addUnchecked(String identifier, T value);

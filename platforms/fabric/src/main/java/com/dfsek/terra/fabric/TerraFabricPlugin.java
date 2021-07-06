@@ -359,7 +359,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
                     if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
                         try {
-                            event.getPack().getRegistry(Tree.class).add(entry.getKey().getValue().toString(), (Tree) entry.getValue());
+                            event.getPack().getRegistry(Tree.class).register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
                             debugLogger.info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
                         } catch(DuplicateEntryException ignored) {
                         }
@@ -401,7 +401,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
-                registry.add(id, (Tree) tree);
+                registry.register(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
         }
