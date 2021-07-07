@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.addons.chunkgenerator;
 
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.generator.Palette;

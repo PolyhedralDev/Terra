@@ -1,4 +1,4 @@
-package com.dfsek.terra.world;
+package com.dfsek.terra.api.world;
 
 import com.dfsek.terra.api.world.ChunkAccess;
 import com.dfsek.terra.api.world.World;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.generation.math.interpolation;
+package com.dfsek.terra.api.world.generator;
 
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.api.world.biome.Generator;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.generation.math.interpolation;
+package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Generator;

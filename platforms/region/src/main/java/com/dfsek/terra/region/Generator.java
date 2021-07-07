@@ -1,10 +1,10 @@
 package com.dfsek.terra.region;
 
 import com.dfsek.terra.StandalonePlugin;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
 import com.dfsek.terra.platform.GenWrapper;
-import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.population.FloraPopulator;
 import com.dfsek.terra.world.population.OrePopulator;
 import com.dfsek.terra.world.population.StructurePopulator;
@@ -22,7 +22,7 @@ public class Generator {
     StructurePopulator structurePopulator;
     TreePopulator treePopulator;
     OrePopulator orePopulator;
-    DefaultChunkGenerator3D generator;
+    TerraChunkGenerator generator;
 
     public Generator(long seed, StandalonePlugin plugin) {
         plugin.load();
@@ -30,7 +30,7 @@ public class Generator {
         structurePopulator = new StructurePopulator(plugin);
         treePopulator = new TreePopulator(plugin);
         orePopulator = new OrePopulator(plugin);
-        generator = new DefaultChunkGenerator3D(plugin.getConfigRegistry().get("DEFAULT"), plugin);
+        //generator = new DefaultChunkGenerator3D(plugin.getConfigRegistry().get("DEFAULT"), plugin);
         this.seed = seed;
     }
 

@@ -10,7 +10,6 @@ import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.command.CommandManager;
-import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
@@ -42,6 +41,7 @@ import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.commands.CommandUtil;
+import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -51,7 +51,6 @@ import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorldImpl;
-import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -69,7 +68,7 @@ import java.util.Objects;
 
 
 public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
-    private final Map<String, DefaultChunkGenerator3D> generatorMap = new HashMap<>();
+    private final Map<String, com.dfsek.terra.api.world.generator.TerraChunkGenerator> generatorMap = new HashMap<>();
     private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
 
@@ -125,16 +124,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     @Override
     public String platformName() {
         return "Bukkit";
-    }
-
-    public void setHandle(WorldHandle handle) {
-        getLogger().warning("|-------------------------------------------------------|");
-        getLogger().warning("A third-party com.dfsek.terra.addon has injected a custom WorldHandle!");
-        getLogger().warning("If you encounter issues, try *without* the com.dfsek.terra.addon before");
-        getLogger().warning("reporting to Terra. Report issues with the com.dfsek.terra.addon to the");
-        getLogger().warning("com.dfsek.terra.addon's maintainers!");
-        getLogger().warning("|-------------------------------------------------------|");
-        this.handle = handle;
     }
 
     @Override
@@ -258,7 +247,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             if(!registry.contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
             ConfigPack pack = registry.get(id);
             worlds.put(worldName, pack);
-            return new DefaultChunkGenerator3D(registry.get(id), this);
+            return pack.getGeneratorProvider().newInstance(pack);
         }));
     }
 

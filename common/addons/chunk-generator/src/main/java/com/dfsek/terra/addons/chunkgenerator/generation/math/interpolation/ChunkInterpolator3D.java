@@ -1,10 +1,11 @@
-package com.dfsek.terra.world.generation.math.interpolation;
+package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.generator.ChunkInterpolator;
 import net.jafama.FastMath;
 
 import java.util.HashMap;

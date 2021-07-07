@@ -5,8 +5,8 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.ChunkAccess;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.world.Carver;
-import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator;
+import com.dfsek.terra.api.world.Carver;
+import com.dfsek.terra.api.world.generator.ChunkInterpolator;
 import com.dfsek.terra.world.generation.math.interpolation.ChunkInterpolator3D;
 
 public class NoiseCarver implements Carver {

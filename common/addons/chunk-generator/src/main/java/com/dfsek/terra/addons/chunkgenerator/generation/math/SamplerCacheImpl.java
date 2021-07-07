@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.generation.math;
+package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;

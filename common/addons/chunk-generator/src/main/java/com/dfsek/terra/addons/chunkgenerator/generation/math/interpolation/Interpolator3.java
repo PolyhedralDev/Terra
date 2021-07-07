@@ -1,4 +1,4 @@
-package com.dfsek.terra.world.generation.math.interpolation;
+package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 /**
  * Class for bilinear interpolation of values arranged on a unit square.

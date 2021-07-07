@@ -11,7 +11,6 @@ import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
-import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -62,7 +61,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     );
 
     private final long seed;
-    private final DefaultChunkGenerator3D delegate;
+    private final TerraChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;
 
     private final ConfigPack pack;
@@ -72,7 +71,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         super(biomeSource, new StructuresConfig(false));
         this.pack = configPack;
 
-        this.delegate = new DefaultChunkGenerator3D(pack, TerraFabricPlugin.getInstance());
+        this.delegate = pack.getGeneratorProvider().newInstance(pack);
         delegate.getMain().logger().info("Loading world with config pack " + pack.getID());
         this.biomeSource = biomeSource;
 

@@ -1,15 +1,13 @@
-package com.dfsek.terra.world.generation.generators;
+package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
+import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
-import com.dfsek.terra.api.block.state.properties.enums.Half;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.PaletteUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -18,18 +16,13 @@ import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
-import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
-import com.dfsek.terra.world.Carver;
-import com.dfsek.terra.world.carving.NoiseCarver;
-import com.dfsek.terra.world.generation.math.samplers.Sampler3D;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class DefaultChunkGenerator3D implements TerraChunkGenerator {
@@ -37,13 +30,9 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
     private final TerraPlugin main;
     private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
-    private final Carver carver;
-
     public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
-
-        carver = new NoiseCarver(new ConstantRange(0, 255), main.getWorldHandle().createBlockData("minecraft:air"), main);
     }
 
     @Override
@@ -103,9 +92,6 @@ public class DefaultChunkGenerator3D implements TerraChunkGenerator {
                         }
                     }
                 }
-            }
-            if(configPack.doBetaCarvers()) {
-                carver.carve(world, chunkX, chunkZ, chunk);
             }
             return chunk;
         }

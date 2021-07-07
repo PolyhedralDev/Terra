@@ -8,6 +8,7 @@ import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 
 import java.util.Map;
 import java.util.Set;
@@ -46,4 +47,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     boolean vanillaFlora();
 
     RegistryFactory getRegistryFactory();
+
+    ChunkGeneratorProvider getGeneratorProvider();
 }
