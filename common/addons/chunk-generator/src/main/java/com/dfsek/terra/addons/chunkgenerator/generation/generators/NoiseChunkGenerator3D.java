@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DefaultChunkGenerator3D implements TerraChunkGenerator {
+public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
     private final List<TerraBlockPopulator> blockPopulators = new ArrayList<>();
 
-    public DefaultChunkGenerator3D(ConfigPack c, TerraPlugin main) {
+    public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
     }

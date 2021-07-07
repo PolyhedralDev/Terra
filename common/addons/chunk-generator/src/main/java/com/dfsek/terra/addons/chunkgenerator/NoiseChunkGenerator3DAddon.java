@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.chunkgenerator;
 
-import com.dfsek.terra.addons.chunkgenerator.generation.generators.DefaultChunkGenerator3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.generators.NoiseChunkGenerator3D;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -25,6 +25,6 @@ public class NoiseChunkGenerator3DAddon extends TerraAddon implements EventListe
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
-        event.getPack().getCheckedRegistry(ChunkGeneratorProvider.class).register("NOISE_3D", pack -> new DefaultChunkGenerator3D(pack, main));
+        event.getPack().getCheckedRegistry(ChunkGeneratorProvider.class).register("NOISE_3D", pack -> new NoiseChunkGenerator3D(pack, main));
     }
 }
