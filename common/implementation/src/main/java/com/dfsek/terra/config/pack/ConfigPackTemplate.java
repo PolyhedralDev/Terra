@@ -17,10 +17,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
 
-    @Value("addons")
-    @Default
-    private Set<TerraAddon> addons = new HashSet<>();
-
     @Value("variables")
     @Default
     private Map<String, Double> variables = new HashMap<>();
@@ -158,9 +154,5 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public boolean doBetaCarvers() {
         return betaCarvers;
-    }
-
-    public Set<TerraAddon> getAddons() {
-        return addons;
     }
 }

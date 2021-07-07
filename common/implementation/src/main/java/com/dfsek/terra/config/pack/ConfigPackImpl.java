@@ -13,11 +13,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.config.*;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -25,8 +21,8 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
@@ -44,18 +40,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serial;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.function.Function;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -75,6 +61,8 @@ public class ConfigPackImpl implements ConfigPack {
     private final Loader loader;
 
     private final Configuration configuration;
+
+    private final Set<TerraAddon> addons;
 
     private final BiomeProviderBuilder biomeProviderBuilder;
 
@@ -106,12 +94,16 @@ public class ConfigPackImpl implements ConfigPack {
 
             try {
                 configuration = new Configuration(new FileInputStream(pack));
-                selfLoader.load(template, configuration);
 
-                main.logger().info("Loading config pack \"" + template.getID() + "\"");
+                ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
+                selfLoader.load(addonsTemplate, configuration);
+                this.addons = addonsTemplate.getAddons();
 
                 main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
 
+                selfLoader.load(template, configuration);
+
+                main.logger().info("Loading config pack \"" + template.getID() + "\"");
                 load(l, main);
 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
@@ -158,10 +150,16 @@ public class ConfigPackImpl implements ConfigPack {
                 if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
                 configuration = new Configuration(file.getInputStream(pack));
-                selfLoader.load(template, configuration);
-                main.logger().info("Loading config pack \"" + template.getID() + "\"");
+
+                ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
+                selfLoader.load(addonsTemplate, configuration);
+                this.addons = addonsTemplate.getAddons();
 
                 main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+
+
+                selfLoader.load(template, configuration);
+                main.logger().info("Loading config pack \"" + template.getID() + "\"");
 
                 load(l, main);
 
@@ -185,6 +183,7 @@ public class ConfigPackImpl implements ConfigPack {
     private void checkDeadEntries(TerraPlugin main) {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + clazz + "' registry: '" + id + "'")));
     }
+
     @Override
     public <T> ConfigPackImpl applyLoader(Type type, TypeLoader<T> loader) {
         abstractConfigLoader.registerLoader(type, loader);
@@ -306,7 +305,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     @Override
     public Set<TerraAddon> addons() {
-        return template.getAddons();
+        return addons;
     }
 
     @Override
