@@ -7,7 +7,7 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.math.range.ConstantRange;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collection.MaterialSet;
 
 import java.util.HashMap;
 import java.util.Map;

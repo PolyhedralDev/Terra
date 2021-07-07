@@ -9,4 +9,6 @@ public interface ConfiguredStructure {
     Range getSpawnStart();
 
     StructureSpawn getSpawn();
+
+    String getID();
 }

@@ -72,6 +72,7 @@ public final class FabricUtil {
             }
         }
 
+        /*
         Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions> pair = fabricAddon.getTemplates().get(pack);
         PreLoadCompatibilityOptions compatibilityOptions = pair.getLeft();
         PostLoadCompatibilityOptions postLoadCompatibilityOptions = pair.getRight();
@@ -99,6 +100,8 @@ public final class FabricUtil {
                 }
             }
         }
+
+         */
 
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()

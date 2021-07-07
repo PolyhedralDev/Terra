@@ -3,12 +3,12 @@ package com.dfsek.terra.addons.structure.structures.loot;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.api.inventory.ItemStack;
-import com.dfsek.terra.api.util.GlueList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,7 +16,7 @@ import java.util.Random;
  * Class representation of a Loot Table to populate chest loot.
  */
 public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
-    private final List<Pool> pools = new GlueList<>();
+    private final List<Pool> pools = new ArrayList<>();
 
     /**
      * Instantiates a LootTable from a JSON String.
@@ -35,7 +35,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
 
     @Override
     public List<ItemStack> getLoot(Random r) {
-        List<ItemStack> itemList = new GlueList<>();
+        List<ItemStack> itemList = new ArrayList<>();
         for(Pool pool : pools) {
             itemList.addAll(pool.getItems(r));
         }

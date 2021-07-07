@@ -5,23 +5,16 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.StructureSpawn;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.config.templates.StructureTemplate;
 
 public class TerraStructure implements ConfiguredStructure {
     private final ProbabilityCollection<Structure> structure;
     private final Range spawnStart;
     private final StructureSpawn spawn;
-    private final StructureTemplate template;
 
-    public TerraStructure(ProbabilityCollection<Structure> structures, Range spawnStart, StructureSpawn spawn, StructureTemplate template) {
+    public TerraStructure(ProbabilityCollection<Structure> structures, Range spawnStart, StructureSpawn spawn) {
         this.structure = structures;
         this.spawnStart = spawnStart;
         this.spawn = spawn;
-        this.template = template;
-    }
-
-    public StructureTemplate getTemplate() {
-        return template;
     }
 
     @Override

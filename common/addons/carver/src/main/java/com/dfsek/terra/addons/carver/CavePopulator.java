@@ -13,8 +13,6 @@ import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
-import com.dfsek.terra.carving.UserDefinedCarver;
-import com.dfsek.terra.config.templates.CarverTemplate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

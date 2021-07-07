@@ -8,6 +8,6 @@ import com.dfsek.terra.config.templates.StructureTemplate;
 public class StructureFactory implements ConfigFactory<StructureTemplate, ConfiguredStructure> {
     @Override
     public ConfiguredStructure build(StructureTemplate config, TerraPlugin main) {
-        return new TerraStructure(config.getStructures(), config.getY(), config.getSpawn(), config);
+        return new TerraStructure(config.getStructures(), config.getY(), config.getSpawn());
     }
 }

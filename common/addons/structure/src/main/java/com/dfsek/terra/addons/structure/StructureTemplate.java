@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.templates;
+package com.dfsek.terra.addons.structure;
 
 import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
@@ -11,6 +11,7 @@ import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
@@ -30,11 +31,6 @@ public class StructureTemplate implements AbstractableTemplate, ConfigTemplate {
     @Abstractable
     private StructureSpawn spawn;
 
-    @Value("features")
-    @Abstractable
-    @Default
-    private List<Void> features = new GlueList<>();
-
     public String getID() {
         return id;
     }
@@ -45,10 +41,6 @@ public class StructureTemplate implements AbstractableTemplate, ConfigTemplate {
 
     public Range getY() {
         return y;
-    }
-
-    public List<Void> getFeatures() {
-        return features;
     }
 
     public StructureSpawn getSpawn() {

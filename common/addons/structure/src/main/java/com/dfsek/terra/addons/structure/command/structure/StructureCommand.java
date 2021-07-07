@@ -19,11 +19,6 @@ import com.dfsek.terra.config.lang.LangUtil;
                         aliases = "ld"
                 ),
                 @Subcommand(
-                        clazz = SpawnCommand.class,
-                        value = "spawn",
-                        aliases = "s"
-                ),
-                @Subcommand(
                         clazz = StructureLocateCommand.class,
                         value = "locate",
                         aliases = "l"
@@ -34,6 +29,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 public class StructureCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
-        LangUtil.send("command.structure.main-menu", sender);
+        //LangUtil.send("command.structure.main-menu", sender);
     }
 }

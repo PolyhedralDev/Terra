@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.structure.command.structure;
 
+import com.dfsek.terra.addons.structure.command.structure.argument.ScriptArgumentParser;
+import com.dfsek.terra.addons.structure.command.structure.completer.RotationCompleter;
+import com.dfsek.terra.addons.structure.command.structure.completer.ScriptCompleter;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -16,11 +19,8 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.util.FastRandom;
-import com.dfsek.terra.addons.structure.command.structure.argument.ScriptArgumentParser;
-import com.dfsek.terra.addons.structure.command.structure.completer.RotationCompleter;
-import com.dfsek.terra.addons.structure.command.structure.completer.ScriptCompleter;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @PlayerCommand
@@ -66,7 +66,7 @@ public class StructureLoadCommand implements CommandTemplate {
         Player player = (Player) sender;
 
         long t = System.nanoTime();
-        FastRandom random = new FastRandom(ThreadLocalRandom.current().nextLong());
+        Random random = new Random(ThreadLocalRandom.current().nextLong());
         Rotation r;
         try {
             r = Rotation.fromDegrees(rotation);

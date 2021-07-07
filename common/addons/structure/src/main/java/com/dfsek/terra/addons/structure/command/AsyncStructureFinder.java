@@ -3,7 +3,6 @@ package com.dfsek.terra.addons.structure.command;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
@@ -30,7 +29,7 @@ public class AsyncStructureFinder extends AsyncFeatureFinder<ConfiguredStructure
     public boolean isValid(int x, int z, ConfiguredStructure target) {
         Vector3 spawn = target.getSpawn().getChunkSpawn(x, z, world.getSeed());
         if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(target)) return false;
-        Random random = new FastRandom(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
+        Random random = new Random(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
         return target.getStructure().get(random).test(spawn.setY(target.getSpawnStart().get(random)), world, random, Rotation.fromDegrees(90 * random.nextInt(4)));
     }
 }

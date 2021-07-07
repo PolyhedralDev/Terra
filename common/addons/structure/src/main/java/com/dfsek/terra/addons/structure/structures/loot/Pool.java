@@ -2,13 +2,12 @@ package com.dfsek.terra.addons.structure.structures.loot;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.inventory.ItemStack;
-import com.dfsek.terra.api.util.GlueList;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +50,7 @@ public class Pool {
     public List<ItemStack> getItems(Random r) {
 
         int rolls = r.nextInt(max - min + 1) + min;
-        List<ItemStack> items = new GlueList<>();
+        List<ItemStack> items = new ArrayList<>();
         for(int i = 0; i < rolls; i++) {
             items.add(entries.get(r).getItem(r));
         }

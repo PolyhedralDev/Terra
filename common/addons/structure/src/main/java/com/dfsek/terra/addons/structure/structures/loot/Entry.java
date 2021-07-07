@@ -7,11 +7,11 @@ import com.dfsek.terra.addons.structure.structures.loot.functions.AmountFunction
 import com.dfsek.terra.addons.structure.structures.loot.functions.DamageFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.EnchantFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.LootFunction;
-import com.dfsek.terra.api.util.GlueList;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,7 +21,7 @@ import java.util.Random;
 public class Entry {
     private final Item item;
     private final long weight;
-    private final List<LootFunction> functions = new GlueList<>();
+    private final List<LootFunction> functions = new ArrayList<>();
 
     /**
      * Instantiates an Entry from a JSON representation.

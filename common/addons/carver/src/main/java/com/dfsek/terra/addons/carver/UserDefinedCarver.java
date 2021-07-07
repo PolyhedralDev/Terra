@@ -93,7 +93,7 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public Worm getWorm(long l, Vector3 vector) {
-        Random r = new FastRandom(l + hash);
+        Random r = new Random(l + hash);
         return new UserDefinedWorm(length.get(r) / 2, r, vector, topCut, bottomCut, l);
     }
 
@@ -131,7 +131,7 @@ public class UserDefinedCarver extends Carver {
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
         BiomeTemplate conf = ((UserDefinedBiome) main.getWorld(w).getBiomeProvider().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8)).getConfig();
         if(conf.getCarvers().get(this) != null) {
-            return new FastRandom(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
+            return new Random(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
         }
         return false;
     }

@@ -4,10 +4,10 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
-import com.dfsek.terra.api.util.GlueList;
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -38,7 +38,7 @@ public class EnchantFunction implements LootFunction {
         if(original.getItemMeta() == null) return original;
 
         double enchant = (r.nextDouble() * (max - min)) + min;
-        List<Enchantment> possible = new GlueList<>();
+        List<Enchantment> possible = new ArrayList<>();
         for(Enchantment ench : main.getItemHandle().getEnchantments()) {
             if(ench.canEnchantItem(original) && (disabled == null || !this.disabled.contains(ench.getID()))) {
                 possible.add(ench);
