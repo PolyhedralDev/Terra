@@ -16,6 +16,7 @@ include("common:loader:addon")
 
 
 include("common:addons:noise")
+include("common:addons:chunk-generator")
 
 include("common:addons:biome:config")
 include("common:addons:biome:provider:pipeline")
