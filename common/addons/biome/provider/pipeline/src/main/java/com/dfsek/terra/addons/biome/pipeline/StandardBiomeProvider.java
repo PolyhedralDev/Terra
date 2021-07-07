@@ -1,12 +1,11 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeHolder;
-import com.dfsek.terra.api.world.biome.pipeline.BiomePipelineImpl;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;

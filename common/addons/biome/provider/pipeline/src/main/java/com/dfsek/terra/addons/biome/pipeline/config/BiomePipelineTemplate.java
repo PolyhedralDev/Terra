@@ -3,11 +3,11 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipelineImpl;
+import com.dfsek.terra.addons.biome.pipeline.StandardBiomeProvider;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.addons.biome.pipeline.StageSeeded;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.biome.provider.StandardBiomeProvider;
 
 import java.util.List;
 

@@ -5,7 +5,6 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
-import com.dfsek.terra.config.loaders.config.biome.templates.source.NoiseSourceTemplate;
 
 import java.lang.reflect.Type;
 import java.util.Map;

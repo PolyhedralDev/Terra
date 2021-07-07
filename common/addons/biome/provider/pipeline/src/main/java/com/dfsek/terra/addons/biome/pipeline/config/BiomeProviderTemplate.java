@@ -1,4 +1,4 @@
-package com.dfsek.terra.config.loaders.config.biome.templates.provider;
+package com.dfsek.terra.addons.biome.pipeline.config;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
