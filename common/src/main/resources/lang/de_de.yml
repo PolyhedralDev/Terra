@@ -1,6 +1,6 @@
 enable:
   - "Wenn dir Terra gefällt, denk bitte darüber nach, das Projekt auf Patreon zu unterstützen!"
-  - "Dadurch erhältsts du Zugriff auf experimentelle Funktionen!"
+  - "Dadurch erhältst du Zugriff auf experimentelle Funktionen!"
   - "Unterstütze das Projekt hier: https://www.patreon.com/dfsek"
 disable:
   - "Danke, dass du Terra benutzt!!"
@@ -61,7 +61,7 @@ command:
       debug: "Der Debug-Modus muss aktiviert sein, um die Debug-GUI verwenden zu können! Die Debug-GUI ist NICHT PRODUKTIONSSICHER!"
     render:
       save: "Bild gespeichert unter: \"%s\""
-      error: "Beim speichern ist ein Fehler aufgetreten!"
+      error: "Beim Speichern ist ein Fehler aufgetreten!"
   profile:
     main-menu:
       - "---------------Terra/Profiler---------------"
@@ -76,7 +76,7 @@ command:
     main-menu:
       - "---------------Terra/Strukturen---------------"
       - "export - Exportiert deine aktuelle WorldEdit-Auswahl als Terra-Struktur."
-      - "load   - Ladt eine Terra-Struktur."
+      - "load   - Lädt eine Terra-Struktur."
     invalid-radius: "Ungültiger Radius: \"%s\""
     invalid-rotation: "Ungültige Rotation: \"%s\""
     invalid: "Ungültige Strukturen-ID: \"%s\""
@@ -93,14 +93,14 @@ config:
   loaded: "Erfolgreich %1$s aus Datei %2$s geladen"
   loaded-all: "%1$s %2$s(s) in %3$sms geladen."
   error:
-    invalid-failover: "IUngültiger Failover-Typ: \"%s\""
+    invalid-failover: "Ungültiger Failover-Typ: \"%s\""
     duplicate: "ID doppelt belegt in Datei: %s"
     file:
       - "Konfigurationsfehler in Terra-Objekt. Datei: %1$s"
       - "%2$s"
       - "Korrigier bitte diese(n) Fehler, bevor du fortfährst!"
     generic:
-      - "Ein Fehler ist beim laden der Konfiguration aufegtreten."
+      - "Ein Fehler ist beim Laden der Konfiguration aufgetreten."
       - "Bitte melde diesen Fehler!"
 warning:
   no-population: "Es wurden keine Bevölkerungs-Chunks geladen. Wenn du den Server zum ersten Mal mit Terra startest oder eine neue Welt erstellst, ist dies normal."
