@@ -5,6 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -83,6 +84,13 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("disable.flora")
     @Default
     private boolean disableFlora = false;
+
+    @Value("generator")
+    private ChunkGeneratorProvider generatorProvider;
+
+    public ChunkGeneratorProvider getGeneratorProvider() {
+        return generatorProvider;
+    }
 
     public boolean disableCarvers() {
         return disableCarvers;

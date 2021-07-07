@@ -11,7 +11,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
-import com.dfsek.terra.world.generation.math.SamplerCacheImpl;
+import com.dfsek.terra.world.SamplerCacheImpl;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -27,6 +27,7 @@ import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -361,5 +362,10 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public RegistryFactory getRegistryFactory() {
         return registryFactory;
+    }
+
+    @Override
+    public ChunkGeneratorProvider getGeneratorProvider() {
+        return template.getGeneratorProvider();
     }
 }
