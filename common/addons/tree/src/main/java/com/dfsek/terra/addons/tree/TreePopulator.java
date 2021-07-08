@@ -7,14 +7,14 @@ import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
+import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
 
-public class TreePopulator implements TerraBlockPopulator {
+public class TreePopulator implements TerraGenerationStage {
     private final TerraPlugin main;
 
     public TreePopulator(TerraPlugin main) {

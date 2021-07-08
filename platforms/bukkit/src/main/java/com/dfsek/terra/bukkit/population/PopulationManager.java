@@ -64,7 +64,7 @@ public class PopulationManager extends BlockPopulator {
             long zRand = (random.nextLong() / 2L << 1L) + 1L;
             random.setSeed((long) x * xRand + (long) z * zRand ^ w.getSeed());
             Chunk currentChunk = w.getChunkAt(x, z);
-            generator.getPopulators().forEach(populator -> {
+            generator.getGenerationStages().forEach(populator -> {
                 if(!(populator instanceof Chunkified)) {
                     populator.populate(w, currentChunk);
                 }

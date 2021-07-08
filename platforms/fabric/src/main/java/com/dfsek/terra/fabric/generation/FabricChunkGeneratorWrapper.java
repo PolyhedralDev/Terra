@@ -146,7 +146,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         return CompletableFuture.supplyAsync(() -> {
             World world = (World) ((StructureAccessorAccessor) accessor).getWorld();
             delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
-            delegate.getPopulators().forEach(populator -> {
+            delegate.getGenerationStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
                     populator.populate(world, (com.dfsek.terra.api.world.Chunk) world);
                 }

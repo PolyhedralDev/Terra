@@ -9,7 +9,7 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.api.world.generator.BlockPopulatorProvider;
+import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 @Addon("core-tree-config")
 @Author("Terra")
@@ -25,6 +25,6 @@ public class TreeAddon extends TerraAddon implements EventListener {
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
         event.getPack().registerConfigType(new TreeConfigType(event.getPack()), "TREE", 2);
-        event.getPack().getOrCreateRegistry(BlockPopulatorProvider.class).register("TREE", pack -> new TreePopulator(main));
+        event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("TREE", pack -> new TreePopulator(main));
     }
 }
