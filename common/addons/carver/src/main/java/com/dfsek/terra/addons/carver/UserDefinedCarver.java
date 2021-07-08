@@ -7,11 +7,7 @@ import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.addons.carver.carving.Carver;
 import com.dfsek.terra.addons.carver.carving.Worm;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.paralithic.defined.UserDefinedFunction;
-import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction2;
-import com.dfsek.terra.api.math.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.api.math.range.ConstantRange;
-import com.dfsek.terra.api.util.FastRandom;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.vector.Vector3;
@@ -57,21 +53,6 @@ public class UserDefinedCarver extends Carver {
         this.main = main;
 
         Parser p = new Parser();
-
-        functions.forEach((id, noise) -> {
-            switch(noise.getDimensions()) {
-                case 2:
-                    p.registerFunction(id, new NoiseFunction2(noise.apply(hash)));
-                    break;
-                case 3:
-                    p.registerFunction(id, new NoiseFunction3(noise.apply(hash)));
-                    break;
-            }
-        });
-
-        for(Map.Entry<String, FunctionTemplate> entry : definedFunctions.entrySet()) {
-            p.registerFunction(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), p, parent));
-        }
 
         Scope s = new Scope().withParent(parent);
 

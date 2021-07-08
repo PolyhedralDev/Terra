@@ -3,7 +3,6 @@ package com.dfsek.terra.addons.structure;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.structure.ConfiguredStructure;
-import com.dfsek.terra.config.templates.StructureTemplate;
 
 public class StructureFactory implements ConfigFactory<StructureTemplate, ConfiguredStructure> {
     @Override

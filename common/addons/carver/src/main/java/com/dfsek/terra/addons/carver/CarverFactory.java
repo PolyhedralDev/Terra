@@ -4,16 +4,16 @@ import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.config.pack.ConfigPackImpl;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CarverFactory implements ConfigFactory<CarverTemplate, UserDefinedCarver> {
-    private final ConfigPackImpl pack;
+    private final ConfigPack pack;
 
-    public CarverFactory(ConfigPackImpl pack) {
+    public CarverFactory(ConfigPack pack) {
         this.pack = pack;
     }
 

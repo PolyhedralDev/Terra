@@ -1,18 +1,13 @@
 package com.dfsek.terra.addons.structure;
 
 import com.dfsek.tectonic.annotations.Abstractable;
-import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.StructureSpawn;
-import com.dfsek.terra.api.util.GlueList;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class StructureTemplate implements AbstractableTemplate, ConfigTemplate {

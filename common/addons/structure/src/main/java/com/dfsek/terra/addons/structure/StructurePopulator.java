@@ -10,7 +10,6 @@ import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.TerraBlockPopulator;
@@ -41,8 +40,8 @@ public class StructurePopulator implements TerraBlockPopulator, Chunkified {
             for(ConfiguredStructure conf : config.getRegistry(TerraStructure.class).entries()) {
                 Vector3 spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed());
 
-                if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))
-                    continue;
+                //if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))
+                //    continue;
                 Random random = new Random(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
                 conf.getStructure().get(random).generate(spawn.setY(conf.getSpawnStart().get(random)), world, chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));
             }

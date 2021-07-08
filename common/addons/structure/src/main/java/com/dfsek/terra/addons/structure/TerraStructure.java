@@ -31,4 +31,9 @@ public class TerraStructure implements ConfiguredStructure {
     public StructureSpawn getSpawn() {
         return spawn;
     }
+
+    @Override
+    public String getID() {
+        return null;
+    }
 }

@@ -7,7 +7,6 @@ import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -41,9 +40,12 @@ public class CarverCache {
                             for(int i = 0; i < carving.getLength(); i++) {
                                 carving.step();
                                 TerraBiome biome = provider.getBiome(carving.getRunning());
+                                /*
                                 if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(CarverCache.this.carver)) { // Stop if we enter a biome this carver is not present in
                                     return Collections.emptyList();
                                 }
+
+                                 */
                                 points.add(carving.getPoint());
                             }
                             return points;
