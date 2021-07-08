@@ -8,6 +8,8 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.world.generator.BlockPopulatorProvider;
 
 @Addon("core-flora-config")
 @Author("Terra")
@@ -21,7 +23,8 @@ public class FloraAddon extends TerraAddon implements EventListener {
         main.getEventManager().registerListener(this, this);
     }
 
-    public void onPackLoad(ConfigPackPreLoadEvent event) {
+    public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
         event.getPack().registerConfigType(new FloraConfigType(event.getPack()), "FLORA", 2);
+        event.getPack().getOrCreateRegistry(BlockPopulatorProvider.class).register("FLORA", pack -> new FloraPopulator(main));
     }
 }
