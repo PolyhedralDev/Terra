@@ -25,7 +25,7 @@ import com.dfsek.terra.api.util.seeded.SourceSeeded;
 
 import java.lang.reflect.Type;
 
-@Addon("biome-pipeline")
+@Addon("biome-provider-pipeline")
 @Author("Terra")
 @Version("1.0.0")
 public class BiomePipelineAddon extends TerraAddon implements EventListener {

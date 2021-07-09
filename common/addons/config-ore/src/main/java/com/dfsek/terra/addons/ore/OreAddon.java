@@ -12,7 +12,7 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 
-@Addon("core-ore-config")
+@Addon("config-ore")
 @Author("Terra")
 @Version("1.0.0")
 public class OreAddon extends TerraAddon implements EventListener {

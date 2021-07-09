@@ -20,7 +20,7 @@ import com.dfsek.terra.api.structure.Structure;
 import java.io.InputStream;
 import java.util.Map;
 
-@Addon("terrascript")
+@Addon("structure-terrascript-loader")
 @Author("Terra")
 @Version("1.0.0")
 public class TerraScriptAddon extends TerraAddon implements EventListener {

@@ -11,7 +11,7 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
-@Addon("core-tree-config")
+@Addon("config-tree")
 @Author("Terra")
 @Version("1.0.0")
 public class TreeAddon extends TerraAddon implements EventListener {

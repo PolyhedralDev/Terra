@@ -11,7 +11,7 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 
-@Addon("core-biome-config")
+@Addon("config-biome")
 @Author("Terra")
 @Version("1.0.0")
 public class BiomeConfigAddon extends TerraAddon implements EventListener {

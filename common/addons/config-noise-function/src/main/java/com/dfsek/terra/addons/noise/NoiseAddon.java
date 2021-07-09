@@ -41,7 +41,7 @@ import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import java.util.HashMap;
 import java.util.Map;
 
-@Addon("noise")
+@Addon("config-noise-function")
 @Author("Terra")
 @Version("1.0.0")
 public class NoiseAddon extends TerraAddon implements EventListener {

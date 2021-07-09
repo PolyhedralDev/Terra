@@ -11,7 +11,7 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
-@Addon("core-flora-config")
+@Addon("config-flora")
 @Author("Terra")
 @Version("0.1.0")
 public class FloraAddon extends TerraAddon implements EventListener {

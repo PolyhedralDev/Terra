@@ -12,7 +12,7 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 
-@Addon("noise-chunk-generator-3d")
+@Addon("chunk-generator-noise-3d")
 @Author("Terra")
 @Version("1.0.0")
 public class NoiseChunkGenerator3DAddon extends TerraAddon implements EventListener {
