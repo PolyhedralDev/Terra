@@ -33,10 +33,6 @@ dependencies {
     "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 
-tasks.named<Jar>("jar") {
-    archiveBaseName.set("Terra-biome")
-}
-
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {

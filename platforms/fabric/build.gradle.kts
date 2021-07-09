@@ -1,3 +1,4 @@
+import com.dfsek.terra.addonDir
 import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
@@ -12,6 +13,8 @@ plugins {
 }
 
 configureCommon()
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.json", "com.dfsek.terra.lib.json")
