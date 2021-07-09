@@ -4,7 +4,6 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,7 +14,7 @@ import java.util.Map;
 public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollection<Object>> {
     @Override
     public ProbabilityCollection<Object> load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
-        ProbabilityCollection<Object> collection = new ProbabilityCollectionImpl<>();
+        ProbabilityCollection<Object> collection = new ProbabilityCollection<>();
 
         if(type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
@@ -35,7 +34,7 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                     }
                 }
             } else if(o instanceof String) {
-                return new ProbabilityCollectionImpl.Singleton<>(configLoader.loadType(generic, o));
+                return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, o));
             } else {
                 throw new LoadException("Malformed Probability Collection: " + o);
             }

@@ -25,7 +25,7 @@ public class Pool {
      * @param pool The JSON Object to instantiate from.
      */
     public Pool(JSONObject pool, TerraPlugin main) {
-        entries = new ProbabilityCollectionImpl<>();
+        entries = new ProbabilityCollection<>();
         Object amount = pool.get("rolls");
         if(amount instanceof Long) {
             max = FastMath.toIntExact((Long) amount);

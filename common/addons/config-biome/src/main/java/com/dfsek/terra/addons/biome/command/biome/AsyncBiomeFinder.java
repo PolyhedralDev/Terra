@@ -12,10 +12,29 @@ import java.util.function.Consumer;
 /**
  * Runnable that locates a biome asynchronously
  */
-public class AsyncBiomeFinder extends AsyncFeatureFinder<TerraBiome> {
+public class AsyncBiomeFinder implements Runnable {
+
+    protected final BiomeProvider provider;
+    protected final TerraBiome target;
+    protected final int startRadius;
+    protected final int maxRadius;
+    protected final int centerX;
+    protected final int centerZ;
+    protected final World world;
+    private final Consumer<Vector3> callback;
+    protected int searchSize = 1;
+    protected final TerraPlugin main;
 
     public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
-        super(provider, target, origin, world, startRadius, maxRadius, callback, main);
+        this.provider = provider;
+        this.target = target;
+        this.main = main;
+        this.startRadius = startRadius;
+        this.maxRadius = maxRadius;
+        this.centerX = origin.getBlockX();
+        this.centerZ = origin.getBlockZ();
+        this.world = world;
+        this.callback = callback;
     }
 
     /**
@@ -25,14 +44,68 @@ public class AsyncBiomeFinder extends AsyncFeatureFinder<TerraBiome> {
      * @param z Z coordinate
      * @return TerraBiome at coordinates
      */
-    @Override
     public boolean isValid(int x, int z, TerraBiome target) {
         int res = main.getTerraConfig().getBiomeSearchResolution();
         return getProvider().getBiome(x * res, z * res).equals(target);
     }
 
-    @Override
     public Vector3 finalizeVector(Vector3 orig) {
         return orig.multiply(main.getTerraConfig().getBiomeSearchResolution());
+    }
+    @Override
+    public void run() {
+        int x = centerX;
+        int z = centerZ;
+
+        x /= searchSize;
+        z /= searchSize;
+
+        int run = 1;
+        boolean toggle = true;
+        boolean found = false;
+
+        main:
+        for(int i = startRadius; i < maxRadius; i++) {
+            for(int j = 0; j < run; j++) {
+                if(isValid(x, z, target)) {
+                    found = true;
+                    break main;
+                }
+                if(toggle) x += 1;
+                else x -= 1;
+            }
+            for(int j = 0; j < run; j++) {
+                if(isValid(x, z, target)) {
+                    found = true;
+                    break main;
+                }
+                if(toggle) z += 1;
+                else z -= 1;
+            }
+            run++;
+            toggle = !toggle;
+        }
+        Vector3 finalSpawn = found ? finalizeVector(new Vector3(x, 0, z)) : null;
+        callback.accept(finalSpawn);
+    }
+
+    public TerraBiome getTarget() {
+        return target;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public BiomeProvider getProvider() {
+        return provider;
+    }
+
+    public int getSearchSize() {
+        return searchSize;
+    }
+
+    public void setSearchSize(int searchSize) {
+        this.searchSize = searchSize;
     }
 }
