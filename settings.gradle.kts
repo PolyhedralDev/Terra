@@ -15,21 +15,23 @@ include("common:loader:config")
 include("common:loader:addon")
 
 
-include("common:addons:noise")
-include("common:addons:chunk-generator")
+include("common:addons:biome-provider-image")
+include("common:addons:biome-provider-pipeline")
+include("common:addons:biome-provider-single")
 
-include("common:addons:biome:config")
-include("common:addons:biome:provider:pipeline")
-include("common:addons:biome:provider:image")
-include("common:addons:biome:provider:single")
+include("common:addons:chunk-generator-noise-3d")
 
-include("common:addons:carver")
-include("common:addons:flora")
-include("common:addons:palette")
-include("common:addons:tree")
-include("common:addons:structure")
-include("common:addons:ore")
-include("common:addons:terrascript")
+include("common:addons:config-biome")
+include("common:addons:config-carver")
+include("common:addons:config-flora")
+include("common:addons:config-noise-function")
+include("common:addons:config-ore")
+include("common:addons:config-palette")
+include("common:addons:config-structure")
+include("common:addons:config-tree")
+
+include("common:addons:structure-terrascript-loader")
+
 
 
 
