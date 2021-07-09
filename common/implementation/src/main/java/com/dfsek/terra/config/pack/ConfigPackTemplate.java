@@ -6,9 +6,11 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
+import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,6 +59,9 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private boolean disableSaplings = false;
 
+    @Value("stages")
+    private LinkedHashMap<String, GenerationStageProvider> stages;
+
     @Value("version")
     @Default
     private String version = "0.1.0";
@@ -86,6 +91,10 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public ChunkGeneratorProvider getGeneratorProvider() {
         return generatorProvider;
+    }
+
+    public LinkedHashMap<String, GenerationStageProvider> getStages() {
+        return stages;
     }
 
     public boolean disableCarvers() {
