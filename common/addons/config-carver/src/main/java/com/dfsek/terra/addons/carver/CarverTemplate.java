@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.math.range.ConstantRange;
+import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 

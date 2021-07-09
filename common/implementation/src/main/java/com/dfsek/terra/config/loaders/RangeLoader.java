@@ -3,7 +3,7 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.range.ConstantRange;
+import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 
 import java.lang.reflect.Type;

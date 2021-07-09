@@ -7,14 +7,10 @@ import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.terra.addons.carver.carving.Carver;
 import com.dfsek.terra.addons.carver.carving.Worm;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.math.range.ConstantRange;
+import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
-import com.dfsek.terra.config.templates.BiomeTemplate;
 import net.jafama.FastMath;
 
 import java.util.List;
@@ -41,7 +37,7 @@ public class UserDefinedCarver extends Carver {
     private Range recalc = new ConstantRange(8, 10);
     private double recalcMagnitude = 3;
 
-    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraPlugin main, Map<String, NoiseSeeded> functions, Map<String, FunctionTemplate> definedFunctions) throws ParseException {
+    public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash, int topCut, int bottomCut, CarverTemplate config, TerraPlugin main) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;
@@ -110,10 +106,10 @@ public class UserDefinedCarver extends Carver {
 
     @Override
     public boolean isChunkCarved(World w, int chunkX, int chunkZ, Random random) {
-        BiomeTemplate conf = ((UserDefinedBiome) main.getWorld(w).getBiomeProvider().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8)).getConfig();
+        /*BiomeTemplate conf = ((UserDefinedBiome) main.getWorld(w).getBiomeProvider().getBiome((chunkX << 4) + 8, (chunkZ << 4) + 8)).getConfig();
         if(conf.getCarvers().get(this) != null) {
             return new Random(random.nextLong() + hash).nextInt(100) < conf.getCarvers().get(this);
-        }
+        }*/
         return false;
     }
 

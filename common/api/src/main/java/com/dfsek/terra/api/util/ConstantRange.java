@@ -1,6 +1,5 @@
-package com.dfsek.terra.api.math.range;
+package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.util.Range;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
