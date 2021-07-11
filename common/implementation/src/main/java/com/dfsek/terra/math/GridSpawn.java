@@ -1,10 +1,10 @@
 package com.dfsek.terra.math;
 
 import com.dfsek.terra.util.FastRandom;
-import com.dfsek.terra.util.GlueList;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +26,7 @@ public class GridSpawn implements com.dfsek.terra.api.structure.StructureSpawn {
     public Vector3 getNearestSpawn(int x, int z, long seed) {
         int structureChunkX = x / (width + 2 * separation);
         int structureChunkZ = z / (width + 2 * separation);
-        List<Vector3> zones = new GlueList<>();
+        List<Vector3> zones = new ArrayList<>(9);
         for(int xi = structureChunkX - 1; xi <= structureChunkX + 1; xi++) {
             for(int zi = structureChunkZ - 1; zi <= structureChunkZ + 1; zi++) {
                 zones.add(getChunkSpawn(xi, zi, seed));

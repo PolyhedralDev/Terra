@@ -4,10 +4,10 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.util.function.ExceptionalConsumer;
-import com.dfsek.terra.util.GlueList;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ public abstract class LoaderImpl implements Loader {
      */
     @Override
     public Loader then(ExceptionalConsumer<List<Configuration>> consumer) throws ConfigException {
-        List<Configuration> list = new GlueList<>();
+        List<Configuration> list = new ArrayList<>();
         streams.forEach((id, stream) -> {
             list.add(new Configuration(stream, id));
         });
@@ -33,7 +33,7 @@ public abstract class LoaderImpl implements Loader {
 
     @Override
     public Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException {
-        consumer.accept(new GlueList<>(streams.keySet()));
+        consumer.accept(new ArrayList<>(streams.keySet()));
         return this;
     }
 
