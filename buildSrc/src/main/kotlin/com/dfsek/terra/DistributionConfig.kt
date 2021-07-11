@@ -4,12 +4,17 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginConvention
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getPlugin
 import org.gradle.kotlin.dsl.named
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.net.URL
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 fun Project.configureDistribution() {
     apply(plugin = "java-library")
@@ -26,7 +31,43 @@ fun Project.configureDistribution() {
             downloadPack(netherPackUrl, project)
         }
     }
+
+    val installAddons = tasks.create("installAddons") {
+        group = "terra"
+        project(":common:addons").subprojects.forEach {
+            it.afterEvaluate {
+                dependsOn(it.tasks.getByName("build")) // Depend on addon JARs
+            }
+        }
+
+        doFirst {
+            // The addons are copied into a JAR because of a ShadowJar bug
+            // which expands *all* JARs, even resource ones, into the fat JAR.
+            // To get around this, we copy all addon JARs into a *new* JAR,
+            // then, ShadowJar expands the newly created JAR, putting the original
+            // JARs where they should go.
+            //
+            // https://github.com/johnrengelman/shadow/issues/196
+            val dest = File(buildDir, "/resources/main/addons.jar")
+            dest.parentFile.mkdirs()
+
+            val zip = ZipOutputStream(FileOutputStream(dest))
+
+            project(":common:addons").subprojects.forEach { addonProject ->
+                val jar = (addonProject.tasks.named("jar").get() as Jar)
+                println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}.")
+
+                val entry = ZipEntry("addons/${jar.archiveFileName.get()}")
+                zip.putNextEntry(entry)
+                FileInputStream(jar.archiveFile.get().asFile).copyTo(zip)
+                zip.closeEntry()
+            }
+            zip.close()
+        }
+    }
+
     tasks["processResources"].dependsOn(downloadDefaultPacks)
+    tasks["processResources"].dependsOn(installAddons)
 
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs
