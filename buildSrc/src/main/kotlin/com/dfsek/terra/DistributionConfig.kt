@@ -47,7 +47,7 @@ fun Project.configureDistribution() {
             // then, ShadowJar expands the newly created JAR, putting the original
             // JARs where they should go.
             //
-            // https://github.com/johnrengelman/shadow/issues/196
+            // https://github.com/johnrengelman/shadow/issues/111
             val dest = File(buildDir, "/resources/main/addons.jar")
             dest.parentFile.mkdirs()
 
