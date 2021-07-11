@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.util;
 
 
 import org.apache.commons.rng.core.source64.XoRoShiRo128PlusPlus;

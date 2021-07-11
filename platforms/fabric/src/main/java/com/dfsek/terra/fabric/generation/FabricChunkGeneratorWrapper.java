@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;

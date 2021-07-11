@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.population;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util.logging;
+package com.dfsek.terra.util.logging;
 
 import com.dfsek.terra.api.Logger;
 

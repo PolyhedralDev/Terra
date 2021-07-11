@@ -4,7 +4,7 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.util.function.ExceptionalConsumer;
-import com.dfsek.terra.api.util.GlueList;
+import com.dfsek.terra.util.GlueList;
 
 import java.io.IOException;
 import java.io.InputStream;

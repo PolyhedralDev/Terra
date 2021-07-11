@@ -2,7 +2,7 @@ package com.dfsek.terra.config.loaders.config;
 
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.math.GridSpawn;
+import com.dfsek.terra.math.GridSpawn;
 import com.dfsek.terra.api.structure.StructureSpawn;
 
 import java.lang.reflect.Type;

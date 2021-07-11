@@ -1,7 +1,9 @@
-package com.dfsek.terra.api.event;
+package com.dfsek.terra.event;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.event.EventListener;
+import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.Cancellable;

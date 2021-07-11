@@ -2,9 +2,9 @@ package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.transform.MapTransform;
-import com.dfsek.terra.api.transform.TransformerImpl;
-import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.transform.MapTransform;
+import com.dfsek.terra.transform.TransformerImpl;
+import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;

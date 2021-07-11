@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.util;
 
+import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -709,11 +710,11 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
     public Object clone() {
 
         try {
-            com.dfsek.terra.api.util.GlueList<T> clone = (com.dfsek.terra.api.util.GlueList<T>) super.clone();
+            GlueList<T> clone = (GlueList<T>) super.clone();
 
             clone.first = clone.last = null;
 
-            int capacity = min(MAX_ARRAY_SIZE, max(clone.size, max(clone.initialCapacity, DEFAULT_CAPACITY)));
+            int capacity = FastMath.min(MAX_ARRAY_SIZE, FastMath.max(clone.size, FastMath.max(clone.initialCapacity, DEFAULT_CAPACITY)));
 
             Node<T> initNode = new Node<>(null, null, 0, capacity);
 
@@ -902,7 +903,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
             checkForComodification();
 
             try {
-                com.dfsek.terra.api.util.GlueList.this.set(lastReturn, t);
+                GlueList.this.set(lastReturn, t);
             } catch(IndexOutOfBoundsException e) {
                 throw new ConcurrentModificationException();
             }
@@ -916,7 +917,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
             try {
                 int temp = j;
 
-                com.dfsek.terra.api.util.GlueList.this.add(temp, t);
+                GlueList.this.add(temp, t);
 
                 j = temp + 1;
 
@@ -1025,7 +1026,7 @@ public class GlueList<T> extends AbstractList<T> implements List<T>, Cloneable, 
             checkForComodification();
 
             try {
-                com.dfsek.terra.api.util.GlueList.this.remove(lastReturn);
+                GlueList.this.remove(lastReturn);
 
                 j = lastReturn;
 

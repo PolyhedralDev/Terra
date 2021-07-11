@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.inject;
+package com.dfsek.terra.inject;
 
 import com.dfsek.terra.api.injection.Injector;
 import com.dfsek.terra.api.injection.annotations.Inject;

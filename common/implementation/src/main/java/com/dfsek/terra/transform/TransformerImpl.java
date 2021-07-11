@@ -1,5 +1,8 @@
-package com.dfsek.terra.api.transform;
+package com.dfsek.terra.transform;
 
+import com.dfsek.terra.api.transform.Transform;
+import com.dfsek.terra.api.transform.Transformer;
+import com.dfsek.terra.api.transform.Validator;
 import com.dfsek.terra.api.transform.exception.AttemptsFailedException;
 import com.dfsek.terra.api.transform.exception.TransformException;
 
