@@ -15,10 +15,6 @@ public interface BiomeProvider {
         return getBiome(vector3.getBlockX(), vector3.getBlockZ());
     }
 
-    interface BiomeProviderBuilder {
-        BiomeProvider build(long seed);
-    }
-
     @Deprecated
     enum Type {
         IMAGE, PIPELINE, SINGLE

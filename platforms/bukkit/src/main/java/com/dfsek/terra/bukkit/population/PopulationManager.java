@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.population;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.FastRandom;
+import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;
@@ -64,7 +64,7 @@ public class PopulationManager extends BlockPopulator {
             long zRand = (random.nextLong() / 2L << 1L) + 1L;
             random.setSeed((long) x * xRand + (long) z * zRand ^ w.getSeed());
             Chunk currentChunk = w.getChunkAt(x, z);
-            generator.getPopulators().forEach(populator -> {
+            generator.getGenerationStages().forEach(populator -> {
                 if(!(populator instanceof Chunkified)) {
                     populator.populate(w, currentChunk);
                 }

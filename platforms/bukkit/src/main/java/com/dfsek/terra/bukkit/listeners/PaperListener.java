@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -22,7 +23,7 @@ public class PaperListener implements Listener {
         String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
         TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getWorld()));
-        TerraStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get(name));
+        ConfiguredStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get(name));
         if(config != null) {
             AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin().toVector()), tw.getWorld(), 0, 500, location -> {
                 if(location != null)

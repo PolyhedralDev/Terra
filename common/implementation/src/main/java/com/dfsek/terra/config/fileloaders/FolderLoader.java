@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * Load all {@code *.yml} files from a {@link java.nio.file.Path}.
  */
-public class FolderLoader extends Loader {
+public class FolderLoader extends LoaderImpl {
     private final Path path;
 
     public FolderLoader(Path path) {
@@ -24,7 +24,6 @@ public class FolderLoader extends Loader {
         return new FileInputStream(new File(path.toFile(), singleFile));
     }
 
-    @Override
     protected void load(String directory, String extension) {
         File newPath = new File(path.toFile(), directory);
         newPath.mkdirs();
@@ -32,6 +31,7 @@ public class FolderLoader extends Loader {
             paths.filter(Files::isRegularFile).filter(file -> file.toString().toLowerCase().endsWith(extension)).forEach(file -> {
                 try {
                     String rel = newPath.toPath().relativize(file).toString();
+                    if(rel.equals("pack.yml")) return;
                     streams.put(rel, new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {
                     e.printStackTrace();

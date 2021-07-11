@@ -1,23 +1,25 @@
 package com.dfsek.terra.fabric;
 
+import com.dfsek.tectonic.abstraction.TemplateProvider;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.command.CommandManager;
-import com.dfsek.terra.api.command.TerraCommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.EventManagerImpl;
+import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
@@ -29,14 +31,15 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.logging.DebugLogger;
+import com.dfsek.terra.util.logging.DebugLogger;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.commands.CommandUtil;
+import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
-import com.dfsek.terra.config.builder.BiomeBuilder;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
@@ -77,6 +80,7 @@ import org.apache.logging.log4j.LogManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,6 +91,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
     private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
+
+    private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
+    private final Map<Type, TemplateProvider<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
 
     public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
         return worldMap;
@@ -231,17 +238,20 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return debugLogger;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
         registry
-                .registerLoader(BlockData.class, (t, o, l) -> worldHandle.createBlockData((String) o))
+                .registerLoader(BlockState.class, (t, o, l) -> worldHandle.createBlockData((String) o))
                 .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);
                     return identifier;
                 });
+        loaders.forEach(registry::registerLoader);
+        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
     }
 
     @Override
@@ -258,7 +268,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         if(config.isDebugProfiler()) profiler.start();
 
         if(!addonRegistry.loadAll()) {
-            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
+            throw new IllegalStateException("Failed to load addons. Please correct com.dfsek.terra.addon installations to continue.");
         }
         logger.info("Loaded addons.");
 
@@ -290,6 +300,19 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return profiler;
     }
 
+    @Override
+    public <T> TerraFabricPlugin applyLoader(Type type, TypeLoader<T> loader) {
+        loaders.put(type, loader);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TerraFabricPlugin applyLoader(Type type, TemplateProvider<ObjectTemplate<T>> loader) {
+        objectLoaders.put(type, (TemplateProvider<ObjectTemplate<?>>) ((Object) loader));
+        return this;
+    }
+
     @Addon("Terra-Fabric")
     @Author("Terra")
     @Version("1.0.0")
@@ -304,7 +327,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         @Priority(Priority.LOWEST)
         @Global
         public void injectTrees(ConfigPackPreLoadEvent event) {
-            CheckedRegistry<Tree> treeRegistry = event.getPack().getRegistry(Tree.class);
+            CheckedRegistry<Tree> treeRegistry = event.getPack().getCheckedRegistry(Tree.class);
             injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.HUGE_BROWN_MUSHROOM);
             injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.HUGE_RED_MUSHROOM);
             injectTree(treeRegistry, "JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE);
@@ -336,7 +359,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                 BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
                     if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
                         try {
-                            event.getPack().getRegistry(Tree.class).add(entry.getKey().getValue().toString(), (Tree) entry.getValue());
+                            event.getPack().getCheckedRegistry(Tree.class).register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
                             debugLogger.info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
                         } catch(DuplicateEntryException ignored) {
                         }
@@ -364,7 +387,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         public void injectBiomes(BiomeRegistrationEvent event) {
             logger.info("Registering biomes...");
             Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
-            configRegistry.forEach(pack -> pack.getRegistry(BiomeBuilder.class).forEach((id, biome) -> FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(biome, pack, event.getRegistryManager())))); // Register all Terra biomes.
+            configRegistry.forEach(pack -> pack.getCheckedRegistry(BiomeBuilder.class).forEach((id, biome) -> FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(biome, pack, event.getRegistryManager())))); // Register all Terra biomes.
             logger.info("Biomes registered.");
         }
 
@@ -378,7 +401,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
-                registry.add(id, (Tree) tree);
+                registry.register(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
         }

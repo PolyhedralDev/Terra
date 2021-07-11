@@ -5,7 +5,7 @@ import com.dfsek.terra.api.block.Block;
 import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.entity.BlockState;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.forge.ForgeAdapter;
 import net.minecraft.block.FlowingFluidBlock;

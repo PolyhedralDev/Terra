@@ -25,14 +25,14 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
 
     @Override
-    public void add(String identifier, T value) throws DuplicateEntryException {
-        registry.addChecked(identifier, value);
+    public void register(String identifier, T value) throws DuplicateEntryException {
+        registry.registerChecked(identifier, value);
     }
 
     @Override
     @Deprecated
-    public void addUnchecked(String identifier, T value) {
-        registry.add(identifier, value);
+    public void registerUnchecked(String identifier, T value) {
+        registry.register(identifier, value);
     }
 
     @Override

@@ -21,5 +21,5 @@ public interface TerraChunkGenerator {
 
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
 
-    List<TerraBlockPopulator> getPopulators();
+    List<TerraGenerationStage> getGenerationStages();
 }

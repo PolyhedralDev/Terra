@@ -14,6 +14,8 @@ group = "com.dfsek.terra.common"
 
 dependencies {
     "shadedApi"(project(":common:api"))
+    "shadedApi"(project(":common:loader:config"))
+    "shadedApi"(project(":common:loader:addon"))
 
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
     "shadedApi"("commons-io:commons-io:2.4")

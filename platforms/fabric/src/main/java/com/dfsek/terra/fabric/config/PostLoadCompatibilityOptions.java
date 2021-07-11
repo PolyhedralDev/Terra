@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.config.builder.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
