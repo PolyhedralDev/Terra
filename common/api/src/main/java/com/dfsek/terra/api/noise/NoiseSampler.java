@@ -30,4 +30,28 @@ public interface NoiseSampler {
     double getNoiseSeeded(int seed, double x, double y);
 
     double getNoiseSeeded(int seed, double x, double y, double z);
+
+    static NoiseSampler zero() {
+        return new NoiseSampler() {
+            @Override
+            public double getNoise(double x, double y) {
+                return 0;
+            }
+
+            @Override
+            public double getNoise(double x, double y, double z) {
+                return 0;
+            }
+
+            @Override
+            public double getNoiseSeeded(int seed, double x, double y) {
+                return 0;
+            }
+
+            @Override
+            public double getNoiseSeeded(int seed, double x, double y, double z) {
+                return 0;
+            }
+        };
+    }
 }

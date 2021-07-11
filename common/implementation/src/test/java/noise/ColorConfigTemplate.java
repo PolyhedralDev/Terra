@@ -3,11 +3,11 @@ package noise;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 public class ColorConfigTemplate implements ConfigTemplate {
     @Value("colors")
-    private ProbabilityCollectionImpl<Integer> colors;
+    private ProbabilityCollection<Integer> colors;
 
     @Value("enable")
     @Default
@@ -17,7 +17,7 @@ public class ColorConfigTemplate implements ConfigTemplate {
         return enable;
     }
 
-    public ProbabilityCollectionImpl<Integer> getColors() {
+    public ProbabilityCollection<Integer> getColors() {
         return colors;
     }
 }

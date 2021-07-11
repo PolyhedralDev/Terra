@@ -4,7 +4,6 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.vector.Vector3Impl;
 import org.bukkit.Location;
 
 public class BukkitPlayer implements Player {
@@ -22,7 +21,7 @@ public class BukkitPlayer implements Player {
     @Override
     public Vector3 position() {
         org.bukkit.Location bukkit = delegate.getLocation();
-        return new Vector3Impl(bukkit.getX(), bukkit.getY(), bukkit.getZ());
+        return new Vector3(bukkit.getX(), bukkit.getY(), bukkit.getZ());
     }
 
     @Override

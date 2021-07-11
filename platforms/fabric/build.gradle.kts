@@ -1,3 +1,4 @@
+import com.dfsek.terra.addonDir
 import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
@@ -12,6 +13,8 @@ plugins {
 }
 
 configureCommon()
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.json", "com.dfsek.terra.lib.json")
@@ -23,8 +26,8 @@ group = "com.dfsek.terra.fabric"
 dependencies {
     "shadedApi"(project(":common:implementation"))
 
-    "minecraft"("com.mojang:minecraft:1.17")
-    "mappings"("net.fabricmc:yarn:1.17+build.1:v2")
+    "minecraft"("com.mojang:minecraft:1.17.1")
+    "mappings"("net.fabricmc:yarn:1.17.1+build.1:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
 
     "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {

@@ -1,5 +1,9 @@
 package com.dfsek.terra.api.util.generic.either;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -14,29 +18,39 @@ public final class Either<L, R> {
         this.leftPresent = leftPresent;
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static <L1, R1> Either<L1, R1> left(L1 left) {
-        return new Either<>(left, null, true);
+        return new Either<>(Objects.requireNonNull(left), null, true);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static <L1, R1> Either<L1, R1> right(R1 right) {
-        return new Either<>(null, right, false);
+        return new Either<>(null, Objects.requireNonNull(right), false);
     }
 
+    @NotNull
     public Optional<L> getLeft() {
         if(leftPresent) return Optional.of(left);
         return Optional.empty();
     }
 
+    @NotNull
     public Optional<R> getRight() {
         if(!leftPresent) return Optional.of(right);
         return Optional.empty();
     }
 
+    @NotNull
+    @Contract("_ -> this")
     public Either<L, R> ifLeft(Consumer<L> action) {
         if(leftPresent) action.accept(left);
         return this;
     }
 
+    @NotNull
+    @Contract("_ -> this")
     public Either<L, R> ifRight(Consumer<R> action) {
         if(!leftPresent) action.accept(right);
         return this;
@@ -48,5 +62,20 @@ public final class Either<L, R> {
 
     public boolean hasRight() {
         return !leftPresent;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(left, right);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Either)) return false;
+
+        Either<?, ?> that = (Either<?, ?>) obj;
+
+        return (this.leftPresent && that.leftPresent && Objects.equals(this.left, that.left))
+                || (!this.leftPresent && !that.leftPresent && Objects.equals(this.right, that.right));
     }
 }

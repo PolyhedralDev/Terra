@@ -6,7 +6,7 @@ import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.inject.InjectorImpl;
+import com.dfsek.terra.inject.InjectorImpl;
 import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.OpenRegistryImpl;
@@ -27,15 +27,15 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
 
     public AddonRegistry(TerraAddon addon, TerraPlugin main) {
         this.main = main;
-        add(addon.getName(), addon);
+        register(addon.getName(), addon);
     }
 
     @Override
-    public boolean add(String identifier, TerraAddon addon) {
+    public boolean register(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
-        main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
-        return super.add(identifier, addon);
+        main.logger().info("Loaded com.dfsek.terra.addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
+        return super.register(identifier, addon);
     }
 
     @Override
@@ -88,15 +88,15 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                     pluginInjector.inject(loadedAddon);
                     loggerInjector.inject(loadedAddon);
                 } catch(InstantiationException | IllegalAccessException | InvocationTargetException | InjectionException e) {
-                    throw new AddonLoadException("Failed to load addon \" + " + addon.getId() + "\": ", e);
+                    throw new AddonLoadException("Failed to load com.dfsek.terra.addon \" + " + addon.getId() + "\": ", e);
                 }
                 try {
-                    addChecked(loadedAddon.getName(), loadedAddon);
+                    registerChecked(loadedAddon.getName(), loadedAddon);
                 } catch(DuplicateEntryException e) {
                     valid = false;
-                    main.logger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
-                    main.logger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
-                    main.logger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
+                    main.logger().severe("Duplicate com.dfsek.terra.addon ID; com.dfsek.terra.addon with ID " + loadedAddon.getName() + " is already loaded.");
+                    main.logger().severe("Existing com.dfsek.terra.addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
+                    main.logger().severe("Duplicate com.dfsek.terra.addon class: " + addonClass.getCanonicalName());
                 }
             }
         } catch(AddonLoadException | IOException e) {

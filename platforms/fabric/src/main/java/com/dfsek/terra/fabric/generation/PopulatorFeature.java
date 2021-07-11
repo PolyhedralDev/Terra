@@ -24,7 +24,7 @@ public class PopulatorFeature extends Feature<DefaultFeatureConfig> {
         if(!(chunkGenerator instanceof FabricChunkGeneratorWrapper)) return true;
         StructureWorldAccess world = context.getWorld();
         FabricChunkGeneratorWrapper gen = (FabricChunkGeneratorWrapper) chunkGenerator;
-        gen.getHandle().getPopulators().forEach(populator -> {
+        gen.getHandle().getGenerationStages().forEach(populator -> {
             if(!(populator instanceof Chunkified)) {
                 populator.populate((World) world, (Chunk) world);
             }

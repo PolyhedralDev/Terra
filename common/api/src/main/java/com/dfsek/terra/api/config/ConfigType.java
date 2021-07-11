@@ -7,10 +7,10 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 
 import java.util.function.Supplier;
 
-public interface ConfigType<T extends ConfigTemplate, R> {
+public interface ConfigType<T extends AbstractableTemplate, R> {
     T getTemplate(ConfigPack pack, TerraPlugin main);
 
-    void callback(ConfigPack pack, TerraPlugin main, T loadedConfig) throws LoadException;
+    ConfigFactory<T, R> getFactory();
 
     Class<R> getTypeClass();
 
