@@ -32,6 +32,7 @@ include("common:addons:config-tree")
 
 include("common:addons:structure-terrascript-loader")
 
+include("common:addons:language-yaml")
 
 
 
