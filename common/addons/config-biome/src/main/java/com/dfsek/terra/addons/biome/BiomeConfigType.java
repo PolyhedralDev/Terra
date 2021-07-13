@@ -41,7 +41,7 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, BiomeBuilder> 
             if(c.equals("SELF")) return null;
             BiomeBuilder obj = registry.get((String) c);
             if(obj == null)
-                throw new LoadException("No such " + t.getTypeName() + " matching \"" + c + "\" was found in this registry.");
+                throw new LoadException("No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry.");
             return obj;
         });
     }

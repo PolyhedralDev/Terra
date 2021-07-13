@@ -15,7 +15,7 @@ group = "com.dfsek.terra.common"
 dependencies {
 
     "shadedApi"("com.dfsek:Paralithic:0.3.2")
-    "implementation"("com.dfsek.tectonic:common:2.0.0")
+    "shadedApi"("com.dfsek.tectonic:common:2.0.0")
 
     "shadedApi"("net.jafama:jafama:2.3.2")
     "shadedApi"("org.yaml:snakeyaml:1.27")

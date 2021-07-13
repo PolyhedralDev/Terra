@@ -7,6 +7,7 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.Lazy;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.util.function.Function;
 
@@ -22,7 +23,7 @@ public class RegistryFactoryImpl implements RegistryFactory {
             private final Lazy<TypeLoader<T>> loaderCache = Lazy.of(() -> loader.apply(this));
 
             @Override
-            public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+            public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
                 return loaderCache.value().load(type, o, configLoader);
             }
         };

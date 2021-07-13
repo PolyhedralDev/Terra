@@ -4,6 +4,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.registry.Registry;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
 
     @Override
-    public T load(Type t, Object c, ConfigLoader loader) throws LoadException {
+    public T load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         return registry.load(t, c, loader);
     }
 }

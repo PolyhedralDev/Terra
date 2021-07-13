@@ -44,7 +44,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
                 return new PaletteImpl.Singleton(main.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
             Palette obj = registry.get((String) c);
             if(obj == null)
-                throw new LoadException("No such " + t.getTypeName() + " matching \"" + c + "\" was found in this registry.");
+                throw new LoadException("No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry.");
             return obj;
         });
     }

@@ -6,6 +6,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Set;
@@ -66,7 +67,7 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
 
     @Override
-    public T load(Type t, Object c, ConfigLoader loader) throws LoadException {
+    public T load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         return registry.load(t, c, loader);
     }
 }

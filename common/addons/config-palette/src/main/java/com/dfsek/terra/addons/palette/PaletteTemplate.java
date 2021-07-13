@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.palette;
 
-import com.dfsek.tectonic.annotations.Abstractable;
 import com.dfsek.tectonic.annotations.Default;
+import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
@@ -12,15 +12,14 @@ import java.util.List;
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("noise")
-    @Abstractable
     @Default
     private NoiseSeeded noise = NoiseSeeded.zero(2);
 
     @Value("id")
+    @Final
     private String id;
 
     @Value("layers")
-    @Abstractable
     private List<PaletteLayerHolder> palette;
 
     public String getID() {

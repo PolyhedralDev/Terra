@@ -1,7 +1,8 @@
 package com.dfsek.terra.addons.carver;
 
-import com.dfsek.tectonic.annotations.Abstractable;
+
 import com.dfsek.tectonic.annotations.Default;
+import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
@@ -15,100 +16,79 @@ import java.util.Map;
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class CarverTemplate implements AbstractableTemplate {
     @Value("id")
+    @Final
     private String id;
 
     @Value("step")
-    @Abstractable
     @Default
     private int step = 2;
 
     @Value("recalculate-magnitude")
     @Default
-    @Abstractable
     private double recaclulateMagnitude = 4;
 
     @Value("recalculate-direction")
-    @Abstractable
     @Default
     private Range recalc = new ConstantRange(8, 10);
 
     @Value("length")
-    @Abstractable
     private Range length;
 
     @Value("start.x")
-    @Abstractable
     private double startX;
 
     @Value("start.y")
-    @Abstractable
     private double startY;
 
     @Value("start.z")
-    @Abstractable
     private double startZ;
 
     @Value("start.radius.x")
-    @Abstractable
     private String radMX;
 
     @Value("start.radius.y")
-    @Abstractable
     private String radMY;
 
     @Value("start.radius.z")
-    @Abstractable
     private String radMZ;
 
     @Value("start.height")
-    @Abstractable
     private Range height;
 
     @Value("cut.bottom")
-    @Abstractable
     @Default
     private int cutBottom = 0;
 
     @Value("cut.top")
-    @Abstractable
     @Default
     private int cutTop = 0;
 
     @Value("mutate.x")
-    @Abstractable
     private double mutateX;
 
     @Value("mutate.y")
-    @Abstractable
     private double mutateY;
 
     @Value("mutate.z")
-    @Abstractable
     private double mutateZ;
 
     @Value("palette.top")
-    @Abstractable
     private CarverPalette top;
 
     @Value("palette.bottom")
-    @Abstractable
     private CarverPalette bottom;
 
     @Value("palette.outer")
-    @Abstractable
     private CarverPalette outer;
 
     @Value("palette.inner")
-    @Abstractable
     private CarverPalette inner;
 
     @Value("shift")
-    @Abstractable
     @Default
     private Map<BlockType, MaterialSet> shift = new HashMap<>();
 
     @Value("update")
-    @Abstractable
     @Default
     private MaterialSet update = new MaterialSet();
 

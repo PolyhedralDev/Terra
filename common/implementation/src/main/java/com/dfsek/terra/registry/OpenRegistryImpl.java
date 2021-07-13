@@ -5,6 +5,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,10 +34,10 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
 
     @Override
-    public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+    public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
         if(obj == null)
-            throw new LoadException("No such " + type.getTypeName() + " matching \"" + o + "\" was found in this registry.");
+            throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o + "\" was found in this registry.");
         return obj;
     }
 

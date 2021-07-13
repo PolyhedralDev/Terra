@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -204,7 +205,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public <T> ConfigPackImpl applyLoader(Type type, TemplateProvider<ObjectTemplate<T>> loader) {
+    public <T> ConfigPackImpl applyLoader(Type type, Supplier<ObjectTemplate<T>> loader) {
         abstractConfigLoader.registerLoader(type, loader);
         selfLoader.registerLoader(type, loader);
         return this;
