@@ -20,7 +20,6 @@ dependencies {
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
 
     "shadedApi"("com.dfsek:Paralithic:0.3.2")
-    "shadedApi"("net.jafama:jafama:2.3.2")
     "shadedApi"("org.ow2.asm:asm:9.0")
     "shadedApi"("commons-io:commons-io:2.6")
 
