@@ -14,7 +14,6 @@ group = "com.dfsek.terra.common"
 
 dependencies {
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
-    "shadedApi"("commons-io:commons-io:2.4")
 
     "shadedApi"("com.dfsek:Paralithic:0.3.2")
     "shadedApi"("com.dfsek:Tectonic:1.4.0")

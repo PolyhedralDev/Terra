@@ -18,7 +18,6 @@ dependencies {
     "shadedApi"(project(":common:loader:addon"))
 
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
-    "shadedApi"("commons-io:commons-io:2.4")
 
     "shadedApi"("com.dfsek:Paralithic:0.3.2")
     "shadedApi"("net.jafama:jafama:2.3.2")
