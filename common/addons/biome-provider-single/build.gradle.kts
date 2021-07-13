@@ -17,7 +17,6 @@ dependencies {
 
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
 
-    "shadedApi"("com.dfsek:Paralithic:0.3.2")
 
     "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
 
