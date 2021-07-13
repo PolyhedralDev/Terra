@@ -14,12 +14,11 @@ import java.util.Stack;
 public class ProfilerImpl implements Profiler {
     private static final ThreadLocal<Stack<Frame>> THREAD_STACK = ThreadLocal.withInitial(Stack::new);
     private static final ThreadLocal<Map<String, List<Long>>> TIMINGS = ThreadLocal.withInitial(HashMap::new);
-    private final List<Map<String, List<Long>>> accessibleThreadMaps = new ArrayList<>();
-    private volatile boolean running = false;
-    private static boolean instantiated = false;
-
     private static final ThreadLocal<Boolean> SAFE = ThreadLocal.withInitial(() -> false);
     private static final ThreadLocal<MutableInteger> STACK_SIZE = ThreadLocal.withInitial(() -> new MutableInteger(0));
+    private static boolean instantiated = false;
+    private final List<Map<String, List<Long>>> accessibleThreadMaps = new ArrayList<>();
+    private volatile boolean running = false;
 
     public ProfilerImpl() {
         if(instantiated) throw new IllegalStateException("Only one instance of Profiler may exist!");

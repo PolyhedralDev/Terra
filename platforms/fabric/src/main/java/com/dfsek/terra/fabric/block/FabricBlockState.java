@@ -1,17 +1,13 @@
 package com.dfsek.terra.fabric.block;
 
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
-import com.dfsek.terra.api.block.state.properties.enums.Axis;
-import com.dfsek.terra.api.block.state.properties.enums.Half;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.fabric.mixin.access.StateAccessor;
 import com.dfsek.terra.fabric.util.FabricAdapter;
-import com.dfsek.terra.fabric.util.FabricUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.RailShape;
@@ -19,7 +15,6 @@ import net.minecraft.block.enums.WallShape;
 import net.minecraft.block.enums.WireConnection;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-import scala.collection.immutable.Stream;
 
 import java.util.HashMap;
 import java.util.Map;

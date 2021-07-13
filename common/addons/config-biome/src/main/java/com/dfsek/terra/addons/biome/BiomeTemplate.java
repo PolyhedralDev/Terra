@@ -168,6 +168,10 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private Map<String, Integer> colors = new HashMap<>(); // Plain ol' map, so platforms can decide what to do with colors (if anything).
 
+    public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
+        this.pack = pack;
+    }
+
     public List<String> getExtended() {
         return extended;
     }
@@ -206,10 +210,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     public boolean doSlabs() {
         return doSlabs;
-    }
-
-    public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
-        this.pack = pack;
     }
 
     public Map<BlockType, Palette> getSlabPalettes() {

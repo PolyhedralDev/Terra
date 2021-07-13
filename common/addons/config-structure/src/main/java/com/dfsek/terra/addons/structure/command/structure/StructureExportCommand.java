@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.structure.command.structure;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Sign;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;

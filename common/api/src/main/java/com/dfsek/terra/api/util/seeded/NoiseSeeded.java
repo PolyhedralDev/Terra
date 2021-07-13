@@ -3,11 +3,6 @@ package com.dfsek.terra.api.util.seeded;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 public interface NoiseSeeded extends SeededBuilder<NoiseSampler> {
-    @Override
-    NoiseSampler apply(Long seed);
-
-    int getDimensions();
-
     static NoiseSeeded zero(int dimensions) {
         return new NoiseSeeded() {
             @Override
@@ -21,4 +16,9 @@ public interface NoiseSeeded extends SeededBuilder<NoiseSampler> {
             }
         };
     }
+
+    @Override
+    NoiseSampler apply(Long seed);
+
+    int getDimensions();
 }

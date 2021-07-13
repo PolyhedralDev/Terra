@@ -1,8 +1,8 @@
 package com.dfsek.terra.math;
 
-import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.util.FastRandom;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
+import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ChunkInterpolator3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ElevationInterpolator;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.Sampler;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ChunkInterpolator3D;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ElevationInterpolator;
 import net.jafama.FastMath;
 
 public class Sampler3D implements Sampler {

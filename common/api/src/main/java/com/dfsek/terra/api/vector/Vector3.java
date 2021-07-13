@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.vector;
 
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.world.World;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

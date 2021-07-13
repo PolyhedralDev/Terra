@@ -2,7 +2,6 @@ package com.dfsek.terra.bukkit.population;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;
@@ -10,6 +9,7 @@ import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
+import com.dfsek.terra.util.FastRandom;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +31,12 @@ public class PopulationManager extends BlockPopulator {
         this.main = main;
     }
 
+    public static File getDataFolder(World w) {
+        File f = new File(((BukkitWorld) w).getWorldFolder(), "gaea");
+        f.mkdirs();
+        return f;
+    }
+
     @SuppressWarnings("unchecked")
     public synchronized void saveBlocks(World w) throws IOException {
         File f = new File(getDataFolder(w), "chunks.bin");
@@ -43,13 +49,6 @@ public class PopulationManager extends BlockPopulator {
         File f = new File(getDataFolder(w), "chunks.bin");
         needsPop.addAll((HashSet<ChunkCoordinate>) SerializationUtil.fromFile(f));
     }
-
-    public static File getDataFolder(World w) {
-        File f = new File(((BukkitWorld) w).getWorldFolder(), "gaea");
-        f.mkdirs();
-        return f;
-    }
-
 
     // Synchronize to prevent chunks from being queued for population multiple times.
     public synchronized void checkNeighbors(int x, int z, World world) {

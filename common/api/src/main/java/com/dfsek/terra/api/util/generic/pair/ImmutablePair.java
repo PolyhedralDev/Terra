@@ -6,10 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public final class ImmutablePair<L, R> {
+    private static final ImmutablePair<?, ?> NULL = new ImmutablePair<>(null, null);
     private final L left;
     private final R right;
-
-    private static final ImmutablePair<?, ?> NULL = new ImmutablePair<>(null, null);
 
     private ImmutablePair(L left, R right) {
         this.left = left;
@@ -21,18 +20,18 @@ public final class ImmutablePair<L, R> {
         return new ImmutablePair<>(left, right);
     }
 
+    @Contract("-> new")
+    @SuppressWarnings("unchecked")
+    public static <L1, R1> ImmutablePair<L1, R1> ofNull() {
+        return (ImmutablePair<L1, R1>) NULL;
+    }
+
     public R getRight() {
         return right;
     }
 
     public L getLeft() {
         return left;
-    }
-
-    @Contract("-> new")
-    @SuppressWarnings("unchecked")
-    public static <L1, R1> ImmutablePair<L1, R1> ofNull() {
-        return (ImmutablePair<L1, R1>) NULL;
     }
 
     @NotNull

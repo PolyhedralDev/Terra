@@ -82,12 +82,12 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
         }
     }
 
-    public double computeNoise(Generator generator, double x, double y, double z) {
-        return noiseGetter.apply(generator, new Vector3(x, y, z));
-    }
-
     private static int reRange(int value, int high) {
         return FastMath.max(FastMath.min(value, high), 0);
+    }
+
+    public double computeNoise(Generator generator, double x, double y, double z) {
+        return noiseGetter.apply(generator, new Vector3(x, y, z));
     }
 
     /**

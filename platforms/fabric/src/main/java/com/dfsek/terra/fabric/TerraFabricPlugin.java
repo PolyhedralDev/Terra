@@ -19,7 +19,6 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
@@ -31,7 +30,6 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.util.logging.DebugLogger;
 import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
@@ -41,6 +39,7 @@ import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
@@ -57,6 +56,7 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
+import com.dfsek.terra.util.logging.DebugLogger;
 import com.dfsek.terra.world.TerraWorldImpl;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -86,24 +86,17 @@ import java.util.Map;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
-    private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
+    private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
     private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
 
     private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
     private final Map<Type, TemplateProvider<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
-
-    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
-        return worldMap;
-    }
-
     private final EventManager eventManager = new EventManagerImpl(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
-
     private final Profiler profiler = new ProfilerImpl();
-
     private final Logger logger = new Logger() {
         @Override
         public void info(String message) {
@@ -120,18 +113,25 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             log4jLogger.error(message);
         }
     };
-
     private final DebugLogger debugLogger = new DebugLogger(logger);
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(configRegistry);
-
     private final FabricAddon fabricAddon = new FabricAddon();
     private final AddonRegistry addonRegistry = new AddonRegistry(fabricAddon, this);
     private final com.dfsek.terra.api.registry.Registry<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
-
     private final PluginConfig config = new PluginConfigImpl();
+    private final CommandManager manager = new TerraCommandManager(this);
+    private File dataFolder;
+
+    public static TerraFabricPlugin getInstance() {
+        return instance;
+    }
+
+    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
+        return worldMap;
+    }
 
     private ProtoBiome parseBiome(String id) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
@@ -139,15 +139,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return new ProtoBiome(identifier);
     }
 
-    private File dataFolder;
-    private final CommandManager manager = new TerraCommandManager(this);
-
     public CommandManager getManager() {
         return manager;
-    }
-
-    public static TerraFabricPlugin getInstance() {
-        return instance;
     }
 
     @Override

@@ -21,6 +21,7 @@ import java.util.Locale;
 public class FabricWorldHandle implements WorldHandle {
 
     private static final com.dfsek.terra.api.block.state.BlockState AIR = FabricAdapter.adapt(Blocks.AIR.getDefaultState());
+
     @Override
     public FabricBlockState createBlockData(String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);

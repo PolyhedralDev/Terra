@@ -60,13 +60,13 @@ public class NoiseAddon extends TerraAddon implements EventListener {
                 .applyLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
                 .applyLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object));
     }
-    
+
     @SuppressWarnings("deprecation")
     public void packPreLoad(ConfigPackPreLoadEvent event) {
         CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getOrCreateRegistry(NoiseProvider.class);
         event.getPack()
                 .applyLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry));
-        
+
         noiseRegistry.registerUnchecked("LINEAR", LinearNormalizerTemplate::new);
         noiseRegistry.registerUnchecked("NORMAL", NormalNormalizerTemplate::new);
         noiseRegistry.registerUnchecked("CLAMP", ClampNormalizerTemplate::new);

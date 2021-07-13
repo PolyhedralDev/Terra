@@ -4,14 +4,14 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.addons.biome.pipeline.StageSeeded;
-import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
-import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
+import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
+import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 
 import java.lang.reflect.Type;
 import java.util.Map;

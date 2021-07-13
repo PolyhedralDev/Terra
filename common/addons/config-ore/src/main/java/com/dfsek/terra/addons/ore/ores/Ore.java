@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.ore.ores;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
@@ -15,8 +15,8 @@ public abstract class Ore {
     private final BlockState material;
     private final MaterialSet replaceable;
     private final boolean applyGravity;
-    protected TerraPlugin main;
     private final Map<BlockType, BlockState> materials;
+    protected TerraPlugin main;
 
     public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, TerraPlugin main, Map<BlockType, BlockState> materials) {
         this.material = material;

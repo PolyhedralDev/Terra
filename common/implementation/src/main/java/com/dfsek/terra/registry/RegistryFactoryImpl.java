@@ -20,6 +20,7 @@ public class RegistryFactoryImpl implements RegistryFactory {
     public <T> OpenRegistry<T> create(Function<OpenRegistry<T>, TypeLoader<T>> loader) {
         return new OpenRegistryImpl<>() {
             private final Lazy<TypeLoader<T>> loaderCache = Lazy.of(() -> loader.apply(this));
+
             @Override
             public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
                 return loaderCache.value().load(type, o, configLoader);

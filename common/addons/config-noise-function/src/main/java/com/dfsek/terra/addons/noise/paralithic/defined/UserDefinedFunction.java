@@ -17,6 +17,14 @@ public class UserDefinedFunction implements DynamicFunction {
         this.args = args;
     }
 
+    public static UserDefinedFunction newInstance(FunctionTemplate template, Parser parser, Scope parent) throws ParseException {
+
+        Scope functionScope = new Scope().withParent(parent);
+
+        template.getArgs().forEach(functionScope::addInvocationVariable);
+
+        return new UserDefinedFunction(parser.parse(template.getFunction(), functionScope), template.getArgs().size());
+    }
 
     @Override
     public double eval(double... args) {
@@ -31,14 +39,5 @@ public class UserDefinedFunction implements DynamicFunction {
     @Override
     public int getArgNumber() {
         return args;
-    }
-
-    public static UserDefinedFunction newInstance(FunctionTemplate template, Parser parser, Scope parent) throws ParseException {
-
-        Scope functionScope = new Scope().withParent(parent);
-
-        template.getArgs().forEach(functionScope::addInvocationVariable);
-
-        return new UserDefinedFunction(parser.parse(template.getFunction(), functionScope), template.getArgs().size());
     }
 }

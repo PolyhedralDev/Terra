@@ -54,8 +54,8 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
      */
     public static class PaletteLayer {
         private final boolean col; // Is layer using a collection?
-        private ProbabilityCollection<BlockState> collection;
         private final NoiseSampler sampler;
+        private ProbabilityCollection<BlockState> collection;
         private BlockState m;
 
         /**

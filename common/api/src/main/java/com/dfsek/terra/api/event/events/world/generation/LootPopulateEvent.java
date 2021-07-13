@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class LootPopulateEvent extends AbstractCancellable implements PackEvent, Cancellable {
     private final Container container;
-    private LootTable table;
     private final ConfigPack pack;
     private final Structure structure;
+    private LootTable table;
 
     public LootPopulateEvent(Container container, LootTable table, ConfigPack pack, Structure structure) {
         this.container = container;

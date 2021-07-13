@@ -32,7 +32,7 @@ public enum Direction {
             case DOWN:
                 return this;
             default:
-                return rotations[(this.rotation + rotation.getDegrees()/90) % 4];
+                return rotations[(this.rotation + rotation.getDegrees() / 90) % 4];
         }
     }
 

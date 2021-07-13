@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.state.properties.enums.Half;
 import com.dfsek.terra.api.block.state.properties.enums.Axis;
+import com.dfsek.terra.api.block.state.properties.enums.Half;
 import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;

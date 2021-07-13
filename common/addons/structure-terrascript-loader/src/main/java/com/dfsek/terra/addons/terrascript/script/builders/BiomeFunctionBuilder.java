@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.terrascript.script.builders;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.BiomeFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 
 import java.util.List;
 

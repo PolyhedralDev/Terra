@@ -4,9 +4,9 @@ import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 import java.util.HashMap;
 import java.util.Map;

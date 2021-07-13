@@ -9,7 +9,15 @@ public abstract class NoiseFunction implements NoiseSampler {
     protected static final int PRIME_X = 501125321;
     protected static final int PRIME_Y = 1136930381;
     protected static final int PRIME_Z = 1720413743;
+    static final int precision = 100;
+    static final int modulus = 360 * precision;
+    static final double[] sin = new double[360 * 100]; // lookup table
 
+    static {
+        for(int i = 0; i < sin.length; i++) {
+            sin[i] = (float) Math.sin((double) (i) / (precision));
+        }
+    }
 
     protected double frequency = 0.02d;
     protected int seed;
@@ -21,8 +29,6 @@ public abstract class NoiseFunction implements NoiseSampler {
     protected static int fastFloor(double f) {
         return f >= 0 ? (int) f : (int) f - 1;
     }
-
-    static final int precision = 100;
 
     protected static int hash(int seed, int xPrimed, int yPrimed, int zPrimed) {
         int hash = seed ^ xPrimed ^ yPrimed ^ zPrimed;
@@ -37,8 +43,6 @@ public abstract class NoiseFunction implements NoiseSampler {
         hash *= 0x27d4eb2d;
         return hash;
     }
-
-    static final int modulus = 360 * precision;
 
     protected static int fastRound(double f) {
         return f >= 0 ? (int) (f + 0.5f) : (int) (f - 0.5);
@@ -75,14 +79,6 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     protected static double fastSqrt(double f) {
         return FastMath.sqrt(f);
-    }
-
-    static final double[] sin = new double[360 * 100]; // lookup table
-
-    static {
-        for(int i = 0; i < sin.length; i++) {
-            sin[i] = (float) Math.sin((double) (i) / (precision));
-        }
     }
 
     protected static int fastCeil(double f) {

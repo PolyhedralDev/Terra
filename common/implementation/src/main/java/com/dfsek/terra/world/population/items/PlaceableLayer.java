@@ -1,8 +1,8 @@
 package com.dfsek.terra.world.population.items;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
 

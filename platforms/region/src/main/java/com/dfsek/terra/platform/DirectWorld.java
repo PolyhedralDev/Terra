@@ -1,8 +1,8 @@
 package com.dfsek.terra.platform;
 
 import com.dfsek.terra.DirectUtils;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;

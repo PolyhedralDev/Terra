@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
  * @param <T>
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
-    private final Map<String, Entry<T>> objects;
     private static final Entry<?> NULL = new Entry<>(null);
+    private final Map<String, Entry<T>> objects;
 
     public OpenRegistryImpl() {
         objects = new HashMap<>();

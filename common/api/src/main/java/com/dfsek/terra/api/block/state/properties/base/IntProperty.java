@@ -8,11 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 public interface IntProperty extends Property<Integer> {
-    @Override
-    default Class<Integer> getType() {
-        return Integer.class;
-    }
-
     static IntProperty of(String name, int min, int max) {
         return new IntProperty() {
             private final Collection<Integer> collection = Construct.construct(() -> {
@@ -33,5 +28,10 @@ public interface IntProperty extends Property<Integer> {
                 return collection;
             }
         };
+    }
+
+    @Override
+    default Class<Integer> getType() {
+        return Integer.class;
     }
 }

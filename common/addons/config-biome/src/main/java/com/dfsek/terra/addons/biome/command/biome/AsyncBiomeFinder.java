@@ -21,9 +21,9 @@ public class AsyncBiomeFinder implements Runnable {
     protected final int centerX;
     protected final int centerZ;
     protected final World world;
+    protected final TerraPlugin main;
     private final Consumer<Vector3> callback;
     protected int searchSize = 1;
-    protected final TerraPlugin main;
 
     public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
         this.provider = provider;
@@ -52,6 +52,7 @@ public class AsyncBiomeFinder implements Runnable {
     public Vector3 finalizeVector(Vector3 orig) {
         return orig.multiply(main.getTerraConfig().getBiomeSearchResolution());
     }
+
     @Override
     public void run() {
         int x = centerX;

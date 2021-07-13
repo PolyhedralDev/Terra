@@ -17,9 +17,10 @@ public class AsyncStructureFinder implements Runnable {
     protected final int centerX;
     protected final int centerZ;
     protected final World world;
+    protected final TerraPlugin main;
     private final Consumer<Vector3> callback;
     protected int searchSize = 1;
-    protected final TerraPlugin main;
+
     public AsyncStructureFinder(BiomeProvider provider, ConfiguredStructure target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
         //setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
         this.provider = provider;

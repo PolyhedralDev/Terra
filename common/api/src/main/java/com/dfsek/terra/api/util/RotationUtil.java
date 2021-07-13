@@ -37,8 +37,6 @@ public final class RotationUtil {
     }
 
 
-
-
     public static Axis getRotatedAxis(Axis orig, Rotation r) {
         Axis other = orig;
         final boolean shouldSwitch = r.equals(Rotation.CW_90) || r.equals(Rotation.CCW_90);

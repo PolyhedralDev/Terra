@@ -2,13 +2,13 @@ package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.transform.MapTransform;
-import com.dfsek.terra.transform.TransformerImpl;
-import com.dfsek.terra.util.FastRandom;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.dfsek.terra.transform.MapTransform;
+import com.dfsek.terra.transform.TransformerImpl;
+import com.dfsek.terra.util.FastRandom;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
@@ -22,12 +22,6 @@ import org.bukkit.event.world.StructureGrowEvent;
  * Listener for events on all implementations.
  */
 public class CommonListener implements Listener {
-    private final TerraPlugin main;
-
-    public CommonListener(TerraPlugin main) {
-        this.main = main;
-    }
-
     private static final TransformerImpl<TreeType, String> TREE_TYPE_STRING_TRANSFORMER = new TransformerImpl.Builder<TreeType, String>()
             .addTransform(new MapTransform<TreeType, String>()
                     .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
@@ -38,6 +32,11 @@ public class CommonListener implements Listener {
                     .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
                     .add(TreeType.SWAMP, "SWAMP_OAK"))
             .addTransform(TreeType::toString).build();
+    private final TerraPlugin main;
+
+    public CommonListener(TerraPlugin main) {
+        this.main = main;
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onSaplingGrow(StructureGrowEvent e) {

@@ -3,10 +3,7 @@ package com.dfsek.terra
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.withType
-import org.gradle.language.jvm.tasks.ProcessResources
 import java.io.File
-import java.util.*
 import java.util.function.Predicate
 import kotlin.streams.asStream
 

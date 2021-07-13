@@ -6,11 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public interface BooleanProperty extends Property<Boolean> {
-    @Override
-    default Class<Boolean> getType() {
-        return Boolean.class;
-    }
-
     static BooleanProperty of(String name) {
         return new BooleanProperty() {
             private static final Collection<Boolean> BOOLEANS = Arrays.asList(true, false);
@@ -25,5 +20,10 @@ public interface BooleanProperty extends Property<Boolean> {
                 return BOOLEANS;
             }
         };
+    }
+
+    @Override
+    default Class<Boolean> getType() {
+        return Boolean.class;
     }
 }

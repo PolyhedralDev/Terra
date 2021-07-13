@@ -120,10 +120,10 @@ public class UserDefinedCarver extends Carver {
     private class UserDefinedWorm extends Worm {
         private final Vector3 direction;
         private final Vector3 origin;
+        private final long seed;
         private int steps;
         private int nextDirection = 0;
         private double[] currentRotation = new double[3];
-        private final long seed;
 
         public UserDefinedWorm(int length, Random r, Vector3 origin, int topCut, int bottomCut, long seed) {
             super(length, r, origin);

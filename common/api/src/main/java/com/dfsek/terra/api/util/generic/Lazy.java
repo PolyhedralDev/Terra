@@ -11,15 +11,15 @@ public final class Lazy<T> {
         this.valueSupplier = valueSupplier;
     }
 
+    public static <T> Lazy<T> of(Supplier<T> valueSupplier) {
+        return new Lazy<>(valueSupplier);
+    }
+
     public T value() {
         if(!got && value == null) {
             got = true;
             value = valueSupplier.get();
         }
         return value;
-    }
-
-    public static <T> Lazy<T> of(Supplier<T> valueSupplier) {
-        return new Lazy<>(valueSupplier);
     }
 }

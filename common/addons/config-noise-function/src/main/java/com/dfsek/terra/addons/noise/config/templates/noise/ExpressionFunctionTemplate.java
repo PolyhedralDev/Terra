@@ -24,22 +24,18 @@ import java.util.Map;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFunction> implements ValidatedConfigTemplate {
+    private final Map<String, NoiseSeeded> otherFunctions;
     @Value("variables")
     @Default
     private Map<String, Double> vars = new HashMap<>();
-
     @Value("equation")
     private String equation;
-
     @Value("functions")
     @Default
     private LinkedHashMap<String, NoiseSeeded> functions = new LinkedHashMap<>();
-
     @Value("expressions")
     @Default
     private LinkedHashMap<String, FunctionTemplate> expressions = new LinkedHashMap<>();
-
-    private final Map<String, NoiseSeeded> otherFunctions;
 
     public ExpressionFunctionTemplate(Map<String, NoiseSeeded> otherFunctions) {
         this.otherFunctions = otherFunctions;

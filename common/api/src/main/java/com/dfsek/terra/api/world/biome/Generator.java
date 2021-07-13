@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.world.biome;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.generator.Palette;
 
 public interface Generator {
     /**
@@ -30,6 +29,7 @@ public interface Generator {
     double getWeight();
 
     PaletteSettings getPaletteSettings();
+
     NoiseSampler getBiomeNoise();
 
     double getElevationWeight();

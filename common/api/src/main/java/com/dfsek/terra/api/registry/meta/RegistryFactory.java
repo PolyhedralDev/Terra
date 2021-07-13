@@ -11,6 +11,7 @@ import java.util.function.Function;
 public interface RegistryFactory {
     /**
      * Create a generic OpenRegistry.
+     *
      * @param <T> Type of registry.
      * @return New OpenRegistry
      */
@@ -18,8 +19,9 @@ public interface RegistryFactory {
 
     /**
      * Create an OpenRegistry with custom {@link TypeLoader}
+     *
      * @param loader Function to create loader.
-     * @param <T> Type of registry.
+     * @param <T>    Type of registry.
      * @return New OpenRegistry.
      */
     <T> OpenRegistry<T> create(Function<OpenRegistry<T>, TypeLoader<T>> loader);

@@ -16,11 +16,11 @@ import org.spongepowered.asm.mixin.Shadow;
 @Implements(@Interface(iface = Sign.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class SignBlockEntityMixin {
     @Shadow
-    public abstract void setTextOnRow(int row, Text text);
-
-    @Shadow
     @Final
     private Text[] texts;
+
+    @Shadow
+    public abstract void setTextOnRow(int row, Text text);
 
     public @NotNull String[] terra$getLines() {
         String[] lines = new String[texts.length];

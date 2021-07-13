@@ -11,6 +11,7 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     private final BiConsumer<String, ConfigType<?, ?>> callback;
 
     private final TerraPlugin main;
+
     public ConfigTypeRegistry(TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;

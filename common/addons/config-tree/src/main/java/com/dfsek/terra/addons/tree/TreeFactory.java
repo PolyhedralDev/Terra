@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.tree;
 
+import com.dfsek.terra.addons.tree.tree.TerraTree;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.world.Tree;
-import com.dfsek.terra.addons.tree.tree.TerraTree;
 
 public class TreeFactory implements ConfigFactory<TreeTemplate, Tree> {
     @Override

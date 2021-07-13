@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.ore;
 
+import com.dfsek.terra.addons.ore.ores.Ore;
+import com.dfsek.terra.addons.ore.ores.VanillaOre;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.addons.ore.ores.Ore;
-import com.dfsek.terra.addons.ore.ores.VanillaOre;
 
 public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
     @Override

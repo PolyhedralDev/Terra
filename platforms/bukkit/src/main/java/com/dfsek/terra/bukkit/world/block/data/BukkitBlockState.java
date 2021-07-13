@@ -1,21 +1,9 @@
 package com.dfsek.terra.bukkit.world.block.data;
 
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Material;
-import org.bukkit.block.data.AnaloguePowerable;
-import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.block.data.Orientable;
-import org.bukkit.block.data.Rail;
-import org.bukkit.block.data.Rotatable;
-import org.bukkit.block.data.Waterlogged;
-import org.bukkit.block.data.type.RedstoneWire;
-import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.Stairs;
-import org.bukkit.block.data.type.Wall;
 
 public class BukkitBlockState implements BlockState {
     private org.bukkit.block.data.BlockData delegate;

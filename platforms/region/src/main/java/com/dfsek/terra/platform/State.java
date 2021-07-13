@@ -1,7 +1,7 @@
 package com.dfsek.terra.platform;
 
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
 import net.querz.nbt.tag.CompoundTag;
 
 public class State implements BlockState, BlockType {

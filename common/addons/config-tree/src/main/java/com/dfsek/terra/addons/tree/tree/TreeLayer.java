@@ -8,7 +8,6 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
-import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.Tree;
 
 public class TreeLayer {
@@ -45,9 +44,9 @@ public class TreeLayer {
         BlockState current;
         int i = 0;
         for(int ignored : level) {
-            current = chunk.getBlock((int) coords.getX(), level.getMax()-i, (int) coords.getZ());
+            current = chunk.getBlock((int) coords.getX(), level.getMax() - i, (int) coords.getZ());
             if(item.getSpawnable().contains(current.getBlockType())) {
-                item.plant(new Vector3((int) coords.getX(), level.getMax()-i, (int) coords.getZ()), chunk.getWorld(), PopulationUtil.getRandom(chunk, coords.hashCode()));
+                item.plant(new Vector3((int) coords.getX(), level.getMax() - i, (int) coords.getZ()), chunk.getWorld(), PopulationUtil.getRandom(chunk, coords.hashCode()));
             }
             i--;
         }

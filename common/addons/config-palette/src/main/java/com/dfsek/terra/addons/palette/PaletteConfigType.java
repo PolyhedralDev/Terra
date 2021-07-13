@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.palette;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.addons.palette.palette.PaletteImpl;
 import com.dfsek.terra.api.TerraPlugin;
@@ -11,7 +10,6 @@ import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.world.generator.Palette;
 
-import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {

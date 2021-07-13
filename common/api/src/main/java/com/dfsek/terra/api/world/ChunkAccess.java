@@ -10,9 +10,9 @@ public interface ChunkAccess extends Handle {
      * <p>
      * Setting blocks outside the chunk's bounds does nothing.
      *
-     * @param x         the x location in the chunk from 0-15 inclusive
-     * @param y         the y location in the chunk from 0 (inclusive) - maxHeight (exclusive)
-     * @param z         the z location in the chunk from 0-15 inclusive
+     * @param x          the x location in the chunk from 0-15 inclusive
+     * @param y          the y location in the chunk from 0 (inclusive) - maxHeight (exclusive)
+     * @param z          the z location in the chunk from 0-15 inclusive
      * @param blockState the type to set the block to
      */
     void setBlock(int x, int y, int z, @NotNull BlockState blockState);

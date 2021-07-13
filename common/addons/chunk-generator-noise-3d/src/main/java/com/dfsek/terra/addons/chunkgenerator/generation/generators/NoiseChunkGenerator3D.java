@@ -17,8 +17,8 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.Sampler;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,6 +33,24 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
+    }
+
+    @SuppressWarnings({"try"})
+    static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, TerraPlugin main) {
+        try(ProfileFrame ignore = main.getProfiler().profile("biomes")) {
+            int xOrig = (chunkX << 4);
+            int zOrig = (chunkZ << 4);
+            BiomeProvider grid = main.getWorld(world).getBiomeProvider();
+            for(int x = 0; x < 4; x++) {
+                for(int z = 0; z < 4; z++) {
+                    int cx = xOrig + (x << 2);
+                    int cz = zOrig + (z << 2);
+                    TerraBiome b = grid.getBiome(cx, cz);
+
+                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
+                }
+            }
+        }
     }
 
     @Override
@@ -85,7 +103,7 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
 
                             justSet = false;
                             paletteLevel = 0;
-                        } */else {
+                        } */ else {
 
                             justSet = false;
                             paletteLevel = 0;
@@ -114,24 +132,6 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
             return true;
         }
         return false;
-    }
-
-    @SuppressWarnings({"try"})
-    static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, TerraPlugin main) {
-        try(ProfileFrame ignore = main.getProfiler().profile("biomes")) {
-            int xOrig = (chunkX << 4);
-            int zOrig = (chunkZ << 4);
-            BiomeProvider grid = main.getWorld(world).getBiomeProvider();
-            for(int x = 0; x < 4; x++) {
-                for(int z = 0; z < 4; z++) {
-                    int cx = xOrig + (x << 2);
-                    int cz = zOrig + (z << 2);
-                    TerraBiome b = grid.getBiome(cx, cz);
-
-                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz));
-                }
-            }
-        }
     }
 
     @Override

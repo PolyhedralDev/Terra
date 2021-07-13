@@ -1,17 +1,17 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.dfsek.terra.api.vector.Vector2;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
+import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
 public class BiomeHolderImpl implements BiomeHolder {
     private final Vector2 origin;
     private final int width;
-    private TerraBiome[][] biomes;
     private final int offset;
+    private TerraBiome[][] biomes;
 
     public BiomeHolderImpl(int width, Vector2 origin) {
         width += 4;

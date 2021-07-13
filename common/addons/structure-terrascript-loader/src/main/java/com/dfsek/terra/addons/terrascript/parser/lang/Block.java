@@ -42,6 +42,20 @@ public class Block implements Item<Block.ReturnInfo<?>> {
         return position;
     }
 
+    public enum ReturnLevel {
+        NONE(false), BREAK(false), CONTINUE(false), RETURN(true), FAIL(true);
+
+        private final boolean returnFast;
+
+        ReturnLevel(boolean returnFast) {
+            this.returnFast = returnFast;
+        }
+
+        public boolean isReturnFast() {
+            return returnFast;
+        }
+    }
+
     public static class ReturnInfo<T> {
         private final ReturnLevel level;
         private final T data;
@@ -57,20 +71,6 @@ public class Block implements Item<Block.ReturnInfo<?>> {
 
         public T getData() {
             return data;
-        }
-    }
-
-    public enum ReturnLevel {
-        NONE(false), BREAK(false), CONTINUE(false), RETURN(true), FAIL(true);
-
-        private final boolean returnFast;
-
-        ReturnLevel(boolean returnFast) {
-            this.returnFast = returnFast;
-        }
-
-        public boolean isReturnFast() {
-            return returnFast;
         }
     }
 }

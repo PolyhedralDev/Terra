@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.biome;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
@@ -10,7 +9,6 @@ import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 
-import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 public class BiomeConfigType implements ConfigType<BiomeTemplate, BiomeBuilder> {

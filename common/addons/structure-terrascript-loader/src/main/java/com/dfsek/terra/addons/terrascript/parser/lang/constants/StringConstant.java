@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class StringConstant extends ConstantExpression<String> {
     public StringConstant(String constant, Position position) {

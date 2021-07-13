@@ -14,15 +14,12 @@ import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.util.logging.DebugLogger;
-import com.dfsek.terra.util.logging.JavaLogger;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -45,11 +42,14 @@ import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
+import com.dfsek.terra.util.logging.DebugLogger;
+import com.dfsek.terra.util.logging.JavaLogger;
 import com.dfsek.terra.world.TerraWorldImpl;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
@@ -68,23 +68,6 @@ import java.util.Objects;
 
 
 public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
-    private final Map<String, com.dfsek.terra.api.world.generator.TerraChunkGenerator> generatorMap = new HashMap<>();
-    private final Map<World, TerraWorld> worldMap = new HashMap<>();
-    private final Map<String, ConfigPack> worlds = new HashMap<>();
-
-    private final Profiler profiler = new ProfilerImpl();
-
-    private final ConfigRegistry registry = new ConfigRegistry();
-    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(registry);
-
-    private final PluginConfig config = new PluginConfigImpl();
-    private final ItemHandle itemHandle = new BukkitItemHandle();
-    private WorldHandle handle = new BukkitWorldHandle();
-    private final GenericLoaders genericLoaders = new GenericLoaders(this);
-    private DebugLogger debugLogger;
-
-
-    private final EventManager eventManager = new EventManagerImpl(this);
     public static final BukkitVersion BUKKIT_VERSION;
 
     static {
@@ -97,9 +80,20 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
 
+    private final Map<String, com.dfsek.terra.api.world.generator.TerraChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<World, TerraWorld> worldMap = new HashMap<>();
+    private final Map<String, ConfigPack> worlds = new HashMap<>();
+    private final Profiler profiler = new ProfilerImpl();
+    private final ConfigRegistry registry = new ConfigRegistry();
+    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(registry);
+    private final PluginConfig config = new PluginConfigImpl();
+    private final ItemHandle itemHandle = new BukkitItemHandle();
+    private final GenericLoaders genericLoaders = new GenericLoaders(this);
+    private final EventManager eventManager = new EventManagerImpl(this);
     private final AddonRegistry addonRegistry = new AddonRegistry(new BukkitAddon(this), this);
     private final LockedRegistryImpl<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
-
+    private WorldHandle handle = new BukkitWorldHandle();
+    private DebugLogger debugLogger;
 
     public boolean reload() {
         config.load(this);

@@ -30,17 +30,17 @@ public class Vector2 implements Cloneable {
         return x;
     }
 
+    public Vector2 setX(double x) {
+        this.x = x;
+        return this;
+    }
+
     public Vector2 clone() {
         try {
             return (Vector2) super.clone();
         } catch(CloneNotSupportedException e) {
             throw new Error(e);
         }
-    }
-
-    public Vector2 setX(double x) {
-        this.x = x;
-        return this;
     }
 
     /**

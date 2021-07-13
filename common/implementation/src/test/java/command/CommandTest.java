@@ -2,7 +2,6 @@ package command;
 
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
-import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
@@ -15,6 +14,7 @@ import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.command.exception.InvalidArgumentsException;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.commands.TerraCommandManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

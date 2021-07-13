@@ -72,7 +72,7 @@ public class TerraWorldImpl implements TerraWorld {
             return palette.get(level, x, y, z);
         } /* else if(y <= biome.getConfig().getSeaLevel()) {
             return biome.getConfig().getOceanPalette().get(biome.getConfig().getSeaLevel() - y, x, y, z);
-        } */else return air;
+        } */ else return air;
     }
 
     @Override
