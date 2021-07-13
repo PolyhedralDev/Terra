@@ -22,12 +22,10 @@ dependencies {
 
     "shadedApi"("com.dfsek:Paralithic:0.3.2")
     "shadedApi"("net.jafama:jafama:2.3.2")
-    "shadedApi"("org.yaml:snakeyaml:1.27")
     "shadedApi"("org.ow2.asm:asm:9.0")
     "shadedApi"("commons-io:commons-io:2.6")
 
     "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
-    "shadedApi"("org.yaml:snakeyaml:1.27")
 
     "compileOnly"("com.google.guava:guava:30.0-jre")
 
