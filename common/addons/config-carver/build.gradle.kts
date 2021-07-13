@@ -18,7 +18,6 @@ dependencies {
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
 
 
-    "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
 
     "compileOnly"("com.google.guava:guava:30.0-jre")
 

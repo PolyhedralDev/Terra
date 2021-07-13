@@ -22,7 +22,6 @@ dependencies {
     "shadedApi"("org.yaml:snakeyaml:1.27")
     "shadedApi"("org.ow2.asm:asm:9.0")
 
-    "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
 
     "compileOnly"("com.google.guava:guava:30.0-jre")
 
