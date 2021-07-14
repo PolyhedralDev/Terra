@@ -1,6 +1,5 @@
 package com.dfsek.terra.config.fileloaders;
 
-import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.util.function.ExceptionalConsumer;
@@ -15,21 +14,6 @@ import java.util.Set;
 
 public abstract class LoaderImpl implements Loader {
     protected final Map<String, InputStream> streams = new HashMap<>();
-
-    /**
-     * Do something with the InputStreams.
-     *
-     * @param consumer Something to do with the streams.
-     */
-    @Override
-    public Loader then(ExceptionalConsumer<List<Configuration>> consumer) throws ConfigException {
-        List<Configuration> list = new ArrayList<>();
-        streams.forEach((id, stream) -> {
-            list.add(new Configuration(stream, id));
-        });
-        consumer.accept(list);
-        return this;
-    }
 
     @Override
     public Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException {

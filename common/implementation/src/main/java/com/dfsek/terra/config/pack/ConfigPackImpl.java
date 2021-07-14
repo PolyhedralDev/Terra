@@ -2,7 +2,7 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
-import com.dfsek.tectonic.abstraction.TemplateProvider;
+import com.dfsek.tectonic.abstraction.AbstractConfiguration;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
@@ -11,15 +11,16 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
@@ -106,7 +107,7 @@ public class ConfigPackImpl implements ConfigPack {
             File pack = new File(folder, "pack.yml");
 
             try {
-                configuration = new Configuration(new FileInputStream(pack));
+                this.configuration = new YamlConfiguration(new FileInputStream(pack), "pack.yml");
 
                 ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
                 selfLoader.load(addonsTemplate, configuration);
@@ -120,7 +121,7 @@ public class ConfigPackImpl implements ConfigPack {
                 load(l, main);
 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
-                selfLoader.load(packPostTemplate, new FileInputStream(pack));
+                selfLoader.load(packPostTemplate, configuration);
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
                 checkDeadEntries(main);
@@ -162,7 +163,7 @@ public class ConfigPackImpl implements ConfigPack {
 
                 if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
 
-                configuration = new Configuration(file.getInputStream(pack));
+                this.configuration = new YamlConfiguration(file.getInputStream(pack), "pack.yml");
 
                 ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
                 selfLoader.load(addonsTemplate, configuration);
@@ -178,7 +179,7 @@ public class ConfigPackImpl implements ConfigPack {
 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
 
-                selfLoader.load(packPostTemplate, file.getInputStream(pack));
+                selfLoader.load(packPostTemplate, configuration);
                 biomeProviderBuilder = packPostTemplate.getProviderBuilder();
                 biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
                 checkDeadEntries(main);
@@ -225,7 +226,7 @@ public class ConfigPackImpl implements ConfigPack {
 
         List<Configuration> configurations = new ArrayList<>();
 
-        loader.open("", ".yml").thenEntries(entries -> entries.forEach(stream -> configurations.add(new Configuration(stream.getValue(), stream.getKey()))));
+        main.getEventManager().callEvent(new ConfigurationLoadEvent(this, loader, configurations::add));
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
@@ -236,9 +237,10 @@ public class ConfigPackImpl implements ConfigPack {
         }
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) {
-            for(AbstractableTemplate config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()), () -> configType.getTemplate(this, main))) {
+            CheckedRegistry registry = getCheckedRegistry(configType.getTypeClass());
+            for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {
-                    ((CheckedRegistry) getCheckedRegistry(configType.getTypeClass())).register(config.getID(), ((ConfigFactory) configType.getFactory()).build(config, main));
+                    registry.register(config.getID(), ((ConfigFactory) configType.getFactory()).build(selfLoader.load(configType.getTemplate(this, main), config), main));
                 } catch(DuplicateEntryException e) {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }

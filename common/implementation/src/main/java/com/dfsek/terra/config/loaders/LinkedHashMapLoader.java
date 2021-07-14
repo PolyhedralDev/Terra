@@ -4,6 +4,8 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -12,13 +14,13 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class LinkedHashMapLoader implements TypeLoader<LinkedHashMap<Object, Object>> {
     @Override
-    public LinkedHashMap<Object, Object> load(Type t, Object c, ConfigLoader loader) throws LoadException {
+    public LinkedHashMap<Object, Object> load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> config = (Map<String, Object>) c;
         LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
-        if(t instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) t;
-            Type key = pType.getActualTypeArguments()[0];
-            Type value = pType.getActualTypeArguments()[1];
+        if(t instanceof AnnotatedParameterizedType) {
+            AnnotatedParameterizedType pType = (AnnotatedParameterizedType) t;
+            AnnotatedType key = pType.getAnnotatedActualTypeArguments()[0];
+            AnnotatedType value = pType.getAnnotatedActualTypeArguments()[1];
             for(Map.Entry<String, Object> entry : config.entrySet()) {
                 map.put(loader.loadType(key, entry.getKey()), loader.loadType(value, entry.getValue()));
             }

@@ -11,12 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 public interface Loader {
-    /**
-     * Do something with the InputStreams.
-     *
-     * @param consumer Something to do with the streams.
-     */
-    Loader then(ExceptionalConsumer<List<Configuration>> consumer) throws ConfigException;
 
     Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException;
 

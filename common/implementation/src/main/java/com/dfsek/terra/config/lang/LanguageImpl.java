@@ -2,6 +2,7 @@ package com.dfsek.terra.config.lang;
 
 
 import com.dfsek.tectonic.config.Configuration;
+import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Message;
 
@@ -16,7 +17,7 @@ public class LanguageImpl implements com.dfsek.terra.api.lang.Language {
     private final Configuration configuration;
 
     public LanguageImpl(File file) throws IOException {
-        configuration = new Configuration(new FileInputStream(file));
+        configuration = new YamlConfiguration(new FileInputStream(file), file.getName());
     }
 
     @Override

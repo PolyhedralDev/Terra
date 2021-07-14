@@ -1,6 +1,5 @@
 package com.dfsek.terra.fabric;
 
-import com.dfsek.tectonic.abstraction.TemplateProvider;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeLoader;
@@ -83,6 +82,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
@@ -93,7 +93,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
 
     private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
-    private final Map<Type, TemplateProvider<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
+    private final Map<Type, Supplier<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
     private final EventManager eventManager = new EventManagerImpl(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
@@ -244,7 +244,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     return identifier;
                 });
         loaders.forEach(registry::registerLoader);
-        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (TemplateProvider<ObjectTemplate<Object>>) ((Object) l)));
+        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (Supplier<ObjectTemplate<Object>>) ((Object) l)));
     }
 
     @Override
@@ -301,8 +301,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> TerraFabricPlugin applyLoader(Type type, TemplateProvider<ObjectTemplate<T>> loader) {
-        objectLoaders.put(type, (TemplateProvider<ObjectTemplate<?>>) ((Object) loader));
+    public <T> TerraFabricPlugin applyLoader(Type type, Supplier<ObjectTemplate<T>> loader) {
+        objectLoaders.put(type, (Supplier<ObjectTemplate<?>>) ((Object) loader));
         return this;
     }
 

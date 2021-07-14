@@ -5,6 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.JarUtil;
@@ -80,7 +81,7 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
         logger.info("Loading config values");
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();
-            loader.load(this, file);
+            loader.load(this, new YamlConfiguration(file, "config.yml"));
             if(dumpDefaultConfig) { // Don't dump default config if already loaded.
                 try(JarFile jar = main.getModJar()) {
                     JarUtil.copyResourcesToDirectory(jar, "packs", new File(main.getDataFolder(), "packs").toString());

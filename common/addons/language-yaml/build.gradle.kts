@@ -16,8 +16,6 @@ dependencies {
     "shadedApi"(project(":common:api"))
     "compileOnly"("com.google.guava:guava:30.0-jre")
 
-    "shadedApi"("com.dfsek.tectonic:yaml:2.0.0")
-
     "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 
