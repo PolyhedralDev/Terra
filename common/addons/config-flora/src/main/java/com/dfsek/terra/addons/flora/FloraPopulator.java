@@ -8,6 +8,7 @@ import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,6 @@ public class FloraPopulator implements TerraGenerationStage {
         try(ProfileFrame ignore = main.getProfiler().profile("flora")) {
             if(tw.getConfig().disableFlora()) return;
 
-            if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();
             for(int x = 0; x < 16; x++) {

@@ -33,6 +33,7 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
+        c.getStages().forEach(stage -> blockPopulators.add(stage.newInstance(c)));
     }
 
     @SuppressWarnings({"try"})
@@ -70,7 +71,6 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
             TerraWorld tw = main.getWorld(world);
             BiomeProvider grid = tw.getBiomeProvider();
 
-            if(!tw.isSafe()) return chunk;
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
 

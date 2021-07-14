@@ -30,6 +30,7 @@ import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
+import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -243,7 +244,7 @@ public class ConfigPackImpl implements ConfigPack {
                 try {
                     Object loaded = ((ConfigFactory) configType.getFactory()).build(selfLoader.load(configType.getTemplate(this, main), config), main);
                     registry.register(config.getID(), loaded);
-                    main.getEventManager().callEvent(new ConfigLoadEvent(this, config, template -> selfLoader.load(template, configuration), configType, loaded));
+                    main.getEventManager().callEvent(new ConfigLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
                 } catch(DuplicateEntryException e) {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }
@@ -304,6 +305,11 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public WorldConfigImpl toWorldConfig(TerraWorld world) {
         return new WorldConfigImpl(world, this, main);
+    }
+
+    @Override
+    public List<GenerationStageProvider> getStages() {
+        return template.getStages();
     }
 
     @Override

@@ -12,8 +12,6 @@ public interface TerraWorld {
 
     WorldConfig getConfig();
 
-    boolean isSafe();
-
     /**
      * Get a block at an ungenerated location
      *

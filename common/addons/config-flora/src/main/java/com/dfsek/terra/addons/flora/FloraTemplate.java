@@ -4,8 +4,12 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.flora.flora.TerraFlora;
+import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+
+import java.util.List;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class FloraTemplate implements AbstractableTemplate {
@@ -52,6 +56,20 @@ public class FloraTemplate implements AbstractableTemplate {
     @Value("irrigable-offset")
     @Default
     private int irrigableOffset;
+
+    @Value("layers")
+    private List<BlockLayer> layers;
+
+    @Value("layer-distribution")
+    private NoiseSeeded noiseDistribution;
+
+    public NoiseSeeded getNoiseDistribution() {
+        return noiseDistribution;
+    }
+
+    public List<BlockLayer> getLayers() {
+        return layers;
+    }
 
     public int getIrrigableOffset() {
         return irrigableOffset;

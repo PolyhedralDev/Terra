@@ -26,7 +26,6 @@ public class OrePopulator implements TerraGenerationStage {
         try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
             if(tw.getConfig().disableOres()) return;
 
-            if(!tw.isSafe()) return;
             for(int cx = -1; cx <= 1; cx++) {
                 for(int cz = -1; cz <= 1; cz++) {
                     Random random = new Random(PopulationUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));

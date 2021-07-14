@@ -17,7 +17,6 @@ import net.jafama.FastMath;
 public class TerraWorldImpl implements TerraWorld {
     private final BiomeProvider provider;
     private final WorldConfigImpl config;
-    private final boolean safe;
     private final World world;
     private final BlockState air;
 
@@ -29,7 +28,6 @@ public class TerraWorldImpl implements TerraWorld {
         this.provider = config.getProvider();
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
         this.air = main.getWorldHandle().air();
-        safe = true;
     }
 
 
@@ -47,11 +45,6 @@ public class TerraWorldImpl implements TerraWorld {
     @Override
     public WorldConfigImpl getConfig() {
         return config;
-    }
-
-    @Override
-    public boolean isSafe() {
-        return safe;
     }
 
 

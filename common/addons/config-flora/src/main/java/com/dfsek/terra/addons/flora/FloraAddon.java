@@ -1,6 +1,8 @@
 package com.dfsek.terra.addons.flora;
 
+import com.dfsek.terra.addons.flora.config.BlockLayerTemplate;
 import com.dfsek.terra.addons.flora.flora.FloraLayer;
+import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -15,6 +17,7 @@ import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,8 @@ public class FloraAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
-        main.applyLoader(FloraLayer.class, FloraLayerLoader::new);
+        main.applyLoader(FloraLayer.class, FloraLayerLoader::new)
+                .applyLoader(BlockLayer.class, BlockLayerTemplate::new);
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
@@ -46,6 +50,6 @@ public class FloraAddon extends TerraAddon implements EventListener {
     }
 
     public List<FloraLayer> getFlora(TerraBiome biome) {
-        return flora.get(biome.getID());
+        return flora.getOrDefault(biome.getID(), Collections.emptyList());
     }
 }

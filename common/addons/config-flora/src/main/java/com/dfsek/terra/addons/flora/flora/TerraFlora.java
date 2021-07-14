@@ -1,16 +1,18 @@
 package com.dfsek.terra.addons.flora.flora;
 
+import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.Flora;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.Palette;
 import net.jafama.FastMath;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 public class TerraFlora implements Flora {
-    private final Palette floraPalette;
+    private final List<ProbabilityCollection<BlockState>> layers;
     private final boolean physics;
     private final boolean ceiling;
 
@@ -40,8 +42,9 @@ public class TerraFlora implements Flora {
 
     private final TerraPlugin main;
 
-    public TerraFlora(Palette floraPalette, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraPlugin main) {
-        this.floraPalette = floraPalette;
+    private final NoiseSampler distribution;
+
+    public TerraFlora(List<BlockLayer> layers, boolean physics, boolean ceiling, MaterialSet irrigable, MaterialSet spawnable, MaterialSet replaceable, MaterialSet testRotation, int maxPlacements, Search search, boolean spawnBlacklist, int irrigableOffset, TerraPlugin main, NoiseSampler distribution) {
         this.physics = physics;
         this.testRotation = testRotation;
         this.spawnBlacklist = spawnBlacklist;
@@ -53,11 +56,19 @@ public class TerraFlora implements Flora {
         this.search = search;
         this.irrigableOffset = irrigableOffset;
         this.main = main;
+        this.distribution = distribution;
+
+        this.layers = new ArrayList<>();
+        layers.forEach(layer -> {
+            for(int i = 0; i < layer.getLayers(); i++) {
+                this.layers.add(layer.getBlocks());
+            }
+        });
     }
 
     @Override
     public List<Vector3> getValidSpawnsAt(Chunk chunk, int x, int z, Range range) {
-        int size = floraPalette.getSize();
+        int size = layers.size();
         Vector3 current = new Vector3(x, search.equals(Search.UP) ? range.getMin() : range.getMax(), z);
         List<Vector3> blocks = new ArrayList<>();
         int cx = chunk.getX() << 4;
@@ -90,11 +101,14 @@ public class TerraFlora implements Flora {
                 || irrigable.contains(world.getBlockData(b.getBlockX(), b.getBlockY(), b.getBlockZ() - 1).getBlockType());
     }
 
+    private ProbabilityCollection<BlockState> getStateCollection(int layer) {
+        return layers.get(FastMath.max(FastMath.min(layer, layers.size()-1), 0));
+    }
 
     @Override
     public boolean plant(Vector3 location, World world) {
         boolean doRotation = testRotation.size() > 0;
-        int size = floraPalette.getSize();
+        int size = layers.size();
         int c = ceiling ? -1 : 1;
 
         EnumSet<Direction> faces = doRotation ? getFaces(location.clone().add(0, c, 0), world) : EnumSet.noneOf(Direction.class);
@@ -102,7 +116,7 @@ public class TerraFlora implements Flora {
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
-            BlockState data = floraPalette.get((ceiling ? lvl : size - lvl - 1), location.getX(), location.getY(), location.getZ()).clone();
+            BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(), location.getZ()).clone();
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(new Random(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
 

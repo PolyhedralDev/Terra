@@ -8,6 +8,7 @@ import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
@@ -56,7 +57,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     private boolean disableSaplings = false;
 
     @Value("stages")
-    private LinkedHashMap<String, GenerationStageProvider> stages;
+    private List<GenerationStageProvider> stages;
 
     @Value("version")
     @Default
@@ -89,7 +90,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
         return generatorProvider;
     }
 
-    public LinkedHashMap<String, GenerationStageProvider> getStages() {
+    public List<GenerationStageProvider> getStages() {
         return stages;
     }
 

@@ -9,7 +9,9 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
+import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,8 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz);
 
     WorldConfig toWorldConfig(TerraWorld world);
+
+    List<GenerationStageProvider> getStages();
 
     void registerConfigType(ConfigType<?, ?> type, String id, int priority);
 

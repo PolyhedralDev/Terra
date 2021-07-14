@@ -32,7 +32,6 @@ public class TreePopulator implements TerraGenerationStage {
         try(ProfileFrame ignore = main.getProfiler().profile("tree")) {
             if(tw.getConfig().disableTrees()) return;
 
-            if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
             Random random = PopulationUtil.getRandom(chunk);
             for(int x = 0; x < 16; x += 2) {

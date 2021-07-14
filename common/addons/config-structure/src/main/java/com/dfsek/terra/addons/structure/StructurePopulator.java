@@ -34,7 +34,6 @@ public class StructurePopulator implements TerraGenerationStage, Chunkified {
 
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
-            if(!tw.isSafe()) return;
             BiomeProvider provider = tw.getBiomeProvider();
             WorldConfig config = tw.getConfig();
             for(ConfiguredStructure conf : config.getRegistry(TerraStructure.class).entries()) {

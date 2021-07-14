@@ -34,7 +34,6 @@ public class CavePopulator implements TerraGenerationStage, Chunkified {
         WorldHandle handle = main.getWorldHandle();
         try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
-            if(!tw.isSafe()) return;
             WorldConfig config = tw.getConfig();
             if(config.disableCarving()) return;
 

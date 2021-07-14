@@ -37,7 +37,9 @@ public class FloraLayer {
     }
 
     public void place(Chunk chunk, Vector2 coords) {
-        Flora item = layer.get(noise, (chunk.getX() << 4) + coords.getX(), (chunk.getZ() << 4) + coords.getZ());
-        item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block, chunk.getWorld()));
+        int cx = (chunk.getX() << 4);
+        int cz = (chunk.getZ() << 4);
+        Flora item = layer.get(noise, cx + coords.getX(), cz + coords.getZ());
+        item.getValidSpawnsAt(chunk, (int) coords.getX(), (int) coords.getZ(), level).forEach(block -> item.plant(block.add(cx, 0, cz), chunk.getWorld()));
     }
 }
