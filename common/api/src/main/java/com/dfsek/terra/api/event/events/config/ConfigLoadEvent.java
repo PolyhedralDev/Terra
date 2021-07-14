@@ -17,11 +17,14 @@ public class ConfigLoadEvent implements PackEvent {
     private final Consumer<ConfigTemplate> loader;
     private final ConfigType<?, ?> type;
 
-    public ConfigLoadEvent(ConfigPack pack, AbstractConfiguration configuration, Consumer<ConfigTemplate> loader, ConfigType<?, ?> type) {
+    private final Object loaded;
+
+    public ConfigLoadEvent(ConfigPack pack, AbstractConfiguration configuration, Consumer<ConfigTemplate> loader, ConfigType<?, ?> type, Object loaded) {
         this.pack = pack;
         this.configuration = configuration;
         this.loader = loader;
         this.type = type;
+        this.loaded = loaded;
     }
 
     @Override
@@ -40,5 +43,11 @@ public class ConfigLoadEvent implements PackEvent {
 
     public ConfigType<?, ?> getType() {
         return type;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getLoadedObject(Class<T> clazz) {
+        if(!clazz.isAssignableFrom(type.getTypeClass())) throw new ClassCastException("Cannot assign object from loader of type " + type.getTypeClass().getCanonicalName() + " to class " + clazz.getCanonicalName());
+        return (T) loaded;
     }
 }
