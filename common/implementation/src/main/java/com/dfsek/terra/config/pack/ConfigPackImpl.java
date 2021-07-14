@@ -18,6 +18,7 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.event.events.config.ConfigLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
@@ -241,6 +242,7 @@ public class ConfigPackImpl implements ConfigPack {
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {
                     registry.register(config.getID(), ((ConfigFactory) configType.getFactory()).build(selfLoader.load(configType.getTemplate(this, main), config), main));
+                    main.getEventManager().callEvent(new ConfigLoadEvent(this, config, template -> selfLoader.load(template, configuration), configType));
                 } catch(DuplicateEntryException e) {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }
