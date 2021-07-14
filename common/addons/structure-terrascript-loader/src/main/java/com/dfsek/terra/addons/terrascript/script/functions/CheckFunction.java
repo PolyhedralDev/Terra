@@ -48,6 +48,8 @@ public class CheckFunction implements Function<String> {
     }
 
     private String apply(Vector3 vector, World world) {
+        int y = vector.getBlockY();
+        if(y >= world.getMaxHeight() || y < 0) return "AIR";
         TerraWorld tw = main.getWorld(world);
         SamplerCache cache = tw.getConfig().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);
@@ -57,8 +59,8 @@ public class CheckFunction implements Function<String> {
         //BiomeProvider provider = tw.getBiomeProvider();
         //TerraBiome b = provider.getBiome(vector.getBlockX(), vector.getBlockZ());
 
-        //if(vector.getY() > c.getSeaLevel()) return "AIR"; // Above sea level
-        return "OCEAN"; // Below sea level
+        /*if(vector.getY() > c.getSeaLevel())*/ return "AIR"; // Above sea level
+        //return "OCEAN"; // Below sea level
     }
 
     private double sample(int x, int y, int z, SamplerCache cache) {

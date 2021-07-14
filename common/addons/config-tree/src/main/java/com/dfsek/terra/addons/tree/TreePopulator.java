@@ -1,8 +1,10 @@
 package com.dfsek.terra.addons.tree;
 
+import com.dfsek.terra.addons.tree.tree.TreeLayer;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
+import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
@@ -16,9 +18,11 @@ import java.util.Random;
 
 public class TreePopulator implements TerraGenerationStage {
     private final TerraPlugin main;
+    private final TreeAddon addon;
 
-    public TreePopulator(TerraPlugin main) {
+    public TreePopulator(TerraPlugin main, TreeAddon addon) {
         this.main = main;
+        this.addon = addon;
     }
 
     private static int offset(Random r, int i) {
@@ -36,14 +40,11 @@ public class TreePopulator implements TerraGenerationStage {
             Random random = PopulationUtil.getRandom(chunk);
             for(int x = 0; x < 16; x += 2) {
                 for(int z = 0; z < 16; z += 2) {
-                    /*
-                    UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    for(TreeLayer layer : biome.getConfig().getTrees()) {
+                    for(TreeLayer layer : addon.getTrees(provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z))) {
                         if(layer.getDensity() >= random.nextDouble() * 100) {
                             layer.place(chunk, new Vector2(offset(random, x), offset(random, z)));
                         }
                     }
-                     */
                 }
             }
         }

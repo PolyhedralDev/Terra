@@ -42,13 +42,13 @@ public class TreeLayer {
     public void place(Chunk chunk, Vector2 coords) {
         Tree item = layer.get(noise, coords.getX(), coords.getZ());
         BlockState current;
-        int i = 0;
-        for(int ignored : level) {
-            current = chunk.getBlock((int) coords.getX(), level.getMax() - i, (int) coords.getZ());
+        int cx = (chunk.getX()) << 4;
+        int cz = (chunk.getZ()) << 4;
+        for(int y : level) {
+            current = chunk.getBlock((int) coords.getX(), y, (int) coords.getZ());
             if(item.getSpawnable().contains(current.getBlockType())) {
-                item.plant(new Vector3((int) coords.getX(), level.getMax() - i, (int) coords.getZ()), chunk.getWorld(), PopulationUtil.getRandom(chunk, coords.hashCode()));
+                item.plant(new Vector3((int) coords.getX() + cx, y+1, (int) coords.getZ() + cz), chunk.getWorld(), PopulationUtil.getRandom(chunk, coords.hashCode()));
             }
-            i--;
         }
     }
 }
