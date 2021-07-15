@@ -20,10 +20,9 @@ public class StructureAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
-        main.applyLoader(ConfiguredStructure.class, (t, o, l) -> null);
     }
 
     public void onConfigLoad(ConfigPackPreLoadEvent event) {
-
+        event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null);
     }
 }

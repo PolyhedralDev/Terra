@@ -22,11 +22,11 @@ public class BiomeConfigAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
-        main.applyLoader(PaletteHolder.class, new PaletteHolderLoader())
-                .applyLoader(SlantHolder.class, (t, o, l) -> null);
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
         event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
+        event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader())
+                .applyLoader(SlantHolder.class, (t, o, l) -> null);
     }
 }

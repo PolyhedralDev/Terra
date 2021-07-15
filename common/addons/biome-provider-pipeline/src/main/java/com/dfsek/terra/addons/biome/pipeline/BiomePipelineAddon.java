@@ -19,6 +19,7 @@ import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
+import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.api.util.seeded.SourceSeeded;
@@ -34,7 +35,11 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
 
     @Override
     public void initialize() {
-        main.applyLoader(SourceSeeded.class, new SourceBuilderLoader())
+        main.getEventManager().registerListener(this, this);
+    }
+
+    public void onPackLoad(ConfigPackPreLoadEvent event) {
+        event.getPack().applyLoader(SourceSeeded.class, new SourceBuilderLoader())
                 .applyLoader(StageSeeded.class, new StageBuilderLoader())
                 .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                 .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))

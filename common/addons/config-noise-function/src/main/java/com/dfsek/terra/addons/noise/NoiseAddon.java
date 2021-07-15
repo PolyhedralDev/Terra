@@ -51,7 +51,13 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         plugin.getEventManager().registerListener(this, this);
-        plugin.applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
+    }
+
+    public void packPreLoad(ConfigPackPreLoadEvent event) {
+        CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getOrCreateRegistry(NoiseProvider.class);
+        event.getPack()
+                .applyLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
+                .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .applyLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
@@ -59,47 +65,40 @@ public class NoiseAddon extends TerraAddon implements EventListener {
                 .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
                 .applyLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
                 .applyLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object));
-    }
 
-    @SuppressWarnings("deprecation")
-    public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getOrCreateRegistry(NoiseProvider.class);
-        event.getPack()
-                .applyLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry));
+        noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
+        noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
+        noiseRegistry.register("CLAMP", ClampNormalizerTemplate::new);
 
-        noiseRegistry.registerUnchecked("LINEAR", LinearNormalizerTemplate::new);
-        noiseRegistry.registerUnchecked("NORMAL", NormalNormalizerTemplate::new);
-        noiseRegistry.registerUnchecked("CLAMP", ClampNormalizerTemplate::new);
+        noiseRegistry.register("IMAGE", ImageSamplerTemplate::new);
 
-        noiseRegistry.registerUnchecked("IMAGE", ImageSamplerTemplate::new);
+        noiseRegistry.register("DOMAINWARP", DomainWarpTemplate::new);
 
-        noiseRegistry.registerUnchecked("DOMAINWARP", DomainWarpTemplate::new);
+        noiseRegistry.register("FBM", BrownianMotionTemplate::new);
+        noiseRegistry.register("PINGPONG", PingPongTemplate::new);
+        noiseRegistry.register("RIDGED", RidgedFractalTemplate::new);
 
-        noiseRegistry.registerUnchecked("FBM", BrownianMotionTemplate::new);
-        noiseRegistry.registerUnchecked("PINGPONG", PingPongTemplate::new);
-        noiseRegistry.registerUnchecked("RIDGED", RidgedFractalTemplate::new);
-
-        noiseRegistry.registerUnchecked("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
-        noiseRegistry.registerUnchecked("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
-        noiseRegistry.registerUnchecked("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
-        noiseRegistry.registerUnchecked("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
-        noiseRegistry.registerUnchecked("GABOR", GaborNoiseTemplate::new);
+        noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
+        noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
+        noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
+        noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
+        noiseRegistry.register("GABOR", GaborNoiseTemplate::new);
 
 
-        noiseRegistry.registerUnchecked("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
-        noiseRegistry.registerUnchecked("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
+        noiseRegistry.register("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
+        noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
 
-        noiseRegistry.registerUnchecked("CELLULAR", CellularNoiseTemplate::new);
+        noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
 
-        noiseRegistry.registerUnchecked("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
-        noiseRegistry.registerUnchecked("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+        noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+        noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
 
-        noiseRegistry.registerUnchecked("CONSTANT", ConstantNoiseTemplate::new);
+        noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
 
-        noiseRegistry.registerUnchecked("KERNEL", KernelTemplate::new);
+        noiseRegistry.register("KERNEL", KernelTemplate::new);
 
         Map<String, NoiseSeeded> packFunctions = new HashMap<>();
-        noiseRegistry.registerUnchecked("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
+        noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
 
 
         try {

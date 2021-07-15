@@ -161,14 +161,4 @@ public class StandalonePlugin implements TerraPlugin {
     public Profiler getProfiler() {
         return profiler;
     }
-
-    @Override
-    public <T> LoaderHolder applyLoader(Type type, TypeLoader<T> loader) {
-        return null;
-    }
-
-    @Override
-    public <T> LoaderHolder applyLoader(Type type, Supplier<ObjectTemplate<T>> loader) {
-        return null;
-    }
 }

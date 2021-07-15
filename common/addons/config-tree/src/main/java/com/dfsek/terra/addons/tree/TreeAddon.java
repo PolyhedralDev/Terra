@@ -33,12 +33,12 @@ public class TreeAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
-        main.applyLoader(TreeLayer.class, TreeLayerTemplate::new);
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
         event.getPack().registerConfigType(new TreeConfigType(event.getPack()), "TREE", 2);
         event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("TREE", pack -> new TreePopulator(main, this));
+        event.getPack().applyLoader(TreeLayer.class, TreeLayerTemplate::new);
     }
 
     public void onBiomeLoad(ConfigLoadEvent event) {

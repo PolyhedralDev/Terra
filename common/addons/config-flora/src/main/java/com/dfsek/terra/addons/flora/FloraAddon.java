@@ -34,13 +34,13 @@ public class FloraAddon extends TerraAddon implements EventListener {
     @Override
     public void initialize() {
         main.getEventManager().registerListener(this, this);
-        main.applyLoader(FloraLayer.class, FloraLayerLoader::new)
-                .applyLoader(BlockLayer.class, BlockLayerTemplate::new);
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
         event.getPack().registerConfigType(new FloraConfigType(event.getPack()), "FLORA", 2);
         event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FLORA", pack -> new FloraPopulator(main, this));
+        event.getPack().applyLoader(FloraLayer.class, FloraLayerLoader::new)
+                .applyLoader(BlockLayer.class, BlockLayerTemplate::new);
     }
 
     public void onBiomeLoad(ConfigLoadEvent event) {

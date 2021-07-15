@@ -24,7 +24,7 @@ import java.util.jar.JarFile;
 /**
  * Represents a Terra mod/plugin instance.
  */
-public interface TerraPlugin extends LoaderRegistrar, LoaderHolder {
+public interface TerraPlugin extends LoaderRegistrar {
     WorldHandle getWorldHandle();
 
     TerraWorld getWorld(World world);

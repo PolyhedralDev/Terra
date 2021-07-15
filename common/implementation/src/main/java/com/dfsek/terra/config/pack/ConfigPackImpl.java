@@ -232,17 +232,17 @@ public class ConfigPackImpl implements ConfigPack {
 
         List<Configuration> configurations = new ArrayList<>();
 
-        main.getEventManager().callEvent(new ConfigurationLoadEvent(this, loader, configurations::add));
+        main.getEventManager().callEvent(new ConfigurationLoadEvent(this, loader, configurations::add)); // Create all the configs.
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
-        for(Configuration configuration : configurations) {
+        for(Configuration configuration : configurations) { // Sort the configs
             ProtoConfig config = new ProtoConfig();
             selfLoader.load(config, configuration);
             configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
         }
 
-        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) {
+        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
             CheckedRegistry registry = getCheckedRegistry(configType.getTypeClass());
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {

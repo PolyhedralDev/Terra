@@ -91,9 +91,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     private static TerraFabricPlugin instance;
     private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
     private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
-
-    private final Map<Type, TypeLoader<?>> loaders = new HashMap<>();
-    private final Map<Type, Supplier<ObjectTemplate<?>>> objectLoaders = new HashMap<>();
     private final EventManager eventManager = new EventManagerImpl(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
@@ -243,8 +240,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);
                     return identifier;
                 });
-        loaders.forEach(registry::registerLoader);
-        objectLoaders.forEach((t, l) -> registry.registerLoader(t, (Supplier<ObjectTemplate<Object>>) ((Object) l)));
     }
 
     @Override
@@ -291,19 +286,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public Profiler getProfiler() {
         return profiler;
-    }
-
-    @Override
-    public <T> TerraFabricPlugin applyLoader(Type type, TypeLoader<T> loader) {
-        loaders.put(type, loader);
-        return this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TerraFabricPlugin applyLoader(Type type, Supplier<ObjectTemplate<T>> loader) {
-        objectLoaders.put(type, (Supplier<ObjectTemplate<?>>) ((Object) loader));
-        return this;
     }
 
     @Addon("Terra-Fabric")
