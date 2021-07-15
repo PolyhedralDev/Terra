@@ -82,22 +82,18 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final BiomeProviderBuilder biomeProviderBuilder;
 
+    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
     private final ConfigTypeRegistry configTypeRegistry;
-    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
+
 
     private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
 
     public ConfigPackImpl(File folder, TerraPlugin main) throws ConfigException {
         try {
-            this.configTypeRegistry = new ConfigTypeRegistry(main, (id, configType) -> {
-                OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
-                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
-                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
-            });
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
+            this.configTypeRegistry = createRegistry();
             long l = System.nanoTime();
 
             register(abstractConfigLoader);
@@ -139,14 +135,9 @@ public class ConfigPackImpl implements ConfigPack {
 
     public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
         try {
-            this.configTypeRegistry = new ConfigTypeRegistry(main, (id, configType) -> {
-                OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-                selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
-                abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
-                registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
-            });
             this.loader = new ZIPLoader(file);
             this.main = main;
+            this.configTypeRegistry = createRegistry();
             long l = System.nanoTime();
 
             register(selfLoader);
@@ -194,6 +185,19 @@ public class ConfigPackImpl implements ConfigPack {
         }
 
         toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+    }
+
+    private ConfigTypeRegistry createRegistry() {
+        return new ConfigTypeRegistry(main, (id, configType) -> {
+            OpenRegistry<?> openRegistry = configType.registrySupplier().get();
+            if(registryMap.containsKey(configType.getTypeClass())) { // Someone already registered something; we need to copy things to the new registry.
+                //noinspection unchecked
+                registryMap.get(configType.getTypeClass()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+            }
+            selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
+            abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
+            registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+        });
     }
 
     private void checkDeadEntries(TerraPlugin main) {

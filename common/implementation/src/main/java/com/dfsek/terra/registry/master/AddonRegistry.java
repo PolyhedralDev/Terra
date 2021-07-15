@@ -34,7 +34,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     public boolean register(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
-        main.logger().info("Loaded com.dfsek.terra.addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
+        main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
         return super.register(identifier, addon);
     }
 
@@ -44,6 +44,9 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     }
 
     public boolean loadAll() {
+        return loadAll(TerraPlugin.class.getClassLoader());
+    }
+    public boolean loadAll(ClassLoader parent) {
         InjectorImpl<TerraPlugin> pluginInjector = new InjectorImpl<>(main);
         pluginInjector.addExplicitTarget(TerraPlugin.class);
 
@@ -56,7 +59,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
         try {
             for(File jar : addonsFolder.listFiles(file -> file.getName().endsWith(".jar"))) {
                 main.logger().info("Loading Addon(s) from: " + jar.getName());
-                for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar)) {
+                for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar, parent)) {
                     pool.add(new PreLoadAddon(addonClass, jar));
                 }
             }

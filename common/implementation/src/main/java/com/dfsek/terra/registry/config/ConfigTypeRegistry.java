@@ -19,9 +19,9 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     }
 
     @Override
-    public boolean add(String identifier, Entry<ConfigType<?, ?>> value) {
+    public boolean register(String identifier, Entry<ConfigType<?, ?>> value) {
         callback.accept(identifier, value.getValue());
         main.getDebugLogger().info("Registered config registry with ID " + identifier + " to class " + value.getValue().getTypeClass().getCanonicalName());
-        return super.add(identifier, value);
+        return super.register(identifier, value);
     }
 }

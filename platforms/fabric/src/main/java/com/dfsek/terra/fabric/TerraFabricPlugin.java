@@ -260,7 +260,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         debugLogger.setDebug(config.isDebugLogging());
         if(config.isDebugProfiler()) profiler.start();
 
-        if(!addonRegistry.loadAll()) {
+        if(!addonRegistry.loadAll(getClass().getClassLoader())) {
             throw new IllegalStateException("Failed to load addons. Please correct com.dfsek.terra.addon installations to continue.");
         }
         logger.info("Loaded addons.");
@@ -317,10 +317,10 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             eventManager.registerListener(this, this);
         }
 
-        @Priority(Priority.LOWEST)
+        @Priority(Priority.HIGHEST)
         @Global
         public void injectTrees(ConfigPackPreLoadEvent event) {
-            CheckedRegistry<Tree> treeRegistry = event.getPack().getCheckedRegistry(Tree.class);
+            CheckedRegistry<Tree> treeRegistry = event.getPack().getOrCreateRegistry(Tree.class);
             injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.HUGE_BROWN_MUSHROOM);
             injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.HUGE_RED_MUSHROOM);
             injectTree(treeRegistry, "JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE);

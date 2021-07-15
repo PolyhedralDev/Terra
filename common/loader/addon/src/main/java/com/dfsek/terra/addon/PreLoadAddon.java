@@ -33,7 +33,7 @@ public class PreLoadAddon {
 
     public void rebuildDependencies(AddonPool pool, PreLoadAddon origin, boolean levelG1) throws AddonLoadException {
         if(this.equals(origin) && !levelG1)
-            throw new CircularDependencyException("Detected circular dependency in com.dfsek.terra.addon \"" + id + "\", dependencies: " + Arrays.toString(dependencies));
+            throw new CircularDependencyException("Detected circular dependency in addon \"" + id + "\", dependencies: " + Arrays.toString(dependencies));
 
         for(String dependency : dependencies) {
             PreLoadAddon preLoadAddon = pool.get(dependency);

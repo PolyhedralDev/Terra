@@ -6,7 +6,6 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,10 +46,10 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
 
     @Override
     public boolean register(String identifier, T value) {
-        return add(identifier, new Entry<>(value));
+        return register(identifier, new Entry<>(value));
     }
 
-    public boolean add(String identifier, Entry<T> value) {
+    public boolean register(String identifier, Entry<T> value) {
         boolean exists = objects.containsKey(identifier);
         objects.put(identifier, value);
         return exists;
