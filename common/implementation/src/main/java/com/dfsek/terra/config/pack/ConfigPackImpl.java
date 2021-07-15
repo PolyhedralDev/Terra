@@ -18,10 +18,10 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.config.Loader;
-import com.dfsek.terra.api.event.events.config.ConfigLoadEvent;
-import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
-import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
@@ -232,7 +232,7 @@ public class ConfigPackImpl implements ConfigPack {
 
         List<Configuration> configurations = new ArrayList<>();
 
-        main.getEventManager().callEvent(new ConfigurationLoadEvent(this, loader, configurations::add)); // Create all the configs.
+        main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::add)); // Create all the configs.
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
@@ -248,7 +248,7 @@ public class ConfigPackImpl implements ConfigPack {
                 try {
                     Object loaded = ((ConfigFactory) configType.getFactory()).build(selfLoader.load(configType.getTemplate(this, main), config), main);
                     registry.register(config.getID(), loaded);
-                    main.getEventManager().callEvent(new ConfigLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
+                    main.getEventManager().callEvent(new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
                 } catch(DuplicateEntryException e) {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }

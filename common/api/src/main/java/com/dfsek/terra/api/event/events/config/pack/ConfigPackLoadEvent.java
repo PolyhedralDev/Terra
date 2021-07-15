@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.event.events.config;
+package com.dfsek.terra.api.event.events.config.pack;
 
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;

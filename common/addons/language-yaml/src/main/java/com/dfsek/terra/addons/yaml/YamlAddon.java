@@ -7,7 +7,7 @@ import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
+import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 
 @Addon("language-yaml")
@@ -22,7 +22,7 @@ public class YamlAddon extends TerraAddon implements EventListener {
         main.getEventManager().registerListener(this, this);
     }
 
-    public void loadYamlConfigs(ConfigurationLoadEvent event) {
+    public void loadYamlConfigs(ConfigurationDiscoveryEvent event) {
         event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> event.register(new YamlConfiguration(entry.getValue(), entry.getKey()))));
     }
 }

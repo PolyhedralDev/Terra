@@ -2,9 +2,7 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -20,8 +18,8 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
-import com.dfsek.terra.api.event.events.config.ConfigPackPostLoadEvent;
-import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
@@ -79,10 +77,8 @@ import org.apache.logging.log4j.LogManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 
 public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
