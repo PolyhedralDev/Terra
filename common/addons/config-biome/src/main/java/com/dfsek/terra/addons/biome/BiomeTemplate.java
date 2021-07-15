@@ -74,16 +74,8 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private int blendStep = 4;
 
-    @Value("structures")
-    @Default
-    private List<ConfiguredStructure> structures = new ArrayList<>();
-
     @Value("noise")
     private NoiseSeeded noiseEquation;
-
-    /*@Value("ores")
-    @Default
-    private OreHolder oreHolder = new OreHolder();*/
 
     @Value("ocean.level")
     @Default
@@ -99,14 +91,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("elevation.weight")
     @Default
     private double elevationWeight = 1;
-
-    /*@Value("flora")
-    @Default
-    private List<FloraLayer> flora = new ArrayList<>();
-
-    @Value("trees")
-    @Default
-    private List<TreeLayer> trees = new ArrayList<>();*/
 
     @Value("slabs.enable")
     @Default
@@ -231,10 +215,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     public ProbabilityCollection<Biome> getVanilla() {
         return vanilla;
-    }
-
-    public List<ConfiguredStructure> getStructures() {
-        return structures;
     }
 
     public NoiseSeeded getNoiseEquation() {
