@@ -12,6 +12,11 @@ public class RawWorldHandle implements WorldHandle {
     }
 
     @Override
+    public BlockState air() {
+        return null;
+    }
+
+    @Override
     public EntityType getEntity(String id) {
         return null;
     }

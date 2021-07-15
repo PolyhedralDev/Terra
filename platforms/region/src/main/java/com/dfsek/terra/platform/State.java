@@ -2,6 +2,7 @@ package com.dfsek.terra.platform;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.properties.Property;
 import net.querz.nbt.tag.CompoundTag;
 
 public class State implements BlockState, BlockType {
@@ -55,6 +56,21 @@ public class State implements BlockState, BlockType {
     @Override
     public boolean isStructureVoid() {
         return false;
+    }
+
+    @Override
+    public <T> boolean has(Property<T> property) {
+        return false;
+    }
+
+    @Override
+    public <T> T get(Property<T> property) {
+        return null;
+    }
+
+    @Override
+    public <T> BlockState set(Property<T> property, T value) {
+        return null;
     }
 
 

@@ -36,8 +36,12 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
+        StringBuilder keys = new StringBuilder("[");
+
+        objects.keySet().forEach(key -> keys.append(key + ", "));
+
         if(obj == null)
-            throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o + "\" was found in this registry.");
+            throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o + "\" was found in this registry. Registry contains items: " + keys.substring(0, keys.length()-2) + "]");
         return obj;
     }
 

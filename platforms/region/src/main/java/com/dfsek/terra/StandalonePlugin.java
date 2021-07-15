@@ -1,6 +1,8 @@
 package com.dfsek.terra;
 
+import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -13,6 +15,7 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -34,6 +37,8 @@ import com.dfsek.terra.world.TerraWorldImpl;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public class StandalonePlugin implements TerraPlugin {
@@ -155,5 +160,15 @@ public class StandalonePlugin implements TerraPlugin {
     @Override
     public Profiler getProfiler() {
         return profiler;
+    }
+
+    @Override
+    public <T> LoaderHolder applyLoader(Type type, TypeLoader<T> loader) {
+        return null;
+    }
+
+    @Override
+    public <T> LoaderHolder applyLoader(Type type, Supplier<ObjectTemplate<T>> loader) {
+        return null;
     }
 }
