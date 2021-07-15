@@ -22,6 +22,8 @@ import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
+import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
+import com.dfsek.terra.api.event.events.config.type.ConfigTypePreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
@@ -244,6 +246,7 @@ public class ConfigPackImpl implements ConfigPack {
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
             CheckedRegistry registry = getCheckedRegistry(configType.getTypeClass());
+            main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry));
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {
                     Object loaded = ((ConfigFactory) configType.getFactory()).build(selfLoader.load(configType.getTemplate(this, main), config), main);
@@ -253,6 +256,7 @@ public class ConfigPackImpl implements ConfigPack {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }
             }
+            main.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry));
         }
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
