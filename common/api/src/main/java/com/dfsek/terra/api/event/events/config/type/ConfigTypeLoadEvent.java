@@ -9,14 +9,21 @@ public abstract class ConfigTypeLoadEvent implements PackEvent {
     private final ConfigType<?, ?> type;
     private final CheckedRegistry<?> registry;
 
-    public ConfigTypeLoadEvent(ConfigType<?, ?> type, CheckedRegistry<?> registry) {
+    private final ConfigPack pack;
+
+    public ConfigTypeLoadEvent(ConfigType<?, ?> type, CheckedRegistry<?> registry, ConfigPack pack) {
         this.type = type;
         this.registry = registry;
+        this.pack = pack;
     }
 
     @Override
     public ConfigPack getPack() {
-        return null;
+        return pack;
+    }
+
+    public boolean is(Class<?> clazz) {
+        return clazz.isAssignableFrom(type.getTypeClass());
     }
 
     @SuppressWarnings("unchecked")

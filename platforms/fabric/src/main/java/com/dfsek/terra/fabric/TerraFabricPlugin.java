@@ -20,6 +20,7 @@ import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
@@ -295,9 +296,34 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             eventManager.registerListener(this, this);
         }
 
+        @Global
+        public void onPackLoad(ConfigPackPreLoadEvent event) {
+            PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
+            try {
+                event.loadTemplate(template);
+            } catch(ConfigException e) {
+                e.printStackTrace();
+            }
+
+            if(template.doRegistryInjection()) {
+                BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
+                    if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
+                        try {
+                            event.getPack().getCheckedRegistry(Tree.class).register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
+                            debugLogger.info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
+                        } catch(DuplicateEntryException ignored) {
+                        }
+                    }
+                });
+            }
+            templates.put(event.getPack(), Pair.of(template, null));
+
+        }
+
         @Priority(Priority.HIGHEST)
         @Global
-        public void injectTrees(ConfigPackPreLoadEvent event) {
+        public void injectTrees(ConfigTypePostLoadEvent event) {
+            if(!event.is(Tree.class)) return;
             CheckedRegistry<Tree> treeRegistry = event.getPack().getOrCreateRegistry(Tree.class);
             injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.HUGE_BROWN_MUSHROOM);
             injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.HUGE_RED_MUSHROOM);
@@ -318,26 +344,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
             injectTree(treeRegistry, "MEGA_SPRUCE", ConfiguredFeatures.MEGA_SPRUCE);
             injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
             injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
-
-            PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
-            try {
-                event.loadTemplate(template);
-            } catch(ConfigException e) {
-                e.printStackTrace();
-            }
-
-            if(template.doRegistryInjection()) {
-                BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
-                    if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
-                        try {
-                            event.getPack().getCheckedRegistry(Tree.class).register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
-                            debugLogger.info("Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
-                        } catch(DuplicateEntryException ignored) {
-                        }
-                    }
-                });
-            }
-            templates.put(event.getPack(), Pair.of(template, null));
         }
 
         @Priority(Priority.HIGHEST)

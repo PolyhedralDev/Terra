@@ -246,7 +246,7 @@ public class ConfigPackImpl implements ConfigPack {
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
             CheckedRegistry registry = getCheckedRegistry(configType.getTypeClass());
-            main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry));
+            main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {
                     Object loaded = ((ConfigFactory) configType.getFactory()).build(selfLoader.load(configType.getTemplate(this, main), config), main);
@@ -256,7 +256,7 @@ public class ConfigPackImpl implements ConfigPack {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }
             }
-            main.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry));
+            main.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
         }
 
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));

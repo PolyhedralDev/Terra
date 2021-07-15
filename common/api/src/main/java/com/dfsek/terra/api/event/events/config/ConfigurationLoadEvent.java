@@ -48,6 +48,10 @@ public class ConfigurationLoadEvent implements PackEvent {
         return type;
     }
 
+    public boolean is(Class<?> clazz) {
+        return clazz.isAssignableFrom(type.getTypeClass());
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T getLoadedObject(Class<T> clazz) {
         if(!clazz.isAssignableFrom(type.getTypeClass()))
