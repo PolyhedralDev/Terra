@@ -58,4 +58,9 @@ public class ConfigurationLoadEvent implements PackEvent {
             throw new ClassCastException("Cannot assign object from loader of type " + type.getTypeClass().getCanonicalName() + " to class " + clazz.getCanonicalName());
         return (T) loaded;
     }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getLoadedObject() {
+        return (T) loaded;
+    }
 }
