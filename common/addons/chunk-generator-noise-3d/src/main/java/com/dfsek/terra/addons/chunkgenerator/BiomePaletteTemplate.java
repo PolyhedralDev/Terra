@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.chunkgenerator;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;

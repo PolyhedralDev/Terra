@@ -1,13 +1,17 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
+import com.dfsek.terra.addons.chunkgenerator.NoiseChunkGenerator3DAddon;
 import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
+import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -30,14 +34,17 @@ import java.util.Random;
 public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
+
+    private final NoiseChunkGenerator3DAddon addon;
     private final List<TerraGenerationStage> blockPopulators = new ArrayList<>();
 
     private final BlockState air;
 
-    public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
+    public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main, NoiseChunkGenerator3DAddon addon) {
         this.configPack = c;
         this.main = main;
         this.air = main.getWorldHandle().air();
+        this.addon = addon;
         c.getStages().forEach(stage -> blockPopulators.add(stage.newInstance(c)));
     }
 
@@ -88,27 +95,35 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
                     int cx = xOrig + x;
                     int cz = zOrig + z;
 
-                    TerraBiome b = grid.getBiome(cx, cz);
-                    Generator g = b.getGenerator(world);
+                    TerraBiome biome = grid.getBiome(cx, cz);
 
-                    //int sea = c.getSeaLevel();
-                    //Palette seaPalette = c.getOceanPalette();
+                    PaletteInfo paletteInfo = addon.getPalette(biome);
+
+                    if(paletteInfo == null) {
+                        main.logger().info("null palette: " + biome.getID());
+                    }
+
+                    Generator generator = biome.getGenerator(world);
+
+                    int sea = paletteInfo.getSeaLevel();
+                    Palette seaPalette = paletteInfo.getOcean();
 
                     boolean justSet = false;
                     BlockState data = null;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
                             justSet = true;
-                            data = PaletteUtil.getPalette(x, y, z, g, sampler).get(paletteLevel, cx, y, cz);
+
+                            data = PaletteUtil.getPalette(x, y, z, generator, sampler, paletteInfo).get(paletteLevel, cx, y, cz);
                             chunk.setBlock(x, y, z, data);
 
                             paletteLevel++;
-                        } /*else if(y <= sea) {
+                        } else if(y <= sea) {
                             chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig));
 
                             justSet = false;
                             paletteLevel = 0;
-                        } */ else {
+                        }  else {
 
                             justSet = false;
                             paletteLevel = 0;
