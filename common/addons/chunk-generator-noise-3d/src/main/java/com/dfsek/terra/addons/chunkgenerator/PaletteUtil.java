@@ -17,6 +17,6 @@ public final class PaletteUtil {
             }
         }
 
-        return c.getPaletteSettings().getPalette(y);
+        return paletteInfo.getPaletteHolder().getPalette(y);
     }
 }

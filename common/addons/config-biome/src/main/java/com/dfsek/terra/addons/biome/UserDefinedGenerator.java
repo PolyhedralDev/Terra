@@ -6,7 +6,6 @@ import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.PaletteSettings;
 
 public class UserDefinedGenerator implements Generator {
-    private final PaletteSettings paletteSettings;
 
     private final NoiseSampler noise;
     private final NoiseSampler elevation;
@@ -18,8 +17,7 @@ public class UserDefinedGenerator implements Generator {
     private final int blendStep;
     private final double blendWeight;
 
-    public UserDefinedGenerator(PaletteHolder palettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
-        this.paletteSettings = new PaletteSettingsImpl(palettes);
+    public UserDefinedGenerator(NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.noise = noise;
         this.elevation = elevation;
         this.carving = carving;
@@ -54,11 +52,6 @@ public class UserDefinedGenerator implements Generator {
     @Override
     public double getWeight() {
         return blendWeight;
-    }
-
-    @Override
-    public PaletteSettings getPaletteSettings() {
-        return paletteSettings;
     }
 
     @Override

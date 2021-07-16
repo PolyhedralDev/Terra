@@ -45,9 +45,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private NoiseSeeded carvingEquation = NoiseSeeded.zero(3);
 
-    @Value("palette")
-    private PaletteHolder palette;
-
     @Value("vanilla")
     private ProbabilityCollection<Biome> vanilla;
 
@@ -73,9 +70,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("ocean.level")
     @Default
     private int seaLevel = 62;
-
-    @Value("ocean.palette")
-    private Palette oceanPalette;
 
     @Value("elevation.equation")
     @Default
@@ -113,10 +107,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("tags")
     @Default
     private Set<String> tags = new HashSet<>();
-
-    /*@Value("carving")
-    @Default
-    private Map<UserDefinedCarver, Integer> carvers = new HashMap<>();*/
 
     @Value("colors")
     @Default
@@ -190,16 +180,8 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return seaLevel;
     }
 
-    public Palette getOceanPalette() {
-        return oceanPalette;
-    }
-
     public String getID() {
         return id;
-    }
-
-    public PaletteHolder getPalette() {
-        return palette;
     }
 
     public ProbabilityCollection<Biome> getVanilla() {

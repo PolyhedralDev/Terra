@@ -174,8 +174,10 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
         TerraWorld terraWorld = main.getWorld(world);
         BiomeProvider provider = terraWorld.getBiomeProvider();
         TerraBiome biome = provider.getBiome(x, z);
-        Palette palette = biome.getGenerator(world).getPaletteSettings().getPalette(y);
         Sampler sampler = terraWorld.getConfig().getSamplerCache().get(x, z);
+
+        PaletteInfo paletteInfo = addon.getPalette(biome);
+        Palette palette = PaletteUtil.getPalette(x, y, z, biome.getGenerator(world), sampler, paletteInfo);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
         double noise = sampler.sample(fdX, y, fdZ);
@@ -186,8 +188,8 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
                 else level = 0;
             }
             return palette.get(level, x, y, z);
-        } /* else if(y <= biome.getConfig().getSeaLevel()) {
-            return biome.getConfig().getOceanPalette().get(biome.getConfig().getSeaLevel() - y, x, y, z);
-        } */ else return air;
+        } else if(y <= paletteInfo.getSeaLevel()) {
+            return paletteInfo.getOcean().get(paletteInfo.getSeaLevel() - y, x, y, z);
+        } else return air;
     }
 }

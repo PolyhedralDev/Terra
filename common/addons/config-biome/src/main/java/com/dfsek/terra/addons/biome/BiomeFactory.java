@@ -14,6 +14,6 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, BiomeBuilder> 
 
     @Override
     public BiomeBuilder build(BiomeTemplate template, TerraPlugin main) {
-        return new UserDefinedBiomeBuilder(template, pack);
+        return new UserDefinedBiomeBuilder(template);
     }
 }

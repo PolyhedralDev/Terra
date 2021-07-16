@@ -28,8 +28,6 @@ public interface Generator {
 
     double getWeight();
 
-    PaletteSettings getPaletteSettings();
-
     NoiseSampler getBiomeNoise();
 
     double getElevationWeight();
