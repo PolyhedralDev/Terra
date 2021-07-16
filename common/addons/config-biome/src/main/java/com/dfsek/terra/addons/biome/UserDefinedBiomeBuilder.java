@@ -24,7 +24,7 @@ public class UserDefinedBiomeBuilder implements BiomeBuilder {
         synchronized(biomeMap) {
             return biomeMap.computeIfAbsent(seed,
                     s -> {
-                        WorldGenerator generator = new WorldGenerator(template.getPalette(), template.getSlant(), template.getNoiseEquation().apply(seed), template.getElevationEquation().apply(seed), template.getCarvingEquation().apply(seed), template.getBiomeNoise().apply(seed), template.getElevationWeight(),
+                        UserDefinedGenerator generator = new UserDefinedGenerator(template.getPalette(), template.getNoiseEquation().apply(seed), template.getElevationEquation().apply(seed), template.getCarvingEquation().apply(seed), template.getBiomeNoise().apply(seed), template.getElevationWeight(),
                                 template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
                         return new UserDefinedBiome(template.getVanilla(), generator, template);
                     }

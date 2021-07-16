@@ -1,6 +1,5 @@
-package com.dfsek.terra.addons.biome.slant;
+package com.dfsek.terra.addons.chunkgenerator.palette;
 
-import com.dfsek.terra.addons.biome.holder.PaletteHolder;
 
 import java.util.TreeMap;
 

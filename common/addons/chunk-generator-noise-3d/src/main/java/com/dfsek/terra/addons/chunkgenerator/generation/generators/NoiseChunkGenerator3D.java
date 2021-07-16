@@ -16,9 +16,11 @@ import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -30,9 +32,12 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     private final TerraPlugin main;
     private final List<TerraGenerationStage> blockPopulators = new ArrayList<>();
 
+    private final BlockState air;
+
     public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
+        this.air = main.getWorldHandle().air();
         c.getStages().forEach(stage -> blockPopulators.add(stage.newInstance(c)));
     }
 
@@ -147,5 +152,27 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     @Override
     public List<TerraGenerationStage> getGenerationStages() {
         return blockPopulators;
+    }
+
+    @Override
+    public BlockState getBlock(World world, int x, int y, int z) {
+        TerraWorld terraWorld = main.getWorld(world);
+        BiomeProvider provider = terraWorld.getBiomeProvider();
+        TerraBiome biome = provider.getBiome(x, z);
+        Palette palette = biome.getGenerator(world).getPaletteSettings().getPalette(y);
+        Sampler sampler = terraWorld.getConfig().getSamplerCache().get(x, z);
+        int fdX = FastMath.floorMod(x, 16);
+        int fdZ = FastMath.floorMod(z, 16);
+        double noise = sampler.sample(fdX, y, fdZ);
+        if(noise > 0) {
+            int level = 0;
+            for(int yi = world.getMaxHeight() - 1; yi > y; yi--) {
+                if(sampler.sample(fdX, yi, fdZ) > 0) level++;
+                else level = 0;
+            }
+            return palette.get(level, x, y, z);
+        } /* else if(y <= biome.getConfig().getSeaLevel()) {
+            return biome.getConfig().getOceanPalette().get(biome.getConfig().getSeaLevel() - y, x, y, z);
+        } */ else return air;
     }
 }

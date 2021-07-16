@@ -18,8 +18,6 @@ public class TerraWorldImpl implements TerraWorld {
     private final BiomeProvider provider;
     private final WorldConfigImpl config;
     private final World world;
-    private final BlockState air;
-
 
     public TerraWorldImpl(World w, ConfigPack c, TerraPlugin main) {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
@@ -27,7 +25,6 @@ public class TerraWorldImpl implements TerraWorld {
         config = (WorldConfigImpl) c.toWorldConfig(this);
         this.provider = config.getProvider();
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
-        this.air = main.getWorldHandle().air();
     }
 
 
@@ -50,22 +47,7 @@ public class TerraWorldImpl implements TerraWorld {
 
     @Override
     public BlockState getUngeneratedBlock(int x, int y, int z) {
-        TerraBiome biome = provider.getBiome(x, z);
-        Palette palette = biome.getGenerator(world).getPaletteSettings().getPalette(y);
-        Sampler sampler = config.getSamplerCache().get(x, z);
-        int fdX = FastMath.floorMod(x, 16);
-        int fdZ = FastMath.floorMod(z, 16);
-        double noise = sampler.sample(fdX, y, fdZ);
-        if(noise > 0) {
-            int level = 0;
-            for(int yi = world.getMaxHeight() - 1; yi > y; yi--) {
-                if(sampler.sample(fdX, yi, fdZ) > 0) level++;
-                else level = 0;
-            }
-            return palette.get(level, x, y, z);
-        } /* else if(y <= biome.getConfig().getSeaLevel()) {
-            return biome.getConfig().getOceanPalette().get(biome.getConfig().getSeaLevel() - y, x, y, z);
-        } */ else return air;
+        return world.getTerraGenerator().getBlock(world, x, y, z);
     }
 
     @Override

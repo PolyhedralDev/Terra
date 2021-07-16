@@ -8,18 +8,15 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.addons.biome.holder.PaletteHolder;
-import com.dfsek.terra.addons.biome.slant.SlantHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generator.Palette;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,10 +47,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("palette")
     private PaletteHolder palette;
-
-    @Value("slant")
-    @Default
-    private SlantHolder slant = null;
 
     @Value("vanilla")
     private ProbabilityCollection<Biome> vanilla;
@@ -159,10 +152,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     public boolean interpolateElevation() {
         return interpolateElevation;
-    }
-
-    public SlantHolder getSlant() {
-        return slant;
     }
 
     public double getSlabThreshold() {

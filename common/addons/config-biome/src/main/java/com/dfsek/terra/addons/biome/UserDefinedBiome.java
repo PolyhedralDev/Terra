@@ -12,7 +12,7 @@ import java.util.Set;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements TerraBiome {
-    private final WorldGenerator gen;
+    private final UserDefinedGenerator gen;
     private final ProbabilityCollection<Biome> vanilla;
     private final String id;
     private final BiomeTemplate config;
@@ -20,7 +20,7 @@ public class UserDefinedBiome implements TerraBiome {
     private final Set<String> tags;
 
 
-    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, WorldGenerator gen, BiomeTemplate config) {
+    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, UserDefinedGenerator gen, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();

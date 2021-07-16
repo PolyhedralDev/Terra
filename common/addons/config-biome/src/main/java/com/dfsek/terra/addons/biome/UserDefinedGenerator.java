@@ -1,14 +1,12 @@
 package com.dfsek.terra.addons.biome;
 
 import com.dfsek.terra.addons.biome.holder.PaletteHolder;
-import com.dfsek.terra.addons.biome.slant.SlantHolder;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Generator;
 import com.dfsek.terra.api.world.biome.PaletteSettings;
 
-public class WorldGenerator implements Generator {
+public class UserDefinedGenerator implements Generator {
     private final PaletteSettings paletteSettings;
-    private final SlantHolder slantPalettes;
 
     private final NoiseSampler noise;
     private final NoiseSampler elevation;
@@ -20,9 +18,8 @@ public class WorldGenerator implements Generator {
     private final int blendStep;
     private final double blendWeight;
 
-    public WorldGenerator(PaletteHolder palettes, SlantHolder slantPalettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
+    public UserDefinedGenerator(PaletteHolder palettes, NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.paletteSettings = new PaletteSettingsImpl(palettes);
-        this.slantPalettes = slantPalettes;
         this.noise = noise;
         this.elevation = elevation;
         this.carving = carving;

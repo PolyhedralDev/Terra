@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.biome;
 
 import com.dfsek.terra.addons.biome.holder.PaletteHolder;
 import com.dfsek.terra.addons.biome.holder.PaletteHolderLoader;
-import com.dfsek.terra.addons.biome.slant.SlantHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -26,7 +25,6 @@ public class BiomeConfigAddon extends TerraAddon implements EventListener {
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
         event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
-        event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader())
-                .applyLoader(SlantHolder.class, (t, o, l) -> null);
+        event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
     }
 }
