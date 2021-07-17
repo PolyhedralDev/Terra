@@ -1,10 +1,8 @@
-package com.dfsek.terra.addons.tree;
+package com.dfsek.terra.addons.generation.tree;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
-import com.dfsek.terra.addons.tree.tree.TreeLayer;
 
 import java.util.Collections;
 import java.util.List;

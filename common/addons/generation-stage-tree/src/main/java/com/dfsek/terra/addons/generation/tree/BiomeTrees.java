@@ -1,6 +1,5 @@
-package com.dfsek.terra.addons.tree;
+package com.dfsek.terra.addons.generation.tree;
 
-import com.dfsek.terra.addons.tree.tree.TreeLayer;
 import com.dfsek.terra.api.properties.Properties;
 
 import java.util.List;

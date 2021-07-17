@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.tree.tree;
+package com.dfsek.terra.addons.generation.tree;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;

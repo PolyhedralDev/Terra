@@ -1,6 +1,5 @@
-package com.dfsek.terra.addons.tree;
+package com.dfsek.terra.addons.generation.tree;
 
-import com.dfsek.terra.addons.tree.tree.TreeLayer;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
