@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.biome;
 
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -19,6 +20,7 @@ public class UserDefinedBiome implements TerraBiome {
     private final int color;
     private final Set<String> tags;
 
+    private final Context context = new Context();
 
     public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, UserDefinedGenerator gen, BiomeTemplate config) {
         this.vanilla = vanilla;
@@ -67,5 +69,10 @@ public class UserDefinedBiome implements TerraBiome {
     @Override
     public String toString() {
         return "{BIOME:" + getID() + "}";
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
     }
 }
