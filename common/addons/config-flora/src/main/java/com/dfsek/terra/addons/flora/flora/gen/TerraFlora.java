@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.flora.flora;
+package com.dfsek.terra.addons.flora.flora.gen;
 
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.TerraPlugin;

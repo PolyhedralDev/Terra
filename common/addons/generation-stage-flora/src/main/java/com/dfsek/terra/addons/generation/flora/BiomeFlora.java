@@ -1,6 +1,5 @@
-package com.dfsek.terra.addons.flora;
+package com.dfsek.terra.addons.generation.flora;
 
-import com.dfsek.terra.addons.flora.flora.FloraLayer;
 import com.dfsek.terra.api.properties.Properties;
 
 import java.util.List;

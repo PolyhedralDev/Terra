@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.flora.flora;
+package com.dfsek.terra.addons.generation.flora;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.Range;
