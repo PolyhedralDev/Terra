@@ -1,8 +1,9 @@
 package com.dfsek.terra.addons.chunkgenerator.palette;
 
+import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.world.generator.Palette;
 
-public class PaletteInfo {
+public class PaletteInfo implements Properties {
     private final PaletteHolder paletteHolder;
     private final SlantHolder slantHolder;
     private final Palette ocean;

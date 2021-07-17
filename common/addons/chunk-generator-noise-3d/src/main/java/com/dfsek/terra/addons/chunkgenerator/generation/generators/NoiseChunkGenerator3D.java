@@ -1,17 +1,14 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
-import com.dfsek.terra.addons.chunkgenerator.NoiseChunkGenerator3DAddon;
 import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
-import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -34,18 +31,15 @@ import java.util.Random;
 public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
-
-    private final NoiseChunkGenerator3DAddon addon;
-    private final List<TerraGenerationStage> blockPopulators = new ArrayList<>();
+    private final List<TerraGenerationStage> generationStages = new ArrayList<>();
 
     private final BlockState air;
 
-    public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main, NoiseChunkGenerator3DAddon addon) {
+    public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
         this.configPack = c;
         this.main = main;
         this.air = main.getWorldHandle().air();
-        this.addon = addon;
-        c.getStages().forEach(stage -> blockPopulators.add(stage.newInstance(c)));
+        c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
     }
 
     @SuppressWarnings({"try"})
@@ -97,7 +91,7 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
 
                     TerraBiome biome = grid.getBiome(cx, cz);
 
-                    PaletteInfo paletteInfo = addon.getPalette(biome);
+                    PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
 
                     if(paletteInfo == null) {
                         main.logger().info("null palette: " + biome.getID());
@@ -166,7 +160,7 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
 
     @Override
     public List<TerraGenerationStage> getGenerationStages() {
-        return blockPopulators;
+        return generationStages;
     }
 
     @Override
@@ -176,7 +170,7 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
         TerraBiome biome = provider.getBiome(x, z);
         Sampler sampler = terraWorld.getConfig().getSamplerCache().get(x, z);
 
-        PaletteInfo paletteInfo = addon.getPalette(biome);
+        PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
         Palette palette = PaletteUtil.getPalette(x, y, z, biome.getGenerator(world), sampler, paletteInfo);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
