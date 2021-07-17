@@ -9,9 +9,12 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getPlugin
 import org.gradle.kotlin.dsl.named
+import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.FileWriter
 import java.net.URL
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -66,8 +69,42 @@ fun Project.configureDistribution() {
         }
     }
 
-    tasks["processResources"].dependsOn(downloadDefaultPacks)
-    tasks["processResources"].dependsOn(installAddons)
+    val generateResourceManifest = tasks.create("generateResourceManifest") {
+        group = "terra"
+        dependsOn(downloadDefaultPacks)
+        dependsOn(installAddons)
+        doFirst {
+            val resources = HashMap<String, MutableList<String>>()
+            val packsDir = File("${project.buildDir}/resources/main/packs/")
+
+            packsDir.walkTopDown().forEach {
+                if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
+                resources.computeIfAbsent("packs") { ArrayList() }.add(it.name)
+            }
+            project(":common:addons").subprojects.forEach { addonProject ->
+                val jar = (addonProject.tasks.named("jar").get() as Jar).archiveFileName.get()
+                resources.computeIfAbsent("addons") { ArrayList() }.add(jar)
+            }
+
+            val options = DumperOptions()
+            options.indent = 2
+            options.indentWithIndicator = true
+            options.indicatorIndent = 2
+            options.isPrettyFlow = true
+            options.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+            options.defaultScalarStyle = DumperOptions.ScalarStyle.DOUBLE_QUOTED
+
+            val yaml = Yaml(options)
+
+            val manifest = File("${project.buildDir}/resources/main/resources.yml")
+
+            if (manifest.exists()) manifest.delete()
+            manifest.createNewFile()
+            yaml.dump(resources, FileWriter(manifest))
+        }
+    }
+
+    tasks["processResources"].dependsOn(generateResourceManifest)
 
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs
