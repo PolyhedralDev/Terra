@@ -20,15 +20,16 @@ public class UserDefinedBiome implements TerraBiome {
     private final int color;
     private final Set<String> tags;
 
-    private final Context context = new Context();
+    private final Context context;
 
-    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, UserDefinedGenerator gen, BiomeTemplate config) {
+    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, UserDefinedGenerator gen, BiomeTemplate config, Context context) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();
         this.config = config;
         this.color = config.getColor();
         this.tags = config.getTags();
+        this.context = context;
         tags.add("BIOME:" + id);
     }
 
