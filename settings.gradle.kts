@@ -6,33 +6,18 @@ include("common:implementation")
 include("common:loader:config")
 include("common:loader:addon")
 
+fun includeImmediateChildren(dir: File, type: String) {
+    dir.walkTopDown().maxDepth(1).forEach {
+        if(!it.isDirectory || !File(it, "build.gradle.kts").exists()) return@forEach
+        val addonDir = it.relativeTo(file(".")).path.replace("/", ":");
+        println("Including $type directory \"$addonDir\" as subproject.")
+        include(addonDir)
+    }
+}
 
-include("common:addons:biome-provider-image")
-include("common:addons:biome-provider-pipeline")
-include("common:addons:biome-provider-single")
+includeImmediateChildren(file("common/addons"), "addon")
 
-include("common:addons:chunk-generator-noise-3d")
-
-include("common:addons:config-biome")
-include("common:addons:config-carver")
-include("common:addons:config-flora")
-include("common:addons:config-noise-function")
-include("common:addons:config-ore")
-include("common:addons:config-palette")
-include("common:addons:config-structure")
-include("common:addons:config-tree")
-
-include("common:addons:structure-terrascript-loader")
-
-include("common:addons:language-yaml")
-
-
-
-include("platforms:bukkit")
-include("platforms:fabric")
-include("platforms:region")
-include("platforms:sponge")
-include("platforms:forge")
+includeImmediateChildren(file("platforms"), "platform")
 
 pluginManagement {
     repositories {
