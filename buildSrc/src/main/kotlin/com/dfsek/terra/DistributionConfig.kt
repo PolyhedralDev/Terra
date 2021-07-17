@@ -86,7 +86,6 @@ fun Project.configureDistribution() {
         relocate("org.javax.annotation", "com.dfsek.terra.lib.javax.annotation")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
-        minimize()
     }
     convention.getPlugin<BasePluginConvention>().archivesBaseName = project.name
 
