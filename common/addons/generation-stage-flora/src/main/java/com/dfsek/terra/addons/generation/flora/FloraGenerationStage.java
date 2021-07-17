@@ -19,10 +19,10 @@ import java.util.Random;
 /**
  * Populates Flora
  */
-public class FloraPopulator implements TerraGenerationStage {
+public class FloraGenerationStage implements TerraGenerationStage {
     private final TerraPlugin main;
 
-    public FloraPopulator(TerraPlugin main) {
+    public FloraGenerationStage(TerraPlugin main) {
         this.main = main;
     }
 

@@ -27,7 +27,7 @@ public class FloraGenerationAddon extends TerraAddon implements EventListener {
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
         event.getPack().applyLoader(FloraLayer.class, FloraLayerLoader::new);
-        event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FLORA", pack -> new FloraPopulator(main));
+        event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FLORA", pack -> new FloraGenerationStage(main));
     }
 
     public void onBiomeLoad(ConfigurationLoadEvent event) {
