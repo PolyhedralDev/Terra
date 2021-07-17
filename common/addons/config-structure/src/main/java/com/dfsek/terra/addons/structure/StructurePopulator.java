@@ -39,8 +39,9 @@ public class StructurePopulator implements TerraGenerationStage, Chunkified {
             for(ConfiguredStructure conf : config.getRegistry(TerraStructure.class).entries()) {
                 Vector3 spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed());
 
-                //if(!((UserDefinedBiome) provider.getBiome(spawn)).getConfig().getStructures().contains(conf))
-                //    continue;
+                if(!provider.getBiome(spawn).getContext().get(BiomeStructures.class).getStructures().contains(conf)) {
+                    continue;
+                }
                 Random random = new Random(PopulationUtil.getCarverChunkSeed(FastMath.floorDiv(spawn.getBlockX(), 16), FastMath.floorDiv(spawn.getBlockZ(), 16), world.getSeed()));
                 conf.getStructure().get(random).generate(spawn.setY(conf.getSpawnStart().get(random)), world, chunk, random, Rotation.fromDegrees(90 * random.nextInt(4)));
             }
