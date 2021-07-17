@@ -23,11 +23,9 @@ import java.util.Random;
  */
 public class FloraPopulator implements TerraGenerationStage {
     private final TerraPlugin main;
-    private final FloraAddon floraAddon;
 
-    public FloraPopulator(TerraPlugin main, FloraAddon floraAddon) {
+    public FloraPopulator(TerraPlugin main) {
         this.main = main;
-        this.floraAddon = floraAddon;
     }
 
     @SuppressWarnings("try")
@@ -42,7 +40,7 @@ public class FloraPopulator implements TerraGenerationStage {
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     Vector2 l = new Vector2(x, z);
-                    layers.put(l, floraAddon.getFlora(provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z)));
+                    layers.put(l, provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z).getContext().get(BiomeFlora.class).getLayers());
                 }
             }
 
