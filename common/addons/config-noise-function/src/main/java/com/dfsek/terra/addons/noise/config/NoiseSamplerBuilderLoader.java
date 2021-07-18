@@ -7,18 +7,18 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.provider.NoiseProvider;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
 public class NoiseSamplerBuilderLoader implements TypeLoader<SeededNoiseSampler> {
-    private final Registry<NoiseProvider> noiseRegistry;
+    private final Registry<Supplier<ObjectTemplate<SeededNoiseSampler>>> noiseRegistry;
 
-    public NoiseSamplerBuilderLoader(Registry<NoiseProvider> noiseRegistry) {
+    public NoiseSamplerBuilderLoader(Registry<Supplier<ObjectTemplate<SeededNoiseSampler>>> noiseRegistry) {
         this.noiseRegistry = noiseRegistry;
     }
 

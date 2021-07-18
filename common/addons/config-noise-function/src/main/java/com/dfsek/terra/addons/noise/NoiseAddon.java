@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.noise;
 
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.noise.config.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
@@ -34,11 +35,12 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.util.provider.NoiseProvider;
+import com.dfsek.terra.api.util.TypeToken;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @Addon("config-noise-function")
 @Author("Terra")
@@ -47,13 +49,15 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin plugin;
 
+    public static final TypeToken<Supplier<ObjectTemplate<SeededNoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeToken<>() {};
+
     @Override
     public void initialize() {
         plugin.getEventManager().registerListener(this, this);
     }
 
     public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getOrCreateRegistry(NoiseProvider.class);
+        CheckedRegistry<Supplier<ObjectTemplate<SeededNoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
         event.getPack()
                 .applyLoader(SeededNoiseSampler.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
