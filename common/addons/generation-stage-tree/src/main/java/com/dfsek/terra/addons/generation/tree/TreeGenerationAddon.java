@@ -31,7 +31,7 @@ public class TreeGenerationAddon extends TerraAddon implements EventListener {
     }
 
     public void onBiomeLoad(ConfigurationLoadEvent event) {
-        if(SeededTerraBiome.class.isAssignableFrom(event.getType().getTypeClass())) {
+        if(event.is(SeededTerraBiome.class)) {
             event.getLoadedObject(SeededTerraBiome.class).getContext().put(event.load(new BiomeTreeTemplate()).get());
         }
     }

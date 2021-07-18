@@ -7,6 +7,7 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.util.TypeToken;
 import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 
 import java.util.function.Supplier;
@@ -14,6 +15,8 @@ import java.util.function.Supplier;
 public class BiomeConfigType implements ConfigType<BiomeTemplate, SeededTerraBiome> {
     private final ConfigPack pack;
     private final BiomeFactory factory;
+
+    public static final TypeToken<SeededTerraBiome> BIOME_TYPE_TOKEN = new TypeToken<>() {};
 
     public BiomeConfigType(ConfigPack pack) {
         this.pack = pack;
@@ -31,8 +34,8 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, SeededTerraBio
     }
 
     @Override
-    public Class<SeededTerraBiome> getTypeClass() {
-        return SeededTerraBiome.class;
+    public TypeToken<SeededTerraBiome> getTypeClass() {
+        return BIOME_TYPE_TOKEN;
     }
 
     @Override

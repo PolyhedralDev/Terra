@@ -5,6 +5,7 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.util.TypeToken;
 import com.dfsek.terra.api.world.Tree;
 
 import java.util.function.Supplier;
@@ -13,6 +14,7 @@ public class TreeConfigType implements ConfigType<TreeTemplate, Tree> {
     private final TreeFactory factory = new TreeFactory();
     private final ConfigPack pack;
 
+    public static final TypeToken<Tree> TREE_TYPE_TOKEN = new TypeToken<>(){};
     public TreeConfigType(ConfigPack pack) {
         this.pack = pack;
     }
@@ -28,8 +30,8 @@ public class TreeConfigType implements ConfigType<TreeTemplate, Tree> {
     }
 
     @Override
-    public Class<Tree> getTypeClass() {
-        return Tree.class;
+    public TypeToken<Tree> getTypeClass() {
+        return TREE_TYPE_TOKEN;
     }
 
     @Override

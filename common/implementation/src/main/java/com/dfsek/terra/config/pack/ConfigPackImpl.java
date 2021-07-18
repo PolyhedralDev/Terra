@@ -194,12 +194,12 @@ public class ConfigPackImpl implements ConfigPack {
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
             OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-            if(registryMap.containsKey(configType.getTypeClass())) { // Someone already registered something; we need to copy things to the new registry.
-                registryMap.get(configType.getTypeClass()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+            if(registryMap.containsKey(configType.getTypeClass().getType())) { // Someone already registered something; we need to copy things to the new registry.
+                registryMap.get(configType.getTypeClass().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
-            selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
-            abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
-            registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+            selfLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
+            abstractConfigLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
+            registryMap.put(configType.getTypeClass().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
         });
     }
 
