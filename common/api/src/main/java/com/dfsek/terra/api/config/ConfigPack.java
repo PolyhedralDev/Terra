@@ -6,7 +6,7 @@ import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.util.TypeToken;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -26,7 +26,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
         return getOrCreateRegistry((Type) clazz);
     }
 
-    default <T> CheckedRegistry<T> getOrCreateRegistry(TypeToken<T> type) {
+    default <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> type) {
         return getOrCreateRegistry(type.getType());
     }
 

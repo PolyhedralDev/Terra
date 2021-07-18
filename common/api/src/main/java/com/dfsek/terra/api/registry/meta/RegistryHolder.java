@@ -2,7 +2,7 @@ package com.dfsek.terra.api.registry.meta;
 
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.TypeToken;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 import java.lang.reflect.Type;
 
@@ -11,7 +11,7 @@ public interface RegistryHolder {
         return getRegistry((Type) clazz);
     }
 
-    default <T> Registry<T> getRegistry(TypeToken<T> type) {
+    default <T> Registry<T> getRegistry(TypeKey<T> type) {
         return getRegistry(type.getType());
     }
 
@@ -21,7 +21,7 @@ public interface RegistryHolder {
         return getCheckedRegistry((Type) clazz);
     }
 
-    default <T> CheckedRegistry<T> getCheckedRegistry(TypeToken<T> type) throws IllegalStateException {
+    default <T> CheckedRegistry<T> getCheckedRegistry(TypeKey<T> type) throws IllegalStateException {
         return getCheckedRegistry(type.getType());
     }
 

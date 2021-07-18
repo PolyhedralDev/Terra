@@ -21,7 +21,7 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.util.TypeToken;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
@@ -35,8 +35,8 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin main;
 
-    public static final TypeToken<SeededBuilder<BiomeProvider>> BIOME_PROVIDER_BUILDER_TOKEN = new TypeToken<>(){};
-    public static final TypeToken<SeededBuilder<BiomeSource>> BIOME_SOURCE_BUILDER_TOKEN = new TypeToken<>(){};
+    public static final TypeKey<SeededBuilder<BiomeProvider>> BIOME_PROVIDER_BUILDER_TOKEN = new TypeKey<>(){};
+    public static final TypeKey<SeededBuilder<BiomeSource>> BIOME_SOURCE_BUILDER_TOKEN = new TypeKey<>(){};
 
     @Override
     public void initialize() {

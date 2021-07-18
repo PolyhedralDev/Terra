@@ -8,7 +8,7 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
-import com.dfsek.terra.api.util.TypeToken;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.generator.Palette;
 
 import java.util.function.Supplier;
@@ -18,7 +18,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     private final ConfigPack pack;
     private final TerraPlugin main;
 
-    public static final TypeToken<Palette> PALETTE_TYPE_TOKEN = new TypeToken<>(){};
+    public static final TypeKey<Palette> PALETTE_TYPE_TOKEN = new TypeKey<>(){};
 
     public PaletteConfigType(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;
@@ -36,7 +36,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
 
     @Override
-    public TypeToken<Palette> getTypeClass() {
+    public TypeKey<Palette> getTypeClass() {
         return PALETTE_TYPE_TOKEN;
     }
 

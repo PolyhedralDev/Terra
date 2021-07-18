@@ -1,16 +1,18 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.api.util.reflection;
+
+import com.dfsek.terra.api.util.ReflectionUtil;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class TypeToken<T> {
+public class TypeKey<T> {
     final Class<? super T> rawType;
     final Type type;
     final int hashCode;
 
     @SuppressWarnings("unchecked")
-    protected TypeToken() {
+    protected TypeKey() {
         this.type = getSuperclassTypeParameter(getClass());
         this.rawType = (Class<? super T>) ReflectionUtil.getRawType(type);
         this.hashCode = type.hashCode();
@@ -47,8 +49,8 @@ public class TypeToken<T> {
 
     @Override
     public final boolean equals(Object o) {
-        return o instanceof TypeToken<?>
-                && equals(type, ((TypeToken<?>) o).type);
+        return o instanceof TypeKey<?>
+                && equals(type, ((TypeKey<?>) o).type);
     }
 
     @Override

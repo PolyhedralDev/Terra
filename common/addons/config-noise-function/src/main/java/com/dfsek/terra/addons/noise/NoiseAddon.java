@@ -35,7 +35,7 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.util.TypeToken;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin plugin;
 
-    public static final TypeToken<Supplier<ObjectTemplate<SeededNoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeToken<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<SeededNoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {};
 
     @Override
     public void initialize() {
