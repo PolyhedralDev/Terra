@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.world.biome;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.generator.Palette;
 
 public interface Generator {
     /**
@@ -28,13 +27,6 @@ public interface Generator {
     int getBlendDistance();
 
     double getWeight();
-
-    /**
-     * Gets the BlocPalette to generate the biome with.
-     *
-     * @return BlocPalette - The biome's palette.
-     */
-    Palette getPalette(int y);
 
     NoiseSampler getBiomeNoise();
 

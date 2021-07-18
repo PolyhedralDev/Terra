@@ -8,13 +8,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the annotated class is an entry point for a Terra addon.
+ * Specifies that the annotated class is an entry point for a Terra com.dfsek.terra.addon.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Addon {
     /**
-     * @return The ID of the addon.
+     * @return The ID of the com.dfsek.terra.addon.
      */
     @NotNull String value();
 }

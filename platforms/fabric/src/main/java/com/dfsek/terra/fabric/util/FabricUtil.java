@@ -1,19 +1,14 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.state.Container;
-import com.dfsek.terra.api.block.state.MobSpawner;
-import com.dfsek.terra.api.block.state.Sign;
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.entity.Container;
+import com.dfsek.terra.api.block.entity.MobSpawner;
+import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.config.builder.BiomeBuilder;
-import com.dfsek.terra.config.templates.BiomeTemplate;
+import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -29,11 +24,9 @@ import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -51,8 +44,8 @@ public final class FabricUtil {
      * @return The Minecraft delegate biome.
      */
     public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
-        BiomeTemplate template = biome.getTemplate();
-        Map<String, Integer> colors = template.getColors();
+        // BiomeTemplate template = biome.getTemplate();
+        Map<String, Integer> colors = new HashMap<>(); // template.getColors();
 
         TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
 
@@ -73,11 +66,12 @@ public final class FabricUtil {
             }
         }
 
+        /*
         Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions> pair = fabricAddon.getTemplates().get(pack);
         PreLoadCompatibilityOptions compatibilityOptions = pair.getLeft();
         PostLoadCompatibilityOptions postLoadCompatibilityOptions = pair.getRight();
 
-        TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
+        //TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome.getTemplate().getID());
 
         Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatureRegistry = registryManager.get(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY);
         for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
@@ -100,6 +94,8 @@ public final class FabricUtil {
                 }
             }
         }
+
+         */
 
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
@@ -141,8 +137,8 @@ public final class FabricUtil {
         }
     }
 
-    public static BlockState createState(WorldAccess worldAccess, BlockPos pos) {
-        BlockEntity entity = worldAccess.getBlockEntity(pos);
+    public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
+        net.minecraft.block.entity.BlockEntity entity = worldAccess.getBlockEntity(pos);
         if(entity instanceof SignBlockEntity) {
             return (Sign) entity;
         } else if(entity instanceof MobSpawnerBlockEntity) {

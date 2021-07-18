@@ -5,7 +5,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
-import java.lang.reflect.Type;
+import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
  * @param <T>
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
-    private final Map<String, Entry<T>> objects;
     private static final Entry<?> NULL = new Entry<>(null);
+    private final Map<String, Entry<T>> objects;
 
     public OpenRegistryImpl() {
         objects = new HashMap<>();
@@ -33,29 +33,33 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
 
     @Override
-    public T load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
+    public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
+        StringBuilder keys = new StringBuilder("[");
+
+        objects.keySet().forEach(key -> keys.append(key + ", "));
+
         if(obj == null)
-            throw new LoadException("No such " + type.getTypeName() + " matching \"" + o + "\" was found in this registry.");
+            throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o + "\" was found in this registry. Registry contains items: " + keys.substring(0, keys.length()-2) + "]");
         return obj;
     }
 
     @Override
-    public boolean add(String identifier, T value) {
-        return add(identifier, new Entry<>(value));
+    public boolean register(String identifier, T value) {
+        return register(identifier, new Entry<>(value));
     }
 
-    public boolean add(String identifier, Entry<T> value) {
+    public boolean register(String identifier, Entry<T> value) {
         boolean exists = objects.containsKey(identifier);
         objects.put(identifier, value);
         return exists;
     }
 
     @Override
-    public void addChecked(String identifier, T value) throws DuplicateEntryException {
+    public void registerChecked(String identifier, T value) throws DuplicateEntryException {
         if(objects.containsKey(identifier))
             throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
-        add(identifier, value);
+        register(identifier, value);
     }
 
     @Override

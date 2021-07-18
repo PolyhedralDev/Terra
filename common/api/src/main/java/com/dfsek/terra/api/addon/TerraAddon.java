@@ -7,11 +7,11 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents an entry point for an addon. Implementations must be annotated with {@link Addon}.
+ * Represents an entry point for an com.dfsek.terra.addon. Implementations must be annotated with {@link Addon}.
  */
 public abstract class TerraAddon {
     /**
-     * Gets the version of this addon.
+     * Gets the version of this com.dfsek.terra.addon.
      *
      * @return Addon version.
      */
@@ -21,7 +21,7 @@ public abstract class TerraAddon {
     }
 
     /**
-     * Gets the author of this addon.
+     * Gets the author of this com.dfsek.terra.addon.
      *
      * @return Addon author.
      */
@@ -31,19 +31,19 @@ public abstract class TerraAddon {
     }
 
     /**
-     * Gets the name (ID) of this addon.
+     * Gets the name (ID) of this com.dfsek.terra.addon.
      *
      * @return Addon ID.
      */
     public final @NotNull String getName() {
         Addon addon = getClass().getAnnotation(Addon.class);
         if(addon == null)
-            throw new IllegalStateException("Addon annotation not present"); // This should never happen; the presence of this annotation is checked by the addon loader.
+            throw new IllegalStateException("Addon annotation not present"); // This should never happen; the presence of this annotation is checked by the com.dfsek.terra.addon loader.
         return addon.value();
     }
 
     /**
-     * Invoked immediately after an addon is loaded.
+     * Invoked immediately after an com.dfsek.terra.addon is loaded.
      */
     public abstract void initialize();
 }

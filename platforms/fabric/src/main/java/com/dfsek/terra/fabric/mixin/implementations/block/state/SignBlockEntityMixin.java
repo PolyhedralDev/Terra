@@ -1,7 +1,7 @@
 package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.block.state.SerialState;
-import com.dfsek.terra.api.block.state.Sign;
+import com.dfsek.terra.api.block.entity.SerialState;
+import com.dfsek.terra.api.block.entity.Sign;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -16,11 +16,11 @@ import org.spongepowered.asm.mixin.Shadow;
 @Implements(@Interface(iface = Sign.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class SignBlockEntityMixin {
     @Shadow
-    public abstract void setTextOnRow(int row, Text text);
-
-    @Shadow
     @Final
     private Text[] texts;
+
+    @Shadow
+    public abstract void setTextOnRow(int row, Text text);
 
     public @NotNull String[] terra$getLines() {
         String[] lines = new String[texts.length];

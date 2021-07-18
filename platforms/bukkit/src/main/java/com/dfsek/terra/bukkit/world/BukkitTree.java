@@ -3,7 +3,7 @@ package com.dfsek.terra.bukkit.world;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.collections.MaterialSet;
+import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;

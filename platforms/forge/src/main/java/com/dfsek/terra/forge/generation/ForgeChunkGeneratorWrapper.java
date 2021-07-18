@@ -49,9 +49,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
-    private final long seed;
-    private final DefaultChunkGenerator3D delegate;
-    private final TerraBiomeSource biomeSource;
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
             Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
     ).apply(config, config.stable(TerraForgePlugin.getInstance().getConfigRegistry()::get))));
@@ -60,12 +57,10 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
             Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),
             PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
             .apply(instance, instance.stable(ForgeChunkGeneratorWrapper::new)));
+    private final long seed;
+    private final DefaultChunkGenerator3D delegate;
+    private final TerraBiomeSource biomeSource;
     private final ConfigPack pack;
-
-    public ConfigPack getPack() {
-        return pack;
-    }
-
     private DimensionType dimensionType;
 
     public ForgeChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
@@ -77,6 +72,10 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
         this.biomeSource = biomeSource;
 
         this.seed = seed;
+    }
+
+    public ConfigPack getPack() {
+        return pack;
     }
 
     @Override

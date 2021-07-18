@@ -1,23 +1,38 @@
 package com.dfsek.terra.api.block.state;
 
 import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.block.BlockData;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.properties.Property;
 
-public interface BlockState extends Handle {
-    Vector3 getPosition();
+import java.util.function.Consumer;
 
-    int getX();
+public interface BlockState extends Cloneable, Handle {
 
-    int getY();
+    BlockType getBlockType();
 
-    int getZ();
+    boolean matches(BlockState other);
 
-    BlockData getBlockData();
+    BlockState clone();
 
-    boolean update(boolean applyPhysics);
+    String getAsString();
 
-    default void applyState(String state) {
-        // Do nothing by default.
+    boolean isAir();
+
+    boolean isStructureVoid();
+
+    <T> boolean has(Property<T> property);
+
+    <T> T get(Property<T> property);
+
+    <T> BlockState set(Property<T> property, T value);
+
+    default <T> BlockState setIfPresent(Property<T> property, T value) {
+        if(has(property)) set(property, value);
+        return this;
+    }
+
+    default <T> BlockState ifProperty(Property<T> property, Consumer<BlockState> action) {
+        if(has(property)) action.accept(this);
+        return this;
     }
 }

@@ -7,10 +7,6 @@ import com.dfsek.terra.api.lang.Language;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.jar.JarFile;
-
-import static com.dfsek.terra.api.util.JarUtil.copyResourcesToDirectory;
 
 public final class LangUtil {
     private static Language language;
@@ -18,12 +14,6 @@ public final class LangUtil {
     public static void load(String langID, TerraPlugin main) {
         Logger logger = main.logger();
         File file = new File(main.getDataFolder(), "lang");
-        try(JarFile jar = main.getModJar()) {
-            copyResourcesToDirectory(jar, "lang", file.toString());
-        } catch(IOException | URISyntaxException e) {
-            main.getDebugLogger().severe("Failed to dump language files!");
-            main.getDebugLogger().stack(e);
-        }
         try {
             File file1 = new File(file, langID + ".yml");
             logger.info(file1.getAbsolutePath());

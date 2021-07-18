@@ -1,29 +1,18 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.Axis;
-import com.dfsek.terra.api.block.BlockFace;
-import com.dfsek.terra.api.block.data.Bisected;
-import com.dfsek.terra.api.block.data.Slab;
-import com.dfsek.terra.api.block.data.Stairs;
+import com.dfsek.terra.api.block.state.properties.enums.Axis;
+import com.dfsek.terra.api.block.state.properties.enums.Half;
+import com.dfsek.terra.api.block.state.properties.enums.RailShape;
+import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
+import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.fabric.block.FabricBlockData;
-import com.dfsek.terra.fabric.block.data.FabricDirectional;
-import com.dfsek.terra.fabric.block.data.FabricMultipleFacing;
-import com.dfsek.terra.fabric.block.data.FabricOrientable;
-import com.dfsek.terra.fabric.block.data.FabricRotatable;
-import com.dfsek.terra.fabric.block.data.FabricSlab;
-import com.dfsek.terra.fabric.block.data.FabricStairs;
-import com.dfsek.terra.fabric.block.data.FabricWaterlogged;
-import com.dfsek.terra.vector.Vector3Impl;
+import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.block.enums.StairShape;
-import net.minecraft.state.property.Properties;
+import net.minecraft.block.enums.WallShape;
+import net.minecraft.block.enums.WireConnection;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import java.util.Arrays;
 
 public final class FabricAdapter {
     public static BlockPos adapt(Vector3 v) {
@@ -31,126 +20,110 @@ public final class FabricAdapter {
     }
 
     public static Vector3 adapt(BlockPos pos) {
-        return new Vector3Impl(pos.getX(), pos.getY(), pos.getZ());
+        return new Vector3(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public static FabricBlockData adapt(BlockState state) {
-        if(state.contains(Properties.STAIR_SHAPE)) return new FabricStairs(state);
-
-        if(state.contains(Properties.SLAB_TYPE)) return new FabricSlab(state);
-
-        if(state.contains(Properties.AXIS)) return new FabricOrientable(state, Properties.AXIS);
-        if(state.contains(Properties.HORIZONTAL_AXIS)) return new FabricOrientable(state, Properties.HORIZONTAL_AXIS);
-
-        if(state.contains(Properties.ROTATION)) return new FabricRotatable(state);
-
-        if(state.contains(Properties.FACING)) return new FabricDirectional(state, Properties.FACING);
-        if(state.contains(Properties.HOPPER_FACING)) return new FabricDirectional(state, Properties.HOPPER_FACING);
-        if(state.contains(Properties.HORIZONTAL_FACING)) return new FabricDirectional(state, Properties.HORIZONTAL_FACING);
-
-        if(state.getProperties().containsAll(Arrays.asList(Properties.NORTH, Properties.SOUTH, Properties.EAST, Properties.WEST)))
-            return new FabricMultipleFacing(state);
-        if(state.contains(Properties.WATERLOGGED)) return new FabricWaterlogged(state);
-        return new FabricBlockData(state);
+    public static FabricBlockState adapt(BlockState state) {
+        return new FabricBlockState(state);
     }
 
-    public static Direction adapt(BlockFace face) {
-        switch(face) {
+    public static Direction adapt(com.dfsek.terra.api.block.state.properties.enums.Direction direction) {
+        switch(direction) {
+            case SOUTH:
+                return Direction.SOUTH;
             case NORTH:
                 return Direction.NORTH;
             case WEST:
                 return Direction.WEST;
-            case SOUTH:
-                return Direction.SOUTH;
             case EAST:
                 return Direction.EAST;
             case UP:
                 return Direction.UP;
             case DOWN:
                 return Direction.DOWN;
-            default:
-                throw new IllegalArgumentException("Illegal direction: " + face);
         }
+        throw new IllegalArgumentException();
     }
 
-    public static Stairs.Shape adapt(StairShape shape) {
+    public static com.dfsek.terra.api.block.state.properties.enums.Direction adapt(Direction direction) {
+        switch(direction) {
+            case SOUTH:
+                return com.dfsek.terra.api.block.state.properties.enums.Direction.SOUTH;
+            case NORTH:
+                return com.dfsek.terra.api.block.state.properties.enums.Direction.NORTH;
+            case WEST:
+                return com.dfsek.terra.api.block.state.properties.enums.Direction.WEST;
+            case EAST:
+                return com.dfsek.terra.api.block.state.properties.enums.Direction.EAST;
+            case UP:
+                return com.dfsek.terra.api.block.state.properties.enums.Direction.UP;
+            case DOWN:
+                return com.dfsek.terra.api.block.state.properties.enums.Direction.DOWN;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static WallHeight adapt(WallShape shape) {
         switch(shape) {
-            case OUTER_RIGHT:
-                return Stairs.Shape.OUTER_RIGHT;
-            case INNER_RIGHT:
-                return Stairs.Shape.INNER_RIGHT;
-            case OUTER_LEFT:
-                return Stairs.Shape.OUTER_LEFT;
-            case INNER_LEFT:
-                return Stairs.Shape.INNER_LEFT;
-            case STRAIGHT:
-                return Stairs.Shape.STRAIGHT;
-            default:
-                throw new IllegalStateException();
+            case LOW:
+                return WallHeight.LOW;
+            case NONE:
+                return WallHeight.NONE;
+            case TALL:
+                return WallHeight.TALL;
         }
+        throw new IllegalArgumentException();
     }
 
-    public static Bisected.Half adapt(BlockHalf half) {
+    public static WallShape adapt(WallHeight shape) {
+        switch(shape) {
+            case LOW:
+                return WallShape.LOW;
+            case NONE:
+                return WallShape.NONE;
+            case TALL:
+                return WallShape.TALL;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static RedstoneConnection adapt(WireConnection connection) {
+        switch(connection) {
+            case NONE:
+                return RedstoneConnection.NONE;
+            case UP:
+                return RedstoneConnection.UP;
+            case SIDE:
+                return RedstoneConnection.SIDE;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static WireConnection adapt(RedstoneConnection connection) {
+        switch(connection) {
+            case NONE:
+                return WireConnection.NONE;
+            case UP:
+                return WireConnection.UP;
+            case SIDE:
+                return WireConnection.SIDE;
+        }
+        throw new IllegalArgumentException();
+    }
+
+
+    public static Half adapt(BlockHalf half) {
         switch(half) {
             case BOTTOM:
-                return Bisected.Half.BOTTOM;
+                return Half.BOTTOM;
             case TOP:
-                return Bisected.Half.TOP;
+                return Half.TOP;
             default:
                 throw new IllegalStateException();
         }
     }
 
-    public static BlockFace adapt(Direction direction) {
-        switch(direction) {
-            case DOWN:
-                return BlockFace.DOWN;
-            case UP:
-                return BlockFace.UP;
-            case WEST:
-                return BlockFace.WEST;
-            case EAST:
-                return BlockFace.EAST;
-            case NORTH:
-                return BlockFace.NORTH;
-            case SOUTH:
-                return BlockFace.SOUTH;
-            default:
-                throw new IllegalStateException();
-        }
-    }
-
-    public static Slab.Type adapt(SlabType type) {
-        switch(type) {
-            case BOTTOM:
-                return Slab.Type.BOTTOM;
-            case TOP:
-                return Slab.Type.TOP;
-            case DOUBLE:
-                return Slab.Type.DOUBLE;
-            default:
-                throw new IllegalStateException();
-        }
-    }
-
-    public static StairShape adapt(Stairs.Shape shape) {
-        switch(shape) {
-            case STRAIGHT:
-                return StairShape.STRAIGHT;
-            case INNER_LEFT:
-                return StairShape.INNER_LEFT;
-            case OUTER_LEFT:
-                return StairShape.OUTER_LEFT;
-            case INNER_RIGHT:
-                return StairShape.INNER_RIGHT;
-            case OUTER_RIGHT:
-                return StairShape.OUTER_RIGHT;
-            default:
-                throw new IllegalStateException();
-        }
-    }
-
-    public static BlockHalf adapt(Bisected.Half half) {
+    public static BlockHalf adapt(Half half) {
         switch(half) {
             case TOP:
                 return BlockHalf.TOP;
@@ -161,18 +134,58 @@ public final class FabricAdapter {
         }
     }
 
-    public static SlabType adapt(Slab.Type type) {
-        switch(type) {
-            case DOUBLE:
-                return SlabType.DOUBLE;
-            case TOP:
-                return SlabType.TOP;
-            case BOTTOM:
-                return SlabType.BOTTOM;
-            default:
-                throw new IllegalStateException();
+    public static RailShape adapt(net.minecraft.block.enums.RailShape railShape) {
+        switch(railShape) {
+            case EAST_WEST:
+                return RailShape.EAST_WEST;
+            case NORTH_EAST:
+                return RailShape.NORTH_EAST;
+            case NORTH_WEST:
+                return RailShape.NORTH_WEST;
+            case SOUTH_EAST:
+                return RailShape.SOUTH_EAST;
+            case SOUTH_WEST:
+                return RailShape.SOUTH_WEST;
+            case NORTH_SOUTH:
+                return RailShape.NORTH_SOUTH;
+            case ASCENDING_EAST:
+                return RailShape.ASCENDING_EAST;
+            case ASCENDING_NORTH:
+                return RailShape.ASCENDING_NORTH;
+            case ASCENDING_SOUTH:
+                return RailShape.ASCENDING_SOUTH;
+            case ASCENDING_WEST:
+                return RailShape.ASCENDING_WEST;
         }
+        throw new IllegalStateException();
     }
+
+    public static net.minecraft.block.enums.RailShape adapt(RailShape railShape) {
+        switch(railShape) {
+            case EAST_WEST:
+                return net.minecraft.block.enums.RailShape.EAST_WEST;
+            case NORTH_EAST:
+                return net.minecraft.block.enums.RailShape.NORTH_EAST;
+            case NORTH_WEST:
+                return net.minecraft.block.enums.RailShape.NORTH_WEST;
+            case SOUTH_EAST:
+                return net.minecraft.block.enums.RailShape.SOUTH_EAST;
+            case SOUTH_WEST:
+                return net.minecraft.block.enums.RailShape.SOUTH_WEST;
+            case NORTH_SOUTH:
+                return net.minecraft.block.enums.RailShape.NORTH_SOUTH;
+            case ASCENDING_EAST:
+                return net.minecraft.block.enums.RailShape.ASCENDING_EAST;
+            case ASCENDING_NORTH:
+                return net.minecraft.block.enums.RailShape.ASCENDING_NORTH;
+            case ASCENDING_SOUTH:
+                return net.minecraft.block.enums.RailShape.ASCENDING_SOUTH;
+            case ASCENDING_WEST:
+                return net.minecraft.block.enums.RailShape.ASCENDING_WEST;
+        }
+        throw new IllegalStateException();
+    }
+
 
     public static Axis adapt(Direction.Axis axis) {
         switch(axis) {

@@ -1,23 +1,32 @@
 package com.dfsek.terra.api.config;
 
-import com.dfsek.terra.api.LoaderRegistrar;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.meta.RegistryFactory;
+import com.dfsek.terra.api.registry.meta.RegistryHolder;
+import com.dfsek.terra.api.tectonic.LoaderHolder;
+import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
+import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ConfigPack extends LoaderRegistrar {
-    @SuppressWarnings("unchecked")
-    <T> CheckedRegistry<T> getRegistry(Class<T> clazz);
+public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
+    BiomeProviderBuilder getBiomeProviderBuilder();
 
-    BiomeProvider.BiomeProviderBuilder getBiomeProviderBuilder();
+    <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz);
 
     WorldConfig toWorldConfig(TerraWorld world);
 
-    CheckedRegistry<ConfigType<?, ?>> getConfigTypeRegistry();
+    List<GenerationStageProvider> getStages();
+
+    void registerConfigType(ConfigType<?, ?> type, String id, int priority);
+
+    Loader getLoader();
 
     Set<TerraAddon> addons();
 
@@ -40,4 +49,8 @@ public interface ConfigPack extends LoaderRegistrar {
     boolean doBetaCarvers();
 
     boolean vanillaFlora();
+
+    RegistryFactory getRegistryFactory();
+
+    ChunkGeneratorProvider getGeneratorProvider();
 }

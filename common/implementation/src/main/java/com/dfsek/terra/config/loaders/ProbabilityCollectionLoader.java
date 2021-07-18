@@ -3,9 +3,10 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.util.ProbabilityCollection;
-import com.dfsek.terra.api.util.collections.ProbabilityCollectionImpl;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -14,12 +15,12 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollection<Object>> {
     @Override
-    public ProbabilityCollection<Object> load(Type type, Object o, ConfigLoader configLoader) throws LoadException {
-        ProbabilityCollection<Object> collection = new ProbabilityCollectionImpl<>();
+    public ProbabilityCollection<Object> load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
+        ProbabilityCollection<Object> collection = new ProbabilityCollection<>();
 
-        if(type instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) type;
-            Type generic = pType.getActualTypeArguments()[0];
+        if(type instanceof AnnotatedParameterizedType) {
+            AnnotatedParameterizedType pType = (AnnotatedParameterizedType) type;
+            AnnotatedType generic = pType.getAnnotatedActualTypeArguments()[0];
             if(o instanceof Map) {
                 Map<Object, Integer> map = (Map<Object, Integer>) o;
                 for(Map.Entry<Object, Integer> entry : map.entrySet()) {
@@ -35,7 +36,7 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                     }
                 }
             } else if(o instanceof String) {
-                return new ProbabilityCollectionImpl.Singleton<>(configLoader.loadType(generic, o));
+                return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, o));
             } else {
                 throw new LoadException("Malformed Probability Collection: " + o);
             }

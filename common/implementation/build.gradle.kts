@@ -14,19 +14,13 @@ group = "com.dfsek.terra.common"
 
 dependencies {
     "shadedApi"(project(":common:api"))
+    "shadedApi"(project(":common:loader:config"))
+    "shadedApi"(project(":common:loader:addon"))
 
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")
-    "shadedApi"("commons-io:commons-io:2.4")
 
-    "shadedApi"("com.dfsek:Paralithic:0.3.2")
-    "shadedApi"("com.dfsek:Tectonic:1.4.0")
-    "shadedApi"("net.jafama:jafama:2.3.2")
-    "shadedApi"("org.yaml:snakeyaml:1.27")
-    "shadedApi"("org.ow2.asm:asm:9.0")
     "shadedApi"("commons-io:commons-io:2.6")
 
-    "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
-    "shadedApi"("org.yaml:snakeyaml:1.27")
 
     "compileOnly"("com.google.guava:guava:30.0-jre")
 

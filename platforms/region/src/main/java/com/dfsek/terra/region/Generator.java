@@ -1,14 +1,10 @@
 package com.dfsek.terra.region;
 
 import com.dfsek.terra.StandalonePlugin;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
 import com.dfsek.terra.platform.GenWrapper;
-import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
-import com.dfsek.terra.world.population.FloraPopulator;
-import com.dfsek.terra.world.population.OrePopulator;
-import com.dfsek.terra.world.population.StructurePopulator;
-import com.dfsek.terra.world.population.TreePopulator;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
 
@@ -18,19 +14,11 @@ import java.util.Map;
 
 public class Generator {
     private final long seed;
-    FloraPopulator floraPopulator;
-    StructurePopulator structurePopulator;
-    TreePopulator treePopulator;
-    OrePopulator orePopulator;
-    DefaultChunkGenerator3D generator;
+    TerraChunkGenerator generator;
 
     public Generator(long seed, StandalonePlugin plugin) {
         plugin.load();
-        floraPopulator = new FloraPopulator(plugin);
-        structurePopulator = new StructurePopulator(plugin);
-        treePopulator = new TreePopulator(plugin);
-        orePopulator = new OrePopulator(plugin);
-        generator = new DefaultChunkGenerator3D(plugin.getConfigRegistry().get("DEFAULT"), plugin);
+        //generator = new DefaultChunkGenerator3D(plugin.getConfigRegistry().get("DEFAULT"), plugin);
         this.seed = seed;
     }
 
@@ -51,10 +39,6 @@ public class Generator {
                 DirectChunkData chunkData = (DirectChunkData) world.getChunkAt(cx, cz);
                 generator.generateChunkData(world, null, cx, cz, chunkData);
 
-                structurePopulator.populate(world, chunkData);
-                orePopulator.populate(world, chunkData);
-                floraPopulator.populate(world, chunkData);
-                treePopulator.populate(world, chunkData);
                 count++;
 
                 if(count % 200 == 0) {

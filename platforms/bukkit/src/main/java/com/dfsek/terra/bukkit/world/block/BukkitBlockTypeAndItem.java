@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.world.block;
 
-import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -20,7 +20,7 @@ public class BukkitBlockTypeAndItem implements BlockType, Item {
     }
 
     @Override
-    public BlockData getDefaultData() {
+    public BlockState getDefaultData() {
         return BukkitAdapter.adapt(delegate.createBlockData());
     }
 

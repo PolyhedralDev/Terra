@@ -1,47 +1,114 @@
 package com.dfsek.terra.api.vector;
 
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.util.MathUtil;
+import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
-public interface Vector3 extends Cloneable {
-    double getZ();
+public class Vector3 implements Cloneable {
+    private double x;
+    private double y;
+    private double z;
 
-    Vector3 setZ(double z);
+    public Vector3(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 
-    double getX();
+    public double getZ() {
+        return z;
+    }
 
-    Vector3 setX(double x);
+    public Vector3 setZ(double z) {
+        this.z = z;
+        return this;
+    }
 
-    double getY();
+    public double getX() {
+        return x;
+    }
 
-    Vector3 setY(double y);
+    public Vector3 setX(double x) {
+        this.x = x;
+        return this;
+    }
 
-    int getBlockX();
+    public double getY() {
+        return y;
+    }
 
-    int getBlockY();
+    public Vector3 setY(double y) {
+        this.y = y;
+        return this;
+    }
 
-    int getBlockZ();
+    public int getBlockX() {
+        return FastMath.floorToInt(x);
+    }
 
-    Vector3 multiply(double m);
+    public int getBlockY() {
+        return FastMath.floorToInt(y);
+    }
 
-    Vector3 add(double x, double y, double z);
+    public int getBlockZ() {
+        return FastMath.floorToInt(z);
+    }
 
-    Vector3 add(Vector3 other);
+    public Vector3 multiply(double m) {
+        x *= m;
+        y *= m;
+        z *= m;
+        return this;
+    }
 
-    Vector3 add(Vector2 other);
+    public Vector3 add(double x, double y, double z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        return this;
+    }
 
-    double lengthSquared();
+    public Vector3 add(Vector3 other) {
+        this.x += other.getX();
+        this.y += other.getY();
+        this.z += other.getZ();
+        return this;
+    }
 
-    double length();
+    public Vector3 add(Vector2 other) {
+        this.x += other.getX();
+        this.z += other.getZ();
+        return this;
+    }
 
-    double inverseLength();
+    public double lengthSquared() {
+        return x * x + y * y + z * z;
+    }
+
+    public Vector3 clone() {
+        try {
+            return (Vector3) super.clone();
+        } catch(CloneNotSupportedException e) {
+            throw new Error(e);
+        }
+    }
+
+    public double length() {
+        return FastMath.sqrt(lengthSquared());
+    }
+
+    public double inverseLength() {
+        return FastMath.invSqrtQuick(lengthSquared());
+    }
 
     /**
      * Returns if a vector is normalized
      *
      * @return whether the vector is normalised
      */
-    boolean isNormalized();
+    public boolean isNormalized() {
+        return MathUtil.equals(this.lengthSquared(), 1);
+    }
 
     /**
      * Rotates the vector around the x axis.
@@ -55,7 +122,15 @@ public interface Vector3 extends Cloneable {
      *              in radians
      * @return the same vector
      */
-    @NotNull Vector3 rotateAroundX(double angle);
+    @NotNull
+    public Vector3 rotateAroundX(double angle) {
+        double angleCos = Math.cos(angle);
+        double angleSin = Math.sin(angle);
+
+        double y = angleCos * getY() - angleSin * getZ();
+        double z = angleSin * getY() + angleCos * getZ();
+        return setY(y).setZ(z);
+    }
 
     /**
      * Rotates the vector around the y axis.
@@ -69,7 +144,15 @@ public interface Vector3 extends Cloneable {
      *              in radians
      * @return the same vector
      */
-    @NotNull Vector3 rotateAroundY(double angle);
+    @NotNull
+    public Vector3 rotateAroundY(double angle) {
+        double angleCos = Math.cos(angle);
+        double angleSin = Math.sin(angle);
+
+        double x = angleCos * getX() + angleSin * getZ();
+        double z = -angleSin * getX() + angleCos * getZ();
+        return setX(x).setZ(z);
+    }
 
     /**
      * Rotates the vector around the z axis
@@ -83,7 +166,15 @@ public interface Vector3 extends Cloneable {
      *              in radians
      * @return the same vector
      */
-    @NotNull Vector3 rotateAroundZ(double angle);
+    @NotNull
+    public Vector3 rotateAroundZ(double angle) {
+        double angleCos = Math.cos(angle);
+        double angleSin = Math.sin(angle);
+
+        double x = angleCos * getX() - angleSin * getY();
+        double y = angleSin * getX() + angleCos * getY();
+        return setX(x).setY(y);
+    }
 
     /**
      * Get the distance between this vector and another. The value of this
@@ -95,7 +186,9 @@ public interface Vector3 extends Cloneable {
      * @param o The other vector
      * @return the distance
      */
-    double distance(@NotNull Vector3 o);
+    public double distance(@NotNull Vector3 o) {
+        return FastMath.sqrt(FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ()));
+    }
 
     /**
      * Get the squared distance between this vector and another.
@@ -103,7 +196,9 @@ public interface Vector3 extends Cloneable {
      * @param o The other vector
      * @return the distance
      */
-    double distanceSquared(@NotNull Vector3 o);
+    public double distanceSquared(@NotNull Vector3 o) {
+        return FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ());
+    }
 
     /**
      * Rotates the vector around a given arbitrary axis in 3 dimensional space.
@@ -124,7 +219,10 @@ public interface Vector3 extends Cloneable {
      * @throws IllegalArgumentException if the provided axis vector instance is
      *                                  null
      */
-    @NotNull Vector3 rotateAroundAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException;
+    @NotNull
+    public Vector3 rotateAroundAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException {
+        return rotateAroundNonUnitAxis(axis.isNormalized() ? axis : axis.clone().normalize(), angle);
+    }
 
     /**
      * Rotates the vector around a given arbitrary axis in 3 dimensional space.
@@ -144,7 +242,27 @@ public interface Vector3 extends Cloneable {
      * @throws IllegalArgumentException if the provided axis vector instance is
      *                                  null
      */
-    @NotNull Vector3 rotateAroundNonUnitAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException;
+    @NotNull
+    public Vector3 rotateAroundNonUnitAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException {
+        double x = getX(), y = getY(), z = getZ();
+        double x2 = axis.getX(), y2 = axis.getY(), z2 = axis.getZ();
+
+        double cosTheta = Math.cos(angle);
+        double sinTheta = Math.sin(angle);
+        double dotProduct = this.dot(axis);
+
+        double xPrime = x2 * dotProduct * (1d - cosTheta)
+                + x * cosTheta
+                + (-z2 * y + y2 * z) * sinTheta;
+        double yPrime = y2 * dotProduct * (1d - cosTheta)
+                + y * cosTheta
+                + (z2 * x - x2 * z) * sinTheta;
+        double zPrime = z2 * dotProduct * (1d - cosTheta)
+                + z * cosTheta
+                + (-y2 * x + x2 * y) * sinTheta;
+
+        return setX(xPrime).setY(yPrime).setZ(zPrime);
+    }
 
     /**
      * Calculates the dot product of this vector with another. The dot product
@@ -153,13 +271,59 @@ public interface Vector3 extends Cloneable {
      * @param other The other vector
      * @return dot product
      */
-    double dot(@NotNull Vector3 other);
+    public double dot(@NotNull Vector3 other) {
+        return x * other.getX() + y * other.getY() + z * other.getZ();
+    }
 
-    Vector3 normalize();
+    public Vector3 normalize() {
+        return this.multiply(this.inverseLength());
+    }
 
-    Vector3 subtract(int x, int y, int z);
+    public Vector3 subtract(int x, int y, int z) {
+        this.x -= x;
+        this.y -= y;
+        this.z -= z;
+        return this;
+    }
 
-    Vector3 subtract(Vector3 end);
+    public Vector3 subtract(Vector3 end) {
+        x -= end.getX();
+        y -= end.getY();
+        z -= end.getZ();
+        return this;
+    }
 
-    Vector3 clone();
+    /**
+     * Returns a hash code for this vector
+     *
+     * @return hash code
+     */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.z) ^ (Double.doubleToLongBits(this.z) >>> 32));
+        return hash;
+    }
+
+    /**
+     * Checks to see if two objects are equal.
+     * <p>
+     * Only two Vectors can ever return true. This method uses a fuzzy match
+     * to account for floating point errors. The epsilon can be retrieved
+     * with epsilon.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Vector3)) return false;
+        Vector3 other = (Vector3) obj;
+        return MathUtil.equals(x, other.getX()) && MathUtil.equals(y, other.getY()) && MathUtil.equals(z, other.getZ());
+    }
+
+    @Override
+    public String toString() {
+        return "(" + getX() + ", " + getY() + ", " + getZ() + ")";
+    }
 }

@@ -4,7 +4,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.annotations.Global;
 import com.dfsek.terra.api.event.annotations.Priority;
-import com.dfsek.terra.api.event.events.config.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -24,9 +24,9 @@ public class TerraListener implements EventListener {
         for(TreeType value : TreeType.values()) {
             try {
                 String id = BukkitAdapter.TREE_TRANSFORMER.translate(value);
-                event.getPack().getRegistry(Tree.class).add(id, new BukkitTree(value, main));
-                event.getPack().getRegistry(Tree.class).get(id); // Platform trees should never be marked "dead"
-            } catch(DuplicateEntryException ignore) { // If another addon has already registered trees, do nothing.
+                event.getPack().getCheckedRegistry(Tree.class).register(id, new BukkitTree(value, main));
+                event.getPack().getCheckedRegistry(Tree.class).get(id); // Platform trees should never be marked "dead"
+            } catch(DuplicateEntryException ignore) { // If another com.dfsek.terra.addon has already registered trees, do nothing.
             }
         }
     }

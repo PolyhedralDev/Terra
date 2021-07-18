@@ -1,11 +1,11 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
-import com.dfsek.terra.api.block.state.SerialState;
-import com.dfsek.terra.api.block.state.Sign;
+import com.dfsek.terra.api.block.entity.SerialState;
+import com.dfsek.terra.api.block.entity.Sign;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class BukkitSign extends BukkitBlockState implements Sign {
+public class BukkitSign extends BukkitBlockEntity implements Sign {
     protected BukkitSign(org.bukkit.block.Sign block) {
         super(block);
     }

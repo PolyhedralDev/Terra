@@ -3,27 +3,18 @@ package com.dfsek.terra.config.pack;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
-import com.dfsek.terra.config.loaders.config.function.FunctionTemplate;
+import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
+import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class ConfigPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
-
-    @Value("noise")
-    private Map<String, NoiseSeeded> noiseBuilderMap;
-
-    @Value("addons")
-    @Default
-    private Set<TerraAddon> addons = new HashSet<>();
 
     @Value("variables")
     @Default
@@ -32,10 +23,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("beta.carving")
     @Default
     private boolean betaCarvers = false;
-
-    @Value("functions")
-    @Default
-    private LinkedHashMap<String, FunctionTemplate> functions = new LinkedHashMap<>();
 
     @Value("structures.locatable")
     @Default
@@ -69,6 +56,9 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private boolean disableSaplings = false;
 
+    @Value("stages")
+    private List<GenerationStageProvider> stages;
+
     @Value("version")
     @Default
     private String version = "0.1.0";
@@ -93,6 +83,17 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private boolean disableFlora = false;
 
+    @Value("generator")
+    private ChunkGeneratorProvider generatorProvider;
+
+    public ChunkGeneratorProvider getGeneratorProvider() {
+        return generatorProvider;
+    }
+
+    public List<GenerationStageProvider> getStages() {
+        return stages;
+    }
+
     public boolean disableCarvers() {
         return disableCarvers;
     }
@@ -111,10 +112,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public boolean disableTrees() {
         return disableTrees;
-    }
-
-    public LinkedHashMap<String, FunctionTemplate> getFunctions() {
-        return functions;
     }
 
     public String getVersion() {
@@ -149,10 +146,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
         return vanillaStructures;
     }
 
-    public Map<String, NoiseSeeded> getNoiseBuilderMap() {
-        return noiseBuilderMap;
-    }
-
     public Map<String, Double> getVariables() {
         return variables;
     }
@@ -167,9 +160,5 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     public boolean doBetaCarvers() {
         return betaCarvers;
-    }
-
-    public Set<TerraAddon> getAddons() {
-        return addons;
     }
 }

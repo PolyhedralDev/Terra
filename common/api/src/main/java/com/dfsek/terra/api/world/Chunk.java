@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.world;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.block.state.BlockState;
 
 public interface Chunk extends ChunkAccess {
     int getX();
@@ -9,11 +9,11 @@ public interface Chunk extends ChunkAccess {
 
     World getWorld();
 
-    BlockData getBlock(int x, int y, int z);
+    BlockState getBlock(int x, int y, int z);
 
-    void setBlock(int x, int y, int z, BlockData data, boolean physics);
+    void setBlock(int x, int y, int z, BlockState data, boolean physics);
 
-    default void setBlock(int x, int y, int z, BlockData data) {
+    default void setBlock(int x, int y, int z, BlockState data) {
         setBlock(x, y, z, data, false);
     }
 }

@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.block.state.Container;
+import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.fabric.mixin.implementations.block.BlockEntityMixin;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
