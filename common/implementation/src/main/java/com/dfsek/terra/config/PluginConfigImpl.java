@@ -9,12 +9,23 @@ import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.JarUtil;
+import com.google.common.base.Charsets;
+import org.apache.commons.io.IOUtils;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -69,7 +80,7 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
 
     @Value("dump-default")
     @Default
-    private boolean dumpDefaultConfig = true;
+    private boolean dumpDefaultData = true;
 
     @Value("script.max-recursion")
     @Default
@@ -82,16 +93,36 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();
             loader.load(this, new YamlConfiguration(file, "config.yml"));
-            if(dumpDefaultConfig) { // Don't dump default config if already loaded.
-                try(JarFile jar = main.getModJar()) {
-                    JarUtil.copyResourcesToDirectory(jar, "packs", new File(main.getDataFolder(), "packs").toString());
-                } catch(IOException | URISyntaxException e) {
-                    main.getDebugLogger().severe("Failed to dump default config files!");
-                    e.printStackTrace();
-                    main.getDebugLogger().severe("Either you're on Forge, or this is a bug. If it's the latter, report this to Terra!");
+            if(dumpDefaultData) {
+                try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
+                    if(resourcesConfig == null) {
+                        logger.info("No resources config found. Skipping resource dumping.");
+                        return;
+                    }
+                    String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
+                    Map<String, List<String>> resources = new Yaml().load(resourceYaml);
+                    resources.forEach((dir, entries) -> entries.forEach(entry -> {
+                        String resourcePath = dir + "/" + entry;
+                        File resource = new File(main.getDataFolder(), resourcePath);
+                        if(resource.exists()) return; // dont overwrite
+                        main.logger().info("Dumping resource " + resource.getAbsolutePath());
+                        try {
+                            resource.getParentFile().mkdirs();
+                            resource.createNewFile();
+                        } catch(IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                        try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
+                            OutputStream os = new FileOutputStream(resource)) {
+                            IOUtils.copy(is, os);
+                        } catch(IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    }));
                 }
             }
-        } catch(ConfigException | IOException e) {
+        } catch(ConfigException | IOException | UncheckedIOException e) {
+            logger.severe("Failed to dump resources");
             e.printStackTrace();
         }
 
