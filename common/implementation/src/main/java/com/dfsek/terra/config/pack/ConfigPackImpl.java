@@ -84,7 +84,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final SeededBiomeProvider seededBiomeProvider;
 
-    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
+    private final Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
     private final ConfigTypeRegistry configTypeRegistry;
 
@@ -220,7 +220,7 @@ public class ConfigPackImpl implements ConfigPack {
         return this;
     }
 
-    protected Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
+    protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;
     }
 
@@ -269,14 +269,14 @@ public class ConfigPackImpl implements ConfigPack {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> CheckedRegistry<T> getRegistry(Class<T> clazz) {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
+    public <T> CheckedRegistry<T> getRegistry(Type type) {
+        return (CheckedRegistry<T>) registryMap.getOrDefault(type, ImmutablePair.ofNull()).getRight();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getCheckedRegistry(Class<T> clazz) throws IllegalStateException {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
+    public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
+        return (CheckedRegistry<T>) registryMap.getOrDefault(type, ImmutablePair.ofNull()).getRight();
     }
 
     @SuppressWarnings("unchecked")

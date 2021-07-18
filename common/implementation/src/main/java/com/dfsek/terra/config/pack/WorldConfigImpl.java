@@ -13,6 +13,7 @@ import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.world.SamplerCacheImpl;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class WorldConfigImpl implements WorldConfig {
     private final TerraWorld world;
     private final ConfigPackImpl pack;
 
-    private final Map<Class<?>, Registry<?>> registryMap = new HashMap<>();
+    private final Map<Type, Registry<?>> registryMap = new HashMap<>();
 
     public WorldConfigImpl(TerraWorld world, ConfigPackImpl pack, TerraPlugin main) {
         this.world = world;
