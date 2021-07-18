@@ -2,19 +2,19 @@ package com.dfsek.terra.addons.biome;
 
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 import com.dfsek.terra.api.world.biome.Biome;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UserDefinedBiomeBuilder implements BiomeBuilder {
+public class UserDefinedSeededTerraBiome implements SeededTerraBiome {
     private final BiomeTemplate template;
     private final Context context = new Context();
 
     private final Map<Long, UserDefinedBiome> biomeMap = new ConcurrentHashMap<>();
 
-    public UserDefinedBiomeBuilder(BiomeTemplate template) {
+    public UserDefinedSeededTerraBiome(BiomeTemplate template) {
         this.template = template;
     }
 

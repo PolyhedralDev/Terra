@@ -7,6 +7,6 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
 @Linked(TerraBiome.class)
-public interface BiomeBuilder extends SeededBuilder<TerraBiome>, PropertyHolder {
+public interface SeededTerraBiome extends SeededBuilder<TerraBiome>, PropertyHolder {
     ProbabilityCollection<Biome> getVanillaBiomes();
 }

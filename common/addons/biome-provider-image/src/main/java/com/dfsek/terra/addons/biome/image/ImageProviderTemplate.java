@@ -2,14 +2,14 @@ package com.dfsek.terra.addons.biome.image;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import java.awt.image.BufferedImage;
 import java.util.stream.Collectors;
 
 public class ImageProviderTemplate /*extends BiomeProviderTemplate */ {
-    private final Registry<BiomeBuilder> biomes;
+    private final Registry<SeededTerraBiome> biomes;
     @Value("image.name")
     private BufferedImage image;
 
@@ -18,7 +18,7 @@ public class ImageProviderTemplate /*extends BiomeProviderTemplate */ {
 
     private int resolution;
 
-    public ImageProviderTemplate(Registry<BiomeBuilder> set) {
+    public ImageProviderTemplate(Registry<SeededTerraBiome> set) {
         this.biomes = set;
     }
 

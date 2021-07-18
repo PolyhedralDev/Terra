@@ -10,7 +10,7 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 @Addon("generation-stage-feature")
@@ -30,8 +30,8 @@ public class FeatureGenerationAddon extends TerraAddon implements EventListener 
     }
 
     public void onBiomeLoad(ConfigurationLoadEvent event) {
-        if(BiomeBuilder.class.isAssignableFrom(event.getType().getTypeClass())) {
-            event.getLoadedObject(BiomeBuilder.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());
+        if(SeededTerraBiome.class.isAssignableFrom(event.getType().getTypeClass())) {
+            event.getLoadedObject(SeededTerraBiome.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());
         }
     }
 }

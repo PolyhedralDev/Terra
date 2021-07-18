@@ -7,11 +7,11 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 
 import java.util.function.Supplier;
 
-public class BiomeConfigType implements ConfigType<BiomeTemplate, BiomeBuilder> {
+public class BiomeConfigType implements ConfigType<BiomeTemplate, SeededTerraBiome> {
     private final ConfigPack pack;
     private final BiomeFactory factory;
 
@@ -26,20 +26,20 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, BiomeBuilder> 
     }
 
     @Override
-    public ConfigFactory<BiomeTemplate, BiomeBuilder> getFactory() {
+    public ConfigFactory<BiomeTemplate, SeededTerraBiome> getFactory() {
         return factory;
     }
 
     @Override
-    public Class<BiomeBuilder> getTypeClass() {
-        return BiomeBuilder.class;
+    public Class<SeededTerraBiome> getTypeClass() {
+        return SeededTerraBiome.class;
     }
 
     @Override
-    public Supplier<OpenRegistry<BiomeBuilder>> registrySupplier() {
-        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<BiomeBuilder>) (t, c, loader) -> {
+    public Supplier<OpenRegistry<SeededTerraBiome>> registrySupplier() {
+        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<SeededTerraBiome>) (t, c, loader) -> {
             if(c.equals("SELF")) return null;
-            BiomeBuilder obj = registry.get((String) c);
+            SeededTerraBiome obj = registry.get((String) c);
             if(obj == null)
                 throw new LoadException("No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry.");
             return obj;

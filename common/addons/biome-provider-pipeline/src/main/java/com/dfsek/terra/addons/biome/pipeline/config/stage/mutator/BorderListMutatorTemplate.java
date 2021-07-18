@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.mutator.BorderListMutator;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
 import java.util.HashMap;
@@ -19,10 +19,10 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
     private String defaultReplace;
 
     @Value("default-to")
-    private ProbabilityCollection<BiomeBuilder> defaultTo;
+    private ProbabilityCollection<SeededTerraBiome> defaultTo;
 
     @Value("replace")
-    private Map<BiomeBuilder, ProbabilityCollection<BiomeBuilder>> replace;
+    private Map<SeededTerraBiome, ProbabilityCollection<SeededTerraBiome>> replace;
 
 
     @Override
