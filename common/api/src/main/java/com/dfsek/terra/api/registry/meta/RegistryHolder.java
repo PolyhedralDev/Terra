@@ -21,9 +21,11 @@ public interface RegistryHolder {
         return getCheckedRegistry((Type) clazz);
     }
 
-    default <T> CheckedRegistry<T> getCheckedRegistry(TypeToken<T> type) {
+    default <T> CheckedRegistry<T> getCheckedRegistry(TypeToken<T> type) throws IllegalStateException {
         return getCheckedRegistry(type.getType());
     }
 
-    <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException;
+    default <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
+        throw new IllegalStateException("Cannot get checked registry.");
+    }
 }
