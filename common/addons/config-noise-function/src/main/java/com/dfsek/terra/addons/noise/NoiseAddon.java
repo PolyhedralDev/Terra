@@ -1,6 +1,5 @@
 package com.dfsek.terra.addons.noise;
 
-import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.addons.noise.config.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
@@ -101,12 +100,8 @@ public class NoiseAddon extends TerraAddon implements EventListener {
         noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
 
 
-        try {
-            NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
-            event.loadTemplate(template);
-            packFunctions.putAll(template.getNoiseBuilderMap());
-        } catch(ConfigException e) {
-            throw new RuntimeException(e);
-        }
+        NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
+        event.loadTemplate(template);
+        packFunctions.putAll(template.getNoiseBuilderMap());
     }
 }
