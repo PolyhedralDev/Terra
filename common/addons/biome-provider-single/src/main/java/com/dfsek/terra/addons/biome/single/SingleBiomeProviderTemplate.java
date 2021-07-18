@@ -3,10 +3,10 @@ package com.dfsek.terra.addons.biome.single;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
-public class SingleBiomeProviderTemplate implements ObjectTemplate<BiomeProviderBuilder>, BiomeProviderBuilder {
+public class SingleBiomeProviderTemplate implements ObjectTemplate<SeededBiomeProvider>, SeededBiomeProvider {
     @Value("biome")
     private SeededTerraBiome biome;
 
@@ -16,7 +16,7 @@ public class SingleBiomeProviderTemplate implements ObjectTemplate<BiomeProvider
     }
 
     @Override
-    public BiomeProviderBuilder get() {
+    public SeededBiomeProvider get() {
         return this;
     }
 }

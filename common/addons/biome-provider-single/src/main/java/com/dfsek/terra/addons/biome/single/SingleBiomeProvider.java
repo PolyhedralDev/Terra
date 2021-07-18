@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.biome.single;
 
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
-public class SingleBiomeProvider implements BiomeProvider, BiomeProviderBuilder {
+public class SingleBiomeProvider implements BiomeProvider, SeededBiomeProvider {
     private final TerraBiome biome;
 
     public SingleBiomeProvider(TerraBiome biome) {

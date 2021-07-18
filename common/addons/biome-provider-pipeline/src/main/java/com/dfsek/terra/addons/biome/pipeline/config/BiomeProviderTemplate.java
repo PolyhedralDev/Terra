@@ -3,10 +3,10 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
-public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProviderBuilder>, BiomeProviderBuilder {
+public abstract class BiomeProviderTemplate implements ObjectTemplate<SeededBiomeProvider>, SeededBiomeProvider {
     @Value("resolution")
     @Default
     protected int resolution = 1;
@@ -18,7 +18,7 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     protected double blendAmp = 0d;
 
     @Override
-    public BiomeProviderBuilder get() {
+    public SeededBiomeProvider get() {
         return this;
     }
 }

@@ -6,7 +6,7 @@ import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
-    BiomeProviderBuilder getBiomeProviderBuilder();
+    SeededBiomeProvider getBiomeProviderBuilder();
 
     <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz);
 

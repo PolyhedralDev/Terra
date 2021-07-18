@@ -21,7 +21,7 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.util.seeded.SeededBiomeSource;
 
 import java.lang.reflect.Type;
@@ -51,6 +51,6 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
                 .applyLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
                 .applyLoader((Type) BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
-                .applyLoader(BiomeProviderBuilder.class, new BiomeProviderBuilderLoader());
+                .applyLoader(SeededBiomeProvider.class, new BiomeProviderBuilderLoader());
     }
 }

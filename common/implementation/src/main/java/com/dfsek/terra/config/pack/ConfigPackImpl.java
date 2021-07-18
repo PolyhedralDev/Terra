@@ -29,7 +29,7 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
+import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -82,7 +82,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final Set<TerraAddon> addons;
 
-    private final BiomeProviderBuilder biomeProviderBuilder;
+    private final SeededBiomeProvider seededBiomeProvider;
 
     private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
@@ -122,8 +122,8 @@ public class ConfigPackImpl implements ConfigPack {
 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, configuration);
-                biomeProviderBuilder = packPostTemplate.getProviderBuilder();
-                biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                seededBiomeProvider = packPostTemplate.getProviderBuilder();
+                seededBiomeProvider.build(0); // Build dummy provider to catch errors at load time.
                 checkDeadEntries(main);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
@@ -175,8 +175,8 @@ public class ConfigPackImpl implements ConfigPack {
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
 
                 selfLoader.load(packPostTemplate, configuration);
-                biomeProviderBuilder = packPostTemplate.getProviderBuilder();
-                biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                seededBiomeProvider = packPostTemplate.getProviderBuilder();
+                seededBiomeProvider.build(0); // Build dummy provider to catch errors at load time.
                 checkDeadEntries(main);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
@@ -293,8 +293,8 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public BiomeProviderBuilder getBiomeProviderBuilder() {
-        return biomeProviderBuilder;
+    public SeededBiomeProvider getBiomeProviderBuilder() {
+        return seededBiomeProvider;
     }
 
     @SuppressWarnings("unchecked")
