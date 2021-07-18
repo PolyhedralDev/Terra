@@ -6,8 +6,9 @@ import com.dfsek.terra.addons.biome.pipeline.BiomePipelineImpl;
 import com.dfsek.terra.addons.biome.pipeline.StageSeeded;
 import com.dfsek.terra.addons.biome.pipeline.StandardBiomeProvider;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.util.seeded.SeededBiomeSource;
+import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     private List<StageSeeded> stages;
 
     @Value("pipeline.source")
-    private SeededBiomeSource source;
+    private SeededBuilder<BiomeSource> source;
 
     public BiomePipelineTemplate(TerraPlugin main) {
         this.main = main;

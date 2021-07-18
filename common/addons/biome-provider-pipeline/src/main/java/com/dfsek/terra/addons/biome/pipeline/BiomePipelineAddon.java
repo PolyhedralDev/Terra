@@ -22,9 +22,9 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.util.TypeToken;
-import com.dfsek.terra.api.util.seeded.SeededBiomeSource;
 import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
 import java.lang.reflect.Type;
 
@@ -36,6 +36,7 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
     private TerraPlugin main;
 
     public static final TypeToken<SeededBuilder<BiomeProvider>> BIOME_PROVIDER_BUILDER_TOKEN = new TypeToken<>(){};
+    public static final TypeToken<SeededBuilder<BiomeSource>> BIOME_SOURCE_BUILDER_TOKEN = new TypeToken<>(){};
 
     @Override
     public void initialize() {
@@ -43,7 +44,7 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
-        event.getPack().applyLoader(SeededBiomeSource.class, new SourceBuilderLoader())
+        event.getPack().applyLoader(BIOME_SOURCE_BUILDER_TOKEN.getType(), new SourceBuilderLoader())
                 .applyLoader(StageSeeded.class, new StageBuilderLoader())
                 .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                 .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
