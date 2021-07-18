@@ -2,7 +2,7 @@ package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.util.ReflectionUtil;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import java.util.LinkedHashMap;

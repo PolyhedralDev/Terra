@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.api.util.reflection;
 
 import org.jetbrains.annotations.NotNull;
 

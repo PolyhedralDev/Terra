@@ -9,7 +9,7 @@ import com.dfsek.terra.api.event.annotations.Priority;
 import com.dfsek.terra.api.event.events.Cancellable;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.PackEvent;
-import com.dfsek.terra.api.util.ReflectionUtil;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
