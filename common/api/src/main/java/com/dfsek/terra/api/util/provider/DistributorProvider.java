@@ -1,4 +1,9 @@
 package com.dfsek.terra.api.util.provider;
 
-public interface DistributorProvider {
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.api.structure.feature.Distributor;
+
+import java.util.function.Supplier;
+
+public interface DistributorProvider extends Supplier<ObjectTemplate<Distributor>> {
 }
