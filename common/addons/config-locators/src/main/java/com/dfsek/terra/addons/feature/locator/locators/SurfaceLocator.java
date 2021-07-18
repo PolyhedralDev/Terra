@@ -4,17 +4,18 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.ConstantRange;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.Column;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SurfaceLocator implements Locator {
-    private final ConstantRange search;
+    private final Range search;
 
     private final BlockState air;
 
-    public SurfaceLocator(ConstantRange search, TerraPlugin main) {
+    public SurfaceLocator(Range search, TerraPlugin main) {
         this.search = search;
         this.air = main.getWorldHandle().air();
     }
