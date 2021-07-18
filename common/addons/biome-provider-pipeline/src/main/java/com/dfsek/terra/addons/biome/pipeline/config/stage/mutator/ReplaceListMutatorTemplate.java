@@ -22,11 +22,11 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
     private Map<SeededTerraBiome, ProbabilityCollection<SeededTerraBiome>> replace;
 
     @Override
-    public BiomeMutator build(long seed) {
+    public BiomeMutator getMutator(long seed) {
         Map<TerraBiome, ProbabilityCollection<TerraBiome>> replaceMap = new HashMap<>();
 
-        replace.forEach((biomeBuilder, biomeBuilders) -> replaceMap.put(biomeBuilder.apply(seed), biomeBuilders.map(builder -> builder.apply(seed), true)));
+        replace.forEach((biomeBuilder, biomeBuilders) -> replaceMap.put(biomeBuilder.build(seed), biomeBuilders.map(builder -> builder.build(seed), true)));
 
-        return new ReplaceListMutator(replaceMap, defaultFrom, defaultTo.map(biomeBuilder -> biomeBuilder.apply(seed), true), noise.apply(seed));
+        return new ReplaceListMutator(replaceMap, defaultFrom, defaultTo.map(biomeBuilder -> biomeBuilder.build(seed), true), noise.build(seed));
     }
 }

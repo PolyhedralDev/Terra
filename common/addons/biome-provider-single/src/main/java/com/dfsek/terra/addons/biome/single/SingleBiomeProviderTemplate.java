@@ -12,7 +12,7 @@ public class SingleBiomeProviderTemplate implements ObjectTemplate<BiomeProvider
 
     @Override
     public BiomeProvider build(long seed) {
-        return new SingleBiomeProvider(biome.apply(seed));
+        return new SingleBiomeProvider(biome.build(seed));
     }
 
     @Override

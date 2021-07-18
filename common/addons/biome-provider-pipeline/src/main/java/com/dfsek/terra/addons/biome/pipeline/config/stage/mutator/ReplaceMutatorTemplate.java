@@ -15,7 +15,7 @@ public class ReplaceMutatorTemplate extends MutatorStageTemplate {
     private ProbabilityCollection<SeededTerraBiome> to;
 
     @Override
-    public BiomeMutator build(long seed) {
-        return new ReplaceMutator(from, to.map(biomeBuilder -> biomeBuilder.apply(seed), true), noise.apply(seed));
+    public BiomeMutator getMutator(long seed) {
+        return new ReplaceMutator(from, to.map(biomeBuilder -> biomeBuilder.build(seed), true), noise.build(seed));
     }
 }

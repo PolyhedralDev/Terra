@@ -26,11 +26,11 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
 
 
     @Override
-    public BiomeMutator build(long seed) {
+    public BiomeMutator getMutator(long seed) {
         Map<TerraBiome, ProbabilityCollection<TerraBiome>> replaceMap = new HashMap<>();
 
-        replace.forEach((keyBuilder, replacements) -> replaceMap.put(keyBuilder.apply(seed), replacements.map(replacement -> replacement.apply(seed), true)));
+        replace.forEach((keyBuilder, replacements) -> replaceMap.put(keyBuilder.build(seed), replacements.map(replacement -> replacement.build(seed), true)));
 
-        return new BorderListMutator(replaceMap, from, defaultReplace, noise.apply(seed), defaultTo.map(biomeBuilder -> biomeBuilder.apply(seed), true));
+        return new BorderListMutator(replaceMap, from, defaultReplace, noise.build(seed), defaultTo.map(biomeBuilder -> biomeBuilder.build(seed), true));
     }
 }

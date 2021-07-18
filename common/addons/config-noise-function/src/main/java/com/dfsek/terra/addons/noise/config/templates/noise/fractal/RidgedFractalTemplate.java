@@ -5,8 +5,8 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class RidgedFractalTemplate extends FractalTemplate<RidgedFractalSampler> {
     @Override
-    public NoiseSampler apply(Long seed) {
-        RidgedFractalSampler sampler = new RidgedFractalSampler((int) (long) seed, function.apply(seed));
+    public NoiseSampler build(long seed) {
+        RidgedFractalSampler sampler = new RidgedFractalSampler((int) seed, function.build(seed));
         sampler.setGain(fractalGain);
         sampler.setLacunarity(fractalLacunarity);
         sampler.setOctaves(octaves);

@@ -23,6 +23,6 @@ public class FloraLayerLoader implements ObjectTemplate<FloraLayer> {
 
     @Override
     public FloraLayer get() {
-        return new FloraLayer(density, y, items, distribution.apply(2403L));
+        return new FloraLayer(density, y, items, distribution.build(2403L));
     }
 }

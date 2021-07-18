@@ -28,7 +28,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
     private double frequency = 1;
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public NoiseSampler build(long seed) {
         double[][] k = new double[kernel.size()][kernel.get(0).size()];
 
         for(int x = 0; x < kernel.size(); x++) {
@@ -37,7 +37,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
             }
         }
 
-        KernelSampler sampler = new KernelSampler(k, function.apply(seed));
+        KernelSampler sampler = new KernelSampler(k, function.build(seed));
         sampler.setFrequency(frequency);
         return sampler;
     }

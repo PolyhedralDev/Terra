@@ -32,7 +32,7 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     public BiomeProvider build(long seed) {
         BiomePipelineImpl.BiomePipelineBuilder biomePipelineBuilder = new BiomePipelineImpl.BiomePipelineBuilder(initialSize);
         stages.forEach(biomePipelineBuilder::addStage);
-        BiomePipelineImpl pipeline = biomePipelineBuilder.build(source.apply(seed), seed);
-        return new StandardBiomeProvider(pipeline, main, resolution, blend.apply(seed), blendAmp, (int) seed);
+        BiomePipelineImpl pipeline = biomePipelineBuilder.build(source.build(seed), seed);
+        return new StandardBiomeProvider(pipeline, main, resolution, blend.build(seed), blendAmp, (int) seed);
     }
 }

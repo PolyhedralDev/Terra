@@ -219,19 +219,19 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         //pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
 
         try {
-            noiseEquation.apply(0L);
+            noiseEquation.build(0L);
         } catch(Exception e) {
             throw new ValidationException("Invalid noise sampler: ", e);
         }
 
         try {
-            carvingEquation.apply(0L);
+            carvingEquation.build(0L);
         } catch(Exception e) {
             throw new ValidationException("Invalid carving sampler: ", e);
         }
 
         try {
-            elevationEquation.apply(0L);
+            elevationEquation.build(0L);
         } catch(Exception e) {
             throw new ValidationException("Invalid elevation sampler: ", e);
         }

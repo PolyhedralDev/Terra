@@ -13,8 +13,8 @@ public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
     }
 
     @Override
-    public NoiseSampler apply(Long seed) {
-        NoiseFunction sampler = samplerSupplier.apply((int) (long) seed + salt);
+    public NoiseSampler build(long seed) {
+        NoiseFunction sampler = samplerSupplier.apply((int) seed + salt);
         sampler.setFrequency(frequency);
         return sampler;
     }

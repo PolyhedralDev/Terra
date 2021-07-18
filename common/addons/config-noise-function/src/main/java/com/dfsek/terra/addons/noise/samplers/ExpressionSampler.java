@@ -30,10 +30,10 @@ public class ExpressionSampler implements NoiseSampler {
         functions.forEach((id, noise) -> {
             switch(noise.getDimensions()) {
                 case 2:
-                    parser.registerFunction(id, new NoiseFunction2(noise.apply(seed)));
+                    parser.registerFunction(id, new NoiseFunction2(noise.build(seed)));
                     break;
                 case 3:
-                    parser.registerFunction(id, new NoiseFunction3(noise.apply(seed)));
+                    parser.registerFunction(id, new NoiseFunction3(noise.build(seed)));
                     break;
             }
         });

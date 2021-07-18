@@ -22,6 +22,6 @@ public class TreeLayerTemplate implements ObjectTemplate<TreeLayer> {
 
     @Override
     public TreeLayer get() {
-        return new TreeLayer(density, y, items, distribution.apply(2403L));
+        return new TreeLayer(density, y, items, distribution.build(2403L));
     }
 }

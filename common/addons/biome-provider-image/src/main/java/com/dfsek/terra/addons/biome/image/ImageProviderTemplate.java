@@ -24,6 +24,6 @@ public class ImageProviderTemplate /*extends BiomeProviderTemplate */ {
 
     //@Override
     public BiomeProvider build(long seed) {
-        return new ImageBiomeProvider(biomes.entries().stream().map(biomeBuilder -> biomeBuilder.apply(seed)).collect(Collectors.toSet()), image, resolution, align);
+        return new ImageBiomeProvider(biomes.entries().stream().map(biomeBuilder -> biomeBuilder.build(seed)).collect(Collectors.toSet()), image, resolution, align);
     }
 }

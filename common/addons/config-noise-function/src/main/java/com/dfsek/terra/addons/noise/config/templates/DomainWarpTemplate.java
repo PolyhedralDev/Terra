@@ -23,7 +23,7 @@ public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
     private double amplitude = 1;
 
     @Override
-    public NoiseSampler apply(Long seed) {
-        return new DomainWarpedSampler(function.apply(seed), warp.apply(seed), (int) (seed + salt), amplitude);
+    public NoiseSampler build(long seed) {
+        return new DomainWarpedSampler(function.build(seed), warp.build(seed), (int) (seed + salt), amplitude);
     }
 }

@@ -6,7 +6,7 @@ public interface SeededNoiseSampler extends SeededBuilder<NoiseSampler> {
     static SeededNoiseSampler zero(int dimensions) {
         return new SeededNoiseSampler() {
             @Override
-            public NoiseSampler apply(Long seed) {
+            public NoiseSampler build(long seed) {
                 return NoiseSampler.zero();
             }
 
@@ -16,9 +16,6 @@ public interface SeededNoiseSampler extends SeededBuilder<NoiseSampler> {
             }
         };
     }
-
-    @Override
-    NoiseSampler apply(Long seed);
 
     int getDimensions();
 }

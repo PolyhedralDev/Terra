@@ -51,7 +51,7 @@ public class BiomePipelineImpl {
         }
 
         public BiomePipelineImpl build(BiomeSource source, long seed) {
-            List<Stage> stagesBuilt = stages.stream().map(stageBuilder -> stageBuilder.apply(seed)).collect(Collectors.toList());
+            List<Stage> stagesBuilt = stages.stream().map(stageBuilder -> stageBuilder.build(seed)).collect(Collectors.toList());
 
             for(Stage stage : stagesBuilt) {
                 if(stage.isExpansion()) expand = expand * 2 - 1;

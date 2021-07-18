@@ -42,7 +42,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     }
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public NoiseSampler build(long seed) {
         try {
             Map<String, Function> noiseFunctionMap = generateFunctions(seed);
             return new ExpressionFunction(noiseFunctionMap, equation, vars);
@@ -71,14 +71,14 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
 
         otherFunctions.forEach((id, function) -> {
             if(function.getDimensions() == 2) {
-                noiseFunctionMap.put(id, new NoiseFunction2(function.apply(seed)));
-            } else noiseFunctionMap.put(id, new NoiseFunction3(function.apply(seed)));
+                noiseFunctionMap.put(id, new NoiseFunction2(function.build(seed)));
+            } else noiseFunctionMap.put(id, new NoiseFunction3(function.build(seed)));
         });
 
         functions.forEach((id, function) -> {
             if(function.getDimensions() == 2) {
-                noiseFunctionMap.put(id, new NoiseFunction2(function.apply(seed)));
-            } else noiseFunctionMap.put(id, new NoiseFunction3(function.apply(seed)));
+                noiseFunctionMap.put(id, new NoiseFunction2(function.build(seed)));
+            } else noiseFunctionMap.put(id, new NoiseFunction3(function.build(seed)));
         });
 
         return noiseFunctionMap;
