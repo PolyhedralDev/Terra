@@ -5,5 +5,5 @@ import com.dfsek.terra.api.world.Column;
 import java.util.List;
 
 public interface Locator {
-    List<Integer> getSuitableCoordinates(Column column, int x, int z);
+    List<Integer> getSuitableCoordinates(Column column);
 }
