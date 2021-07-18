@@ -189,11 +189,11 @@ public class ConfigPackImpl implements ConfigPack {
         toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
+    @SuppressWarnings("unchecked")
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
             OpenRegistry<?> openRegistry = configType.registrySupplier().get();
             if(registryMap.containsKey(configType.getTypeClass())) { // Someone already registered something; we need to copy things to the new registry.
-                //noinspection unchecked
                 registryMap.get(configType.getTypeClass()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
             selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
