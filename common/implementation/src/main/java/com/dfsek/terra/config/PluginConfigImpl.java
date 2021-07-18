@@ -8,8 +8,6 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.util.JarUtil;
-import com.google.common.base.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
 
@@ -20,13 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.config.PluginConfig {

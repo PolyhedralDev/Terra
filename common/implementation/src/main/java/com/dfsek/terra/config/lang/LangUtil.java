@@ -7,10 +7,6 @@ import com.dfsek.terra.api.lang.Language;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.jar.JarFile;
-
-import static com.dfsek.terra.api.util.JarUtil.copyResourcesToDirectory;
 
 public final class LangUtil {
     private static Language language;

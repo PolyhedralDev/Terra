@@ -10,16 +10,11 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.util.JarUtil;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.jar.JarFile;
 
 /**
  * Represents a Terra mod/plugin instance.
@@ -69,8 +64,4 @@ public interface TerraPlugin extends LoaderRegistrar {
     }
 
     Profiler getProfiler();
-
-    default JarFile getModJar() throws URISyntaxException, IOException {
-        return JarUtil.getJarFile();
-    }
 }
