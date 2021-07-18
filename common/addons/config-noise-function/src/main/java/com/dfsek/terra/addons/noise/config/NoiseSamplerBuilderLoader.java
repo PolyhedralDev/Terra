@@ -7,7 +7,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.seeded.NoiseProvider;
+import com.dfsek.terra.api.util.provider.NoiseProvider;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 import java.lang.reflect.AnnotatedType;

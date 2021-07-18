@@ -34,7 +34,7 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.util.seeded.NoiseProvider;
+import com.dfsek.terra.api.util.provider.NoiseProvider;
 import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 import java.util.HashMap;
