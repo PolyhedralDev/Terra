@@ -30,8 +30,9 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.ReflectionUtil;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
+import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
@@ -83,7 +84,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final Set<TerraAddon> addons;
 
-    private final SeededBiomeProvider seededBiomeProvider;
+    private final SeededBuilder<BiomeProvider> seededBiomeProvider;
 
     private final Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
@@ -294,7 +295,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public SeededBiomeProvider getBiomeProviderBuilder() {
+    public SeededBuilder<BiomeProvider> getBiomeProviderBuilder() {
         return seededBiomeProvider;
     }
 

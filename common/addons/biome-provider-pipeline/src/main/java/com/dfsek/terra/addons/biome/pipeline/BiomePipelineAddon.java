@@ -21,8 +21,10 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
+import com.dfsek.terra.api.util.TypeToken;
 import com.dfsek.terra.api.util.seeded.SeededBiomeSource;
+import com.dfsek.terra.api.util.seeded.SeededBuilder;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import java.lang.reflect.Type;
 
@@ -32,6 +34,8 @@ import java.lang.reflect.Type;
 public class BiomePipelineAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin main;
+
+    public static final TypeToken<SeededBuilder<BiomeProvider>> BIOME_PROVIDER_BUILDER_TOKEN = new TypeToken<>(){};
 
     @Override
     public void initialize() {
@@ -51,6 +55,6 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
                 .applyLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
                 .applyLoader((Type) BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
-                .applyLoader(SeededBiomeProvider.class, new BiomeProviderBuilderLoader());
+                .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderBuilderLoader());
     }
 }
