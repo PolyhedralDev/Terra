@@ -18,12 +18,6 @@ public final class LangUtil {
     public static void load(String langID, TerraPlugin main) {
         Logger logger = main.logger();
         File file = new File(main.getDataFolder(), "lang");
-        try(JarFile jar = main.getModJar()) {
-            copyResourcesToDirectory(jar, "lang", file.toString());
-        } catch(IOException | URISyntaxException e) {
-            main.getDebugLogger().severe("Failed to dump language files!");
-            main.getDebugLogger().stack(e);
-        }
         try {
             File file1 = new File(file, langID + ".yml");
             logger.info(file1.getAbsolutePath());
