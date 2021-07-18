@@ -81,6 +81,14 @@ fun Project.configureDistribution() {
                 if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
                 resources.computeIfAbsent("packs") { ArrayList() }.add(it.name)
             }
+
+            val langDir = File("${project(":common:implementation").buildDir}/resources/main/lang/")
+
+            langDir.walkTopDown().forEach {
+                if (it.isDirectory || !it.name.endsWith(".yml")) return@forEach
+                resources.computeIfAbsent("lang") { ArrayList() }.add(it.name)
+            }
+
             project(":common:addons").subprojects.forEach { addonProject ->
                 val jar = (addonProject.tasks.named("jar").get() as Jar).archiveFileName.get()
                 resources.computeIfAbsent("addons") { ArrayList() }.add(jar)
