@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.structure;
 
 import com.dfsek.terra.api.properties.Properties;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
 import java.util.Set;
 

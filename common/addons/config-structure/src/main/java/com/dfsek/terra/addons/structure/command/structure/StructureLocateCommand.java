@@ -16,7 +16,7 @@ import com.dfsek.terra.api.command.arg.IntegerArgumentParser;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.vector.Vector3;
 
 import java.util.Locale;

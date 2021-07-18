@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.structure;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;

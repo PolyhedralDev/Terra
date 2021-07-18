@@ -5,7 +5,7 @@ import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
 import java.util.ArrayList;
 import java.util.List;
