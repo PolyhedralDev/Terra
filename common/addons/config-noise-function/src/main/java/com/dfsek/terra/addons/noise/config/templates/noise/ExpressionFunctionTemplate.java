@@ -15,7 +15,7 @@ import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.addons.noise.samplers.noise.ExpressionFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,7 +24,7 @@ import java.util.Map;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFunction> implements ValidatedConfigTemplate {
-    private final Map<String, NoiseSeeded> otherFunctions;
+    private final Map<String, SeededNoiseSampler> otherFunctions;
     @Value("variables")
     @Default
     private Map<String, Double> vars = new HashMap<>();
@@ -32,12 +32,12 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     private String equation;
     @Value("functions")
     @Default
-    private LinkedHashMap<String, NoiseSeeded> functions = new LinkedHashMap<>();
+    private LinkedHashMap<String, SeededNoiseSampler> functions = new LinkedHashMap<>();
     @Value("expressions")
     @Default
     private LinkedHashMap<String, FunctionTemplate> expressions = new LinkedHashMap<>();
 
-    public ExpressionFunctionTemplate(Map<String, NoiseSeeded> otherFunctions) {
+    public ExpressionFunctionTemplate(Map<String, SeededNoiseSampler> otherFunctions) {
         this.otherFunctions = otherFunctions;
     }
 

@@ -35,7 +35,7 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.provider.NoiseProvider;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +55,7 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     public void packPreLoad(ConfigPackPreLoadEvent event) {
         CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getOrCreateRegistry(NoiseProvider.class);
         event.getPack()
-                .applyLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
+                .applyLoader(SeededNoiseSampler.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
@@ -96,7 +96,7 @@ public class NoiseAddon extends TerraAddon implements EventListener {
 
         noiseRegistry.register("KERNEL", KernelTemplate::new);
 
-        Map<String, NoiseSeeded> packFunctions = new HashMap<>();
+        Map<String, SeededNoiseSampler> packFunctions = new HashMap<>();
         noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
 
 

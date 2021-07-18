@@ -7,13 +7,12 @@ import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
-import com.dfsek.terra.addons.biome.holder.PaletteHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generator.Palette;
 
@@ -43,14 +42,14 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("beta.carving.equation")
     @Default
-    private NoiseSeeded carvingEquation = NoiseSeeded.zero(3);
+    private SeededNoiseSampler carvingEquation = SeededNoiseSampler.zero(3);
 
     @Value("vanilla")
     private ProbabilityCollection<Biome> vanilla;
 
     @Value("biome-noise")
     @Default
-    private NoiseSeeded biomeNoise = NoiseSeeded.zero(2);
+    private SeededNoiseSampler biomeNoise = SeededNoiseSampler.zero(2);
 
     @Value("blend.distance")
     @Default
@@ -65,7 +64,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private int blendStep = 4;
 
     @Value("noise")
-    private NoiseSeeded noiseEquation;
+    private SeededNoiseSampler noiseEquation;
 
     @Value("ocean.level")
     @Default
@@ -73,7 +72,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("elevation.equation")
     @Default
-    private NoiseSeeded elevationEquation = NoiseSeeded.zero(2);
+    private SeededNoiseSampler elevationEquation = SeededNoiseSampler.zero(2);
 
     @Value("elevation.weight")
     @Default
@@ -160,15 +159,15 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return stairPalettes;
     }
 
-    public NoiseSeeded getBiomeNoise() {
+    public SeededNoiseSampler getBiomeNoise() {
         return biomeNoise;
     }
 
-    public NoiseSeeded getElevationEquation() {
+    public SeededNoiseSampler getElevationEquation() {
         return elevationEquation;
     }
 
-    public NoiseSeeded getCarvingEquation() {
+    public SeededNoiseSampler getCarvingEquation() {
         return carvingEquation;
     }
 
@@ -188,7 +187,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return vanilla;
     }
 
-    public NoiseSeeded getNoiseEquation() {
+    public SeededNoiseSampler getNoiseEquation() {
         return noiseEquation;
     }
 

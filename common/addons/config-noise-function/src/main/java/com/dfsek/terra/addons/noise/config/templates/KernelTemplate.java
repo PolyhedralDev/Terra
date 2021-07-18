@@ -6,7 +6,7 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.addons.noise.samplers.KernelSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
     private double factor = 1;
 
     @Value("function")
-    private NoiseSeeded function;
+    private SeededNoiseSampler function;
 
     @Value("frequency")
     @Default

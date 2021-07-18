@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.Tree;
 
 public class TreeLayerTemplate implements ObjectTemplate<TreeLayer> {
@@ -18,7 +18,7 @@ public class TreeLayerTemplate implements ObjectTemplate<TreeLayer> {
     private ProbabilityCollection<Tree> items;
 
     @Value("distribution")
-    private NoiseSeeded distribution;
+    private SeededNoiseSampler distribution;
 
     @Override
     public TreeLayer get() {

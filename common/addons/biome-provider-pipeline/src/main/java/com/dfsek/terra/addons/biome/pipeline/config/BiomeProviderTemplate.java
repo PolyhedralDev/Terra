@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProviderBuilder>, BiomeProviderBuilder {
     @Value("resolution")
@@ -12,7 +12,7 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     protected int resolution = 1;
     @Value("blend.noise")
     @Default
-    protected NoiseSeeded blend = NoiseSeeded.zero(2);
+    protected SeededNoiseSampler blend = SeededNoiseSampler.zero(2);
     @Value("blend.amplitude")
     @Default
     protected double blendAmp = 0d;

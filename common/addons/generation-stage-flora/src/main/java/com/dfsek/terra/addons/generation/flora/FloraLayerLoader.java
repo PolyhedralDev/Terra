@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.Flora;
 
 public class FloraLayerLoader implements ObjectTemplate<FloraLayer> {
@@ -18,7 +18,7 @@ public class FloraLayerLoader implements ObjectTemplate<FloraLayer> {
     private ProbabilityCollection<Flora> items;
 
     @Value("distribution")
-    private NoiseSeeded distribution;
+    private SeededNoiseSampler distribution;
 
 
     @Override

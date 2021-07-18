@@ -2,9 +2,9 @@ package com.dfsek.terra.api.util.seeded;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-public interface NoiseSeeded extends SeededBuilder<NoiseSampler> {
-    static NoiseSeeded zero(int dimensions) {
-        return new NoiseSeeded() {
+public interface SeededNoiseSampler extends SeededBuilder<NoiseSampler> {
+    static SeededNoiseSampler zero(int dimensions) {
+        return new SeededNoiseSampler() {
             @Override
             public NoiseSampler apply(Long seed) {
                 return NoiseSampler.zero();

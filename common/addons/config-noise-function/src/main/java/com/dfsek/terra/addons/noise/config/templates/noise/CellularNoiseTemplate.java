@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
@@ -24,7 +24,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Value("lookup")
     @Default
-    private NoiseSeeded lookup = new NoiseSeeded() {
+    private SeededNoiseSampler lookup = new SeededNoiseSampler() {
         @Override
         public NoiseSampler apply(Long seed) {
 

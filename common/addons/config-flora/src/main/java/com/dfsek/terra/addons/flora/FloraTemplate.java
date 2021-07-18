@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.addons.flora.flora.gen.TerraFlora;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.util.collection.MaterialSet;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.List;
 
@@ -61,9 +61,9 @@ public class FloraTemplate implements AbstractableTemplate {
     private List<BlockLayer> layers;
 
     @Value("layer-distribution")
-    private NoiseSeeded noiseDistribution;
+    private SeededNoiseSampler noiseDistribution;
 
-    public NoiseSeeded getNoiseDistribution() {
+    public SeededNoiseSampler getNoiseDistribution() {
         return noiseDistribution;
     }
 

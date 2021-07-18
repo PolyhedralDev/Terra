@@ -9,7 +9,7 @@ import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 public class ExpressionSampler implements NoiseSampler {
     private final Expression expression;
 
-    public ExpressionSampler(String equation, Scope parent, long seed, Map<String, NoiseSeeded> functions, Map<String, FunctionTemplate> definedFunctions) throws ParseException {
+    public ExpressionSampler(String equation, Scope parent, long seed, Map<String, SeededNoiseSampler> functions, Map<String, FunctionTemplate> definedFunctions) throws ParseException {
         Parser parser = new Parser();
         Scope scope = new Scope().withParent(parent);
 
