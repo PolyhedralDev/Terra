@@ -28,6 +28,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
+import com.dfsek.terra.api.util.ReflectionUtil;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.seeded.SeededBiomeProvider;
 import com.dfsek.terra.api.world.TerraWorld;
@@ -203,7 +204,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     private void checkDeadEntries(TerraPlugin main) {
-        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + clazz + "' registry: '" + id + "'")));
+        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + ReflectionUtil.typeToString(clazz) + "' registry: '" + id + "'")));
     }
 
     @Override
@@ -299,12 +300,12 @@ public class ConfigPackImpl implements ConfigPack {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
-        return (CheckedRegistry<T>) registryMap.computeIfAbsent(clazz, c -> {
+    public <T> CheckedRegistry<T> getOrCreateRegistry(Type type) {
+        return (CheckedRegistry<T>) registryMap.computeIfAbsent(type, c -> {
             OpenRegistry<T> registry = new OpenRegistryImpl<>();
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
-            main.getDebugLogger().info("Registered loader for registry of class " + c);
+            main.getDebugLogger().info("Registered loader for registry of class " + ReflectionUtil.typeToString(c));
             return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }
