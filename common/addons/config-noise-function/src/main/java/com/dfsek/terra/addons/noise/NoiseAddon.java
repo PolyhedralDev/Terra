@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.noise;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
-import com.dfsek.terra.addons.noise.config.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
@@ -59,14 +58,8 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     public void packPreLoad(ConfigPackPreLoadEvent event) {
         CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
         event.getPack()
-                .applyLoader(NoiseSampler.class, new NoiseSamplerBuilderLoader(noiseRegistry))
-                .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .applyLoader(CellularSampler.DistanceFunction.class, (t, o, l) -> CellularSampler.DistanceFunction.valueOf((String) o))
                 .applyLoader(CellularSampler.ReturnType.class, (t, o, l) -> CellularSampler.ReturnType.valueOf((String) o))
-                .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
-                .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
-                .applyLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
-                .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
                 .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new);
 
         noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
