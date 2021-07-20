@@ -18,18 +18,19 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
 import com.dfsek.terra.api.event.events.config.type.ConfigTypePreLoadEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
@@ -37,6 +38,7 @@ import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
+import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
@@ -50,6 +52,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -304,6 +307,28 @@ public class ConfigPackImpl implements ConfigPack {
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
             main.getDebugLogger().info("Registered loader for registry of class " + ReflectionUtil.typeToString(c));
+
+            if(type instanceof ParameterizedType) {
+                ParameterizedType param = (ParameterizedType) type;
+                Type base = param.getRawType();
+                if(base instanceof Class  // should always be true but we'll check anyways
+                        && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
+                    Type supplied = param.getActualTypeArguments()[0]; // Grab the supplied type
+                    if(supplied instanceof ParameterizedType) {
+                        ParameterizedType suppliedParam = (ParameterizedType) supplied;
+                        Type suppliedBase = suppliedParam.getRawType();
+                        if(suppliedBase instanceof Class // should always be true but we'll check anyways
+                                && ObjectTemplate.class.isAssignableFrom((Class<?>) suppliedBase)) {
+                            Type templateType = suppliedParam.getActualTypeArguments()[0];
+                            GenericTemplateSupplierLoader<?> loader = new GenericTemplateSupplierLoader<>((Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
+                            selfLoader.registerLoader(templateType, loader);
+                            abstractConfigLoader.registerLoader(templateType, loader);
+                            main.getDebugLogger().info("Registered template loader for registry of class " + ReflectionUtil.typeToString(templateType));
+                        }
+                    }
+                }
+            }
+
             return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }
