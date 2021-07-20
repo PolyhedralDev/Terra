@@ -29,7 +29,7 @@ public class ImageBiomeProvider implements BiomeProvider, SeededBuilder<BiomePro
     }
 
     @Override
-    public TerraBiome getBiome(int x, int z) {
+    public TerraBiome getBiome(int x, int z, long seed) {
         x /= resolution;
         z /= resolution;
         Color color = align.getColor(image, x, z);

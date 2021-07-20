@@ -23,7 +23,7 @@ public class BorderListMutator implements BiomeMutator {
     }
 
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
+    public TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed) {
         TerraBiome origin = viewPoint.getBiome(0, 0);
         if(origin.getTags().contains(defaultReplace)) {
             for(int xi = -1; xi <= 1; xi++) {
@@ -33,10 +33,10 @@ public class BorderListMutator implements BiomeMutator {
                     if(current == null) continue;
                     if(current.getTags().contains(border)) {
                         if(replace.containsKey(origin)) {
-                            TerraBiome biome = replace.get(origin).get(noiseSampler, x, z);
+                            TerraBiome biome = replace.get(origin).get(noiseSampler, x, z, seed);
                             return biome == null ? origin : biome;
                         }
-                        TerraBiome biome = replaceDefault.get(noiseSampler, x, z);
+                        TerraBiome biome = replaceDefault.get(noiseSampler, x, z, seed);
                         return biome == null ? origin : biome;
                     }
                 }

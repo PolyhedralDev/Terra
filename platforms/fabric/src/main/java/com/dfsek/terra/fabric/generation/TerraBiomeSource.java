@@ -53,7 +53,7 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        TerraBiome biome = grid.getBiome(biomeX << 2, biomeZ << 2);
+        TerraBiome biome = grid.getBiome(biomeX << 2, biomeZ << 2, seed);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }
 }

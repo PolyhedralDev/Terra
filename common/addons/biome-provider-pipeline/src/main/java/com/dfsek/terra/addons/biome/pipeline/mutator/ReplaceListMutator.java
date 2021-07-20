@@ -21,14 +21,14 @@ public class ReplaceListMutator implements BiomeMutator {
     }
 
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
+    public TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed) {
         TerraBiome center = viewPoint.getBiome(0, 0);
         if(replace.containsKey(center)) {
-            TerraBiome biome = replace.get(center).get(sampler, x, z);
+            TerraBiome biome = replace.get(center).get(sampler, x, z, seed);
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         if(viewPoint.getBiome(0, 0).getTags().contains(defaultTag)) {
-            TerraBiome biome = replaceDefault.get(sampler, x, z);
+            TerraBiome biome = replaceDefault.get(sampler, x, z, seed);
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         return center;

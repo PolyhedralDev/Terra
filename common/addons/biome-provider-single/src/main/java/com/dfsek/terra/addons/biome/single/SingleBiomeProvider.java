@@ -12,7 +12,7 @@ public class SingleBiomeProvider implements BiomeProvider, SeededBuilder<BiomePr
     }
 
     @Override
-    public TerraBiome getBiome(int x, int z) {
+    public TerraBiome getBiome(int x, int z, long seed) {
         return biome;
     }
 

@@ -11,7 +11,7 @@ public class NoiseDistributor implements Distributor {
     }
 
     @Override
-    public boolean matches(int x, int z) {
-        return sampler.getNoise(x, z) > 0;
+    public boolean matches(int x, int z, long seed) {
+        return sampler.getNoiseSeeded(seed, x, z) > 0;
     }
 }

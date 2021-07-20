@@ -192,9 +192,8 @@ public class CellularSampler extends NoiseFunction {
 
     private NoiseSampler noiseLookup;
 
-    public CellularSampler(int seed) {
-        super(seed);
-        noiseLookup = new OpenSimplex2Sampler(seed);
+    public CellularSampler() {
+        noiseLookup = new OpenSimplex2Sampler();
     }
 
     public void setDistanceFunction(DistanceFunction distanceFunction) {
@@ -214,7 +213,8 @@ public class CellularSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y) {
+        int seed = (int) sl;
         int xr = fastRound(x);
         int yr = fastRound(y);
 
@@ -349,7 +349,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Div:
                 return distance0 / distance1 - 1;
             case NoiseLookup:
-                return noiseLookup.getNoise(center.getX(), center.getZ());
+                return noiseLookup.getNoiseSeeded(sl, center.getX(), center.getZ());
             case Distance3:
                 return distance2 - 1;
             case Distance3Add:
@@ -366,7 +366,8 @@ public class CellularSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z) {
+        int seed = (int) sl;
         int xr = fastRound(x);
         int yr = fastRound(y);
         int zr = fastRound(z);
@@ -523,7 +524,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Div:
                 return distance0 / distance1 - 1;
             case NoiseLookup:
-                return noiseLookup.getNoise(center.getX(), center.getY(), center.getZ());
+                return noiseLookup.getNoiseSeeded(sl, center.getX(), center.getY(), center.getZ());
             case Distance3:
                 return distance2 - 1;
             case Distance3Add:

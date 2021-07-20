@@ -16,8 +16,6 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractal
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
-import com.dfsek.terra.addons.noise.samplers.ImageSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2SSampler;
@@ -64,10 +62,7 @@ public class NoiseAddon extends TerraAddon implements EventListener {
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .applyLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
-                .applyLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
-                .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
-                .applyLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
-                .applyLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object));
+                .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new);
 
         noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
         noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
@@ -81,20 +76,20 @@ public class NoiseAddon extends TerraAddon implements EventListener {
         noiseRegistry.register("PINGPONG", PingPongTemplate::new);
         noiseRegistry.register("RIDGED", RidgedFractalTemplate::new);
 
-        noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
-        noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
-        noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
-        noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
+        noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(seed3 -> new OpenSimplex2Sampler()));
+        noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(seed3 -> new OpenSimplex2SSampler()));
+        noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(seed2 -> new PerlinSampler()));
+        noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(seed2 -> new SimplexSampler()));
         noiseRegistry.register("GABOR", GaborNoiseTemplate::new);
 
 
         noiseRegistry.register("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
-        noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
+        noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(seed1 -> new ValueCubicSampler()));
 
         noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
 
-        noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
-        noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+        noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(seed -> new WhiteNoiseSampler()));
+        noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(seed -> new GaussianNoiseSampler()));
 
         noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
 

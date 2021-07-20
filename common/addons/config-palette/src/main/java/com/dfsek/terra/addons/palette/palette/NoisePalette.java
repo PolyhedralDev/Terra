@@ -15,7 +15,7 @@ public class NoisePalette extends PaletteImpl {
     }
 
     @Override
-    public BlockState get(int layer, double x, double y, double z) {
+    public BlockState get(int layer, double x, double y, double z, long seed) {
         PaletteLayer paletteLayer;
         if(layer > this.getSize()) paletteLayer = this.getLayers().get(this.getLayers().size() - 1);
         else {
@@ -24,6 +24,6 @@ public class NoisePalette extends PaletteImpl {
             else paletteLayer = pl.get(layer);
         }
         NoiseSampler paletteSampler = paletteLayer.getSampler();
-        return paletteLayer.get(paletteSampler == null ? sampler : paletteSampler, x, y, z, is2D);
+        return paletteLayer.get(paletteSampler == null ? sampler : paletteSampler, x, y, z, is2D, seed);
     }
 }

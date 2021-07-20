@@ -3,9 +3,6 @@ package com.dfsek.terra.addons.noise.samplers.noise.value;
 import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 
 public abstract class ValueStyleNoise extends NoiseFunction {
-    public ValueStyleNoise(int seed) {
-        super(seed);
-    }
 
     protected static double valCoord(int seed, int xPrimed, int yPrimed) {
         int hash = hash(seed, xPrimed, yPrimed);

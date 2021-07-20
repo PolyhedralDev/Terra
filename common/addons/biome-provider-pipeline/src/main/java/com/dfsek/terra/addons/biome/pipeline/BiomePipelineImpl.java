@@ -29,10 +29,10 @@ public class BiomePipelineImpl {
      * @param z Chunk Z coord
      * @return BiomeHolder containing biomes.
      */
-    public BiomeHolder getBiomes(int x, int z) {
+    public BiomeHolder getBiomes(int x, int z, long seed) {
         BiomeHolder holder = new BiomeHolderImpl(init, new Vector2(x * (init - 1), z * (init - 1)));
-        holder.fill(source);
-        for(Stage stage : stages) holder = stage.apply(holder);
+        holder.fill(source, seed);
+        for(Stage stage : stages) holder = stage.apply(holder, seed);
         return holder;
     }
 

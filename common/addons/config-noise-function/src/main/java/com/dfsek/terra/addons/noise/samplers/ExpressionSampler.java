@@ -8,6 +8,7 @@ import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
+import com.dfsek.terra.addons.noise.paralithic.noise.SeedContext;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
@@ -46,22 +47,12 @@ public class ExpressionSampler implements NoiseSampler {
     }
 
     @Override
-    public double getNoise(double x, double y) {
-        return getNoise(x, 0, y);
+    public double getNoiseSeeded(long seed, double x, double y) {
+        return getNoiseSeeded(seed, x, y);
     }
 
     @Override
-    public double getNoise(double x, double y, double z) {
-        return expression.evaluate(x, y, z);
-    }
-
-    @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
-        return getNoise(x, y);
-    }
-
-    @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
-        return getNoise(x, y, z);
+    public double getNoiseSeeded(long seed, double x, double y, double z) {
+        return expression.evaluate(new SeedContext(seed), x, y, z);
     }
 }

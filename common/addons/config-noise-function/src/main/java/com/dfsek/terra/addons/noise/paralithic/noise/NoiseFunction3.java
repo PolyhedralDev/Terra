@@ -1,8 +1,10 @@
 package com.dfsek.terra.addons.noise.paralithic.noise;
 
+import com.dfsek.paralithic.functions.dynamic.Context;
+import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-public class NoiseFunction3 implements NoiseFunction {
+public class NoiseFunction3 implements DynamicFunction {
     private final NoiseSampler gen;
 
     public NoiseFunction3(NoiseSampler gen) {
@@ -16,11 +18,16 @@ public class NoiseFunction3 implements NoiseFunction {
 
     @Override
     public double eval(double... args) {
-        return gen.getNoise(args[0], args[1], args[2]);
+        throw new UnsupportedOperationException("Cannot evaluate seeded function without seed context.");
+    }
+
+    @Override
+    public double eval(Context context, double... args) {
+        return gen.getNoiseSeeded(((SeedContext) context).getSeed(), args[0], args[1], args[2]);
     }
 
     @Override
     public boolean isStateless() {
-        return true;
+        return false;
     }
 }

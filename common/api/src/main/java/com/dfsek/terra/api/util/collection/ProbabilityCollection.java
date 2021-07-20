@@ -38,15 +38,15 @@ public class ProbabilityCollection<E> implements Collection<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public E get(NoiseSampler n, double x, double y, double z) {
+    public E get(NoiseSampler n, double x, double y, double z, long seed) {
         if(array.length == 0) return null;
-        return (E) array[MathUtil.normalizeIndex(n.getNoise(x, y, z), array.length)];
+        return (E) array[MathUtil.normalizeIndex(n.getNoiseSeeded(seed, x, y, z), array.length)];
     }
 
     @SuppressWarnings("unchecked")
-    public E get(NoiseSampler n, double x, double z) {
+    public E get(NoiseSampler n, double x, double z, long seed) {
         if(array.length == 0) return null;
-        return (E) array[MathUtil.normalizeIndex(n.getNoise(x, z), array.length)];
+        return (E) array[MathUtil.normalizeIndex(n.getNoiseSeeded(seed, x, z), array.length)];
     }
 
     @SuppressWarnings("unchecked")
@@ -183,12 +183,12 @@ public class ProbabilityCollection<E> implements Collection<E> {
         }
 
         @Override
-        public T get(NoiseSampler n, double x, double y, double z) {
+        public T get(NoiseSampler n, double x, double y, double z, long seed) {
             return single;
         }
 
         @Override
-        public T get(NoiseSampler n, double x, double z) {
+        public T get(NoiseSampler n, double x, double z, long seed) {
             return single;
         }
 

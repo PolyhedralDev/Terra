@@ -40,7 +40,7 @@ public class TreeLayer {
     }
 
     public void place(Chunk chunk, Vector2 coords) {
-        Tree item = layer.get(noise, coords.getX(), coords.getZ());
+        Tree item = layer.get(noise, coords.getX(), coords.getZ(), chunk.getWorld().getSeed());
         BlockState current;
         int cx = (chunk.getX()) << 4;
         int cz = (chunk.getZ()) << 4;

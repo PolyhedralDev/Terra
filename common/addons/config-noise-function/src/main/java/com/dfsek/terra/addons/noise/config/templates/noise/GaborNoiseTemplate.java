@@ -28,7 +28,7 @@ public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
 
     @Override
     public NoiseSampler build(long seed) {
-        GaborNoiseSampler gaborNoiseSampler = new GaborNoiseSampler((int) seed + salt);
+        GaborNoiseSampler gaborNoiseSampler = new GaborNoiseSampler();
         gaborNoiseSampler.setFrequency(frequency);
         gaborNoiseSampler.setRotation(rotation);
         gaborNoiseSampler.setIsotropic(isotropic);

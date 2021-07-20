@@ -18,9 +18,8 @@ public class GaborNoiseSampler extends NoiseFunction {
     private double g = FastMath.exp(-impulsesPerCell);
 
 
-    public GaborNoiseSampler(int seed) {
-        super(seed);
-        rand = new WhiteNoiseSampler(seed);
+    public GaborNoiseSampler() {
+        rand = new WhiteNoiseSampler();
     }
 
     public void setIsotropic(boolean isotropic) {
@@ -57,16 +56,16 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double z) {
+    public double getNoiseRaw(long seed, double x, double z) {
         return gaborNoise(seed, x, z);
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z) {
         return gaborNoise(seed, x, z);
     }
 
-    private double gaborNoise(int seed, double x, double y) {
+    private double gaborNoise(long seed, double x, double y) {
         x /= kernelRadius;
         y /= kernelRadius;
         int xi = fastFloor(x);
@@ -82,7 +81,7 @@ public class GaborNoiseSampler extends NoiseFunction {
         return noise;
     }
 
-    private double calculateCell(int seed, int xi, int yi, double x, double y) {
+    private double calculateCell(long seed, int xi, int yi, double x, double y) {
         long mashedSeed = murmur64(31L * xi + yi) + seed;
 
         double gaussianSource = (rand.getNoiseRaw(mashedSeed++) + 1) / 2;

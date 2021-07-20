@@ -25,13 +25,14 @@ public class FeatureGenerationStage implements TerraGenerationStage {
         try(ProfileFrame ignore = main.getProfiler().profile("feature")) {
             int cx = chunk.getX() << 4;
             int cz = chunk.getZ() << 4;
+            long seed = world.getSeed();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     int tx = cx + x;
                     int tz = cz + z;
                     ColumnImpl column = new ColumnImpl(tx, tz, world);
-                    terraWorld.getBiomeProvider().getBiome(tx, tz).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
-                        if(feature.getDistributor().matches(tx, tz)) {
+                    terraWorld.getBiomeProvider().getBiome(tx, tz, seed).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
+                        if(feature.getDistributor().matches(tx, tz, seed)) {
                             feature.getLocator()
                                     .getSuitableCoordinates(column)
                                     .forEach(y ->

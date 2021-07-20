@@ -17,9 +17,9 @@ public class ReplaceMutator implements BiomeMutator {
     }
 
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
+    public TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed) {
         if(viewPoint.getBiome(0, 0).getTags().contains(replaceableTag)) {
-            TerraBiome biome = replace.get(sampler, x, z);
+            TerraBiome biome = replace.get(sampler, x, z, seed);
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         return viewPoint.getBiome(0, 0);

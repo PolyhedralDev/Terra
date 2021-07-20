@@ -1,13 +1,13 @@
 package com.dfsek.terra.api.structure.feature;
 
 public interface Distributor {
-    boolean matches(int x, int z);
+    boolean matches(int x, int z, long seed);
 
     default Distributor and(Distributor other) {
-        return (x, z) -> this.matches(x, z) && other.matches(x, z);
+        return (x, z, seed) -> this.matches(x, z, seed) && other.matches(x, z, seed);
     }
 
     default Distributor or(Distributor other) {
-        return (x, z) -> this.matches(x, z) || other.matches(x, z);
+        return (x, z, seed) -> this.matches(x, z, seed) || other.matches(x, z, seed);
     }
 }

@@ -4,11 +4,11 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
 public interface BiomeHolder {
-    BiomeHolder expand(BiomeExpander expander);
+    BiomeHolder expand(BiomeExpander expander, long seed);
 
-    void mutate(BiomeMutator mutator);
+    void mutate(BiomeMutator mutator, long seed);
 
-    void fill(BiomeSource source);
+    void fill(BiomeSource source, long seed);
 
     TerraBiome getBiome(int x, int z);
 

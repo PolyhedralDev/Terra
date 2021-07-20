@@ -8,13 +8,12 @@ import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 public class GaussianNoiseSampler extends NoiseFunction {
     private final WhiteNoiseSampler whiteNoiseSampler; // Back with a white noise sampler.
 
-    public GaussianNoiseSampler(int seed) {
-        super(seed);
-        whiteNoiseSampler = new WhiteNoiseSampler(seed);
+    public GaussianNoiseSampler() {
+        whiteNoiseSampler = new WhiteNoiseSampler();
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y) {
         double v1, v2, s;
         do {
             v1 = whiteNoiseSampler.getNoiseSeeded(seed++, x, y);
@@ -26,7 +25,7 @@ public class GaussianNoiseSampler extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z) {
         double v1, v2, s;
         do {
             v1 = whiteNoiseSampler.getNoiseSeeded(seed++, x, y, z);

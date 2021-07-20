@@ -35,9 +35,10 @@ public class TreePopulator implements TerraGenerationStage {
 
             BiomeProvider provider = tw.getBiomeProvider();
             Random random = PopulationUtil.getRandom(chunk);
+            long seed = world.getSeed();
             for(int x = 0; x < 16; x += 2) {
                 for(int z = 0; z < 16; z += 2) {
-                    for(TreeLayer layer : provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z).getContext().get(BiomeTrees.class).getTrees()) {
+                    for(TreeLayer layer : provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, seed).getContext().get(BiomeTrees.class).getTrees()) {
                         if(layer.getDensity() >= random.nextDouble() * 100) {
                             layer.place(chunk, new Vector2(offset(random, x), offset(random, z)));
                         }

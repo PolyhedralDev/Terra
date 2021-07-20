@@ -17,8 +17,8 @@ public class ExpanderStage implements Stage {
     }
 
     @Override
-    public BiomeHolder apply(BiomeHolder in) {
-        return in.expand(expander);
+    public BiomeHolder apply(BiomeHolder in, long seed) {
+        return in.expand(expander, seed);
     }
 
     public enum Type {

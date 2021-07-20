@@ -5,6 +5,7 @@ import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
+import com.dfsek.terra.addons.noise.paralithic.noise.SeedContext;
 
 import java.util.Map;
 
@@ -15,7 +16,6 @@ public class ExpressionFunction extends NoiseFunction {
     private final Expression expression;
 
     public ExpressionFunction(Map<String, Function> functions, String eq, Map<String, Double> vars) throws ParseException {
-        super(0);
         Parser p = new Parser();
         Scope scope = new Scope();
 
@@ -32,12 +32,12 @@ public class ExpressionFunction extends NoiseFunction {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y) {
-        return expression.evaluate(x, 0, y);
+    public double getNoiseRaw(long seed, double x, double y) {
+        return expression.evaluate(new SeedContext(seed), x, 0, y);
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
-        return expression.evaluate(x, y, z);
+    public double getNoiseRaw(long seed, double x, double y, double z) {
+        return expression.evaluate(new SeedContext(seed), x, y, z);
     }
 }

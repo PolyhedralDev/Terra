@@ -12,22 +12,12 @@ public abstract class Normalizer implements NoiseSampler {
     public abstract double normalize(double in);
 
     @Override
-    public double getNoise(double x, double y) {
-        return normalize(sampler.getNoise(x, y));
-    }
-
-    @Override
-    public double getNoise(double x, double y, double z) {
-        return normalize(sampler.getNoise(x, y, z));
-    }
-
-    @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseSeeded(long seed, double x, double y) {
         return normalize(sampler.getNoiseSeeded(seed, x, y));
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseSeeded(long seed, double x, double y, double z) {
         return normalize(sampler.getNoiseSeeded(seed, x, y, z));
     }
 }

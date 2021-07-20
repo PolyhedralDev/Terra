@@ -24,6 +24,6 @@ public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
 
     @Override
     public NoiseSampler build(long seed) {
-        return new DomainWarpedSampler(function.build(seed), warp.build(seed), (int) (seed + salt), amplitude);
+        return new DomainWarpedSampler(function.build(seed), warp.build(seed), amplitude);
     }
 }
