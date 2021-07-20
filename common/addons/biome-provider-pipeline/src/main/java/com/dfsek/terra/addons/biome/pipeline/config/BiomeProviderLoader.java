@@ -7,7 +7,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import java.lang.reflect.AnnotatedType;
 
-public class BiomeProviderBuilderLoader implements TypeLoader<BiomeProvider> {
+public class BiomeProviderLoader implements TypeLoader<BiomeProvider> {
     @Override
     public BiomeProvider load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         return loader.loadType(BiomePipelineTemplate.class, c).get(); // TODO: actually implement this lol

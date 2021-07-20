@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.BiomeProviderBuilderLoader;
+import com.dfsek.terra.addons.biome.pipeline.config.BiomeProviderLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.NoiseSourceTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.SourceLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageLoader;
@@ -54,6 +54,6 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
                 .applyLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
                 .applyLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
-                .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderBuilderLoader());
+                .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderLoader());
     }
 }
