@@ -6,9 +6,8 @@ import com.dfsek.terra.addons.feature.locator.locators.SurfaceLocator;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
 
-public class SurfaceLocatorTemplate implements ObjectTemplate<SeededBuilder<Locator>> {
+public class SurfaceLocatorTemplate implements ObjectTemplate<Locator> {
     private final TerraPlugin main;
 
     @Value("range")
@@ -19,7 +18,7 @@ public class SurfaceLocatorTemplate implements ObjectTemplate<SeededBuilder<Loca
     }
 
     @Override
-    public SeededBuilder<Locator> get() {
-        return seed -> new SurfaceLocator(range, main);
+    public Locator get() {
+        return new SurfaceLocator(range, main);
     }
 }

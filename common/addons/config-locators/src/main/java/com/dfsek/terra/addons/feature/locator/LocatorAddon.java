@@ -11,10 +11,8 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
 
 import java.util.function.Supplier;
 
@@ -23,7 +21,7 @@ import java.util.function.Supplier;
 @Author("Terra")
 public class LocatorAddon extends TerraAddon implements EventListener {
 
-    public static final TypeKey<Supplier<ObjectTemplate<SeededBuilder<Locator>>>> LOCATOR_TOKEN = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<Locator>>> LOCATOR_TOKEN = new TypeKey<>() {};
     @Inject
     private TerraPlugin main;
 
@@ -33,7 +31,7 @@ public class LocatorAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<Supplier<ObjectTemplate<SeededBuilder<Locator>>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
+        CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
         locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
     }
 }

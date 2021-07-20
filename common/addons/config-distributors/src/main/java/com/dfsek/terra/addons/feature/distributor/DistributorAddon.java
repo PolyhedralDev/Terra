@@ -13,7 +13,6 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
 
 import java.util.function.Supplier;
 
@@ -21,7 +20,7 @@ import java.util.function.Supplier;
 @Version("1.0.0")
 @Author("Terra")
 public class DistributorAddon extends TerraAddon implements EventListener {
-    public static final TypeKey<Supplier<ObjectTemplate<SeededBuilder<Distributor>>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {};
     @Inject
     private TerraPlugin main;
 
@@ -32,7 +31,7 @@ public class DistributorAddon extends TerraAddon implements EventListener {
 
 
     public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<Supplier<ObjectTemplate<SeededBuilder<Distributor>>>> distributorRegistry = event.getPack().getOrCreateRegistry(DISTRIBUTOR_TOKEN);
+        CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(DISTRIBUTOR_TOKEN);
         distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
     }
 }

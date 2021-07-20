@@ -30,7 +30,6 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
@@ -84,7 +83,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final Set<TerraAddon> addons;
 
-    private final SeededBuilder<BiomeProvider> seededBiomeProvider;
+    private final BiomeProvider seededBiomeProvider;
 
     private final Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
@@ -125,7 +124,6 @@ public class ConfigPackImpl implements ConfigPack {
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                seededBiomeProvider.build(0); // Build dummy provider to catch errors at load time.
                 checkDeadEntries(main);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
@@ -178,7 +176,6 @@ public class ConfigPackImpl implements ConfigPack {
 
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                seededBiomeProvider.build(0); // Build dummy provider to catch errors at load time.
                 checkDeadEntries(main);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
@@ -295,7 +292,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public SeededBuilder<BiomeProvider> getBiomeProviderBuilder() {
+    public BiomeProvider getBiomeProviderBuilder() {
         return seededBiomeProvider;
     }
 

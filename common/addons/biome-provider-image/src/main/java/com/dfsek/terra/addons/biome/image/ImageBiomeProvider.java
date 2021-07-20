@@ -1,6 +1,5 @@
 package com.dfsek.terra.addons.biome.image;
 
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import net.jafama.FastMath;
