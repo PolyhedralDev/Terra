@@ -63,7 +63,8 @@ public class NoiseAddon extends TerraAddon implements EventListener {
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .applyLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
-                .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new);
+                .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
+                .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new);
 
         noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
         noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);

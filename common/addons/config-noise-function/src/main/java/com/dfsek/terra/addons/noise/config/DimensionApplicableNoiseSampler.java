@@ -1,16 +1,15 @@
 package com.dfsek.terra.addons.noise.config;
 
+import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-public class DimensionApplicableNoiseSampler {
-    private final int dimensions;
+public class DimensionApplicableNoiseSampler implements ObjectTemplate<DimensionApplicableNoiseSampler> {
+    @Value("dimensions")
+    private int dimensions;
 
-    private final NoiseSampler sampler;
-
-    public DimensionApplicableNoiseSampler(int dimensions, NoiseSampler sampler) {
-        this.dimensions = dimensions;
-        this.sampler = sampler;
-    }
+    @Value(".")
+    private NoiseSampler sampler;
 
     public int getDimensions() {
         return dimensions;
@@ -18,5 +17,10 @@ public class DimensionApplicableNoiseSampler {
 
     public NoiseSampler getSampler() {
         return sampler;
+    }
+
+    @Override
+    public DimensionApplicableNoiseSampler get() {
+        return this;
     }
 }
