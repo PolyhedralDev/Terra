@@ -5,11 +5,11 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
-public class RandomSource implements BiomeSource {
+public class NoiseSource implements BiomeSource {
     private final ProbabilityCollection<TerraBiome> biomes;
     private final NoiseSampler sampler;
 
-    public RandomSource(ProbabilityCollection<TerraBiome> biomes, NoiseSampler sampler) {
+    public NoiseSource(ProbabilityCollection<TerraBiome> biomes, NoiseSampler sampler) {
         this.biomes = biomes;
         this.sampler = sampler;
     }

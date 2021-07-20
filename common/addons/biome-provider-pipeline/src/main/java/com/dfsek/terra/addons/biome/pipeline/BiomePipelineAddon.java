@@ -17,7 +17,7 @@ import com.dfsek.terra.addons.biome.pipeline.mutator.BorderMutator;
 import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceListMutator;
 import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceMutator;
 import com.dfsek.terra.addons.biome.pipeline.mutator.SmoothMutator;
-import com.dfsek.terra.addons.biome.pipeline.source.RandomSource;
+import com.dfsek.terra.addons.biome.pipeline.source.NoiseSource;
 import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.TerraPlugin;
@@ -52,7 +52,7 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(Stage.class, new StageLoader())
                 .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                 .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
-                .applyLoader(RandomSource.class, NoiseSourceTemplate::new)
+                .applyLoader(NoiseSource.class, NoiseSourceTemplate::new)
                 .applyLoader(ReplaceMutator.class, ReplaceMutatorTemplate::new)
                 .applyLoader(BorderMutator.class, BorderMutatorTemplate::new)
                 .applyLoader(BorderListMutator.class, BorderListMutatorTemplate::new)

@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.config;
 
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.addons.biome.pipeline.source.RandomSource;
+import com.dfsek.terra.addons.biome.pipeline.source.NoiseSource;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -16,6 +16,6 @@ public class NoiseSourceTemplate extends SourceTemplate {
 
     @Override
     public BiomeSource get() {
-        return new RandomSource(biomes, noise);
+        return new NoiseSource(biomes, noise);
     }
 }
