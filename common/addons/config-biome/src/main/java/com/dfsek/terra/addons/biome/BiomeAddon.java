@@ -14,7 +14,7 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 @Addon("config-biome")
 @Author("Terra")
 @Version("1.0.0")
-public class BiomeConfigAddon extends TerraAddon implements EventListener {
+public class BiomeAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin main;
 
