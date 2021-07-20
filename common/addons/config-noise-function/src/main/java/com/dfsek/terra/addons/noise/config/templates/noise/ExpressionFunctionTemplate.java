@@ -16,7 +16,6 @@ import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.addons.noise.samplers.noise.ExpressionFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

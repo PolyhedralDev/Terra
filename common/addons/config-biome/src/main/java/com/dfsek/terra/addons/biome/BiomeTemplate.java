@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.biome;
 
-import com.dfsek.paralithic.eval.parser.Parser;
-import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
@@ -13,7 +11,6 @@ import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generator.Palette;
 

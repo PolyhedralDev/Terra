@@ -6,7 +6,6 @@ import com.dfsek.terra.addons.feature.distributor.distributors.NoiseDistributor;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.util.seeded.SeededBuilder;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 public class NoiseDistributorTemplate implements ObjectTemplate<SeededBuilder<Distributor>> {
     @Value("distribution")

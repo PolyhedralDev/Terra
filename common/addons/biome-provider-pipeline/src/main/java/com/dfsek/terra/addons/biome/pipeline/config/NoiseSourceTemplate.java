@@ -5,7 +5,6 @@ import com.dfsek.terra.addons.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
 public class NoiseSourceTemplate extends SourceTemplate {

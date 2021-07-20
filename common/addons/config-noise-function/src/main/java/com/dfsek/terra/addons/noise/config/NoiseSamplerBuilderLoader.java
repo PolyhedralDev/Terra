@@ -8,10 +8,8 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.lang.reflect.AnnotatedType;
-import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 

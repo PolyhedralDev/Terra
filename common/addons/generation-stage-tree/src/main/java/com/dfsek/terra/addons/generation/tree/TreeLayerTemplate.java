@@ -5,7 +5,6 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.Tree;
 
 public class TreeLayerTemplate implements ObjectTemplate<TreeLayer> {

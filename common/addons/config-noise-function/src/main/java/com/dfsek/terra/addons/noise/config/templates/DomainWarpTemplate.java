@@ -4,7 +4,6 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.samplers.DomainWarpedSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {

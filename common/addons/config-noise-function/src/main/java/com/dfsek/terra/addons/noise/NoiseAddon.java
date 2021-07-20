@@ -36,7 +36,6 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.HashMap;
 import java.util.Map;

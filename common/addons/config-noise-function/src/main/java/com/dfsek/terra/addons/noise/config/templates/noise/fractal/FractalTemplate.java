@@ -5,7 +5,6 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.samplers.noise.fractal.FractalNoiseFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 public abstract class FractalTemplate<T extends FractalNoiseFunction> extends SamplerTemplate<T> {
     @Value("octaves")

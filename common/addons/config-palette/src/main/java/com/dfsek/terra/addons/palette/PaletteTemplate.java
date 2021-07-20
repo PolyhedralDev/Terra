@@ -6,7 +6,6 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.List;
 

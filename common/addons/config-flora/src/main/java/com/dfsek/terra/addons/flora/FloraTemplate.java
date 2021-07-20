@@ -8,7 +8,6 @@ import com.dfsek.terra.addons.flora.flora.gen.TerraFlora;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.MaterialSet;
-import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 import java.util.List;
 
