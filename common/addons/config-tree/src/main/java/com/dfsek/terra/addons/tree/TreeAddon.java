@@ -23,6 +23,6 @@ public class TreeAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
-        event.getPack().registerConfigType(new TreeConfigType(event.getPack()), "TREE", 2);
+        event.getPack().registerConfigType(new TreeConfigType(), "TREE", 2);
     }
 }

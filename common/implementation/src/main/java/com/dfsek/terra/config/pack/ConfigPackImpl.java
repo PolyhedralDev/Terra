@@ -191,7 +191,7 @@ public class ConfigPackImpl implements ConfigPack {
     @SuppressWarnings("unchecked")
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
-            OpenRegistry<?> openRegistry = configType.registrySupplier().get();
+            OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
             if(registryMap.containsKey(configType.getTypeClass().getType())) { // Someone already registered something; we need to copy things to the new registry.
                 registryMap.get(configType.getTypeClass().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }

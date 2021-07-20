@@ -25,7 +25,7 @@ public class FloraAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
-        event.getPack().registerConfigType(new FloraConfigType(event.getPack()), "FLORA", 2);
+        event.getPack().registerConfigType(new FloraConfigType(), "FLORA", 2);
         event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
     }
 }

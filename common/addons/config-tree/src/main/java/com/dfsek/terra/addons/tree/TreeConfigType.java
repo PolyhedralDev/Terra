@@ -12,12 +12,8 @@ import java.util.function.Supplier;
 
 public class TreeConfigType implements ConfigType<TreeTemplate, Tree> {
     private final TreeFactory factory = new TreeFactory();
-    private final ConfigPack pack;
 
     public static final TypeKey<Tree> TREE_TYPE_TOKEN = new TypeKey<>(){};
-    public TreeConfigType(ConfigPack pack) {
-        this.pack = pack;
-    }
 
     @Override
     public TreeTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
@@ -36,6 +32,6 @@ public class TreeConfigType implements ConfigType<TreeTemplate, Tree> {
 
     @Override
     public Supplier<OpenRegistry<Tree>> registrySupplier(ConfigPack pack) {
-        return this.pack.getRegistryFactory()::create;
+        return pack.getRegistryFactory()::create;
     }
 }

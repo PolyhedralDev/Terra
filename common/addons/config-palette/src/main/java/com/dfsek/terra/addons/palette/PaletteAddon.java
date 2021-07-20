@@ -24,7 +24,7 @@ public class PaletteAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
-        event.getPack().registerConfigType(new PaletteConfigType(event.getPack(), main), "PALETTE", 2);
+        event.getPack().registerConfigType(new PaletteConfigType(main), "PALETTE", 2);
         event.getPack().applyLoader(PaletteLayerHolder.class, new PaletteLayerLoader());
     }
 }

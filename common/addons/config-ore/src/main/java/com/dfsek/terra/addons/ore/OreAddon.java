@@ -25,7 +25,7 @@ public class OreAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
-        event.getPack().registerConfigType(new OreConfigType(event.getPack()), "ORE", 1);
+        event.getPack().registerConfigType(new OreConfigType(), "ORE", 1);
         event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("ORE", pack -> new OrePopulator(main));
     }
 }
