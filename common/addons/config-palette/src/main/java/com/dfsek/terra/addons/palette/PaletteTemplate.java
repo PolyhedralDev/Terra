@@ -5,7 +5,7 @@ import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("noise")
     @Default
-    private NoiseSeeded noise = NoiseSeeded.zero(2);
+    private NoiseSampler noise = NoiseSampler.zero();
 
     @Value("id")
     @Final
@@ -30,7 +30,7 @@ public class PaletteTemplate implements AbstractableTemplate {
         return palette;
     }
 
-    public NoiseSeeded getNoise() {
+    public NoiseSampler getNoise() {
         return noise;
     }
 }

@@ -4,7 +4,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.mutator.BorderMutator;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
 @SuppressWarnings("unused")
 public class BorderMutatorTemplate extends MutatorStageTemplate {
@@ -15,10 +15,10 @@ public class BorderMutatorTemplate extends MutatorStageTemplate {
     private String replace;
 
     @Value("to")
-    private ProbabilityCollection<BiomeBuilder> to;
+    private ProbabilityCollection<TerraBiome> to;
 
     @Override
-    public BiomeMutator build(long seed) {
-        return new BorderMutator(from, replace, noise.apply(seed), to.map(biomeBuilder -> biomeBuilder.apply(seed), true));
+    public BiomeMutator get() {
+        return new BorderMutator(from, replace, noise, to);
     }
 }

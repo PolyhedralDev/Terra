@@ -1,19 +1,16 @@
 package com.dfsek.terra.addons.biome;
 
-import com.dfsek.paralithic.eval.parser.Parser;
-import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
-import com.dfsek.terra.addons.biome.holder.PaletteHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.generator.Palette;
 
@@ -43,14 +40,14 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("beta.carving.equation")
     @Default
-    private NoiseSeeded carvingEquation = NoiseSeeded.zero(3);
+    private NoiseSampler carvingEquation = NoiseSampler.zero();
 
     @Value("vanilla")
     private ProbabilityCollection<Biome> vanilla;
 
     @Value("biome-noise")
     @Default
-    private NoiseSeeded biomeNoise = NoiseSeeded.zero(2);
+    private NoiseSampler biomeNoise = NoiseSampler.zero();
 
     @Value("blend.distance")
     @Default
@@ -65,7 +62,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private int blendStep = 4;
 
     @Value("noise")
-    private NoiseSeeded noiseEquation;
+    private NoiseSampler noiseEquation;
 
     @Value("ocean.level")
     @Default
@@ -73,7 +70,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("elevation.equation")
     @Default
-    private NoiseSeeded elevationEquation = NoiseSeeded.zero(2);
+    private NoiseSampler elevationEquation = NoiseSampler.zero();
 
     @Value("elevation.weight")
     @Default
@@ -160,15 +157,15 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return stairPalettes;
     }
 
-    public NoiseSeeded getBiomeNoise() {
+    public NoiseSampler getBiomeNoise() {
         return biomeNoise;
     }
 
-    public NoiseSeeded getElevationEquation() {
+    public NoiseSampler getElevationEquation() {
         return elevationEquation;
     }
 
-    public NoiseSeeded getCarvingEquation() {
+    public NoiseSampler getCarvingEquation() {
         return carvingEquation;
     }
 
@@ -188,7 +185,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return vanilla;
     }
 
-    public NoiseSeeded getNoiseEquation() {
+    public NoiseSampler getNoiseEquation() {
         return noiseEquation;
     }
 
@@ -207,36 +204,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Override
     public boolean validate() throws ValidationException {
         color |= 0xff000000; // Alpha adjustment
-        Parser tester = new Parser();
-        Scope testScope = new Scope();
-
-        variables.forEach(testScope::create);
-
-        testScope.addInvocationVariable("x");
-        testScope.addInvocationVariable("y");
-        testScope.addInvocationVariable("z");
-
-
-        //pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
-
-        try {
-            noiseEquation.apply(0L);
-        } catch(Exception e) {
-            throw new ValidationException("Invalid noise sampler: ", e);
-        }
-
-        try {
-            carvingEquation.apply(0L);
-        } catch(Exception e) {
-            throw new ValidationException("Invalid carving sampler: ", e);
-        }
-
-        try {
-            elevationEquation.apply(0L);
-        } catch(Exception e) {
-            throw new ValidationException("Invalid elevation sampler: ", e);
-        }
-
         return true;
     }
 }

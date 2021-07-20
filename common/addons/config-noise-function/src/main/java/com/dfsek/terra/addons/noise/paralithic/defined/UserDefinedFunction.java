@@ -4,6 +4,7 @@ import com.dfsek.paralithic.Expression;
 import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
+import com.dfsek.paralithic.functions.dynamic.Context;
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 
@@ -29,6 +30,11 @@ public class UserDefinedFunction implements DynamicFunction {
     @Override
     public double eval(double... args) {
         return expression.evaluate(args);
+    }
+
+    @Override
+    public double eval(Context context, double... args) {
+        return expression.evaluate(context, args);
     }
 
     @Override

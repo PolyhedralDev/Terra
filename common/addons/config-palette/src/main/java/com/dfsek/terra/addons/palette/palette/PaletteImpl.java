@@ -13,7 +13,7 @@ import java.util.Random;
  * A class representation of a "slice" of the world.
  * Used to get a section of blocks, based on the depth at which they are found.
  */
-public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator.Palette {
+public abstract class PaletteImpl implements Palette {
     private final List<PaletteLayer> pallet = new ArrayList<>();
 
     /**
@@ -86,19 +86,9 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
             return sampler;
         }
 
-        /**
-         * Gets a material from the layer.
-         *
-         * @return Material - the material..
-         */
-        public BlockState get(Random random) {
-            if(col) return this.collection.get(random);
-            return m;
-        }
 
-        public BlockState get(NoiseSampler random, double x, double y, double z, boolean is2D) {
-            if(col && is2D) return this.collection.get(random, x, z);
-            else if(col) return this.collection.get(random, x, y, z);
+        public BlockState get(NoiseSampler random, double x, double y, double z, long seed) {
+            if(col) return this.collection.get(random, x, y, z, seed);
             return m;
         }
 
@@ -115,7 +105,7 @@ public abstract class PaletteImpl implements com.dfsek.terra.api.world.generator
         }
 
         @Override
-        public BlockState get(int layer, double x, double y, double z) {
+        public BlockState get(int layer, double x, double y, double z, long seed) {
             return item;
         }
     }

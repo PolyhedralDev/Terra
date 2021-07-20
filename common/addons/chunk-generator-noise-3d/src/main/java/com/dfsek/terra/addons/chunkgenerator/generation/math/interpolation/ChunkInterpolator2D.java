@@ -32,11 +32,13 @@ public class ChunkInterpolator2D implements ChunkInterpolator {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
 
+        long seed = w.getSeed();
+
         double[][] noiseStorage = new double[5][5];
 
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                Generator generator = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2)).getGenerator(w);
+                Generator generator = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getGenerator(w);
                 Map<Generator, MutableInteger> genMap = new HashMap<>();
 
                 int step = generator.getBlendStep();
@@ -44,7 +46,7 @@ public class ChunkInterpolator2D implements ChunkInterpolator {
 
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
-                        genMap.computeIfAbsent(provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step)).getGenerator(w), g -> new MutableInteger(0)).increment(); // Increment by 1
+                        genMap.computeIfAbsent(provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed).getGenerator(w), g -> new MutableInteger(0)).increment(); // Increment by 1
                     }
                 }
 

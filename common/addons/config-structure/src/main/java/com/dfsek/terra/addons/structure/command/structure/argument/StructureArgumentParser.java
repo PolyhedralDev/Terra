@@ -5,7 +5,7 @@ import com.dfsek.terra.api.command.arg.ArgumentParser;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
 public class StructureArgumentParser implements ArgumentParser<ConfiguredStructure> {
     @Inject

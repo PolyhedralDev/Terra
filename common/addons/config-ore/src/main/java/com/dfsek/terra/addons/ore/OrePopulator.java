@@ -31,7 +31,7 @@ public class OrePopulator implements TerraGenerationStage {
                     Random random = new Random(PopulationUtil.getCarverChunkSeed(chunk.getX() + cx, chunk.getZ() + cz, world.getSeed()));
                     int originX = ((chunk.getX() + cx) << 4);
                     int originZ = ((chunk.getZ() + cz) << 4);
-                    TerraBiome b = tw.getBiomeProvider().getBiome(originX + 8, originZ + 8);
+                    TerraBiome b = tw.getBiomeProvider().getBiome(originX + 8, originZ + 8, world.getSeed());
                     /*
                     BiomeTemplate config = ((UserDefinedBiome) b).getConfig();
                     int finalCx = cx;

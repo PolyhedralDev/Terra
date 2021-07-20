@@ -28,9 +28,10 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
-import com.dfsek.terra.api.util.seeded.BiomeProviderBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 import com.dfsek.terra.config.dummy.DummyWorld;
@@ -82,9 +83,9 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final Set<TerraAddon> addons;
 
-    private final BiomeProviderBuilder biomeProviderBuilder;
+    private final BiomeProvider seededBiomeProvider;
 
-    private final Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
+    private final Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
 
     private final ConfigTypeRegistry configTypeRegistry;
 
@@ -122,8 +123,7 @@ public class ConfigPackImpl implements ConfigPack {
 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, configuration);
-                biomeProviderBuilder = packPostTemplate.getProviderBuilder();
-                biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                seededBiomeProvider = packPostTemplate.getProviderBuilder();
                 checkDeadEntries(main);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
@@ -175,8 +175,7 @@ public class ConfigPackImpl implements ConfigPack {
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
 
                 selfLoader.load(packPostTemplate, configuration);
-                biomeProviderBuilder = packPostTemplate.getProviderBuilder();
-                biomeProviderBuilder.build(0); // Build dummy provider to catch errors at load time.
+                seededBiomeProvider = packPostTemplate.getProviderBuilder();
                 checkDeadEntries(main);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
@@ -189,21 +188,21 @@ public class ConfigPackImpl implements ConfigPack {
         toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
     }
 
+    @SuppressWarnings("unchecked")
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
             OpenRegistry<?> openRegistry = configType.registrySupplier().get();
-            if(registryMap.containsKey(configType.getTypeClass())) { // Someone already registered something; we need to copy things to the new registry.
-                //noinspection unchecked
-                registryMap.get(configType.getTypeClass()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+            if(registryMap.containsKey(configType.getTypeClass().getType())) { // Someone already registered something; we need to copy things to the new registry.
+                registryMap.get(configType.getTypeClass().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
-            selfLoader.registerLoader(configType.getTypeClass(), openRegistry);
-            abstractConfigLoader.registerLoader(configType.getTypeClass(), openRegistry);
-            registryMap.put(configType.getTypeClass(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+            selfLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
+            abstractConfigLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
+            registryMap.put(configType.getTypeClass().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
         });
     }
 
     private void checkDeadEntries(TerraPlugin main) {
-        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + clazz + "' registry: '" + id + "'")));
+        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries().forEach((id, value) -> main.getDebugLogger().warning("Dead entry in '" + ReflectionUtil.typeToString(clazz) + "' registry: '" + id + "'")));
     }
 
     @Override
@@ -220,7 +219,7 @@ public class ConfigPackImpl implements ConfigPack {
         return this;
     }
 
-    protected Map<Class<?>, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
+    protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;
     }
 
@@ -269,14 +268,14 @@ public class ConfigPackImpl implements ConfigPack {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> CheckedRegistry<T> getRegistry(Class<T> clazz) {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
+    public <T> CheckedRegistry<T> getRegistry(Type type) {
+        return (CheckedRegistry<T>) registryMap.getOrDefault(type, ImmutablePair.ofNull()).getRight();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getCheckedRegistry(Class<T> clazz) throws IllegalStateException {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getRight();
+    public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
+        return (CheckedRegistry<T>) registryMap.getOrDefault(type, ImmutablePair.ofNull()).getRight();
     }
 
     @SuppressWarnings("unchecked")
@@ -293,18 +292,18 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public BiomeProviderBuilder getBiomeProviderBuilder() {
-        return biomeProviderBuilder;
+    public BiomeProvider getBiomeProviderBuilder() {
+        return seededBiomeProvider;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
-        return (CheckedRegistry<T>) registryMap.computeIfAbsent(clazz, c -> {
+    public <T> CheckedRegistry<T> getOrCreateRegistry(Type type) {
+        return (CheckedRegistry<T>) registryMap.computeIfAbsent(type, c -> {
             OpenRegistry<T> registry = new OpenRegistryImpl<>();
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
-            main.getDebugLogger().info("Registered loader for registry of class " + c);
+            main.getDebugLogger().info("Registered loader for registry of class " + ReflectionUtil.typeToString(c));
             return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }

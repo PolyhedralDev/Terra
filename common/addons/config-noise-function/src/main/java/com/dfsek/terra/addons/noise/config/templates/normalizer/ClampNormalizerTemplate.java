@@ -13,7 +13,7 @@ public class ClampNormalizerTemplate extends NormalizerTemplate<ClampNormalizer>
     private double min;
 
     @Override
-    public NoiseSampler apply(Long seed) {
-        return new ClampNormalizer(function.apply(seed), min, max);
+    public NoiseSampler get() {
+        return new ClampNormalizer(function, min, max);
     }
 }

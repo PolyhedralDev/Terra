@@ -2,6 +2,7 @@ package com.dfsek.terra.registry.config;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigType;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import java.util.LinkedHashMap;
@@ -21,7 +22,7 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     @Override
     public boolean register(String identifier, Entry<ConfigType<?, ?>> value) {
         callback.accept(identifier, value.getValue());
-        main.getDebugLogger().info("Registered config registry with ID " + identifier + " to class " + value.getValue().getTypeClass().getCanonicalName());
+        main.getDebugLogger().info("Registered config registry with ID " + identifier + " to type " + ReflectionUtil.typeToString(value.getValue().getTypeClass().getType()));
         return super.register(identifier, value);
     }
 }

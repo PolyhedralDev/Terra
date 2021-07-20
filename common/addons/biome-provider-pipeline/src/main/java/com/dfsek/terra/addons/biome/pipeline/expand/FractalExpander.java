@@ -13,7 +13,7 @@ public class FractalExpander implements BiomeExpander {
     }
 
     @Override
-    public TerraBiome getBetween(double x, double z, TerraBiome... others) {
-        return others[MathUtil.normalizeIndex(sampler.getNoise(x, z), others.length)];
+    public TerraBiome getBetween(double x, double z, long seed, TerraBiome... others) {
+        return others[MathUtil.normalizeIndex(sampler.getNoiseSeeded(seed, x, z), others.length)];
     }
 }

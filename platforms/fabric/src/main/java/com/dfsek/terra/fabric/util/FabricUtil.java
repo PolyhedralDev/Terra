@@ -5,7 +5,7 @@ import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.mojang.serialization.Lifecycle;
@@ -43,7 +43,7 @@ public final class FabricUtil {
      * @param pack  The ConfigPack this biome belongs to.
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(BiomeBuilder biome, ConfigPack pack, DynamicRegistryManager registryManager) {
+    public static Biome createBiome(TerraBiome biome, ConfigPack pack, DynamicRegistryManager registryManager) {
         // BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = new HashMap<>(); // template.getColors();
 

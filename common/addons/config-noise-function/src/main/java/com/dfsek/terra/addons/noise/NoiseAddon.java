@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.noise;
 
-import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
@@ -16,7 +17,6 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractal
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
-import com.dfsek.terra.addons.noise.samplers.ImageSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
@@ -34,12 +34,13 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.util.seeded.NoiseProvider;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @Addon("config-noise-function")
 @Author("Terra")
@@ -48,23 +49,25 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin plugin;
 
+    public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {};
+
     @Override
     public void initialize() {
         plugin.getEventManager().registerListener(this, this);
     }
 
     public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<NoiseProvider> noiseRegistry = event.getPack().getOrCreateRegistry(NoiseProvider.class);
+        CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
         event.getPack()
-                .applyLoader(NoiseSeeded.class, new NoiseSamplerBuilderLoader(noiseRegistry))
+                .applyLoader(NoiseSampler.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
+                .applyLoader(CellularSampler.DistanceFunction.class, (t, o, l) -> CellularSampler.DistanceFunction.valueOf((String) o))
+                .applyLoader(CellularSampler.ReturnType.class, (t, o, l) -> CellularSampler.ReturnType.valueOf((String) o))
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
                 .applyLoader(NormalNormalizerTemplate.class, NormalNormalizerTemplate::new)
-                .applyLoader(ImageSampler.Channel.class, (t, object, cf) -> ImageSampler.Channel.valueOf((String) object))
                 .applyLoader(ClampNormalizerTemplate.class, ClampNormalizerTemplate::new)
-                .applyLoader(CellularSampler.ReturnType.class, (t, object, cf) -> CellularSampler.ReturnType.valueOf((String) object))
-                .applyLoader(CellularSampler.DistanceFunction.class, (t, object, cf) -> CellularSampler.DistanceFunction.valueOf((String) object));
+                .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new);
 
         noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
         noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
@@ -97,16 +100,12 @@ public class NoiseAddon extends TerraAddon implements EventListener {
 
         noiseRegistry.register("KERNEL", KernelTemplate::new);
 
-        Map<String, NoiseSeeded> packFunctions = new HashMap<>();
+        Map<String, DimensionApplicableNoiseSampler> packFunctions = new HashMap<>();
         noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
 
 
-        try {
-            NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
-            event.loadTemplate(template);
-            packFunctions.putAll(template.getNoiseBuilderMap());
-        } catch(ConfigException e) {
-            throw new RuntimeException(e);
-        }
+        NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
+        event.loadTemplate(template);
+        packFunctions.putAll(template.getNoiseBuilderMap());
     }
 }

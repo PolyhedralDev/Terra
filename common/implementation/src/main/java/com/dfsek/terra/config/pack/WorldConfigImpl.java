@@ -2,24 +2,15 @@ package com.dfsek.terra.config.pack;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
 import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.GenerationStage;
-import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 import com.dfsek.terra.registry.LockedRegistryImpl;
-import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.world.SamplerCacheImpl;
-import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class WorldConfigImpl implements WorldConfig {
@@ -30,7 +21,7 @@ public class WorldConfigImpl implements WorldConfig {
     private final TerraWorld world;
     private final ConfigPackImpl pack;
 
-    private final Map<Class<?>, Registry<?>> registryMap = new HashMap<>();
+    private final Map<Type, Registry<?>> registryMap = new HashMap<>();
 
     public WorldConfigImpl(TerraWorld world, ConfigPackImpl pack, TerraPlugin main) {
         this.world = world;
@@ -39,11 +30,7 @@ public class WorldConfigImpl implements WorldConfig {
 
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
 
-        OpenRegistry<TerraBiome> biomeOpenRegistry = new OpenRegistryImpl<>();
-        pack.getCheckedRegistry(BiomeBuilder.class).forEach((id, biome) -> biomeOpenRegistry.register(id, biome.apply(world.getWorld().getSeed())));
-        registryMap.put(TerraBiome.class, new LockedRegistryImpl<>(biomeOpenRegistry));
-
-        this.provider = pack.getBiomeProviderBuilder().build(world.getWorld().getSeed());
+        this.provider = pack.getBiomeProviderBuilder();
     }
 
     @Override

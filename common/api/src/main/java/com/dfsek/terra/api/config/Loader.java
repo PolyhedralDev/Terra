@@ -1,20 +1,19 @@
 package com.dfsek.terra.api.config;
 
-import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.terra.api.util.function.ExceptionalConsumer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public interface Loader {
 
-    Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException;
+    Loader thenNames(Consumer<List<String>> consumer) throws ConfigException;
 
-    Loader thenEntries(ExceptionalConsumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException;
+    Loader thenEntries(Consumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException;
 
     /**
      * Get a single file from this Loader.

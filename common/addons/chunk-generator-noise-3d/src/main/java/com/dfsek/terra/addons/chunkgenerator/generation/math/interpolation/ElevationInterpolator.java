@@ -11,12 +11,14 @@ public class ElevationInterpolator {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
 
+        long seed = world.getSeed();
+
         Generator[][] gens = new Generator[18 + 2 * smooth][18 + 2 * smooth];
 
         // Precompute generators.
         for(int x = -1 - smooth; x <= 16 + smooth; x++) {
             for(int z = -1 - smooth; z <= 16 + smooth; z++) {
-                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z).getGenerator(world);
+                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z, seed).getGenerator(world);
             }
         }
 
@@ -27,7 +29,7 @@ public class ElevationInterpolator {
                 for(int xi = -smooth; xi <= smooth; xi++) {
                     for(int zi = -smooth; zi <= smooth; zi++) {
                         Generator gen = gens[x + 1 + smooth + xi][z + 1 + smooth + zi];
-                        noise += gen.getElevationSampler().getNoise(xOrigin + x, zOrigin + z) * gen.getElevationWeight();
+                        noise += gen.getElevationSampler().getNoiseSeeded(seed, xOrigin + x, zOrigin + z) * gen.getElevationWeight();
                         div += gen.getElevationWeight();
                     }
                 }

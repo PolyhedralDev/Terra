@@ -4,15 +4,14 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.samplers.DomainWarpedSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
     @Value("warp")
-    private NoiseSeeded warp;
+    private NoiseSampler warp;
 
     @Value("function")
-    private NoiseSeeded function;
+    private NoiseSampler function;
 
     @Value("salt")
     @Default
@@ -23,7 +22,7 @@ public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
     private double amplitude = 1;
 
     @Override
-    public NoiseSampler apply(Long seed) {
-        return new DomainWarpedSampler(function.apply(seed), warp.apply(seed), (int) (seed + salt), amplitude);
+    public NoiseSampler get() {
+        return new DomainWarpedSampler(function, warp, amplitude);
     }
 }

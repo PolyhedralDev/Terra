@@ -33,12 +33,13 @@ public class FloraGenerationStage implements TerraGenerationStage {
         try(ProfileFrame ignore = main.getProfiler().profile("flora")) {
             if(tw.getConfig().disableFlora()) return;
 
+            long seed = world.getSeed();
             BiomeProvider provider = tw.getBiomeProvider();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     Vector2 l = new Vector2(x, z);
-                    layers.put(l, provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z).getContext().get(BiomeFlora.class).getLayers());
+                    layers.put(l, provider.getBiome((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z, seed).getContext().get(BiomeFlora.class).getLayers());
                 }
             }
 

@@ -4,17 +4,18 @@ import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
-    private final Function<Integer, NoiseFunction> samplerSupplier;
+    private final Supplier<NoiseFunction> samplerSupplier;
 
-    public SimpleNoiseTemplate(Function<Integer, NoiseFunction> samplerSupplier) {
+    public SimpleNoiseTemplate(Supplier<NoiseFunction> samplerSupplier) {
         this.samplerSupplier = samplerSupplier;
     }
 
     @Override
-    public NoiseSampler apply(Long seed) {
-        NoiseFunction sampler = samplerSupplier.apply((int) (long) seed + salt);
+    public NoiseSampler get() {
+        NoiseFunction sampler = samplerSupplier.get();
         sampler.setFrequency(frequency);
         return sampler;
     }

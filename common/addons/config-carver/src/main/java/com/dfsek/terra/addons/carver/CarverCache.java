@@ -39,7 +39,7 @@ public class CarverCache {
                             List<Worm.WormPoint> points = new ArrayList<>();
                             for(int i = 0; i < carving.getLength(); i++) {
                                 carving.step();
-                                TerraBiome biome = provider.getBiome(carving.getRunning());
+                                TerraBiome biome = provider.getBiome(carving.getRunning(), w.getSeed());
                                 /*
                                 if(!((UserDefinedBiome) biome).getConfig().getCarvers().containsKey(CarverCache.this.carver)) { // Stop if we enter a biome this carver is not present in
                                     return Collections.emptyList();

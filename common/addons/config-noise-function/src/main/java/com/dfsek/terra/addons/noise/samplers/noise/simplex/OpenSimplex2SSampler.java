@@ -4,13 +4,10 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
  * NoiseSampler implementation to provide OpenSimplex2 (Smooth Variant) noise.
  */
 public class OpenSimplex2SSampler extends SimplexStyleSampler {
-    public OpenSimplex2SSampler(int seed) {
-        super(seed);
-    }
-
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseRaw(int seed, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y) {
+        int seed = (int) sl;
         // 2D OpenSimplex2S case is a modified 2D simplex noise.
 
         final double SQRT3 = 1.7320508075688772935274463415059;
@@ -117,7 +114,8 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
 
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z) {
+        int seed = (int) sl;
         // 3D OpenSimplex2S case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);
         double r = (x + y + z) * R3; // Rotation, not skew

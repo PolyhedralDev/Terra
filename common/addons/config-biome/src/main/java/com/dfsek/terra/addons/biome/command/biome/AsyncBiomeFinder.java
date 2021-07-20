@@ -46,7 +46,7 @@ public class AsyncBiomeFinder implements Runnable {
      */
     public boolean isValid(int x, int z, TerraBiome target) {
         int res = main.getTerraConfig().getBiomeSearchResolution();
-        return getProvider().getBiome(x * res, z * res).equals(target);
+        return getProvider().getBiome(x * res, z * res, world.getSeed()).equals(target);
     }
 
     public Vector3 finalizeVector(Vector3 orig) {

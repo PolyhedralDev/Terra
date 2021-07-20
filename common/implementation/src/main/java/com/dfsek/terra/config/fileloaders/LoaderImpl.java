@@ -2,7 +2,6 @@ package com.dfsek.terra.config.fileloaders;
 
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.config.Loader;
-import com.dfsek.terra.api.util.function.ExceptionalConsumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,18 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class LoaderImpl implements Loader {
     protected final Map<String, InputStream> streams = new HashMap<>();
 
     @Override
-    public Loader thenNames(ExceptionalConsumer<List<String>> consumer) throws ConfigException {
+    public Loader thenNames(Consumer<List<String>> consumer) throws ConfigException {
         consumer.accept(new ArrayList<>(streams.keySet()));
         return this;
     }
 
     @Override
-    public Loader thenEntries(ExceptionalConsumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException {
+    public Loader thenEntries(Consumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException {
         consumer.accept(streams.entrySet());
         return this;
     }

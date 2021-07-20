@@ -13,10 +13,10 @@ configureDependencies()
 group = "com.dfsek.terra.common"
 
 dependencies {
-    "shadedApi"("com.dfsek:Paralithic:0.3.2")
+    "shadedApi"("com.dfsek:Paralithic:0.4.0")
 
-    "shadedApi"("com.dfsek.tectonic:common:2.1.0")
-    "shadedApi"("com.dfsek.tectonic:yaml:2.1.0")
+    "shadedApi"("com.dfsek.tectonic:common:2.1.1")
+    "shadedApi"("com.dfsek.tectonic:yaml:2.1.1")
 
     "shadedApi"("net.jafama:jafama:2.3.2")
     "shadedApi"("org.yaml:snakeyaml:1.27")

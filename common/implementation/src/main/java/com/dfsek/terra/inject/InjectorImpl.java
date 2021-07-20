@@ -3,7 +3,7 @@ package com.dfsek.terra.inject;
 import com.dfsek.terra.api.injection.Injector;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.injection.exception.InjectionException;
-import com.dfsek.terra.api.util.ReflectionUtil;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

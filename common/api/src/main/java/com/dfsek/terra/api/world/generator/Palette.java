@@ -15,7 +15,7 @@ public interface Palette {
      * @param layer - The layer at which to fetch the material.
      * @return BlockData - The material fetched.
      */
-    BlockState get(int layer, double x, double y, double z);
+    BlockState get(int layer, double x, double y, double z, long seed);
 
     int getSize();
 }

@@ -6,7 +6,6 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.addons.noise.samplers.KernelSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.seeded.NoiseSeeded;
 
 import java.util.List;
 
@@ -21,14 +20,14 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
     private double factor = 1;
 
     @Value("function")
-    private NoiseSeeded function;
+    private NoiseSampler function;
 
     @Value("frequency")
     @Default
     private double frequency = 1;
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public NoiseSampler get() {
         double[][] k = new double[kernel.size()][kernel.get(0).size()];
 
         for(int x = 0; x < kernel.size(); x++) {
@@ -37,7 +36,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
             }
         }
 
-        KernelSampler sampler = new KernelSampler(k, function.apply(seed));
+        KernelSampler sampler = new KernelSampler(k, function);
         sampler.setFrequency(frequency);
         return sampler;
     }

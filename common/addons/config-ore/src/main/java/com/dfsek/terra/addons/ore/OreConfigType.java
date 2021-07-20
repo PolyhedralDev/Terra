@@ -6,12 +6,14 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 import java.util.function.Supplier;
 
 public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     private final OreFactory factory = new OreFactory();
     private final ConfigPack pack;
+    public static final TypeKey<Ore> ORE_TYPE_TOKEN = new TypeKey<>(){};
 
     public OreConfigType(ConfigPack pack) {
         this.pack = pack;
@@ -28,8 +30,8 @@ public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     }
 
     @Override
-    public Class<Ore> getTypeClass() {
-        return Ore.class;
+    public TypeKey<Ore> getTypeClass() {
+        return ORE_TYPE_TOKEN;
     }
 
     @Override

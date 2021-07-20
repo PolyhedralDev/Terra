@@ -3,9 +3,9 @@ package com.dfsek.terra.addons.biome;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
-public class BiomeFactory implements ConfigFactory<BiomeTemplate, BiomeBuilder> {
+public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
     private final ConfigPack pack;
 
     public BiomeFactory(ConfigPack pack) {
@@ -13,7 +13,9 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, BiomeBuilder> 
     }
 
     @Override
-    public BiomeBuilder build(BiomeTemplate template, TerraPlugin main) {
-        return new UserDefinedBiomeBuilder(template);
+    public TerraBiome build(BiomeTemplate template, TerraPlugin main) {
+        UserDefinedGenerator generator = new UserDefinedGenerator(template.getNoiseEquation(), template.getElevationEquation(), template.getCarvingEquation(), template.getBiomeNoise(), template.getElevationWeight(),
+                template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
+        return new UserDefinedBiome(template.getVanilla(), generator, template);
     }
 }

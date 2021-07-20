@@ -20,11 +20,6 @@ public abstract class NoiseFunction implements NoiseSampler {
     }
 
     protected double frequency = 0.02d;
-    protected int seed;
-
-    public NoiseFunction(int seed) {
-        this.seed = seed;
-    }
 
     protected static int fastFloor(double f) {
         return f >= 0 ? (int) f : (int) f - 1;
@@ -114,11 +109,6 @@ public abstract class NoiseFunction implements NoiseSampler {
         return sinLookup((int) ((a + Math.PI / 2) * precision + 0.5f));
     }
 
-
-    public void setSeed(int seed) {
-        this.seed = seed;
-    }
-
     public double getFrequency() {
         return frequency;
     }
@@ -128,26 +118,16 @@ public abstract class NoiseFunction implements NoiseSampler {
     }
 
     @Override
-    public double getNoise(double x, double y) {
-        return getNoiseSeeded(seed, x, y);
-    }
-
-    @Override
-    public double getNoise(double x, double y, double z) {
-        return getNoiseSeeded(seed, x, y, z);
-    }
-
-    @Override
-    public double getNoiseSeeded(int seed, double x, double y) {
+    public double getNoiseSeeded(long seed, double x, double y) {
         return getNoiseRaw(seed, x * frequency, y * frequency);
     }
 
     @Override
-    public double getNoiseSeeded(int seed, double x, double y, double z) {
+    public double getNoiseSeeded(long seed, double x, double y, double z) {
         return getNoiseRaw(seed, x * frequency, y * frequency, z * frequency);
     }
 
-    public abstract double getNoiseRaw(int seed, double x, double y);
+    public abstract double getNoiseRaw(long seed, double x, double y);
 
-    public abstract double getNoiseRaw(int seed, double x, double y, double z);
+    public abstract double getNoiseRaw(long seed, double x, double y, double z);
 }

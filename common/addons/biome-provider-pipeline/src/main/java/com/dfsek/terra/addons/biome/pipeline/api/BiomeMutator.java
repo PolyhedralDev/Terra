@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.biome.pipeline.api;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public interface BiomeMutator {
-    TerraBiome mutate(ViewPoint viewPoint, double x, double z);
+    TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed);
 
     class ViewPoint {
         private final BiomeHolder biomes;

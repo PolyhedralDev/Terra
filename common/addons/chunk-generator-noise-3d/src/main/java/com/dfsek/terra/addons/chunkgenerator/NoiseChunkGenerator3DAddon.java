@@ -15,7 +15,7 @@ import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.api.util.seeded.BiomeBuilder;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 
 @Addon("chunk-generator-noise-3d")
@@ -37,8 +37,8 @@ public class NoiseChunkGenerator3DAddon extends TerraAddon implements EventListe
     }
 
     public void onBiomeLoad(ConfigurationLoadEvent event) {
-        if(event.is(BiomeBuilder.class)) {
-            event.getLoadedObject(BiomeBuilder.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
+        if(event.is(TerraBiome.class)) {
+            event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
         }
     }
 }

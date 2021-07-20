@@ -16,7 +16,7 @@ public class SmoothMutator implements BiomeMutator {
     }
 
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, double x, double z) {
+    public TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed) {
         TerraBiome top = viewPoint.getBiome(1, 0);
         TerraBiome bottom = viewPoint.getBiome(-1, 0);
         TerraBiome left = viewPoint.getBiome(0, 1);
@@ -27,7 +27,7 @@ public class SmoothMutator implements BiomeMutator {
         boolean horiz = Objects.equals(left, right) && left != null;
 
         if(vert && horiz) {
-            return MathUtil.normalizeIndex(sampler.getNoise(x, z), 2) == 0 ? left : top;
+            return MathUtil.normalizeIndex(sampler.getNoiseSeeded(seed, x, z), 2) == 0 ? left : top;
         }
 
         if(vert) return top;

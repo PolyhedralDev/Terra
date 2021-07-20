@@ -116,7 +116,7 @@ public class TerraFlora implements Flora {
 
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
-            BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(), location.getZ()).clone();
+            BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(), location.getZ(), world.getSeed()).clone();
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(new Random(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
 

@@ -29,7 +29,7 @@ public class BiomeHolderImpl implements BiomeHolder {
     }
 
     @Override
-    public BiomeHolder expand(BiomeExpander expander) {
+    public BiomeHolder expand(BiomeExpander expander, long seed) {
         TerraBiome[][] old = biomes;
         int newWidth = width * 2 - 1;
 
@@ -39,31 +39,31 @@ public class BiomeHolderImpl implements BiomeHolder {
             for(int z = 0; z < width; z++) {
                 biomes[x * 2][z * 2] = old[x][z];
                 if(z != width - 1)
-                    biomes[x * 2][z * 2 + 1] = expander.getBetween(x + origin.getX(), z + 1 + origin.getZ(), old[x][z], old[x][z + 1]);
+                    biomes[x * 2][z * 2 + 1] = expander.getBetween(x + origin.getX(), z + 1 + origin.getZ(), seed, old[x][z], old[x][z + 1]);
                 if(x != width - 1)
-                    biomes[x * 2 + 1][z * 2] = expander.getBetween(x + 1 + origin.getX(), z + origin.getZ(), old[x][z], old[x + 1][z]);
+                    biomes[x * 2 + 1][z * 2] = expander.getBetween(x + 1 + origin.getX(), z + origin.getZ(), seed, old[x][z], old[x + 1][z]);
                 if(x != width - 1 && z != width - 1)
-                    biomes[x * 2 + 1][z * 2 + 1] = expander.getBetween(x + 1 + origin.getX(), z + 1 + origin.getZ(), old[x][z], old[x + 1][z + 1], old[x][z + 1], old[x + 1][z]);
+                    biomes[x * 2 + 1][z * 2 + 1] = expander.getBetween(x + 1 + origin.getX(), z + 1 + origin.getZ(), seed, old[x][z], old[x + 1][z + 1], old[x][z + 1], old[x + 1][z]);
             }
         }
         return new BiomeHolderImpl(biomes, origin.setX(origin.getX() * 2 - 1).setZ(origin.getZ() * 2 - 1), newWidth, offset);
     }
 
     @Override
-    public void mutate(BiomeMutator mutator) {
+    public void mutate(BiomeMutator mutator, long seed) {
         for(int x = 0; x < width; x++) {
             for(int z = 0; z < width; z++) {
                 BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(this, x, z);
-                biomes[x][z] = mutator.mutate(viewPoint, x + origin.getX(), z + origin.getZ());
+                biomes[x][z] = mutator.mutate(viewPoint, x + origin.getX(), z + origin.getZ(), seed);
             }
         }
     }
 
     @Override
-    public void fill(BiomeSource source) {
+    public void fill(BiomeSource source, long seed) {
         for(int x = 0; x < width; x++) {
             for(int z = 0; z < width; z++) {
-                biomes[x][z] = source.getBiome(origin.getX() + x, origin.getZ() + z);
+                biomes[x][z] = source.getBiome(origin.getX() + x, origin.getZ() + z, seed);
             }
         }
     }

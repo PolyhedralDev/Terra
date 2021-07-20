@@ -4,12 +4,12 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class RidgedFractalSampler extends FractalNoiseFunction {
 
-    public RidgedFractalSampler(int seed, NoiseSampler input) {
-        super(seed, input);
+    public RidgedFractalSampler(NoiseSampler input) {
+        super(input);
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y) {
         double sum = 0;
         double amp = fractalBounding;
 
@@ -27,7 +27,7 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z) {
         double sum = 0;
         double amp = fractalBounding;
 

@@ -19,7 +19,7 @@ public class ImageSamplerTemplate extends SamplerTemplate<ImageSampler> {
     private ImageSampler.Channel channel;
 
     @Override
-    public NoiseSampler apply(Long seed) {
+    public NoiseSampler get() {
         return new ImageSampler(image, channel, frequency);
     }
 }

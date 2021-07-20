@@ -9,10 +9,7 @@ import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
 import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.structure.ConfiguredStructure;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-
-import java.util.List;
 
 @Command(
         arguments = {

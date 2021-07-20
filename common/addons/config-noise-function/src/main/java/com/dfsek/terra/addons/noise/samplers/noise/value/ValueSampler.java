@@ -1,12 +1,9 @@
 package com.dfsek.terra.addons.noise.samplers.noise.value;
 
 public class ValueSampler extends ValueStyleNoise {
-    public ValueSampler(int seed) {
-        super(seed);
-    }
-
     @Override
-    public double getNoiseRaw(int seed, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y) {
+        int seed = (int) sl;
         int x0 = fastFloor(x);
         int y0 = fastFloor(y);
 
@@ -25,7 +22,8 @@ public class ValueSampler extends ValueStyleNoise {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z) {
+        int seed = (int) sl;
         int x0 = fastFloor(x);
         int y0 = fastFloor(y);
         int z0 = fastFloor(z);

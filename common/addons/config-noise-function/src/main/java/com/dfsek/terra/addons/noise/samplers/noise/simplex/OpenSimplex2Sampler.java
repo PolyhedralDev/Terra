@@ -6,12 +6,9 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 public class OpenSimplex2Sampler extends SimplexStyleSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
 
-    public OpenSimplex2Sampler(int seed) {
-        super(seed);
-    }
-
     @Override
-    public double getNoiseRaw(int seed, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y) {
+        int seed = (int) sl;
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.
         final double G2 = (3 - SQRT3) / 6;
 
@@ -71,7 +68,8 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     }
 
     @Override
-    public double getNoiseRaw(int seed, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z) {
+        int seed = (int) sl;
         // 3D OpenSimplex2Sampler case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);
         double r = (x + y + z) * R3; // Rotation, not skew
