@@ -35,7 +35,7 @@ public class TreeConfigType implements ConfigType<TreeTemplate, Tree> {
     }
 
     @Override
-    public Supplier<OpenRegistry<Tree>> registrySupplier() {
-        return pack.getRegistryFactory()::create;
+    public Supplier<OpenRegistry<Tree>> registrySupplier(ConfigPack pack) {
+        return this.pack.getRegistryFactory()::create;
     }
 }

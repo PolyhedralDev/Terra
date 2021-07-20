@@ -39,8 +39,8 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
 
     @Override
-    public Supplier<OpenRegistry<TerraBiome>> registrySupplier() {
-        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<TerraBiome>) (t, c, loader) -> {
+    public Supplier<OpenRegistry<TerraBiome>> registrySupplier(ConfigPack pack) {
+        return () -> this.pack.getRegistryFactory().create(registry -> (TypeLoader<TerraBiome>) (t, c, loader) -> {
             if(c.equals("SELF")) return null;
             TerraBiome obj = registry.get((String) c);
             if(obj == null)

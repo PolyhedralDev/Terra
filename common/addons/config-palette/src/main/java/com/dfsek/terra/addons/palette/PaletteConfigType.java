@@ -41,8 +41,8 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
 
     @Override
-    public Supplier<OpenRegistry<Palette>> registrySupplier() {
-        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
+    public Supplier<OpenRegistry<Palette>> registrySupplier(ConfigPack pack) {
+        return () -> this.pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
             if(((String) c).startsWith("BLOCK:"))
                 return new PaletteImpl.Singleton(main.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
             Palette obj = registry.get((String) c);

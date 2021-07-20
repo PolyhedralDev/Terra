@@ -35,7 +35,7 @@ public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     }
 
     @Override
-    public Supplier<OpenRegistry<Ore>> registrySupplier() {
-        return pack.getRegistryFactory()::create;
+    public Supplier<OpenRegistry<Ore>> registrySupplier(ConfigPack pack) {
+        return this.pack.getRegistryFactory()::create;
     }
 }

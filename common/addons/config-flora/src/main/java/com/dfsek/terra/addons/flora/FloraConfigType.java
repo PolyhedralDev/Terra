@@ -36,7 +36,7 @@ public class FloraConfigType implements ConfigType<FloraTemplate, Flora> {
     }
 
     @Override
-    public Supplier<OpenRegistry<Flora>> registrySupplier() {
-        return pack.getRegistryFactory()::create;
+    public Supplier<OpenRegistry<Flora>> registrySupplier(ConfigPack pack) {
+        return this.pack.getRegistryFactory()::create;
     }
 }
