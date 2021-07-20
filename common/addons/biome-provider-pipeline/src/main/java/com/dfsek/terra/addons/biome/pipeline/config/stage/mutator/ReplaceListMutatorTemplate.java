@@ -27,6 +27,6 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
 
         replace.forEach((biomeBuilder, biomeBuilders) -> replaceMap.put(biomeBuilder.build(seed), biomeBuilders.map(builder -> builder.build(seed), true)));
 
-        return new ReplaceListMutator(replaceMap, defaultFrom, defaultTo.map(biomeBuilder -> biomeBuilder.build(seed), true), noise.build(seed));
+        return new ReplaceListMutator(replaceMap, defaultFrom, defaultTo.map(biomeBuilder -> biomeBuilder.build(seed), true), noise);
     }
 }

@@ -4,6 +4,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.samplers.noise.fractal.FractalNoiseFunction;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
 public abstract class FractalTemplate<T extends FractalNoiseFunction> extends SamplerTemplate<T> {
@@ -24,5 +25,5 @@ public abstract class FractalTemplate<T extends FractalNoiseFunction> extends Sa
     protected double weightedStrength = 0.0D;
 
     @Value("function")
-    protected SeededNoiseSampler function;
+    protected NoiseSampler function;
 }

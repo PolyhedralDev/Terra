@@ -21,7 +21,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
     private double factor = 1;
 
     @Value("function")
-    private SeededNoiseSampler function;
+    private NoiseSampler function;
 
     @Value("frequency")
     @Default
@@ -37,7 +37,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
             }
         }
 
-        KernelSampler sampler = new KernelSampler(k, function.build(seed));
+        KernelSampler sampler = new KernelSampler(k, function);
         sampler.setFrequency(frequency);
         return sampler;
     }

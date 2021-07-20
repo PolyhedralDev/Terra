@@ -23,7 +23,7 @@ public class UserDefinedSeededTerraBiome implements SeededTerraBiome {
         synchronized(biomeMap) {
             return biomeMap.computeIfAbsent(seed,
                     s -> {
-                        UserDefinedGenerator generator = new UserDefinedGenerator(template.getNoiseEquation().build(seed), template.getElevationEquation().build(seed), template.getCarvingEquation().build(seed), template.getBiomeNoise().build(seed), template.getElevationWeight(),
+                        UserDefinedGenerator generator = new UserDefinedGenerator(template.getNoiseEquation(), template.getElevationEquation(), template.getCarvingEquation(), template.getBiomeNoise(), template.getElevationWeight(),
                                 template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
                         return new UserDefinedBiome(template.getVanilla(), generator, template, context);
                     }

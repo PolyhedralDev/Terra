@@ -14,6 +14,6 @@ public class ClampNormalizerTemplate extends NormalizerTemplate<ClampNormalizer>
 
     @Override
     public NoiseSampler build(long seed) {
-        return new ClampNormalizer(function.build(seed), min, max);
+        return new ClampNormalizer(function, min, max);
     }
 }

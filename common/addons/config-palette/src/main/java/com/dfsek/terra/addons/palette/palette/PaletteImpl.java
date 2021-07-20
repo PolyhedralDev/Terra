@@ -86,19 +86,9 @@ public abstract class PaletteImpl implements Palette {
             return sampler;
         }
 
-        /**
-         * Gets a material from the layer.
-         *
-         * @return Material - the material..
-         */
-        public BlockState get(Random random) {
-            if(col) return this.collection.get(random);
-            return m;
-        }
 
-        public BlockState get(NoiseSampler random, double x, double y, double z, boolean is2D, long seed) {
-            if(col && is2D) return this.collection.get(random, x, z, seed);
-            else if(col) return this.collection.get(random, x, y, z, seed);
+        public BlockState get(NoiseSampler random, double x, double y, double z, long seed) {
+            if(col) return this.collection.get(random, x, y, z, seed);
             return m;
         }
 

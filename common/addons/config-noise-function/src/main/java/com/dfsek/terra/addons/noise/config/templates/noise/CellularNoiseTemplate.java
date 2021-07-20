@@ -24,22 +24,12 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Value("lookup")
     @Default
-    private SeededNoiseSampler lookup = new SeededNoiseSampler() {
-        @Override
-        public NoiseSampler build(long seed) {
-            return new OpenSimplex2Sampler();
-        }
-
-        @Override
-        public int getDimensions() {
-            return 2;
-        }
-    };
+    private NoiseSampler lookup = new OpenSimplex2Sampler();
 
     @Override
     public NoiseSampler build(long seed) {
         CellularSampler sampler = new CellularSampler();
-        sampler.setNoiseLookup(lookup.build(seed));
+        sampler.setNoiseLookup(lookup);
         sampler.setFrequency(frequency);
         sampler.setJitterModifier(cellularJitter);
         sampler.setReturnType(cellularReturnType);

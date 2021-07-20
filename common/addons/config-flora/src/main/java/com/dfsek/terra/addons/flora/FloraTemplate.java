@@ -6,6 +6,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.addons.flora.flora.gen.TerraFlora;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 
@@ -61,9 +62,9 @@ public class FloraTemplate implements AbstractableTemplate {
     private List<BlockLayer> layers;
 
     @Value("layer-distribution")
-    private SeededNoiseSampler noiseDistribution;
+    private NoiseSampler noiseDistribution;
 
-    public SeededNoiseSampler getNoiseDistribution() {
+    public NoiseSampler getNoiseDistribution() {
         return noiseDistribution;
     }
 

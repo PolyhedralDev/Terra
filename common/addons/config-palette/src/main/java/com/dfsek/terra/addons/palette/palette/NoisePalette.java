@@ -7,12 +7,10 @@ import java.util.List;
 
 public class NoisePalette extends PaletteImpl {
     private final NoiseSampler sampler;
-    private final boolean is2D;
 
-    public NoisePalette(NoiseSampler sampler, boolean is2D) {
+    public NoisePalette(NoiseSampler sampler) {
         this.sampler = sampler;
-        this.is2D = is2D;
-    }
+            }
 
     @Override
     public BlockState get(int layer, double x, double y, double z, long seed) {
@@ -24,6 +22,6 @@ public class NoisePalette extends PaletteImpl {
             else paletteLayer = pl.get(layer);
         }
         NoiseSampler paletteSampler = paletteLayer.getSampler();
-        return paletteLayer.get(paletteSampler == null ? sampler : paletteSampler, x, y, z, is2D, seed);
+        return paletteLayer.get(paletteSampler == null ? sampler : paletteSampler, x, y, z, seed);
     }
 }

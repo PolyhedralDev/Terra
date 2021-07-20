@@ -19,6 +19,6 @@ public class NormalNormalizerTemplate extends NormalizerTemplate<NormalNormalize
 
     @Override
     public NoiseSampler build(long seed) {
-        return new NormalNormalizer(function.build(seed), groups, mean, stdDev);
+        return new NormalNormalizer(function, groups, mean, stdDev);
     }
 }

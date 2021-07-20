@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.generation.flora;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
@@ -18,11 +19,11 @@ public class FloraLayerLoader implements ObjectTemplate<FloraLayer> {
     private ProbabilityCollection<Flora> items;
 
     @Value("distribution")
-    private SeededNoiseSampler distribution;
+    private NoiseSampler distribution;
 
 
     @Override
     public FloraLayer get() {
-        return new FloraLayer(density, y, items, distribution.build(2403L));
+        return new FloraLayer(density, y, items, distribution);
     }
 }

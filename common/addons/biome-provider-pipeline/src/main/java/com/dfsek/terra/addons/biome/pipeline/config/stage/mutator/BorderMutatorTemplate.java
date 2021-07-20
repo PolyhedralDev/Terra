@@ -19,6 +19,6 @@ public class BorderMutatorTemplate extends MutatorStageTemplate {
 
     @Override
     public BiomeMutator getMutator(long seed) {
-        return new BorderMutator(from, replace, noise.build(seed), to.map(biomeBuilder -> biomeBuilder.build(seed), true));
+        return new BorderMutator(from, replace, noise, to.map(biomeBuilder -> biomeBuilder.build(seed), true));
     }
 }

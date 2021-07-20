@@ -11,6 +11,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -42,14 +43,14 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("beta.carving.equation")
     @Default
-    private SeededNoiseSampler carvingEquation = SeededNoiseSampler.zero(3);
+    private NoiseSampler carvingEquation = NoiseSampler.zero();
 
     @Value("vanilla")
     private ProbabilityCollection<Biome> vanilla;
 
     @Value("biome-noise")
     @Default
-    private SeededNoiseSampler biomeNoise = SeededNoiseSampler.zero(2);
+    private NoiseSampler biomeNoise = NoiseSampler.zero();
 
     @Value("blend.distance")
     @Default
@@ -64,7 +65,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private int blendStep = 4;
 
     @Value("noise")
-    private SeededNoiseSampler noiseEquation;
+    private NoiseSampler noiseEquation;
 
     @Value("ocean.level")
     @Default
@@ -72,7 +73,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("elevation.equation")
     @Default
-    private SeededNoiseSampler elevationEquation = SeededNoiseSampler.zero(2);
+    private NoiseSampler elevationEquation = NoiseSampler.zero();
 
     @Value("elevation.weight")
     @Default
@@ -159,15 +160,15 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return stairPalettes;
     }
 
-    public SeededNoiseSampler getBiomeNoise() {
+    public NoiseSampler getBiomeNoise() {
         return biomeNoise;
     }
 
-    public SeededNoiseSampler getElevationEquation() {
+    public NoiseSampler getElevationEquation() {
         return elevationEquation;
     }
 
-    public SeededNoiseSampler getCarvingEquation() {
+    public NoiseSampler getCarvingEquation() {
         return carvingEquation;
     }
 
@@ -187,7 +188,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return vanilla;
     }
 
-    public SeededNoiseSampler getNoiseEquation() {
+    public NoiseSampler getNoiseEquation() {
         return noiseEquation;
     }
 
@@ -206,36 +207,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Override
     public boolean validate() throws ValidationException {
         color |= 0xff000000; // Alpha adjustment
-        Parser tester = new Parser();
-        Scope testScope = new Scope();
-
-        variables.forEach(testScope::create);
-
-        testScope.addInvocationVariable("x");
-        testScope.addInvocationVariable("y");
-        testScope.addInvocationVariable("z");
-
-
-        //pack.getTemplate().getNoiseBuilderMap().forEach((id, builder) -> tester.registerFunction(id, new BlankFunction(builder.getDimensions()))); // Register dummy functions
-
-        try {
-            noiseEquation.build(0L);
-        } catch(Exception e) {
-            throw new ValidationException("Invalid noise sampler: ", e);
-        }
-
-        try {
-            carvingEquation.build(0L);
-        } catch(Exception e) {
-            throw new ValidationException("Invalid carving sampler: ", e);
-        }
-
-        try {
-            elevationEquation.build(0L);
-        } catch(Exception e) {
-            throw new ValidationException("Invalid elevation sampler: ", e);
-        }
-
         return true;
     }
 }

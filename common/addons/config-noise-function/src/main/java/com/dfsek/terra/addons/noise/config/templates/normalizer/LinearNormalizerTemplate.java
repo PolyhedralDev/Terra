@@ -14,6 +14,6 @@ public class LinearNormalizerTemplate extends NormalizerTemplate<LinearNormalize
 
     @Override
     public NoiseSampler build(long seed) {
-        return new LinearNormalizer(function.build(seed), min, max);
+        return new LinearNormalizer(function, min, max);
     }
 }

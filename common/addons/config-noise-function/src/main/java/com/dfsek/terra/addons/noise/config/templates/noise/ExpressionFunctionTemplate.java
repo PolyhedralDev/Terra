@@ -8,6 +8,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
@@ -32,7 +33,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     private String equation;
     @Value("functions")
     @Default
-    private LinkedHashMap<String, SeededNoiseSampler> functions = new LinkedHashMap<>();
+    private LinkedHashMap<String, DimensionApplicableNoiseSampler> functions = new LinkedHashMap<>();
     @Value("expressions")
     @Default
     private LinkedHashMap<String, FunctionTemplate> expressions = new LinkedHashMap<>();
@@ -77,8 +78,8 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
 
         functions.forEach((id, function) -> {
             if(function.getDimensions() == 2) {
-                noiseFunctionMap.put(id, new NoiseFunction2(function.build(seed)));
-            } else noiseFunctionMap.put(id, new NoiseFunction3(function.build(seed)));
+                noiseFunctionMap.put(id, new NoiseFunction2(function.getSampler()));
+            } else noiseFunctionMap.put(id, new NoiseFunction3(function.getSampler()));
         });
 
         return noiseFunctionMap;

@@ -9,10 +9,10 @@ import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
     @Value("warp")
-    private SeededNoiseSampler warp;
+    private NoiseSampler warp;
 
     @Value("function")
-    private SeededNoiseSampler function;
+    private NoiseSampler function;
 
     @Value("salt")
     @Default
@@ -24,6 +24,6 @@ public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
 
     @Override
     public NoiseSampler build(long seed) {
-        return new DomainWarpedSampler(function.build(seed), warp.build(seed), amplitude);
+        return new DomainWarpedSampler(function, warp, amplitude);
     }
 }

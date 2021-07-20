@@ -31,6 +31,6 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
 
         replace.forEach((keyBuilder, replacements) -> replaceMap.put(keyBuilder.build(seed), replacements.map(replacement -> replacement.build(seed), true)));
 
-        return new BorderListMutator(replaceMap, from, defaultReplace, noise.build(seed), defaultTo.map(biomeBuilder -> biomeBuilder.build(seed), true));
+        return new BorderListMutator(replaceMap, from, defaultReplace, noise, defaultTo.map(biomeBuilder -> biomeBuilder.build(seed), true));
     }
 }
