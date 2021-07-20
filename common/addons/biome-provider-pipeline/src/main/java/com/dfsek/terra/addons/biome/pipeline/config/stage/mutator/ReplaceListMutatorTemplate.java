@@ -20,7 +20,7 @@ public class ReplaceListMutatorTemplate extends MutatorStageTemplate {
     private Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace;
 
     @Override
-    public BiomeMutator getMutator(long seed) {
+    public BiomeMutator getMutator() {
         return new ReplaceListMutator(replace, defaultFrom, defaultTo, noise);
     }
 }

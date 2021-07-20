@@ -18,7 +18,7 @@ public class BorderMutatorTemplate extends MutatorStageTemplate {
     private ProbabilityCollection<TerraBiome> to;
 
     @Override
-    public BiomeMutator getMutator(long seed) {
+    public BiomeMutator getMutator() {
         return new BorderMutator(from, replace, noise, to);
     }
 }

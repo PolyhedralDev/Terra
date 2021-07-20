@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.biome.pipeline.config.stage;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.addons.biome.pipeline.StageSeeded;
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorTemplate;
@@ -14,13 +14,12 @@ import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class StageBuilderLoader implements TypeLoader<StageSeeded> {
+public class StageBuilderLoader implements TypeLoader<Stage> {
     @Override
-    public StageSeeded load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
+    public Stage load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> raw = (Map<String, Object>) c;
 
         if(raw.size() != 1) throw new LoadException("Illegal stage map size: " + raw.size());
@@ -36,20 +35,20 @@ public class StageBuilderLoader implements TypeLoader<StageSeeded> {
         if(entry.getKey().equals("expand")) {
             ExpanderStage.Type stageType = loader.loadType(ExpanderStage.Type.class, mutator.get("type"));
             if(stageType.equals(ExpanderStage.Type.FRACTAL)) {
-                return loader.loadType(ExpanderStageTemplate.class, mutator);
+                return loader.loadType(ExpanderStageTemplate.class, mutator).get();
             } else throw new LoadException("No such expander \"" + stageType + "\"");
         } else if(entry.getKey().equals("mutate")) {
             switch(loader.loadType(MutatorStage.Type.class, mutator.get("type"))) {
                 case SMOOTH:
-                    return loader.loadType(SmoothMutatorTemplate.class, mutator);
+                    return loader.loadType(SmoothMutatorTemplate.class, mutator).get();
                 case REPLACE:
-                    return loader.loadType(ReplaceMutatorTemplate.class, mutator);
+                    return loader.loadType(ReplaceMutatorTemplate.class, mutator).get();
                 case REPLACE_LIST:
-                    return loader.loadType(ReplaceListMutatorTemplate.class, mutator);
+                    return loader.loadType(ReplaceListMutatorTemplate.class, mutator).get();
                 case BORDER:
-                    return loader.loadType(BorderMutatorTemplate.class, mutator);
+                    return loader.loadType(BorderMutatorTemplate.class, mutator).get();
                 case BORDER_LIST:
-                    return loader.loadType(BorderListMutatorTemplate.class, mutator);
+                    return loader.loadType(BorderListMutatorTemplate.class, mutator).get();
                 default:
                     throw new LoadException("No such mutator type \"" + mutator.get("type"));
             }

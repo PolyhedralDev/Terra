@@ -15,7 +15,7 @@ public class NoiseSourceTemplate extends SourceTemplate {
     private ProbabilityCollection<TerraBiome> biomes;
 
     @Override
-    public BiomeSource build(long seed) {
+    public BiomeSource get() {
         return new RandomSource(biomes, noise);
     }
 }

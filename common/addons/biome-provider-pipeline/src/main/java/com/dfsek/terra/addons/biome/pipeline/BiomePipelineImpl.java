@@ -42,7 +42,7 @@ public class BiomePipelineImpl {
 
     public static final class BiomePipelineBuilder {
         private final int init;
-        List<StageSeeded> stages = new ArrayList<>();
+        List<Stage> stages = new ArrayList<>();
         private int expand;
 
         public BiomePipelineBuilder(int init) {
@@ -50,17 +50,15 @@ public class BiomePipelineImpl {
             expand = init;
         }
 
-        public BiomePipelineImpl build(BiomeSource source, long seed) {
-            List<Stage> stagesBuilt = stages.stream().map(stageBuilder -> stageBuilder.build(seed)).collect(Collectors.toList());
-
-            for(Stage stage : stagesBuilt) {
+        public BiomePipelineImpl build(BiomeSource source) {
+            for(Stage stage : stages) {
                 if(stage.isExpansion()) expand = expand * 2 - 1;
             }
 
-            return new BiomePipelineImpl(source, stagesBuilt, expand, init);
+            return new BiomePipelineImpl(source, stages, expand, init);
         }
 
-        public BiomePipelineBuilder addStage(StageSeeded stage) {
+        public BiomePipelineBuilder addStage(Stage stage) {
             stages.add(stage);
             return this;
         }

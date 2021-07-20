@@ -19,7 +19,7 @@ public class StandardBiomeProvider implements BiomeProvider {
     private final NoiseSampler mutator;
     private final double noiseAmp;
 
-    public StandardBiomeProvider(BiomePipelineImpl pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp, int seed) {
+    public StandardBiomeProvider(BiomePipelineImpl pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;

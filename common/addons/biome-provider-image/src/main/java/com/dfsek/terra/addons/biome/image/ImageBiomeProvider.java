@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ImageBiomeProvider implements BiomeProvider, SeededBuilder<BiomeProvider> { // This provider does not need a seed, so it is its own builder.
+public class ImageBiomeProvider implements BiomeProvider {
     private final Map<Color, TerraBiome> colorBiomeMap = new HashMap<>();
     private final BufferedImage image;
     private final int resolution;
@@ -38,11 +38,6 @@ public class ImageBiomeProvider implements BiomeProvider, SeededBuilder<BiomePro
             int d2 = distance(color, element);
             return d1 < d2 ? running : element;
         }));
-    }
-
-    @Override
-    public BiomeProvider build(long seed) {
-        return this;
     }
 
     public enum Align {

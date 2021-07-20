@@ -7,7 +7,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
-public abstract class BiomeProviderTemplate implements ObjectTemplate<SeededBuilder<BiomeProvider>>, SeededBuilder<BiomeProvider> {
+public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvider> {
     @Value("resolution")
     @Default
     protected int resolution = 1;
@@ -17,9 +17,4 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<SeededBuil
     @Value("blend.amplitude")
     @Default
     protected double blendAmp = 0d;
-
-    @Override
-    public SeededBuilder<BiomeProvider> get() {
-        return this;
-    }
 }

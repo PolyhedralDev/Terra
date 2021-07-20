@@ -1,9 +1,10 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomeProviderBuilderLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.NoiseSourceTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.SourceBuilderLoader;
+import com.dfsek.terra.addons.biome.pipeline.config.SourceLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageBuilderLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
@@ -22,7 +23,6 @@ import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.util.seeded.SeededBuilder;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
@@ -35,8 +35,8 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin main;
 
-    public static final TypeKey<SeededBuilder<BiomeProvider>> BIOME_PROVIDER_BUILDER_TOKEN = new TypeKey<>(){};
-    public static final TypeKey<SeededBuilder<BiomeSource>> BIOME_SOURCE_BUILDER_TOKEN = new TypeKey<>(){};
+    public static final TypeKey<BiomeProvider> BIOME_PROVIDER_BUILDER_TOKEN = new TypeKey<>(){};
+    public static final TypeKey<BiomeSource> BIOME_SOURCE_BUILDER_TOKEN = new TypeKey<>(){};
 
     @Override
     public void initialize() {
@@ -44,8 +44,8 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
     }
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
-        event.getPack().applyLoader(BIOME_SOURCE_BUILDER_TOKEN.getType(), new SourceBuilderLoader())
-                .applyLoader(StageSeeded.class, new StageBuilderLoader())
+        event.getPack().applyLoader(BIOME_SOURCE_BUILDER_TOKEN.getType(), new SourceLoader())
+                .applyLoader(Stage.class, new StageBuilderLoader())
                 .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                 .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
                 .applyLoader(NoiseSourceTemplate.class, NoiseSourceTemplate::new)
@@ -55,7 +55,7 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(ReplaceListMutatorTemplate.class, ReplaceListMutatorTemplate::new)
                 .applyLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
                 .applyLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
-                .applyLoader((Type) BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
+                .applyLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
                 .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderBuilderLoader());
     }
 }

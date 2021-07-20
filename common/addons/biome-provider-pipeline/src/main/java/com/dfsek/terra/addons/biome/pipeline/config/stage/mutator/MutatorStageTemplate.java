@@ -6,10 +6,10 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 
 public abstract class MutatorStageTemplate extends StageTemplate {
-    public abstract BiomeMutator getMutator(long seed);
+    public abstract BiomeMutator getMutator();
 
     @Override
-    public Stage build(long seed) {
-        return new MutatorStage(getMutator(seed));
+    public Stage get() {
+        return new MutatorStage(getMutator());
     }
 }

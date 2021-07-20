@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
 
 public class ExpanderStageTemplate extends StageTemplate {
     @Override
-    public Stage build(long seed) {
+    public Stage get() {
         return new ExpanderStage(new FractalExpander(noise));
     }
 }
