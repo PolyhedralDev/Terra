@@ -28,7 +28,7 @@ public class TerraBiomeSource extends BiomeSource {
 
     private final Registry<Biome> biomeRegistry;
     private final long seed;
-    private final BiomeProvider grid;
+    private final BiomeProvider provider;
     private final ConfigPack pack;
 
     public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
@@ -37,7 +37,7 @@ public class TerraBiomeSource extends BiomeSource {
                 .collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.grid = pack.getBiomeProviderBuilder().build(seed);
+        this.provider = pack.getBiomeProviderBuilder();
         this.pack = pack;
     }
 
@@ -53,7 +53,7 @@ public class TerraBiomeSource extends BiomeSource {
 
     @Override
     public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        TerraBiome biome = grid.getBiome(biomeX << 2, biomeZ << 2, seed);
+        TerraBiome biome = provider.getBiome(biomeX << 2, biomeZ << 2, seed);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }
 }
