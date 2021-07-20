@@ -10,6 +10,11 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorT
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
+import com.dfsek.terra.addons.biome.pipeline.mutator.BorderListMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.BorderMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceListMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.SmoothMutator;
 import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 
@@ -35,20 +40,20 @@ public class StageLoader implements TypeLoader<Stage> {
         if(entry.getKey().equals("expand")) {
             ExpanderStage.Type stageType = loader.loadType(ExpanderStage.Type.class, mutator.get("type"));
             if(stageType.equals(ExpanderStage.Type.FRACTAL)) {
-                return loader.loadType(ExpanderStageTemplate.class, mutator).get();
+                return loader.loadType(ExpanderStage.class, mutator);
             } else throw new LoadException("No such expander \"" + stageType + "\"");
         } else if(entry.getKey().equals("mutate")) {
             switch(loader.loadType(MutatorStage.Type.class, mutator.get("type"))) {
                 case SMOOTH:
-                    return loader.loadType(SmoothMutatorTemplate.class, mutator).get();
+                    return new MutatorStage(loader.loadType(SmoothMutator.class, mutator));
                 case REPLACE:
-                    return loader.loadType(ReplaceMutatorTemplate.class, mutator).get();
+                    return new MutatorStage(loader.loadType(ReplaceMutator.class, mutator));
                 case REPLACE_LIST:
-                    return loader.loadType(ReplaceListMutatorTemplate.class, mutator).get();
+                    return new MutatorStage(loader.loadType(ReplaceListMutator.class, mutator));
                 case BORDER:
-                    return loader.loadType(BorderMutatorTemplate.class, mutator).get();
+                    return new MutatorStage(loader.loadType(BorderMutator.class, mutator));
                 case BORDER_LIST:
-                    return loader.loadType(BorderListMutatorTemplate.class, mutator).get();
+                    return new MutatorStage(loader.loadType(BorderListMutator.class, mutator));
                 default:
                     throw new LoadException("No such mutator type \"" + mutator.get("type"));
             }

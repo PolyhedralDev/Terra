@@ -15,7 +15,7 @@ public class ReplaceMutatorTemplate extends MutatorStageTemplate {
     private ProbabilityCollection<TerraBiome> to;
 
     @Override
-    public BiomeMutator getMutator() {
+    public BiomeMutator get() {
         return new ReplaceMutator(from, to, noise);
     }
 }

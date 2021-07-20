@@ -24,7 +24,7 @@ public class BorderListMutatorTemplate extends MutatorStageTemplate {
 
 
     @Override
-    public BiomeMutator getMutator() {
+    public BiomeMutator get() {
         return new BorderListMutator(replace, from, defaultReplace, noise, defaultTo);
     }
 }

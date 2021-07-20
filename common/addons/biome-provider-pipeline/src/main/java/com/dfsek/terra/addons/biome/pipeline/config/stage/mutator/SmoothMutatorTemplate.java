@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.biome.pipeline.mutator.SmoothMutator;
 
 public class SmoothMutatorTemplate extends MutatorStageTemplate {
     @Override
-    public BiomeMutator getMutator() {
+    public BiomeMutator get() {
         return new SmoothMutator(noise);
     }
 }

@@ -12,6 +12,12 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorT
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
+import com.dfsek.terra.addons.biome.pipeline.mutator.BorderListMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.BorderMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceListMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceMutator;
+import com.dfsek.terra.addons.biome.pipeline.mutator.SmoothMutator;
+import com.dfsek.terra.addons.biome.pipeline.source.RandomSource;
 import com.dfsek.terra.addons.biome.pipeline.stages.ExpanderStage;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.TerraPlugin;
@@ -46,14 +52,14 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(Stage.class, new StageLoader())
                 .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                 .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
-                .applyLoader(NoiseSourceTemplate.class, NoiseSourceTemplate::new)
-                .applyLoader(ReplaceMutatorTemplate.class, ReplaceMutatorTemplate::new)
-                .applyLoader(BorderMutatorTemplate.class, BorderMutatorTemplate::new)
-                .applyLoader(BorderListMutatorTemplate.class, BorderListMutatorTemplate::new)
-                .applyLoader(ReplaceListMutatorTemplate.class, ReplaceListMutatorTemplate::new)
-                .applyLoader(SmoothMutatorTemplate.class, SmoothMutatorTemplate::new)
-                .applyLoader(ExpanderStageTemplate.class, ExpanderStageTemplate::new)
-                .applyLoader(BiomePipelineTemplate.class, () -> new BiomePipelineTemplate(main))
+                .applyLoader(RandomSource.class, NoiseSourceTemplate::new)
+                .applyLoader(ReplaceMutator.class, ReplaceMutatorTemplate::new)
+                .applyLoader(BorderMutator.class, BorderMutatorTemplate::new)
+                .applyLoader(BorderListMutator.class, BorderListMutatorTemplate::new)
+                .applyLoader(ReplaceListMutator.class, ReplaceListMutatorTemplate::new)
+                .applyLoader(SmoothMutator.class, SmoothMutatorTemplate::new)
+                .applyLoader(ExpanderStage.class, ExpanderStageTemplate::new)
+                .applyLoader(StandardBiomeProvider.class, () -> new BiomePipelineTemplate(main))
                 .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderLoader());
     }
 }
