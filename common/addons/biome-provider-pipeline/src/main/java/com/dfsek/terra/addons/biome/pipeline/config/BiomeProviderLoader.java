@@ -3,7 +3,6 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.addons.biome.pipeline.BiomePipelineImpl;
 import com.dfsek.terra.addons.biome.pipeline.StandardBiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 

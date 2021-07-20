@@ -7,15 +7,14 @@ import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class BiomePipelineImpl {
+public class BiomePipeline {
     private final BiomeSource source;
     private final List<Stage> stages;
     private final int size;
     private final int init;
 
-    private BiomePipelineImpl(BiomeSource source, List<Stage> stages, int size, int init) {
+    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init) {
         this.source = source;
         this.stages = stages;
         this.size = size;
@@ -50,12 +49,12 @@ public class BiomePipelineImpl {
             expand = init;
         }
 
-        public BiomePipelineImpl build(BiomeSource source) {
+        public BiomePipeline build(BiomeSource source) {
             for(Stage stage : stages) {
                 if(stage.isExpansion()) expand = expand * 2 - 1;
             }
 
-            return new BiomePipelineImpl(source, stages, expand, init);
+            return new BiomePipeline(source, stages, expand, init);
         }
 
         public BiomePipelineBuilder addStage(Stage stage) {

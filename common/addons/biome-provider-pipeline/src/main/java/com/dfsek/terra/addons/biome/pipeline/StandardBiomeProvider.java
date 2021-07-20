@@ -3,7 +3,6 @@ package com.dfsek.terra.addons.biome.pipeline;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.google.common.cache.CacheBuilder;
@@ -14,12 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class StandardBiomeProvider implements BiomeProvider {
     private final LoadingCache<SeededVector, BiomeHolder> holderCache;
-    private final BiomePipelineImpl pipeline;
+    private final BiomePipeline pipeline;
     private final int resolution;
     private final NoiseSampler mutator;
     private final double noiseAmp;
 
-    public StandardBiomeProvider(BiomePipelineImpl pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp) {
+    public StandardBiomeProvider(BiomePipeline pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
