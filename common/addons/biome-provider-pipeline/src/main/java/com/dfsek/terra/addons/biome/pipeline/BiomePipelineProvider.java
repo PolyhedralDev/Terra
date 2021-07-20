@@ -11,14 +11,14 @@ import com.google.common.cache.LoadingCache;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
-public class StandardBiomeProvider implements BiomeProvider {
+public class BiomePipelineProvider implements BiomeProvider {
     private final LoadingCache<SeededVector, BiomeHolder> holderCache;
     private final BiomePipeline pipeline;
     private final int resolution;
     private final NoiseSampler mutator;
     private final double noiseAmp;
 
-    public StandardBiomeProvider(BiomePipeline pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp) {
+    public BiomePipelineProvider(BiomePipeline pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;

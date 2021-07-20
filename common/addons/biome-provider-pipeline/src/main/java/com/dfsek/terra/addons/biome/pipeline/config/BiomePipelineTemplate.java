@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipeline;
-import com.dfsek.terra.addons.biome.pipeline.StandardBiomeProvider;
+import com.dfsek.terra.addons.biome.pipeline.BiomePipelineProvider;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -33,6 +33,6 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
         BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize);
         stages.forEach(biomePipelineBuilder::addStage);
         BiomePipeline pipeline = biomePipelineBuilder.build(source);
-        return new StandardBiomeProvider(pipeline, main, resolution, blend, blendAmp);
+        return new BiomePipelineProvider(pipeline, main, resolution, blend, blendAmp);
     }
 }

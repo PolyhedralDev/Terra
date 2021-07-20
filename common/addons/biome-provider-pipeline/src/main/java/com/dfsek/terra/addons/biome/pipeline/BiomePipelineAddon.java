@@ -59,7 +59,7 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
                 .applyLoader(ReplaceListMutator.class, ReplaceListMutatorTemplate::new)
                 .applyLoader(SmoothMutator.class, SmoothMutatorTemplate::new)
                 .applyLoader(ExpanderStage.class, ExpanderStageTemplate::new)
-                .applyLoader(StandardBiomeProvider.class, () -> new BiomePipelineTemplate(main))
+                .applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
                 .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderLoader());
     }
 }
