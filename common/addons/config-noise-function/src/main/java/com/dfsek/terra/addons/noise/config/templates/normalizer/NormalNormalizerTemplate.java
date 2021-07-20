@@ -18,7 +18,7 @@ public class NormalNormalizerTemplate extends NormalizerTemplate<NormalNormalize
     private int groups = 16384;
 
     @Override
-    public NoiseSampler build(long seed) {
+    public NoiseSampler get() {
         return new NormalNormalizer(function, groups, mean, stdDev);
     }
 }

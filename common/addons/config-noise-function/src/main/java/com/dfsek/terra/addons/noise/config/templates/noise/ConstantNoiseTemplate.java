@@ -13,7 +13,7 @@ public class ConstantNoiseTemplate extends SamplerTemplate<ConstantSampler> {
     private double value = 0d;
 
     @Override
-    public NoiseSampler build(long seed) {
+    public NoiseSampler get() {
         return new ConstantSampler(value);
     }
 }

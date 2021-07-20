@@ -28,7 +28,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> implements Va
     private double frequency = 1;
 
     @Override
-    public NoiseSampler build(long seed) {
+    public NoiseSampler get() {
         double[][] k = new double[kernel.size()][kernel.get(0).size()];
 
         for(int x = 0; x < kernel.size(); x++) {

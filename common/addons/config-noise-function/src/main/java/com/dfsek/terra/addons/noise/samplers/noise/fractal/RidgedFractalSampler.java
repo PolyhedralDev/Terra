@@ -4,7 +4,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class RidgedFractalSampler extends FractalNoiseFunction {
 
-    public RidgedFractalSampler(int seed, NoiseSampler input) {
+    public RidgedFractalSampler(NoiseSampler input) {
         super(input);
     }
 

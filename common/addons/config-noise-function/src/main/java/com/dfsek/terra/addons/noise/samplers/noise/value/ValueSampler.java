@@ -1,10 +1,6 @@
 package com.dfsek.terra.addons.noise.samplers.noise.value;
 
 public class ValueSampler extends ValueStyleNoise {
-    public ValueSampler(int seed) {
-        super();
-    }
-
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;

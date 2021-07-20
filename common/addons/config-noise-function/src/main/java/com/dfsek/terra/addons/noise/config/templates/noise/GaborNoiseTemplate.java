@@ -27,7 +27,7 @@ public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     private double f0 = 0.625;
 
     @Override
-    public NoiseSampler build(long seed) {
+    public NoiseSampler get() {
         GaborNoiseSampler gaborNoiseSampler = new GaborNoiseSampler();
         gaborNoiseSampler.setFrequency(frequency);
         gaborNoiseSampler.setRotation(rotation);

@@ -5,8 +5,8 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class BrownianMotionTemplate extends FractalTemplate<BrownianMotionSampler> {
     @Override
-    public NoiseSampler build(long seed) {
-        BrownianMotionSampler sampler = new BrownianMotionSampler((int) seed, function);
+    public NoiseSampler get() {
+        BrownianMotionSampler sampler = new BrownianMotionSampler(function);
         sampler.setGain(fractalGain);
         sampler.setLacunarity(fractalLacunarity);
         sampler.setOctaves(octaves);

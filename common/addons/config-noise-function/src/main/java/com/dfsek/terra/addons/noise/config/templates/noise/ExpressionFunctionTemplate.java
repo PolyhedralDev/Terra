@@ -25,7 +25,7 @@ import java.util.Map;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused"})
 public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFunction> implements ValidatedConfigTemplate {
-    private final Map<String, SeededNoiseSampler> otherFunctions;
+    private final Map<String, DimensionApplicableNoiseSampler> otherFunctions;
     @Value("variables")
     @Default
     private Map<String, Double> vars = new HashMap<>();
@@ -38,14 +38,14 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Default
     private LinkedHashMap<String, FunctionTemplate> expressions = new LinkedHashMap<>();
 
-    public ExpressionFunctionTemplate(Map<String, SeededNoiseSampler> otherFunctions) {
+    public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> otherFunctions) {
         this.otherFunctions = otherFunctions;
     }
 
     @Override
-    public NoiseSampler build(long seed) {
+    public NoiseSampler get() {
         try {
-            Map<String, Function> noiseFunctionMap = generateFunctions(seed);
+            Map<String, Function> noiseFunctionMap = generateFunctions();
             return new ExpressionFunction(noiseFunctionMap, equation, vars);
         } catch(ParseException e) {
             throw new IllegalStateException(e);
@@ -55,7 +55,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Override
     public boolean validate() throws ValidationException {
         try {
-            Map<String, Function> noiseFunctionMap = generateFunctions(0L);
+            Map<String, Function> noiseFunctionMap = generateFunctions();
             new ExpressionFunction(noiseFunctionMap, equation, vars);
         } catch(ParseException e) {
             throw new ValidationException("Errors occurred while parsing noise equation: ", e);
@@ -63,7 +63,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
         return super.validate();
     }
 
-    private Map<String, Function> generateFunctions(Long seed) throws ParseException {
+    private Map<String, Function> generateFunctions() throws ParseException {
         Map<String, Function> noiseFunctionMap = new HashMap<>();
 
         for(Map.Entry<String, FunctionTemplate> entry : expressions.entrySet()) {
@@ -72,8 +72,8 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
 
         otherFunctions.forEach((id, function) -> {
             if(function.getDimensions() == 2) {
-                noiseFunctionMap.put(id, new NoiseFunction2(function.build(seed)));
-            } else noiseFunctionMap.put(id, new NoiseFunction3(function.build(seed)));
+                noiseFunctionMap.put(id, new NoiseFunction2(function.getSampler()));
+            } else noiseFunctionMap.put(id, new NoiseFunction3(function.getSampler()));
         });
 
         functions.forEach((id, function) -> {

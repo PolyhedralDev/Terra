@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.noise;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.NoiseSamplerBuilderLoader;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
@@ -32,6 +33,7 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.util.seeded.SeededNoiseSampler;
@@ -47,7 +49,7 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin plugin;
 
-    public static final TypeKey<Supplier<ObjectTemplate<SeededNoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {};
 
     @Override
     public void initialize() {
@@ -55,9 +57,9 @@ public class NoiseAddon extends TerraAddon implements EventListener {
     }
 
     public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<Supplier<ObjectTemplate<SeededNoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
+        CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
         event.getPack()
-                .applyLoader(SeededNoiseSampler.class, new NoiseSamplerBuilderLoader(noiseRegistry))
+                .applyLoader(NoiseSampler.class, new NoiseSamplerBuilderLoader(noiseRegistry))
                 .applyLoader(ImageSamplerTemplate.class, ImageSamplerTemplate::new)
                 .applyLoader(DomainWarpTemplate.class, DomainWarpTemplate::new)
                 .applyLoader(LinearNormalizerTemplate.class, LinearNormalizerTemplate::new)
@@ -76,26 +78,26 @@ public class NoiseAddon extends TerraAddon implements EventListener {
         noiseRegistry.register("PINGPONG", PingPongTemplate::new);
         noiseRegistry.register("RIDGED", RidgedFractalTemplate::new);
 
-        noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(seed3 -> new OpenSimplex2Sampler()));
-        noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(seed3 -> new OpenSimplex2SSampler()));
-        noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(seed2 -> new PerlinSampler()));
-        noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(seed2 -> new SimplexSampler()));
+        noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
+        noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
+        noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
+        noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
         noiseRegistry.register("GABOR", GaborNoiseTemplate::new);
 
 
         noiseRegistry.register("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
-        noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(seed1 -> new ValueCubicSampler()));
+        noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
 
         noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
 
-        noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(seed -> new WhiteNoiseSampler()));
-        noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(seed -> new GaussianNoiseSampler()));
+        noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+        noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
 
         noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
 
         noiseRegistry.register("KERNEL", KernelTemplate::new);
 
-        Map<String, SeededNoiseSampler> packFunctions = new HashMap<>();
+        Map<String, DimensionApplicableNoiseSampler> packFunctions = new HashMap<>();
         noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
 
 

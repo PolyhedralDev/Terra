@@ -12,8 +12,8 @@ public class PingPongTemplate extends FractalTemplate<PingPongSampler> {
     private double pingPong = 2.0D;
 
     @Override
-    public NoiseSampler build(long seed) {
-        PingPongSampler sampler = new PingPongSampler((int) seed, function);
+    public NoiseSampler get() {
+        PingPongSampler sampler = new PingPongSampler(function);
         sampler.setGain(fractalGain);
         sampler.setLacunarity(fractalLacunarity);
         sampler.setOctaves(octaves);
