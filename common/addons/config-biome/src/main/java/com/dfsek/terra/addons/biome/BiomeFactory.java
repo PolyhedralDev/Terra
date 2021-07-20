@@ -3,7 +3,6 @@ package com.dfsek.terra.addons.biome;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
