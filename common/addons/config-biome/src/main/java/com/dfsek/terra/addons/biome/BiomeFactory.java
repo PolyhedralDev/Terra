@@ -4,8 +4,9 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.seeded.SeededTerraBiome;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
-public class BiomeFactory implements ConfigFactory<BiomeTemplate, SeededTerraBiome> {
+public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
     private final ConfigPack pack;
 
     public BiomeFactory(ConfigPack pack) {
@@ -13,7 +14,9 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, SeededTerraBio
     }
 
     @Override
-    public SeededTerraBiome build(BiomeTemplate template, TerraPlugin main) {
-        return new UserDefinedSeededTerraBiome(template);
+    public TerraBiome build(BiomeTemplate template, TerraPlugin main) {
+        UserDefinedGenerator generator = new UserDefinedGenerator(template.getNoiseEquation(), template.getElevationEquation(), template.getCarvingEquation(), template.getBiomeNoise(), template.getElevationWeight(),
+                template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
+        return new UserDefinedBiome(template.getVanilla(), generator, template);
     }
 }
