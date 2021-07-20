@@ -17,7 +17,7 @@ import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class StageBuilderLoader implements TypeLoader<Stage> {
+public class StageLoader implements TypeLoader<Stage> {
     @Override
     public Stage load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> raw = (Map<String, Object>) c;

@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomeProviderBuilderLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.NoiseSourceTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.SourceLoader;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.StageBuilderLoader;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.StageLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorTemplate;
@@ -26,8 +26,6 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
-import java.lang.reflect.Type;
-
 @Addon("biome-provider-pipeline")
 @Author("Terra")
 @Version("1.0.0")
@@ -45,7 +43,7 @@ public class BiomePipelineAddon extends TerraAddon implements EventListener {
 
     public void onPackLoad(ConfigPackPreLoadEvent event) {
         event.getPack().applyLoader(BIOME_SOURCE_BUILDER_TOKEN.getType(), new SourceLoader())
-                .applyLoader(Stage.class, new StageBuilderLoader())
+                .applyLoader(Stage.class, new StageLoader())
                 .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                 .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
                 .applyLoader(NoiseSourceTemplate.class, NoiseSourceTemplate::new)
