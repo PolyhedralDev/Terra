@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.feature.locator;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -33,5 +34,6 @@ public class LocatorAddon extends TerraAddon implements EventListener {
     public void onPackLoad(ConfigPackPreLoadEvent event) {
         CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
         locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
+        locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
     }
 }
