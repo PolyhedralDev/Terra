@@ -29,7 +29,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
             if(parameterizedType.getRawType() instanceof Class) { // Should always be true but we check anyways
                 Class<?> baseClass = (Class<?>) parameterizedType.getRawType();
 
-                if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // List metaconfig
+                if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // Map metaconfig
                     Map<Object, Object> map = (Map<Object, Object>) c;
 
                     Map<Object, Object> newMap = new HashMap<>(map);
