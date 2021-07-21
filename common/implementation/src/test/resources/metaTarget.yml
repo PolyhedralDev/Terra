@@ -14,3 +14,4 @@ string:
   two: two
   three: three
   six: six
+double: 1

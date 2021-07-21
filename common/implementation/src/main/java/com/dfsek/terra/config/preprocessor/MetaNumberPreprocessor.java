@@ -12,10 +12,11 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
+import java.util.Arrays;
 import java.util.Map;
 
 public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
-    public static final TypeKey<@Meta String> META_STRING_KEY = new TypeKey<>() {};
+    public static final TypeKey<String> META_STRING_KEY = new TypeKey<@Meta String>() {};
 
     public MetaNumberPreprocessor(Map<String, Configuration> configs) {
         super(configs);

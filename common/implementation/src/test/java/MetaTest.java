@@ -6,6 +6,7 @@ import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import org.junit.jupiter.api.Test;
@@ -26,9 +27,12 @@ public class MetaTest {
         configurationMap.put(metaTarget.getName(), metaTarget);
 
         ConfigLoader loader = new ConfigLoader();
-        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+
+        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
         loader.load(new MetaListConfig(), meta).list.forEach(System.out::println);
     }
@@ -49,9 +53,12 @@ public class MetaTest {
         configurationMap.put(metaTarget.getName(), metaTarget);
 
         ConfigLoader loader = new ConfigLoader();
-        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+
+        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
         loader.load(new MetaMapConfig(), meta).map.forEach((k, v) -> System.out.println(k + ": " + v));
     }
@@ -72,10 +79,13 @@ public class MetaTest {
         configurationMap.put(metaTarget.getName(), metaTarget);
 
         ConfigLoader loader = new ConfigLoader();
-        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
+
+        loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
-        loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+
+        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
         System.out.println(loader.load(new MetaStringConfig(), meta).string);
     }
@@ -83,5 +93,35 @@ public class MetaTest {
     private static final class MetaStringConfig implements ConfigTemplate {
         @Value("string")
         private @Meta String string;
+    }
+
+    @Test
+    public void testMetaNumber() {
+        Configuration meta = new YamlConfiguration(MetaTest.class.getResourceAsStream("/meta.yml"), "meta.yml");
+        Configuration metaTarget = new YamlConfiguration(MetaTest.class.getResourceAsStream("/metaTarget.yml"), "metaTarget.yml");
+
+        Map<String, Configuration> configurationMap = new HashMap<>();
+
+        configurationMap.put(meta.getName(), meta);
+        configurationMap.put(metaTarget.getName(), metaTarget);
+
+        ConfigLoader loader = new ConfigLoader();
+        loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+
+        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
+
+        System.out.println("int: " + loader.load(new MetaNumberConfig(), meta).integer);
+        System.out.println("double: " + loader.load(new MetaNumberConfig(), meta).aDouble);
+    }
+
+    private static final class MetaNumberConfig implements ConfigTemplate {
+        @Value("int")
+        private @Meta int integer;
+
+        @Value("double")
+        private @Meta double aDouble;
     }
 }

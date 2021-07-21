@@ -24,10 +24,10 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
             String candidate = (String) c;
             StringSubstitutor substitutor = new StringSubstitutor(key -> {
                 Object meta = getMetaValue(key);
-                if(!(meta instanceof String)) {
-                    throw new LoadException("MetaString template injection candidate must be string, is type " + meta.getClass().getCanonicalName());
+                if(!(meta instanceof String) && !(meta instanceof Number) && !(meta instanceof Character) && !(meta instanceof Boolean)) {
+                    throw new LoadException("MetaString template injection candidate must be string or primitive, is type " + meta.getClass().getCanonicalName());
                 }
-                return (String) meta;
+                return meta.toString();
             });
             return (Result<T>) Result.overwrite(substitutor.replace(candidate));
         }
