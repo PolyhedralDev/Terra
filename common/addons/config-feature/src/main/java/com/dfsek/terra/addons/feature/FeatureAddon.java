@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.tree;
+package com.dfsek.terra.addons.feature;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -8,12 +8,11 @@ import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
-@Addon("config-tree")
-@Author("Terra")
+@Addon("config-feature")
 @Version("1.0.0")
-public class TreeAddon extends TerraAddon implements EventListener {
+@Author("Terra")
+public class FeatureAddon extends TerraAddon implements EventListener {
     @Inject
     private TerraPlugin main;
 
@@ -22,7 +21,7 @@ public class TreeAddon extends TerraAddon implements EventListener {
         main.getEventManager().registerListener(this, this);
     }
 
-    public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
-        event.getPack().registerConfigType(new TreeConfigType(), "TREE", 2);
+    public void onPackLoad(ConfigPackPreLoadEvent event) {
+        event.getPack().registerConfigType(new FeatureConfigType(), "FEATURE", 2);
     }
 }

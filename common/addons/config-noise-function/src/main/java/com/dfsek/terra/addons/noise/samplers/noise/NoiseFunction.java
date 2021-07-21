@@ -21,6 +21,16 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     protected double frequency = 0.02d;
 
+    protected long salt;
+
+    public void setSalt(long salt) {
+        this.salt = salt;
+    }
+
+    public NoiseFunction() {
+        this.salt = 0;
+    }
+
     protected static int fastFloor(double f) {
         return f >= 0 ? (int) f : (int) f - 1;
     }
@@ -119,12 +129,12 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     @Override
     public double getNoiseSeeded(long seed, double x, double y) {
-        return getNoiseRaw(seed, x * frequency, y * frequency);
+        return getNoiseRaw(seed + salt, x * frequency, y * frequency);
     }
 
     @Override
     public double getNoiseSeeded(long seed, double x, double y, double z) {
-        return getNoiseRaw(seed, x * frequency, y * frequency, z * frequency);
+        return getNoiseRaw(seed + salt, x * frequency, y * frequency, z * frequency);
     }
 
     public abstract double getNoiseRaw(long seed, double x, double y);

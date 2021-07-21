@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.feature.distributor.config;
 
+import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.feature.distributor.distributors.NoiseDistributor;
@@ -10,8 +11,12 @@ public class NoiseDistributorTemplate implements ObjectTemplate<Distributor> {
     @Value("distribution")
     private NoiseSampler noise;
 
+    @Value("threshold")
+    @Default
+    private double threshold = 0;
+
     @Override
     public Distributor get() {
-        return new NoiseDistributor(noise);
+        return new NoiseDistributor(noise, threshold);
     }
 }

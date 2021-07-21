@@ -13,13 +13,11 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import java.util.function.Supplier;
 
 public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
-    private final ConfigPack pack;
     private final BiomeFactory factory;
 
     public static final TypeKey<TerraBiome> BIOME_TYPE_TOKEN = new TypeKey<>() {};
 
     public BiomeConfigType(ConfigPack pack) {
-        this.pack = pack;
         this.factory = new BiomeFactory(pack);
     }
 
@@ -39,7 +37,7 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
 
     @Override
-    public Supplier<OpenRegistry<TerraBiome>> registrySupplier() {
+    public Supplier<OpenRegistry<TerraBiome>> registrySupplier(ConfigPack pack) {
         return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<TerraBiome>) (t, c, loader) -> {
             if(c.equals("SELF")) return null;
             TerraBiome obj = registry.get((String) c);

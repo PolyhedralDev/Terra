@@ -12,13 +12,8 @@ import java.util.function.Supplier;
 
 public class FloraConfigType implements ConfigType<FloraTemplate, Flora> {
     private final FloraFactory factory = new FloraFactory();
-    private final ConfigPack pack;
 
     public static final TypeKey<Flora> FLORA_TYPE_TOKEN = new TypeKey<>(){};
-
-    public FloraConfigType(ConfigPack pack) {
-        this.pack = pack;
-    }
 
     @Override
     public FloraTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
@@ -36,7 +31,7 @@ public class FloraConfigType implements ConfigType<FloraTemplate, Flora> {
     }
 
     @Override
-    public Supplier<OpenRegistry<Flora>> registrySupplier() {
+    public Supplier<OpenRegistry<Flora>> registrySupplier(ConfigPack pack) {
         return pack.getRegistryFactory()::create;
     }
 }

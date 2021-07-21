@@ -4,6 +4,7 @@ import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public abstract class NoiseTemplate<T extends NoiseFunction> extends SamplerTemplate<T> {
@@ -13,5 +14,5 @@ public abstract class NoiseTemplate<T extends NoiseFunction> extends SamplerTemp
 
     @Value("salt")
     @Default
-    protected int salt = 0;
+    protected long salt = 0;
 }

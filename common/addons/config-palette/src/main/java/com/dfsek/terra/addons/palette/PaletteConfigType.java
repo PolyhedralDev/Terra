@@ -15,13 +15,11 @@ import java.util.function.Supplier;
 
 public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     private final PaletteFactory factory = new PaletteFactory();
-    private final ConfigPack pack;
     private final TerraPlugin main;
 
     public static final TypeKey<Palette> PALETTE_TYPE_TOKEN = new TypeKey<>(){};
 
-    public PaletteConfigType(ConfigPack pack, TerraPlugin main) {
-        this.pack = pack;
+    public PaletteConfigType(TerraPlugin main) {
         this.main = main;
     }
 
@@ -41,7 +39,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
 
     @Override
-    public Supplier<OpenRegistry<Palette>> registrySupplier() {
+    public Supplier<OpenRegistry<Palette>> registrySupplier(ConfigPack pack) {
         return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
             if(((String) c).startsWith("BLOCK:"))
                 return new PaletteImpl.Singleton(main.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.

@@ -33,6 +33,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
         sampler.setJitterModifier(cellularJitter);
         sampler.setReturnType(cellularReturnType);
         sampler.setDistanceFunction(cellularDistanceFunction);
+        sampler.setSalt(salt);
         return sampler;
     }
 }
