@@ -1,0 +1,18 @@
+list:
+  - ONE
+  - "<< metaTarget.yml:list"
+  - FOUR
+  - FIVE
+  - SIX
+  - "<< metaTarget.yml:list2"
+  - NINE
+  - TEN
+map:
+  "<<":
+    - metaTarget.yml:map1
+    - metaTarget.yml:map2
+  one: ONE
+  two: TWO
+string: "one-${metaTarget.yml:string.two}-${metaTarget.yml:string.three}-four-five-${metaTarget.yml:string.six}"
+int: 2 + 4
+double: ${metaTarget.yml:double} + 5.6

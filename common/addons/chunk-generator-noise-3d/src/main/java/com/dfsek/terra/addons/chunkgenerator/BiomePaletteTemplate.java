@@ -6,21 +6,22 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.generator.Palette;
 
 public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     @Value("palette")
-    private PaletteHolder palette;
+    private @Meta PaletteHolder palette;
 
     @Value("slant")
     @Default
-    private SlantHolder slant = null;
+    private @Meta SlantHolder slant = null;
 
     @Value("ocean.level")
-    private int seaLevel;
+    private @Meta int seaLevel;
 
     @Value("ocean.palette")
-    private Palette oceanPalette;
+    private @Meta Palette oceanPalette;
 
     @Override
     public PaletteInfo get() {

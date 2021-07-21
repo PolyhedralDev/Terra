@@ -3,19 +3,20 @@ package com.dfsek.terra.addons.noise.config.templates.normalizer;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.normalizer.NormalNormalizer;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class NormalNormalizerTemplate extends NormalizerTemplate<NormalNormalizer> {
     @Value("mean")
-    private double mean;
+    private @Meta double mean;
 
     @Value("standard-deviation")
-    private double stdDev;
+    private @Meta double stdDev;
 
     @Value("groups")
     @Default
-    private int groups = 16384;
+    private @Meta int groups = 16384;
 
     @Override
     public NoiseSampler get() {

@@ -21,6 +21,8 @@ dependencies {
 
     "shadedApi"("commons-io:commons-io:2.6")
 
+    "shadedImplementation"("org.apache.commons:commons-text:1.9")
+
 
     "compileOnly"("com.google.guava:guava:30.0-jre")
 

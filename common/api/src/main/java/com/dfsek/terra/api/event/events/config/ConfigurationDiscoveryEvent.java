@@ -5,6 +5,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.event.events.PackEvent;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -17,9 +18,9 @@ public class ConfigurationDiscoveryEvent implements PackEvent {
     private final ConfigPack pack;
     private final Loader loader;
 
-    private final Consumer<Configuration> consumer;
+    private final BiConsumer<String, Configuration> consumer;
 
-    public ConfigurationDiscoveryEvent(ConfigPack pack, Loader loader, Consumer<Configuration> consumer) {
+    public ConfigurationDiscoveryEvent(ConfigPack pack, Loader loader, BiConsumer<String, Configuration> consumer) {
         this.pack = pack;
         this.loader = loader;
         this.consumer = consumer;
@@ -34,7 +35,7 @@ public class ConfigurationDiscoveryEvent implements PackEvent {
         return loader;
     }
 
-    public void register(Configuration config) {
-        consumer.accept(config);
+    public void register(String identifier, Configuration config) {
+        consumer.accept(identifier, config);
     }
 }

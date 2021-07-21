@@ -4,6 +4,7 @@ import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.StructureSpawn;
 import com.dfsek.terra.api.util.Range;
@@ -16,13 +17,13 @@ public class StructureTemplate implements AbstractableTemplate, ConfigTemplate {
     private String id;
 
     @Value("scripts")
-    private ProbabilityCollection<Structure> structure;
+    private @Meta ProbabilityCollection<@Meta Structure> structure;
 
     @Value("spawn.start")
-    private Range y;
+    private @Meta Range y;
 
     @Value("spawn")
-    private StructureSpawn spawn;
+    private @Meta StructureSpawn spawn;
 
     public String getID() {
         return id;

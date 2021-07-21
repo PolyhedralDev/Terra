@@ -18,6 +18,7 @@ import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
@@ -40,6 +41,9 @@ import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
+import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
@@ -234,16 +238,30 @@ public class ConfigPackImpl implements ConfigPack {
             varScope.create(var.getKey(), var.getValue());
         }
 
-        List<Configuration> configurations = new ArrayList<>();
+        Map<String, Configuration> configurations = new HashMap<>();
 
-        main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::add)); // Create all the configs.
+        main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
+
+        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+
+        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
+
+        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
-        for(Configuration configuration : configurations) { // Sort the configs
-            ProtoConfig config = new ProtoConfig();
-            selfLoader.load(config, configuration);
-            configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+        for(Configuration configuration : configurations.values()) { // Sort the configs
+            if(configuration.contains("type")) { // Only sort configs with type key
+                ProtoConfig config = new ProtoConfig();
+                selfLoader.load(config, configuration);
+                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+            }
         }
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs

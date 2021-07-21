@@ -6,6 +6,7 @@ import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
@@ -21,76 +22,76 @@ public class CarverTemplate implements AbstractableTemplate {
 
     @Value("step")
     @Default
-    private int step = 2;
+    private @Meta int step = 2;
 
     @Value("recalculate-magnitude")
     @Default
-    private double recaclulateMagnitude = 4;
+    private @Meta double recaclulateMagnitude = 4;
 
     @Value("recalculate-direction")
     @Default
-    private Range recalc = new ConstantRange(8, 10);
+    private @Meta Range recalc = new ConstantRange(8, 10);
 
     @Value("length")
-    private Range length;
+    private @Meta Range length;
 
     @Value("start.x")
-    private double startX;
+    private @Meta double startX;
 
     @Value("start.y")
-    private double startY;
+    private @Meta double startY;
 
     @Value("start.z")
-    private double startZ;
+    private @Meta double startZ;
 
     @Value("start.radius.x")
-    private String radMX;
+    private @Meta String radMX;
 
     @Value("start.radius.y")
-    private String radMY;
+    private @Meta String radMY;
 
     @Value("start.radius.z")
-    private String radMZ;
+    private @Meta String radMZ;
 
     @Value("start.height")
-    private Range height;
+    private @Meta Range height;
 
     @Value("cut.bottom")
     @Default
-    private int cutBottom = 0;
+    private @Meta int cutBottom = 0;
 
     @Value("cut.top")
     @Default
-    private int cutTop = 0;
+    private @Meta int cutTop = 0;
 
     @Value("mutate.x")
-    private double mutateX;
+    private @Meta double mutateX;
 
     @Value("mutate.y")
-    private double mutateY;
+    private @Meta double mutateY;
 
     @Value("mutate.z")
-    private double mutateZ;
+    private @Meta double mutateZ;
 
     @Value("palette.top")
-    private CarverPalette top;
+    private @Meta CarverPalette top;
 
     @Value("palette.bottom")
-    private CarverPalette bottom;
+    private @Meta CarverPalette bottom;
 
     @Value("palette.outer")
-    private CarverPalette outer;
+    private @Meta CarverPalette outer;
 
     @Value("palette.inner")
-    private CarverPalette inner;
+    private @Meta CarverPalette inner;
 
     @Value("shift")
     @Default
-    private Map<BlockType, MaterialSet> shift = new HashMap<>();
+    private @Meta Map<@Meta BlockType, @Meta MaterialSet> shift = new HashMap<>();
 
     @Value("update")
     @Default
-    private MaterialSet update = new MaterialSet();
+    private @Meta MaterialSet update = new MaterialSet();
 
     public String getID() {
         return id;

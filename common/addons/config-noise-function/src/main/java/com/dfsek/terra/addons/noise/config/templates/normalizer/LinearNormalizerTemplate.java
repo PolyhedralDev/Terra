@@ -2,15 +2,16 @@ package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.normalizer.LinearNormalizer;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class LinearNormalizerTemplate extends NormalizerTemplate<LinearNormalizer> {
     @Value("max")
-    private double max;
+    private @Meta double max;
 
     @Value("min")
-    private double min;
+    private @Meta double min;
 
     @Override
     public NoiseSampler get() {

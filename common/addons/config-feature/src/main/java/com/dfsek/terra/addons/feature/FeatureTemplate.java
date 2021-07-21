@@ -4,6 +4,7 @@ import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.feature.Distributor;
@@ -16,16 +17,16 @@ public class FeatureTemplate implements AbstractableTemplate {
     private String id;
 
     @Value("distributor")
-    private Distributor distributor;
+    private @Meta Distributor distributor;
 
     @Value("locator")
-    private Locator locator;
+    private @Meta Locator locator;
 
     @Value("structures.distribution")
-    private NoiseSampler structureNoise;
+    private @Meta NoiseSampler structureNoise;
 
     @Value("structures.structures")
-    private ProbabilityCollection<Structure> structures;
+    private @Meta ProbabilityCollection<Structure> structures;
 
     @Override
     public String getID() {
