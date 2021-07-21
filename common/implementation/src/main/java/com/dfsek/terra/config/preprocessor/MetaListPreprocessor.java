@@ -4,7 +4,6 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.preprocessor.Result;
-import com.dfsek.tectonic.preprocessor.ValuePreprocessor;
 import com.dfsek.terra.api.config.meta.Meta;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,8 +47,9 @@ public class MetaListPreprocessor extends MetaPreprocessor<Meta> {
 
                         List<Object> metaList = (List<Object>) metaValue;
 
-                        newList.addAll(i + offset, metaList);
-                        offset += metaList.size();
+                        newList.remove(i + offset); // Remove placeholder
+                        newList.addAll(i + offset, metaList); // Add metalist values where placeholder was
+                        offset += metaList.size() - 1; // add metalist size to offset, subtract one to account for placeholder.
                     }
 
                     return (Result<T>) Result.overwrite(newList);
