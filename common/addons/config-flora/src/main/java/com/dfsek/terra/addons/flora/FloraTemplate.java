@@ -6,6 +6,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.addons.flora.flora.gen.TerraFlora;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 
@@ -18,50 +19,50 @@ public class FloraTemplate implements AbstractableTemplate {
     private String id;
 
     @Value("spawnable")
-    private MaterialSet spawnable;
+    private @Meta MaterialSet spawnable;
 
     @Value("spawn-blacklist")
     @Default
-    private boolean spawnBlacklist = false;
+    private @Meta boolean spawnBlacklist = false;
 
 
     @Value("replaceable")
     @Default
-    private MaterialSet replaceable = MaterialSet.empty();
+    private @Meta MaterialSet replaceable = MaterialSet.empty();
 
     @Value("irrigable")
     @Default
-    private MaterialSet irrigable = null;
+    private @Meta MaterialSet irrigable = null;
 
     @Value("rotatable")
     @Default
-    private MaterialSet rotatable = MaterialSet.empty();
+    private @Meta MaterialSet rotatable = MaterialSet.empty();
 
     @Value("physics")
     @Default
-    private boolean doPhysics = false;
+    private @Meta boolean doPhysics = false;
 
     @Value("ceiling")
     @Default
-    private boolean ceiling = false;
+    private @Meta boolean ceiling = false;
 
     @Value("search")
     @Default
-    private TerraFlora.Search search = TerraFlora.Search.UP;
+    private TerraFlora.@Meta Search search = TerraFlora.Search.UP;
 
     @Value("max-placements")
     @Default
-    private int maxPlacements = -1;
+    private @Meta int maxPlacements = -1;
 
     @Value("irrigable-offset")
     @Default
-    private int irrigableOffset;
+    private @Meta int irrigableOffset;
 
     @Value("layers")
-    private List<BlockLayer> layers;
+    private @Meta List<@Meta BlockLayer> layers;
 
     @Value("layer-distribution")
-    private NoiseSampler noiseDistribution;
+    private @Meta NoiseSampler noiseDistribution;
 
     public NoiseSampler getNoiseDistribution() {
         return noiseDistribution;

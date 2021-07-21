@@ -6,6 +6,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 
@@ -19,29 +20,29 @@ public class OreTemplate implements AbstractableTemplate {
     private String id;
 
     @Value("material")
-    private BlockState material;
+    private @Meta BlockState material;
 
     @Value("material-overrides")
     @Default
-    private Map<BlockType, BlockState> materials = new HashMap<>();
+    private @Meta Map<@Meta BlockType, @Meta BlockState> materials = new HashMap<>();
 
     @Value("replace")
-    private MaterialSet replaceable;
+    private @Meta MaterialSet replaceable;
 
     @Value("physics")
     @Default
-    private boolean physics = false;
+    private @Meta boolean physics = false;
 
     @Value("size")
-    private Range size;
+    private @Meta Range size;
 
     @Value("deform")
     @Default
-    private double deform = 0.75D;
+    private @Meta double deform = 0.75D;
 
     @Value("deform-frequency")
     @Default
-    private double deformFrequency = 0.1D;
+    private @Meta double deformFrequency = 0.1D;
 
     public double getDeform() {
         return deform;

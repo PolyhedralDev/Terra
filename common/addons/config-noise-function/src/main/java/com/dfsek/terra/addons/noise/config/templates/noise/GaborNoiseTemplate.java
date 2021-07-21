@@ -3,28 +3,29 @@ package com.dfsek.terra.addons.noise.config.templates.noise;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.samplers.noise.GaborNoiseSampler;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     @Value("rotation")
     @Default
-    private double rotation = 0.25;
+    private @Meta double rotation = 0.25;
 
     @Value("isotropic")
     @Default
-    private boolean isotropic = true;
+    private @Meta boolean isotropic = true;
 
     @Value("deviation")
     @Default
-    private double deviation = 1.0;
+    private @Meta double deviation = 1.0;
 
     @Value("impulses")
     @Default
-    private double impulses = 64d;
+    private @Meta double impulses = 64d;
 
     @Value("frequency_0")
     @Default
-    private double f0 = 0.625;
+    private @Meta double f0 = 0.625;
 
     @Override
     public NoiseSampler get() {

@@ -5,6 +5,7 @@ import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.List;
@@ -13,14 +14,14 @@ import java.util.List;
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("noise")
     @Default
-    private NoiseSampler noise = NoiseSampler.zero();
+    private @Meta NoiseSampler noise = NoiseSampler.zero();
 
     @Value("id")
     @Final
     private String id;
 
     @Value("layers")
-    private List<PaletteLayerHolder> palette;
+    private @Meta List<@Meta PaletteLayerHolder> palette;
 
     public String getID() {
         return id;

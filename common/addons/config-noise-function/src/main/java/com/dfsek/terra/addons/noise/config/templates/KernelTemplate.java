@@ -5,6 +5,7 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.terra.addons.noise.samplers.KernelSampler;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.List;
@@ -13,18 +14,18 @@ import java.util.List;
 public class KernelTemplate extends SamplerTemplate<KernelSampler> implements ValidatedConfigTemplate {
 
     @Value("kernel")
-    private List<List<Double>> kernel;
+    private @Meta List<@Meta List<@Meta Double>> kernel;
 
     @Value("factor")
     @Default
-    private double factor = 1;
+    private @Meta double factor = 1;
 
     @Value("function")
-    private NoiseSampler function;
+    private @Meta NoiseSampler function;
 
     @Value("frequency")
     @Default
-    private double frequency = 1;
+    private @Meta double frequency = 1;
 
     @Override
     public NoiseSampler get() {

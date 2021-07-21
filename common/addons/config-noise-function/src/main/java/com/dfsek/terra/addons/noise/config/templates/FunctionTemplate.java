@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.noise.config.templates;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     private List<String> args;
 
     @Value("function")
-    private String function;
+    private @Meta String function;
 
     public List<String> getArgs() {
         return args;

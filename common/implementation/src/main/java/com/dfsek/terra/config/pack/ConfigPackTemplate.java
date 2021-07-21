@@ -3,6 +3,7 @@ package com.dfsek.terra.config.pack;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
@@ -18,35 +19,35 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("variables")
     @Default
-    private Map<String, Double> variables = new HashMap<>();
+    private @Meta Map<String, @Meta Double> variables = new HashMap<>();
 
     @Value("beta.carving")
     @Default
-    private boolean betaCarvers = false;
+    private @Meta boolean betaCarvers = false;
 
     @Value("structures.locatable")
     @Default
-    private Map<String, String> locatable = new HashMap<>();
+    private @Meta Map<@Meta String, @Meta String> locatable = new HashMap<>();
 
     @Value("blend.terrain.elevation")
     @Default
-    private int elevationBlend = 4;
+    private @Meta int elevationBlend = 4;
 
     @Value("vanilla.mobs")
     @Default
-    private boolean vanillaMobs = true;
+    private @Meta boolean vanillaMobs = true;
 
     @Value("vanilla.caves")
     @Default
-    private boolean vanillaCaves = false;
+    private @Meta boolean vanillaCaves = false;
 
     @Value("vanilla.decorations")
     @Default
-    private boolean vanillaDecorations = false;
+    private @Meta boolean vanillaDecorations = false;
 
     @Value("vanilla.structures")
     @Default
-    private boolean vanillaStructures = false;
+    private @Meta boolean vanillaStructures = false;
 
     @Value("author")
     @Default
@@ -54,10 +55,10 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("disable.sapling")
     @Default
-    private boolean disableSaplings = false;
+    private @Meta boolean disableSaplings = false;
 
     @Value("stages")
-    private List<GenerationStageProvider> stages;
+    private @Meta List<@Meta GenerationStageProvider> stages;
 
     @Value("version")
     @Default
@@ -65,26 +66,26 @@ public class ConfigPackTemplate implements ConfigTemplate {
 
     @Value("disable.carvers")
     @Default
-    private boolean disableCarvers = false;
+    private @Meta boolean disableCarvers = false;
 
     @Value("disable.structures")
     @Default
-    private boolean disableStructures = false;
+    private @Meta boolean disableStructures = false;
 
     @Value("disable.ores")
     @Default
-    private boolean disableOres = false;
+    private @Meta boolean disableOres = false;
 
     @Value("disable.trees")
     @Default
-    private boolean disableTrees = false;
+    private @Meta boolean disableTrees = false;
 
     @Value("disable.flora")
     @Default
-    private boolean disableFlora = false;
+    private @Meta boolean disableFlora = false;
 
     @Value("generator")
-    private ChunkGeneratorProvider generatorProvider;
+    private @Meta ChunkGeneratorProvider generatorProvider;
 
     public ChunkGeneratorProvider getGeneratorProvider() {
         return generatorProvider;

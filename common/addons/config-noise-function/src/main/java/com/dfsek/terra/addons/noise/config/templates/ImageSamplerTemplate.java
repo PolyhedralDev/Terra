@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.noise.config.templates;
 
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.noise.samplers.ImageSampler;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.awt.image.BufferedImage;
@@ -10,13 +11,13 @@ import java.awt.image.BufferedImage;
 public class ImageSamplerTemplate extends SamplerTemplate<ImageSampler> {
 
     @Value("image")
-    private BufferedImage image;
+    private @Meta BufferedImage image;
 
     @Value("frequency")
-    private double frequency;
+    private @Meta double frequency;
 
     @Value("channel")
-    private ImageSampler.Channel channel;
+    private ImageSampler.@Meta Channel channel;
 
     @Override
     public NoiseSampler get() {

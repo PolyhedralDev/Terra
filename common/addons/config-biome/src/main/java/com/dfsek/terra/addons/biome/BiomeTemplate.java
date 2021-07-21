@@ -9,6 +9,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -27,7 +28,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("id")
     @Final
-    private String id;
+    private @Meta String id;
 
     @Value("extends")
     @Final
@@ -36,78 +37,78 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
 
     @Value("variables")
     @Default
-    private Map<String, Double> variables = new HashMap<>();
+    private @Meta Map<String, @Meta Double> variables = new HashMap<>();
 
     @Value("beta.carving.equation")
     @Default
-    private NoiseSampler carvingEquation = NoiseSampler.zero();
+    private @Meta NoiseSampler carvingEquation = NoiseSampler.zero();
 
     @Value("vanilla")
-    private ProbabilityCollection<Biome> vanilla;
+    private @Meta ProbabilityCollection<Biome> vanilla;
 
     @Value("biome-noise")
     @Default
-    private NoiseSampler biomeNoise = NoiseSampler.zero();
+    private @Meta NoiseSampler biomeNoise = NoiseSampler.zero();
 
     @Value("blend.distance")
     @Default
-    private int blendDistance = 3;
+    private @Meta int blendDistance = 3;
 
     @Value("blend.weight")
     @Default
-    private double blendWeight = 1;
+    private @Meta double blendWeight = 1;
 
     @Value("blend.step")
     @Default
-    private int blendStep = 4;
+    private @Meta int blendStep = 4;
 
     @Value("noise")
-    private NoiseSampler noiseEquation;
+    private @Meta NoiseSampler noiseEquation;
 
     @Value("ocean.level")
     @Default
-    private int seaLevel = 62;
+    private @Meta int seaLevel = 62;
 
     @Value("elevation.equation")
     @Default
-    private NoiseSampler elevationEquation = NoiseSampler.zero();
+    private @Meta NoiseSampler elevationEquation = NoiseSampler.zero();
 
     @Value("elevation.weight")
     @Default
-    private double elevationWeight = 1;
+    private @Meta double elevationWeight = 1;
 
     @Value("slabs.enable")
     @Default
-    private boolean doSlabs = false;
+    private @Meta boolean doSlabs = false;
 
     @Value("slabs.threshold")
     @Default
-    private double slabThreshold = 0.0075D;
+    private @Meta double slabThreshold = 0.0075D;
 
     @Value("slabs.palettes")
     @Default
-    private Map<BlockType, Palette> slabPalettes;
+    private @Meta Map<@Meta BlockType, @Meta Palette> slabPalettes;
 
     @Value("slabs.stair-palettes")
     @Default
-    private Map<BlockType, Palette> stairPalettes;
+    private @Meta Map<@Meta BlockType, @Meta Palette> stairPalettes;
 
     @Value("interpolate-elevation")
     @Default
-    private boolean interpolateElevation = true;
+    private @Meta boolean interpolateElevation = true;
 
     @Value("color")
     @Final
     @Default
-    private int color = 0;
+    private @Meta int color = 0;
 
     @Value("tags")
     @Default
-    private Set<String> tags = new HashSet<>();
+    private @Meta Set<@Meta String> tags = new HashSet<>();
 
     @Value("colors")
     @Default
-    private Map<String, Integer> colors = new HashMap<>(); // Plain ol' map, so platforms can decide what to do with colors (if anything).
+    private @Meta Map<String, @Meta Integer> colors = new HashMap<>(); // Plain ol' map, so platforms can decide what to do with colors (if anything).
 
     public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
         this.pack = pack;

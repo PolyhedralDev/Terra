@@ -6,6 +6,7 @@ import com.dfsek.terra.addons.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipelineProvider;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
 
@@ -16,13 +17,13 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     private final TerraPlugin main;
     @Value("pipeline.initial-size")
     @Default
-    private int initialSize = 2;
+    private @Meta int initialSize = 2;
 
     @Value("pipeline.stages")
-    private List<Stage> stages;
+    private @Meta List<@Meta Stage> stages;
 
     @Value("pipeline.source")
-    private BiomeSource source;
+    private @Meta BiomeSource source;
 
     public BiomePipelineTemplate(TerraPlugin main) {
         this.main = main;

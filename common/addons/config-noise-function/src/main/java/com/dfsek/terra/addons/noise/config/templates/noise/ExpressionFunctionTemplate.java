@@ -15,6 +15,7 @@ import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 import com.dfsek.terra.addons.noise.samplers.noise.ExpressionFunction;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import java.util.HashMap;
@@ -27,15 +28,18 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     private final Map<String, DimensionApplicableNoiseSampler> otherFunctions;
     @Value("variables")
     @Default
-    private Map<String, Double> vars = new HashMap<>();
+    private @Meta Map<String, @Meta Double> vars = new HashMap<>();
+
     @Value("equation")
-    private String equation;
+    private @Meta String equation;
+
     @Value("functions")
     @Default
-    private LinkedHashMap<String, DimensionApplicableNoiseSampler> functions = new LinkedHashMap<>();
+    private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> functions = new LinkedHashMap<>();
+
     @Value("expressions")
     @Default
-    private LinkedHashMap<String, FunctionTemplate> expressions = new LinkedHashMap<>();
+    private @Meta LinkedHashMap<String, @Meta FunctionTemplate> expressions = new LinkedHashMap<>();
 
     public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> otherFunctions) {
         this.otherFunctions = otherFunctions;
