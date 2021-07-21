@@ -42,6 +42,7 @@ import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
@@ -248,6 +249,10 @@ public class ConfigPackImpl implements ConfigPack {
         MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
+
+        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
