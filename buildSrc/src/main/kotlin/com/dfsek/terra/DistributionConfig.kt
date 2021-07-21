@@ -123,12 +123,7 @@ fun Project.configureDistribution() {
         archiveClassifier.set("shaded")
         setVersion(project.version)
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
-        relocate("net.jafama", "com.dfsek.terra.lib.jafama")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
-        relocate("com.google.errorprone", "com.dfsek.terra.lib.google.errorprone")
-        relocate("com.google.j2objc", "com.dfsek.terra.lib.google.j2objc")
-        relocate("org.checkerframework", "com.dfsek.terra.lib.checkerframework")
-        relocate("org.javax.annotation", "com.dfsek.terra.lib.javax.annotation")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
     }

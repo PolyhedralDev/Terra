@@ -33,6 +33,6 @@ fun Project.configureDependencies() {
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.7.0")
         "testImplementation"("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-        "api"("org.jetbrains:annotations:20.1.0")
+        "compileOnly"("org.jetbrains:annotations:20.1.0")
     }
 }
