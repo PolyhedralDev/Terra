@@ -12,9 +12,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class MetaListPreprocessor extends MetaPreprocessor<Meta> {
-    public MetaListPreprocessor(Map<String, Configuration> configs) {
+public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
+    public MetaListLikePreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
 
@@ -26,7 +27,7 @@ public class MetaListPreprocessor extends MetaPreprocessor<Meta> {
             if(parameterizedType.getRawType() instanceof Class) { // Should always be true but we check anyways
                 Class<?> baseClass = (Class<?>) parameterizedType.getRawType();
 
-                if(List.class.isAssignableFrom(baseClass) && c instanceof List) { // List metaconfig
+                if((List.class.isAssignableFrom(baseClass) || Set.class.isAssignableFrom(baseClass)) && c instanceof List) { // List or set metaconfig
                     List<Object> list = (List<Object>) c;
 
                     int offset = 0;
@@ -42,7 +43,7 @@ public class MetaListPreprocessor extends MetaPreprocessor<Meta> {
                         Object metaValue = getMetaValue(meta);
 
                         if(!(metaValue instanceof List)) {
-                            throw new LoadException("MetaList injection candidate must be list, is type " + metaValue.getClass().getCanonicalName());
+                            throw new LoadException("MetaList/Set injection candidate must be list, is type " + metaValue.getClass().getCanonicalName());
                         }
 
                         List<Object> metaList = (List<Object>) metaValue;

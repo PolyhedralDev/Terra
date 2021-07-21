@@ -41,7 +41,7 @@ import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
-import com.dfsek.terra.config.preprocessor.MetaListPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
@@ -245,7 +245,7 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
 
-        MetaListPreprocessor listPreprocessor = new MetaListPreprocessor(configurations);
+        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
 
