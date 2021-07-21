@@ -63,9 +63,9 @@ public class StructureScript implements Structure {
 
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
 
-        parser.registerFunction("block", new BlockFunctionBuilder(main, false))
-                .registerFunction("dynamicBlock", new BlockFunctionBuilder(main, true))
-                .registerFunction("debugBlock", new BlockFunctionBuilder(main, false))
+        parser
+                .registerFunction("block", new BlockFunctionBuilder(main))
+                .registerFunction("debugBlock", new BlockFunctionBuilder(main))
                 .registerFunction("check", new CheckFunctionBuilder(main))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, main))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
