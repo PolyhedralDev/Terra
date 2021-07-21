@@ -23,6 +23,6 @@ public class YamlAddon extends TerraAddon implements EventListener {
     }
 
     public void loadYamlConfigs(ConfigurationDiscoveryEvent event) {
-        event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> event.register(new YamlConfiguration(entry.getValue(), entry.getKey()))));
+        event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()))));
     }
 }
