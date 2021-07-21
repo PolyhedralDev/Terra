@@ -7,3 +7,9 @@ list:
   - "<< metaTarget.yml:list2"
   - NINE
   - TEN
+map:
+  "<<":
+    - metaTarget.yml:map1
+    - metaTarget.yml:map2
+  one: ONE
+  two: TWO

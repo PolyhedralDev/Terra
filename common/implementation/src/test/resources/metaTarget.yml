@@ -4,3 +4,9 @@ list:
 list2:
   - SEVEN
   - EIGHT
+map1:
+  three: THREE
+  four: FOUR
+  five: FIVE
+map2:
+  six: SIX
