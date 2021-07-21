@@ -7,23 +7,35 @@ import java.util.Objects;
 public class TypeKey<T> {
     final Class<? super T> rawType;
     final Type type;
+
+    final AnnotatedType annotatedType;
     final int hashCode;
 
     @SuppressWarnings("unchecked")
     protected TypeKey() {
         this.type = getSuperclassTypeParameter(getClass());
+        this.annotatedType = getAnnotatedSuperclassTypeParameter(getClass());
         this.rawType = (Class<? super T>) ReflectionUtil.getRawType(type);
         this.hashCode = type.hashCode();
     }
 
 
-    static Type getSuperclassTypeParameter(Class<?> subclass) {
+    private static Type getSuperclassTypeParameter(Class<?> subclass) {
         Type superclass = subclass.getGenericSuperclass();
         if(superclass instanceof Class) {
             throw new RuntimeException("Missing type parameter.");
         }
         ParameterizedType parameterized = (ParameterizedType) superclass;
         return parameterized.getActualTypeArguments()[0];
+    }
+
+    private static AnnotatedType getAnnotatedSuperclassTypeParameter(Class<?> subclass) {
+        AnnotatedType superclass = subclass.getAnnotatedSuperclass();
+        if(superclass.getType() instanceof Class) {
+            throw new RuntimeException("Missing type parameter.");
+        }
+        AnnotatedParameterizedType parameterized = (AnnotatedParameterizedType) superclass;
+        return parameterized.getAnnotatedActualTypeArguments()[0];
     }
 
     /**
@@ -38,6 +50,10 @@ public class TypeKey<T> {
      */
     public final Type getType() {
         return type;
+    }
+
+    public AnnotatedType getAnnotatedType() {
+        return annotatedType;
     }
 
     @Override
