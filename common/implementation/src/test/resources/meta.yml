@@ -1,0 +1,9 @@
+list:
+  - ONE
+  - "<< metaTarget.yml:list"
+  - FOUR
+  - FIVE
+  - SIX
+  - "<< metaTarget.yml:list2"
+  - NINE
+  - TEN
