@@ -246,9 +246,11 @@ public class ConfigPackImpl implements ConfigPack {
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
         for(Configuration configuration : configurations.values()) { // Sort the configs
-            ProtoConfig config = new ProtoConfig();
-            selfLoader.load(config, configuration);
-            configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+            if(configuration.contains("type")) { // Only sort configs with type key
+                ProtoConfig config = new ProtoConfig();
+                selfLoader.load(config, configuration);
+                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+            }
         }
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
