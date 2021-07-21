@@ -4,6 +4,7 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.config.preprocessor.MetaListPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,7 @@ public class MetaTest {
 
         ConfigLoader loader = new ConfigLoader();
         loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaListPreprocessor(configurationMap));
 
         loader.load(new ConfigTest(), meta).list.forEach(System.out::println);
     }
