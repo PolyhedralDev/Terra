@@ -14,11 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MetaValuePreprocessor implements ValuePreprocessor<Meta> {
-    private final Map<String, Configuration> configs;
+public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
 
     public MetaValuePreprocessor(Map<String, Configuration> configs) {
-        this.configs = configs;
+        super(configs);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,21 +66,5 @@ public class MetaValuePreprocessor implements ValuePreprocessor<Meta> {
         }
 
         return Result.noOp();
-    }
-
-    private Object getMetaValue(String meta) {
-        int sep = meta.indexOf(':');
-        String file = meta.substring(0, sep);
-        String key = meta.substring(sep + 1);
-
-        if(!configs.containsKey(file)) throw new LoadException("Cannot fetch metavalue: No such config: " + file);
-
-        Configuration config = configs.get(file);
-
-        if(!config.contains(key)) {
-            throw new LoadException("Cannot fetch metavalue: No such key " + key + " in configuration " + config.getName());
-        }
-
-        return config.get(key);
     }
 }
