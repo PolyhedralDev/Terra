@@ -322,32 +322,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
 
         @Priority(Priority.HIGHEST)
         @Global
-        public void injectTrees(ConfigTypePostLoadEvent event) {
-            if(!event.is(Tree.class)) return;
-            CheckedRegistry<Tree> treeRegistry = event.getPack().getOrCreateRegistry(Tree.class);
-            injectTree(treeRegistry, "BROWN_MUSHROOM", ConfiguredFeatures.HUGE_BROWN_MUSHROOM);
-            injectTree(treeRegistry, "RED_MUSHROOM", ConfiguredFeatures.HUGE_RED_MUSHROOM);
-            injectTree(treeRegistry, "JUNGLE", ConfiguredFeatures.MEGA_JUNGLE_TREE);
-            injectTree(treeRegistry, "JUNGLE_COCOA", ConfiguredFeatures.JUNGLE_TREE);
-            injectTree(treeRegistry, "LARGE_OAK", ConfiguredFeatures.FANCY_OAK);
-            injectTree(treeRegistry, "LARGE_SPRUCE", ConfiguredFeatures.PINE);
-            injectTree(treeRegistry, "SMALL_JUNGLE", ConfiguredFeatures.JUNGLE_TREE);
-            injectTree(treeRegistry, "SWAMP_OAK", ConfiguredFeatures.SWAMP_OAK);
-            injectTree(treeRegistry, "TALL_BIRCH", ConfiguredFeatures.BIRCH_TALL);
-            injectTree(treeRegistry, "ACACIA", ConfiguredFeatures.ACACIA);
-            injectTree(treeRegistry, "BIRCH", ConfiguredFeatures.BIRCH);
-            injectTree(treeRegistry, "DARK_OAK", ConfiguredFeatures.DARK_OAK);
-            injectTree(treeRegistry, "OAK", ConfiguredFeatures.OAK);
-            injectTree(treeRegistry, "CHORUS_PLANT", ConfiguredFeatures.CHORUS_PLANT);
-            injectTree(treeRegistry, "SPRUCE", ConfiguredFeatures.SPRUCE);
-            injectTree(treeRegistry, "JUNGLE_BUSH", ConfiguredFeatures.JUNGLE_BUSH);
-            injectTree(treeRegistry, "MEGA_SPRUCE", ConfiguredFeatures.MEGA_SPRUCE);
-            injectTree(treeRegistry, "CRIMSON_FUNGUS", ConfiguredFeatures.CRIMSON_FUNGI);
-            injectTree(treeRegistry, "WARPED_FUNGUS", ConfiguredFeatures.WARPED_FUNGI);
-        }
-
-        @Priority(Priority.HIGHEST)
-        @Global
         public void createInjectionOptions(ConfigPackPostLoadEvent event) {
             PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
 
