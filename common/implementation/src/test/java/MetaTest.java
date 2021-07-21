@@ -6,6 +6,7 @@ import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import org.junit.jupiter.api.Test;
 
@@ -58,5 +59,29 @@ public class MetaTest {
     private static final class MetaMapConfig implements ConfigTemplate {
         @Value("map")
         private @Meta Map<@Meta String, @Meta String> map;
+    }
+
+    @Test
+    public void testMetaString() {
+        Configuration meta = new YamlConfiguration(MetaTest.class.getResourceAsStream("/meta.yml"), "meta.yml");
+        Configuration metaTarget = new YamlConfiguration(MetaTest.class.getResourceAsStream("/metaTarget.yml"), "metaTarget.yml");
+
+        Map<String, Configuration> configurationMap = new HashMap<>();
+
+        configurationMap.put(meta.getName(), meta);
+        configurationMap.put(metaTarget.getName(), metaTarget);
+
+        ConfigLoader loader = new ConfigLoader();
+        loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
+
+        System.out.println(loader.load(new MetaStringConfig(), meta).string);
+    }
+
+    private static final class MetaStringConfig implements ConfigTemplate {
+        @Value("string")
+        private @Meta String string;
     }
 }

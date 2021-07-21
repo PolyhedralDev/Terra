@@ -10,3 +10,7 @@ map1:
   five: FIVE
 map2:
   six: SIX
+string:
+  two: two
+  three: three
+  six: six

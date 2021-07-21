@@ -13,3 +13,4 @@ map:
     - metaTarget.yml:map2
   one: ONE
   two: TWO
+string: "one-${metaTarget.yml:string.two}-${metaTarget.yml:string.three}-four-five-${metaTarget.yml:string.six}"
