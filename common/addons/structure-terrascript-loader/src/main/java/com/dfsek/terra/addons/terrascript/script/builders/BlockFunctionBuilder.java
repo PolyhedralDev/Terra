@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
+import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.BlockFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
@@ -23,6 +24,9 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
         if(argumentList.size() < 4) throw new ParseException("Expected data", position);
         Returnable<Boolean> booleanReturnable = new BooleanConstant(true, position);
         if(argumentList.size() == 5) booleanReturnable = (Returnable<Boolean>) argumentList.get(4);
+        if(argumentList.get(3) instanceof StringConstant) {
+            return new BlockFunction.Constant((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1), (Returnable<Number>) argumentList.get(2), (StringConstant) argumentList.get(3), booleanReturnable, main, position);
+        }
         return new BlockFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1), (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), booleanReturnable, main, position);
     }
 

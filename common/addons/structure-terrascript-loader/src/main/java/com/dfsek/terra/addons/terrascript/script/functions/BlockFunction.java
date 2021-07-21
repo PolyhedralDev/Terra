@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 import com.dfsek.terra.addons.terrascript.buffer.items.BufferedBlock;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
@@ -14,7 +15,6 @@ import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 import net.jafama.FastMath;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,9 +49,13 @@ public class BlockFunction implements Function<Void> {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        BlockState rot = data.computeIfAbsent(blockData.apply(implementationArguments, variableMap), main.getWorldHandle()::createBlockData).clone();
+        BlockState rot = getBlockState(implementationArguments, variableMap).clone();
         setBlock(implementationArguments, variableMap, arguments, rot);
         return null;
+    }
+
+    protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
+        return data.computeIfAbsent(blockData.apply(arguments, variableMap), main.getWorldHandle()::createBlockData);
     }
 
     @Override
@@ -62,5 +66,18 @@ public class BlockFunction implements Function<Void> {
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;
+    }
+
+    public static class Constant extends BlockFunction {
+        private final BlockState state;
+        public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData, Returnable<Boolean> overwrite, TerraPlugin main, Position position) {
+            super(x, y, z, blockData, overwrite, main, position);
+            this.state = main.getWorldHandle().createBlockData(blockData.getConstant());
+        }
+
+        @Override
+        protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
+            return state;
+        }
     }
 }
