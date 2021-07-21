@@ -17,6 +17,7 @@ public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
     public NoiseSampler get() {
         NoiseFunction sampler = samplerSupplier.get();
         sampler.setFrequency(frequency);
+        sampler.setSalt(salt);
         return sampler;
     }
 }

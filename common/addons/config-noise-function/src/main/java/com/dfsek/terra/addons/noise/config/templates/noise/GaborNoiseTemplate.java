@@ -35,6 +35,7 @@ public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
         gaborNoiseSampler.setDeviation(deviation);
         gaborNoiseSampler.setImpulsesPerKernel(impulses);
         gaborNoiseSampler.setFrequency0(f0);
+        gaborNoiseSampler.setSalt(salt);
         return gaborNoiseSampler;
     }
 }
