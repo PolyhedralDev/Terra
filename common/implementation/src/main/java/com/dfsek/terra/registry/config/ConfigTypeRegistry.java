@@ -22,7 +22,7 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     @Override
     public boolean register(String identifier, Entry<ConfigType<?, ?>> value) {
         callback.accept(identifier, value.getValue());
-        main.getDebugLogger().info("Registered config registry with ID " + identifier + " to type " + ReflectionUtil.typeToString(value.getValue().getTypeClass().getType()));
+        main.getDebugLogger().info("Registered config registry with ID " + identifier + " to type " + ReflectionUtil.typeToString(value.getValue().getTypeKey().getType()));
         return super.register(identifier, value);
     }
 }

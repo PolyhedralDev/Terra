@@ -26,7 +26,7 @@ public class FeatureConfigType implements ConfigType<FeatureTemplate, Feature> {
     }
 
     @Override
-    public TypeKey<Feature> getTypeClass() {
+    public TypeKey<Feature> getTypeKey() {
         return FEATURE_TYPE_KEY;
     }
 

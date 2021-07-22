@@ -32,7 +32,7 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
 
     @Override
-    public TypeKey<TerraBiome> getTypeClass() {
+    public TypeKey<TerraBiome> getTypeKey() {
         return BIOME_TYPE_TOKEN;
     }
 

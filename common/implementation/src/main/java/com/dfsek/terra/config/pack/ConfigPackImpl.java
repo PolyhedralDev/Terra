@@ -199,12 +199,12 @@ public class ConfigPackImpl implements ConfigPack {
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
             OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
-            if(registryMap.containsKey(configType.getTypeClass().getType())) { // Someone already registered something; we need to copy things to the new registry.
-                registryMap.get(configType.getTypeClass().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+            if(registryMap.containsKey(configType.getTypeKey().getType())) { // Someone already registered something; we need to copy things to the new registry.
+                registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
-            selfLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
-            abstractConfigLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
-            registryMap.put(configType.getTypeClass().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+            selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
+            abstractConfigLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
+            registryMap.put(configType.getTypeKey().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
         });
     }
 
@@ -265,7 +265,7 @@ public class ConfigPackImpl implements ConfigPack {
         }
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
-            CheckedRegistry registry = getCheckedRegistry(configType.getTypeClass());
+            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
             main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {

@@ -51,13 +51,13 @@ public class ConfigurationLoadEvent implements PackEvent, FailThroughEvent {
     }
 
     public boolean is(Class<?> clazz) {
-        return clazz.isAssignableFrom(type.getTypeClass().getRawType());
+        return clazz.isAssignableFrom(type.getTypeKey().getRawType());
     }
 
     @SuppressWarnings("unchecked")
     public <T> T getLoadedObject(Class<T> clazz) {
-        if(!clazz.isAssignableFrom(type.getTypeClass().getRawType()))
-            throw new ClassCastException("Cannot assign object from loader of type " + ReflectionUtil.typeToString(type.getTypeClass().getType()) + " to class " + clazz.getCanonicalName());
+        if(!clazz.isAssignableFrom(type.getTypeKey().getRawType()))
+            throw new ClassCastException("Cannot assign object from loader of type " + ReflectionUtil.typeToString(type.getTypeKey().getType()) + " to class " + clazz.getCanonicalName());
         return (T) loaded;
     }
 
