@@ -1,9 +1,7 @@
 package com.dfsek.terra.fabric.mixin;
 
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.world.TerraWorldImpl;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
@@ -27,9 +25,8 @@ public abstract class ServerWorldMixin {
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
-            TerraFabricPlugin.getInstance().getWorldMap().put(dimensionType, Pair.of((ServerWorld) (Object) this, new TerraWorldImpl((com.dfsek.terra.api.world.World) this, ((FabricChunkGeneratorWrapper) chunkGenerator).getPack(), TerraFabricPlugin.getInstance())));
-            ((FabricChunkGeneratorWrapper) chunkGenerator).setDimensionType(dimensionType);
-            TerraFabricPlugin.getInstance().logger().info("Registered world " + this + " to dimension type " + dimensionType);
+            ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
+            TerraFabricPlugin.getInstance().logger().info("Registered world " + this);
         }
     }
 }

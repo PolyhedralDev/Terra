@@ -23,7 +23,6 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.command.FixChunkCommand;
 import com.dfsek.terra.bukkit.command.SaveDataCommand;
@@ -35,7 +34,6 @@ import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
@@ -251,17 +249,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     public CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedRegistry;
-    }
-
-    public TerraWorld getWorld(World world) {
-        BukkitWorld w = (BukkitWorld) world;
-        if(!w.isTerraWorld())
-            throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
-        if(!worlds.containsKey(w.getName())) {
-            getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorldImpl(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
-        }
-        return worldMap.computeIfAbsent(w, w2 -> new TerraWorldImpl(w, worlds.get(w.getName()), this));
     }
 
     @Override

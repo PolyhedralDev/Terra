@@ -22,8 +22,6 @@ import java.io.File;
 public interface TerraPlugin extends LoaderRegistrar {
     WorldHandle getWorldHandle();
 
-    TerraWorld getWorld(World world);
-
     Logger logger();
 
     PluginConfig getTerraConfig();

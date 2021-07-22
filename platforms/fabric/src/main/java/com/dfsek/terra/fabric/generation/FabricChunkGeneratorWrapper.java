@@ -65,7 +65,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     private final TerraBiomeSource biomeSource;
 
     private final ConfigPack pack;
-    private DimensionType dimensionType;
+    private ServerWorld world;
 
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
@@ -98,8 +98,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
         // No-op
     }
 
-    public void setDimensionType(DimensionType dimensionType) {
-        this.dimensionType = dimensionType;
+    public void setWorld(ServerWorld world) {
+        this.world = world;
     }
 
     @Nullable
@@ -170,9 +170,8 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
-        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
-        int height = world.getWorld().getMaxHeight();
-        while(height >= world.getWorld().getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockState) world.getUngeneratedBlock(x, height - 1, z)).getHandle())) {
+        int height = ((World) world).getMaxHeight();
+        while(height >= ((World) world).getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockState) ((World) world).getTerraGenerator().getBlock((World) world, x, height - 1, z)).getHandle())) {
             height--;
         }
         return height;
@@ -180,10 +179,9 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
-        TerraWorld world = TerraFabricPlugin.getInstance().getWorld(dimensionType);
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
-            array[y] = ((FabricBlockState) world.getUngeneratedBlock(x, y, z)).getHandle();
+            array[y] = ((FabricBlockState) ((World) world).getTerraGenerator().getBlock((World) world, x, y, z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }

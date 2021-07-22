@@ -21,7 +21,6 @@ public class FeatureGenerationStage implements TerraGenerationStage {
     @Override
     @SuppressWarnings("try")
     public void populate(World world, Chunk chunk) {
-        TerraWorld terraWorld = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("feature")) {
             int cx = chunk.getX() << 4;
             int cz = chunk.getZ() << 4;
