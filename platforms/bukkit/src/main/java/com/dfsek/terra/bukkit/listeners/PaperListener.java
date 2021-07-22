@@ -19,7 +19,6 @@ public class PaperListener implements Listener {
 
     @EventHandler
     public void onStructureLocate(StructureLocateEvent e) {
-        if(!BukkitAdapter.adapt(e.getWorld()).isTerraWorld()) return;
         String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
         World w = BukkitAdapter.adapt(e.getWorld());

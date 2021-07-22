@@ -51,7 +51,6 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     public static synchronized void fixChunk(Chunk c) {
-        if(!c.getWorld().isTerraWorld()) throw new IllegalArgumentException();
         popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
     }
 

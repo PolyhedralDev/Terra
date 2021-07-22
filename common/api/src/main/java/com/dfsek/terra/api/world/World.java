@@ -55,10 +55,6 @@ public interface World extends Handle {
 
     int getMinHeight();
 
-    default boolean isTerraWorld() {
-        return getGenerator().getHandle() instanceof GeneratorWrapper;
-    }
-
     default TerraChunkGenerator getTerraGenerator() {
         return ((GeneratorWrapper) getGenerator().getHandle()).getHandle();
     }
