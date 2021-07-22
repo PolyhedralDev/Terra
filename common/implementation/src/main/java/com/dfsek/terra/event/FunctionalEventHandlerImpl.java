@@ -3,6 +3,7 @@ package com.dfsek.terra.event;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.events.Event;
+import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.event.functional.EventContext;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
@@ -39,7 +40,7 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
                     ((EventContextImpl<Event>) context).handle(event);
                 }
             } catch(Exception e) {
-                if(context.isFailThrough()) throw e; // Rethrow if it's fail-through.
+                if(context.isFailThrough() && event instanceof FailThroughEvent) throw e; // Rethrow if it's fail-through.
                 StringWriter writer = new StringWriter();
                 e.printStackTrace(new PrintWriter(writer));
                 main.logger().warning("Exception occurred during event handling:");

@@ -3,12 +3,13 @@ package com.dfsek.terra.api.event.events.config.pack;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 
 /**
  * An event related to the loading process of config packs.
  */
-public abstract class ConfigPackLoadEvent implements PackEvent {
+public abstract class ConfigPackLoadEvent implements PackEvent, FailThroughEvent {
     private final ConfigPack pack;
     private final ExceptionalConsumer<ConfigTemplate> configLoader;
 

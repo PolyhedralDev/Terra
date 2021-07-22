@@ -3,6 +3,7 @@ package com.dfsek.terra.api.event.events.config;
 import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 
 import java.util.function.BiConsumer;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  * Addons should listen to this event if they wish to add
  * another configuration format.
  */
-public class ConfigurationDiscoveryEvent implements PackEvent {
+public class ConfigurationDiscoveryEvent implements PackEvent, FailThroughEvent {
     private final ConfigPack pack;
     private final Loader loader;
 
