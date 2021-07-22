@@ -7,15 +7,10 @@ import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.config.pack.WorldConfigImpl;
-import net.jafama.FastMath;
 
 public class TerraWorldImpl implements TerraWorld {
-    private final BiomeProvider provider;
     private final WorldConfigImpl config;
     private final World world;
 
@@ -23,7 +18,6 @@ public class TerraWorldImpl implements TerraWorld {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
         config = (WorldConfigImpl) c.toWorldConfig(this);
-        this.provider = config.getProvider();
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
     }
 
@@ -33,11 +27,6 @@ public class TerraWorldImpl implements TerraWorld {
         return world;
     }
 
-
-    @Override
-    public BiomeProvider getBiomeProvider() {
-        return provider;
-    }
 
     @Override
     public WorldConfigImpl getConfig() {

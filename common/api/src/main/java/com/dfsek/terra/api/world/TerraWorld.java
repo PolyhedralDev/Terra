@@ -8,8 +8,6 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public interface TerraWorld {
     World getWorld();
 
-    BiomeProvider getBiomeProvider();
-
     WorldConfig getConfig();
 
     /**
