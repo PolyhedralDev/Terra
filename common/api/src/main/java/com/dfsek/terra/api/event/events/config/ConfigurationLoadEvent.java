@@ -4,6 +4,7 @@ import com.dfsek.tectonic.abstraction.AbstractConfiguration;
 import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
+import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  * Addons should listen to this event if they wish to add
  * config values to existing {@link ConfigType}s.
  */
-public class ConfigurationLoadEvent implements PackEvent {
+public class ConfigurationLoadEvent implements PackEvent, FailThroughEvent {
     private final ConfigPack pack;
     private final AbstractConfiguration configuration;
     private final Consumer<ConfigTemplate> loader;

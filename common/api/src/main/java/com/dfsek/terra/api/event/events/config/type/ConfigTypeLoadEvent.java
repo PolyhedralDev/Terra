@@ -2,11 +2,12 @@ package com.dfsek.terra.api.event.events.config.type;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
+import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
-public abstract class ConfigTypeLoadEvent implements PackEvent {
+public abstract class ConfigTypeLoadEvent implements PackEvent, FailThroughEvent {
     private final ConfigType<?, ?> type;
     private final CheckedRegistry<?> registry;
 

@@ -8,8 +8,8 @@ import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
-import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.feature.Locator;
@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 @Addon("config-locators")
 @Version("1.0.0")
 @Author("Terra")
-public class LocatorAddon extends TerraAddon implements EventListener {
+public class LocatorAddon extends TerraAddon {
 
     public static final TypeKey<Supplier<ObjectTemplate<Locator>>> LOCATOR_TOKEN = new TypeKey<>() {};
     @Inject
@@ -28,12 +28,14 @@ public class LocatorAddon extends TerraAddon implements EventListener {
 
     @Override
     public void initialize() {
-        main.getEventManager().registerListener(this, this);
-    }
-
-    public void onPackLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
-        locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
-        locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
+        main.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
+                    locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
+                    locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
+                })
+                .failThrough();
     }
 }
