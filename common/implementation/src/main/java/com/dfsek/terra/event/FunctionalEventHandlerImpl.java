@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,16 +53,19 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
 
     @Override
     public <T extends Event> EventContext<T> register(TerraAddon addon, Class<T> clazz) {
-        EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz);
+        EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz, this);
         contextMap.computeIfAbsent(clazz, c -> new ArrayList<>()).add(eventContext);
         return eventContext;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends Event> EventContext<T> register(TerraAddon addon, TypeKey<T> clazz) {
-        EventContextImpl<T> eventContext = new EventContextImpl<>(addon, (Class<T>) clazz.getRawType());
+        EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz.getType(), this);
         contextMap.computeIfAbsent(clazz.getType(), c -> new ArrayList<>()).add(eventContext);
         return eventContext;
+    }
+
+    public void recomputePriorities(Type target) {
+        contextMap.get(target).sort(Comparator.naturalOrder());
     }
 }

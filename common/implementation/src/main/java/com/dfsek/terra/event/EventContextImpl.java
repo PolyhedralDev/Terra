@@ -3,15 +3,16 @@ package com.dfsek.terra.event;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
-import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.event.functional.EventContext;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EventContextImpl<T extends Event> implements EventContext<T>, Comparable<EventContextImpl<T>> {
+public class EventContextImpl<T extends Event> implements EventContext<T>, Comparable<EventContextImpl<?>> {
     private final List<Consumer<T>> actions = new ArrayList<>();
     private int priority;
     private boolean failThrough = false;
@@ -19,11 +20,14 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
 
     private final TerraAddon addon;
 
-    private final Class<? extends Event> eventClass;
+    private final Type eventType;
 
-    public EventContextImpl(TerraAddon addon, Class<? extends Event> eventClass) {
+    private final FunctionalEventHandlerImpl parent;
+
+    public EventContextImpl(TerraAddon addon, Type eventType, FunctionalEventHandlerImpl parent) {
         this.addon = addon;
-        this.eventClass = eventClass;
+        this.eventType = eventType;
+        this.parent = parent;
     }
 
     public void handle(T event) {
@@ -39,13 +43,14 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
     @Override
     public EventContext<T> priority(int priority) {
         this.priority = priority;
+        parent.recomputePriorities(eventType);
         return this;
     }
 
     @Override
     public EventContext<T> failThrough() {
-        if(!FailThroughEvent.class.isAssignableFrom(eventClass)) {
-            throw new IllegalStateException("Cannot fail-through on event which does not implement FailThroughEvent: " + eventClass.getCanonicalName());
+        if(!FailThroughEvent.class.isAssignableFrom(ReflectionUtil.getRawType(eventType))) {
+            throw new IllegalStateException("Cannot fail-through on event which does not implement FailThroughEvent: " + ReflectionUtil.typeToString(eventType));
         }
         this.failThrough = true;
         return this;
@@ -58,7 +63,7 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
     }
 
     @Override
-    public int compareTo(@NotNull EventContextImpl<T> o) {
+    public int compareTo(@NotNull EventContextImpl<?> o) {
         return this.priority - o.priority;
     }
 
