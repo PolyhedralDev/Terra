@@ -8,8 +8,6 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public interface TerraWorld {
     World getWorld();
 
-    WorldConfig getConfig();
-
     /**
      * Get a block at an ungenerated location
      *
