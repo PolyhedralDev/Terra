@@ -17,7 +17,7 @@ public class TerraWorldImpl implements TerraWorld {
     public TerraWorldImpl(World w, ConfigPack c, TerraPlugin main) {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
-        config = (WorldConfigImpl) c.toWorldConfig(this);
+        config = (WorldConfigImpl) c.toWorldConfig(w);
         main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
     }
 

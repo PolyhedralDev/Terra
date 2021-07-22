@@ -2,6 +2,7 @@ package com.dfsek.terra.fabric.mixin.implementations.world;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -23,16 +24,24 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.TickScheduler;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.chunk.ChunkStatus;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = World.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
+    private WorldConfig config;
+
     @Shadow
     @Final
     private ServerWorld world;
@@ -49,6 +58,11 @@ public abstract class ChunkRegionMixin {
 
     public int terraWorld$getMaxHeight() {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
+    }
+
+    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
+    public void injectConstructor(ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i, CallbackInfo ci) {
+        this.config = ((World) world).getConfig();
     }
 
     @SuppressWarnings("deprecation")
@@ -112,6 +126,10 @@ public abstract class ChunkRegionMixin {
     @SuppressWarnings("deprecation")
     public BiomeProvider terraWorld$getBiomeProvider() {
         return ((TerraBiomeSource) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator().getBiomeSource()).getProvider();
+    }
+
+    public WorldConfig terraWorld$getConfig() {
+        return config;
     }
 
     /**

@@ -2,6 +2,7 @@ package com.dfsek.terra.config.dummy;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
@@ -65,5 +66,10 @@ public class DummyWorld implements World {
     @Override
     public BiomeProvider getBiomeProvider() {
         throw new UnsupportedOperationException("Cannot get biome provider of DummyWorld");
+    }
+
+    @Override
+    public WorldConfig getConfig() {
+        throw new UnsupportedOperationException("Cannot get config of DummyWorld");
     }
 }

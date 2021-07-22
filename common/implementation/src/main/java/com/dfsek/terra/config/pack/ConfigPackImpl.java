@@ -32,7 +32,7 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -139,7 +139,7 @@ public class ConfigPackImpl implements ConfigPack {
             main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
             throw e;
         }
-        toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+        toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
 
     public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
@@ -192,7 +192,7 @@ public class ConfigPackImpl implements ConfigPack {
             throw e;
         }
 
-        toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+        toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
 
     @SuppressWarnings("unchecked")
@@ -353,7 +353,7 @@ public class ConfigPackImpl implements ConfigPack {
 
 
     @Override
-    public WorldConfigImpl toWorldConfig(TerraWorld world) {
+    public WorldConfigImpl toWorldConfig(World world) {
         return new WorldConfigImpl(world, this, main);
     }
 

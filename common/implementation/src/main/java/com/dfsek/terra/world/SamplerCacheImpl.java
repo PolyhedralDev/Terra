@@ -3,6 +3,7 @@ package com.dfsek.terra.world;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Sampler;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -13,14 +14,14 @@ import org.jetbrains.annotations.NotNull;
 public class SamplerCacheImpl implements com.dfsek.terra.api.world.generator.SamplerCache {
     private final LoadingCache<Long, Sampler> cache;
 
-    public SamplerCacheImpl(TerraPlugin main, TerraWorld world) {
+    public SamplerCacheImpl(TerraPlugin main, World world) {
         cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getSamplerCache())
                 .build(new CacheLoader<>() {
                     @Override
                     public Sampler load(@NotNull Long key) {
                         int cx = (int) (key >> 32);
                         int cz = (int) key.longValue();
-                        return world.getWorld().getTerraGenerator().createSampler(cx, cz, world.getWorld().getBiomeProvider(), world.getWorld(), world.getConfig().elevationBlend());
+                        return world.getTerraGenerator().createSampler(cx, cz, world.getBiomeProvider(), world, world.getConfig().elevationBlend());
                     }
                 });
     }

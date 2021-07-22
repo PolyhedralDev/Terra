@@ -8,6 +8,7 @@ import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -29,7 +30,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
         return getOrCreateRegistry(type.getType());
     }
 
-    WorldConfig toWorldConfig(TerraWorld world);
+    WorldConfig toWorldConfig(World world);
 
     List<GenerationStageProvider> getStages();
 
