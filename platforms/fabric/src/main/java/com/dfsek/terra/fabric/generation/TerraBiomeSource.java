@@ -56,4 +56,8 @@ public class TerraBiomeSource extends BiomeSource {
         TerraBiome biome = provider.getBiome(biomeX << 2, biomeZ << 2, seed);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }
+
+    public BiomeProvider getProvider() {
+        return provider;
+    }
 }

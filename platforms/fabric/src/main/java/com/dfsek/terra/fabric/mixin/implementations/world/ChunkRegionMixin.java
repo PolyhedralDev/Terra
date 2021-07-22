@@ -7,11 +7,13 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
@@ -105,6 +107,11 @@ public abstract class ChunkRegionMixin {
 
     public TerraChunkGenerator terraWorld$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terraWorld$getGenerator()).getHandle();
+    }
+
+    @SuppressWarnings("deprecation")
+    public BiomeProvider terraWorld$getBiomeProvider() {
+        return ((TerraBiomeSource) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator().getBiomeSource()).getProvider();
     }
 
     /**

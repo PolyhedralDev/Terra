@@ -7,14 +7,17 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Implements;
@@ -81,6 +84,10 @@ public abstract class ServerWorldMixin {
 
     public TerraChunkGenerator terra$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
+    }
+
+    public BiomeProvider terra$getBiomeProvider() {
+        return ((TerraBiomeSource) ((ServerWorld) (Object) this).getChunkManager().getChunkGenerator().getBiomeSource()).getProvider();
     }
 
     /**
