@@ -2,6 +2,7 @@ package com.dfsek.terra.event;
 
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.events.Event;
+import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.event.functional.EventContext;
 import org.jetbrains.annotations.NotNull;
@@ -18,14 +19,14 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
 
     private final TerraAddon addon;
 
-    public EventContextImpl(TerraAddon addon) {
+    private final Class<? extends Event> eventClass;
+
+    public EventContextImpl(TerraAddon addon, Class<? extends Event> eventClass) {
         this.addon = addon;
+        this.eventClass = eventClass;
     }
 
     public void handle(T event) {
-        if(event instanceof PackEvent) {
-
-        }
         actions.forEach(action -> action.accept(event));
     }
 
@@ -43,6 +44,9 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
 
     @Override
     public EventContext<T> failThrough() {
+        if(!FailThroughEvent.class.isAssignableFrom(eventClass)) {
+            throw new IllegalStateException("Cannot fail-through on event which does not implement FailThroughEvent: " + eventClass.getCanonicalName());
+        }
         this.failThrough = true;
         return this;
     }

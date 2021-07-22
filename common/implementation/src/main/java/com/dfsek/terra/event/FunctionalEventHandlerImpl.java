@@ -52,14 +52,15 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
 
     @Override
     public <T extends Event> EventContext<T> register(TerraAddon addon, Class<T> clazz) {
-        EventContextImpl<T> eventContext = new EventContextImpl<>(addon);
+        EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz);
         contextMap.computeIfAbsent(clazz, c -> new ArrayList<>()).add(eventContext);
         return eventContext;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends Event> EventContext<T> register(TerraAddon addon, TypeKey<T> clazz) {
-        EventContextImpl<T> eventContext = new EventContextImpl<>(addon);
+        EventContextImpl<T> eventContext = new EventContextImpl<>(addon, (Class<T>) clazz.getRawType());
         contextMap.computeIfAbsent(clazz.getType(), c -> new ArrayList<>()).add(eventContext);
         return eventContext;
     }
