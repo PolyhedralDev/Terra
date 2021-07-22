@@ -15,12 +15,12 @@ public class SamplerCacheImpl implements com.dfsek.terra.api.world.generator.Sam
 
     public SamplerCacheImpl(TerraPlugin main, TerraWorld world) {
         cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getSamplerCache())
-                .build(new CacheLoader<Long, Sampler>() {
+                .build(new CacheLoader<>() {
                     @Override
                     public Sampler load(@NotNull Long key) {
                         int cx = (int) (key >> 32);
                         int cz = (int) key.longValue();
-                        return world.getWorld().getTerraGenerator().createSampler(cx, cz, world.getBiomeProvider(), world.getWorld(), world.getConfig().elevationBlend());
+                        return world.getWorld().getTerraGenerator().createSampler(cx, cz, world.getWorld().getBiomeProvider(), world.getWorld(), world.getConfig().elevationBlend());
                     }
                 });
     }

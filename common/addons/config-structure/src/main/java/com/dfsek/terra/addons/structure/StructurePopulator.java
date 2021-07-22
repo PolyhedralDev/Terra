@@ -34,7 +34,7 @@ public class StructurePopulator implements TerraGenerationStage, Chunkified {
 
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
-            BiomeProvider provider = tw.getBiomeProvider();
+            BiomeProvider provider = world.getBiomeProvider();
             WorldConfig config = tw.getConfig();
             for(ConfiguredStructure conf : config.getRegistry(TerraStructure.class).entries()) {
                 Vector3 spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed());

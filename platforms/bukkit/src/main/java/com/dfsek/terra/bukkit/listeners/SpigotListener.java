@@ -3,6 +3,7 @@ package com.dfsek.terra.bukkit.listeners;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -36,9 +37,9 @@ public class SpigotListener implements Listener {
         if(e.getEntityType().equals(EntityType.ENDER_SIGNAL)) {
             main.getDebugLogger().info("Detected Ender Signal...");
             if(!BukkitAdapter.adapt(e.getEntity().getWorld()).isTerraWorld()) return;
-            TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getEntity().getWorld()));
+            World w = BukkitAdapter.adapt(e.getEntity().getWorld());
             EnderSignal signal = (EnderSignal) entity;
-            ConfiguredStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get("STRONGHOLD"));
+            ConfiguredStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(w.getConfig().getLocatable().get("STRONGHOLD"));
             if(config != null) {
                 main.getDebugLogger().info("Overriding Ender Signal...");
                 AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getLocation().toVector()), tw.getWorld(), 0, 500, location -> {

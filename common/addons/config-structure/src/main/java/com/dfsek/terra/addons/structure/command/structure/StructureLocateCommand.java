@@ -61,7 +61,7 @@ public class StructureLocateCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
 
-        new Thread(new AsyncStructureFinder(main.getWorld(player.world()).getBiomeProvider(), structure, player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), player.world(), 0, radius, location -> {
+        new Thread(new AsyncStructureFinder(player.world().getBiomeProvider(), structure, player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), player.world(), 0, radius, location -> {
             if(location != null) {
                 sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", structure.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3(0, player.position().getY(), 0)).distance(player.position())));
                 if(teleport) {

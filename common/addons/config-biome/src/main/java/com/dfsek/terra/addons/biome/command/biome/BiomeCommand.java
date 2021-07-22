@@ -37,7 +37,7 @@ public class BiomeCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
 
-        BiomeProvider provider = main.getWorld(player.world()).getBiomeProvider();
+        BiomeProvider provider = player.world().getBiomeProvider();
         UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(player.position(), player.world().getSeed());
         sender.sendMessage("You are standing in " + biome.getID());
     }

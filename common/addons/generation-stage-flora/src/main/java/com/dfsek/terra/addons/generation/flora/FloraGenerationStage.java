@@ -34,7 +34,7 @@ public class FloraGenerationStage implements TerraGenerationStage {
             if(tw.getConfig().disableFlora()) return;
 
             long seed = world.getSeed();
-            BiomeProvider provider = tw.getBiomeProvider();
+            BiomeProvider provider = world.getBiomeProvider();
             Map<Vector2, List<FloraLayer>> layers = new HashMap<>();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {

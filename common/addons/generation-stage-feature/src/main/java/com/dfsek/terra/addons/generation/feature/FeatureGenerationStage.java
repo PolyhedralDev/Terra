@@ -31,7 +31,7 @@ public class FeatureGenerationStage implements TerraGenerationStage {
                     int tx = cx + x;
                     int tz = cz + z;
                     ColumnImpl column = new ColumnImpl(tx, tz, world);
-                    terraWorld.getBiomeProvider().getBiome(tx, tz, seed).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
+                    world.getBiomeProvider().getBiome(tx, tz, seed).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
                         if(feature.getDistributor().matches(tx, tz, seed)) {
                             feature.getLocator()
                                     .getSuitableCoordinates(column)
