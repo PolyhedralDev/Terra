@@ -43,6 +43,7 @@ public class TerraScriptAddon extends TerraAddon {
                             }
                         }
                     }).close();
-                });
+                })
+                .failThrough();
     }
 }

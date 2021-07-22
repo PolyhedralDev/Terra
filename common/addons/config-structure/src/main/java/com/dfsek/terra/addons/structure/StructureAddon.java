@@ -22,6 +22,7 @@ public class StructureAddon extends TerraAddon {
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null));
+                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
+                .failThrough();
     }
 }

@@ -26,6 +26,7 @@ public class FloraAddon extends TerraAddon {
                 .then(event -> {
                     event.getPack().registerConfigType(new FloraConfigType(), "FLORA", 2);
                     event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
-                });
+                })
+                .failThrough();
     }
 }

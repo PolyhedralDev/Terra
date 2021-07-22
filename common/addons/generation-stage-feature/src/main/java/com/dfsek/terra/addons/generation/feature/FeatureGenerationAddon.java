@@ -25,7 +25,8 @@ public class FeatureGenerationAddon extends TerraAddon {
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FEATURE", pack -> new FeatureGenerationStage(main)));
+                .then(event -> event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FEATURE", pack -> new FeatureGenerationStage(main)))
+                .failThrough();
 
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
@@ -34,6 +35,7 @@ public class FeatureGenerationAddon extends TerraAddon {
                     if(event.is(TerraBiome.class)) {
                         event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());
                     }
-                });
+                })
+                .failThrough();
     }
 }

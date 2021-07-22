@@ -28,7 +28,8 @@ public class FloraGenerationAddon extends TerraAddon {
                 .then(event -> {
                     event.getPack().applyLoader(FloraLayer.class, FloraLayerLoader::new);
                     event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FLORA", pack -> new FloraGenerationStage(main));
-                });
+                })
+                .failThrough();
 
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
@@ -37,6 +38,7 @@ public class FloraGenerationAddon extends TerraAddon {
                     if(event.is(TerraBiome.class)) {
                         event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomeFloraTemplate()).get());
                     }
-                });
+                })
+                .failThrough();
     }
 }

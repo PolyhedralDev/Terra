@@ -26,6 +26,7 @@ public class BiomeAddon extends TerraAddon {
                 .then(event -> {
                     event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
                     event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
-                });
+                })
+                .failThrough();
     }
 }

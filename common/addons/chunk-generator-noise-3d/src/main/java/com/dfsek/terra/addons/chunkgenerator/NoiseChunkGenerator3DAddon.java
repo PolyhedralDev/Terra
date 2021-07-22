@@ -44,6 +44,7 @@ public class NoiseChunkGenerator3DAddon extends TerraAddon {
                     if(event.is(TerraBiome.class)) {
                         event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
                     }
-                });
+                })
+                .failThrough();
     }
 }

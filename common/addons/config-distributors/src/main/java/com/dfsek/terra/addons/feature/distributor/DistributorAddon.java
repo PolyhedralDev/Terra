@@ -39,6 +39,7 @@ public class DistributorAddon extends TerraAddon {
 
                     event.getPack()
                             .applyLoader(Point.class, PointTemplate::new);
-                });
+                })
+                .failThrough();
     }
 }

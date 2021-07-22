@@ -100,6 +100,7 @@ public class NoiseAddon extends TerraAddon {
                     NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
                     event.loadTemplate(template);
                     packFunctions.putAll(template.getNoiseBuilderMap());
-                });
+                })
+                .failThrough();
     }
 }

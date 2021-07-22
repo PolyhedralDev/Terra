@@ -26,6 +26,7 @@ public class PaletteAddon extends TerraAddon {
                 .then(event -> {
                     event.getPack().registerConfigType(new PaletteConfigType(main), "PALETTE", 2);
                     event.getPack().applyLoader(PaletteLayerHolder.class, new PaletteLayerLoader());
-                });
+                })
+                .failThrough();
     }
 }

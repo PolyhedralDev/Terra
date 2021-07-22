@@ -26,6 +26,7 @@ public class OreAddon extends TerraAddon {
                 .then(event -> {
                     event.getPack().registerConfigType(new OreConfigType(), "ORE", 1);
                     event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("ORE", pack -> new OrePopulator(main));
-                });
+                })
+                .failThrough();
     }
 }

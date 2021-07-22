@@ -35,6 +35,7 @@ public class LocatorAddon extends TerraAddon {
                     CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                     locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
                     locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
-                });
+                })
+                .failThrough();
     }
 }
