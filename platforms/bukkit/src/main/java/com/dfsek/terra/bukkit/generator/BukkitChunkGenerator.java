@@ -18,34 +18,4 @@ public class BukkitChunkGenerator implements com.dfsek.terra.api.world.generator
         return delegate;
     }
 
-    public static class BukkitChunkData implements ChunkData {
-
-        private final ChunkGenerator.ChunkData delegate;
-
-        public BukkitChunkData(ChunkGenerator.ChunkData delegate) {
-            this.delegate = delegate;
-        }
-
-        @Override
-        public ChunkGenerator.ChunkData getHandle() {
-            return delegate;
-        }
-
-        @Override
-        public int getMaxHeight() {
-            return delegate.getMaxHeight();
-        }
-
-
-        @Override
-        public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-            delegate.setBlock(x, y, z, ((BukkitBlockState) blockState).getHandle());
-        }
-
-
-        @Override
-        public @NotNull BlockState getBlock(int x, int y, int z) {
-            return BukkitBlockState.newInstance(delegate.getBlockData(x, y, z));
-        }
-    }
 }

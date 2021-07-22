@@ -72,7 +72,7 @@ public class BukkitChunkGeneratorWrapper extends ChunkGenerator implements Gener
         com.dfsek.terra.api.world.World bukkitWorld = BukkitAdapter.adapt(world);
         if(needsLoad) load(bukkitWorld); // Load population data for world.
         delegate.generateBiomes(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome));
-        return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkGenerator.BukkitChunkData(createChunkData(world))).getHandle();
+        return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkData(createChunkData(world))).getHandle();
     }
 
     @Override
