@@ -20,8 +20,6 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.command.FixChunkCommand;
@@ -47,7 +45,6 @@ import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.util.logging.DebugLogger;
 import com.dfsek.terra.util.logging.JavaLogger;
-import com.dfsek.terra.world.TerraWorldImpl;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -78,7 +75,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
     }
 
     private final Map<String, com.dfsek.terra.api.world.generator.TerraChunkGenerator> generatorMap = new HashMap<>();
-    private final Map<World, TerraWorld> worldMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final Profiler profiler = new ProfilerImpl();
     private final ConfigRegistry registry = new ConfigRegistry();
@@ -96,14 +92,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = registry.loadAll(this);
-        Map<World, TerraWorld> newMap = new HashMap<>();
-        worldMap.forEach((world, tw) -> {
-            world.getConfig().getSamplerCache().clear();
-            String packID = world.getConfig().getID();
-            newMap.put(world, new TerraWorldImpl(world, registry.get(packID), this));
-        });
-        worldMap.clear();
-        worldMap.putAll(newMap);
+
         return succeed;
     }
 

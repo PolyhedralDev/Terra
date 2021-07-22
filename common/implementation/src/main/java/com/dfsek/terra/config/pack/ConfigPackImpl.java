@@ -49,7 +49,6 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.RegistryFactoryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
-import com.dfsek.terra.world.TerraWorldImpl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -10,7 +10,6 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import net.jafama.FastMath;

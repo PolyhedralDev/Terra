@@ -2,7 +2,6 @@ package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Sampler;
 import com.google.common.cache.CacheBuilder;

@@ -1,13 +1,10 @@
 package com.dfsek.terra.api.config;
 
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 
-import java.util.List;
 import java.util.Map;
 
 public interface WorldConfig {
