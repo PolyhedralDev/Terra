@@ -30,7 +30,6 @@ import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
-import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -44,7 +43,7 @@ import java.util.function.Supplier;
 @Addon("config-noise-function")
 @Author("Terra")
 @Version("1.0.0")
-public class NoiseAddon extends TerraAddon implements EventListener {
+public class NoiseAddon extends TerraAddon {
     @Inject
     private TerraPlugin plugin;
 
@@ -52,53 +51,53 @@ public class NoiseAddon extends TerraAddon implements EventListener {
 
     @Override
     public void initialize() {
-        plugin.getEventManager().registerListener(this, this);
-    }
+        plugin.getEventManager()
+                .register(ConfigPackPreLoadEvent.class)
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
+                    event.getPack()
+                            .applyLoader(CellularSampler.DistanceFunction.class, (t, o, l) -> CellularSampler.DistanceFunction.valueOf((String) o))
+                            .applyLoader(CellularSampler.ReturnType.class, (t, o, l) -> CellularSampler.ReturnType.valueOf((String) o))
+                            .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new);
 
-    public void packPreLoad(ConfigPackPreLoadEvent event) {
-        CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(NOISE_SAMPLER_TOKEN);
-        event.getPack()
-                .applyLoader(CellularSampler.DistanceFunction.class, (t, o, l) -> CellularSampler.DistanceFunction.valueOf((String) o))
-                .applyLoader(CellularSampler.ReturnType.class, (t, o, l) -> CellularSampler.ReturnType.valueOf((String) o))
-                .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new);
+                    noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
+                    noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
+                    noiseRegistry.register("CLAMP", ClampNormalizerTemplate::new);
 
-        noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
-        noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
-        noiseRegistry.register("CLAMP", ClampNormalizerTemplate::new);
+                    noiseRegistry.register("IMAGE", ImageSamplerTemplate::new);
 
-        noiseRegistry.register("IMAGE", ImageSamplerTemplate::new);
+                    noiseRegistry.register("DOMAINWARP", DomainWarpTemplate::new);
 
-        noiseRegistry.register("DOMAINWARP", DomainWarpTemplate::new);
+                    noiseRegistry.register("FBM", BrownianMotionTemplate::new);
+                    noiseRegistry.register("PINGPONG", PingPongTemplate::new);
+                    noiseRegistry.register("RIDGED", RidgedFractalTemplate::new);
 
-        noiseRegistry.register("FBM", BrownianMotionTemplate::new);
-        noiseRegistry.register("PINGPONG", PingPongTemplate::new);
-        noiseRegistry.register("RIDGED", RidgedFractalTemplate::new);
-
-        noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
-        noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
-        noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
-        noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
-        noiseRegistry.register("GABOR", GaborNoiseTemplate::new);
-
-
-        noiseRegistry.register("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
-        noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
-
-        noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
-
-        noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
-        noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
-
-        noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
-
-        noiseRegistry.register("KERNEL", KernelTemplate::new);
-
-        Map<String, DimensionApplicableNoiseSampler> packFunctions = new HashMap<>();
-        noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
+                    noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
+                    noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
+                    noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
+                    noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
+                    noiseRegistry.register("GABOR", GaborNoiseTemplate::new);
 
 
-        NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
-        event.loadTemplate(template);
-        packFunctions.putAll(template.getNoiseBuilderMap());
+                    noiseRegistry.register("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
+                    noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
+
+                    noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
+
+                    noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+                    noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+
+                    noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
+
+                    noiseRegistry.register("KERNEL", KernelTemplate::new);
+
+                    Map<String, DimensionApplicableNoiseSampler> packFunctions = new HashMap<>();
+                    noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
+
+
+                    NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
+                    event.loadTemplate(template);
+                    packFunctions.putAll(template.getNoiseBuilderMap());
+                });
     }
 }
