@@ -5,7 +5,6 @@ import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
-import com.dfsek.terra.api.event.EventListener;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
@@ -13,16 +12,14 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 @Addon("config-structure")
 @Version("1.0.0")
 @Author("Terra")
-public class StructureAddon extends TerraAddon implements EventListener {
+public class StructureAddon extends TerraAddon {
     @Inject
     private TerraPlugin main;
 
     @Override
     public void initialize() {
-        main.getEventManager().registerListener(this, this);
-    }
-
-    public void onConfigLoad(ConfigPackPreLoadEvent event) {
-        event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null);
+        main.getEventManager()
+                .register(ConfigPackPreLoadEvent.class)
+                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null));
     }
 }
