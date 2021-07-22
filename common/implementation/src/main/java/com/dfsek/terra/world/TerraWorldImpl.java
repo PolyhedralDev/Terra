@@ -3,11 +3,9 @@ package com.dfsek.terra.world;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.event.events.world.TerraWorldLoadEvent;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.config.pack.WorldConfigImpl;
 
 public class TerraWorldImpl implements TerraWorld {
@@ -18,7 +16,6 @@ public class TerraWorldImpl implements TerraWorld {
         if(!w.isTerraWorld()) throw new IllegalArgumentException("World " + w + " is not a Terra World!");
         this.world = w;
         config = (WorldConfigImpl) c.toWorldConfig(w);
-        main.getEventManager().callEvent(new TerraWorldLoadEvent(this, c));
     }
 
 

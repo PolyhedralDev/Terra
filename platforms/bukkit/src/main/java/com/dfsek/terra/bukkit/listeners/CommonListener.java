@@ -43,8 +43,7 @@ public class CommonListener implements Listener {
         if(e.isCancelled()) return;
         World bukkit = BukkitAdapter.adapt(e.getWorld());
         if(!bukkit.isTerraWorld()) return;
-        TerraWorld tw = main.getWorld(bukkit);
-        WorldConfig c = tw.getConfig();
+        WorldConfig c = bukkit.getConfig();
         if(c.isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();

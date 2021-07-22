@@ -100,8 +100,8 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         boolean succeed = registry.loadAll(this);
         Map<World, TerraWorld> newMap = new HashMap<>();
         worldMap.forEach((world, tw) -> {
-            tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getID();
+            world.getConfig().getSamplerCache().clear();
+            String packID = world.getConfig().getID();
             newMap.put(world, new TerraWorldImpl(world, registry.get(packID), this));
         });
         worldMap.clear();

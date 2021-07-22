@@ -29,9 +29,8 @@ public class FloraGenerationStage implements TerraGenerationStage {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("flora")) {
-            if(tw.getConfig().disableFlora()) return;
+            if(world.getConfig().disableFlora()) return;
 
             long seed = world.getSeed();
             BiomeProvider provider = world.getBiomeProvider();

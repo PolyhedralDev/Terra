@@ -75,13 +75,12 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     @SuppressWarnings({"try"})
     public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
         try(ProfileFrame ignore = main.getProfiler().profile("chunk_base_3d")) {
-            TerraWorld tw = main.getWorld(world);
             BiomeProvider grid = world.getBiomeProvider();
 
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
 
-            Sampler sampler = tw.getConfig().getSamplerCache().getChunk(chunkX, chunkZ);
+            Sampler sampler = world.getConfig().getSamplerCache().getChunk(chunkX, chunkZ);
 
             long seed = world.getSeed();
 
@@ -168,10 +167,9 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
 
     @Override
     public BlockState getBlock(World world, int x, int y, int z) {
-        TerraWorld terraWorld = main.getWorld(world);
         BiomeProvider provider = world.getBiomeProvider();
         TerraBiome biome = provider.getBiome(x, z, world.getSeed());
-        Sampler sampler = terraWorld.getConfig().getSamplerCache().get(x, z);
+        Sampler sampler = world.getConfig().getSamplerCache().get(x, z);
 
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
         Palette palette = PaletteUtil.getPalette(x, y, z, biome.getGenerator(world), sampler, paletteInfo);

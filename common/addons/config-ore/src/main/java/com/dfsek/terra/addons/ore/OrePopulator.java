@@ -22,9 +22,8 @@ public class OrePopulator implements TerraGenerationStage {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
-            if(tw.getConfig().disableOres()) return;
+            if(world.getConfig().disableOres()) return;
 
             for(int cx = -1; cx <= 1; cx++) {
                 for(int cz = -1; cz <= 1; cz++) {

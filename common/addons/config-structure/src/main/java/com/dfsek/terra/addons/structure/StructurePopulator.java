@@ -28,14 +28,13 @@ public class StructurePopulator implements TerraGenerationStage, Chunkified {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        TerraWorld tw = main.getWorld(world);
         try(ProfileFrame ignore = main.getProfiler().profile("structure")) {
-            if(tw.getConfig().disableStructures()) return;
+            if(world.getConfig().disableStructures()) return;
 
             int cx = (chunk.getX() << 4);
             int cz = (chunk.getZ() << 4);
             BiomeProvider provider = world.getBiomeProvider();
-            WorldConfig config = tw.getConfig();
+            WorldConfig config = world.getConfig();
             for(ConfiguredStructure conf : config.getRegistry(TerraStructure.class).entries()) {
                 Vector3 spawn = conf.getSpawn().getNearestSpawn(cx + 8, cz + 8, world.getSeed());
 

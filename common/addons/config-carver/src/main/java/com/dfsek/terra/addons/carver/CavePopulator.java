@@ -30,11 +30,9 @@ public class CavePopulator implements TerraGenerationStage, Chunkified {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        TerraWorld tw = main.getWorld(world);
-        WorldHandle handle = main.getWorldHandle();
         try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
-            WorldConfig config = tw.getConfig();
+            WorldConfig config = world.getConfig();
             if(config.disableCarving()) return;
 
             for(UserDefinedCarver c : config.getRegistry(UserDefinedCarver.class).entries()) {

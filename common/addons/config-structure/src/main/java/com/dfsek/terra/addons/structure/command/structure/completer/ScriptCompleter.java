@@ -16,6 +16,6 @@ public class ScriptCompleter implements TabCompleter {
 
     @Override
     public List<String> complete(CommandSender sender) {
-        return main.getWorld(((Player) sender).world()).getConfig().getRegistry(Structure.class).entries().stream().map(Structure::getId).collect(Collectors.toList());
+        return ((Player) sender).world().getConfig().getRegistry(Structure.class).entries().stream().map(Structure::getId).collect(Collectors.toList());
     }
 }

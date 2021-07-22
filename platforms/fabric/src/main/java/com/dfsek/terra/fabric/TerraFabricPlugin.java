@@ -83,7 +83,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
     private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
-    private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
+    private final Map<DimensionType, ServerWorld> worldMap = new HashMap<>();
     private final EventManager eventManager = new EventManagerImpl(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
@@ -119,7 +119,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return instance;
     }
 
-    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
+    public Map<DimensionType, ServerWorld> getWorldMap() {
         return worldMap;
     }
 
@@ -144,9 +144,7 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     }
 
     public TerraWorld getWorld(DimensionType type) {
-        TerraWorld world = worldMap.get(type).getRight();
-        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
-        return world;
+       throw new IllegalArgumentException("No world exists with dimension type " + type);
     }
 
     @Override
@@ -188,10 +186,9 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = configRegistry.loadAll(this);
-        worldMap.forEach((seed, pair) -> {
-            pair.getRight().getConfig().getSamplerCache().clear();
-            String packID = pair.getRight().getConfig().getID();
-            pair.setRight(new TerraWorldImpl(pair.getRight().getWorld(), configRegistry.get(packID), this));
+        worldMap.forEach((seed, world) -> {
+            if(!(world instanceof World)) return;
+            ((World) world).getConfig().getSamplerCache().clear();
         });
         return succeed;
     }
