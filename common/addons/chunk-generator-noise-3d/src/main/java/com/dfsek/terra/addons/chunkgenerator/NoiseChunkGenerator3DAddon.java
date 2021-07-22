@@ -21,24 +21,28 @@ import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 @Addon("chunk-generator-noise-3d")
 @Author("Terra")
 @Version("1.0.0")
-public class NoiseChunkGenerator3DAddon extends TerraAddon implements EventListener {
+public class NoiseChunkGenerator3DAddon extends TerraAddon {
     @Inject
     private TerraPlugin main;
 
     @Override
     public void initialize() {
-        main.getEventManager().registerListener(this, this);
-    }
+        main.getEventManager()
+                .register(ConfigPackPreLoadEvent.class)
+                .then(event -> {
+                    event.getPack().getOrCreateRegistry(ChunkGeneratorProvider.class).register("NOISE_3D", pack -> new NoiseChunkGenerator3D(pack, main));
+                    event.getPack()
+                            .applyLoader(SlantHolder.class, new SlantHolderLoader())
+                            .applyLoader(PaletteHolder.class, new PaletteHolderLoader());
+                })
+                .failThrough();
 
-    public void onPackLoad(ConfigPackPreLoadEvent event) throws DuplicateEntryException {
-        event.getPack().getOrCreateRegistry(ChunkGeneratorProvider.class).register("NOISE_3D", pack -> new NoiseChunkGenerator3D(pack, main));
-        event.getPack().applyLoader(SlantHolder.class, new SlantHolderLoader())
-                .applyLoader(PaletteHolder.class, new PaletteHolderLoader());
-    }
-
-    public void onBiomeLoad(ConfigurationLoadEvent event) {
-        if(event.is(TerraBiome.class)) {
-            event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
-        }
+        main.getEventManager()
+                .register(ConfigurationLoadEvent.class)
+                .then(event -> {
+                    if(event.is(TerraBiome.class)) {
+                        event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
+                    }
+                });
     }
 }
