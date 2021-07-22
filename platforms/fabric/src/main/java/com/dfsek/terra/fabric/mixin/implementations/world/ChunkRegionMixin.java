@@ -24,6 +24,7 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.TickScheduler;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.chunk.ChunkManager;
 import net.minecraft.world.chunk.ChunkStatus;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
@@ -55,6 +56,9 @@ public abstract class ChunkRegionMixin {
 
     @Shadow
     public abstract TickScheduler<Fluid> getFluidTickScheduler();
+
+    @Shadow
+    public abstract ChunkManager getChunkManager();
 
     public int terraWorld$getMaxHeight() {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
@@ -116,7 +120,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public TerraChunkGenerator terraWorld$getTerraGenerator() {
-        return ((FabricChunkGeneratorWrapper) terraWorld$getGenerator()).getHandle();
+        return ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator()).getHandle();
     }
 
     @SuppressWarnings("deprecation")

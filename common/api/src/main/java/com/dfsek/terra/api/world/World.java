@@ -17,8 +17,6 @@ public interface World extends Handle {
 
     int getMaxHeight();
 
-    ChunkGenerator getGenerator();
-
     Chunk getChunkAt(int x, int z);
 
     default Chunk getChunkAt(Vector3 location) {
@@ -55,9 +53,7 @@ public interface World extends Handle {
 
     int getMinHeight();
 
-    default TerraChunkGenerator getTerraGenerator() {
-        return ((GeneratorWrapper) getGenerator().getHandle()).getHandle();
-    }
+    TerraChunkGenerator getTerraGenerator();
 
     BiomeProvider getBiomeProvider();
 

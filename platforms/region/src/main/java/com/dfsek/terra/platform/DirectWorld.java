@@ -8,7 +8,6 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
@@ -38,11 +37,6 @@ public class DirectWorld implements World {
     @Override
     public int getMaxHeight() {
         return 255;
-    }
-
-    @Override
-    public ChunkGenerator getGenerator() {
-        return generator;
     }
 
     @Override

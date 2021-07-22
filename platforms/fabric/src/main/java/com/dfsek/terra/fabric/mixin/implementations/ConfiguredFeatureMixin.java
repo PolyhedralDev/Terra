@@ -9,7 +9,9 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.spongepowered.asm.mixin.Implements;
@@ -32,7 +34,7 @@ public abstract class ConfiguredFeatureMixin {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
         try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             StructureWorldAccess fabricWorldAccess = ((StructureWorldAccess) world);
-            ChunkGenerator generatorWrapper = (ChunkGenerator) world.getGenerator();
+            ChunkGenerator generatorWrapper = ((ServerWorldAccess) world).toServerWorld().getChunkManager().getChunkGenerator();
             return generate(fabricWorldAccess, generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
         }
     }
