@@ -33,7 +33,6 @@ import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
-import com.dfsek.terra.bukkit.listeners.TerraListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
@@ -343,7 +342,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
         @Override
         public void initialize() {
-            main.getEventManager().registerListener(this, new TerraListener(main));
+
         }
     }
 }
