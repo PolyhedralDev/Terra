@@ -6,6 +6,7 @@ import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.injection.annotations.Inject;
 
 @Addon("config-feature")
@@ -18,7 +19,8 @@ public class FeatureAddon extends TerraAddon {
     @Override
     public void initialize() {
         main.getEventManager()
-                .register(ConfigPackPreLoadEvent.class)
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), "FEATURE", 2));
     }
 }

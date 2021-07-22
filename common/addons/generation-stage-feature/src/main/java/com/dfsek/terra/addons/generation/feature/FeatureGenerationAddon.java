@@ -8,6 +8,7 @@ import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -22,11 +23,13 @@ public class FeatureGenerationAddon extends TerraAddon {
     @Override
     public void initialize() {
         main.getEventManager()
-                .register(ConfigPackPreLoadEvent.class)
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("FEATURE", pack -> new FeatureGenerationStage(main)));
 
         main.getEventManager()
-                .register(ConfigurationLoadEvent.class)
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigurationLoadEvent.class)
                 .then(event -> {
                     if(event.is(TerraBiome.class)) {
                         event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());

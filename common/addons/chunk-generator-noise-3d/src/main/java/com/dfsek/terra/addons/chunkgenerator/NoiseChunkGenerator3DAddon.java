@@ -12,6 +12,7 @@ import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
@@ -26,7 +27,8 @@ public class NoiseChunkGenerator3DAddon extends TerraAddon {
     @Override
     public void initialize() {
         main.getEventManager()
-                .register(ConfigPackPreLoadEvent.class)
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     event.getPack().getOrCreateRegistry(ChunkGeneratorProvider.class).register("NOISE_3D", pack -> new NoiseChunkGenerator3D(pack, main));
                     event.getPack()
@@ -36,7 +38,8 @@ public class NoiseChunkGenerator3DAddon extends TerraAddon {
                 .failThrough();
 
         main.getEventManager()
-                .register(ConfigurationLoadEvent.class)
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigurationLoadEvent.class)
                 .then(event -> {
                     if(event.is(TerraBiome.class)) {
                         event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());

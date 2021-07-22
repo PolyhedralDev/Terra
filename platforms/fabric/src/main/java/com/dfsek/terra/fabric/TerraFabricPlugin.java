@@ -17,6 +17,7 @@ import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
@@ -289,7 +290,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         @Override
         public void initialize() {
             eventManager
-                    .register(ConfigPackPreLoadEvent.class)
+                    .getHandler(FunctionalEventHandler.class)
+                    .register(this, ConfigPackPreLoadEvent.class)
                     .then(event -> {
                         PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
                         try {
@@ -314,7 +316,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     .global();
 
             eventManager
-                    .register(ConfigPackPostLoadEvent.class)
+                    .getHandler(FunctionalEventHandler.class)
+                    .register(this, ConfigPackPostLoadEvent.class)
                     .then(event -> {
                         PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
 
@@ -330,7 +333,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     .global();
 
             eventManager
-                    .register(BiomeRegistrationEvent.class)
+                    .getHandler(FunctionalEventHandler.class)
+                    .register(this, BiomeRegistrationEvent.class)
                     .then(event -> {
                         logger.info("Registering biomes...");
                         Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
@@ -340,7 +344,8 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                     .global();
 
             eventManager
-                    .register(GameInitializationEvent.class)
+                    .getHandler(FunctionalEventHandler.class)
+                    .register(this, GameInitializationEvent.class)
                     .then(event -> {
                         TerraFabricPlugin main = TerraFabricPlugin.getInstance();
                         main.logger().info("Loading config packs...");
