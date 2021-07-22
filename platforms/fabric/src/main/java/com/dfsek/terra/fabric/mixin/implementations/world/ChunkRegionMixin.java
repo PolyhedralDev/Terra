@@ -115,10 +115,6 @@ public abstract class ChunkRegionMixin {
         return this;
     }
 
-    public boolean terraWorld$isTerraWorld() {
-        return terraWorld$getGenerator() instanceof GeneratorWrapper;
-    }
-
     public TerraChunkGenerator terraWorld$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terraWorld$getGenerator()).getHandle();
     }

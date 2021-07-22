@@ -100,10 +100,6 @@ public abstract class ServerWorldMixin {
         return this;
     }
 
-    public boolean terra$isTerraWorld() {
-        return terra$getGenerator() instanceof GeneratorWrapper;
-    }
-
     public TerraChunkGenerator terra$getTerraGenerator() {
         return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
     }
