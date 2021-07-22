@@ -10,14 +10,14 @@ import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import com.dfsek.terra.api.world.generator.GenerationStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class CavePopulator implements TerraGenerationStage, Chunkified {
+public class CavePopulator implements GenerationStage, Chunkified {
     private static final Map<BlockType, BlockState> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private final TerraPlugin main;
 

@@ -19,7 +19,7 @@ import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import com.dfsek.terra.api.world.generator.GenerationStage;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +30,7 @@ import java.util.Random;
 public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
-    private final List<TerraGenerationStage> generationStages = new ArrayList<>();
+    private final List<GenerationStage> generationStages = new ArrayList<>();
 
     private final BlockState air;
 
@@ -160,7 +160,7 @@ public class NoiseChunkGenerator3D implements TerraChunkGenerator {
     }
 
     @Override
-    public List<TerraGenerationStage> getGenerationStages() {
+    public List<GenerationStage> getGenerationStages() {
         return generationStages;
     }
 

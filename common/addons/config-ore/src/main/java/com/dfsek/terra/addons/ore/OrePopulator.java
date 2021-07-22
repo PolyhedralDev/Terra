@@ -6,12 +6,12 @@ import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import com.dfsek.terra.api.world.generator.GenerationStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class OrePopulator implements TerraGenerationStage {
+public class OrePopulator implements GenerationStage {
     private final TerraPlugin main;
 
     public OrePopulator(TerraPlugin main) {

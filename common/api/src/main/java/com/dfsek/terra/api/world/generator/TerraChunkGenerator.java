@@ -23,7 +23,7 @@ public interface TerraChunkGenerator {
 
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
 
-    List<TerraGenerationStage> getGenerationStages();
+    List<GenerationStage> getGenerationStages();
 
     BlockState getBlock(World world, int x, int y, int z);
 

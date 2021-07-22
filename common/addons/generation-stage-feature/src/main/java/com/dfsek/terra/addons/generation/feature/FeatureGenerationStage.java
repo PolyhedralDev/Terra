@@ -8,9 +8,9 @@ import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import com.dfsek.terra.api.world.generator.GenerationStage;
 
-public class FeatureGenerationStage implements TerraGenerationStage {
+public class FeatureGenerationStage implements GenerationStage {
     private final TerraPlugin main;
 
     public FeatureGenerationStage(TerraPlugin main) {

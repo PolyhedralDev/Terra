@@ -7,7 +7,7 @@ import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import com.dfsek.terra.api.world.generator.GenerationStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Populates Flora
  */
-public class FloraGenerationStage implements TerraGenerationStage {
+public class FloraGenerationStage implements GenerationStage {
     private final TerraPlugin main;
 
     public FloraGenerationStage(TerraPlugin main) {
