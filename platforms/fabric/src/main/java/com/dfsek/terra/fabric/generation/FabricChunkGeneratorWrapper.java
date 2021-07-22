@@ -169,7 +169,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
         int height = ((World) world).getMaxHeight();
-        while(height >= ((World) world).getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockState) ((World) world).getTerraGenerator().getBlock((World) world, x, height - 1, z)).getHandle())) {
+        while(height >= ((World) world).getMinHeight() && !heightmap.getBlockPredicate().test(((FabricBlockState) ((World) world).getGenerator().getBlock((World) world, x, height - 1, z)).getHandle())) {
             height--;
         }
         return height;
@@ -179,7 +179,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
-            array[y] = ((FabricBlockState) ((World) world).getTerraGenerator().getBlock((World) world, x, y, z)).getHandle();
+            array[y] = ((FabricBlockState) ((World) world).getGenerator().getBlock((World) world, x, y, z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }

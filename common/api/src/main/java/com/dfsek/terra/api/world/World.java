@@ -53,7 +53,7 @@ public interface World extends Handle {
 
     int getMinHeight();
 
-    TerraChunkGenerator getTerraGenerator();
+    TerraChunkGenerator getGenerator();
 
     BiomeProvider getBiomeProvider();
 
