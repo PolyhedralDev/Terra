@@ -4,7 +4,7 @@ import com.dfsek.terra.configureDependencies
 configureCompilation()
 configureDependencies()
 
-group = "com.dfsek.terra.common"
+
 
 dependencies {
     "shadedApi"("com.dfsek:Paralithic:0.4.0")

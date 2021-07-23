@@ -6,7 +6,6 @@ plugins {
 
 configureCommon()
 
-group = "com.dfsek.terra"
 
 repositories {
     mavenCentral()

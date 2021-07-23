@@ -19,7 +19,6 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
-group = "com.dfsek.terra.fabric"
 
 dependencies {
     "shadedApi"(project(":common:implementation"))

@@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 configureCommon()
 
-group = "com.dfsek.terra"
 
 repositories {
     mavenCentral()
