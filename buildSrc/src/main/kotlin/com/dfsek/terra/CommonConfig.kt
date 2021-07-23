@@ -7,6 +7,7 @@ fun Project.configureCommon() {
     configureDependencies()
     configureCompilation()
     configureDistribution()
+    configurePublishing()
 
     version = rootProject.version
 }
@@ -14,6 +15,7 @@ fun Project.configureCommon() {
 fun Project.configureAddon() {
     configureDependencies()
     configureCompilation()
+    configurePublishing()
 
     version = rootProject.version
 }
