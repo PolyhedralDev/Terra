@@ -9,7 +9,7 @@ import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -99,7 +99,7 @@ public abstract class ServerWorldMixin {
         return this;
     }
 
-    public TerraChunkGenerator terra$getGenerator() {
+    public ChunkGenerator terra$getGenerator() {
         return ((FabricChunkGeneratorWrapper) chunkManager.getChunkGenerator()).getHandle();
     }
 

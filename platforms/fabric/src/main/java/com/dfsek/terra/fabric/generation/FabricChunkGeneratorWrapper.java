@@ -5,7 +5,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
@@ -31,7 +31,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.StructureFeature;
@@ -40,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class FabricChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
+public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
     public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
@@ -59,7 +58,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     );
 
     private final long seed;
-    private final TerraChunkGenerator delegate;
+    private final ChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;
 
     private final ConfigPack pack;
@@ -78,12 +77,12 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
 
 
     @Override
-    protected Codec<? extends ChunkGenerator> getCodec() {
+    protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
         return CODEC;
     }
 
     @Override
-    public ChunkGenerator withSeed(long seed) {
+    public net.minecraft.world.gen.chunk.ChunkGenerator withSeed(long seed) {
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
 
@@ -225,7 +224,7 @@ public class FabricChunkGeneratorWrapper extends ChunkGenerator implements Gener
     }
 
     @Override
-    public TerraChunkGenerator getHandle() {
+    public ChunkGenerator getHandle() {
         return delegate;
     }
 }

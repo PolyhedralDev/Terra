@@ -18,7 +18,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GenerationStage;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class NoiseChunkGenerator3D implements TerraChunkGenerator {
+public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final ConfigPack configPack;
     private final TerraPlugin main;
     private final List<GenerationStage> generationStages = new ArrayList<>();

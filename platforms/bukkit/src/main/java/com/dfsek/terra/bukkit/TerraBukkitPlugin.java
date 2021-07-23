@@ -74,7 +74,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
 
-    private final Map<String, com.dfsek.terra.api.world.generator.TerraChunkGenerator> generatorMap = new HashMap<>();
+    private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final Profiler profiler = new ProfilerImpl();
     private final ConfigRegistry registry = new ConfigRegistry();

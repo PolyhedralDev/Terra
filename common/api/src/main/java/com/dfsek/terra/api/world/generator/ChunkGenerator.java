@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Random;
 
-public interface TerraChunkGenerator {
+public interface ChunkGenerator {
     ChunkData generateChunkData(@NotNull World world, Random random, int x, int z, ChunkData original);
 
     void generateBiomes(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome);

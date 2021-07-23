@@ -8,7 +8,7 @@ import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 
 public interface World extends Handle {
     long getSeed();
@@ -51,7 +51,7 @@ public interface World extends Handle {
 
     int getMinHeight();
 
-    TerraChunkGenerator getGenerator();
+    ChunkGenerator getGenerator();
 
     BiomeProvider getBiomeProvider();
 
