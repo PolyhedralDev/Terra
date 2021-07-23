@@ -13,10 +13,6 @@ configureDependencies()
 group = "com.dfsek.terra.common"
 
 dependencies {
-    "compileOnly"(project(":common:api"))
-    "testImplementation"(project(":common:api"))
-
-
     "shadedApi"("commons-io:commons-io:2.6")
 }
 

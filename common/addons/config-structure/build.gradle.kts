@@ -13,11 +13,6 @@ configureDependencies()
 group = "com.dfsek.terra.common"
 
 dependencies {
-    "compileOnly"(project(":common:api"))
-    "testImplementation"(project(":common:api"))
-
-
-
     "shadedApi"("com.googlecode.json-simple:json-simple:1.1.1")
 }
 
