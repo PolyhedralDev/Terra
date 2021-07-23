@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.structure;
 
+import com.dfsek.terra.api.StringIdentifiable;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.vector.Vector3;
@@ -8,7 +9,7 @@ import com.dfsek.terra.api.world.World;
 
 import java.util.Random;
 
-public interface Structure {
+public interface Structure extends StringIdentifiable {
     /**
      * Paste the structure at a location
      *
@@ -31,6 +32,4 @@ public interface Structure {
 
     @SuppressWarnings("try")
     boolean generateDirect(Vector3 location, World world, Random random, Rotation rotation);
-
-    String getId();
 }

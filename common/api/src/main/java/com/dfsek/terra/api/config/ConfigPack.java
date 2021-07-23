@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.config;
 
+import com.dfsek.terra.api.StringIdentifiable;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
+public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder, StringIdentifiable {
     BiomeProvider getBiomeProviderBuilder();
 
     <T> CheckedRegistry<T> getOrCreateRegistry(Type clazz);
@@ -38,8 +39,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     Loader getLoader();
 
     Set<TerraAddon> addons();
-
-    String getID();
 
     String getAuthor();
 
