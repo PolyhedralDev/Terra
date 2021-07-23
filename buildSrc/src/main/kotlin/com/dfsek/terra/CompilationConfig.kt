@@ -11,6 +11,7 @@ import org.gradle.language.jvm.tasks.ProcessResources
 
 fun Project.configureCompilation() {
     apply(plugin = "maven-publish")
+    apply(plugin = "java-library")
     apply(plugin = "idea")
 
     configure<JavaPluginConvention> {
