@@ -6,10 +6,6 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
-plugins {
-    `java-library`
-    `maven-publish`
-}
 configureCommon()
 
 group = "com.dfsek.terra.bukkit"

@@ -6,8 +6,6 @@ import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    `java-library`
-    `maven-publish`
     id("fabric-loom").version("0.8-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }

@@ -1,12 +1,6 @@
 import com.dfsek.terra.configureCompilation
 import com.dfsek.terra.configureDependencies
 
-plugins {
-    `java-library`
-    `maven-publish`
-    idea
-}
-
 configureCompilation()
 configureDependencies()
 
