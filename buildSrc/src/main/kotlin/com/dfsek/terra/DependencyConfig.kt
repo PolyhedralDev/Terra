@@ -36,12 +36,10 @@ fun Project.configureDependencies() {
         "testImplementation"("com.google.guava:guava:30.0-jre")
     }
 
-    project(":common:addons").subprojects.forEach {
-        it.afterEvaluate {
-            dependencies {
-                "compileOnly"(project(":common:api"))
-                "testImplementation"(project(":common:api"))
-            }
+    if (project(":common:addons").subprojects.contains(this)) {
+        dependencies {
+            "compileOnly"(project(":common:api"))
+            "testImplementation"(project(":common:api"))
         }
     }
 }
