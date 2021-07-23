@@ -133,7 +133,6 @@ public class StructureScript implements Structure {
         }
     }
 
-    @Override
     @SuppressWarnings("try")
     public boolean test(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {

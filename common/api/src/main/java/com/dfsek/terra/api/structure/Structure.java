@@ -25,9 +25,6 @@ public interface Structure extends StringIdentifiable {
     boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation);
 
     @SuppressWarnings("try")
-    boolean test(Vector3 location, World world, Random random, Rotation rotation);
-
-    @SuppressWarnings("try")
     boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
 
     @SuppressWarnings("try")
