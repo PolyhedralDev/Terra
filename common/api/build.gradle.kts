@@ -1,8 +1,10 @@
 import com.dfsek.terra.configureCompilation
 import com.dfsek.terra.configureDependencies
+import com.dfsek.terra.configurePublishing
 
 configureCompilation()
 configureDependencies()
+configurePublishing()
 
 
 
