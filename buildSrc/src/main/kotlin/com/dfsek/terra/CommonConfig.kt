@@ -4,20 +4,13 @@ import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
 
 fun Project.configureCommon() {
-    configureDependencies()
-    configureCompilation()
     configureDistribution()
-    configurePublishing()
 
     version = rootProject.version
 }
 
 fun Project.configureAddon() {
-    configureDependencies()
-    configureCompilation()
-    configurePublishing()
 
-    version = rootProject.version
 }
 
 fun Project.getGitHash(): String {

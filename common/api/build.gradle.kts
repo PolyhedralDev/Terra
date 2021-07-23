@@ -1,13 +1,3 @@
-import com.dfsek.terra.configureCompilation
-import com.dfsek.terra.configureDependencies
-import com.dfsek.terra.configurePublishing
-
-configureCompilation()
-configureDependencies()
-configurePublishing()
-
-
-
 dependencies {
     "shadedApi"("com.dfsek:Paralithic:0.4.0")
 
