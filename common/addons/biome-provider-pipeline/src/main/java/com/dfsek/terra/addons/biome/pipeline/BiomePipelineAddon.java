@@ -30,7 +30,7 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.biome.generation.pipeline.BiomeSource;
+import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 
 @Addon("biome-provider-pipeline")
 @Author("Terra")
@@ -59,7 +59,8 @@ public class BiomePipelineAddon extends TerraAddon {
                         .applyLoader(SmoothMutator.class, SmoothMutatorTemplate::new)
                         .applyLoader(ExpanderStage.class, ExpanderStageTemplate::new)
                         .applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
-                        .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderLoader()))
+                        .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderLoader())
+                        .applyLoader(BiomeSource.Type.class, (t, object, cf) -> BiomeSource.Type.valueOf((String) object)))
                 .failThrough();
     }
 }
