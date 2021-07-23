@@ -1,5 +1,4 @@
-import com.dfsek.terra.configureCompilation
-import com.dfsek.terra.configureDependencies
+import com.dfsek.terra.configureAddon
 
 plugins {
     `java-library`
@@ -7,8 +6,7 @@ plugins {
     idea
 }
 
-configureCompilation()
-configureDependencies()
+configureAddon()
 
 group = "com.dfsek.terra.common"
 
