@@ -11,6 +11,13 @@ fun Project.configureCommon() {
     version = rootProject.version
 }
 
+fun Project.configureAddon() {
+    configureDependencies()
+    configureCompilation()
+
+    version = rootProject.version
+}
+
 fun Project.getGitHash(): String {
     val stdout = ByteArrayOutputStream()
     exec {
