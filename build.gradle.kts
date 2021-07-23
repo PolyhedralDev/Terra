@@ -28,9 +28,9 @@ allprojects {
     }
 }
 
-project(":platforms").subprojects.forEach {
-    afterEvaluate {
-        configureDistribution()
+afterEvaluate {
+    project(":platforms").subprojects.forEach { // Platform projects are where distribution happens
+        it.configureDistribution()
     }
 }
 
