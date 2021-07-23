@@ -1,4 +1,4 @@
-import com.dfsek.terra.getGitHash
+import com.dfsek.terra.*
 
 val versionObj = Version("6", "0", "0", true)
 
@@ -6,10 +6,15 @@ allprojects {
     version = versionObj
     group = "com.dfsek.terra"
 
+    configureDependencies()
+    configureCompilation()
+    configurePublishing()
+
     tasks.withType<JavaCompile>().configureEach {
         options.isFork = true
         options.isIncremental = true
     }
+
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
 
@@ -21,8 +26,14 @@ allprojects {
         reports.html.isEnabled = false
         reports.junitXml.isEnabled = false
     }
-
 }
+
+afterEvaluate {
+    project(":platforms").subprojects.forEach { // Platform projects are where distribution happens
+        it.configureDistribution()
+    }
+}
+
 /**
  * Version class that does version stuff.
  */

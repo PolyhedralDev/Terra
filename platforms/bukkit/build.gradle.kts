@@ -1,4 +1,3 @@
-import com.dfsek.terra.configureCommon
 import com.dfsek.terra.gitClone
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
@@ -6,13 +5,6 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
-plugins {
-    `java-library`
-    `maven-publish`
-}
-configureCommon()
-
-group = "com.dfsek.terra.bukkit"
 
 val mcVersion = "1.17"
 val testDir = "target/server"
@@ -182,28 +174,4 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.bstats.bukkit", "com.dfsek.terra.lib.bstats")
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("com.google.common", "com.dfsek.terra.lib.google.common")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["jar"])
-        }
-    }
-
-    repositories {
-        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
-
-        maven(mavenUrl) {
-            val mavenUsername: String? by project
-            val mavenPassword: String? by project
-            if (mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
-            }
-        }
-    }
 }

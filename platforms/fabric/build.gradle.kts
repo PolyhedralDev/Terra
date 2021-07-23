@@ -1,18 +1,14 @@
 import com.dfsek.terra.addonDir
-import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    `java-library`
-    `maven-publish`
     id("fabric-loom").version("0.8-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
-configureCommon()
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
@@ -21,7 +17,6 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
-group = "com.dfsek.terra.fabric"
 
 dependencies {
     "shadedApi"(project(":common:implementation"))
@@ -72,28 +67,4 @@ tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     addGameVersion("1.16.4")
     addGameVersion("1.16.5")
     addLoader("fabric")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["jar"])
-        }
-    }
-
-    repositories {
-        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
-
-        maven(mavenUrl) {
-            val mavenUsername: String? by project
-            val mavenPassword: String? by project
-            if (mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
-            }
-        }
-    }
 }

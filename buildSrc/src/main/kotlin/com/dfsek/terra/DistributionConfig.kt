@@ -20,7 +20,6 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 fun Project.configureDistribution() {
-    apply(plugin = "java-library")
     apply(plugin = "com.github.johnrengelman.shadow")
 
     val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
