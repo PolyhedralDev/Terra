@@ -1,10 +1,7 @@
 package com.dfsek.terra
 
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.repositories
+import org.gradle.kotlin.dsl.*
 
 fun Project.configureDependencies() {
     apply(plugin = "java")
@@ -37,5 +34,14 @@ fun Project.configureDependencies() {
 
         "compileOnly"("com.google.guava:guava:30.0-jre")
         "testImplementation"("com.google.guava:guava:30.0-jre")
+    }
+
+    project(":common:addons").subprojects.forEach {
+        it.afterEvaluate {
+            dependencies {
+                "compileOnly"(project(":common:api"))
+                "testImplementation"(project(":common:api"))
+            }
+        }
     }
 }
