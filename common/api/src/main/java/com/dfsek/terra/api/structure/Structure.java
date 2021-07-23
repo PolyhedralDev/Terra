@@ -10,16 +10,6 @@ import com.dfsek.terra.api.world.World;
 import java.util.Random;
 
 public interface Structure extends StringIdentifiable {
-    /**
-     * Paste the structure at a location
-     *
-     * @param location Location to paste structure
-     * @param world
-     * @param rotation Rotation of structure
-     * @return Whether generation was successful
-     */
-    boolean generate(Vector3 location, World world, Random random, Rotation rotation);
-
     boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation);
 
     boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
