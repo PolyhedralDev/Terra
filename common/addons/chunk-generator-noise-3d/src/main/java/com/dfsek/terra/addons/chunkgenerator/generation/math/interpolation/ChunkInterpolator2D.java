@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkInterpolator;
 import net.jafama.FastMath;
@@ -18,7 +18,7 @@ import java.util.function.BiFunction;
  */
 public class ChunkInterpolator2D implements ChunkInterpolator {
     private final Interpolator[][] interpGrid = new Interpolator[4][4];
-    private final BiFunction<Generator, Vector3, Double> noiseGetter;
+    private final BiFunction<GenerationSettings, Vector3, Double> noiseGetter;
 
     /**
      * Instantiates a 3D ChunkInterpolator3D at a pair of chunk coordinates.
@@ -27,7 +27,7 @@ public class ChunkInterpolator2D implements ChunkInterpolator {
      * @param chunkZ   Z coordinate of the chunk.
      * @param provider Biome Provider to use for biome fetching.
      */
-    public ChunkInterpolator2D(World w, int chunkX, int chunkZ, BiomeProvider provider, BiFunction<Generator, Vector3, Double> noiseGetter) {
+    public ChunkInterpolator2D(World w, int chunkX, int chunkZ, BiomeProvider provider, BiFunction<GenerationSettings, Vector3, Double> noiseGetter) {
         this.noiseGetter = noiseGetter;
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
@@ -38,11 +38,11 @@ public class ChunkInterpolator2D implements ChunkInterpolator {
 
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                Generator generator = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getGenerator(w);
-                Map<Generator, MutableInteger> genMap = new HashMap<>();
+                GenerationSettings generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getGenerator(w);
+                Map<GenerationSettings, MutableInteger> genMap = new HashMap<>();
 
-                int step = generator.getBlendStep();
-                int blend = generator.getBlendDistance();
+                int step = generationSettings.getBlendStep();
+                int blend = generationSettings.getBlendDistance();
 
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
@@ -69,8 +69,8 @@ public class ChunkInterpolator2D implements ChunkInterpolator {
         return FastMath.max(FastMath.min(value, high), 0);
     }
 
-    public double computeNoise(Generator generator, double x, double y, double z) {
-        return noiseGetter.apply(generator, new Vector3(x, y, z));
+    public double computeNoise(GenerationSettings generationSettings, double x, double y, double z) {
+        return noiseGetter.apply(generationSettings, new Vector3(x, y, z));
     }
 
     /**

@@ -2,7 +2,7 @@ package com.dfsek.terra.api.world.biome;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-public interface Generator {
+public interface GenerationSettings {
     /**
      * Gets the noise sampler instance to use for base terrain.
      *

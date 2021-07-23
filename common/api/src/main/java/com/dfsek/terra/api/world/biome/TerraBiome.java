@@ -24,7 +24,7 @@ public interface TerraBiome extends PropertyHolder {
      *
      * @return BiomeTerrain - The terrain generation instance.
      */
-    Generator getGenerator(World w);
+    GenerationSettings getGenerator(World w);
 
     int getColor();
 

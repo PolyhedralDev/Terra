@@ -12,7 +12,7 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
@@ -98,7 +98,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                         main.logger().info("null palette: " + biome.getID());
                     }
 
-                    Generator generator = biome.getGenerator(world);
+                    GenerationSettings generationSettings = biome.getGenerator(world);
 
                     int sea = paletteInfo.getSeaLevel();
                     Palette seaPalette = paletteInfo.getOcean();
@@ -109,7 +109,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                         if(sampler.sample(x, y, z) > 0) {
                             justSet = true;
 
-                            data = PaletteUtil.getPalette(x, y, z, generator, sampler, paletteInfo).get(paletteLevel, cx, y, cz, seed);
+                            data = PaletteUtil.getPalette(x, y, z, generationSettings, sampler, paletteInfo).get(paletteLevel, cx, y, cz, seed);
                             chunk.setBlock(x, y, z, data);
 
                             paletteLevel++;

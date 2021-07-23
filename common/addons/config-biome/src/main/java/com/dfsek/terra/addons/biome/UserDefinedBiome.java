@@ -4,7 +4,7 @@ import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.biome.Generator;
+import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements TerraBiome {
-    private final UserDefinedGenerator gen;
+    private final UserDefinedGenerationSettings gen;
     private final ProbabilityCollection<Biome> vanilla;
     private final String id;
     private final BiomeTemplate config;
@@ -22,7 +22,7 @@ public class UserDefinedBiome implements TerraBiome {
 
     private final Context context = new Context();
 
-    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, UserDefinedGenerator gen, BiomeTemplate config) {
+    public UserDefinedBiome(ProbabilityCollection<Biome> vanilla, UserDefinedGenerationSettings gen, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();
@@ -52,7 +52,7 @@ public class UserDefinedBiome implements TerraBiome {
     }
 
     @Override
-    public Generator getGenerator(World w) {
+    public GenerationSettings getGenerator(World w) {
         return gen;
     }
 
