@@ -18,15 +18,11 @@ public interface Structure extends StringIdentifiable {
      * @param rotation Rotation of structure
      * @return Whether generation was successful
      */
-    @SuppressWarnings("try")
     boolean generate(Vector3 location, World world, Random random, Rotation rotation);
 
-    @SuppressWarnings("try")
     boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation);
 
-    @SuppressWarnings("try")
     boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
 
-    @SuppressWarnings("try")
     boolean generateDirect(Vector3 location, World world, Random random, Rotation rotation);
 }
