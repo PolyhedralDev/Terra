@@ -1,5 +1,4 @@
 import com.dfsek.terra.addonDir
-import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.LoomGradleExtension

@@ -3,12 +3,6 @@ package com.dfsek.terra
 import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
 
-fun Project.configureCommon() {
-    configureDistribution()
-
-    version = rootProject.version
-}
-
 fun Project.getGitHash(): String {
     val stdout = ByteArrayOutputStream()
     exec {
