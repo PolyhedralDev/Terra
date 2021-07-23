@@ -54,7 +54,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     int cz = zOrig + (z << 2);
                     TerraBiome b = grid.getBiome(cx, cz, seed);
 
-                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator(world).getBiomeNoise(), cx, 0, cz, world.getSeed()));
+                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator().getBiomeNoise(), cx, 0, cz, world.getSeed()));
                 }
             }
         }
@@ -98,7 +98,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                         main.logger().info("null palette: " + biome.getID());
                     }
 
-                    GenerationSettings generationSettings = biome.getGenerator(world);
+                    GenerationSettings generationSettings = biome.getGenerator();
 
                     int sea = paletteInfo.getSeaLevel();
                     Palette seaPalette = paletteInfo.getOcean();
@@ -171,7 +171,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         Sampler sampler = world.getConfig().getSamplerCache().get(x, z);
 
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-        Palette palette = PaletteUtil.getPalette(x, y, z, biome.getGenerator(world), sampler, paletteInfo);
+        Palette palette = PaletteUtil.getPalette(x, y, z, biome.getGenerator(), sampler, paletteInfo);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
         double noise = sampler.sample(fdX, y, fdZ);

@@ -18,7 +18,7 @@ public class ElevationInterpolator {
         // Precompute generators.
         for(int x = -1 - smooth; x <= 16 + smooth; x++) {
             for(int z = -1 - smooth; z <= 16 + smooth; z++) {
-                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z, seed).getGenerator(world);
+                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z, seed).getGenerator();
             }
         }
 

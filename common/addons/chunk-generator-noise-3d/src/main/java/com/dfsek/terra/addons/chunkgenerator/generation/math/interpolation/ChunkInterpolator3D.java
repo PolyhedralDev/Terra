@@ -49,7 +49,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
 
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                GenerationSettings generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getGenerator(w);
+                GenerationSettings generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getGenerator();
                 Map<GenerationSettings, MutableInteger> genMap = new HashMap<>();
 
                 int step = generationSettings.getBlendStep();
@@ -57,7 +57,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
 
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
-                        genMap.computeIfAbsent(provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed).getGenerator(w), g -> new MutableInteger(0)).increment(); // Increment by 1
+                        genMap.computeIfAbsent(provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed).getGenerator(), g -> new MutableInteger(0)).increment(); // Increment by 1
                     }
                 }
 

@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.biome;
 
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -52,7 +51,7 @@ public class UserDefinedBiome implements TerraBiome {
     }
 
     @Override
-    public GenerationSettings getGenerator(World w) {
+    public GenerationSettings getGenerator() {
         return gen;
     }
 
