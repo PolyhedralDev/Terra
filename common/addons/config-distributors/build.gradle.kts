@@ -13,7 +13,9 @@ configureDependencies()
 group = "com.dfsek.terra.common"
 
 dependencies {
-    "shadedApi"(project(":common:api"))
+    "compileOnly"(project(":common:api"))
+    "testImplementation"(project(":common:api"))
+
     "compileOnly"("com.google.guava:guava:30.0-jre")
 
     "testImplementation"("com.google.guava:guava:30.0-jre")
