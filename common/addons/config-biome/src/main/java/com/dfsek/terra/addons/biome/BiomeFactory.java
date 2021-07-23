@@ -14,7 +14,7 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
 
     @Override
     public TerraBiome build(BiomeTemplate template, TerraPlugin main) {
-        UserDefinedGenerator generator = new UserDefinedGenerator(template.getNoiseEquation(), template.getElevationEquation(), template.getCarvingEquation(), template.getBiomeNoise(), template.getElevationWeight(),
+        UserDefinedGenerationSettings generator = new UserDefinedGenerationSettings(template.getNoiseEquation(), template.getElevationEquation(), template.getCarvingEquation(), template.getBiomeNoise(), template.getElevationWeight(),
                 template.getBlendDistance(), template.getBlendStep(), template.getBlendWeight());
         return new UserDefinedBiome(template.getVanilla(), generator, template);
     }

@@ -11,8 +11,6 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.World;
 
 import java.io.File;
 
@@ -21,8 +19,6 @@ import java.io.File;
  */
 public interface TerraPlugin extends LoaderRegistrar {
     WorldHandle getWorldHandle();
-
-    TerraWorld getWorld(World world);
 
     Logger logger();
 

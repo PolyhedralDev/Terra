@@ -37,7 +37,7 @@ public class TerraScriptAddon extends TerraAddon {
                         for(Map.Entry<String, InputStream> entry : entries) {
                             try {
                                 StructureScript structureScript = new StructureScript(entry.getValue(), main, structureRegistry, lootRegistry, event.getPack().getRegistryFactory().create());
-                                structureRegistry.register(structureScript.getId(), structureScript);
+                                structureRegistry.register(structureScript.getID(), structureScript);
                             } catch(ParseException e) {
                                 throw new LoadException("Failed to load script: ", e);
                             }

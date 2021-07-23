@@ -5,7 +5,7 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
@@ -22,11 +22,11 @@ import java.util.Random;
  * Cursed management class for the horrors of Bukkit population
  */
 public class PopulationManager extends BlockPopulator {
-    private final TerraChunkGenerator generator;
+    private final ChunkGenerator generator;
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
     private final TerraPlugin main;
 
-    public PopulationManager(TerraChunkGenerator generator, TerraPlugin main) {
+    public PopulationManager(ChunkGenerator generator, TerraPlugin main) {
         this.generator = generator;
         this.main = main;
     }

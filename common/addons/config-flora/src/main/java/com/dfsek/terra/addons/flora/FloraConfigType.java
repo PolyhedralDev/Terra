@@ -26,7 +26,7 @@ public class FloraConfigType implements ConfigType<FloraTemplate, Flora> {
     }
 
     @Override
-    public TypeKey<Flora> getTypeClass() {
+    public TypeKey<Flora> getTypeKey() {
         return FLORA_TYPE_TOKEN;
     }
 

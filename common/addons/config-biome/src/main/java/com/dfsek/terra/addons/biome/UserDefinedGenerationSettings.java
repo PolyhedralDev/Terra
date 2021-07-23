@@ -1,11 +1,9 @@
 package com.dfsek.terra.addons.biome;
 
-import com.dfsek.terra.addons.biome.holder.PaletteHolder;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.biome.Generator;
-import com.dfsek.terra.api.world.biome.PaletteSettings;
+import com.dfsek.terra.api.world.biome.GenerationSettings;
 
-public class UserDefinedGenerator implements Generator {
+public class UserDefinedGenerationSettings implements GenerationSettings {
 
     private final NoiseSampler noise;
     private final NoiseSampler elevation;
@@ -17,7 +15,7 @@ public class UserDefinedGenerator implements Generator {
     private final int blendStep;
     private final double blendWeight;
 
-    public UserDefinedGenerator(NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
+    public UserDefinedGenerationSettings(NoiseSampler noise, NoiseSampler elevation, NoiseSampler carving, NoiseSampler biomeNoise, double elevationWeight, int blendDistance, int blendStep, double blendWeight) {
         this.noise = noise;
         this.elevation = elevation;
         this.carving = carving;

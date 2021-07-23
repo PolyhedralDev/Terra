@@ -1,22 +1,23 @@
 package com.dfsek.terra.api.config;
 
+import com.dfsek.terra.api.StringIdentifiable;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
 
-import java.util.List;
 import java.util.Map;
 
-public interface WorldConfig {
+public interface WorldConfig extends StringIdentifiable {
     <T> Registry<T> getRegistry(Class<T> clazz);
 
-    TerraWorld getWorld();
+    World getWorld();
 
     SamplerCache getSamplerCache();
 
     BiomeProvider getProvider();
+
+    ConfigPack getPack();
 
     int elevationBlend();
 
@@ -29,8 +30,6 @@ public interface WorldConfig {
     boolean disableFlora();
 
     boolean disableStructures();
-
-    String getID();
 
     String getAuthor();
 

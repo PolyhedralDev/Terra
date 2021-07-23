@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.biome.generation.pipeline;
+package com.dfsek.terra.addons.biome.pipeline.source;
 
 import com.dfsek.terra.api.world.biome.TerraBiome;
 

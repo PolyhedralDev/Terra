@@ -11,7 +11,7 @@ public interface ConfigType<T extends AbstractableTemplate, R> {
 
     ConfigFactory<T, R> getFactory();
 
-    TypeKey<R> getTypeClass();
+    TypeKey<R> getTypeKey();
 
     Supplier<OpenRegistry<R>> registrySupplier(ConfigPack pack);
 }

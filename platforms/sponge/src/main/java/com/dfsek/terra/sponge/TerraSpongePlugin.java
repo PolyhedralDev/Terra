@@ -12,8 +12,6 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.LockedRegistry;
-import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LanguageImpl;
 import com.dfsek.terra.event.EventManagerImpl;
@@ -66,11 +64,6 @@ public class TerraSpongePlugin implements TerraPlugin {
     @Override
     public WorldHandle getWorldHandle() {
         return spongeWorldHandle;
-    }
-
-    @Override
-    public TerraWorld getWorld(World world) {
-        return null;
     }
 
     @Override

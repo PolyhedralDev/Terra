@@ -4,22 +4,20 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.api.world.generator.TerraGenerationStage;
+import com.dfsek.terra.api.world.generator.GenerationStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class CavePopulator implements TerraGenerationStage, Chunkified {
+public class CavePopulator implements GenerationStage, Chunkified {
     private static final Map<BlockType, BlockState> shiftStorage = new HashMap<>(); // Persist BlockData created for shifts, to avoid re-calculating each time.
     private final TerraPlugin main;
 
@@ -30,11 +28,9 @@ public class CavePopulator implements TerraGenerationStage, Chunkified {
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        TerraWorld tw = main.getWorld(world);
-        WorldHandle handle = main.getWorldHandle();
         try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
-            WorldConfig config = tw.getConfig();
+            WorldConfig config = world.getConfig();
             if(config.disableCarving()) return;
 
             for(UserDefinedCarver c : config.getRegistry(UserDefinedCarver.class).entries()) {

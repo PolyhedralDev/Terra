@@ -4,7 +4,6 @@ import com.dfsek.terra.StandalonePlugin;
 import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.platform.DirectChunkData;
 import com.dfsek.terra.platform.DirectWorld;
-import com.dfsek.terra.platform.GenWrapper;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
 
@@ -28,8 +27,7 @@ public class Generator {
         System.out.println("Total mem: " + Runtime.getRuntime().maxMemory() / 1024 / 1024 / 1024 + "GB");
 
 
-        GenWrapper wrapper = new GenWrapper(generator);
-        DirectWorld world = new DirectWorld(seed, wrapper);
+        DirectWorld world = new DirectWorld(seed, null);
 
         long l = System.nanoTime();
         int count = 0;

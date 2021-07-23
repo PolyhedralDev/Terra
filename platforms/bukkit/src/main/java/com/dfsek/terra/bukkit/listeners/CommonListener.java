@@ -2,7 +2,6 @@ package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -42,9 +41,7 @@ public class CommonListener implements Listener {
     public void onSaplingGrow(StructureGrowEvent e) {
         if(e.isCancelled()) return;
         World bukkit = BukkitAdapter.adapt(e.getWorld());
-        if(!bukkit.isTerraWorld()) return;
-        TerraWorld tw = main.getWorld(bukkit);
-        WorldConfig c = tw.getConfig();
+        WorldConfig c = bukkit.getConfig();
         if(c.isDisableSaplings()) return;
         e.setCancelled(true);
         Block block = e.getLocation().getBlock();

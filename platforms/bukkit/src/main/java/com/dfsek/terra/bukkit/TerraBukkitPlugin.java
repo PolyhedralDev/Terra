@@ -20,10 +20,7 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.world.TerraWorld;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.command.FixChunkCommand;
 import com.dfsek.terra.bukkit.command.SaveDataCommand;
@@ -35,7 +32,6 @@ import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
-import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
@@ -49,7 +45,6 @@ import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.util.logging.DebugLogger;
 import com.dfsek.terra.util.logging.JavaLogger;
-import com.dfsek.terra.world.TerraWorldImpl;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -79,8 +74,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
 
-    private final Map<String, com.dfsek.terra.api.world.generator.TerraChunkGenerator> generatorMap = new HashMap<>();
-    private final Map<World, TerraWorld> worldMap = new HashMap<>();
+    private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     private final Profiler profiler = new ProfilerImpl();
     private final ConfigRegistry registry = new ConfigRegistry();
@@ -98,14 +92,7 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = registry.loadAll(this);
-        Map<World, TerraWorld> newMap = new HashMap<>();
-        worldMap.forEach((world, tw) -> {
-            tw.getConfig().getSamplerCache().clear();
-            String packID = tw.getConfig().getID();
-            newMap.put(world, new TerraWorldImpl(world, registry.get(packID), this));
-        });
-        worldMap.clear();
-        worldMap.putAll(newMap);
+
         return succeed;
     }
 
@@ -251,17 +238,6 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     public CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedRegistry;
-    }
-
-    public TerraWorld getWorld(World world) {
-        BukkitWorld w = (BukkitWorld) world;
-        if(!w.isTerraWorld())
-            throw new IllegalArgumentException("Not a Terra world! " + w.getGenerator());
-        if(!worlds.containsKey(w.getName())) {
-            getLogger().warning("Unexpected world load detected: \"" + w.getName() + "\"");
-            return new TerraWorldImpl(w, ((TerraChunkGenerator) w.getGenerator().getHandle()).getConfigPack(), this);
-        }
-        return worldMap.computeIfAbsent(w, w2 -> new TerraWorldImpl(w, worlds.get(w.getName()), this));
     }
 
     @Override

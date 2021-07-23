@@ -23,6 +23,6 @@ public class GetBlockCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-        sender.sendMessage("Block: " + main.getWorld(player.world()).getUngeneratedBlock(player.position()).getAsString());
+        sender.sendMessage("Block: " + player.world().getGenerator().getBlock(player.world(), player.position()).getAsString());
     }
 }

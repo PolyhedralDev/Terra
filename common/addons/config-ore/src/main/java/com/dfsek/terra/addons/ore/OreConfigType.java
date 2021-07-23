@@ -25,7 +25,7 @@ public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     }
 
     @Override
-    public TypeKey<Ore> getTypeClass() {
+    public TypeKey<Ore> getTypeKey() {
         return ORE_TYPE_TOKEN;
     }
 

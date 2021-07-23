@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.config;
 
+import com.dfsek.terra.api.StringIdentifiable;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
@@ -7,7 +8,7 @@ import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder {
+public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder, StringIdentifiable {
     BiomeProvider getBiomeProviderBuilder();
 
     <T> CheckedRegistry<T> getOrCreateRegistry(Type clazz);
@@ -29,7 +30,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
         return getOrCreateRegistry(type.getType());
     }
 
-    WorldConfig toWorldConfig(TerraWorld world);
+    WorldConfig toWorldConfig(World world);
 
     List<GenerationStageProvider> getStages();
 
@@ -38,8 +39,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     Loader getLoader();
 
     Set<TerraAddon> addons();
-
-    String getID();
 
     String getAuthor();
 

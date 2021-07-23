@@ -25,9 +25,7 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.Tree;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
@@ -52,17 +50,13 @@ import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.util.logging.DebugLogger;
-import com.dfsek.terra.world.TerraWorldImpl;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -83,7 +77,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static TerraFabricPlugin instance;
     private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
-    private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
     private final EventManager eventManager = new EventManagerImpl(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
@@ -119,10 +112,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         return instance;
     }
 
-    public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
-        return worldMap;
-    }
-
     private ProtoBiome parseBiome(String id) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
         if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier); // failure.
@@ -136,17 +125,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
     @Override
     public WorldHandle getWorldHandle() {
         return worldHandle;
-    }
-
-    @Override
-    public TerraWorld getWorld(World world) {
-        return getWorld(((WorldAccess) world).getDimension());
-    }
-
-    public TerraWorld getWorld(DimensionType type) {
-        TerraWorld world = worldMap.get(type).getRight();
-        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
-        return world;
     }
 
     @Override
@@ -188,11 +166,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
         config.load(this);
         LangUtil.load(config.getLanguage(), this); // Load language.
         boolean succeed = configRegistry.loadAll(this);
-        worldMap.forEach((seed, pair) -> {
-            pair.getRight().getConfig().getSamplerCache().clear();
-            String packID = pair.getRight().getConfig().getID();
-            pair.setRight(new TerraWorldImpl(pair.getRight().getWorld(), configRegistry.get(packID), this));
-        });
         return succeed;
     }
 

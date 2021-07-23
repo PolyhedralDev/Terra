@@ -114,17 +114,6 @@ public class StructureScript implements Structure {
 
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript:" + id)) {
-            StructureBuffer buffer = new StructureBuffer(location);
-            boolean level = applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
-            buffer.paste(location, world);
-            return level;
-        }
-    }
-
-    @Override
-    @SuppressWarnings("try")
     public boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_chunk:" + id)) {
             StructureBuffer buffer = computeBuffer(location, world, random, rotation);
@@ -133,7 +122,6 @@ public class StructureScript implements Structure {
         }
     }
 
-    @Override
     @SuppressWarnings("try")
     public boolean test(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {
@@ -164,7 +152,7 @@ public class StructureScript implements Structure {
 
     @Override
     @SuppressWarnings("try")
-    public boolean generateDirect(Vector3 location, World world, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
             DirectBuffer buffer = new DirectBuffer(location, world);
             return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
@@ -172,7 +160,7 @@ public class StructureScript implements Structure {
     }
 
     @Override
-    public String getId() {
+    public String getID() {
         return id;
     }
 

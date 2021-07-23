@@ -2,13 +2,14 @@ package com.dfsek.terra.config.dummy;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 
 public class DummyWorld implements World {
     @Override
@@ -24,11 +25,6 @@ public class DummyWorld implements World {
     @Override
     public int getMaxHeight() {
         return 255;
-    }
-
-    @Override
-    public ChunkGenerator getGenerator() {
-        return () -> (GeneratorWrapper) () -> null;
     }
 
     @Override
@@ -59,5 +55,20 @@ public class DummyWorld implements World {
     @Override
     public int getMinHeight() {
         return 0;
+    }
+
+    @Override
+    public ChunkGenerator getGenerator() {
+        throw new UnsupportedOperationException("Cannot get generator of DummyWorld");
+    }
+
+    @Override
+    public BiomeProvider getBiomeProvider() {
+        throw new UnsupportedOperationException("Cannot get biome provider of DummyWorld");
+    }
+
+    @Override
+    public WorldConfig getConfig() {
+        throw new UnsupportedOperationException("Cannot get config of DummyWorld");
     }
 }

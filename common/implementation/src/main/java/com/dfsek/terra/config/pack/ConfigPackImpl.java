@@ -32,7 +32,7 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
@@ -49,7 +49,6 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.RegistryFactoryImpl;
 import com.dfsek.terra.registry.config.ConfigTypeRegistry;
-import com.dfsek.terra.world.TerraWorldImpl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -139,7 +138,7 @@ public class ConfigPackImpl implements ConfigPack {
             main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
             throw e;
         }
-        toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+        toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
 
     public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
@@ -192,19 +191,19 @@ public class ConfigPackImpl implements ConfigPack {
             throw e;
         }
 
-        toWorldConfig(new TerraWorldImpl(new DummyWorld(), this, main)); // Build now to catch any errors immediately.
+        toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
 
     @SuppressWarnings("unchecked")
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
             OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
-            if(registryMap.containsKey(configType.getTypeClass().getType())) { // Someone already registered something; we need to copy things to the new registry.
-                registryMap.get(configType.getTypeClass().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+            if(registryMap.containsKey(configType.getTypeKey().getType())) { // Someone already registered something; we need to copy things to the new registry.
+                registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
-            selfLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
-            abstractConfigLoader.registerLoader(configType.getTypeClass().getType(), openRegistry);
-            registryMap.put(configType.getTypeClass().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+            selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
+            abstractConfigLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
+            registryMap.put(configType.getTypeKey().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
         });
     }
 
@@ -265,7 +264,7 @@ public class ConfigPackImpl implements ConfigPack {
         }
 
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
-            CheckedRegistry registry = getCheckedRegistry(configType.getTypeClass());
+            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
             main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {
@@ -353,7 +352,7 @@ public class ConfigPackImpl implements ConfigPack {
 
 
     @Override
-    public WorldConfigImpl toWorldConfig(TerraWorld world) {
+    public WorldConfigImpl toWorldConfig(World world) {
         return new WorldConfigImpl(world, this, main);
     }
 

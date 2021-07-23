@@ -33,7 +33,7 @@ public class BufferedLootApplication implements BufferedItem {
             }
             Container container = (Container) data;
 
-            LootPopulateEvent event = new LootPopulateEvent(container, table, world.getTerraGenerator().getConfigPack(), structure);
+            LootPopulateEvent event = new LootPopulateEvent(container, table, world.getConfig().getPack(), structure);
             main.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
 

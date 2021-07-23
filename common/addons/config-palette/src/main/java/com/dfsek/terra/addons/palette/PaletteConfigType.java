@@ -34,7 +34,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
 
     @Override
-    public TypeKey<Palette> getTypeClass() {
+    public TypeKey<Palette> getTypeKey() {
         return PALETTE_TYPE_TOKEN;
     }
 

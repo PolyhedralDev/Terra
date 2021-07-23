@@ -2,7 +2,7 @@ package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
-import com.dfsek.terra.api.world.TerraWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.world.population.items.TerraStructure;
@@ -19,13 +19,12 @@ public class PaperListener implements Listener {
 
     @EventHandler
     public void onStructureLocate(StructureLocateEvent e) {
-        if(!BukkitAdapter.adapt(e.getWorld()).isTerraWorld()) return;
         String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
-        TerraWorld tw = main.getWorld(BukkitAdapter.adapt(e.getWorld()));
+        World w = BukkitAdapter.adapt(e.getWorld());
         ConfiguredStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get(name));
         if(config != null) {
-            AsyncStructureFinder finder = new AsyncStructureFinder(tw.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin().toVector()), tw.getWorld(), 0, 500, location -> {
+            AsyncStructureFinder finder = new AsyncStructureFinder(w.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin().toVector()), tw.getWorld(), 0, 500, location -> {
                 if(location != null)
                     e.setResult(BukkitAdapter.adapt(location).toLocation(e.getWorld()));
                 main.getDebugLogger().info("Location: " + location);

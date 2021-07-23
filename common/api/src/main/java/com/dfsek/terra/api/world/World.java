@@ -3,19 +3,17 @@ package com.dfsek.terra.api.world;
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.GeneratorWrapper;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 
 public interface World extends Handle {
     long getSeed();
 
     int getMaxHeight();
-
-    ChunkGenerator getGenerator();
 
     Chunk getChunkAt(int x, int z);
 
@@ -53,11 +51,9 @@ public interface World extends Handle {
 
     int getMinHeight();
 
-    default boolean isTerraWorld() {
-        return getGenerator().getHandle() instanceof GeneratorWrapper;
-    }
+    ChunkGenerator getGenerator();
 
-    default TerraChunkGenerator getTerraGenerator() {
-        return ((GeneratorWrapper) getGenerator().getHandle()).getHandle();
-    }
+    BiomeProvider getBiomeProvider();
+
+    WorldConfig getConfig();
 }

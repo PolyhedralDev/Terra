@@ -10,7 +10,6 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.world.TerraWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import net.jafama.FastMath;
@@ -50,8 +49,7 @@ public class CheckFunction implements Function<String> {
     private String apply(Vector3 vector, World world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
-        TerraWorld tw = main.getWorld(world);
-        SamplerCache cache = tw.getConfig().getSamplerCache();
+        SamplerCache cache = world.getConfig().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);
 
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.

@@ -38,7 +38,7 @@ public class BiomeFunction implements Function<String> {
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        BiomeProvider grid = main.getWorld(arguments.getWorld()).getBiomeProvider();
+        BiomeProvider grid = arguments.getWorld().getBiomeProvider();
 
         return grid.getBiome(arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ()))), arguments.getWorld().getSeed()).getID();
     }

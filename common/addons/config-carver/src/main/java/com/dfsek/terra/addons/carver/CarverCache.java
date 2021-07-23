@@ -26,12 +26,12 @@ public class CarverCache {
     public CarverCache(World w, TerraPlugin main, UserDefinedCarver carver) {
         this.carver = carver;
         cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getCarverCacheSize())
-                .build(new CacheLoader<Long, List<Worm.WormPoint>>() {
+                .build(new CacheLoader<>() {
                     @Override
                     public List<Worm.WormPoint> load(@NotNull Long key) {
                         int chunkX = (int) (key >> 32);
                         int chunkZ = (int) key.longValue();
-                        BiomeProvider provider = main.getWorld(w).getBiomeProvider();
+                        BiomeProvider provider = w.getBiomeProvider();
                         if(CarverCache.this.carver.isChunkCarved(w, chunkX, chunkZ, new Random(PopulationUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed() + CarverCache.this.carver.hashCode())))) {
                             long seed = PopulationUtil.getCarverChunkSeed(chunkX, chunkZ, w.getSeed());
                             Random r = new Random(seed);

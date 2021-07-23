@@ -7,9 +7,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitEntity;
-import com.dfsek.terra.bukkit.generator.BukkitChunkGenerator;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
@@ -31,11 +29,6 @@ public class BukkitWorld implements World {
     @Override
     public int getMaxHeight() {
         return delegate.getMaxHeight();
-    }
-
-    @Override
-    public ChunkGenerator getGenerator() {
-        return new BukkitChunkGenerator(delegate.getGenerator());
     }
 
     public String getName() {

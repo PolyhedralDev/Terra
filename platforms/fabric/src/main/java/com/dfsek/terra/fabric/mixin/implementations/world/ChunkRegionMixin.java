@@ -2,16 +2,17 @@ package com.dfsek.terra.fabric.mixin.implementations.world;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.GeneratorWrapper;
-import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
@@ -21,16 +22,24 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.TickScheduler;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.chunk.ChunkStatus;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = World.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
+    private WorldConfig config;
+
     @Shadow
     @Final
     private ServerWorld world;
@@ -40,18 +49,15 @@ public abstract class ChunkRegionMixin {
     private long seed;
 
     @Shadow
-    public abstract boolean setBlockState(BlockPos pos, net.minecraft.block.BlockState state, int flags, int maxUpdateDepth);
-
-    @Shadow
     public abstract TickScheduler<Fluid> getFluidTickScheduler();
 
     public int terraWorld$getMaxHeight() {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
     }
 
-    @SuppressWarnings("deprecation")
-    public ChunkGenerator terraWorld$getGenerator() {
-        return (ChunkGenerator) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator();
+    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
+    public void injectConstructor(ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i, CallbackInfo ci) {
+        this.config = ((World) world).getConfig();
     }
 
     public Chunk terraWorld$getChunkAt(int x, int z) {
@@ -99,12 +105,17 @@ public abstract class ChunkRegionMixin {
         return this;
     }
 
-    public boolean terraWorld$isTerraWorld() {
-        return terraWorld$getGenerator() instanceof GeneratorWrapper;
+    public ChunkGenerator terraWorld$getGenerator() {
+        return ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator()).getHandle();
     }
 
-    public TerraChunkGenerator terraWorld$getTerraGenerator() {
-        return ((FabricChunkGeneratorWrapper) terraWorld$getGenerator()).getHandle();
+    @SuppressWarnings("deprecation")
+    public BiomeProvider terraWorld$getBiomeProvider() {
+        return ((TerraBiomeSource) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator().getBiomeSource()).getProvider();
+    }
+
+    public WorldConfig terraWorld$getConfig() {
+        return config;
     }
 
     /**
