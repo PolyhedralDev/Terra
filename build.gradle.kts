@@ -1,7 +1,4 @@
-import com.dfsek.terra.configureCompilation
-import com.dfsek.terra.configureDependencies
-import com.dfsek.terra.configurePublishing
-import com.dfsek.terra.getGitHash
+import com.dfsek.terra.*
 
 val versionObj = Version("6", "0", "0", true)
 
@@ -30,6 +27,13 @@ allprojects {
         reports.junitXml.isEnabled = false
     }
 }
+
+project(":platforms").subprojects.forEach {
+    afterEvaluate {
+        configureDistribution()
+    }
+}
+
 /**
  * Version class that does version stuff.
  */
