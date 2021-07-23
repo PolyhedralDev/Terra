@@ -6,9 +6,6 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
-configureCommon()
-
-group = "com.dfsek.terra.bukkit"
 
 val mcVersion = "1.17"
 val testDir = "target/server"

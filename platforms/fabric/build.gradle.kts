@@ -10,7 +10,6 @@ plugins {
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
-configureCommon()
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
