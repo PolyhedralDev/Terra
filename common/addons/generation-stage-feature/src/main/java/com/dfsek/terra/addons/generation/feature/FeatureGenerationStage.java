@@ -35,7 +35,7 @@ public class FeatureGenerationStage implements GenerationStage {
                                     .getSuitableCoordinates(column)
                                     .forEach(y ->
                                             feature.getStructure(world, tx, y, tz)
-                                                    .generateDirect(new Vector3(tx, y, tz), world, PopulationUtil.getRandom(chunk), Rotation.NONE)
+                                                    .generate(new Vector3(tx, y, tz), world, PopulationUtil.getRandom(chunk), Rotation.NONE)
                                     );
                         }
                     });

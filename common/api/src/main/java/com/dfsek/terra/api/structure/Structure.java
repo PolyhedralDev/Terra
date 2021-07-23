@@ -14,5 +14,5 @@ public interface Structure extends StringIdentifiable {
 
     boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
 
-    boolean generateDirect(Vector3 location, World world, Random random, Rotation rotation);
+    boolean generate(Vector3 location, World world, Random random, Rotation rotation);
 }
