@@ -18,11 +18,6 @@ dependencies {
 
 
     "shadedApi"("commons-io:commons-io:2.6")
-
-
-    "compileOnly"("com.google.guava:guava:30.0-jre")
-
-    "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 
 publishing {

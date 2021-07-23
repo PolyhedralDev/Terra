@@ -19,9 +19,5 @@ dependencies {
     "shadedApi"("com.dfsek.tectonic:yaml:2.1.2")
 
     "shadedApi"("net.jafama:jafama:2.3.2")
-
-    "compileOnly"("com.google.guava:guava:30.0-jre")
-
-    "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 

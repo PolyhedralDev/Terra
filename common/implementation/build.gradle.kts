@@ -23,10 +23,6 @@ dependencies {
 
     "shadedImplementation"("org.yaml:snakeyaml:1.27")
     "shadedImplementation"("org.ow2.asm:asm:9.0")
-
-    "compileOnly"("com.google.guava:guava:30.0-jre")
-
-    "testImplementation"("com.google.guava:guava:30.0-jre")
 }
 
 publishing {
