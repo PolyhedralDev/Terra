@@ -24,7 +24,7 @@ public class DirectWorld implements World {
     private final GenWrapper generator;
     private final Map<Long, MCAFile> files = Collections.synchronizedMap(new HashMap<>());
 
-    public DirectWorld(long seed, GenWrapper generator) {
+    public DirectWorld(long seed) {
         this.seed = seed;
         this.generator = generator;
     }
