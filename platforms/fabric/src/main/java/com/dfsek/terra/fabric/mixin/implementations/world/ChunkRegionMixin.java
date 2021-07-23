@@ -52,13 +52,7 @@ public abstract class ChunkRegionMixin {
     private long seed;
 
     @Shadow
-    public abstract boolean setBlockState(BlockPos pos, net.minecraft.block.BlockState state, int flags, int maxUpdateDepth);
-
-    @Shadow
     public abstract TickScheduler<Fluid> getFluidTickScheduler();
-
-    @Shadow
-    public abstract ChunkManager getChunkManager();
 
     public int terraWorld$getMaxHeight() {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
@@ -67,11 +61,6 @@ public abstract class ChunkRegionMixin {
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
     public void injectConstructor(ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i, CallbackInfo ci) {
         this.config = ((World) world).getConfig();
-    }
-
-    @SuppressWarnings("deprecation")
-    public ChunkGenerator terraWorld$getGenerator() {
-        return (ChunkGenerator) ((ChunkRegion) (Object) this).toServerWorld().getChunkManager().getChunkGenerator();
     }
 
     public Chunk terraWorld$getChunkAt(int x, int z) {
@@ -119,7 +108,7 @@ public abstract class ChunkRegionMixin {
         return this;
     }
 
-    public TerraChunkGenerator terraWorld$getTerraGenerator() {
+    public TerraChunkGenerator terraWorld$getGenerator() {
         return ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator()).getHandle();
     }
 

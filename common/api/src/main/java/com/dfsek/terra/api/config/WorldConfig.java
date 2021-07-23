@@ -16,6 +16,8 @@ public interface WorldConfig {
 
     BiomeProvider getProvider();
 
+    ConfigPack getPack();
+
     int elevationBlend();
 
     boolean disableTrees();

@@ -9,6 +9,7 @@ import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.generator.TerraChunkGenerator;
 
 public class DummyWorld implements World {
     @Override
@@ -54,6 +55,11 @@ public class DummyWorld implements World {
     @Override
     public int getMinHeight() {
         return 0;
+    }
+
+    @Override
+    public TerraChunkGenerator getGenerator() {
+        throw new UnsupportedOperationException("Cannot get generator of DummyWorld");
     }
 
     @Override

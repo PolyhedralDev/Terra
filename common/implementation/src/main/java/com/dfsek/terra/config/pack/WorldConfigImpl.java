@@ -1,6 +1,7 @@
 package com.dfsek.terra.config.pack;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.World;
@@ -52,6 +53,11 @@ public class WorldConfigImpl implements WorldConfig {
     @Override
     public BiomeProvider getProvider() {
         return provider;
+    }
+
+    @Override
+    public ConfigPack getPack() {
+        return pack;
     }
 
     @Override
