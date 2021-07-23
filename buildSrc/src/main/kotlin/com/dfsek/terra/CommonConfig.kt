@@ -9,10 +9,6 @@ fun Project.configureCommon() {
     version = rootProject.version
 }
 
-fun Project.configureAddon() {
-
-}
-
 fun Project.getGitHash(): String {
     val stdout = ByteArrayOutputStream()
     exec {
