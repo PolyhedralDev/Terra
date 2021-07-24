@@ -2,7 +2,7 @@ package com.dfsek.terra
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
@@ -15,7 +15,7 @@ fun Project.configureCompilation() {
     apply(plugin = "java-library")
     apply(plugin = "idea")
 
-    configure<JavaPluginConvention> {
+    configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_16
         targetCompatibility = JavaVersion.VERSION_16
     }
