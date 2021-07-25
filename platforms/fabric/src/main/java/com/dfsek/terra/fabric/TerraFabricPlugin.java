@@ -36,7 +36,7 @@ import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-import com.dfsek.terra.fabric.event.GameInitializationEvent;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -313,17 +313,6 @@ public class TerraFabricPlugin implements TerraPlugin, ModInitializer {
                         Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
                         configRegistry.forEach(pack -> pack.getCheckedRegistry(TerraBiome.class).forEach((id, biome) -> FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, new Identifier("terra", FabricUtil.createBiomeID(pack, id)), FabricUtil.createBiome(biome, pack, event.getRegistryManager())))); // Register all Terra biomes.
                         logger.info("Biomes registered.");
-                    })
-                    .global();
-
-            eventManager
-                    .getHandler(FunctionalEventHandler.class)
-                    .register(this, GameInitializationEvent.class)
-                    .then(event -> {
-                        TerraFabricPlugin main = TerraFabricPlugin.getInstance();
-                        main.logger().info("Loading config packs...");
-                        configRegistry.loadAll(TerraFabricPlugin.this);
-                        logger.info("Loaded packs.");
                     })
                     .global();
         }
