@@ -130,6 +130,10 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         }
     }
 
+    public CommandManager getManager() {
+        return manager;
+    }
+
     @Override
     public Logger getDebugLogger() {
         return debugLogger.value();

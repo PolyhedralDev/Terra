@@ -47,7 +47,7 @@ public final class FabricUtil {
         // BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = new HashMap<>(); // template.getColors();
 
-        TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
+        //TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
 
         Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
         Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);

@@ -3,6 +3,7 @@ package com.dfsek.terra.fabric.generation;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.util.FabricUtil;
 import com.mojang.serialization.Codec;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class TerraBiomeSource extends BiomeSource {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
             Codec.STRING.fieldOf("pack").forGetter(ConfigPack::getID)
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
+    ).apply(config, config.stable(FabricEntryPoint.getTerraPlugin().getConfigRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
             Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),

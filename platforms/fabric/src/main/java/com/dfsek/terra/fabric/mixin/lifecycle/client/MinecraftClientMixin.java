@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.mixin.lifecycle.client;
 
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.generation.TerraGeneratorType;
@@ -19,8 +20,8 @@ public class MinecraftClientMixin {
             target = "Lnet/minecraft/client/util/WindowProvider;createWindow(Lnet/minecraft/client/WindowSettings;Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/client/util/Window;", // sorta arbitrary position, after mod init, before window opens
             shift = At.Shift.BEFORE))
     public void injectConstructor(RunArgs args, CallbackInfo callbackInfo) {
-        TerraFabricPlugin.getInstance().getEventManager().callEvent(new PlatformInitializationEvent());
-        TerraFabricPlugin.getInstance().getConfigRegistry().forEach(pack -> {
+        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new PlatformInitializationEvent());
+        FabricEntryPoint.getTerraPlugin().getConfigRegistry().forEach(pack -> {
             final GeneratorType generatorType = new TerraGeneratorType(pack);
             //noinspection ConstantConditions
             ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getID()));

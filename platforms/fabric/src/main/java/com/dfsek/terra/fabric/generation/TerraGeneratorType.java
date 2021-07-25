@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import net.fabricmc.api.EnvType;
@@ -25,7 +26,7 @@ public class TerraGeneratorType extends GeneratorType {
     @Override
     public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures, boolean bonusChest) {
         GeneratorOptions options = super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
-        TerraFabricPlugin.getInstance().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
+        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
         return options;
     }
 
