@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.dfsek.terra.fabric.TerraFabricPlugin"
+      "com.dfsek.terra.fabric.FabricEntryPoint"
     ]
   },
   "mixins": [
