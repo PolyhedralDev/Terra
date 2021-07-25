@@ -54,13 +54,7 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
     private final CommandManager manager = new TerraCommandManager(this);
 
-    private final AddonRegistry addonRegistry = Construct.construct(() -> {
-        Optional<TerraAddon> addon = getPlatformAddon();
-        AddonRegistry registry = addon.map(terraAddon -> new AddonRegistry(terraAddon, this)).orElseGet(() -> new AddonRegistry(this));
-        InternalAddon internalAddon = new InternalAddon(this);
-        registry.register(internalAddon);
-        return registry;
-    });
+    private final AddonRegistry addonRegistry;
 
 
     public AbstractTerraPlugin() {
@@ -75,6 +69,9 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         if(config.isDebugProfiler()) { // if debug.profiler is enabled, start profiling
             profiler.start();
         }
+
+        addonRegistry = getPlatformAddon().map(terraAddon -> new AddonRegistry(terraAddon, this)).orElseGet(() -> new AddonRegistry(this));
+        addonRegistry.register(new InternalAddon(this));
 
         if(!addonRegistry.loadAll(getClass().getClassLoader())) { // load all addons
             throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
