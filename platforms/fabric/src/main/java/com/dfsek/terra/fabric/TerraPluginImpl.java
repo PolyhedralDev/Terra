@@ -1,7 +1,10 @@
 package com.dfsek.terra.fabric;
 
+import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.AbstractTerraPlugin;
 import com.dfsek.terra.api.Logger;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.lang.Language;
@@ -9,7 +12,10 @@ import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
+import com.dfsek.terra.fabric.util.ProtoBiome;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
@@ -69,5 +75,23 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
     @Override
     public String platformName() {
         return "Fabric";
+    }
+
+    @Override
+    public void register(TypeRegistry registry) {
+        super.register(registry);
+        registry
+                .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
+                .registerLoader(Identifier.class, (t, o, l) -> {
+                    Identifier identifier = Identifier.tryParse((String) o);
+                    if(identifier == null) throw new LoadException("Invalid identifier: " + o);
+                    return identifier;
+                });
+    }
+
+    private ProtoBiome parseBiome(String id) throws LoadException {
+        Identifier identifier = Identifier.tryParse(id);
+        if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier); // failure.
+        return new ProtoBiome(identifier);
     }
 }
