@@ -27,7 +27,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import java.util.HashMap;
 import java.util.Map;
 
-@Addon("Terra-Fabric")
+@Addon("terra-fabric")
 @Author("Terra")
 @Version("1.0.0")
 public final class FabricAddon extends TerraAddon {
