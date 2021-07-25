@@ -5,10 +5,8 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.AbstractTerraPlugin;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
@@ -44,7 +42,7 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
 
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
-    private final Lazy<File> dataFolder = Lazy.of(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
+    private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
 
     @Override
     public WorldHandle getWorldHandle() {

@@ -9,13 +9,11 @@ import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
@@ -39,7 +37,7 @@ import java.util.Optional;
  * Skeleton implementation of {@link TerraPlugin}
  */
 public abstract class AbstractTerraPlugin implements TerraPlugin {
-    private final Lazy<DebugLogger> debugLogger = Lazy.of(() -> new DebugLogger(logger()));
+    private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
     private final EventManager eventManager = new EventManagerImpl(this);
 
     private final ConfigRegistry configRegistry = new ConfigRegistry();
