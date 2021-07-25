@@ -4,6 +4,7 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.AbstractTerraPlugin;
 import com.dfsek.terra.api.Logger;
+import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -19,6 +20,7 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
+import java.util.Optional;
 
 public class TerraPluginImpl extends AbstractTerraPlugin {
     private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
@@ -47,6 +49,11 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
     @Override
     public WorldHandle getWorldHandle() {
         return worldHandle;
+    }
+
+    @Override
+    protected Optional<TerraAddon> getPlatformAddon() {
+        return Optional.of(new FabricAddon(this));
     }
 
     @Override
