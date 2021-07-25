@@ -11,6 +11,7 @@ import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
@@ -147,5 +148,10 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     @Override
     public void register(TypeRegistry registry) {
         loaders.register(registry);
+    }
+
+    @Override
+    public Language getLanguage() {
+        return LangUtil.getLanguage();
     }
 }
