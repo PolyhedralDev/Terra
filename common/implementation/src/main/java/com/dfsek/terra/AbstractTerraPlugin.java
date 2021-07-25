@@ -82,10 +82,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
 
-        eventManager
-                .getHandler(FunctionalEventHandler.class);
-                /**/
-
 
         logger().info("Finished initialization.");
     }
