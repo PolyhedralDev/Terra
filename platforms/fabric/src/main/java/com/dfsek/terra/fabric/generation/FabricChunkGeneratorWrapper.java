@@ -7,7 +7,6 @@ import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.util.FastRandom;

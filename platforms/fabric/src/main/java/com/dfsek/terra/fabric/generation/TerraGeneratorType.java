@@ -2,7 +2,6 @@ package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -4,7 +4,6 @@ import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;

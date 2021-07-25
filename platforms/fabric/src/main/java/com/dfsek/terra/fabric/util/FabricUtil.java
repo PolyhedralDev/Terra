@@ -7,8 +7,6 @@ import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.TerraPluginImpl;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.entity.LootableContainerBlockEntity;

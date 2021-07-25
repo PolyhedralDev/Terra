@@ -2,7 +2,6 @@ package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.TerraPluginImpl;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;

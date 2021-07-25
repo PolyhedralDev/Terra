@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;

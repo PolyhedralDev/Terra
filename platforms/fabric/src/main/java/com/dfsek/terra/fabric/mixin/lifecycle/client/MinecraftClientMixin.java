@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.mixin.lifecycle.client;
 
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.generation.TerraGeneratorType;
 import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;

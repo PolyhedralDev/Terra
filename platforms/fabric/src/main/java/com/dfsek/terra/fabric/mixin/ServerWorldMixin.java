@@ -1,7 +1,6 @@
 package com.dfsek.terra.fabric.mixin;
 
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
