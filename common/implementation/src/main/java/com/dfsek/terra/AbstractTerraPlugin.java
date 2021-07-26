@@ -9,12 +9,12 @@ import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
@@ -35,6 +35,8 @@ import java.util.Optional;
 
 /**
  * Skeleton implementation of {@link TerraPlugin}
+ *
+ * Implementations must invoke {@link #load()} in their constructors.
  */
 public abstract class AbstractTerraPlugin implements TerraPlugin {
     private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
@@ -56,12 +58,23 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
     private final Logger logger;
 
+    private static final MutableBoolean LOADED = new MutableBoolean(false);
+
 
     public AbstractTerraPlugin() {
         this.logger = createLogger();
-        System.out.println(logger);
+        addonRegistry = getPlatformAddon().map(terraAddon -> new AddonRegistry(terraAddon, this)).orElseGet(() -> new AddonRegistry(this));
+    }
+
+    protected void load() {
+        if(LOADED.get()) {
+            throw new IllegalStateException("Someone tried to initialize Terra, but Terra has already initialized. This is most likely due to a broken platform implementation, or a misbehaving mod.");
+        }
+        LOADED.set(true);
+
         logger().info("Initializing Terra...");
 
+        saveDefaultConfig();
         config.load(this); // load config.yml
 
         LangUtil.load(config.getLanguage(), this); // load language
@@ -72,7 +85,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
             profiler.start();
         }
 
-        addonRegistry = getPlatformAddon().map(terraAddon -> new AddonRegistry(terraAddon, this)).orElseGet(() -> new AddonRegistry(this));
         addonRegistry.register(new InternalAddon(this));
 
         if(!addonRegistry.loadAll(getClass().getClassLoader())) { // load all addons

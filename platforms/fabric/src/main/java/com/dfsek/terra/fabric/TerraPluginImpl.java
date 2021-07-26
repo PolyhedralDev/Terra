@@ -36,6 +36,10 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
         return Optional.of(new FabricAddon(this));
     }
 
+    public TerraPluginImpl() {
+        load();
+    }
+
     @Override
     protected Logger createLogger() {
         final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
