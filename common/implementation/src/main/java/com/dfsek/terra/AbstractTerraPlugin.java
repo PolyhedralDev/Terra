@@ -74,7 +74,15 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
         logger().info("Initializing Terra...");
 
-        saveDefaultConfig();
+        try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
+            File configFile = new File(getDataFolder(), "config.yml");
+            if(!configFile.exists()) {
+                FileUtils.copyInputStreamToFile(stream, configFile);
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
         config.load(this); // load config.yml
 
         LangUtil.load(config.getLanguage(), this); // load language
@@ -125,18 +133,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
-    }
-
-    @Override
-    public void saveDefaultConfig() {
-        try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
-            File configFile = new File(getDataFolder(), "config.yml");
-            if(!configFile.exists()) {
-                FileUtils.copyInputStreamToFile(stream, configFile);
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public CommandManager getManager() {
