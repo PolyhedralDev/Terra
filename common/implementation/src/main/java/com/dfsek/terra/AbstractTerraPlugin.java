@@ -54,8 +54,12 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
     private final AddonRegistry addonRegistry;
 
+    private final Logger logger;
+
 
     public AbstractTerraPlugin() {
+        this.logger = createLogger();
+        System.out.println(logger);
         logger().info("Initializing Terra...");
 
         config.load(this); // load config.yml
@@ -89,6 +93,8 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     protected Optional<TerraAddon> getPlatformAddon() {
         return Optional.empty();
     }
+
+    protected abstract Logger createLogger();
 
     @Override
     public PluginConfig getTerraConfig() {
@@ -148,5 +154,10 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     @Override
     public Language getLanguage() {
         return LangUtil.getLanguage();
+    }
+
+    @Override
+    public Logger logger() {
+        return logger;
     }
 }

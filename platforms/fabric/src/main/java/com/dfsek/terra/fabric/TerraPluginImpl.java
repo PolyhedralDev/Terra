@@ -21,24 +21,6 @@ import java.io.File;
 import java.util.Optional;
 
 public class TerraPluginImpl extends AbstractTerraPlugin {
-    private final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
-
-    private final Logger logger = new Logger() {
-        @Override
-        public void info(String message) {
-            log4jLogger.info(message);
-        }
-
-        @Override
-        public void warning(String message) {
-            log4jLogger.warn(message);
-        }
-
-        @Override
-        public void severe(String message) {
-            log4jLogger.error(message);
-        }
-    };
 
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
@@ -55,9 +37,26 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
     }
 
     @Override
-    public Logger logger() {
-        return logger;
+    protected Logger createLogger() {
+        final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
+        return new Logger() {
+            @Override
+            public void info(String message) {
+                log4jLogger.info(message);
+            }
+
+            @Override
+            public void warning(String message) {
+                log4jLogger.warn(message);
+            }
+
+            @Override
+            public void severe(String message) {
+                log4jLogger.error(message);
+            }
+        };
     }
+
 
     @Override
     public File getDataFolder() {
