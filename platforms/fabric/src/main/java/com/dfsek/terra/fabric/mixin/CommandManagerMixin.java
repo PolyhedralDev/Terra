@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric.mixin;
 import com.dfsek.terra.api.command.exception.CommandException;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -33,7 +33,7 @@ public abstract class CommandManagerMixin {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;findAmbiguities(Lcom/mojang/brigadier/AmbiguityConsumer;)V", remap = false))
     private void injectTerraCommands(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
-        com.dfsek.terra.api.command.CommandManager manager = TerraFabricPlugin.getInstance().getManager();
+        com.dfsek.terra.api.command.CommandManager manager = FabricEntryPoint.getTerraPlugin().getManager();
         int max = manager.getMaxArgumentDepth();
         RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
         for(int i = 0; i < max; i++) {

@@ -1,6 +1,6 @@
 package com.dfsek.terra.fabric.mixin;
 
-import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
@@ -26,7 +26,7 @@ public abstract class ServerWorldMixin {
     public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
             ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
-            TerraFabricPlugin.getInstance().logger().info("Registered world " + this);
+            FabricEntryPoint.getTerraPlugin().logger().info("Registered world " + this);
         }
     }
 }

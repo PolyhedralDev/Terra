@@ -3,11 +3,11 @@ package com.dfsek.terra
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
-import org.gradle.api.plugins.BasePluginConvention
+import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getPlugin
 import org.gradle.kotlin.dsl.named
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -126,7 +126,10 @@ fun Project.configureDistribution() {
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
     }
-    convention.getPlugin<BasePluginConvention>().archivesBaseName = project.name
+
+    configure<BasePluginExtension> {
+        archivesName.set(project.name)
+    }
 
     tasks.named<DefaultTask>("build") {
         dependsOn(tasks["shadowJar"])

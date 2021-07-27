@@ -23,8 +23,8 @@ allprojects {
         failFast = true
         maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).takeIf { it > 0 } ?: 1
 
-        reports.html.isEnabled = false
-        reports.junitXml.isEnabled = false
+        reports.html.required.set(false)
+        reports.junitXml.required.set(false)
     }
 }
 

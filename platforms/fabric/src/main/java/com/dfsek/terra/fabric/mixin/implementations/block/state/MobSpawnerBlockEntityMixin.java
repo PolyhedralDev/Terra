@@ -3,7 +3,7 @@ package com.dfsek.terra.fabric.mixin.implementations.block.state;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.mixin.access.MobSpawnerLogicAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -96,7 +96,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
                 case "type":
-                    terra$setSpawnedType(TerraFabricPlugin.getInstance().getWorldHandle().getEntity(v));
+                    terra$setSpawnedType(FabricEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
                     return;
                 case "delay":
                     terra$setDelay(Integer.parseInt(v));

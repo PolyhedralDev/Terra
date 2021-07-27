@@ -11,7 +11,7 @@ public final class Lazy<T> {
         this.valueSupplier = valueSupplier;
     }
 
-    public static <T> Lazy<T> of(Supplier<T> valueSupplier) {
+    public static <T> Lazy<T> lazy(Supplier<T> valueSupplier) {
         return new Lazy<>(valueSupplier);
     }
 

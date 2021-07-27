@@ -6,12 +6,11 @@ import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.spongepowered.asm.mixin.Implements;
@@ -32,7 +31,7 @@ public abstract class ConfiguredFeatureMixin {
     @SuppressWarnings({"ConstantConditions", "try"})
     public boolean terra$plant(Vector3 l, World world, Random r) {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
-        try(ProfileFrame ignore = TerraFabricPlugin.getInstance().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
+        try(ProfileFrame ignore = FabricEntryPoint.getTerraPlugin().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             StructureWorldAccess fabricWorldAccess = ((StructureWorldAccess) world);
             ChunkGenerator generatorWrapper = ((ServerWorldAccess) world).toServerWorld().getChunkManager().getChunkGenerator();
             return generate(fabricWorldAccess, generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
@@ -40,8 +39,8 @@ public abstract class ConfiguredFeatureMixin {
     }
 
     public Set<BlockType> terra$getSpawnable() {
-        return MaterialSet.get(TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:grass_block"),
-                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:podzol"),
-                TerraFabricPlugin.getInstance().getWorldHandle().createBlockData("minecraft:mycelium"));
+        return MaterialSet.get(FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:grass_block"),
+                FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:podzol"),
+                FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:mycelium"));
     }
 }

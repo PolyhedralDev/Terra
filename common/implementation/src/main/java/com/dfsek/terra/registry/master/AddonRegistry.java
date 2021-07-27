@@ -27,7 +27,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
 
     public AddonRegistry(TerraAddon addon, TerraPlugin main) {
         this.main = main;
-        register(addon.getName(), addon);
+        register(addon);
     }
 
     @Override
@@ -36,6 +36,10 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
         addon.initialize();
         main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
         return super.register(identifier, addon);
+    }
+
+    public boolean register(TerraAddon addon) {
+        return register(addon.getName(), addon);
     }
 
     @Override
