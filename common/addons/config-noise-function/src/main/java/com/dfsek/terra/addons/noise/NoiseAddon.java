@@ -68,25 +68,25 @@ public class NoiseAddon extends TerraAddon {
 
                     noiseRegistry.register("IMAGE", ImageSamplerTemplate::new);
 
-                    noiseRegistry.register("DOMAINWARP", DomainWarpTemplate::new);
+                    noiseRegistry.register("DOMAIN_WARP", DomainWarpTemplate::new);
 
                     noiseRegistry.register("FBM", BrownianMotionTemplate::new);
-                    noiseRegistry.register("PINGPONG", PingPongTemplate::new);
+                    noiseRegistry.register("PING_PONG", PingPongTemplate::new);
                     noiseRegistry.register("RIDGED", RidgedFractalTemplate::new);
 
-                    noiseRegistry.register("OPENSIMPLEX2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
-                    noiseRegistry.register("OPENSIMPLEX2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
+                    noiseRegistry.register("OPEN_SIMPLEX_2", () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
+                    noiseRegistry.register("OPEN_SIMPLEX_2S", () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
                     noiseRegistry.register("PERLIN", () -> new SimpleNoiseTemplate(PerlinSampler::new));
                     noiseRegistry.register("SIMPLEX", () -> new SimpleNoiseTemplate(SimplexSampler::new));
                     noiseRegistry.register("GABOR", GaborNoiseTemplate::new);
 
 
                     noiseRegistry.register("VALUE", () -> new SimpleNoiseTemplate(ValueSampler::new));
-                    noiseRegistry.register("VALUECUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
+                    noiseRegistry.register("VALUE_CUBIC", () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
 
                     noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
 
-                    noiseRegistry.register("WHITENOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+                    noiseRegistry.register("WHITE_NOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
                     noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
 
                     noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
