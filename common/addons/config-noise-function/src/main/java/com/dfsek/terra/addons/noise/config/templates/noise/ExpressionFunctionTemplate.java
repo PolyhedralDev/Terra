@@ -30,7 +30,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Default
     private @Meta Map<String, @Meta Double> vars = new HashMap<>();
 
-    @Value("equation")
+    @Value("expression")
     private @Meta String equation;
 
     @Value("functions")
