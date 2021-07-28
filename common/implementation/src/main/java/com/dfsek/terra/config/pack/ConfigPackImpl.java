@@ -255,13 +255,13 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
 
-        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-
         MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+
+        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
