@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.feature.locator.locators;
 
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
+import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.Column;
@@ -18,7 +19,7 @@ public class PatternLocator implements Locator {
     }
 
     @Override
-    public List<Integer> getSuitableCoordinates(Column column) {
+    public BinaryColumn getSuitableCoordinates(Column column) {
         List<Integer> locations = new ArrayList<>();
 
         for(int y : search) {
