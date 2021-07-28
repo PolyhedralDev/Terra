@@ -11,7 +11,7 @@ public class MatchPattern implements Pattern {
     private final Range range;
     private final Predicate<BlockState> matches;
 
-    protected MatchPattern(Range range, Predicate<BlockState> matches) {
+    public MatchPattern(Range range, Predicate<BlockState> matches) {
         this.range = range;
         this.matches = matches;
     }
