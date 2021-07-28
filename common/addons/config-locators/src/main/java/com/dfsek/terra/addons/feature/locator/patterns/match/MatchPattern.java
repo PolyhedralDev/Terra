@@ -19,7 +19,7 @@ public class MatchPattern implements Pattern {
     @Override
     public boolean matches(int y, Column column) {
         for(int i : range) {
-            if(!matches.test(column.getBlock(i))) return false;
+            if(!matches.test(column.getBlock(y + i))) return false;
         }
         return true;
     }
