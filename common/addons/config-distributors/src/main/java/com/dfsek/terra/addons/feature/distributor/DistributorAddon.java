@@ -1,7 +1,9 @@
 package com.dfsek.terra.addons.feature.distributor;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.AndDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.NoiseDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.util.Point;
 import com.dfsek.terra.addons.feature.distributor.util.PointTemplate;
@@ -36,6 +38,8 @@ public class DistributorAddon extends TerraAddon {
                     CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(DISTRIBUTOR_TOKEN);
                     distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
                     distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
+                    distributorRegistry.register("AND", AndDistributorTemplate::new);
+                    distributorRegistry.register("OR", OrDistributorTemplate::new);
 
                     event.getPack()
                             .applyLoader(Point.class, PointTemplate::new);

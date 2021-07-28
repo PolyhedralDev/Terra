@@ -42,6 +42,8 @@ import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import com.dfsek.terra.config.prototype.ProtoConfig;
@@ -241,17 +243,25 @@ public class ConfigPackImpl implements ConfigPack {
 
         main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
 
-        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
 
         MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
 
-        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+
+        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+
+        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
