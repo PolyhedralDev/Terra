@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.feature.locator;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.NoiseLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
@@ -48,6 +49,7 @@ public class LocatorAddon extends TerraAddon {
                     locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
                     locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
                     locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
+                    locatorRegistry.register("NOISE", NoiseLocatorTemplate::new);
 
                     locatorRegistry.register("AND", AndLocatorTemplate::new);
                     locatorRegistry.register("OR", OrLocatorTemplate::new);
