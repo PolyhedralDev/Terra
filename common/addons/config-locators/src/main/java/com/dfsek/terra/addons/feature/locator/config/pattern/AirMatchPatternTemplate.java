@@ -12,14 +12,9 @@ public class AirMatchPatternTemplate implements ObjectTemplate<Pattern> {
     @Value("offset")
     private Range offset;
 
-    private final BlockState air;
-
-    public AirMatchPatternTemplate(TerraPlugin main) {
-        this.air = main.getWorldHandle().air();
-    }
 
     @Override
     public Pattern get() {
-        return new MatchPattern(offset, air::matches);
+        return new MatchPattern(offset, BlockState::isAir);
     }
 }
