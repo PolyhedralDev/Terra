@@ -29,9 +29,9 @@ public class RandomLocator implements Locator {
 
         int size = points.get(r);
 
-        List<Integer> results = new ArrayList<>(size);
+        BinaryColumn results = new BinaryColumn(column.getMinY(), column.getMaxY());
         for(int i = 0; i < size; i++) {
-            results.set(i, height.get(r));
+            results.set(height.get(r));
         }
 
         return results;
