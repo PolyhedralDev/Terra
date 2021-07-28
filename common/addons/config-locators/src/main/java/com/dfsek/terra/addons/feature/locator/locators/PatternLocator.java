@@ -20,10 +20,10 @@ public class PatternLocator implements Locator {
 
     @Override
     public BinaryColumn getSuitableCoordinates(Column column) {
-        List<Integer> locations = new ArrayList<>();
+        BinaryColumn locations = new BinaryColumn(column.getMinY(), column.getMaxY());
 
         for(int y : search) {
-            if(pattern.matches(y, column)) locations.add(y);
+            if(pattern.matches(y, column)) locations.set(y);
         }
 
         return locations;
