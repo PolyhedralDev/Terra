@@ -241,13 +241,13 @@ public class ConfigPackImpl implements ConfigPack {
 
         main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
 
-        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
-
         MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+
+        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
 
         MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
