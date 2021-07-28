@@ -241,10 +241,6 @@ public class ConfigPackImpl implements ConfigPack {
 
         main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
 
-        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-
         MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
@@ -252,6 +248,10 @@ public class ConfigPackImpl implements ConfigPack {
         MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+
+        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
 
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
 
