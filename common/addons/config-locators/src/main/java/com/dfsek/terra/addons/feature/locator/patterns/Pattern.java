@@ -12,4 +12,8 @@ public interface Pattern {
     default Pattern or(Pattern that) {
         return (y, column) -> this.matches(y, column) || that.matches(y, column);
     }
+
+    default Pattern not() {
+        return (y, column) -> !this.matches(y, column);
+    }
 }
