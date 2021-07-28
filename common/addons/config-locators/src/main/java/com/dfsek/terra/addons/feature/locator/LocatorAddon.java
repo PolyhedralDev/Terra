@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.feature.locator;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.AirMatchPatternTemplate;
@@ -44,6 +45,7 @@ public class LocatorAddon extends TerraAddon {
                     CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                     locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
                     locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
+                    locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
