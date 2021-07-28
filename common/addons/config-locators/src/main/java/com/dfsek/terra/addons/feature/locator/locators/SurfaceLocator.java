@@ -21,11 +21,13 @@ public class SurfaceLocator implements Locator {
 
     @Override
     public BinaryColumn getSuitableCoordinates(Column column) {
+        BinaryColumn location = new BinaryColumn(column.getMinY(), column.getMaxY());
         for(int y : search) {
             if(column.getBlock(y).matches(air) && !column.getBlock(y-1).matches(air)) {
-                return Collections.singletonList(y);
+                location.set(y);
+                return location;
             }
         }
-        return Collections.emptyList();
+        return location;
     }
 }
