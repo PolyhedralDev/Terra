@@ -14,7 +14,12 @@ import java.util.Map;
 public class RangeLoader implements TypeLoader<Range> {
     @Override
     public Range load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
-        Map<String, Integer> map = (Map<String, Integer>) o;
-        return new ConstantRange(map.get("min"), map.get("max"));
+        if(o instanceof Map) {
+            Map<String, Integer> map = (Map<String, Integer>) o;
+            return new ConstantRange(map.get("min"), map.get("max"));
+        } else {
+            int h = configLoader.loadType(Integer.class, o);
+            return new ConstantRange(h, h+1);
+        }
     }
 }
