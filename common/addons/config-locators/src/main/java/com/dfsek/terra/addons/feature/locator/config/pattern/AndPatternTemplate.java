@@ -5,12 +5,13 @@ import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
+import com.dfsek.terra.api.config.meta.Meta;
 
 import java.util.List;
 
 public class AndPatternTemplate implements ObjectTemplate<Pattern>, ValidatedConfigTemplate {
     @Value("patterns")
-    private List<Pattern> patterns;
+    private @Meta List<@Meta Pattern> patterns;
 
     @Override
     public Pattern get() {
