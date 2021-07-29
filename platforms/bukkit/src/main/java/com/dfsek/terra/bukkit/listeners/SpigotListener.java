@@ -1,14 +1,6 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
-import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.world.population.items.TerraStructure;
-import org.bukkit.entity.EnderSignal;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,6 +24,7 @@ public class SpigotListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEnderEye(EntitySpawnEvent e) {
+        /*
         Entity entity = e.getEntity();
         if(e.getEntityType().equals(EntityType.ENDER_SIGNAL)) {
             main.getDebugLogger().info("Detected Ender Signal...");
@@ -49,6 +42,7 @@ public class SpigotListener implements Listener {
             } else
                 main.logger().warning("No overrides are defined for Strongholds. Ender Signals will not work correctly.");
         }
+         */
     }
 
     @EventHandler

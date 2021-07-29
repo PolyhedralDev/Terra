@@ -11,13 +11,24 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 public class BukkitWorldHandle implements WorldHandle {
+    private final BlockState air;
+
+    public BukkitWorldHandle() {
+        this.air = BukkitBlockState.newInstance(Material.AIR.createBlockData());
+    }
 
     @Override
     public BlockState createBlockData(String data) {
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data);
         return BukkitBlockState.newInstance(bukkitData);
+    }
+
+    @Override
+    public BlockState air() {
+        return air;
     }
 
     @Override

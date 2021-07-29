@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.world.block.data;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.properties.Property;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Material;
 
@@ -56,5 +57,20 @@ public class BukkitBlockState implements BlockState {
     @Override
     public boolean isStructureVoid() {
         return delegate.getMaterial() == Material.STRUCTURE_VOID;
+    }
+
+    @Override
+    public <T> boolean has(Property<T> property) {
+        return false;
+    }
+
+    @Override
+    public <T> T get(Property<T> property) {
+        return null;
+    }
+
+    @Override
+    public <T> BlockState set(Property<T> property, T value) {
+        return null;
     }
 }

@@ -1,11 +1,6 @@
 package com.dfsek.terra.bukkit.listeners;
 
 import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
-import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.locate.AsyncStructureFinder;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.world.population.items.TerraStructure;
 import io.papermc.paper.event.world.StructureLocateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +14,7 @@ public class PaperListener implements Listener {
 
     @EventHandler
     public void onStructureLocate(StructureLocateEvent e) {
-        String name = "minecraft:" + e.getType().getName();
+        /*String name = "minecraft:" + e.getType().getName();
         main.getDebugLogger().info("Overriding structure location for \"" + name + "\"");
         World w = BukkitAdapter.adapt(e.getWorld());
         ConfiguredStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get(name));
@@ -34,5 +29,6 @@ public class PaperListener implements Listener {
             e.setResult(e.getOrigin());
             main.logger().warning("No overrides are defined for \"" + name + "\". Locating this structure will NOT work properly!");
         }
+         */
     }
 }

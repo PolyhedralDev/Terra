@@ -1,12 +1,14 @@
 package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
+import com.dfsek.terra.bukkit.world.BukkitWorld;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
@@ -31,11 +33,12 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
 
     private boolean needsLoad = true;
 
+    private WorldConfig worldConfig;
+
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate) {
         this.delegate = delegate;
         this.main = delegate.getMain();
         this.popMan = new PopulationManager(delegate, main);
-
     }
 
 
@@ -67,10 +70,17 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
 
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome) {
+        if(this.worldConfig == null) {
+            this.worldConfig = delegate.getConfigPack().toWorldConfig(BukkitAdapter.adapt(world));
+        }
         com.dfsek.terra.api.world.World bukkitWorld = BukkitAdapter.adapt(world);
         if(needsLoad) load(bukkitWorld); // Load population data for world.
         delegate.generateBiomes(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome));
         return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkData(createChunkData(world))).getHandle();
+    }
+
+    public WorldConfig getWorldConfig() {
+        return worldConfig;
     }
 
     @Override
