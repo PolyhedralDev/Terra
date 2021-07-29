@@ -143,7 +143,7 @@ task<JavaExec>(name = "runPaper") {
         copyTerra("paper")
     }
 
-    main = "io.papermc.paperclip.Paperclip"
+    mainClass.set("io.papermc.paperclip.Paperclip")
     jvmArgs = jvmFlags
     maxHeapSize = testMem
     minHeapSize = testMem
@@ -161,7 +161,7 @@ task<JavaExec>(name = "runPurpur") {
         copyTerra("purpur")
     }
 
-    main = "io.papermc.paperclip.Paperclip"
+    mainClass.set("io.papermc.paperclip.Paperclip")
     jvmArgs = jvmFlags
     maxHeapSize = testMem
     minHeapSize = testMem
