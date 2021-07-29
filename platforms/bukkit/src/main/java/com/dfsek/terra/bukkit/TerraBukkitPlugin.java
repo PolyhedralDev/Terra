@@ -61,7 +61,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
+public class TerraBukkitPlugin extends JavaPlugin {
     public static final BukkitVersion BUKKIT_VERSION;
 
     static {
@@ -74,57 +74,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
 
+    private final TerraPluginImpl terraPlugin = new TerraPluginImpl(this);
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
-    private final Profiler profiler = new ProfilerImpl();
-    private final ConfigRegistry registry = new ConfigRegistry();
-    private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistryImpl<>(registry);
-    private final PluginConfig config = new PluginConfigImpl();
-    private final ItemHandle itemHandle = new BukkitItemHandle();
-    private final GenericLoaders genericLoaders = new GenericLoaders(this);
-    private final EventManager eventManager = new EventManagerImpl(this);
-    private final AddonRegistry addonRegistry = new AddonRegistry(new BukkitAddon(this), this);
-    private final LockedRegistryImpl<TerraAddon> addonLockedRegistry = new LockedRegistryImpl<>(addonRegistry);
-    private WorldHandle handle = new BukkitWorldHandle();
-    private DebugLogger debugLogger;
-
-    public boolean reload() {
-        config.load(this);
-        LangUtil.load(config.getLanguage(), this); // Load language.
-        boolean succeed = registry.loadAll(this);
-
-        return succeed;
-    }
-
-    @Override
-    public ItemHandle getItemHandle() {
-        return itemHandle;
-    }
-
-    @Override
-    public String platformName() {
-        return "Bukkit";
-    }
-
-    @Override
-    public DebugLogger getDebugLogger() {
-        return debugLogger;
-    }
-
-    @Override
-    public EventManager getEventManager() {
-        return eventManager;
-    }
-
-    @Override
-    public void runPossiblyUnsafeTask(Runnable task) {
-        Bukkit.getScheduler().runTask(this, task);
-    }
-
-    @Override
-    public Profiler getProfiler() {
-        return profiler;
-    }
 
     @Override
     public void onDisable() {
@@ -133,35 +85,17 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
 
     @Override
     public void onEnable() {
-        debugLogger = new DebugLogger(logger());
-
         getLogger().info("Running on version " + BUKKIT_VERSION);
         if(BUKKIT_VERSION == BukkitVersion.UNKNOWN) {
             getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
         }
 
-        saveDefaultConfig();
 
         Metrics metrics = new Metrics(this, 9017); // Set up bStats.
-        metrics.addCustomChart(new Metrics.SingleLineChart("worlds", worldMap::size)); // World number chart.
-
-        config.load(this); // Load master config.yml
-        LangUtil.load(config.getLanguage(), this); // Load language.
-
-        debugLogger.setDebug(config.isDebugLogging());
-        if(config.isDebugProfiler()) profiler.start();
-
-        if(!addonRegistry.loadAll()) {
-            getLogger().severe("Failed to load addons. Please correct com.dfsek.terra.addon installations to continue.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        registry.loadAll(this); // Load all config packs.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
 
-        CommandManager manager = new TerraCommandManager(this);
+        CommandManager manager = new TerraCommandManager(terraPlugin);
 
 
         try {
@@ -169,9 +103,9 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             manager.register("save-data", SaveDataCommand.class);
             manager.register("fix-chunk", FixChunkCommand.class);
         } catch(MalformedCommandException e) { // This should never happen.
-            logger().severe("Errors occurred while registering commands.");
+            terraPlugin.logger().severe("Errors occurred while registering commands.");
             e.printStackTrace();
-            logger().severe("Please report this to Terra.");
+            terraPlugin.logger().severe("Please report this to Terra.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -182,15 +116,15 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         c.setTabCompleter(command);
 
 
-        long save = config.getDataSaveInterval();
+        long save = terraPlugin.getTerraConfig().getDataSaveInterval();
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, BukkitChunkGeneratorWrapper::saveAll, save, save); // Schedule population data saving
-        Bukkit.getPluginManager().registerEvents(new CommonListener(this), this); // Register master event listener
+        Bukkit.getPluginManager().registerEvents(new CommonListener(terraPlugin), this); // Register master event listener
         PaperUtil.checkPaper(this);
 
         if(PaperLib.isPaper()) {
             try {
                 Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
-                Bukkit.getPluginManager().registerEvents(new PaperListener(this), this); // Register Paper events.
+                Bukkit.getPluginManager().registerEvents(new PaperListener(terraPlugin), this); // Register Paper events.
             } catch(ClassNotFoundException e) {
                 registerSpigotEvents(true); // Outdated Paper version.
             }
@@ -218,62 +152,17 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
             getLogger().severe("Find out more at https://papermc.io/");
         }
 
-        Bukkit.getPluginManager().registerEvents(new SpigotListener(this), this); // Register Spigot event listener
+        Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener
     }
 
     @Override
     public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            if(!registry.contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
-            ConfigPack pack = registry.get(id);
+            if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
+            ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
             worlds.put(worldName, pack);
             return pack.getGeneratorProvider().newInstance(pack);
         }));
-    }
-
-    @Override
-    public Language getLanguage() {
-        return LangUtil.getLanguage();
-    }
-
-    public CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return checkedRegistry;
-    }
-
-    @Override
-    public Logger logger() {
-        return new JavaLogger(getLogger());
-    }
-
-    @NotNull
-    @Override
-    public PluginConfig getTerraConfig() {
-        return config;
-    }
-
-    @Override
-    public WorldHandle getWorldHandle() {
-        return handle;
-    }
-
-
-    @Override
-    public void register(TypeRegistry registry) {
-        registry
-                .registerLoader(BlockState.class, (t, o, l) -> handle.createBlockData((String) o))
-                .registerLoader(Biome.class, (t, o, l) -> parseBiome((String) o))
-                .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
-        genericLoaders.register(registry);
-    }
-
-    private BukkitBiome parseBiome(String id) throws LoadException {
-        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id);
-        return new BukkitBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
-    }
-
-    @Override
-    public Registry<TerraAddon> getAddons() {
-        return addonLockedRegistry;
     }
 
     public enum BukkitVersion {
@@ -306,19 +195,4 @@ public class TerraBukkitPlugin extends JavaPlugin implements TerraPlugin {
         }
     }
 
-    @Addon("Terra-Bukkit")
-    @Version("1.0.0")
-    @Author("Terra")
-    private static final class BukkitAddon extends TerraAddon {
-        private final TerraPlugin main;
-
-        private BukkitAddon(TerraPlugin main) {
-            this.main = main;
-        }
-
-        @Override
-        public void initialize() {
-
-        }
-    }
 }
