@@ -6,6 +6,7 @@ import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomeProviderLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.NoiseSourceTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageLoader;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorTemplate;
@@ -50,15 +51,7 @@ public class BiomePipelineAddon extends TerraAddon {
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
-                        .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
-                        .applyLoader(ReplaceMutator.class, ReplaceMutatorTemplate::new)
-                        .applyLoader(BorderMutator.class, BorderMutatorTemplate::new)
-                        .applyLoader(BorderListMutator.class, BorderListMutatorTemplate::new)
-                        .applyLoader(ReplaceListMutator.class, ReplaceListMutatorTemplate::new)
-                        .applyLoader(SmoothMutator.class, SmoothMutatorTemplate::new)
-                        .applyLoader(ExpanderStage.class, ExpanderStageTemplate::new)
-                        .applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
+                .then(event -> event.getPack().applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
                         .applyLoader(BiomeProvider.class, new BiomeProviderLoader()))
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(SOURCE_REGISTRY_KEY);
@@ -67,6 +60,11 @@ public class BiomePipelineAddon extends TerraAddon {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(STAGE_REGISTRY_KEY);
                     stageRegistry.register("FRACTAL_EXPAND", ExpanderStageTemplate::new);
+                    stageRegistry.register("SMOOTH", SmoothMutatorTemplate::new);
+                    stageRegistry.register("REPLACE", ReplaceMutatorTemplate::new);
+                    stageRegistry.register("REPLACE_LIST", ReplaceListMutatorTemplate::new);
+                    stageRegistry.register("BORDER", BorderMutatorTemplate::new);
+                    stageRegistry.register("BORDER_LIST", BorderListMutatorTemplate::new);
                 })
                 .failThrough();
     }
