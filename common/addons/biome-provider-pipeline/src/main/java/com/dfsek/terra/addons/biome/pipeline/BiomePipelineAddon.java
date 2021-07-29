@@ -34,6 +34,7 @@ public class BiomePipelineAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<BiomeSource>>> SOURCE_REGISTRY_KEY = new TypeKey<>() {};
 
     public static final TypeKey<Supplier<ObjectTemplate<Stage>>> STAGE_REGISTRY_KEY = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {};
     @Inject
     private TerraPlugin main;
 
@@ -42,8 +43,10 @@ public class BiomePipelineAddon extends TerraAddon {
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
-                        .applyLoader(BiomeProvider.class, new BiomeProviderLoader()))
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(PROVIDER_REGISTRY_KEY);
+                    providerRegistry.register("PIPELINE", () -> new BiomePipelineTemplate(main));
+                })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(SOURCE_REGISTRY_KEY);
                     sourceRegistry.register("NOISE", NoiseSourceTemplate::new);
