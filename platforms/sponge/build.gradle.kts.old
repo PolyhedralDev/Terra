@@ -9,7 +9,6 @@ configureCommon()
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {

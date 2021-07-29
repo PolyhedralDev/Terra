@@ -7,7 +7,6 @@ import net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace
 buildscript {
     repositories {
         maven { url = uri("https://files.minecraftforge.net/maven") }
-        jcenter()
         mavenCentral()
         maven { url = uri("https://repo.spongepowered.org/repository/maven-public/") }
     }
@@ -32,7 +31,6 @@ configureCommon()
 
 repositories {
     maven { url = uri("https://files.minecraftforge.net/maven") }
-    jcenter()
     mavenCentral()
     maven { url = uri("https://repo.spongepowered.org/repository/maven-public/") }
 }

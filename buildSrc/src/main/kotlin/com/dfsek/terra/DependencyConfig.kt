@@ -23,7 +23,6 @@ fun Project.configureDependencies() {
         maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
         maven { url = uri("https://maven.fabricmc.net/") }
         gradlePluginPortal()
-        jcenter()
         mavenCentral()
     }
 
