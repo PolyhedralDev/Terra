@@ -39,15 +39,12 @@ public class BiomePipelineAddon extends TerraAddon {
     @Inject
     private TerraPlugin main;
 
-    public static final TypeKey<BiomeProvider> BIOME_PROVIDER_BUILDER_TOKEN = new TypeKey<>(){};
-    public static final TypeKey<BiomeSource> BIOME_SOURCE_BUILDER_TOKEN = new TypeKey<>(){};
-
     @Override
     public void initialize() {
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(BIOME_SOURCE_BUILDER_TOKEN.getType(), new SourceLoader())
+                .then(event -> event.getPack().applyLoader(BiomeSource.class, new SourceLoader())
                         .applyLoader(Stage.class, new StageLoader())
                         .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                         .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
@@ -59,7 +56,7 @@ public class BiomePipelineAddon extends TerraAddon {
                         .applyLoader(SmoothMutator.class, SmoothMutatorTemplate::new)
                         .applyLoader(ExpanderStage.class, ExpanderStageTemplate::new)
                         .applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
-                        .applyLoader(BIOME_PROVIDER_BUILDER_TOKEN.getType(), new BiomeProviderLoader())
+                        .applyLoader(BiomeProvider.class, new BiomeProviderLoader())
                         .applyLoader(BiomeSource.Type.class, (t, object, cf) -> BiomeSource.Type.valueOf((String) object)))
                 .failThrough();
     }
