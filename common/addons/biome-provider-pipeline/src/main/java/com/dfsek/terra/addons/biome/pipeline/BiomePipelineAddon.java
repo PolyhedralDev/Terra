@@ -59,8 +59,7 @@ public class BiomePipelineAddon extends TerraAddon {
                         .applyLoader(SmoothMutator.class, SmoothMutatorTemplate::new)
                         .applyLoader(ExpanderStage.class, ExpanderStageTemplate::new)
                         .applyLoader(BiomePipelineProvider.class, () -> new BiomePipelineTemplate(main))
-                        .applyLoader(BiomeProvider.class, new BiomeProviderLoader())
-                        .applyLoader(BiomeSource.Type.class, (t, object, cf) -> BiomeSource.Type.valueOf((String) object)))
+                        .applyLoader(BiomeProvider.class, new BiomeProviderLoader()))
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(SOURCE_REGISTRY_KEY);
                     sourceRegistry.register("NOISE", NoiseSourceTemplate::new);
