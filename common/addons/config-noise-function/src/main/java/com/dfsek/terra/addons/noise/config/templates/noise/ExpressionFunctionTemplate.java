@@ -30,14 +30,14 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Default
     private @Meta Map<String, @Meta Double> vars = new HashMap<>();
 
-    @Value("equation")
+    @Value("expression")
     private @Meta String equation;
 
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> functions = new LinkedHashMap<>();
 
-    @Value("expressions")
+    @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> expressions = new LinkedHashMap<>();
 

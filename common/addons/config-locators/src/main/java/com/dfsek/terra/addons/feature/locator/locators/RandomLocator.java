@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.feature.locator.locators;
 
+import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.Column;
@@ -19,7 +20,7 @@ public class RandomLocator implements Locator {
     }
 
     @Override
-    public List<Integer> getSuitableCoordinates(Column column) {
+    public BinaryColumn getSuitableCoordinates(Column column) {
         long seed = column.getWorld().getSeed();
         seed = 31 * seed + column.getX();
         seed = 31 * seed + column.getZ();
@@ -28,9 +29,9 @@ public class RandomLocator implements Locator {
 
         int size = points.get(r);
 
-        List<Integer> results = new ArrayList<>(size);
+        BinaryColumn results = new BinaryColumn(column.getMinY(), column.getMaxY());
         for(int i = 0; i < size; i++) {
-            results.set(i, height.get(r));
+            results.set(height.get(r));
         }
 
         return results;

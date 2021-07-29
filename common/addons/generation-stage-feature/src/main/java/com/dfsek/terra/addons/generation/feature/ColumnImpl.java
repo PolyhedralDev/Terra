@@ -34,4 +34,14 @@ public class ColumnImpl implements Column {
     public World getWorld() {
         return world;
     }
+
+    @Override
+    public int getMinY() {
+        return world.getMinHeight();
+    }
+
+    @Override
+    public int getMaxY() {
+        return world.getMaxHeight();
+    }
 }

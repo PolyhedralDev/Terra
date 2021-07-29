@@ -13,4 +13,8 @@ public interface Column {
     BlockState getBlock(int y);
 
     World getWorld();
+
+    int getMinY();
+
+    int getMaxY();
 }
