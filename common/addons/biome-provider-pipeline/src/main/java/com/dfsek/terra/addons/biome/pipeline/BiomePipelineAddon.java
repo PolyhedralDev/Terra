@@ -41,6 +41,7 @@ public class BiomePipelineAddon extends TerraAddon {
 
     public static final TypeKey<Supplier<ObjectTemplate<BiomeSource>>> SOURCE_REGISTRY_KEY = new TypeKey<>() {};
 
+    public static final TypeKey<Supplier<ObjectTemplate<Stage>>> STAGE_REGISTRY_KEY = new TypeKey<>() {};
     @Inject
     private TerraPlugin main;
 
@@ -49,8 +50,7 @@ public class BiomePipelineAddon extends TerraAddon {
         main.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(Stage.class, new StageLoader())
-                        .applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
+                .then(event -> event.getPack().applyLoader(ExpanderStage.Type.class, (c, o, l) -> ExpanderStage.Type.valueOf((String) o))
                         .applyLoader(MutatorStage.Type.class, (c, o, l) -> MutatorStage.Type.valueOf((String) o))
                         .applyLoader(ReplaceMutator.class, ReplaceMutatorTemplate::new)
                         .applyLoader(BorderMutator.class, BorderMutatorTemplate::new)
@@ -63,6 +63,10 @@ public class BiomePipelineAddon extends TerraAddon {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(SOURCE_REGISTRY_KEY);
                     sourceRegistry.register("NOISE", NoiseSourceTemplate::new);
+                })
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(STAGE_REGISTRY_KEY);
+                    stageRegistry.register("FRACTAL_EXPAND", ExpanderStageTemplate::new);
                 })
                 .failThrough();
     }
