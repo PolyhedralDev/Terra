@@ -88,36 +88,8 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();
             loader.load(this, new YamlConfiguration(file, "config.yml"));
-            if(dumpDefaultData) {
-                try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
-                    if(resourcesConfig == null) {
-                        logger.info("No resources config found. Skipping resource dumping.");
-                        return;
-                    }
-                    String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
-                    Map<String, List<String>> resources = new Yaml().load(resourceYaml);
-                    resources.forEach((dir, entries) -> entries.forEach(entry -> {
-                        String resourcePath = dir + "/" + entry;
-                        File resource = new File(main.getDataFolder(), resourcePath);
-                        if(resource.exists()) return; // dont overwrite
-                        main.logger().info("Dumping resource " + resource.getAbsolutePath());
-                        try {
-                            resource.getParentFile().mkdirs();
-                            resource.createNewFile();
-                        } catch(IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                        try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
-                            OutputStream os = new FileOutputStream(resource)) {
-                            IOUtils.copy(is, os);
-                        } catch(IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    }));
-                }
-            }
         } catch(ConfigException | IOException | UncheckedIOException e) {
-            logger.severe("Failed to dump resources");
+            logger.severe("Failed to load config");
             e.printStackTrace();
         }
 
@@ -190,5 +162,10 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     @Override
     public int getProviderCache() {
         return providerCache;
+    }
+
+    @Override
+    public boolean dumpDefaultConfig() {
+        return dumpDefaultData;
     }
 }

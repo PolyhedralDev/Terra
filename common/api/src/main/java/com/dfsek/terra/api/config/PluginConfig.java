@@ -30,4 +30,6 @@ public interface PluginConfig {
     int getBiomeCache();
 
     int getProviderCache();
+
+    boolean dumpDefaultConfig();
 }

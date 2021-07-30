@@ -27,10 +27,18 @@ import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.util.logging.DebugLogger;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -78,6 +86,39 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
             }
         } catch(IOException e) {
             e.printStackTrace();
+        }
+
+        if(config.dumpDefaultConfig()) {
+            try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
+                if(resourcesConfig == null) {
+                    logger().info("No resources config found. Skipping resource dumping.");
+                    return;
+                }
+                String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
+                Map<String, List<String>> resources = new Yaml().load(resourceYaml);
+                resources.forEach((dir, entries) -> entries.forEach(entry -> {
+                    String resourcePath = dir + "/" + entry;
+                    File resource = new File(getDataFolder(), resourcePath);
+                    if(resource.exists()) return; // dont overwrite
+                    logger().info("Dumping resource " + resource.getAbsolutePath());
+                    try {
+                        resource.getParentFile().mkdirs();
+                        resource.createNewFile();
+                    } catch(IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                    try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
+                        OutputStream os = new FileOutputStream(resource)) {
+                        IOUtils.copy(is, os);
+                    } catch(IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }));
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            getDebugLogger().info("Skipping resource dumping.");
         }
 
         config.load(this); // load config.yml
