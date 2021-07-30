@@ -1,3 +1,4 @@
+import com.dfsek.terra.addonDir
 import com.dfsek.terra.gitClone
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
@@ -175,3 +176,7 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
     relocate("com.google.common", "com.dfsek.terra.lib.google.common")
 }
+
+
+addonDir(project.file("./target/paper/plugins/Terra/addons"), tasks.named("runPaper").get())
+addonDir(project.file("./target/purpur/plugins/Terra/addons"), tasks.named("runPurpur").get())
