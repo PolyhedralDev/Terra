@@ -32,6 +32,9 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
         load();
     }
 
+    public TerraBukkitPlugin getPlugin() {
+        return plugin;
+    }
 
     @Override
     public WorldHandle getWorldHandle() {
