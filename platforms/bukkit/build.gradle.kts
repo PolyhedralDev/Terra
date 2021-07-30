@@ -7,7 +7,7 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 
-val mcVersion = "1.17"
+val mcVersion = "1.17.1"
 val testDir = "target/server"
 val testMem = "3G"
 
