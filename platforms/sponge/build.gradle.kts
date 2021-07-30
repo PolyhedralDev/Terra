@@ -1,5 +1,4 @@
 plugins {
-    id("org.spongepowered.plugin").version("0.9.0")
     id("org.spongepowered.gradle.vanilla").version("0.2")
 }
 
@@ -9,16 +8,16 @@ repositories {
     }
 }
 
-dependencies {
-    "shadedApi"(project(":common:implementation"))
-    annotationProcessor(implementation("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")!!)
-    annotationProcessor("org.spongepowered:mixin:0.8.2:processor")
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
-sponge {
-    plugin {
-        id = "terra"
-    }
+dependencies {
+    "shadedApi"(project(":common:implementation"))
+    "annotationProcessor"("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
+    "shadedImplementation"("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
+    "annotationProcessor"("org.spongepowered:mixin:0.8.2:processor")
 }
 
 minecraft {
