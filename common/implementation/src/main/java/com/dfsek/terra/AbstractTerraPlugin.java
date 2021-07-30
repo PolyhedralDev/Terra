@@ -88,6 +88,11 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
             e.printStackTrace();
         }
 
+
+        config.load(this); // load config.yml
+
+        LangUtil.load(config.getLanguage(), this); // load language
+
         if(config.dumpDefaultConfig()) {
             try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
                 if(resourcesConfig == null) {
@@ -120,10 +125,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         } else {
             getDebugLogger().info("Skipping resource dumping.");
         }
-
-        config.load(this); // load config.yml
-
-        LangUtil.load(config.getLanguage(), this); // load language
 
         debugLogger.value().setDebug(config.isDebugLogging()); // enable debug logger if applicable
 
