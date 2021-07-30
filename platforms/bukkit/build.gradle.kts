@@ -178,5 +178,5 @@ tasks.named<ShadowJar>("shadowJar") {
 }
 
 
-addonDir(project.file("./target/paper/plugins/Terra/addons"), tasks.named("runPaper").get())
-addonDir(project.file("./target/purpur/plugins/Terra/addons"), tasks.named("runPurpur").get())
+addonDir(project.file("./target/server/paper/plugins/Terra/addons"), tasks.named("runPaper").get())
+addonDir(project.file("./target/server/purpur/plugins/Terra/addons"), tasks.named("runPurpur").get())
