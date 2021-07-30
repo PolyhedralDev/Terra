@@ -3,6 +3,7 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.command.FixChunkCommand;
 import com.dfsek.terra.bukkit.command.SaveDataCommand;
@@ -56,8 +57,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
             getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
         }
 
+        terraPlugin.getEventManager().callEvent(new PlatformInitializationEvent());
 
-        Metrics metrics = new Metrics(this, 9017); // Set up bStats.
+        new Metrics(this, 9017); // Set up bStats.
 
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
 
