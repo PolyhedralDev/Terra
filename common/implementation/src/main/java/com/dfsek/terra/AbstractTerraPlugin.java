@@ -54,17 +54,12 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
     private final CommandManager manager = new TerraCommandManager(this);
 
-    private final AddonRegistry addonRegistry;
+    private final AddonRegistry addonRegistry = new AddonRegistry(this);
 
-    private final Logger logger;
+    private final Lazy<Logger> logger = Lazy.lazy(() -> createLogger());
 
     private static final MutableBoolean LOADED = new MutableBoolean(false);
 
-
-    public AbstractTerraPlugin() {
-        this.logger = createLogger();
-        addonRegistry = getPlatformAddon().map(terraAddon -> new AddonRegistry(terraAddon, this)).orElseGet(() -> new AddonRegistry(this));
-    }
 
     protected void load() {
         if(LOADED.get()) {
@@ -73,6 +68,8 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         LOADED.set(true);
 
         logger().info("Initializing Terra...");
+
+        getPlatformAddon().ifPresent(addonRegistry::register);
 
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
             File configFile = new File(getDataFolder(), "config.yml");
@@ -166,6 +163,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
 
     @Override
     public Logger logger() {
-        return logger;
+        return logger.value();
     }
 }
