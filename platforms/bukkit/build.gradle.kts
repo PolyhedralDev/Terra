@@ -47,7 +47,7 @@ fun downloadPaperclip(url: String, dir: String) {
 
 fun copyTerra(dir: String) {
     file("$testDir/$dir").walk().forEach {
-        if (it.name.startsWith("Terra-") && it.name.endsWith(".jar")) it.delete() // Delete old Terra jar(s)
+        if (it.name.startsWith("Terra-bukkit") && it.name.endsWith(".jar")) it.delete() // Delete old Terra jar(s)
     }
     copy {
         from("$buildDir/libs/Terra-bukkit-$version-shaded.jar")
