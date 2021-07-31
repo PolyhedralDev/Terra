@@ -3,14 +3,15 @@ package com.dfsek.terra.sponge.handle;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.sponge.block.SpongeBlockState;
 import org.spongepowered.api.block.BlockTypes;
 
 public class SpongeWorldHandle implements WorldHandle {
-    private final SpongeBlockState air;
+    private final Lazy<SpongeBlockState> air;
 
     public SpongeWorldHandle() {
-        air = new SpongeBlockState(BlockTypes.AIR.get().defaultState());
+        air = Lazy.lazy(() -> new SpongeBlockState(BlockTypes.AIR.get().defaultState()));
     }
 
     @Override
@@ -20,7 +21,7 @@ public class SpongeWorldHandle implements WorldHandle {
 
     @Override
     public BlockState air() {
-        return air;
+        return air.value();
     }
 
     @Override
