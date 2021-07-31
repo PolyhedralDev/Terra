@@ -30,8 +30,8 @@ minecraft {
 
 tasks.named<Jar>("jar") {
     manifest {
-        attributes(
-                mapOf("MixinConfigs" to "terra.mixins.json")
-        )
+        //attributes(
+        //        mapOf("MixinConfigs" to "terra.mixins.json")
+        //)
     }
 }
