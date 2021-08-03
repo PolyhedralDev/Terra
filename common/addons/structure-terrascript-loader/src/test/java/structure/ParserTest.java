@@ -2,7 +2,7 @@ package structure;
 
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
-import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.api.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Returnable;

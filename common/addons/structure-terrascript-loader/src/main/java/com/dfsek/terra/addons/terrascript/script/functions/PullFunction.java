@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.terra.addons.terrascript.buffer.items.BufferedPulledBlock;
-import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.api.ParseException;
 import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.parser.exceptions;
+package com.dfsek.terra.addons.terrascript.api;
 
 import com.dfsek.terra.addons.terrascript.api.Position;
 

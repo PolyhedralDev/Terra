@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.terrascript;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.api.ParseException;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
