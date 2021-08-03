@@ -1,8 +1,4 @@
-package com.dfsek.terra.addons.terrascript.parser.lang.functions;
-
-import com.dfsek.terra.addons.terrascript.api.ParseException;
-import com.dfsek.terra.addons.terrascript.api.Returnable;
-import com.dfsek.terra.addons.terrascript.api.Position;
+package com.dfsek.terra.addons.terrascript.api;
 
 import java.util.List;
 

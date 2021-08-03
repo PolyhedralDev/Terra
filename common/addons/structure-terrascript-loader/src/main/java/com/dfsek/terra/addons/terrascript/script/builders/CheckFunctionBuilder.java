@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 
 import com.dfsek.terra.addons.terrascript.api.ParseException;
 import com.dfsek.terra.addons.terrascript.api.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.CheckFunction;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.api.TerraPlugin;

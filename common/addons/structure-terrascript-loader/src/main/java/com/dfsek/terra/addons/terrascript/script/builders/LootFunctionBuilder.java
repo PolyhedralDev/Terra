@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.terrascript.script.builders;
 
 import com.dfsek.terra.addons.terrascript.api.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.functions.LootFunction;
 import com.dfsek.terra.addons.terrascript.api.Position;
