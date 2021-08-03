@@ -1,4 +1,7 @@
-package com.dfsek.terra.addons.terrascript.api;
+package com.dfsek.terra.addons.terrascript.api.lang;
+
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.Position;
 
 import java.util.Map;
 

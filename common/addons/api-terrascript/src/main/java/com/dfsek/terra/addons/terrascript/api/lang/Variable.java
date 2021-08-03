@@ -1,4 +1,6 @@
-package com.dfsek.terra.addons.terrascript.api;
+package com.dfsek.terra.addons.terrascript.api.lang;
+
+import com.dfsek.terra.addons.terrascript.api.Position;
 
 public interface Variable<T> {
     T getValue();

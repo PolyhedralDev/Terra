@@ -2,9 +2,9 @@ package com.dfsek.terra.addons.terrascript.parser;
 
 import com.dfsek.terra.addons.terrascript.api.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
-import com.dfsek.terra.addons.terrascript.api.Item;
+import com.dfsek.terra.addons.terrascript.api.lang.Item;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.api.Returnable;
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;

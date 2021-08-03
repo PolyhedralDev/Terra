@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.terrascript.api;
 
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+
 import java.util.Map;
 
 public interface Function<T> extends Returnable<T> {

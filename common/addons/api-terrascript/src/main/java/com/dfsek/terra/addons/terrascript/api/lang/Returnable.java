@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.api;
+package com.dfsek.terra.addons.terrascript.api.lang;
 
 public interface Returnable<T> extends Item<T> {
     ReturnType returnType();

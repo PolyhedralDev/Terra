@@ -2,8 +2,8 @@ package com.dfsek.terra.addons.terrascript.parser.lang.functions.def;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.api.Item;
-import com.dfsek.terra.addons.terrascript.api.Variable;
+import com.dfsek.terra.addons.terrascript.api.lang.Item;
+import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.Position;
 
 import java.util.HashMap;
