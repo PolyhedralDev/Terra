@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.api.Position;
 
 public class EOFException extends TokenizerException {
 

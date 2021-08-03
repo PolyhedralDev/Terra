@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.parser.lang;
+package com.dfsek.terra.addons.terrascript.api;
 
 /**
  * Arguments passed to {@link Item}s by the implementation

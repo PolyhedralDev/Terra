@@ -1,7 +1,8 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.api.Returnable;
+import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.Variable;
 
 public class NumberVariable implements Variable<Number> {
     private final Position position;

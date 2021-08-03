@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.tokenizer;
+package com.dfsek.terra.addons.terrascript.api;
 
 public class Position {
     private final int line;

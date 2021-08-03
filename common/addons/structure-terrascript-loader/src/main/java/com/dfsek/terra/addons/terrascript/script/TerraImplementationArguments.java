@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.world.World;

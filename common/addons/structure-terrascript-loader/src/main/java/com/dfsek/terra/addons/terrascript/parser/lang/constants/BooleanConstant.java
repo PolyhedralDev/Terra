@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.api.Position;
 
 public class BooleanConstant extends ConstantExpression<Boolean> {
     public BooleanConstant(Boolean constant, Position position) {

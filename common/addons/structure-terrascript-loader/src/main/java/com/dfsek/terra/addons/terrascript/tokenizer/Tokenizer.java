@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.terrascript.tokenizer;
 
+import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.tokenizer.exceptions.EOFException;
 import com.dfsek.terra.addons.terrascript.tokenizer.exceptions.FormatException;

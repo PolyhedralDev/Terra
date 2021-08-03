@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.api.Returnable;
+import com.dfsek.terra.addons.terrascript.api.Position;
 
 public class BooleanNotOperation extends UnaryOperation<Boolean> {
     public BooleanNotOperation(Returnable<Boolean> input, Position position) {

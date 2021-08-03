@@ -1,12 +1,12 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.terra.addons.terrascript.buffer.items.BufferedStateManipulator;
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
+import com.dfsek.terra.addons.terrascript.api.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;

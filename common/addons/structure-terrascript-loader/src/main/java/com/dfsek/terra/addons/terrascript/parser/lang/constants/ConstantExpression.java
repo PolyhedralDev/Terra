@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.Returnable;
+import com.dfsek.terra.addons.terrascript.api.Variable;
+import com.dfsek.terra.addons.terrascript.api.Position;
 
 import java.util.Map;
 

@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.terrascript.tokenizer;
 
+import com.dfsek.terra.addons.terrascript.api.Position;
+
 public class Token {
     private final String content;
     private final Type type;
