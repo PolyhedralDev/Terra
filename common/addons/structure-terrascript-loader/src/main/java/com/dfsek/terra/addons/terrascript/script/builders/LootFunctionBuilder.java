@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.terrascript.script.builders;
 
-import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.functions.LootFunction;
-import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;

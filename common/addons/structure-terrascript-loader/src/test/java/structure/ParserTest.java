@@ -1,15 +1,15 @@
 package structure;
 
 
-import com.dfsek.terra.addons.terrascript.parser.Parser;
-import com.dfsek.terra.addons.terrascript.api.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.addons.terrascript.parser.Parser;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 

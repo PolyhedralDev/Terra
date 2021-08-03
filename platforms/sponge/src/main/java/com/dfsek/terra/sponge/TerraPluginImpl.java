@@ -13,6 +13,7 @@ import java.io.File;
 public class TerraPluginImpl extends AbstractTerraPlugin {
     private final TerraSpongePlugin plugin;
     private final SpongeWorldHandle worldHandle = new SpongeWorldHandle();
+
     public TerraPluginImpl(TerraSpongePlugin plugin) {
         this.plugin = plugin;
         load();

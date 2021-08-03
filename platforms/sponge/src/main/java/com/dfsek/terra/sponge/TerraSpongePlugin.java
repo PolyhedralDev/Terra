@@ -9,6 +9,7 @@ import org.spongepowered.plugin.jvm.Plugin;
 public class TerraSpongePlugin {
     private final PluginContainer plugin;
     private final TerraPluginImpl terraPlugin;
+
     @Inject
     public TerraSpongePlugin(PluginContainer plugin, Game game) {
         this.plugin = plugin;

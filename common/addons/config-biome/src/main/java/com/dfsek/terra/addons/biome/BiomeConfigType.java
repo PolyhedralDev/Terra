@@ -13,9 +13,9 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import java.util.function.Supplier;
 
 public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
+    public static final TypeKey<TerraBiome> BIOME_TYPE_TOKEN = new TypeKey<>() {
+    };
     private final BiomeFactory factory;
-
-    public static final TypeKey<TerraBiome> BIOME_TYPE_TOKEN = new TypeKey<>() {};
 
     public BiomeConfigType(ConfigPack pack) {
         this.factory = new BiomeFactory(pack);

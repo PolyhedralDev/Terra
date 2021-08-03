@@ -25,7 +25,8 @@ import java.util.function.Supplier;
 @Version("1.0.0")
 @Author("Terra")
 public class DistributorAddon extends TerraAddon {
-    public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {
+    };
     @Inject
     private TerraPlugin main;
 

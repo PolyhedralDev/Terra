@@ -5,7 +5,6 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.terra.api.registry.Registry;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;

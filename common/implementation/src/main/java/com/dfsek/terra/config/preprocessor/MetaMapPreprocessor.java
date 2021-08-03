@@ -10,17 +10,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
+    private static final TypeKey<List<String>> STRING_LIST = new TypeKey<>() {
+    };
+
     public MetaMapPreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
 
-    private static final TypeKey<List<String>> STRING_LIST = new TypeKey<>() {};
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {

@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
+import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
-import com.dfsek.terra.addons.terrascript.api.Position;
 
 public class GreaterOrEqualsThanStatement extends BinaryOperation<Number, Boolean> {
     public GreaterOrEqualsThanStatement(Returnable<Number> left, Returnable<Number> right, Position position) {

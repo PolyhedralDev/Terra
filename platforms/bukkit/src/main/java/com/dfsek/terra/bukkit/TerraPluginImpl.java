@@ -22,10 +22,8 @@ import java.util.Optional;
 
 public class TerraPluginImpl extends AbstractTerraPlugin {
     private final ItemHandle itemHandle = new BukkitItemHandle();
-
-    private WorldHandle handle = new BukkitWorldHandle();
-
     private final TerraBukkitPlugin plugin;
+    private WorldHandle handle = new BukkitWorldHandle();
 
     public TerraPluginImpl(TerraBukkitPlugin plugin) {
         this.plugin = plugin;

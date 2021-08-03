@@ -7,6 +7,7 @@ public class NoiseDistributor implements Distributor {
     private final NoiseSampler sampler;
 
     private final double threshold;
+
     public NoiseDistributor(NoiseSampler sampler, double threshold) {
         this.sampler = sampler;
         this.threshold = threshold;

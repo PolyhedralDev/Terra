@@ -14,10 +14,10 @@ import com.dfsek.terra.api.world.generator.Palette;
 import java.util.function.Supplier;
 
 public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
+    public static final TypeKey<Palette> PALETTE_TYPE_TOKEN = new TypeKey<>() {
+    };
     private final PaletteFactory factory = new PaletteFactory();
     private final TerraPlugin main;
-
-    public static final TypeKey<Palette> PALETTE_TYPE_TOKEN = new TypeKey<>(){};
 
     public PaletteConfigType(TerraPlugin main) {
         this.main = main;

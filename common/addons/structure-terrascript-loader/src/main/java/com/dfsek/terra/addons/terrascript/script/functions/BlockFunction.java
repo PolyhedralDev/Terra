@@ -1,13 +1,13 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.addons.terrascript.buffer.items.BufferedBlock;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.api.Function;
-import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.addons.terrascript.buffer.items.BufferedBlock;
+import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
+import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -20,10 +20,9 @@ import java.util.Map;
 
 public class BlockFunction implements Function<Void> {
     protected final Returnable<Number> x, y, z;
-
-    private final Map<String, BlockState> data = new HashMap<>();
     protected final Returnable<String> blockData;
     protected final TerraPlugin main;
+    private final Map<String, BlockState> data = new HashMap<>();
     private final Returnable<Boolean> overwrite;
     private final Position position;
 
@@ -70,6 +69,7 @@ public class BlockFunction implements Function<Void> {
 
     public static class Constant extends BlockFunction {
         private final BlockState state;
+
         public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData, Returnable<Boolean> overwrite, TerraPlugin main, Position position) {
             super(x, y, z, blockData, overwrite, main, position);
             this.state = main.getWorldHandle().createBlockData(blockData.getConstant());

@@ -11,9 +11,9 @@ import com.dfsek.terra.api.world.Flora;
 import java.util.function.Supplier;
 
 public class FloraConfigType implements ConfigType<FloraTemplate, Flora> {
+    public static final TypeKey<Flora> FLORA_TYPE_TOKEN = new TypeKey<>() {
+    };
     private final FloraFactory factory = new FloraFactory();
-
-    public static final TypeKey<Flora> FLORA_TYPE_TOKEN = new TypeKey<>(){};
 
     @Override
     public FloraTemplate getTemplate(ConfigPack pack, TerraPlugin main) {

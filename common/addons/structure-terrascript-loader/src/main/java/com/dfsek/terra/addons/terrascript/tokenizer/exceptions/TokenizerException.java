@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
 
-import com.dfsek.terra.addons.terrascript.api.ParseException;
 import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
 
 public abstract class TokenizerException extends ParseException {
 

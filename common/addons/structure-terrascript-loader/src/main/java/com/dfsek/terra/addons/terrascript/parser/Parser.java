@@ -1,16 +1,17 @@
 package com.dfsek.terra.addons.terrascript.parser;
 
-import com.dfsek.terra.addons.terrascript.api.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.api.Function;
+import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
 import com.dfsek.terra.addons.terrascript.api.lang.Item;
-import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
-import com.dfsek.terra.addons.terrascript.api.Function;
-import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow.BreakKeyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow.ContinueKeyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow.FailKeyword;
@@ -38,7 +39,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.operations.statements.NotE
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Assignment;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Declaration;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Getter;
-import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 import com.dfsek.terra.addons.terrascript.tokenizer.Tokenizer;
 

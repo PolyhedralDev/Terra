@@ -8,7 +8,6 @@ import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

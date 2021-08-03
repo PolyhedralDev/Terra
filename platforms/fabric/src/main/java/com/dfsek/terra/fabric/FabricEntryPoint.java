@@ -15,11 +15,13 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureConfig;
 
 public class FabricEntryPoint implements ModInitializer {
-    private static final TerraPluginImpl TERRA_PLUGIN = new TerraPluginImpl();
-
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
+    private static final TerraPluginImpl TERRA_PLUGIN = new TerraPluginImpl();
 
+    public static TerraPluginImpl getTerraPlugin() {
+        return TERRA_PLUGIN;
+    }
 
     @Override
     public void onInitialize() {
@@ -30,9 +32,5 @@ public class FabricEntryPoint implements ModInitializer {
 
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
-    }
-
-    public static TerraPluginImpl getTerraPlugin() {
-        return TERRA_PLUGIN;
     }
 }

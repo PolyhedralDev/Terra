@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.noise.paralithic.noise;
 
 import com.dfsek.paralithic.functions.dynamic.Context;
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
-import com.dfsek.terra.addons.noise.util.HashMapDoubleDouble;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 

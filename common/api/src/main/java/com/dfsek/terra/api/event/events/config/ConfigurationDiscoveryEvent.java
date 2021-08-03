@@ -7,7 +7,6 @@ import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * Fired when a pack is searched for {@link Configuration}s.

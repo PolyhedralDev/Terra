@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.biome.pipeline.config.stage.mutator;
 
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceListMutator;

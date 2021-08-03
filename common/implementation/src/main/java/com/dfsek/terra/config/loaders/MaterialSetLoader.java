@@ -7,7 +7,6 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 @SuppressWarnings("unchecked")

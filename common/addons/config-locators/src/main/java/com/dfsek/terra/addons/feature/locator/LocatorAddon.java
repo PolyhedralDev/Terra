@@ -34,8 +34,10 @@ import java.util.function.Supplier;
 @Author("Terra")
 public class LocatorAddon extends TerraAddon {
 
-    public static final TypeKey<Supplier<ObjectTemplate<Locator>>> LOCATOR_TOKEN = new TypeKey<>() {};
-    public static final TypeKey<Supplier<ObjectTemplate<Pattern>>> PATTERN_TOKEN = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<Locator>>> LOCATOR_TOKEN = new TypeKey<>() {
+    };
+    public static final TypeKey<Supplier<ObjectTemplate<Pattern>>> PATTERN_TOKEN = new TypeKey<>() {
+    };
     @Inject
     private TerraPlugin main;
 

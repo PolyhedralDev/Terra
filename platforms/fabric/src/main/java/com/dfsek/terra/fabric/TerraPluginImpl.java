@@ -26,6 +26,10 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
 
+    public TerraPluginImpl() {
+        load();
+    }
+
     @Override
     public WorldHandle getWorldHandle() {
         return worldHandle;
@@ -34,10 +38,6 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
     @Override
     protected Optional<TerraAddon> getPlatformAddon() {
         return Optional.of(new FabricAddon(this));
-    }
-
-    public TerraPluginImpl() {
-        load();
     }
 
     @Override

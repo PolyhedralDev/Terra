@@ -1,8 +1,6 @@
 package com.dfsek.terra.api.event;
 
 import com.dfsek.terra.api.event.events.Event;
-import com.dfsek.terra.api.event.functional.EventContext;
-import com.dfsek.terra.api.util.reflection.TypeKey;
 
 /**
  * Manages event registration and triggering.

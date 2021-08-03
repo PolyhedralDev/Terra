@@ -10,7 +10,7 @@ public class NoisePalette extends PaletteImpl {
 
     public NoisePalette(NoiseSampler sampler) {
         this.sampler = sampler;
-            }
+    }
 
     @Override
     public BlockState get(int layer, double x, double y, double z, long seed) {

@@ -23,10 +23,6 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     protected long salt;
 
-    public void setSalt(long salt) {
-        this.salt = salt;
-    }
-
     public NoiseFunction() {
         this.salt = 0;
     }
@@ -117,6 +113,10 @@ public abstract class NoiseFunction implements NoiseSampler {
 
     protected static double fastCos(double a) {
         return sinLookup((int) ((a + Math.PI / 2) * precision + 0.5f));
+    }
+
+    public void setSalt(long salt) {
+        this.salt = salt;
     }
 
     public double getFrequency() {

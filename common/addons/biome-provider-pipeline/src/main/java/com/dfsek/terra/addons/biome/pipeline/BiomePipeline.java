@@ -2,8 +2,8 @@ package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
-import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.api.vector.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;

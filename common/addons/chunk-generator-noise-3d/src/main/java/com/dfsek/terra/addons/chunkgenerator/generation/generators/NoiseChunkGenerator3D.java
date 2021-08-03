@@ -16,10 +16,10 @@ import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkData;
-import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.generator.Sampler;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GenerationStage;
+import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.generator.Sampler;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -118,7 +118,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
 
                             justSet = false;
                             paletteLevel = 0;
-                        }  else {
+                        } else {
 
                             justSet = false;
                             paletteLevel = 0;

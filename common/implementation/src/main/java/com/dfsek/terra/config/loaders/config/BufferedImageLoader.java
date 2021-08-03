@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 
 public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     private final Loader files;

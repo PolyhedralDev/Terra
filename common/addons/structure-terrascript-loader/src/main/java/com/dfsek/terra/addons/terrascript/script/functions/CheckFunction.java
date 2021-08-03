@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.Function;
+import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
@@ -57,7 +57,8 @@ public class CheckFunction implements Function<String> {
         //BiomeProvider provider = tw.getBiomeProvider();
         //TerraBiome b = provider.getBiome(vector.getBlockX(), vector.getBlockZ());
 
-        /*if(vector.getY() > c.getSeaLevel())*/ return "AIR"; // Above sea level
+        /*if(vector.getY() > c.getSeaLevel())*/
+        return "AIR"; // Above sea level
         //return "OCEAN"; // Below sea level
     }
 

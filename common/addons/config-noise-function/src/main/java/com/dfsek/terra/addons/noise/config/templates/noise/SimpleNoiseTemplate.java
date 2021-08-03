@@ -3,7 +3,6 @@ package com.dfsek.terra.addons.noise.config.templates.noise;
 import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {

@@ -9,7 +9,7 @@ public class BinaryColumn {
     public BinaryColumn(int minY, int maxY) {
         this.minY = minY;
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
-        this.data = new boolean[maxY-minY];
+        this.data = new boolean[maxY - minY];
     }
 
     public void set(int y) {

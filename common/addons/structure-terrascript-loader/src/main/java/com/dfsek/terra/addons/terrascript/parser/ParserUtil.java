@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.parser;
 
-import com.dfsek.terra.addons.terrascript.api.ParseException;
+import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 

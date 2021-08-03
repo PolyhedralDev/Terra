@@ -50,6 +50,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     public boolean loadAll() {
         return loadAll(TerraPlugin.class.getClassLoader());
     }
+
     public boolean loadAll(ClassLoader parent) {
         InjectorImpl<TerraPlugin> pluginInjector = new InjectorImpl<>(main);
         pluginInjector.addExplicitTarget(TerraPlugin.class);

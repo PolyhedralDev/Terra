@@ -6,7 +6,6 @@ import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.Registry;
 
 import java.lang.reflect.AnnotatedType;

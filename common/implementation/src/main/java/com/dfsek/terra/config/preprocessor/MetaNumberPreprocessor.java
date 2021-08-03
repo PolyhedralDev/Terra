@@ -6,20 +6,28 @@ import com.dfsek.tectonic.config.Configuration;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.preprocessor.Result;
-import com.dfsek.tectonic.util.ReflectionUtil;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
-import java.util.Arrays;
 import java.util.Map;
 
 public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
-    public static final TypeKey<String> META_STRING_KEY = new TypeKey<@Meta String>() {};
+    public static final TypeKey<String> META_STRING_KEY = new TypeKey<@Meta String>() {
+    };
 
     public MetaNumberPreprocessor(Map<String, Configuration> configs) {
         super(configs);
+    }
+
+    private static boolean isNumber(Class<?> clazz) {
+        return Number.class.isAssignableFrom(clazz)
+                || byte.class.equals(clazz)
+                || int.class.equals(clazz)
+                || long.class.equals(clazz)
+                || float.class.equals(clazz)
+                || double.class.equals(clazz);
     }
 
     @SuppressWarnings("unchecked")
@@ -34,14 +42,5 @@ public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
             }
         }
         return Result.noOp();
-    }
-
-    private static boolean isNumber(Class<?> clazz) {
-        return Number.class.isAssignableFrom(clazz)
-                || byte.class.equals(clazz)
-                || int.class.equals(clazz)
-                || long.class.equals(clazz)
-                || float.class.equals(clazz)
-                || double.class.equals(clazz);
     }
 }

@@ -43,11 +43,11 @@ import java.util.Optional;
 
 /**
  * Skeleton implementation of {@link TerraPlugin}
- *
+ * <p>
  * Implementations must invoke {@link #load()} in their constructors.
  */
 public abstract class AbstractTerraPlugin implements TerraPlugin {
-    private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
+    private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl(this);
 
     private final ConfigRegistry configRegistry = new ConfigRegistry();
@@ -65,9 +65,7 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
 
     private final Lazy<Logger> logger = Lazy.lazy(() -> createLogger());
-
-    private static final MutableBoolean LOADED = new MutableBoolean(false);
-
+    private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
 
     protected void load() {
         if(LOADED.get()) {

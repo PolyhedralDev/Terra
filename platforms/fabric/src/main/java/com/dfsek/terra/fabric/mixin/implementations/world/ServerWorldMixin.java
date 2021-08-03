@@ -44,11 +44,11 @@ import java.util.concurrent.Executor;
 public abstract class ServerWorldMixin {
     private WorldConfig config;
     @Shadow
-    public abstract long getSeed();
-
-    @Shadow
     @Final
     private ServerChunkManager chunkManager;
+
+    @Shadow
+    public abstract long getSeed();
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/storage/LevelStorage$Session;Lnet/minecraft/world/level/ServerWorldProperties;Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/dimension/DimensionType;Lnet/minecraft/server/WorldGenerationProgressListener;Lnet/minecraft/world/gen/chunk/ChunkGenerator;ZJLjava/util/List;Z)V")
     public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<net.minecraft.world.World> worldKey, DimensionType dimensionType, WorldGenerationProgressListener worldGenerationProgressListener, net.minecraft.world.gen.chunk.ChunkGenerator chunkGenerator, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime, CallbackInfo ci) {

@@ -14,7 +14,8 @@ public class Context {
     }
 
     public Context put(Properties properties) {
-        if(map.containsKey(properties.getClass())) throw new IllegalArgumentException("Property for class " + properties.getClass().getCanonicalName() + " already registered.");
+        if(map.containsKey(properties.getClass()))
+            throw new IllegalArgumentException("Property for class " + properties.getClass().getCanonicalName() + " already registered.");
         map.put(properties.getClass(), properties);
         return this;
     }

@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.feature;
 
 import com.dfsek.tectonic.annotations.Final;
 import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;

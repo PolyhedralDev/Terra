@@ -1,7 +1,7 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import org.bukkit.Chunk;
 import org.bukkit.World;

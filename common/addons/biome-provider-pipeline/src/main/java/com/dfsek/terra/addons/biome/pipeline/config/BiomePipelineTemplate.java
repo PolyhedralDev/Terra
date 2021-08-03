@@ -5,10 +5,10 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipelineProvider;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 
 import java.util.List;
 

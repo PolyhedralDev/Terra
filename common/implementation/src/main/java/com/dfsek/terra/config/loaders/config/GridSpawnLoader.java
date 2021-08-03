@@ -6,7 +6,6 @@ import com.dfsek.terra.api.structure.StructureSpawn;
 import com.dfsek.terra.math.GridSpawn;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")

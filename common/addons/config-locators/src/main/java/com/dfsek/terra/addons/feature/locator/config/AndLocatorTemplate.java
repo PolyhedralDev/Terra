@@ -4,7 +4,6 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ValidatedConfigTemplate;
 import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
-import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.feature.Locator;
 

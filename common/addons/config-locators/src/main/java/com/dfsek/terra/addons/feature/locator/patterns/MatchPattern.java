@@ -1,6 +1,5 @@
 package com.dfsek.terra.addons.feature.locator.patterns;
 
-import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.Column;

@@ -22,6 +22,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     BiomeProvider getBiomeProviderBuilder();
 
     <T> CheckedRegistry<T> getOrCreateRegistry(Type clazz);
+
     default <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
         return getOrCreateRegistry((Type) clazz);
     }

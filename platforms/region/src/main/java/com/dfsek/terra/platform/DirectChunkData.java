@@ -36,7 +36,8 @@ public class DirectChunkData implements ChunkData, com.dfsek.terra.api.world.Chu
     }
 
     @Override
-    public @NotNull BlockState getBlock(int x, int y, int z) {
+    public @NotNull
+    BlockState getBlock(int x, int y, int z) {
         CompoundTag tag = delegate.getBlockStateAt(x, y, z);
         if(tag == null) return new State("minecraft:air");
         return new State(tag.getString("Name"));

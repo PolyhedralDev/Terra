@@ -37,11 +37,6 @@ public class MetaTest {
         loader.load(new MetaListConfig(), meta).list.forEach(System.out::println);
     }
 
-    private static final class MetaListConfig implements ConfigTemplate {
-        @Value("list")
-        private @Meta List<@Meta String> list;
-    }
-
     @Test
     public void testMetaMap() {
         Configuration meta = new YamlConfiguration(MetaTest.class.getResourceAsStream("/meta.yml"), "meta.yml");
@@ -61,11 +56,6 @@ public class MetaTest {
         loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
         loader.load(new MetaMapConfig(), meta).map.forEach((k, v) -> System.out.println(k + ": " + v));
-    }
-
-    private static final class MetaMapConfig implements ConfigTemplate {
-        @Value("map")
-        private @Meta Map<@Meta String, @Meta String> map;
     }
 
     @Test
@@ -90,11 +80,6 @@ public class MetaTest {
         System.out.println(loader.load(new MetaStringConfig(), meta).string);
     }
 
-    private static final class MetaStringConfig implements ConfigTemplate {
-        @Value("string")
-        private @Meta String string;
-    }
-
     @Test
     public void testMetaNumber() {
         Configuration meta = new YamlConfiguration(MetaTest.class.getResourceAsStream("/meta.yml"), "meta.yml");
@@ -115,6 +100,21 @@ public class MetaTest {
 
         System.out.println("int: " + loader.load(new MetaNumberConfig(), meta).integer);
         System.out.println("double: " + loader.load(new MetaNumberConfig(), meta).aDouble);
+    }
+
+    private static final class MetaListConfig implements ConfigTemplate {
+        @Value("list")
+        private @Meta List<@Meta String> list;
+    }
+
+    private static final class MetaMapConfig implements ConfigTemplate {
+        @Value("map")
+        private @Meta Map<@Meta String, @Meta String> map;
+    }
+
+    private static final class MetaStringConfig implements ConfigTemplate {
+        @Value("string")
+        private @Meta String string;
     }
 
     private static final class MetaNumberConfig implements ConfigTemplate {

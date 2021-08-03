@@ -6,9 +6,6 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.Column;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PatternLocator implements Locator {
     private final Pattern pattern;
     private final Range search;

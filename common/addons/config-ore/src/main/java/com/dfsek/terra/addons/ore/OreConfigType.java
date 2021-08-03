@@ -11,8 +11,9 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 import java.util.function.Supplier;
 
 public class OreConfigType implements ConfigType<OreTemplate, Ore> {
+    public static final TypeKey<Ore> ORE_TYPE_TOKEN = new TypeKey<>() {
+    };
     private final OreFactory factory = new OreFactory();
-    public static final TypeKey<Ore> ORE_TYPE_TOKEN = new TypeKey<>(){};
 
     @Override
     public OreTemplate getTemplate(ConfigPack pack, TerraPlugin main) {

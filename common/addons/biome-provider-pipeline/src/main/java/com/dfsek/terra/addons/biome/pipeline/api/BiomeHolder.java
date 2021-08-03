@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.api;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public interface BiomeHolder {
     BiomeHolder expand(BiomeExpander expander, long seed);

@@ -45,10 +45,10 @@ import java.util.function.Supplier;
 @Author("Terra")
 @Version("1.0.0")
 public class NoiseAddon extends TerraAddon {
+    public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
+    };
     @Inject
     private TerraPlugin plugin;
-
-    public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {};
 
     @Override
     public void initialize() {

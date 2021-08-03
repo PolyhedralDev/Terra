@@ -14,15 +14,12 @@ import java.util.function.Consumer;
 
 public class EventContextImpl<T extends Event> implements EventContext<T>, Comparable<EventContextImpl<?>> {
     private final List<Consumer<T>> actions = new ArrayList<>();
+    private final TerraAddon addon;
+    private final Type eventType;
+    private final FunctionalEventHandlerImpl parent;
     private int priority;
     private boolean failThrough = false;
     private boolean global = false;
-
-    private final TerraAddon addon;
-
-    private final Type eventType;
-
-    private final FunctionalEventHandlerImpl parent;
 
     public EventContextImpl(TerraAddon addon, Type eventType, FunctionalEventHandlerImpl parent) {
         this.addon = addon;

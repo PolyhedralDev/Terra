@@ -19,7 +19,8 @@ import java.util.function.Supplier;
 @Author("Terra")
 @Version("1.0.0")
 public class SingleBiomeProviderAddon extends TerraAddon {
-    public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
+    };
 
     @Inject
     private TerraPlugin main;

@@ -6,7 +6,6 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.preprocessor.Result;
 import com.dfsek.terra.api.config.meta.Meta;
 import org.apache.commons.text.StringSubstitutor;
-import org.apache.commons.text.lookup.StringLookup;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;

@@ -1,6 +1,5 @@
 package com.dfsek.terra.addons.flora.flora.gen;
 
-import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
@@ -102,7 +101,7 @@ public class TerraFlora implements Flora {
     }
 
     private ProbabilityCollection<BlockState> getStateCollection(int layer) {
-        return layers.get(FastMath.max(FastMath.min(layer, layers.size()-1), 0));
+        return layers.get(FastMath.max(FastMath.min(layer, layers.size() - 1), 0));
     }
 
     @Override

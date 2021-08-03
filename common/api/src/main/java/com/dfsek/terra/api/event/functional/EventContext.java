@@ -1,6 +1,5 @@
 package com.dfsek.terra.api.event.functional;
 
-import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.Event;
 
 import java.util.function.Consumer;

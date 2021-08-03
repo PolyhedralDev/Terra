@@ -1,6 +1,12 @@
 package com.dfsek.terra.api.util.reflection;
 
-import java.lang.reflect.*;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -36,40 +42,6 @@ public class TypeKey<T> {
         }
         AnnotatedParameterizedType parameterized = (AnnotatedParameterizedType) superclass;
         return parameterized.getAnnotatedActualTypeArguments()[0];
-    }
-
-    /**
-     * Returns the raw (non-generic) type for this type.
-     */
-    public final Class<? super T> getRawType() {
-        return rawType;
-    }
-
-    /**
-     * Gets underlying {@code Type} instance.
-     */
-    public final Type getType() {
-        return type;
-    }
-
-    public AnnotatedType getAnnotatedType() {
-        return annotatedType;
-    }
-
-    @Override
-    public final int hashCode() {
-        return this.hashCode;
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        return o instanceof TypeKey<?>
-                && equals(type, ((TypeKey<?>) o).type);
-    }
-
-    @Override
-    public final String toString() {
-        return ReflectionUtil.typeToString(type);
     }
 
     public static boolean equals(Type a, Type b) {
@@ -115,6 +87,40 @@ public class TypeKey<T> {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Returns the raw (non-generic) type for this type.
+     */
+    public final Class<? super T> getRawType() {
+        return rawType;
+    }
+
+    /**
+     * Gets underlying {@code Type} instance.
+     */
+    public final Type getType() {
+        return type;
+    }
+
+    public AnnotatedType getAnnotatedType() {
+        return annotatedType;
+    }
+
+    @Override
+    public final int hashCode() {
+        return this.hashCode;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        return o instanceof TypeKey<?>
+                && equals(type, ((TypeKey<?>) o).type);
+    }
+
+    @Override
+    public final String toString() {
+        return ReflectionUtil.typeToString(type);
     }
 }
 

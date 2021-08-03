@@ -7,7 +7,6 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;

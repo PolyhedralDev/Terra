@@ -7,7 +7,6 @@ import com.dfsek.terra.api.world.generator.Palette;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * A class representation of a "slice" of the world.

@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.script.builders;
 
-import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.script.functions.CheckBlockFunction;
 import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.script.functions.CheckBlockFunction;
 
 import java.util.List;
 
