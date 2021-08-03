@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     "shadedApi"("commons-io:commons-io:2.6")
+    compileOnly(project(":common:addons:api-terrascript"))
 }
 
 tasks.named<ShadowJar>("shadowJar") {
