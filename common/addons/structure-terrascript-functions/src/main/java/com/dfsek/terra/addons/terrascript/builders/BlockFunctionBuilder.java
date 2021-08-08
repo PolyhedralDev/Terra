@@ -24,22 +24,7 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
     @Override
     public BlockFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
         if(argumentList.size() < 4) throw new ParseException("Expected data", position);
-        Returnable<Boolean> booleanReturnable = new Returnable<Boolean>() {
-            @Override
-            public ReturnType returnType() {
-                return ReturnType.BOOLEAN;
-            }
-
-            @Override
-            public Boolean apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-                return true;
-            }
-
-            @Override
-            public Position getPosition() {
-                return position;
-            }
-        };
+        Returnable<Boolean> booleanReturnable = Returnable.constant(true, Returnable.ReturnType.BOOLEAN, position);
         if(argumentList.size() == 5) booleanReturnable = (Returnable<Boolean>) argumentList.get(4);
         if(argumentList.get(3).returnType() == Returnable.ReturnType.STRING && argumentList.get(3) instanceof ConstantExpression) {
             return new BlockFunction.Constant((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1), (Returnable<Number>) argumentList.get(2), (ConstantExpression<String>) argumentList.get(3), booleanReturnable, main, position);
