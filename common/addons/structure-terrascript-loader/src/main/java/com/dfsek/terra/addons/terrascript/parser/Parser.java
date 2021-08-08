@@ -9,7 +9,7 @@ import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
-import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
+import com.dfsek.terra.addons.terrascript.api.lang.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow.BreakKeyword;

@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.terrascript;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
-import com.dfsek.terra.addons.terrascript.script.StructureScript;
+import com.dfsek.terra.addons.terrascript.script.StructureScriptImpl;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -36,7 +36,7 @@ public class TerraScriptAddon extends TerraAddon {
                     event.getPack().getLoader().open("", ".tesf").thenEntries(entries -> {
                         for(Map.Entry<String, InputStream> entry : entries) {
                             try {
-                                StructureScript structureScript = new StructureScript(entry.getValue(), main, structureRegistry, lootRegistry, event.getPack().getRegistryFactory().create());
+                                com.dfsek.terra.addons.terrascript.api.StructureScript structureScript = new StructureScriptImpl(entry.getValue(), main, structureRegistry, lootRegistry, event.getPack().getRegistryFactory().create());
                                 structureRegistry.register(structureScript.getID(), structureScript);
                             } catch(ParseException e) {
                                 throw new LoadException("Failed to load script: ", e);
