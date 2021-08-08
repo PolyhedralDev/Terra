@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
+import com.dfsek.terra.api.properties.Context;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -27,15 +27,15 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
 
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        if(statement.apply(implementationArguments, variableMap)) return conditional.apply(implementationArguments, variableMap);
+    public Block.ReturnInfo<?> apply(Context context, Map<String, Variable<?>> variableMap) {
+        if(statement.apply(, implementationArguments, variableMap)) return conditional.apply(, implementationArguments, variableMap);
         else {
             for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().apply(implementationArguments, variableMap)) {
-                    return pair.getRight().apply(implementationArguments, variableMap);
+                if(pair.getLeft().apply(, implementationArguments, variableMap)) {
+                    return pair.getRight().apply(, implementationArguments, variableMap);
                 }
             }
-            if(elseBlock != null) return elseBlock.apply(implementationArguments, variableMap);
+            if(elseBlock != null) return elseBlock.apply(, implementationArguments, variableMap);
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }

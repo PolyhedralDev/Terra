@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.terrascript.functions;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -25,8 +25,8 @@ public class RandomFunction implements Function<Integer> {
     }
 
     @Override
-    public Integer apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        return ((TerraImplementationArguments) implementationArguments).getRandom().nextInt(numberReturnable.apply(implementationArguments, variableMap).intValue());
+    public Integer apply(Context context, Map<String, Variable<?>> variableMap) {
+        return ((TerraImplementationArguments) implementationArguments).getRandom().nextInt(numberReturnable.apply(, implementationArguments, variableMap).intValue());
     }
 
     @Override

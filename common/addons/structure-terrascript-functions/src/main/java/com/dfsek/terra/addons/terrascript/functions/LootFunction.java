@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.terrascript.functions;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.StructureScript;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
@@ -9,6 +8,7 @@ import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.buffer.items.BufferedLootApplication;
 import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
 import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -38,13 +38,13 @@ public class LootFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Void apply(Context context, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        String id = data.apply(implementationArguments, variableMap);
+        String id = data.apply(, implementationArguments, variableMap);
         LootTable table = registry.get(id);
 
         if(table == null) {
@@ -52,7 +52,7 @@ public class LootFunction implements Function<Void> {
             return null;
         }
 
-        arguments.getBuffer().addItem(new BufferedLootApplication(table, main, script), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedLootApplication(table, main, script), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

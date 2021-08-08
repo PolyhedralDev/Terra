@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Item;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -21,8 +21,8 @@ public class Assignment<T> implements Item<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public synchronized T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        T val = value.apply(implementationArguments, variableMap);
+    public synchronized T apply(Context context, Map<String, Variable<?>> variableMap) {
+        T val = value.apply(, implementationArguments, variableMap);
         ((Variable<T>) variableMap.get(identifier)).setValue(val);
         return val;
     }

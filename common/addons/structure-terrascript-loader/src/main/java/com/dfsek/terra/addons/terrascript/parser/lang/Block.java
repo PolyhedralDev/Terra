@@ -4,6 +4,7 @@ import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Item;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +24,14 @@ public class Block implements Item<Block.ReturnInfo<?>> {
     }
 
     public ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
-        return apply(implementationArguments, new HashMap<>());
+        return apply(, implementationArguments, new HashMap<>());
     }
 
     @Override
-    public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public ReturnInfo<?> apply(Context context, Map<String, Variable<?>> variableMap) {
         Map<String, Variable<?>> scope = new HashMap<>(variableMap);
         for(Item<?> item : items) {
-            Object result = item.apply(implementationArguments, scope);
+            Object result = item.apply(, implementationArguments, scope);
             if(result instanceof ReturnInfo) {
                 ReturnInfo<?> level = (ReturnInfo<?>) result;
                 if(!level.getLevel().equals(ReturnLevel.NONE)) return level;

@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.terrascript.functions;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public class RecursionsFunction implements Function<Number> {
     }
 
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Number apply(Context context, Map<String, Variable<?>> variableMap) {
         return ((TerraImplementationArguments) implementationArguments).getRecursions();
     }
 

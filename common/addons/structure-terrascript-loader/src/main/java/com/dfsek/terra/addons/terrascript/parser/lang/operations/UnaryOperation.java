@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -19,8 +19,8 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
     public abstract T apply(T input);
 
     @Override
-    public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        return apply(input.apply(implementationArguments, variableMap));
+    public T apply(Context context, Map<String, Variable<?>> variableMap) {
+        return apply(input.apply(, implementationArguments, variableMap));
     }
 
     @Override

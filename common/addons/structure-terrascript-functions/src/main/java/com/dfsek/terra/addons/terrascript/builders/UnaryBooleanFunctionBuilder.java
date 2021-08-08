@@ -2,11 +2,11 @@ package com.dfsek.terra.addons.terrascript.builders;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.List;
 import java.util.Map;
@@ -30,8 +30,8 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
 
             @SuppressWarnings("unchecked")
             @Override
-            public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-                function.accept(((Returnable<Boolean>) argumentList.get(0)).apply(implementationArguments, variableMap), (TerraImplementationArguments) implementationArguments);
+            public Void apply(Context context, Map<String, Variable<?>> variableMap) {
+                function.accept(((Returnable<Boolean>) argumentList.get(0)).apply(, implementationArguments, variableMap), (TerraImplementationArguments) implementationArguments);
                 return null;
             }
 

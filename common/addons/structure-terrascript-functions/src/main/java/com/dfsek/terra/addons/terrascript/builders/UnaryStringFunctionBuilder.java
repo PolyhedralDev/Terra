@@ -2,10 +2,10 @@ package com.dfsek.terra.addons.terrascript.builders;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.List;
 import java.util.Map;
@@ -28,8 +28,8 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
 
             @SuppressWarnings("unchecked")
             @Override
-            public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-                function.accept(((Returnable<String>) argumentList.get(0)).apply(implementationArguments, variableMap));
+            public Void apply(Context context, Map<String, Variable<?>> variableMap) {
+                function.accept(((Returnable<String>) argumentList.get(0)).apply(, implementationArguments, variableMap));
                 return null;
             }
 

@@ -1,9 +1,7 @@
 package com.dfsek.terra.addons.terrascript.api.lang;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
-import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -17,7 +15,7 @@ public abstract class ConstantExpression<T> implements Returnable<T> {
     }
 
     @Override
-    public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public T apply(Context context, Map<String, Variable<?>> variableMap) {
         return constant;
     }
 

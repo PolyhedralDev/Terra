@@ -2,10 +2,10 @@ package com.dfsek.terra.addons.terrascript.builders;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.List;
 import java.util.Map;
@@ -29,8 +29,8 @@ public class BinaryNumberFunctionBuilder implements FunctionBuilder<Function<Num
 
             @SuppressWarnings("unchecked")
             @Override
-            public Number apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(implementationArguments, variableMap), ((Returnable<Number>) argumentList.get(1)).apply(implementationArguments, variableMap));
+            public Number apply(Context context, Map<String, Variable<?>> variableMap) {
+                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(, implementationArguments, variableMap), ((Returnable<Number>) argumentList.get(1)).apply(, implementationArguments, variableMap));
             }
 
             @Override

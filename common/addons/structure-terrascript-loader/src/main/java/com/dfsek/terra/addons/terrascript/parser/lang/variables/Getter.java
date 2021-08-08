@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class Getter implements Returnable<Object> {
     }
 
     @Override
-    public synchronized Object apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public synchronized Object apply(Context context, Map<String, Variable<?>> variableMap) {
         return variableMap.get(identifier).getValue();
     }
 

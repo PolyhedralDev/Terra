@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
     }
 
     @Override
-    public O apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        return apply(left.apply(implementationArguments, variableMap), right.apply(implementationArguments, variableMap));
+    public O apply(Context context, Map<String, Variable<?>> variableMap) {
+        return apply(left.apply(, implementationArguments, variableMap), right.apply(, implementationArguments, variableMap));
     }
 }

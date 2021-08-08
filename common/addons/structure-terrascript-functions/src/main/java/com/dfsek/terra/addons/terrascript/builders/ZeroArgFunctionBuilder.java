@@ -2,11 +2,11 @@ package com.dfsek.terra.addons.terrascript.builders;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
             }
 
             @Override
-            public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+            public T apply(Context context, Map<String, Variable<?>> variableMap) {
                 return function.apply((TerraImplementationArguments) implementationArguments);
             }
 

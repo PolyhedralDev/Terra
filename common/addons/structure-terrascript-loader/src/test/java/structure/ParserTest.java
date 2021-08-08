@@ -3,13 +3,13 @@ package structure;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.api.properties.Context;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -54,9 +54,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(null, new HashMap<>());
+        block.apply(, null, new HashMap<>());
 
-        block.apply(null, new HashMap<>());
+        block.apply(, null, new HashMap<>());
     }
 
     private static class Test1 implements Function<Void> {
@@ -71,8 +71,8 @@ public class ParserTest {
         }
 
         @Override
-        public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-            System.out.println("string: " + a.apply(implementationArguments, variableMap) + ", double: " + b.apply(implementationArguments, variableMap));
+        public Void apply(Context context, Map<String, Variable<?>> variableMap) {
+            System.out.println("string: " + a.apply(, implementationArguments, variableMap) + ", double: " + b.apply(, implementationArguments, variableMap));
             return null;
         }
 

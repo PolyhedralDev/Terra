@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Item;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
+import com.dfsek.terra.api.properties.Context;
 
 import java.util.Map;
 
@@ -30,8 +30,8 @@ public class Declaration<T> implements Item<T> {
     }
 
     @Override
-    public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        T result = value.apply(implementationArguments, variableMap);
+    public T apply(Context context, Map<String, Variable<?>> variableMap) {
+        T result = value.apply(, implementationArguments, variableMap);
         switch(type) {
             case NUMBER:
                 variableMap.put(identifier, new NumberVariable((Number) result, position));

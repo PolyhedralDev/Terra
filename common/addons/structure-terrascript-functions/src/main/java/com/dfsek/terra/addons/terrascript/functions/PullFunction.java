@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.terrascript.functions;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
 import com.dfsek.terra.addons.terrascript.api.lang.ConstantExpression;
@@ -11,6 +10,7 @@ import com.dfsek.terra.addons.terrascript.api.buffer.items.BufferedPulledBlock;
 import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
@@ -34,14 +34,14 @@ public class PullFunction implements Function<Void> {
     }
 
     @Override
-    public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Void apply(Context context, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(), z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
         BlockState rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 
