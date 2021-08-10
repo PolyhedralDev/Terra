@@ -29,7 +29,7 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
             @SuppressWarnings("unchecked")
             @Override
             public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-                function.accept(((Returnable<String>) argumentList.get(0)).apply(, implementationArguments, variableMap));
+                function.accept(((Returnable<String>) argumentList.get(0)).apply(context, variableMap));
                 return null;
             }
 

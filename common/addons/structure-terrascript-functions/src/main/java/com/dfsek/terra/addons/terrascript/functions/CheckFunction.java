@@ -4,7 +4,7 @@ import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -34,14 +34,14 @@ public class CheckFunction implements Function<String> {
     public String apply(Context context, Map<String, Variable<?>> variableMap) {
 
 
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
+        TerraProperties arguments = context.get(TerraProperties.class);
 
 
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        Vector3 location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        Vector3 location = arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
 
         return apply(location, arguments.getWorld());
     }

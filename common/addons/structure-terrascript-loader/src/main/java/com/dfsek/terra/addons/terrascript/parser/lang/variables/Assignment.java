@@ -21,8 +21,8 @@ public class Assignment<T> implements Item<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public synchronized T apply(Context context, Map<String, Variable<?>> variableMap) {
-        T val = value.apply(, implementationArguments, variableMap);
+    public T apply(Context context, Map<String, Variable<?>> variableMap) {
+        T val = value.apply(context, variableMap);
         ((Variable<T>) variableMap.get(identifier)).setValue(val);
         return val;
     }

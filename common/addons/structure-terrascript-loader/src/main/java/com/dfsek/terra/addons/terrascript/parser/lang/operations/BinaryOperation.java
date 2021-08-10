@@ -27,6 +27,6 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
 
     @Override
     public O apply(Context context, Map<String, Variable<?>> variableMap) {
-        return apply(left.apply(, implementationArguments, variableMap), right.apply(, implementationArguments, variableMap));
+        return apply(left.apply(context, variableMap), right.apply(context, variableMap));
     }
 }

@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.buffer.IntermediateBuffer;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.registry.Registry;
@@ -45,16 +45,16 @@ public class StructureFunction implements Function<Boolean> {
 
     @Override
     public Boolean apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
+        TerraProperties arguments = context.get(TerraProperties.class);
 
         if(arguments.getRecursions() > main.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
 
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        String app = id.apply(, implementationArguments, variableMap);
+        String app = id.apply(context, variableMap);
         Structure script = registry.get(app);
         if(script == null) {
             main.logger().severe("No such structure " + app);
@@ -62,7 +62,7 @@ public class StructureFunction implements Function<Boolean> {
         }
 
         Rotation rotation1;
-        String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(, implementationArguments, variableMap);
+        String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(context, variableMap);
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
@@ -70,7 +70,7 @@ public class StructureFunction implements Function<Boolean> {
             return null;
         }
 
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
+        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ()));
 
         return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getWorld(), arguments.getRandom(), arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
     }

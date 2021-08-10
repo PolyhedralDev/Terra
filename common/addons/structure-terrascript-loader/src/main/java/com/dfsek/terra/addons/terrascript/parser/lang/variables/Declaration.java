@@ -31,7 +31,7 @@ public class Declaration<T> implements Item<T> {
 
     @Override
     public T apply(Context context, Map<String, Variable<?>> variableMap) {
-        T result = value.apply(, implementationArguments, variableMap);
+        T result = value.apply(context, variableMap);
         switch(type) {
             case NUMBER:
                 variableMap.put(identifier, new NumberVariable((Number) result, position));

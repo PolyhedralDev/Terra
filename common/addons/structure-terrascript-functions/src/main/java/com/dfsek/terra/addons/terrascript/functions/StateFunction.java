@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.buffer.items.BufferedStateManipulator;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -32,11 +32,11 @@ public class StateFunction implements Function<Void> {
 
     @Override
     public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        TerraProperties arguments = context.get(TerraProperties.class);
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().addItem(new BufferedStateManipulator(main, data.apply(, implementationArguments, variableMap)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedStateManipulator(main, data.apply(context, variableMap)), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

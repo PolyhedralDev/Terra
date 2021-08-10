@@ -4,7 +4,7 @@ import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
@@ -27,13 +27,13 @@ public class CheckBlockFunction implements Function<String> {
 
     @Override
     public String apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
+        TerraProperties properties = context.get(TerraProperties.class);
 
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
-        RotationUtil.rotateVector(xz, arguments.getRotation());
+        RotationUtil.rotateVector(xz, properties.getRotation());
 
-        String data = arguments.getWorld().getBlockData(arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())))).getAsString();
+        String data = properties.getWorld().getBlockData(properties.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())))).getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;
     }

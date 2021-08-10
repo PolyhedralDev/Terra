@@ -5,17 +5,17 @@ import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.properties.Context;
 
 import java.util.List;
 import java.util.Map;
 
 public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
-    private final java.util.function.Function<TerraImplementationArguments, T> function;
+    private final java.util.function.Function<TerraProperties, T> function;
     private final Returnable.ReturnType type;
 
-    public ZeroArgFunctionBuilder(java.util.function.Function<TerraImplementationArguments, T> function, Returnable.ReturnType type) {
+    public ZeroArgFunctionBuilder(java.util.function.Function<TerraProperties, T> function, Returnable.ReturnType type) {
         this.function = function;
         this.type = type;
     }
@@ -30,7 +30,7 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
 
             @Override
             public T apply(Context context, Map<String, Variable<?>> variableMap) {
-                return function.apply((TerraImplementationArguments) implementationArguments);
+                return function.apply(context.get(TerraProperties.class));
             }
 
             @Override

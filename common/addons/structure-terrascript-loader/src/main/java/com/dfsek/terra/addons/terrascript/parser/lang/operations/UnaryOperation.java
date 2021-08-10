@@ -20,7 +20,7 @@ public abstract class UnaryOperation<T> implements Returnable<T> {
 
     @Override
     public T apply(Context context, Map<String, Variable<?>> variableMap) {
-        return apply(input.apply(, implementationArguments, variableMap));
+        return apply(input.apply(context, variableMap));
     }
 
     @Override

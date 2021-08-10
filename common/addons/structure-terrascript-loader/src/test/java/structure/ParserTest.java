@@ -54,9 +54,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
 
-        block.apply(, null, new HashMap<>());
+        block.apply(null, new HashMap<>());
 
-        block.apply(, null, new HashMap<>());
+        block.apply(null, new HashMap<>());
     }
 
     private static class Test1 implements Function<Void> {
@@ -72,7 +72,7 @@ public class ParserTest {
 
         @Override
         public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-            System.out.println("string: " + a.apply(, implementationArguments, variableMap) + ", double: " + b.apply(, implementationArguments, variableMap));
+            System.out.println("string: " + a.apply(context, variableMap) + ", double: " + b.apply(context, variableMap));
             return null;
         }
 

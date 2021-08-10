@@ -4,7 +4,7 @@ import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.vector.Vector2;
@@ -26,11 +26,11 @@ public class GetMarkFunction implements Function<String> {
 
     @Override
     public String apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        TerraProperties arguments = context.get(TerraProperties.class);
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
-        String mark = arguments.getBuffer().getMark(new Vector3(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(, implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
+        String mark = arguments.getBuffer().getMark(new Vector3(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(y.apply(context, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())));
         return mark == null ? "" : mark;
     }
 

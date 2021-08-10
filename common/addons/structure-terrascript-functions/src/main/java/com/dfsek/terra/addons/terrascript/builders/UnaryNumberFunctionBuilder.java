@@ -29,7 +29,7 @@ public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Numb
             @SuppressWarnings("unchecked")
             @Override
             public Number apply(Context context, Map<String, Variable<?>> variableMap) {
-                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(, implementationArguments, variableMap));
+                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(context, variableMap));
             }
 
             @Override

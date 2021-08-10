@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.terrascript.api.lang.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.buffer.items.BufferedPulledBlock;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.properties.Context;
@@ -35,13 +35,13 @@ public class PullFunction implements Function<Void> {
 
     @Override
     public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        TerraProperties arguments = context.get(TerraProperties.class);
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
         BlockState rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedPulledBlock(rot), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).intValue(), FastMath.roundToInt(xz.getZ())));
         return null;
     }
 

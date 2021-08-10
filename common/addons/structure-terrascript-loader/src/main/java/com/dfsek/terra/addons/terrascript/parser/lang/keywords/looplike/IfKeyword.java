@@ -28,14 +28,14 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
 
     @Override
     public Block.ReturnInfo<?> apply(Context context, Map<String, Variable<?>> variableMap) {
-        if(statement.apply(, implementationArguments, variableMap)) return conditional.apply(, implementationArguments, variableMap);
+        if(statement.apply(context, variableMap)) return conditional.apply(context, variableMap);
         else {
             for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().apply(, implementationArguments, variableMap)) {
-                    return pair.getRight().apply(, implementationArguments, variableMap);
+                if(pair.getLeft().apply(context, variableMap)) {
+                    return pair.getRight().apply(context, variableMap);
                 }
             }
-            if(elseBlock != null) return elseBlock.apply(, implementationArguments, variableMap);
+            if(elseBlock != null) return elseBlock.apply(context, variableMap);
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }

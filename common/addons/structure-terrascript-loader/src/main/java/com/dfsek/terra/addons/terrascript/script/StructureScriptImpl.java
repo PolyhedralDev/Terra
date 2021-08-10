@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.terrascript.script;
 
 import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.api.StructureScript;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.addons.terrascript.api.buffer.DirectBuffer;
 import com.dfsek.terra.addons.terrascript.api.buffer.StructureBuffer;
 import com.dfsek.terra.addons.terrascript.api.exception.ParseException;
@@ -10,6 +10,7 @@ import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
@@ -75,7 +76,7 @@ public class StructureScriptImpl implements StructureScript {
         try {
             return cache.get(location, () -> {
                 StructureBuffer buf = new StructureBuffer(location);
-                buf.setSucceeded(applyBlock(new TerraImplementationArguments(buf, rotation, random, world, 0)));
+                buf.setSucceeded(applyBlock(new TerraProperties(buf, rotation, random, world, 0)));
                 return buf;
             });
         } catch(ExecutionException e) {
@@ -87,7 +88,7 @@ public class StructureScriptImpl implements StructureScript {
     @SuppressWarnings("try")
     public boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_recursive:" + id)) {
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
+            return applyBlock(new TerraProperties(buffer, rotation, random, world, recursions));
         }
     }
 
@@ -96,7 +97,7 @@ public class StructureScriptImpl implements StructureScript {
     public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
             DirectBuffer buffer = new DirectBuffer(location, world);
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
+            return applyBlock(new TerraProperties(buffer, rotation, random, world, 0));
         }
     }
 
@@ -105,9 +106,11 @@ public class StructureScriptImpl implements StructureScript {
         return id;
     }
 
-    private boolean applyBlock(TerraImplementationArguments arguments) {
+    private boolean applyBlock(TerraProperties arguments) {
         try {
-            return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
+            Context context = new Context();
+            context.put(arguments);
+            return block.apply(context).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
             main.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
             main.getDebugLogger().stack(e);

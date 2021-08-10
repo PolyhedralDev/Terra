@@ -27,8 +27,8 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
 
     @Override
     public Block.ReturnInfo<?> apply(Context context, Map<String, Variable<?>> variableMap) {
-        for(initializer.apply(, implementationArguments, variableMap); statement.apply(, implementationArguments, variableMap); incrementer.apply(, implementationArguments, variableMap)) {
-            Block.ReturnInfo<?> level = conditional.apply(, implementationArguments, variableMap);
+        for(initializer.apply(context, variableMap); statement.apply(context, variableMap); incrementer.apply(context, variableMap)) {
+            Block.ReturnInfo<?> level = conditional.apply(context, variableMap);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

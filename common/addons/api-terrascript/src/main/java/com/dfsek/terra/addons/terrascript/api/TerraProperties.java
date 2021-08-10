@@ -1,13 +1,14 @@
 package com.dfsek.terra.addons.terrascript.api;
 
 import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
+import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.world.World;
 
 import java.util.Random;
 
-public class TerraImplementationArguments implements ImplementationArguments {
+public class TerraProperties implements Properties {
     private final Buffer buffer;
     private final Rotation rotation;
     private final Random random;
@@ -15,7 +16,7 @@ public class TerraImplementationArguments implements ImplementationArguments {
     private final int recursions;
     private boolean waterlog = false;
 
-    public TerraImplementationArguments(Buffer buffer, Rotation rotation, Random random, World world, int recursions) {
+    public TerraProperties(Buffer buffer, Rotation rotation, Random random, World world, int recursions) {
         this.buffer = buffer;
         this.rotation = rotation;
         this.random = random;

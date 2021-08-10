@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.terrascript.api.lang.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.buffer.items.BufferedBlock;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.properties.Context;
@@ -37,25 +37,25 @@ public class BlockFunction implements Function<Void> {
         this.position = position;
     }
 
-    void setBlock(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap, TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+    void setBlock(Context context, Map<String, Variable<?>> variableMap, TerraProperties arguments, BlockState rot) {
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(, implementationArguments, variableMap), main, arguments.isWaterlog()), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
+        arguments.getBuffer().addItem(new BufferedBlock(rot, overwrite.apply(context, variableMap), main, arguments.isWaterlog()), new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).doubleValue(), FastMath.roundToInt(xz.getZ())));
     }
 
     @Override
     public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        BlockState rot = getBlockState(implementationArguments, variableMap).clone();
-        setBlock(implementationArguments, variableMap, arguments, rot);
+        TerraProperties arguments = context.get(TerraProperties.class);
+        BlockState rot = getBlockState(context, variableMap).clone();
+        setBlock(context, variableMap, arguments, rot);
         return null;
     }
 
-    protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
-        return data.computeIfAbsent(blockData.apply(, arguments, variableMap), main.getWorldHandle()::createBlockData);
+    protected BlockState getBlockState(Context context, Map<String, Variable<?>> variableMap) {
+        return data.computeIfAbsent(blockData.apply(context, variableMap), main.getWorldHandle()::createBlockData);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class BlockFunction implements Function<Void> {
         }
 
         @Override
-        protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
+        protected BlockState getBlockState(Context arguments, Map<String, Variable<?>> variableMap) {
             return state;
         }
     }

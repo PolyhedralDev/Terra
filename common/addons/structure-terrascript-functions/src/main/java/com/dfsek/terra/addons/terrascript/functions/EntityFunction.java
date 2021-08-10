@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.terrascript.api.lang.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
 import com.dfsek.terra.addons.terrascript.api.buffer.items.BufferedEntity;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.properties.Context;
@@ -36,12 +36,12 @@ public class EntityFunction implements Function<Void> {
 
     @Override
     public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        TerraProperties arguments = context.get(TerraProperties.class);
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
         RotationUtil.rotateVector(xz, arguments.getRotation());
 
-        arguments.getBuffer().addItem(new BufferedEntity(data, main), new Vector3(xz.getX(), y.apply(, implementationArguments, variableMap).doubleValue(), xz.getZ()));
+        arguments.getBuffer().addItem(new BufferedEntity(data, main), new Vector3(xz.getX(), y.apply(context, variableMap).doubleValue(), xz.getZ()));
         return null;
     }
 

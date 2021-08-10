@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.terrascript.api.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.api.Position;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.api.properties.Context;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.function.BiConsumer;
 
 public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Void>> {
 
-    private final BiConsumer<Boolean, TerraImplementationArguments> function;
+    private final BiConsumer<Boolean, TerraProperties> function;
 
-    public UnaryBooleanFunctionBuilder(BiConsumer<Boolean, TerraImplementationArguments> function) {
+    public UnaryBooleanFunctionBuilder(BiConsumer<Boolean, TerraProperties> function) {
         this.function = function;
     }
 
@@ -31,7 +31,7 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
             @SuppressWarnings("unchecked")
             @Override
             public Void apply(Context context, Map<String, Variable<?>> variableMap) {
-                function.accept(((Returnable<Boolean>) argumentList.get(0)).apply(, implementationArguments, variableMap), (TerraImplementationArguments) implementationArguments);
+                function.accept(((Returnable<Boolean>) argumentList.get(0)).apply(context, variableMap), context.get(TerraProperties.class));
                 return null;
             }
 

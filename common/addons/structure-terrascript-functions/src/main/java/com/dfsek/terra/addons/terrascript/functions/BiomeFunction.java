@@ -2,9 +2,9 @@ package com.dfsek.terra.addons.terrascript.functions;
 
 import com.dfsek.terra.addons.terrascript.api.Function;
 import com.dfsek.terra.addons.terrascript.api.Position;
+import com.dfsek.terra.addons.terrascript.api.TerraProperties;
 import com.dfsek.terra.addons.terrascript.api.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.api.lang.Variable;
-import com.dfsek.terra.addons.terrascript.api.TerraImplementationArguments;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -32,15 +32,14 @@ public class BiomeFunction implements Function<String> {
 
     @Override
     public String apply(Context context, Map<String, Variable<?>> variableMap) {
-        TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
+        TerraProperties properties = context.get(TerraProperties.class);
+        Vector2 xz = new Vector2(x.apply(context, variableMap).doubleValue(), z.apply(context, variableMap).doubleValue());
 
-        Vector2 xz = new Vector2(x.apply(, implementationArguments, variableMap).doubleValue(), z.apply(, implementationArguments, variableMap).doubleValue());
+        RotationUtil.rotateVector(xz, properties.getRotation());
 
-        RotationUtil.rotateVector(xz, arguments.getRotation());
+        BiomeProvider grid = properties.getWorld().getBiomeProvider();
 
-        BiomeProvider grid = arguments.getWorld().getBiomeProvider();
-
-        return grid.getBiome(arguments.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(, implementationArguments, variableMap).intValue(), FastMath.roundToInt(xz.getZ()))), arguments.getWorld().getSeed()).getID();
+        return grid.getBiome(properties.getBuffer().getOrigin().clone().add(new Vector3(FastMath.roundToInt(xz.getX()), y.apply(context, variableMap).intValue(), FastMath.roundToInt(xz.getZ()))), properties.getWorld().getSeed()).getID();
     }
 
 
