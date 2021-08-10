@@ -7,6 +7,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
+import com.dfsek.terra.api.addon.annotations.Depends;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
@@ -21,6 +22,7 @@ import java.util.Map;
 @Addon("structure-terrascript-loader")
 @Author("Terra")
 @Version("1.0.0")
+@Depends("api-terrascript")
 public class TerraScriptAddon extends TerraAddon {
     @Inject
     private TerraPlugin main;
