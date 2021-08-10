@@ -1,6 +1,5 @@
 package com.dfsek.terra.addons.terrascript.api;
 
-import com.dfsek.terra.addons.terrascript.api.ImplementationArguments;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
