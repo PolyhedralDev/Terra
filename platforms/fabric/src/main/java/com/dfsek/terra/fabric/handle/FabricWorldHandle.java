@@ -1,5 +1,6 @@
 package com.dfsek.terra.fabric.handle;
 
+import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -13,6 +14,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -44,6 +47,15 @@ public class FabricWorldHandle implements WorldHandle {
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse("minecraft:" + id.toLowerCase(Locale.ROOT));
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(Vector3 location, com.dfsek.terra.api.block.state.BlockState block, String snbt) {
+        try {
+            return (BlockEntity) net.minecraft.block.entity.BlockEntity.createFromNbt(FabricAdapter.adapt(location), (BlockState) block, StringNbtReader.parse(snbt));
+        } catch(CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

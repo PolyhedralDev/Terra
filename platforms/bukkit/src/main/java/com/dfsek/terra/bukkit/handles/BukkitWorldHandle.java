@@ -1,5 +1,6 @@
 package com.dfsek.terra.bukkit.handles;
 
+import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
@@ -34,6 +35,11 @@ public class BukkitWorldHandle implements WorldHandle {
     @Override
     public EntityType getEntity(String id) {
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id));
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt) {
+        return null;
     }
 
     @Override

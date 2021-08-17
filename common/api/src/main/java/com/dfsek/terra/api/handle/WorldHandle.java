@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.handle;
 
+import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.Player;
@@ -15,6 +16,8 @@ public interface WorldHandle {
     BlockState air();
 
     EntityType getEntity(String id);
+
+    BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt);
 
     /**
      * Get the locations selected by a player. (Usually via WorldEdit)

@@ -1,9 +1,11 @@
 package com.dfsek.terra.sponge.handle;
 
+import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.sponge.block.SpongeBlockState;
 import org.spongepowered.api.block.BlockTypes;
 
@@ -26,6 +28,11 @@ public class SpongeWorldHandle implements WorldHandle {
 
     @Override
     public EntityType getEntity(String id) {
+        return null;
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt) {
         return null;
     }
 }
