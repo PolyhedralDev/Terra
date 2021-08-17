@@ -45,7 +45,7 @@ public class FabricWorldHandle implements WorldHandle {
     @Override
     public EntityType getEntity(String id) {
         Identifier identifier = Identifier.tryParse(id);
-        if(identifier == null) identifier = Identifier.tryParse("minecraft:" + id.toLowerCase(Locale.ROOT));
+        if(identifier == null) identifier = Identifier.tryParse(id);
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);
     }
 
