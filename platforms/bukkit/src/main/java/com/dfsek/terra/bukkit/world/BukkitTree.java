@@ -24,7 +24,7 @@ public class BukkitTree implements Tree {
 
     private MaterialSet getSpawnable(TreeType type) {
         WorldHandle handle = main.getWorldHandle();
-        switch(type) {
+        switch (type) {
             case CRIMSON_FUNGUS:
                 return MaterialSet.get(handle.createBlockData("minecraft:crimson_nylium"));
             case WARPED_FUNGUS:
@@ -42,10 +42,11 @@ public class BukkitTree implements Tree {
     }
 
     @Override
-    @SuppressWarnings("try")
     public boolean plant(Location l, Random r) {
-        try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
+        try (ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
             return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
+        } catch (Exception ignored) {
+            return false;
         }
     }
 
