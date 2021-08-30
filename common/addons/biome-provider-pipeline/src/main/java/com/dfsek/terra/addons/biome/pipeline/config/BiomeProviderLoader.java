@@ -3,10 +3,12 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
+
+import java.lang.reflect.AnnotatedType;
+
 import com.dfsek.terra.addons.biome.pipeline.BiomePipelineProvider;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
-import java.lang.reflect.AnnotatedType;
 
 public class BiomeProviderLoader implements TypeLoader<BiomeProvider> {
     @Override

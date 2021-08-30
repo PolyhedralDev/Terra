@@ -9,21 +9,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
+
 /**
  * Load all {@code *.yml} files from a {@link java.nio.file.Path}.
  */
 public class FolderLoader extends LoaderImpl {
     private final Path path;
-
+    
     public FolderLoader(Path path) {
         this.path = path;
     }
-
+    
     @Override
     public InputStream get(String singleFile) throws IOException {
         return new FileInputStream(new File(path.toFile(), singleFile));
     }
-
+    
     protected void load(String directory, String extension) {
         File newPath = new File(path.toFile(), directory);
         newPath.mkdirs();

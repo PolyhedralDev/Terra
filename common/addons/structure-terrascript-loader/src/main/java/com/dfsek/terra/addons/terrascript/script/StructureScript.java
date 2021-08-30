@@ -1,5 +1,16 @@
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import net.jafama.FastMath;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
+
 import com.dfsek.terra.addons.terrascript.buffer.DirectBuffer;
 import com.dfsek.terra.addons.terrascript.buffer.StructureBuffer;
 import com.dfsek.terra.addons.terrascript.parser.Parser;
@@ -35,16 +46,7 @@ import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import net.jafama.FastMath;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 public class StructureScript implements Structure {
     private final Block block;
@@ -52,17 +54,18 @@ public class StructureScript implements Structure {
     private final Cache<Vector3, StructureBuffer> cache;
     private final TerraPlugin main;
     private String tempID;
-
-    public StructureScript(InputStream inputStream, TerraPlugin main, Registry<Structure> registry, Registry<LootTable> lootRegistry, Registry<FunctionBuilder<?>> functionRegistry) throws ParseException {
+    
+    public StructureScript(InputStream inputStream, TerraPlugin main, Registry<Structure> registry, Registry<LootTable> lootRegistry,
+                           Registry<FunctionBuilder<?>> functionRegistry) throws ParseException {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream, Charset.defaultCharset()));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
-
+        
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
-
+        
         parser
                 .registerFunction("block", new BlockFunctionBuilder(main))
                 .registerFunction("debugBlock", new BlockFunctionBuilder(main))
@@ -79,14 +82,21 @@ public class StructureScript implements Structure {
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
                 .registerFunction("state", new StateFunctionBuilder(main))
                 .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
-                .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(), Returnable.ReturnType.NUMBER))
-                .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(), Returnable.ReturnType.NUMBER))
-                .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(), Returnable.ReturnType.NUMBER))
-                .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(), Returnable.ReturnType.STRING))
-                .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(), Returnable.ReturnType.NUMBER))
-                .registerFunction("print", new UnaryStringFunctionBuilder(string -> main.getDebugLogger().info("[" + tempID + "] " + string)))
+                .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(),
+                                                                                Returnable.ReturnType.NUMBER))
+                .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(),
+                                                                                Returnable.ReturnType.NUMBER))
+                .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(),
+                                                                                Returnable.ReturnType.NUMBER))
+                .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(),
+                                                                           Returnable.ReturnType.STRING))
+                .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
+                                                                                  Returnable.ReturnType.NUMBER))
+                .registerFunction("print",
+                                  new UnaryStringFunctionBuilder(string -> main.getDebugLogger().info("[" + tempID + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
-                .registerFunction("pow", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
+                .registerFunction("pow", new BinaryNumberFunctionBuilder(
+                        (number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
                 .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> FastMath.floor(number.doubleValue())))
                 .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> FastMath.ceil(number.doubleValue())))
@@ -98,20 +108,22 @@ public class StructureScript implements Structure {
                 .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> FastMath.asin(number.doubleValue())))
                 .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> FastMath.acos(number.doubleValue())))
                 .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> FastMath.atan(number.doubleValue())))
-                .registerFunction("max", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
-                .registerFunction("min", new BinaryNumberFunctionBuilder((number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
-
+                .registerFunction("max", new BinaryNumberFunctionBuilder(
+                        (number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
+                .registerFunction("min", new BinaryNumberFunctionBuilder(
+                        (number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
+        
         if(!main.getTerraConfig().isDebugScript()) {
             parser.ignoreFunction("debugBlock");
         }
-
+        
         block = parser.parse();
         this.id = parser.getID();
         tempID = id;
         this.main = main;
         this.cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getStructureCache()).build();
     }
-
+    
     @Override
     @SuppressWarnings("try")
     public boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation) {
@@ -121,7 +133,24 @@ public class StructureScript implements Structure {
             return buffer.succeeded();
         }
     }
-
+    
+    @Override
+    @SuppressWarnings("try")
+    public boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions) {
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_recursive:" + id)) {
+            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
+        }
+    }
+    
+    @Override
+    @SuppressWarnings("try")
+    public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
+        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
+            DirectBuffer buffer = new DirectBuffer(location, world);
+            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
+        }
+    }
+    
     @SuppressWarnings("try")
     public boolean test(Vector3 location, World world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {
@@ -129,7 +158,7 @@ public class StructureScript implements Structure {
             return buffer.succeeded();
         }
     }
-
+    
     private StructureBuffer computeBuffer(Vector3 location, World world, Random random, Rotation rotation) {
         try {
             return cache.get(location, () -> {
@@ -141,29 +170,7 @@ public class StructureScript implements Structure {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    @SuppressWarnings("try")
-    public boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_recursive:" + id)) {
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
-        }
-    }
-
-    @Override
-    @SuppressWarnings("try")
-    public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
-            DirectBuffer buffer = new DirectBuffer(location, world);
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
-        }
-    }
-
-    @Override
-    public String getID() {
-        return id;
-    }
-
+    
     private boolean applyBlock(TerraImplementationArguments arguments) {
         try {
             return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
@@ -172,5 +179,10 @@ public class StructureScript implements Structure {
             main.getDebugLogger().stack(e);
             return false;
         }
+    }
+    
+    @Override
+    public String getID() {
+        return id;
     }
 }

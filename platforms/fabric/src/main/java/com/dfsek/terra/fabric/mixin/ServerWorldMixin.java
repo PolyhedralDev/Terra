@@ -1,7 +1,5 @@
 package com.dfsek.terra.fabric.mixin;
 
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
@@ -20,10 +18,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+
+
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
-    @Inject(method = "<init>", at = @At(value = "RETURN"))
-    public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType, WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator, boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session,
+                                  ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType,
+                                  WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator,
+                                  boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
             ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
             FabricEntryPoint.getTerraPlugin().logger().info("Registered world " + this);

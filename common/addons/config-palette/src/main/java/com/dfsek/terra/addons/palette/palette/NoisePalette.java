@@ -1,17 +1,18 @@
 package com.dfsek.terra.addons.palette.palette;
 
+import java.util.List;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-import java.util.List;
 
 public class NoisePalette extends PaletteImpl {
     private final NoiseSampler sampler;
-
+    
     public NoisePalette(NoiseSampler sampler) {
         this.sampler = sampler;
-            }
-
+    }
+    
     @Override
     public BlockState get(int layer, double x, double y, double z, long seed) {
         PaletteLayer paletteLayer;

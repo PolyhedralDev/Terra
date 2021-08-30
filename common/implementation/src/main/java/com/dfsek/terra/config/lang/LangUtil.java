@@ -1,16 +1,17 @@
 package com.dfsek.terra.config.lang;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Language;
 
-import java.io.File;
-import java.io.IOException;
 
 public final class LangUtil {
     private static Language language;
-
+    
     public static void load(String langID, TerraPlugin main) {
         Logger logger = main.logger();
         File file = new File(main.getDataFolder(), "lang");
@@ -25,11 +26,11 @@ public final class LangUtil {
             logger.severe("Double-check your configuration before reporting this to Terra!");
         }
     }
-
+    
     public static Language getLanguage() {
         return language;
     }
-
+    
     public static void send(String messageID, CommandSender sender, String... args) {
         language.getMessage(messageID).send(sender, args);
     }

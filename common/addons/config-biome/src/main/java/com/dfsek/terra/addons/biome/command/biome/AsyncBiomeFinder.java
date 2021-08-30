@@ -1,19 +1,21 @@
 package com.dfsek.terra.addons.biome.command.biome;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
+
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
 
 /**
  * Runnable that locates a biome asynchronously
  */
 public class AsyncBiomeFinder implements Runnable {
-
+    
     protected final BiomeProvider provider;
     protected final TerraBiome target;
     protected final int startRadius;
@@ -24,8 +26,9 @@ public class AsyncBiomeFinder implements Runnable {
     protected final TerraPlugin main;
     private final Consumer<Vector3> callback;
     protected int searchSize = 1;
-
-    public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius, Consumer<Vector3> callback, TerraPlugin main) {
+    
+    public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius,
+                            Consumer<Vector3> callback, TerraPlugin main) {
         this.provider = provider;
         this.target = target;
         this.main = main;
@@ -36,35 +39,23 @@ public class AsyncBiomeFinder implements Runnable {
         this.world = world;
         this.callback = callback;
     }
-
-    /**
-     * Helper method to get biome at location
-     *
-     * @param x X coordinate
-     * @param z Z coordinate
-     * @return TerraBiome at coordinates
-     */
-    public boolean isValid(int x, int z, TerraBiome target) {
-        int res = main.getTerraConfig().getBiomeSearchResolution();
-        return getProvider().getBiome(x * res, z * res, world.getSeed()).equals(target);
-    }
-
+    
     public Vector3 finalizeVector(Vector3 orig) {
         return orig.multiply(main.getTerraConfig().getBiomeSearchResolution());
     }
-
+    
     @Override
     public void run() {
         int x = centerX;
         int z = centerZ;
-
+        
         x /= searchSize;
         z /= searchSize;
-
+        
         int run = 1;
         boolean toggle = true;
         boolean found = false;
-
+        
         main:
         for(int i = startRadius; i < maxRadius; i++) {
             for(int j = 0; j < run; j++) {
@@ -89,23 +80,36 @@ public class AsyncBiomeFinder implements Runnable {
         Vector3 finalSpawn = found ? finalizeVector(new Vector3(x, 0, z)) : null;
         callback.accept(finalSpawn);
     }
-
+    
+    /**
+     * Helper method to get biome at location
+     *
+     * @param x X coordinate
+     * @param z Z coordinate
+     *
+     * @return TerraBiome at coordinates
+     */
+    public boolean isValid(int x, int z, TerraBiome target) {
+        int res = main.getTerraConfig().getBiomeSearchResolution();
+        return getProvider().getBiome(x * res, z * res, world.getSeed()).equals(target);
+    }
+    
     public TerraBiome getTarget() {
         return target;
     }
-
+    
     public World getWorld() {
         return world;
     }
-
+    
     public BiomeProvider getProvider() {
         return provider;
     }
-
+    
     public int getSearchSize() {
         return searchSize;
     }
-
+    
     public void setSearchSize(int searchSize) {
         this.searchSize = searchSize;
     }

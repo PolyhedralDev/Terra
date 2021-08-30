@@ -9,12 +9,13 @@ import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.config.lang.LangUtil;
 
+
 @Command(
         subcommands = {
-                @Subcommand(value = "query", aliases = {"q"}, clazz = ProfileQueryCommand.class),
-                @Subcommand(value = "start", aliases = {"s"}, clazz = ProfileStartCommand.class),
-                @Subcommand(value = "stop", aliases = {"st"}, clazz = ProfileStopCommand.class),
-                @Subcommand(value = "reset", aliases = {"r"}, clazz = ProfileResetCommand.class)
+                @Subcommand(value = "query", aliases = "q", clazz = ProfileQueryCommand.class),
+                @Subcommand(value = "start", aliases = "s", clazz = ProfileStartCommand.class),
+                @Subcommand(value = "stop", aliases = "st", clazz = ProfileStopCommand.class),
+                @Subcommand(value = "reset", aliases = "r", clazz = ProfileResetCommand.class)
         },
         usage = "Commands to enable/disable/query/reset the profiler."
 )

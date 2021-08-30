@@ -7,12 +7,13 @@ import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.injection.annotations.Inject;
 
+
 @Command
 @DebugCommand
 public class ProfileQueryCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void execute(CommandSender sender) {
         StringBuilder data = new StringBuilder("Terra Profiler data dump: \n");

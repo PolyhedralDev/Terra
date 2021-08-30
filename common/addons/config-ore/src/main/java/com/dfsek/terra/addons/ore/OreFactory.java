@@ -6,6 +6,7 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigFactory;
 
+
 public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
     @Override
     public Ore build(OreTemplate config, TerraPlugin main) {

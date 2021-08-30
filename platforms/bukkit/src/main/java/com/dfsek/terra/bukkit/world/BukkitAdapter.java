@@ -1,6 +1,13 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.TreeType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.enums.Axis;
@@ -22,12 +29,7 @@ import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 import com.dfsek.terra.transform.MapTransform;
 import com.dfsek.terra.transform.TransformerImpl;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.TreeType;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.
@@ -35,25 +37,25 @@ import org.bukkit.util.Vector;
 public final class BukkitAdapter {
     public static TransformerImpl<TreeType, String> TREE_TRANSFORMER = new TransformerImpl.Builder<TreeType, String>()
             .addTransform(new MapTransform<TreeType, String>()
-                    .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
-                    .add(TreeType.BIG_TREE, "LARGE_OAK")
-                    .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
-                    .add(TreeType.REDWOOD, "SPRUCE")
-                    .add(TreeType.TREE, "OAK")
-                    .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
-                    .add(TreeType.SWAMP, "SWAMP_OAK"))
+                                  .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
+                                  .add(TreeType.BIG_TREE, "LARGE_OAK")
+                                  .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
+                                  .add(TreeType.REDWOOD, "SPRUCE")
+                                  .add(TreeType.TREE, "OAK")
+                                  .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
+                                  .add(TreeType.SWAMP, "SWAMP_OAK"))
             .addTransform(TreeType::toString)
             .build();
-
-
+    
+    
     public static BlockState adapt(org.bukkit.block.data.BlockData data) {
         return BukkitBlockState.newInstance(data);
     }
-
+    
     public static org.bukkit.block.data.BlockData adapt(BlockState data) {
         return ((BukkitBlockState) data).getHandle();
     }
-
+    
     public static Axis adapt(org.bukkit.Axis axis) {
         switch(axis) {
             case X:
@@ -66,7 +68,7 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Half adapt(org.bukkit.block.data.Bisected.Half half) {
         switch(half) {
             case BOTTOM:
@@ -77,7 +79,7 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static RedstoneConnection adapt(org.bukkit.block.data.type.RedstoneWire.Connection connection) {
         switch(connection) {
             case NONE:
@@ -90,7 +92,7 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static org.bukkit.block.data.type.RedstoneWire.Connection adapt(RedstoneConnection connection) {
         switch(connection) {
             case SIDE:
@@ -103,7 +105,7 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static RailShape adapt(org.bukkit.block.data.Rail.Shape shape) {
         switch(shape) {
             case SOUTH_WEST:
@@ -130,7 +132,7 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static org.bukkit.block.data.Rail.Shape adapt(RailShape shape) {
         switch(shape) {
             case EAST_WEST:
@@ -157,8 +159,8 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
-
+    
+    
     public static org.bukkit.block.data.Bisected.Half adapt(Half half) {
         switch(half) {
             case TOP:
@@ -169,7 +171,7 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static org.bukkit.Axis adapt(Axis axis) {
         switch(axis) {
             case Z:
@@ -182,73 +184,73 @@ public final class BukkitAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Vector3 adapt(Location location) {
         return new Vector3(location.getX(), location.getY(), location.getZ());
     }
-
+    
     public static Vector adapt(Vector3 vector3) {
         return new Vector(vector3.getX(), vector3.getY(), vector3.getZ());
     }
-
+    
     public static Vector3 adapt(Vector vector) {
         return new Vector3(vector.getX(), vector.getY(), vector.getZ());
     }
-
+    
     public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
         if(sender instanceof Player) return new BukkitPlayer((Player) sender);
         if(sender instanceof Entity) return new BukkitEntity((Entity) sender);
         return new BukkitCommandSender(sender);
     }
-
+    
     public static org.bukkit.command.CommandSender adapt(CommandSender sender) {
         return ((BukkitCommandSender) sender).getHandle();
     }
-
+    
     public static World adapt(org.bukkit.World world) {
         return new BukkitWorld(world);
     }
-
+    
     public static org.bukkit.World adapt(World world) {
         return (org.bukkit.World) world.getHandle();
     }
-
+    
     public static Chunk adapt(org.bukkit.Chunk chunk) {
         return new BukkitChunk(chunk);
     }
-
+    
     public static org.bukkit.Chunk adapt(Chunk chunk) {
         return (org.bukkit.Chunk) chunk.getHandle();
     }
-
+    
     public static Enchantment adapt(org.bukkit.enchantments.Enchantment enchantment) {
         return new BukkitEnchantment(enchantment);
     }
-
+    
     public static org.bukkit.enchantments.Enchantment adapt(Enchantment enchantment) {
         return ((BukkitEnchantment) enchantment).getHandle();
     }
-
+    
     public static Player adapt(com.dfsek.terra.api.entity.Player player) {
         return ((BukkitPlayer) player).getHandle();
     }
-
+    
     public static com.dfsek.terra.api.entity.Player adapt(Player player) {
         return new BukkitPlayer(player);
     }
-
+    
     public static BukkitBlockTypeAndItem adapt(Material material) {
         return new BukkitBlockTypeAndItem(material);
     }
-
+    
     public static Material adapt(BlockType type) {
         return ((BukkitBlockTypeAndItem) type).getHandle();
     }
-
+    
     public static ItemStack adapt(org.bukkit.inventory.ItemStack in) {
         return new BukkitItemStack(in);
     }
-
+    
     public static org.bukkit.inventory.ItemStack adapt(ItemStack in) {
         return ((BukkitItemStack) in).getHandle();
     }

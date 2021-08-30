@@ -17,16 +17,16 @@ import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 public class OreAddon extends TerraAddon {
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void initialize() {
         main.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    event.getPack().registerConfigType(new OreConfigType(), "ORE", 1);
-                    event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("ORE", pack -> new OrePopulator(main));
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                event.getPack().registerConfigType(new OreConfigType(), "ORE", 1);
+                event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("ORE", pack -> new OrePopulator(main));
+            })
+            .failThrough();
     }
 }

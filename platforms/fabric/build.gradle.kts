@@ -20,11 +20,11 @@ tasks.named<ShadowJar>("shadowJar") {
 
 dependencies {
     "shadedApi"(project(":common:implementation"))
-
+    
     "minecraft"("com.mojang:minecraft:1.17.1")
     "mappings"("net.fabricmc:yarn:1.17.1+build.1:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
-
+    
     "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
         exclude(group = "com.google.guava", module = "guava")
         exclude(group = "com.google.code.gson", module = "gson")

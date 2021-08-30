@@ -2,15 +2,19 @@ package com.dfsek.terra.api.structure.rotation;
 
 import net.jafama.FastMath;
 
+
 public enum Rotation {
-
-    CW_90(90), CW_180(180), CCW_90(270), NONE(0);
+    
+    CW_90(90),
+    CW_180(180),
+    CCW_90(270),
+    NONE(0);
     private final int degrees;
-
+    
     Rotation(int degrees) {
         this.degrees = degrees;
     }
-
+    
     public static Rotation fromDegrees(int deg) {
         switch(FastMath.floorMod(deg, 360)) {
             case 0:
@@ -25,11 +29,7 @@ public enum Rotation {
                 throw new IllegalArgumentException();
         }
     }
-
-    public int getDegrees() {
-        return degrees;
-    }
-
+    
     public Rotation inverse() {
         switch(this) {
             case NONE:
@@ -44,12 +44,18 @@ public enum Rotation {
                 throw new IllegalArgumentException();
         }
     }
-
+    
     public Rotation rotate(Rotation rotation) {
         return fromDegrees(this.getDegrees() + rotation.getDegrees());
     }
-
+    
+    public int getDegrees() {
+        return degrees;
+    }
+    
     public enum Axis {
-        X, Y, Z
+        X,
+        Y,
+        Z
     }
 }

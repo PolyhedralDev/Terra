@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 
+
 @Mixin(Biome.class)
 @Implements(@Interface(iface = com.dfsek.terra.api.world.Biome.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BiomeMixin {

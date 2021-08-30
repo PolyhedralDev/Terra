@@ -11,27 +11,24 @@ import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
-@Command(
-        arguments = {
-                @Argument(
-                        value = "biome",
-                        tabCompleter = BiomeTabCompleter.class,
-                        argumentParser = BiomeArgumentParser.class
-                )
-        }
-)
+
+@Command(arguments = @Argument(
+        value = "biome",
+        tabCompleter = BiomeTabCompleter.class,
+        argumentParser = BiomeArgumentParser.class
+))
 public class BiomeInfoCommand implements CommandTemplate {
     @ArgumentTarget("biome")
     private TerraBiome biome;
-
+    
     @Override
     public void execute(CommandSender sender) {
         sender.sendMessage("Biome info for \"" + biome.getID() + "\".");
         sender.sendMessage("Vanilla biome: " + biome.getVanillaBiomes());
-
+        
         if(biome instanceof UserDefinedBiome) {
             BiomeTemplate bio = ((UserDefinedBiome) biome).getConfig();
-
+            
             if(bio.getExtended().size() == 0) {
                 sender.sendMessage("No Parent Biomes");
             } else {

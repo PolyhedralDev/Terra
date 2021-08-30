@@ -1,14 +1,5 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.api.world.Tree;
-import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.transform.MapTransform;
-import com.dfsek.terra.transform.TransformerImpl;
-import com.dfsek.terra.util.FastRandom;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
@@ -18,26 +9,37 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.config.WorldConfig;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.world.Tree;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.dfsek.terra.transform.MapTransform;
+import com.dfsek.terra.transform.TransformerImpl;
+import com.dfsek.terra.util.FastRandom;
+
+
 /**
  * Listener for events on all implementations.
  */
 public class CommonListener implements Listener {
     private static final TransformerImpl<TreeType, String> TREE_TYPE_STRING_TRANSFORMER = new TransformerImpl.Builder<TreeType, String>()
             .addTransform(new MapTransform<TreeType, String>()
-                    .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
-                    .add(TreeType.BIG_TREE, "LARGE_OAK")
-                    .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
-                    .add(TreeType.REDWOOD, "SPRUCE")
-                    .add(TreeType.TREE, "OAK")
-                    .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
-                    .add(TreeType.SWAMP, "SWAMP_OAK"))
+                                  .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
+                                  .add(TreeType.BIG_TREE, "LARGE_OAK")
+                                  .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
+                                  .add(TreeType.REDWOOD, "SPRUCE")
+                                  .add(TreeType.TREE, "OAK")
+                                  .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
+                                  .add(TreeType.SWAMP, "SWAMP_OAK"))
             .addTransform(TreeType::toString).build();
     private final TerraPlugin main;
-
+    
     public CommonListener(TerraPlugin main) {
         this.main = main;
     }
-
+    
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onSaplingGrow(StructureGrowEvent e) {
         if(e.isCancelled()) return;

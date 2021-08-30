@@ -1,11 +1,12 @@
 package com.dfsek.terra.addons.biome.pipeline.mutator;
 
+import java.util.Map;
+
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
-import java.util.Map;
 
 public class BorderListMutator implements BiomeMutator {
     private final String border;
@@ -13,15 +14,16 @@ public class BorderListMutator implements BiomeMutator {
     private final ProbabilityCollection<TerraBiome> replaceDefault;
     private final String defaultReplace;
     private final Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace;
-
-    public BorderListMutator(Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace, String border, String defaultReplace, NoiseSampler noiseSampler, ProbabilityCollection<TerraBiome> replaceDefault) {
+    
+    public BorderListMutator(Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace, String border, String defaultReplace,
+                             NoiseSampler noiseSampler, ProbabilityCollection<TerraBiome> replaceDefault) {
         this.border = border;
         this.noiseSampler = noiseSampler;
         this.replaceDefault = replaceDefault;
         this.defaultReplace = defaultReplace;
         this.replace = replace;
     }
-
+    
     @Override
     public TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed) {
         TerraBiome origin = viewPoint.getBiome(0, 0);

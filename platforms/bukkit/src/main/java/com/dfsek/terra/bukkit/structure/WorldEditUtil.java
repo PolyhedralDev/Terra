@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+
 public final class WorldEditUtil {
     public static Location[] getSelectionLocations(Player sender) {
         WorldEditPlugin we;
@@ -34,13 +35,14 @@ public final class WorldEditUtil {
         BlockVector3 max = selection.getMaximumPoint();
         Location l1 = new Location(sender.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
         Location l2 = new Location(sender.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
-        return new Location[] {l1, l2};
+        return new Location[]{ l1, l2 };
     }
-
+    
     /**
      * Gets an instance of the WorldEditPlugin class.
      *
      * @return The world edit plugin instance.
+     *
      * @throws WorldEditNotFoundException Thrown when worldedit cannot be found.
      */
     @NotNull
@@ -50,7 +52,7 @@ public final class WorldEditUtil {
         Bukkit.getLogger().severe("[Terra] a command requiring WorldEdit was executed, but WorldEdit was not detected!");
         throw new WorldEditNotFoundException("Could not find World Edit!");
     }
-
+    
     public static Location[] getSelectionPositions(Player sender) {
         WorldEditPlugin we;
         try {
@@ -74,6 +76,6 @@ public final class WorldEditUtil {
         BlockVector3 max = selection.getPos2();
         Location l1 = new Location(sender.getWorld(), min.getBlockX(), min.getBlockY(), min.getBlockZ());
         Location l2 = new Location(sender.getWorld(), max.getBlockX(), max.getBlockY(), max.getBlockZ());
-        return new Location[] {l1, l2};
+        return new Location[]{ l1, l2 };
     }
 }

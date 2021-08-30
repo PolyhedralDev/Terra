@@ -3,6 +3,7 @@ package com.dfsek.terra.api.injection;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.injection.exception.InjectionException;
 
+
 /**
  * Dynamic dependency injector.
  * <p>
@@ -17,7 +18,7 @@ public interface Injector<T> {
      * @param target Target class type.
      */
     void addExplicitTarget(Class<? extends T> target);
-
+    
     /**
      * Inject the stored object into an object.
      * <p>
@@ -27,6 +28,7 @@ public interface Injector<T> {
      * ({@link #addExplicitTarget(Class)}.
      *
      * @param object Object to inject into
+     *
      * @throws InjectionException If:
      *                            <ul>
      *                                <li>Matching field annotated with {@link Inject} is final</li>

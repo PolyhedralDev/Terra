@@ -1,9 +1,10 @@
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
 
+import java.util.Random;
+
 import com.dfsek.terra.api.inventory.ItemStack;
 
-import java.util.Random;
 
 /**
  * Loot LootFunction fot setting the amount of an item.
@@ -11,7 +12,7 @@ import java.util.Random;
 public class AmountFunction implements LootFunction {
     private final int max;
     private final int min;
-
+    
     /**
      * Instantiates an AmountFunction.
      *
@@ -22,12 +23,13 @@ public class AmountFunction implements LootFunction {
         this.min = min;
         this.max = max;
     }
-
+    
     /**
      * Applies the function to an ItemStack.
      *
      * @param original The ItemStack on which to apply the function.
      * @param r        The Random instance to use.
+     *
      * @return - ItemStack - The mutated ItemStack.
      */
     @Override

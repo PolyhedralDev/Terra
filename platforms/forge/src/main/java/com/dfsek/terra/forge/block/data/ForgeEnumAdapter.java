@@ -5,10 +5,12 @@ import com.dfsek.terra.api.block.BlockFace;
 import com.dfsek.terra.api.block.data.Bisected;
 import com.dfsek.terra.api.block.data.Slab;
 import com.dfsek.terra.api.block.data.Stairs;
+
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
+
 
 public final class ForgeEnumAdapter {
     public static Stairs.Shape adapt(StairsShape shape) {
@@ -27,7 +29,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Bisected.Half adapt(Half half) {
         switch(half) {
             case BOTTOM:
@@ -38,7 +40,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static BlockFace adapt(Direction direction) {
         switch(direction) {
             case DOWN:
@@ -57,7 +59,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Slab.Type adapt(SlabType type) {
         switch(type) {
             case BOTTOM:
@@ -70,7 +72,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static StairsShape adapt(Stairs.Shape shape) {
         switch(shape) {
             case STRAIGHT:
@@ -87,7 +89,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Half adapt(Bisected.Half half) {
         switch(half) {
             case TOP:
@@ -98,7 +100,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Direction adapt(BlockFace face) {
         switch(face) {
             case SOUTH:
@@ -117,7 +119,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalArgumentException();
         }
     }
-
+    
     public static SlabType adapt(Slab.Type type) {
         switch(type) {
             case DOUBLE:
@@ -130,7 +132,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Axis adapt(Direction.Axis axis) {
         switch(axis) {
             case X:
@@ -143,7 +145,7 @@ public final class ForgeEnumAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Direction.Axis adapt(Axis axis) {
         switch(axis) {
             case Z:

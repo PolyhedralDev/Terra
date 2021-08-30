@@ -8,13 +8,14 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.List;
 
+
 @Mixin(GeneratorType.class)
 public interface GeneratorTypeAccessor {
     @Accessor("VALUES")
     static List<GeneratorType> getValues() {
         throw new UnsupportedOperationException();
     }
-
+    
     @Mutable
     @Accessor("translationKey")
     void setTranslationKey(Text translationKey);

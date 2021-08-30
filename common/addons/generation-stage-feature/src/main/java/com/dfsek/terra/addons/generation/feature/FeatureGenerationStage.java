@@ -10,13 +10,14 @@ import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.GenerationStage;
 
+
 public class FeatureGenerationStage implements GenerationStage {
     private final TerraPlugin main;
-
+    
     public FeatureGenerationStage(TerraPlugin main) {
         this.main = main;
     }
-
+    
     @Override
     @SuppressWarnings("try")
     public void populate(World world, Chunk chunk) {
@@ -32,11 +33,12 @@ public class FeatureGenerationStage implements GenerationStage {
                     world.getBiomeProvider().getBiome(tx, tz, seed).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
                         if(feature.getDistributor().matches(tx, tz, seed)) {
                             feature.getLocator()
-                                    .getSuitableCoordinates(column)
-                                    .forEach(y ->
-                                            feature.getStructure(world, tx, y, tz)
-                                                    .generate(new Vector3(tx, y, tz), world, PopulationUtil.getRandom(chunk), Rotation.NONE)
-                                    );
+                                   .getSuitableCoordinates(column)
+                                   .forEach(y ->
+                                                    feature.getStructure(world, tx, y, tz)
+                                                           .generate(new Vector3(tx, y, tz), world, PopulationUtil.getRandom(chunk),
+                                                                     Rotation.NONE)
+                                           );
                         }
                     });
                 }

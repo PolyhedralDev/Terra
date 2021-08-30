@@ -8,6 +8,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
+
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import net.querz.mca.MCAUtil;
@@ -19,26 +20,27 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class DirectWorld implements World {
     private final long seed;
     private final GenWrapper generator;
     private final Map<Long, MCAFile> files = Collections.synchronizedMap(new HashMap<>());
-
+    
     public DirectWorld(long seed) {
         this.seed = seed;
         this.generator = generator;
     }
-
+    
     @Override
     public long getSeed() {
         return seed;
     }
-
+    
     @Override
     public int getMaxHeight() {
         return 255;
     }
-
+    
     @Override
     public Chunk getChunkAt(int x, int z) {
         MCAFile file = compute(x, z);
@@ -49,37 +51,37 @@ public class DirectWorld implements World {
         }
         return new DirectChunkData(chunk, this, x, z);
     }
-
+    
     @Override
     public BlockState getBlockData(int x, int y, int z) {
         return null;
     }
-
+    
     @Override
     public void setBlockData(int x, int y, int z, BlockState data, boolean physics) {
-
+    
     }
-
+    
     @Override
     public BlockEntity getBlockState(int x, int y, int z) {
         return null;
     }
-
+    
     @Override
     public Entity spawnEntity(Vector3 location, EntityType entityType) {
         return null;
     }
-
+    
     @Override
     public int getMinHeight() {
         return 0;
     }
-
+    
     @Override
     public Object getHandle() {
         return generator;
     }
-
+    
     public MCAFile compute(int x, int z) {
         synchronized(files) {
             return files.computeIfAbsent(DirectUtils.regionID(x, z), k -> {
@@ -96,11 +98,11 @@ public class DirectWorld implements World {
             });
         }
     }
-
+    
     public CompoundTag getData(int x, int y, int z) {
         return compute(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16)).getBlockStateAt(x, y, z);
     }
-
+    
     public Map<Long, MCAFile> getFiles() {
         return files;
     }

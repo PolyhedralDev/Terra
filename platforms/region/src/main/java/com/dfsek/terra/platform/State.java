@@ -3,12 +3,14 @@ package com.dfsek.terra.platform;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
+
 import net.querz.nbt.tag.CompoundTag;
+
 
 public class State implements BlockState, BlockType {
     private final CompoundTag data;
     private final String noProp;
-
+    
     public State(String data) {
         this.data = new CompoundTag();
         if(data.contains("[")) {
@@ -19,14 +21,14 @@ public class State implements BlockState, BlockType {
             for(String property : props) {
                 String name = property.substring(0, property.indexOf('='));
                 String val = property.substring(property.indexOf('=') + 1);
-
+                
                 pTag.putString(name, val);
             }
             this.data.put("Properties", pTag);
         } else noProp = data;
         this.data.putString("Name", noProp);
     }
-
+    
     public State(CompoundTag tag) {
         if(tag == null) {
             this.data = new CompoundTag();
@@ -36,44 +38,44 @@ public class State implements BlockState, BlockType {
         }
         noProp = data.getString("Name");
     }
-
-
+    
+    
     @Override
     public BlockType getBlockType() {
         return this;
     }
-
+    
     @Override
     public boolean matches(BlockState other) {
         return ((State) other).noProp.equals(noProp);
     }
-
+    
     @Override
     public boolean isAir() {
         return noProp.equals("minecraft:air");
     }
-
+    
     @Override
     public boolean isStructureVoid() {
         return false;
     }
-
+    
     @Override
     public <T> boolean has(Property<T> property) {
         return false;
     }
-
+    
     @Override
     public <T> T get(Property<T> property) {
         return null;
     }
-
+    
     @Override
     public <T> BlockState set(Property<T> property, T value) {
         return null;
     }
-
-
+    
+    
     @Override
     public BlockState clone() {
         try {
@@ -82,38 +84,38 @@ public class State implements BlockState, BlockType {
             throw new Error(e);
         }
     }
-
+    
     @Override
     public String getAsString() {
         return noProp;
     }
-
+    
     @Override
     public CompoundTag getHandle() {
         return data;
     }
-
+    
     @Override
     public int hashCode() {
         return noProp.hashCode();
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof State)) return false;
         return ((State) obj).noProp.equals(noProp);
     }
-
+    
     @Override
     public BlockState getDefaultData() {
         return this;
     }
-
+    
     @Override
     public boolean isSolid() {
         return false;
     }
-
+    
     @Override
     public boolean isWater() {
         return false;

@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.noise.samplers.noise.fractal;
 import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+
 public abstract class FractalNoiseFunction extends NoiseFunction {
     protected final NoiseSampler input;
     protected double fractalBounding = 1 / 1.75;
@@ -10,16 +11,12 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
     protected double gain = 0.5;
     protected double lacunarity = 2.0d;
     protected double weightedStrength = 0.0d;
-
+    
     public FractalNoiseFunction(NoiseSampler input) {
         this.input = input;
         frequency = 1;
     }
-
-    public void setWeightedStrength(double weightedStrength) {
-        this.weightedStrength = weightedStrength;
-    }
-
+    
     protected void calculateFractalBounding() {
         double gain = fastAbs(this.gain);
         double amp = gain;
@@ -30,18 +27,22 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
         }
         fractalBounding = 1 / ampFractal;
     }
-
-    public void setOctaves(int octaves) {
-        this.octaves = octaves;
-        calculateFractalBounding();
-    }
-
+    
     public void setGain(double gain) {
         this.gain = gain;
         calculateFractalBounding();
     }
-
+    
     public void setLacunarity(double lacunarity) {
         this.lacunarity = lacunarity;
+    }
+    
+    public void setOctaves(int octaves) {
+        this.octaves = octaves;
+        calculateFractalBounding();
+    }
+    
+    public void setWeightedStrength(double weightedStrength) {
+        this.weightedStrength = weightedStrength;
     }
 }

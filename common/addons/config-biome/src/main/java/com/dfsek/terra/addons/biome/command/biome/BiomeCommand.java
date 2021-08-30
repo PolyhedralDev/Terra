@@ -12,18 +12,11 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
+
 @Command(
         subcommands = {
-                @Subcommand(
-                        value = "info",
-                        aliases = {"i"},
-                        clazz = BiomeInfoCommand.class
-                ),
-                @Subcommand(
-                        value = "locate",
-                        aliases = {"l"},
-                        clazz = BiomeLocateCommand.class
-                )
+                @Subcommand(value = "info", aliases = "i", clazz = BiomeInfoCommand.class),
+                @Subcommand(value = "locate", aliases = "l", clazz = BiomeLocateCommand.class)
         },
         usage = "/terra biome"
 )
@@ -32,11 +25,11 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class BiomeCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-
+        
         BiomeProvider provider = player.world().getBiomeProvider();
         UserDefinedBiome biome = (UserDefinedBiome) provider.getBiome(player.position(), player.world().getSeed());
         sender.sendMessage("You are standing in " + biome.getID());

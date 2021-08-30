@@ -7,22 +7,24 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.vector.Vector3;
 
+
 /**
  * Interface to be implemented for world manipulation.
  */
 public interface WorldHandle {
     BlockState createBlockData(String data);
-
+    
     BlockState air();
-
-    EntityType getEntity(String id);
-
+    
     BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt);
-
+    
+    EntityType getEntity(String id);
+    
     /**
      * Get the locations selected by a player. (Usually via WorldEdit)
      *
      * @param player Player to get locations for
+     *
      * @return Pair of locations.
      */
     default Pair<Vector3, Vector3> getSelectedLocation(Player player) {

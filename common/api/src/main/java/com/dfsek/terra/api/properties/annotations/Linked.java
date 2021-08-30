@@ -1,11 +1,12 @@
 package com.dfsek.terra.api.properties.annotations;
 
-import com.dfsek.terra.api.properties.PropertyHolder;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.dfsek.terra.api.properties.PropertyHolder;
+
 
 /**
  * Specifies that this property holder shares properties

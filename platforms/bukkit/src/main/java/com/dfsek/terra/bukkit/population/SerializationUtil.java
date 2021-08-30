@@ -11,30 +11,41 @@ import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+
 public final class SerializationUtil {
     public static Object fromFile(File f) throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new MovedObjectInputStream(new FileInputStream(f), "com.dfsek.terra.api.world.generation.population", "com.dfsek.terra.bukkit.population"); // Backwards compat with old Gaea location
+        ObjectInputStream ois = new MovedObjectInputStream(new FileInputStream(f), "com.dfsek.terra.api.world.generation.population",
+                                                           "com.dfsek.terra.bukkit.population"); // Backwards compat with old Gaea location
         Object o = ois.readObject();
         ois.close();
         return o;
     }
-
+    
     public static void toFile(Serializable o, File f) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
         oos.writeObject(o);
         oos.close();
     }
-
+    
     public static class MovedObjectInputStream extends ObjectInputStream {
         private final String oldNameSpace;
         private final String newNameSpace;
-
+        
         public MovedObjectInputStream(InputStream in, String oldNameSpace, String newNameSpace) throws IOException {
             super(in);
             this.oldNameSpace = oldNameSpace;
             this.newNameSpace = newNameSpace;
         }
-
+        
+        @Override
+        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+            if(desc.getName().contains(oldNameSpace)) {
+                String newClassName = desc.getName().replace(oldNameSpace, newNameSpace);
+                return Class.forName(newClassName);
+            }
+            return super.resolveClass(desc);
+        }
+        
         @Override
         protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
             ObjectStreamClass result = super.readClassDescriptor();
@@ -42,11 +53,11 @@ public final class SerializationUtil {
                 if(result.getName().contains(oldNameSpace)) {
                     String newClassName = result.getName().replace(oldNameSpace, newNameSpace);
                     Class<?> localClass = Class.forName(newClassName);
-
+                    
                     Field nameField = ObjectStreamClass.class.getDeclaredField("name");
                     nameField.setAccessible(true);
                     nameField.set(result, newClassName);
-
+                    
                     ObjectStreamClass localClassDescriptor = ObjectStreamClass.lookup(localClass);
                     Field suidField = ObjectStreamClass.class.getDeclaredField("suid");
                     suidField.setAccessible(true);
@@ -56,15 +67,6 @@ public final class SerializationUtil {
                 throw new IOException("Exception when trying to replace namespace", e);
             }
             return result;
-        }
-
-        @Override
-        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
-            if(desc.getName().contains(oldNameSpace)) {
-                String newClassName = desc.getName().replace(oldNameSpace, newNameSpace);
-                return Class.forName(newClassName);
-            }
-            return super.resolveClass(desc);
         }
     }
 }

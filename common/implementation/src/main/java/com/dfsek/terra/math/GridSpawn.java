@@ -1,12 +1,13 @@
 package com.dfsek.terra.math;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.util.FastRandom;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Class to procedurally determine the spawn point of an object based on a grid with padding between cells.
@@ -15,13 +16,13 @@ public class GridSpawn implements com.dfsek.terra.api.structure.StructureSpawn {
     private final int separation;
     private final int width;
     private final int salt;
-
+    
     public GridSpawn(int width, int separation, int salt) {
         this.separation = separation;
         this.width = width;
         this.salt = salt;
     }
-
+    
     @Override
     public Vector3 getNearestSpawn(int x, int z, long seed) {
         int structureChunkX = x / (width + 2 * separation);
@@ -39,13 +40,14 @@ public class GridSpawn implements com.dfsek.terra.api.structure.StructureSpawn {
         }
         return shortest;
     }
-
+    
     /**
      * Get the X/Z coordinates of the spawn point in the nearest Chunk (not Minecraft chunk)
      *
      * @param structureChunkX Chunk X coordinate
      * @param structureChunkZ Chunk Z coordinate
      * @param seed            Seed for RNG
+     *
      * @return Vector representing spawnpoint
      */
     public Vector3 getChunkSpawn(int structureChunkX, int structureChunkZ, long seed) {
@@ -56,11 +58,11 @@ public class GridSpawn implements com.dfsek.terra.api.structure.StructureSpawn {
         int sz = structureChunkZ * (width + 2 * separation) + offsetZ;
         return new Vector3(sx, 0, sz);
     }
-
+    
     public int getWidth() {
         return width;
     }
-
+    
     public int getSeparation() {
         return separation;
     }
