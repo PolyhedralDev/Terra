@@ -7,8 +7,7 @@ to your specifications, with no knowledge of Java required.
 
 * Paper+ servers (Paper, Tuinity, Purpur, etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
 * Fabric: [Modrinth](https://modrinth.com/mod/terra) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
-* Forge **(ALPHA - NOT PRODUCTION-READY)**: [Modrinth](https://modrinth.com/mod/terra)
-  / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
+
 
 ## Building and Running Terra
 
@@ -19,7 +18,6 @@ in `platforms/<platform>/build/libs`
 
 * Bukkit: `Terra-<version>-shaded.jar`
 * Fabric: `Terra-<version>-shaded-mapped.jar`
-* Forge: `Terra-<version>-shaded.jar`
 
 ### Building a Specific Platform
 
@@ -39,9 +37,7 @@ To run Minecraft with Terra in the IDE (for testing) use the following tasks:
 * Fabric
     * `runClient` - Run a Minecraft Fabric client with Terra installed.
     * `runServer` - Run a Minecraft Fabric server with Terra installed.
-* Forge
-    * `runClient` - Run a Minecraft Forge client with Terra installed.
-    * `runServer` - Run a Minecraft Forge server with Terra installed.
+
 
 ## Contributing
 
