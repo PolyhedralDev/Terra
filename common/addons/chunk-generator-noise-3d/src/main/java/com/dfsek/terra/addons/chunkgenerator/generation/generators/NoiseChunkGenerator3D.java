@@ -2,6 +2,8 @@ package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ import com.dfsek.terra.api.world.generator.Sampler;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {
+    private static final Logger logger = LoggerFactory.getLogger(NoiseChunkGenerator3D.class);
+    
     private final ConfigPack configPack;
     private final TerraPlugin main;
     private final List<GenerationStage> generationStages = new ArrayList<>();
@@ -87,7 +91,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
                     
                     if(paletteInfo == null) {
-                        main.logger().info("null palette: " + biome.getID());
+                        logger.info("null palette: {}", biome.getID());
                     }
                     
                     GenerationSettings generationSettings = biome.getGenerator();

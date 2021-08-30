@@ -1,5 +1,8 @@
 package com.dfsek.terra.config.fileloaders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +17,8 @@ import java.util.stream.Stream;
  * Load all {@code *.yml} files from a {@link java.nio.file.Path}.
  */
 public class FolderLoader extends LoaderImpl {
+    private static final Logger logger = LoggerFactory.getLogger(FolderLoader.class);
+    
     private final Path path;
     
     public FolderLoader(Path path) {
@@ -34,11 +39,11 @@ public class FolderLoader extends LoaderImpl {
                     String rel = newPath.toPath().relativize(file).toString();
                     streams.put(rel, new FileInputStream(file.toFile()));
                 } catch(FileNotFoundException e) {
-                    e.printStackTrace();
+                    logger.error("Could not find file to load", e);
                 }
             });
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error("Error while loading files", e);
         }
     }
 }

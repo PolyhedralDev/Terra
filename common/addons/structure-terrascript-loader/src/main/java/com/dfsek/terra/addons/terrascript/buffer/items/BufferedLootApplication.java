@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
@@ -14,6 +17,8 @@ import com.dfsek.terra.api.world.World;
 
 
 public class BufferedLootApplication implements BufferedItem {
+    private static final Logger logger = LoggerFactory.getLogger(BufferedLootApplication.class);
+    
     private final LootTable table;
     private final TerraPlugin main;
     private final StructureScript structure;
@@ -28,12 +33,11 @@ public class BufferedLootApplication implements BufferedItem {
     public void paste(Vector3 origin, World world) {
         try {
             BlockEntity data = world.getBlockState(origin);
-            if(!(data instanceof Container)) {
-                main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
+            if(!(data instanceof Container container)) {
+                logger.error("Failed to place loot at {}; block {} is not container.", origin, data);
                 return;
             }
-            Container container = (Container) data;
-            
+    
             LootPopulateEvent event = new LootPopulateEvent(container, table, world.getConfig().getPack(), structure);
             main.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
@@ -41,8 +45,7 @@ public class BufferedLootApplication implements BufferedItem {
             event.getTable().fillInventory(container.getInventory(), new Random(origin.hashCode()));
             data.update(false);
         } catch(Exception e) {
-            main.logger().warning("Could not apply loot at " + origin + ": " + e.getMessage());
-            e.printStackTrace();
+            logger.warn("Could not apply loot at {}", origin, e);
         }
     }
 }

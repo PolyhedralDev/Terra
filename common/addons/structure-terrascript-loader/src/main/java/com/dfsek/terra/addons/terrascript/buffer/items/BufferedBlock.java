@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
@@ -9,6 +12,8 @@ import com.dfsek.terra.api.world.World;
 
 
 public class BufferedBlock implements BufferedItem {
+    private static final Logger logger = LoggerFactory.getLogger(BufferedBlock.class);
+    
     private final BlockState data;
     private final boolean overwrite;
     private final TerraPlugin main;
@@ -32,8 +37,7 @@ public class BufferedBlock implements BufferedItem {
                 world.setBlockData(origin, data);
             }
         } catch(RuntimeException e) {
-            main.logger().severe("Failed to place block at location " + origin + ": " + e.getMessage());
-            main.getDebugLogger().stack(e);
+            logger.error("Failed to place block at location {}", origin, e);
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.dfsek.terra.addons.terrascript.tokenizer;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import java.util.List;
  * Stream-like data structure that allows viewing future elements without consuming current.
  */
 public class Lookahead {
+    private static final Logger logger = LoggerFactory.getLogger(Lookahead.class);
+    
     private final List<Char> buffer = new ArrayList<>();
     private final Reader input;
     private int index = 0;
@@ -108,7 +113,7 @@ public class Lookahead {
             index++;
             return new Char((char) c, line, index);
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error("Error while fetching next token", e);
             return null;
         }
     }

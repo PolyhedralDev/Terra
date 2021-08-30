@@ -1,6 +1,8 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import net.jafama.FastMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -21,6 +23,8 @@ import com.dfsek.terra.api.vector.Vector3;
 
 
 public class LootFunction implements Function<Void> {
+    private static final Logger logger = LoggerFactory.getLogger(LootFunction.class);
+    
     private final Registry<LootTable> registry;
     private final Returnable<String> data;
     private final Returnable<Number> x, y, z;
@@ -52,7 +56,7 @@ public class LootFunction implements Function<Void> {
         LootTable table = registry.get(id);
         
         if(table == null) {
-            main.logger().severe("No such loot table " + id);
+            logger.error("No such loot table {}", id);
             return null;
         }
         

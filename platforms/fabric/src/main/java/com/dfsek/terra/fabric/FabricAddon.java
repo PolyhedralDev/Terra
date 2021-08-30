@@ -6,6 +6,8 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +35,8 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 @Author("Terra")
 @Version("1.0.0")
 public final class FabricAddon extends TerraAddon {
+    private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
+    
     private final TerraPluginImpl terraFabricPlugin;
     private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
@@ -50,7 +54,7 @@ public final class FabricAddon extends TerraAddon {
                              try {
                                  event.loadTemplate(template);
                              } catch(ConfigException e) {
-                                 e.printStackTrace();
+                                 logger.error("Error loading config template", e);
                              }
             
                              if(template.doRegistryInjection()) {
@@ -59,8 +63,7 @@ public final class FabricAddon extends TerraAddon {
                                          try {
                                              event.getPack().getCheckedRegistry(Tree.class).register(entry.getKey().getValue().toString(),
                                                                                                      (Tree) entry.getValue());
-                                             terraFabricPlugin.getDebugLogger().info(
-                                                     "Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
+                                             logger.info("Injected ConfiguredFeature {} as Tree.", entry.getKey().getValue());
                                          } catch(DuplicateEntryException ignored) {
                                          }
                                      }
@@ -79,7 +82,7 @@ public final class FabricAddon extends TerraAddon {
                              try {
                                  event.loadTemplate(template);
                              } catch(ConfigException e) {
-                                 e.printStackTrace();
+                                 logger.error("Error loading config templatE", e);
                              }
             
                              templates.get(event.getPack()).setRight(template);
@@ -91,7 +94,7 @@ public final class FabricAddon extends TerraAddon {
                          .getHandler(FunctionalEventHandler.class)
                          .register(this, BiomeRegistrationEvent.class)
                          .then(event -> {
-                             terraFabricPlugin.logger().info("Registering biomes...");
+                             logger.info("Registering biomes...");
                              Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
                              terraFabricPlugin.getConfigRegistry().forEach(pack -> pack.getCheckedRegistry(TerraBiome.class)
                                                                                        .forEach(
@@ -102,7 +105,7 @@ public final class FabricAddon extends TerraAddon {
                                                                                                                               pack, id)),
                                                                                                        FabricUtil.createBiome(biome, pack,
                                                                                                                               event.getRegistryManager())))); // Register all Terra biomes.
-                             terraFabricPlugin.logger().info("Biomes registered.");
+                             logger.info("Biomes registered.");
                          })
                          .global();
     }

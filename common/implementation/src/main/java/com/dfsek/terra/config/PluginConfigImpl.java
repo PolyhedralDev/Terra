@@ -6,6 +6,8 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,19 +15,20 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 
-import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.config.PluginConfig {
+    private static final Logger logger = LoggerFactory.getLogger(PluginConfigImpl.class);
+    
     @Value("debug.commands")
     @Default
     private boolean debugCommands = false;
     
     @Value("debug.log")
     @Default
-    private boolean debugLog = false;
+    private boolean debugLog = false; // TODO: 2021-08-30 remove me
     
     @Value("debug.profiler")
     @Default
@@ -77,20 +80,20 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     
     @Override
     public void load(TerraPlugin main) {
-        Logger logger = main.logger();
         logger.info("Loading config values");
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();
             loader.load(this, new YamlConfiguration(file, "config.yml"));
         } catch(ConfigException | IOException | UncheckedIOException e) {
-            logger.severe("Failed to load config");
-            e.printStackTrace();
+            logger.error("Failed to load config", e);
         }
         
-        if(isDebugCommands()) logger.info("Debug commands enabled.");
-        if(isDebugLogging()) logger.info("Debug logging enabled.");
-        if(isDebugProfiler()) logger.info("Debug profiler enabled.");
-        if(isDebugScript()) logger.info("Script debug blocks enabled.");
+        if(isDebugCommands())
+            logger.info("Debug commands enabled.");
+        if(isDebugProfiler())
+            logger.info("Debug profiler enabled.");
+        if(isDebugScript())
+            logger.info("Script debug blocks enabled.");
     }
     
     @Override

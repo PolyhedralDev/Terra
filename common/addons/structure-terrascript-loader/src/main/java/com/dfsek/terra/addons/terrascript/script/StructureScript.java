@@ -4,6 +4,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +51,8 @@ import com.dfsek.terra.api.world.World;
 
 
 public class StructureScript implements Structure {
+    private static final Logger logger = LoggerFactory.getLogger(StructureScript.class);
+    
     private final Block block;
     private final String id;
     private final Cache<Vector3, StructureBuffer> cache;
@@ -93,7 +97,7 @@ public class StructureScript implements Structure {
                 .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
                                                                                   Returnable.ReturnType.NUMBER))
                 .registerFunction("print",
-                                  new UnaryStringFunctionBuilder(string -> main.getDebugLogger().info("[" + tempID + "] " + string)))
+                                  new UnaryStringFunctionBuilder(string -> logger.info("[{}] {}", tempID, string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder(
                         (number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
@@ -175,8 +179,7 @@ public class StructureScript implements Structure {
         try {
             return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
-            main.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
-            main.getDebugLogger().stack(e);
+            logger.error("Failed to generate structure at {}: {}", arguments.getBuffer().getOrigin(), e.getMessage(), e);
             return false;
         }
     }

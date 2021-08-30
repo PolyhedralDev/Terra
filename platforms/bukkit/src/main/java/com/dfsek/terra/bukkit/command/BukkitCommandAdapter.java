@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,8 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class BukkitCommandAdapter implements CommandExecutor, TabCompleter {
+    private static final Logger logger = LoggerFactory.getLogger(BukkitCommandAdapter.class);
+    
     private final CommandManager manager;
     
     public BukkitCommandAdapter(CommandManager manager) {
@@ -51,7 +55,7 @@ public class BukkitCommandAdapter implements CommandExecutor, TabCompleter {
                           .filter(s -> s.toLowerCase(Locale.ROOT).startsWith(args[args.length - 1].toLowerCase(Locale.ROOT))).sorted(
                             String::compareTo).collect(Collectors.toList());
         } catch(CommandException e) {
-            e.printStackTrace();
+            logger.warn("Exception occurred during tab completion", e);
             return Collections.emptyList();
         }
     }

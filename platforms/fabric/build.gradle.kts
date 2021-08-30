@@ -21,6 +21,8 @@ tasks.named<ShadowJar>("shadowJar") {
 dependencies {
     "shadedApi"(project(":common:implementation"))
     
+    "shadedImplementation"("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1")
+    
     "minecraft"("com.mojang:minecraft:1.17.1")
     "mappings"("net.fabricmc:yarn:1.17.1+build.1:v2")
     "modImplementation"("net.fabricmc:fabric-loader:0.11.3")

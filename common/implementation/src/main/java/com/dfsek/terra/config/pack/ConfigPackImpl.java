@@ -12,6 +12,8 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -78,6 +80,8 @@ import com.dfsek.terra.registry.config.ConfigTypeRegistry;
  * Represents a Terra configuration pack.
  */
 public class ConfigPackImpl implements ConfigPack {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigPackImpl.class);
+    
     private final ConfigPackTemplate template = new ConfigPackTemplate();
     
     private final RegistryFactory registryFactory = new RegistryFactoryImpl();
@@ -127,7 +131,7 @@ public class ConfigPackImpl implements ConfigPack {
                 
                 selfLoader.load(template, configuration);
                 
-                main.logger().info("Loading config pack \"" + template.getID() + "\"");
+                logger.info("Loading config pack \"{}\"", template.getID());
                 load(l, main);
                 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
@@ -138,7 +142,7 @@ public class ConfigPackImpl implements ConfigPack {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
         } catch(Exception e) {
-            main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
+            logger.error("Failed to load config pack from folder \"{}\"", folder.getAbsolutePath(), e);
             throw e;
         }
         toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
@@ -177,7 +181,7 @@ public class ConfigPackImpl implements ConfigPack {
                 
                 
                 selfLoader.load(template, configuration);
-                main.logger().info("Loading config pack \"" + template.getID() + "\"");
+                logger.info("Loading config pack \"" + template.getID() + "\"");
                 
                 load(l, main);
                 
@@ -190,7 +194,7 @@ public class ConfigPackImpl implements ConfigPack {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
         } catch(Exception e) {
-            main.logger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
+            logger.error("Failed to load config pack from ZIP archive \"{}\"", file.getName());
             throw e;
         }
         
@@ -281,16 +285,14 @@ public class ConfigPackImpl implements ConfigPack {
             OpenRegistry<T> registry = new OpenRegistryImpl<>();
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
-            main.getDebugLogger().info("Registered loader for registry of class " + ReflectionUtil.typeToString(c));
+            logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
             
-            if(type instanceof ParameterizedType) {
-                ParameterizedType param = (ParameterizedType) type;
+            if(type instanceof ParameterizedType param) {
                 Type base = param.getRawType();
                 if(base instanceof Class  // should always be true but we'll check anyways
                    && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
                     Type supplied = param.getActualTypeArguments()[0]; // Grab the supplied type
-                    if(supplied instanceof ParameterizedType) {
-                        ParameterizedType suppliedParam = (ParameterizedType) supplied;
+                    if(supplied instanceof ParameterizedType suppliedParam) {
                         Type suppliedBase = suppliedParam.getRawType();
                         if(suppliedBase instanceof Class // should always be true but we'll check anyways
                            && ObjectTemplate.class.isAssignableFrom((Class<?>) suppliedBase)) {
@@ -299,8 +301,7 @@ public class ConfigPackImpl implements ConfigPack {
                                     (Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
                             selfLoader.registerLoader(templateType, loader);
                             abstractConfigLoader.registerLoader(templateType, loader);
-                            main.getDebugLogger().info(
-                                    "Registered template loader for registry of class " + ReflectionUtil.typeToString(templateType));
+                            logger.debug("Registered template loader for registry of class {}", ReflectionUtil.typeToString(templateType));
                         }
                     }
                 }
@@ -361,13 +362,9 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     private void checkDeadEntries(TerraPlugin main) {
-        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries()
-                                                                                   .forEach((id, value) -> main.getDebugLogger()
-                                                                                                               .warning("Dead entry in '" +
-                                                                                                                        ReflectionUtil.typeToString(
-                                                                                                                                clazz) +
-                                                                                                                        "' registry: '" +
-                                                                                                                        id + "'")));
+        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft())
+                .getDeadEntries()
+                .forEach((id, value) -> logger.warn("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -431,9 +428,8 @@ public class ConfigPackImpl implements ConfigPack {
         }
         
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
-        main.logger().info(
-                "Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " +
-                (System.nanoTime() - start) / 1000000D + "ms.");
+        logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
+                    template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
     }
     
     protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {

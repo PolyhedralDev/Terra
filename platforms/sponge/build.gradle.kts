@@ -15,6 +15,9 @@ java {
 
 dependencies {
     "shadedApi"(project(":common:implementation"))
+    
+    "shadedImplementation"("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1")
+    
     "annotationProcessor"("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
     "shadedImplementation"("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
     "annotationProcessor"("org.spongepowered:mixin:0.8.2:processor")

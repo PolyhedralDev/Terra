@@ -1,5 +1,8 @@
 package com.dfsek.terra;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -12,6 +15,8 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 @Author("Terra")
 @Version("1.0.0")
 public class InternalAddon extends TerraAddon {
+    private static final Logger logger = LoggerFactory.getLogger(InternalAddon.class);
+    
     private final AbstractTerraPlugin main;
     
     public InternalAddon(AbstractTerraPlugin main) {
@@ -24,9 +29,9 @@ public class InternalAddon extends TerraAddon {
             .getHandler(FunctionalEventHandler.class)
             .register(this, PlatformInitializationEvent.class)
             .then(event -> {
-                main.logger().info("Loading config packs...");
+                logger.info("Loading config packs...");
                 main.getRawConfigRegistry().loadAll(main);
-                main.logger().info("Loaded packs.");
+                logger.info("Loaded packs.");
             })
             .global();
     }

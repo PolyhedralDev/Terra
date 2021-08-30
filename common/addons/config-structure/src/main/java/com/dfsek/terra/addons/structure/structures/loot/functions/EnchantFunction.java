@@ -2,6 +2,8 @@ package com.dfsek.terra.addons.structure.structures.loot.functions;
 
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +17,8 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 public class EnchantFunction implements LootFunction {
+    private static final Logger logger = LoggerFactory.getLogger(EnchantFunction.class);
+    
     private final int min;
     private final int max;
     private final JSONArray disabled;
@@ -60,9 +64,8 @@ public class EnchantFunction implements LootFunction {
             try {
                 meta.addEnchantment(chosen, FastMath.max(lvl, 1));
             } catch(IllegalArgumentException e) {
-                main.logger().warning(
-                        "Attempted to enchant " + original.getType() + " with " + chosen + " at level " + FastMath.max(lvl, 1) +
-                        ", but an unexpected exception occurred! Usually this is caused by a misbehaving enchantment plugin.");
+                logger.warn("Attempted to enchant {} with {} at level {}, but an unexpected exception occurred! Usually this is caused " +
+                            "by a misbehaving enchantment plugin.", original.getType(), chosen, FastMath.max(lvl, 1));
             }
         }
         original.setItemMeta(meta);

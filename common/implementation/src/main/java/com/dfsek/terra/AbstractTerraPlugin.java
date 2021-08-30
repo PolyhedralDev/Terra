@@ -3,6 +3,8 @@ package com.dfsek.terra;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -16,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.command.CommandManager;
@@ -28,7 +29,6 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
@@ -40,7 +40,6 @@ import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.util.logging.DebugLogger;
 
 
 /**
@@ -49,9 +48,10 @@ import com.dfsek.terra.util.logging.DebugLogger;
  * Implementations must invoke {@link #load()} in their constructors.
  */
 public abstract class AbstractTerraPlugin implements TerraPlugin {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractTerraPlugin.class);
+    
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl(this);
-    
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
@@ -66,17 +66,9 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
     
-    private final Lazy<Logger> logger = Lazy.lazy(() -> createLogger());
-    private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
-    
     @Override
     public void register(TypeRegistry registry) {
         loaders.register(registry);
-    }
-    
-    @Override
-    public Logger logger() {
-        return logger.value();
     }
     
     @Override
@@ -100,11 +92,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     }
     
     @Override
-    public Logger getDebugLogger() {
-        return debugLogger.value();
-    }
-    
-    @Override
     public EventManager getEventManager() {
         return eventManager;
     }
@@ -122,7 +109,7 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         }
         LOADED.set(true);
         
-        logger().info("Initializing Terra...");
+        logger.info("Initializing Terra...");
         
         getPlatformAddon().ifPresent(addonRegistry::register);
         
@@ -132,7 +119,7 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
                 FileUtils.copyInputStreamToFile(stream, configFile);
             }
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error("Error loading config.yml resource from jar", e);
         }
         
         
@@ -143,16 +130,17 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         if(config.dumpDefaultConfig()) {
             try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
                 if(resourcesConfig == null) {
-                    logger().info("No resources config found. Skipping resource dumping.");
+                    logger.info("No resources config found. Skipping resource dumping.");
                     return;
                 }
                 String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
                 Map<String, List<String>> resources = new Yaml().load(resourceYaml);
                 resources.forEach((dir, entries) -> entries.forEach(entry -> {
-                    String resourcePath = dir + "/" + entry;
+                    String resourcePath = String.format("%s/%s", dir, entry);
                     File resource = new File(getDataFolder(), resourcePath);
-                    if(resource.exists()) return; // dont overwrite
-                    logger().info("Dumping resource " + resource.getAbsolutePath());
+                    if(resource.exists())
+                        return; // dont overwrite
+                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
                     try {
                         resource.getParentFile().mkdirs();
                         resource.createNewFile();
@@ -167,13 +155,11 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
                     }
                 }));
             } catch(IOException e) {
-                e.printStackTrace();
+                logger.error("Error while dumping resources...", e);
             }
         } else {
-            getDebugLogger().info("Skipping resource dumping.");
+            logger.info("Skipping resource dumping.");
         }
-        
-        debugLogger.value().setDebug(config.isDebugLogging()); // enable debug logger if applicable
         
         if(config.isDebugProfiler()) { // if debug.profiler is enabled, start profiling
             profiler.start();
@@ -184,19 +170,17 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         if(!addonRegistry.loadAll(getClass().getClassLoader())) { // load all addons
             throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
         }
-        logger().info("Loaded addons.");
+        logger.info("Loaded addons.");
         
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {
-            e.printStackTrace(); // TODO do something here even though this should literally never happen
+            logger.error("Error registering commands", e);
         }
         
         
-        logger().info("Finished initialization.");
+        logger.info("Finished initialization.");
     }
-    
-    protected abstract Logger createLogger();
     
     protected Optional<TerraAddon> getPlatformAddon() {
         return Optional.empty();

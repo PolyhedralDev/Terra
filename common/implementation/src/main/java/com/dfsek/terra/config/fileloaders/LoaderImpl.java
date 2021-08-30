@@ -1,6 +1,8 @@
 package com.dfsek.terra.config.fileloaders;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +17,8 @@ import com.dfsek.terra.api.config.Loader;
 
 
 public abstract class LoaderImpl implements Loader {
+    private static final Logger logger = LoggerFactory.getLogger(LoaderImpl.class);
+    
     protected final Map<String, InputStream> streams = new HashMap<>();
     
     @Override
@@ -51,7 +55,7 @@ public abstract class LoaderImpl implements Loader {
             try {
                 input.close();
             } catch(IOException e) {
-                e.printStackTrace();
+                logger.warn("Error occurred while loading", e);
             }
         });
         streams.clear();

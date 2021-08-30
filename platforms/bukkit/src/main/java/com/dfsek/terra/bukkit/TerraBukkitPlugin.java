@@ -8,6 +8,8 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,7 @@ import com.dfsek.terra.commands.TerraCommandManager;
 
 public class TerraBukkitPlugin extends JavaPlugin {
     public static final BukkitVersion BUKKIT_VERSION;
+    private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
     
     static {
         String ver = Bukkit.getServer().getClass().getPackage().getName();
@@ -53,9 +56,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        getLogger().info("Running on version " + BUKKIT_VERSION);
+        logger.info("Running on version {}", BUKKIT_VERSION);
         if(BUKKIT_VERSION == BukkitVersion.UNKNOWN) {
-            getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
+            logger.warn("Terra is running on an unknown Bukkit version. Proceed with caution.");
         }
         
         terraPlugin.getEventManager().callEvent(new PlatformInitializationEvent());
@@ -72,9 +75,12 @@ public class TerraBukkitPlugin extends JavaPlugin {
             manager.register("save-data", SaveDataCommand.class);
             manager.register("fix-chunk", FixChunkCommand.class);
         } catch(MalformedCommandException e) { // This should never happen.
-            terraPlugin.logger().severe("Errors occurred while registering commands.");
-            e.printStackTrace();
-            terraPlugin.logger().severe("Please report this to Terra.");
+            logger.error("""
+                         TERRA HAS BEEN DISABLED
+                                                  
+                         Errors occurred while registering commands.
+                         Please report this to Terra.
+                         """, e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -115,21 +121,21 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     private void registerSpigotEvents(boolean outdated) {
         if(outdated) {
-            getLogger().severe("You are using an outdated version of Paper.");
-            getLogger().severe("This version does not contain StructureLocateEvent.");
-            getLogger().severe("Terra will now fall back to Spigot events.");
-            getLogger().severe("This will prevent cartographer villagers from spawning,");
-            getLogger().severe("and cause structure location to not function.");
-            getLogger().severe("If you want these functionalities, update to the latest build of Paper.");
-            getLogger().severe("If you use a fork, update to the latest version, then if you still");
-            getLogger().severe("receive this message, ask the fork developer to update upstream.");
+            logger.error("You are using an outdated version of Paper.");
+            logger.error("This version does not contain StructureLocateEvent.");
+            logger.error("Terra will now fall back to Spigot events.");
+            logger.error("This will prevent cartographer villagers from spawning,");
+            logger.error("and cause structure location to not function.");
+            logger.error("If you want these functionalities, update to the latest build of Paper.");
+            logger.error("If you use a fork, update to the latest version, then if you still");
+            logger.error("receive this message, ask the fork developer to update upstream.");
         } else {
-            getLogger().severe("Paper is not in use. Falling back to Spigot events.");
-            getLogger().severe("This will prevent cartographer villagers from spawning,");
-            getLogger().severe("and cause structure location to not function.");
-            getLogger().severe("If you want these functionalities (and all the other");
-            getLogger().severe("benefits that Paper offers), upgrade your server to Paper.");
-            getLogger().severe("Find out more at https://papermc.io/");
+            logger.error("Paper is not in use. Falling back to Spigot events.");
+            logger.error("This will prevent cartographer villagers from spawning,");
+            logger.error("and cause structure location to not function.");
+            logger.error("If you want these functionalities (and all the other");
+            logger.error("benefits that Paper offers), upgrade your server to Paper.");
+            logger.error("Find out more at https://papermc.io/");
         }
         
         Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener

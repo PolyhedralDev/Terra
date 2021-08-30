@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
@@ -8,6 +11,8 @@ import com.dfsek.terra.api.world.World;
 
 
 public class BufferedStateManipulator implements BufferedItem {
+    private static final Logger logger = LoggerFactory.getLogger(BufferedStateManipulator.class);
+    
     private final TerraPlugin main;
     private final String data;
     
@@ -23,8 +28,7 @@ public class BufferedStateManipulator implements BufferedItem {
             state.applyState(data);
             state.update(false);
         } catch(Exception e) {
-            main.logger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
-            e.printStackTrace();
+            logger.warn("Could not apply BlockState at {}", origin, e);
         }
     }
 }

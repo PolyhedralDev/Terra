@@ -19,8 +19,6 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
  * Represents a Terra mod/plugin instance.
  */
 public interface TerraPlugin extends LoaderRegistrar {
-    Logger logger();
-    
     boolean reload();
     
     String platformName();
@@ -49,8 +47,6 @@ public interface TerraPlugin extends LoaderRegistrar {
     Registry<TerraAddon> getAddons();
     
     ItemHandle getItemHandle();
-    
-    Logger getDebugLogger();
     
     EventManager getEventManager();
     

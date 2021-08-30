@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.structure.command.structure;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -28,6 +31,8 @@ import com.dfsek.terra.api.vector.Vector3;
 @DebugCommand
 @Command(arguments = @Argument("id"), usage = "/terra structure export <ID>")
 public class StructureExportCommand implements CommandTemplate {
+    private static final Logger logger = LoggerFactory.getLogger(StructureExportCommand.class);
+    
     @Inject
     private TerraPlugin main;
     
@@ -38,10 +43,10 @@ public class StructureExportCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
         
-        Pair<Vector3, Vector3> l = main.getWorldHandle().getSelectedLocation(player);
+        Pair<Vector3, Vector3> area = main.getWorldHandle().getSelectedLocation(player);
         
-        Vector3 l1 = l.getLeft();
-        Vector3 l2 = l.getRight();
+        Vector3 firstCorner = area.getLeft();
+        Vector3 secondCorner = area.getRight();
         
         StringBuilder scriptBuilder = new StringBuilder("id \"" + id + "\";\nnum y = 0;\n");
         
@@ -49,38 +54,36 @@ public class StructureExportCommand implements CommandTemplate {
         int centerY = 0;
         int centerZ = 0;
         
-        for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
-            for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
-                for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
+        for(int x = firstCorner.getBlockX(); x <= secondCorner.getBlockX(); x++) {
+            for(int y = firstCorner.getBlockY(); y <= secondCorner.getBlockY(); y++) {
+                for(int z = firstCorner.getBlockZ(); z <= secondCorner.getBlockZ(); z++) {
                     BlockEntity state = player.world().getBlockState(x, y, z);
-                    if(state instanceof Sign) {
-                        Sign sign = (Sign) state;
-                        if(sign.getLine(0).equals("[TERRA]") && sign.getLine(1).equals("[CENTER]")) {
-                            centerX = x - l1.getBlockX();
-                            centerY = y - l1.getBlockY();
-                            centerZ = z - l1.getBlockZ();
+                    if(state instanceof Sign sign) {
+                        if("[TERRA]".equals(sign.getLine(0)) && "[CENTER]".equals(sign.getLine(1))) {
+                            centerX = x - firstCorner.getBlockX();
+                            centerY = y - firstCorner.getBlockY();
+                            centerZ = z - firstCorner.getBlockZ();
                         }
                     }
                 }
             }
         }
         
-        for(int x = l1.getBlockX(); x <= l2.getBlockX(); x++) {
-            for(int y = l1.getBlockY(); y <= l2.getBlockY(); y++) {
-                for(int z = l1.getBlockZ(); z <= l2.getBlockZ(); z++) {
+        for(int x = firstCorner.getBlockX(); x <= secondCorner.getBlockX(); x++) {
+            for(int y = firstCorner.getBlockY(); y <= secondCorner.getBlockY(); y++) {
+                for(int z = firstCorner.getBlockZ(); z <= secondCorner.getBlockZ(); z++) {
                     
                     BlockState data = player.world().getBlockData(x, y, z);
                     if(data.isStructureVoid()) continue;
                     BlockEntity state = player.world().getBlockState(x, y, z);
-                    if(state instanceof Sign) {
-                        Sign sign = (Sign) state;
-                        if(sign.getLine(0).equals("[TERRA]")) {
+                    if(state instanceof Sign sign) {
+                        if("[TERRA]".equals(sign.getLine(0))) {
                             data = main.getWorldHandle().createBlockData(sign.getLine(2) + sign.getLine(3));
                         }
                     }
                     if(!data.isStructureVoid()) {
-                        scriptBuilder.append("block(").append(x - l1.getBlockX() - centerX).append(", y + ").append(
-                                             y - l1.getBlockY() - centerY).append(", ").append(z - l1.getBlockZ() - centerZ).append(", ")
+                        scriptBuilder.append("block(").append(x - firstCorner.getBlockX() - centerX).append(", y + ").append(
+                                             y - firstCorner.getBlockY() - centerY).append(", ").append(z - firstCorner.getBlockZ() - centerZ).append(", ")
                                      .append("\"");
                         scriptBuilder.append(data.getAsString()).append("\");\n");
                     }
@@ -93,12 +96,12 @@ public class StructureExportCommand implements CommandTemplate {
             file.getParentFile().mkdirs();
             file.createNewFile();
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error("Error creating file to export", e);
         }
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(scriptBuilder.toString());
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error("Error writing script file", e);
         }
         
         sender.sendMessage("Exported structure to " + file.getAbsolutePath());

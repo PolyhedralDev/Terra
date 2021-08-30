@@ -5,13 +5,11 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
-import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.util.Optional;
 
 import com.dfsek.terra.AbstractTerraPlugin;
-import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -70,27 +68,6 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
                     if(identifier == null) throw new LoadException("Invalid identifier: " + o);
                     return identifier;
                 });
-    }
-    
-    @Override
-    protected Logger createLogger() {
-        final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
-        return new Logger() {
-            @Override
-            public void info(String message) {
-                log4jLogger.info(message);
-            }
-            
-            @Override
-            public void warning(String message) {
-                log4jLogger.warn(message);
-            }
-            
-            @Override
-            public void severe(String message) {
-                log4jLogger.error(message);
-            }
-        };
     }
     
     @Override

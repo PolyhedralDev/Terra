@@ -25,6 +25,8 @@ import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.StructureFeature;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -42,6 +44,8 @@ import com.dfsek.terra.util.FastRandom;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
+    private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
+    
     public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
@@ -71,7 +75,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.pack = configPack;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
-        delegate.getMain().logger().info("Loading world with config pack " + pack.getID());
+        logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
         
         this.seed = seed;

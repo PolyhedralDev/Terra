@@ -1,5 +1,7 @@
 package com.dfsek.terra.registry.master;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -13,6 +15,7 @@ import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.injection.Injector;
 import com.dfsek.terra.api.injection.exception.InjectionException;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.inject.InjectorImpl;
@@ -20,6 +23,8 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 
 
 public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AddonRegistry.class);
+    
     private final TerraPlugin main;
     
     public AddonRegistry(TerraPlugin main) {
@@ -35,7 +40,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     public boolean register(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
-        main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
+        logger.info("Loaded addon {} v{}, by {}", addon.getName(), addon.getVersion(), addon.getAuthor());
         return super.register(identifier, addon);
     }
     
@@ -52,6 +57,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
         return loadAll(TerraPlugin.class.getClassLoader());
     }
     
+    @SuppressWarnings({ "NestedTryStatement", "ThrowCaughtLocally" })
     public boolean loadAll(ClassLoader parent) {
         InjectorImpl<TerraPlugin> pluginInjector = new InjectorImpl<>(main);
         pluginInjector.addExplicitTarget(TerraPlugin.class);
@@ -64,7 +70,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
         
         try {
             for(File jar : addonsFolder.listFiles(file -> file.getName().endsWith(".jar"))) {
-                main.logger().info("Loading Addon(s) from: " + jar.getName());
+                logger.info("Loading Addon(s) from: " + jar.getName());
                 for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar, parent)) {
                     pool.add(new PreLoadAddon(addonClass, jar));
                 }
@@ -82,8 +88,9 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                 if(!LogManager.getLogManager().addLogger(addonLogger)) {
                     addonLogger = LogManager.getLogManager().getLogger(logPrefix);
                 }
-                
-                InjectorImpl<Logger> loggerInjector = new InjectorImpl<>(addonLogger);
+    
+                // TODO: 2021-08-30 Remove logger injector entirely?
+                Injector<Logger> loggerInjector = new InjectorImpl<>(addonLogger);
                 loggerInjector.addExplicitTarget(Logger.class);
                 
                 try {
@@ -97,19 +104,24 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                     pluginInjector.inject(loadedAddon);
                     loggerInjector.inject(loadedAddon);
                 } catch(InstantiationException | IllegalAccessException | InvocationTargetException | InjectionException e) {
-                    throw new AddonLoadException("Failed to load com.dfsek.terra.addon \" + " + addon.getId() + "\": ", e);
+                    throw new AddonLoadException(String.format("Failed to load addon \"%s\"", addon.getId()), e);
                 }
                 try {
                     registerChecked(loadedAddon.getName(), loadedAddon);
                 } catch(DuplicateEntryException e) {
                     valid = false;
-                    main.logger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
-                    main.logger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
-                    main.logger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
+                    logger.error("""
+                                 Duplicate addon ID; addon with ID {} is already loaded.
+                                 Existing addon class: {}
+                                 Duplicate addon class: {}
+                                 """,
+                                 loadedAddon.getName(),
+                                 get(loadedAddon.getName()).getClass().getCanonicalName(),
+                                 addonClass.getCanonicalName());
                 }
             }
         } catch(AddonLoadException | IOException e) {
-            e.printStackTrace();
+            logger.error("Failed during addon loading", e);
             valid = false;
         }
         
