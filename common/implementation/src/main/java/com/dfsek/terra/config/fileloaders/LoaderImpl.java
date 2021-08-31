@@ -41,7 +41,7 @@ public abstract class LoaderImpl implements Loader {
      */
     @Override
     public LoaderImpl open(String directory, String extension) {
-        if(streams.size() != 0) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
+        if(!streams.isEmpty()) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
         load(directory, extension);
         return this;
     }
@@ -55,7 +55,7 @@ public abstract class LoaderImpl implements Loader {
             try {
                 input.close();
             } catch(IOException e) {
-                logger.warn("Error occurred while loading", e);
+                logger.error("Error occurred while loading", e);
             }
         });
         streams.clear();

@@ -49,7 +49,7 @@ public class AddonClassLoader extends URLClassLoader {
                     if(addon == null) continue;
                     
                     if(!TerraAddon.class.isAssignableFrom(clazz))
-                        throw new IllegalArgumentException("Addon class \"" + clazz + "\" must extend TerraAddon.");
+                        throw new IllegalArgumentException(String.format("Addon class \"%s\" must extend TerraAddon.", clazz));
                     
                     set.add((Class<? extends TerraAddon>) clazz);
                 } catch(ClassNotFoundException e) {

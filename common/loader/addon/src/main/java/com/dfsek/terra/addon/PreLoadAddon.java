@@ -14,6 +14,8 @@ import com.dfsek.terra.api.addon.annotations.Depends;
 
 
 public class PreLoadAddon {
+    public static final String[] ZERO_LENGTH_STRING_ARRAY = { }; // Don't allocate more than once
+    
     private final List<PreLoadAddon> depends = new ArrayList<>();
     private final Class<? extends TerraAddon> addonClass;
     private final String id;
@@ -25,19 +27,19 @@ public class PreLoadAddon {
         this.id = addonClass.getAnnotation(Addon.class).value();
         this.file = file;
         Depends depends = addonClass.getAnnotation(Depends.class);
-        this.dependencies = depends == null ? new String[]{ } : depends.value();
+        this.dependencies = depends == null ? ZERO_LENGTH_STRING_ARRAY : depends.value();
     }
     
     public void rebuildDependencies(AddonPool pool, PreLoadAddon origin, boolean levelG1) throws AddonLoadException {
         if(this.equals(origin) && !levelG1)
-            throw new CircularDependencyException(
-                    "Detected circular dependency in addon \"" + id + "\", dependencies: " + Arrays.toString(dependencies));
+            throw new CircularDependencyException(String.format("Detected circular dependency in addon \"%s\", dependencies: %s",
+                                                                id, Arrays.toString(dependencies)));
         
         for(String dependency : dependencies) {
             PreLoadAddon preLoadAddon = pool.get(dependency);
             if(preLoadAddon == null)
-                throw new DependencyMissingException(
-                        "Dependency " + dependency + " was not found. Please install " + dependency + " to use " + id + ".");
+                throw new DependencyMissingException(String.format("Dependency %s was not found. Please install %s to use %s.",
+                                                                   dependency, dependency, id));
             depends.add(preLoadAddon);
             preLoadAddon.rebuildDependencies(pool, origin, false);
         }

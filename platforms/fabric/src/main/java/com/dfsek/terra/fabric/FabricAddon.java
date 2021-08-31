@@ -58,11 +58,14 @@ public final class FabricAddon extends TerraAddon {
                              }
             
                              if(template.doRegistryInjection()) {
+                                 logger.info("Injecting structures into Terra");
+                
                                  BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
                                      if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
                                          try {
-                                             event.getPack().getCheckedRegistry(Tree.class).register(entry.getKey().getValue().toString(),
-                                                                                                     (Tree) entry.getValue());
+                                             event.getPack()
+                                                  .getCheckedRegistry(Tree.class)
+                                                  .register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
                                              logger.info("Injected ConfiguredFeature {} as Tree.", entry.getKey().getValue());
                                          } catch(DuplicateEntryException ignored) {
                                          }
@@ -82,7 +85,7 @@ public final class FabricAddon extends TerraAddon {
                              try {
                                  event.loadTemplate(template);
                              } catch(ConfigException e) {
-                                 logger.error("Error loading config templatE", e);
+                                 logger.error("Error loading config template", e);
                              }
             
                              templates.get(event.getPack()).setRight(template);
@@ -95,16 +98,17 @@ public final class FabricAddon extends TerraAddon {
                          .register(this, BiomeRegistrationEvent.class)
                          .then(event -> {
                              logger.info("Registering biomes...");
+            
                              Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
-                             terraFabricPlugin.getConfigRegistry().forEach(pack -> pack.getCheckedRegistry(TerraBiome.class)
-                                                                                       .forEach(
-                                                                                               (id, biome) -> FabricUtil.registerOrOverwrite(
-                                                                                                       biomeRegistry, Registry.BIOME_KEY,
-                                                                                                       new Identifier("terra",
-                                                                                                                      FabricUtil.createBiomeID(
-                                                                                                                              pack, id)),
-                                                                                                       FabricUtil.createBiome(biome, pack,
-                                                                                                                              event.getRegistryManager())))); // Register all Terra biomes.
+                             terraFabricPlugin.getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
+                                 pack.getCheckedRegistry(TerraBiome.class)
+                                     .forEach((id, biome) -> {
+                                         Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
+                                         Biome fabricBiome = FabricUtil.createBiome(biome, pack, event.getRegistryManager());
+                    
+                                         FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, identifier, fabricBiome);
+                                     });
+                             });
                              logger.info("Biomes registered.");
                          })
                          .global();

@@ -17,7 +17,8 @@ public class AddonsCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         sender.sendMessage("Installed Addons:");
-        main.getAddons().forEach(
-                addon -> sender.sendMessage(" - " + addon.getName() + " v" + addon.getVersion() + " by " + addon.getAuthor()));
+        main.getAddons().forEach(addon -> {
+            sender.sendMessage(" - " + addon.getName() + " v" + addon.getVersion() + " by " + addon.getAuthor());
+        });
     }
 }

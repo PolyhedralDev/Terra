@@ -61,11 +61,11 @@ public class TerraPluginImpl extends AbstractTerraPlugin {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry
-                .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
+        registry.registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
-                    if(identifier == null) throw new LoadException("Invalid identifier: " + o);
+                    if(identifier == null)
+                        throw new LoadException("Invalid identifier: " + o);
                     return identifier;
                 });
     }

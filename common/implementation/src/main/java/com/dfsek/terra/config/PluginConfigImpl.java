@@ -80,7 +80,7 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     
     @Override
     public void load(TerraPlugin main) {
-        logger.info("Loading config values");
+        logger.info("Loading config values from config.yml");
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {
             ConfigLoader loader = new ConfigLoader();
             loader.load(this, new YamlConfiguration(file, "config.yml"));
@@ -88,11 +88,11 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
             logger.error("Failed to load config", e);
         }
         
-        if(isDebugCommands())
+        if(debugCommands)
             logger.info("Debug commands enabled.");
-        if(isDebugProfiler())
+        if(debugProfiler)
             logger.info("Debug profiler enabled.");
-        if(isDebugScript())
+        if(debugScript)
             logger.info("Script debug blocks enabled.");
     }
     
