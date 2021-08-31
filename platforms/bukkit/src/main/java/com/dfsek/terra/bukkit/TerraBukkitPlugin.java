@@ -1,6 +1,5 @@
 package com.dfsek.terra.bukkit;
 
-import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -27,23 +26,13 @@ import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
+import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
 
 
 public class TerraBukkitPlugin extends JavaPlugin {
-    public static final BukkitVersion BUKKIT_VERSION;
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
-    
-    static {
-        String ver = Bukkit.getServer().getClass().getPackage().getName();
-        if(ver.contains("1_17")) BUKKIT_VERSION = BukkitVersion.V1_17;
-        else if(ver.contains("1_16")) BUKKIT_VERSION = BukkitVersion.V1_16;
-        else if(ver.contains("1_15")) BUKKIT_VERSION = BukkitVersion.V1_15;
-        else if(ver.contains("1_14")) BUKKIT_VERSION = BukkitVersion.V1_14;
-        else if(ver.contains("1_13")) BUKKIT_VERSION = BukkitVersion.V1_13;
-        else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
-    }
     
     private final TerraPluginImpl terraPlugin = new TerraPluginImpl(this);
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
@@ -56,16 +45,11 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        logger.info("Running on version {}", BUKKIT_VERSION);
-        if(BUKKIT_VERSION == BukkitVersion.UNKNOWN) {
-            logger.warn("Terra is running on an unknown Bukkit version. Proceed with caution.");
-        }
-        
         terraPlugin.getEventManager().callEvent(new PlatformInitializationEvent());
         
         new Metrics(this, 9017); // Set up bStats.
         
-        PluginCommand c = Objects.requireNonNull(getCommand("terra"));
+        PluginCommand cmd = Objects.requireNonNull(getCommand("terra"));
         
         CommandManager manager = new TerraCommandManager(terraPlugin);
         
@@ -87,8 +71,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
         
-        c.setExecutor(command);
-        c.setTabCompleter(command);
+        cmd.setExecutor(command);
+        cmd.setTabCompleter(command);
         
         
         long save = terraPlugin.getTerraConfig().getDataSaveInterval();
@@ -97,20 +81,55 @@ public class TerraBukkitPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CommonListener(terraPlugin), this); // Register master event listener
         PaperUtil.checkPaper(this);
         
-        if(PaperLib.isPaper()) {
-            try {
-                Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
-                Bukkit.getPluginManager().registerEvents(new PaperListener(terraPlugin), this); // Register Paper events.
-            } catch(ClassNotFoundException e) {
-                registerSpigotEvents(true); // Outdated Paper version.
+        try {
+            Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
+            Bukkit.getPluginManager().registerEvents(new PaperListener(terraPlugin), this); // Register Paper events.
+        } catch(ClassNotFoundException e) {
+            /*
+              The command
+              
+                  fmt -w 72 -g 72 -u text | \
+                  boxes -a cmd -p a1h3 -t 4e -d jstone -s82 | \
+                  sed -Ee 's/\+-+\*\//|------------------------------------------------------------------------------|/g' \
+                  -e 's/^\s*(.*)$/"\1\\n"/g' -e 's/\///g' -e 's/\*|\+/./g' -e 's/$/ +/g' -e '/^"\| {3}-{72} {3}\|\\n" \+$/d'
+              
+              was used to create these boxes. Leaving this here for if we want to create more/modify them.
+             */
+            if(VersionUtil.getSpigotVersionInfo().isPaper()) { // logging with stack trace to be annoying.
+                logger.warn("""
+                            .------------------------------------------------------------------------------.
+                            |                                                                              |
+                            |      You are using an outdated version of Paper. This version does not       |
+                            |       contain StructureLocateEvent. Terra will now fall back to Spigot       |
+                            |       events. This will prevent cartographer villagers from spawning,        |
+                            |       and cause structure location to not function. If you want these        |
+                            |      functionalities, update to the latest build of Paper. If you use a      |
+                            |      fork, update to the latest version, then if you still receive this      |
+                            |             message, ask the fork developer to update upstream.              |
+                            |                                                                              |
+                            |------------------------------------------------------------------------------|
+                            """, e);
+            } else {
+                logger.warn("""
+                            .------------------------------------------------------------------------------.
+                            |                                                                              |
+                            |    Paper is not in use. Falling back to Spigot events. This will prevent     |
+                            |    cartographer villagers from spawning, and cause structure location to     |
+                            |      not function. If you want these functionalities (and all the other      |
+                            |     benefits that Paper offers), upgrade your server to Paper. Find out      |
+                            |                         more at https://papermc.io/                          |
+                            |                                                                              |
+                            |------------------------------------------------------------------------------|
+                            """, e);
+                
+                Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener
             }
-        } else {
-            registerSpigotEvents(false);
         }
     }
     
     @Override
-    public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
+    public @Nullable
+    ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
             ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
@@ -119,57 +138,77 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }));
     }
     
-    private void registerSpigotEvents(boolean outdated) {
-        if(outdated) {
-            logger.error("You are using an outdated version of Paper.");
-            logger.error("This version does not contain StructureLocateEvent.");
-            logger.error("Terra will now fall back to Spigot events.");
-            logger.error("This will prevent cartographer villagers from spawning,");
-            logger.error("and cause structure location to not function.");
-            logger.error("If you want these functionalities, update to the latest build of Paper.");
-            logger.error("If you use a fork, update to the latest version, then if you still");
-            logger.error("receive this message, ask the fork developer to update upstream.");
-        } else {
-            logger.error("Paper is not in use. Falling back to Spigot events.");
-            logger.error("This will prevent cartographer villagers from spawning,");
-            logger.error("and cause structure location to not function.");
-            logger.error("If you want these functionalities (and all the other");
-            logger.error("benefits that Paper offers), upgrade your server to Paper.");
-            logger.error("Find out more at https://papermc.io/");
-        }
+    private boolean doVersionCheck() {
+        logger.info("Running on version {} with {}.", VersionUtil.getMinecraftVersionInfo(), VersionUtil.getSpigotVersionInfo());
         
-        Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener
+        if(VersionUtil.getMinecraftVersionInfo().getMinor() < 17)
+            logger.error("Terra does not work on version 1.16.5 at the moment.");
+        
+        if(!VersionUtil.getSpigotVersionInfo().isSpigot())
+            logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER JAR. PLEASE UPGRADE TO PAPER SPIGOT.");
+        
+        if(VersionUtil.getSpigotVersionInfo().isYatopia())
+            logger.warn("Yatopia is a highly unstable fork of spigot. You may experience various issues with it.");
+        
+        if(VersionUtil.getSpigotVersionInfo().isMohist()) {
+            if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {
+                Runnable runnable = () -> { // scary big block of text
+                    logger.error("""
+                                 .----------------------------------------------------------------------------------.
+                                 |                                                                                  |
+                                 |                                ⚠ !! Warning !! ⚠                                 |
+                                 |                                                                                  |
+                                 |                         You are currently using Mohist.                          |
+                                 |                                                                                  |
+                                 |                                Do not use Mohist.                                |
+                                 |                                                                                  |
+                                 |   The concept of combining the rigid Bukkit platform, which assumes a 100%       |
+                                 |   Vanilla server, with the flexible Forge platform, which allows changing        |
+                                 |   core components of the game, simply does not work. These platforms are         |
+                                 |   incompatible at a conceptual level, the only way to combine them would         |
+                                 |   be to make incompatible changes to both. As a result, Mohist's Bukkit          |
+                                 |   API implementation is not compliant. This will cause many plugins to           |
+                                 |   break. Rather than fix their platform, Mohist has chosen to distribute         |
+                                 |   unofficial builds of plugins they deem to be "fixed". These builds are not     |
+                                 |   "fixed", they are simply hacked together to work with Mohist's half-baked      |
+                                 |   Bukkit implementation. To distribute these as "fixed" versions implies that:   |
+                                 |       - These builds are endorsed by the original developers. (They are not)     |
+                                 |       - The issue is on the plugin's end, not Mohist's. (It is not. The issue    |
+                                 |       is that Mohist chooses to not create a compliant Bukkit implementation)    |
+                                 |   Please, do not use Mohist. It causes issues with most plugins, and rather      |
+                                 |   than fixing their platform, Mohist has chosen to distribute unofficial         |
+                                 |   hacked-together builds of plugins, calling them "fixed". If you want           |
+                                 |   to use a server API with Forge mods, look at the Sponge project, an            |
+                                 |   API that is designed to be implementation-agnostic, with first-party           |
+                                 |   support for the Forge mod loader. You are bound to encounter issues if         |
+                                 |   you use Terra with Mohist. We will provide NO SUPPORT for servers running      |
+                                 |   Mohist. If you wish to proceed anyways, you can add the JVM System Property    |
+                                 |   "IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways" to enable the plugin. No   |
+                                 |   support will be provided for servers running Mohist.                           |
+                                 |                                                                                  |
+                                 |                   Because of this **TERRA HAS BEEN DISABLED**.                   |
+                                 |                    Do not come ask us why it is not working.                     |
+                                 |                                                                                  |
+                                 |----------------------------------------------------------------------------------|
+                                 """);
+                };
+                runnable.run();
+                //noinspection deprecation
+                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, runnable, 200L);
+                // Bukkit.shutdown(); // we're not *that* evil
+                setEnabled(false);
+                return false;
+            } else {
+                logger.warn("""
+                            You are using Mohist, so we will not give you any support for issues that may arise.
+                            Since you enabled the "IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways" flag, we won't disable Terra. But be warned.
+                            
+                            > I felt a great disturbance in the JVM,as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
+                            > I fear something terrible has happened.
+                            > - Astrash
+                            """);
+            }
+        }
+        return true;
     }
-    
-    public enum BukkitVersion {
-        V1_13(13),
-        
-        V1_14(14),
-        
-        V1_15(15),
-        
-        V1_16(16),
-        
-        V1_17(17),
-        
-        UNKNOWN(Integer.MAX_VALUE); // Assume unknown version is latest.
-        
-        private final int index;
-        
-        BukkitVersion(int index) {
-            this.index = index;
-        }
-        
-        /**
-         * Gets if this version is above or equal to another.
-         *
-         * @param other Other version
-         *
-         * @return Whether this version is equal to or later than other.
-         */
-        public boolean above(BukkitVersion other) {
-            return this.index >= other.index;
-        }
-    }
-    
 }

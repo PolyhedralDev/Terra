@@ -1,6 +1,8 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import net.jafama.FastMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import com.dfsek.terra.api.vector.Vector3;
 
 
 public class StructureFunction implements Function<Boolean> {
+    private static final Logger logger = LoggerFactory.getLogger(StructureFunction.class);
+    
     private final Registry<Structure> registry;
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
@@ -61,7 +65,7 @@ public class StructureFunction implements Function<Boolean> {
         String app = id.apply(implementationArguments, variableMap);
         Structure script = registry.get(app);
         if(script == null) {
-            main.logger().severe("No such structure " + app);
+            logger.error("No such structure {}", app);
             return null;
         }
         
@@ -70,7 +74,7 @@ public class StructureFunction implements Function<Boolean> {
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
-            main.logger().severe("Invalid rotation " + rotString);
+            logger.error("Invalid rotation {}", rotString);
             return null;
         }
         
