@@ -1,9 +1,5 @@
 package com.dfsek.terra.fabric.mixin;
 
-import com.dfsek.terra.api.command.exception.CommandException;
-import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -22,31 +18,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.dfsek.terra.api.command.exception.CommandException;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.fabric.FabricEntryPoint;
+
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
+
 
 @Mixin(CommandManager.class)
 public abstract class CommandManagerMixin {
     @Shadow
     @Final
     private CommandDispatcher<ServerCommandSource> dispatcher;
-
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;findAmbiguities(Lcom/mojang/brigadier/AmbiguityConsumer;)V", remap = false))
+    
+    @Inject(method = "<init>",
+            at = @At(value = "INVOKE",
+                     target = "Lcom/mojang/brigadier/CommandDispatcher;findAmbiguities(Lcom/mojang/brigadier/AmbiguityConsumer;)V",
+                     remap = false))
     private void injectTerraCommands(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
         com.dfsek.terra.api.command.CommandManager manager = FabricEntryPoint.getTerraPlugin().getManager();
         int max = manager.getMaxArgumentDepth();
         RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
         for(int i = 0; i < max; i++) {
             RequiredArgumentBuilder<ServerCommandSource, String> next = argument("arg" + (max - i - 1), StringArgumentType.word());
-
+            
             arg = next.then(assemble(arg, manager));
         }
-
+        
         dispatcher.register(literal("terra").executes(context -> 1).then(assemble(arg, manager)));
         dispatcher.register(literal("te").executes(context -> 1).then(assemble(arg, manager)));
     }
-
-    private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in, com.dfsek.terra.api.command.CommandManager manager) {
+    
+    private RequiredArgumentBuilder<ServerCommandSource, String> assemble(RequiredArgumentBuilder<ServerCommandSource, String> in,
+                                                                          com.dfsek.terra.api.command.CommandManager manager) {
         return in.suggests((context, builder) -> {
             List<String> args = parseCommand(context.getInput());
             CommandSender sender = (CommandSender) context.getSource();
@@ -75,7 +81,7 @@ public abstract class CommandManagerMixin {
             return 1;
         });
     }
-
+    
     private List<String> parseCommand(String command) {
         if(command.startsWith("/terra ")) command = command.substring("/terra ".length());
         else if(command.startsWith("/te ")) command = command.substring("/te ".length());

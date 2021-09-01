@@ -14,6 +14,7 @@ import com.dfsek.terra.world.TerraWorld;
 import com.dfsek.terra.world.generation.generators.DefaultChunkGenerator3D;
 import com.dfsek.terra.world.generation.math.samplers.Sampler;
 import com.dfsek.terra.world.population.items.TerraStructure;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.jafama.FastMath;
@@ -48,65 +49,58 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+
 public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements GeneratorWrapper {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
-            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraForgePlugin.getInstance().getConfigRegistry()::get))));
+                                                                                                          Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
+                                                                                                        )
+                                                                                                  .apply(config, config.stable(
+                                                                                                          TerraForgePlugin.getInstance()
+                                                                                                                          .getConfigRegistry()::get))));
     public static final Codec<ForgeChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
-            Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),
-            PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
-            .apply(instance, instance.stable(ForgeChunkGeneratorWrapper::new)));
+                                                                                                                        TerraBiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
+                                                                                                                        Codec.LONG.fieldOf("seed").stable().forGetter(generator -> generator.seed),
+                                                                                                                        PACK_CODEC.fieldOf("pack").stable().forGetter(generator -> generator.pack))
+                                                                                                                .apply(instance,
+                                                                                                                       instance.stable(
+                                                                                                                               ForgeChunkGeneratorWrapper::new)));
     private final long seed;
     private final DefaultChunkGenerator3D delegate;
     private final TerraBiomeSource biomeSource;
     private final ConfigPack pack;
     private DimensionType dimensionType;
-
+    
     public ForgeChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new DimensionStructuresSettings(false));
         this.pack = configPack;
-
+        
         this.delegate = new DefaultChunkGenerator3D(pack, TerraForgePlugin.getInstance());
         delegate.getMain().logger().info("Loading world with config pack " + pack.getTemplate().getID());
         this.biomeSource = biomeSource;
-
+        
         this.seed = seed;
     }
-
-    public ConfigPack getPack() {
-        return pack;
-    }
-
-    @Override
-    protected @NotNull
-    Codec<? extends ChunkGenerator> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull
-    ChunkGenerator withSeed(long seed) {
-        return new ForgeChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
-    }
-
+    
     @Override
     public void buildSurfaceAndBedrock(@NotNull WorldGenRegion p_225551_1_, @NotNull IChunk p_225551_2_) {
-
+    
     }
-
+    
     @Nullable
     @Override
-    public BlockPos findNearestMapFeature(@NotNull ServerWorld world, @NotNull Structure<?> feature, @NotNull BlockPos center, int radius, boolean skipExistingChunks) {
+    public BlockPos findNearestMapFeature(@NotNull ServerWorld world, @NotNull Structure<?> feature, @NotNull BlockPos center, int radius,
+                                          boolean skipExistingChunks) {
         if(!pack.getTemplate().disableStructures()) {
             String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getKey(feature)).toString();
             TerraWorld terraWorld = TerraForgePlugin.getInstance().getWorld((World) world);
             TerraStructure located = pack.getStructure(pack.getTemplate().getLocatable().get(name));
             if(located != null) {
                 CompletableFuture<BlockPos> result = new CompletableFuture<>();
-                AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, ForgeAdapter.adapt(center).toLocation((World) world), 0, 500, location -> {
-                    result.complete(ForgeAdapter.adapt(location));
-                }, TerraForgePlugin.getInstance());
+                AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located,
+                                                                       ForgeAdapter.adapt(center).toLocation((World) world), 0, 500,
+                                                                       location -> {
+                                                                           result.complete(ForgeAdapter.adapt(location));
+                                                                       }, TerraForgePlugin.getInstance());
                 finder.run(); // Do this synchronously.
                 try {
                     return result.get();
@@ -117,42 +111,76 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
         }
         return super.findNearestMapFeature(world, feature, center, radius, skipExistingChunks);
     }
-
+    
+    @Override
+    public void createStructures(@NotNull DynamicRegistries dynamicRegistries, @NotNull StructureManager manager, @NotNull IChunk chunk,
+                                 @NotNull TemplateManager templateManager, long p_242707_5_) {
+        if(pack.getTemplate().vanillaStructures()) super.createStructures(dynamicRegistries, manager, chunk, templateManager, p_242707_5_);
+    }
+    
+    @Override
+    public void applyCarvers(long p_230350_1_, @NotNull BiomeManager biomeManager, @NotNull IChunk chunk,
+                             GenerationStage.@NotNull Carving carving) {
+        if(pack.getTemplate().vanillaCaves()) super.applyCarvers(p_230350_1_, biomeManager, chunk, carving);
+    }
+    
+    @Override
+    public void fillFromNoise(@NotNull IWorld world, @NotNull StructureManager p_230352_2_, @NotNull IChunk chunk) {
+        delegate.generateChunkData((World) world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
+    }
+    
+    @Override
+    public void spawnOriginalMobs(WorldGenRegion region) {
+        if(pack.getTemplate().vanillaMobs()) {
+            int cx = region.getCenterX();
+            int cy = region.getCenterZ();
+            Biome biome = region.getBiome((new ChunkPos(cx, cy)).getWorldPosition());
+            SharedSeedRandom chunkRandom = new SharedSeedRandom();
+            chunkRandom.setDecorationSeed(region.getSeed(), cx << 4, cy << 4);
+            WorldEntitySpawner.spawnMobsForChunkGeneration(region, biome, cx, cy, chunkRandom);
+        }
+    }
+    
+    @Override
+    protected @NotNull
+    Codec<? extends ChunkGenerator> codec() {
+        return CODEC;
+    }
+    
+    public void setDimensionType(DimensionType dimensionType) {
+        this.dimensionType = dimensionType;
+    }
+    
+    @Override
+    public @NotNull
+    ChunkGenerator withSeed(long seed) {
+        return new ForgeChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
+    }
+    
+    public ConfigPack getPack() {
+        return pack;
+    }
+    
     @Override
     public boolean hasStronghold(@NotNull ChunkPos p_235952_1_) {
         if(pack.getTemplate().vanillaStructures()) return super.hasStronghold(p_235952_1_);
         return false;
     }
-
-    @Override
-    public void createStructures(@NotNull DynamicRegistries dynamicRegistries, @NotNull StructureManager manager, @NotNull IChunk chunk, @NotNull TemplateManager templateManager, long p_242707_5_) {
-        if(pack.getTemplate().vanillaStructures()) super.createStructures(dynamicRegistries, manager, chunk, templateManager, p_242707_5_);
-    }
-
-    @Override
-    public void applyCarvers(long p_230350_1_, @NotNull BiomeManager biomeManager, @NotNull IChunk chunk, GenerationStage.@NotNull Carving carving) {
-        if(pack.getTemplate().vanillaCaves()) super.applyCarvers(p_230350_1_, biomeManager, chunk, carving);
-    }
-
-    @Override
-    public void fillFromNoise(@NotNull IWorld world, @NotNull StructureManager p_230352_2_, @NotNull IChunk chunk) {
-        delegate.generateChunkData((World) world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
-    }
-
+    
     @Override
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Type p_222529_3_) {
         TerraWorld world = TerraForgePlugin.getInstance().getWorld(dimensionType);
         Sampler sampler = world.getConfig().getSamplerCache().getChunk(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16));
         int cx = FastMath.floorMod(x, 16);
         int cz = FastMath.floorMod(z, 16);
-
+        
         int height = world.getWorld().getMaxHeight();
-
+        
         while(height >= 0 && sampler.sample(cx, height - 1, cz) < 0) height--;
-
+        
         return height;
     }
-
+    
     @Override
     public @NotNull
     IBlockReader getBaseColumn(int x, int z) {
@@ -170,28 +198,12 @@ public class ForgeChunkGeneratorWrapper extends ChunkGenerator implements Genera
                 array[y] = Blocks.STONE.defaultBlockState();
             }
         }
-
+        
         return new Blockreader(array);
     }
-
-    @Override
-    public void spawnOriginalMobs(WorldGenRegion region) {
-        if(pack.getTemplate().vanillaMobs()) {
-            int cx = region.getCenterX();
-            int cy = region.getCenterZ();
-            Biome biome = region.getBiome((new ChunkPos(cx, cy)).getWorldPosition());
-            SharedSeedRandom chunkRandom = new SharedSeedRandom();
-            chunkRandom.setDecorationSeed(region.getSeed(), cx << 4, cy << 4);
-            WorldEntitySpawner.spawnMobsForChunkGeneration(region, biome, cx, cy, chunkRandom);
-        }
-    }
-
+    
     @Override
     public TerraChunkGenerator getHandle() {
         return delegate;
-    }
-
-    public void setDimensionType(DimensionType dimensionType) {
-        this.dimensionType = dimensionType;
     }
 }

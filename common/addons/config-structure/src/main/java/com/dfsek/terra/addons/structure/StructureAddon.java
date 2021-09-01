@@ -10,19 +10,20 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
+
 @Addon("config-structure")
 @Version("1.0.0")
 @Author("Terra")
 public class StructureAddon extends TerraAddon {
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void initialize() {
         main.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigPackPreLoadEvent.class)
+            .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
+            .failThrough();
     }
 }

@@ -1,4 +1,4 @@
-rootProject.name = "terra"
+rootProject.name = "Terra"
 
 include("common:api")
 include("common:implementation")
@@ -8,7 +8,7 @@ include("common:loader:addon")
 
 fun includeImmediateChildren(dir: File, type: String) {
     dir.walkTopDown().maxDepth(1).forEach {
-        if(!it.isDirectory || !File(it, "build.gradle.kts").exists()) return@forEach
+        if (!it.isDirectory || !File(it, "build.gradle.kts").exists()) return@forEach
         val addonDir = it.relativeTo(file(".")).path.replace("/", ":")
         println("Including $type directory \"$addonDir\" as subproject.")
         include(addonDir)

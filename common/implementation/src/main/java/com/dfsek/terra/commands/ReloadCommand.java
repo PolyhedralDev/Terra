@@ -7,13 +7,14 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.config.lang.LangUtil;
 
+
 @Command(
         usage = "/terra reload"
 )
 public class ReloadCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void execute(CommandSender sender) {
         if(!main.reload()) {

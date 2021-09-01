@@ -16,25 +16,27 @@ val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/fin
 
 dependencies {
     "shadedApi"(project(":common:implementation"))
-
+    
     "compileOnly"("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
     "shadedImplementation"("io.papermc:paperlib:1.0.5")
-
+    
     "shadedImplementation"("org.bstats:bstats-bukkit:1.7")
-
+    
     "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
-
+    
     "shadedApi"("com.google.guava:guava:30.0-jre")
 }
 
-val jvmFlags = listOf("-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
-        "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",
-        "-XX:G1NewSizePercent=30", "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M",
-        "-XX:G1ReservePercent=20", "-XX:G1HeapWastePercent=5", "-XX:G1MixedGCCountTarget=4",
-        "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
-        "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
-        "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
-        "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear", "-javaagent:paperclip.jar")
+val jvmFlags = listOf(
+    "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
+    "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",
+    "-XX:G1NewSizePercent=30", "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M",
+    "-XX:G1ReservePercent=20", "-XX:G1HeapWastePercent=5", "-XX:G1MixedGCCountTarget=4",
+    "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
+    "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
+    "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
+    "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear", "-javaagent:paperclip.jar"
+                     )
 
 fun downloadPaperclip(url: String, dir: String) {
     val clip = URL(url.replace("%version%", mcVersion))
@@ -62,18 +64,20 @@ fun installServer(dir: String) {
     // Cloning test setup.
     gitClone("https://github.com/PolyhedralDev/WorldGenTestServer")
     // Copying plugins
-    Files.move(file("WorldGenTestServer/plugins").toPath(),
-            file("$testDir/$dir/plugins").toPath(),
-            StandardCopyOption.REPLACE_EXISTING)
+    Files.move(
+        file("WorldGenTestServer/plugins").toPath(),
+        file("$testDir/$dir/plugins").toPath(),
+        StandardCopyOption.REPLACE_EXISTING
+              )
     // Copying config
     val serverText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/server.properties").readText()
     file("$testDir/$dir/server.properties").writeText(serverText)
     val bukkitText = URL("https://raw.githubusercontent.com/PolyhedralDev/WorldGenTestServer/master/bukkit.yml").readText()
     file("$testDir/$dir/bukkit.yml").writeText(bukkitText.replace("\${world}", "world").replace("\${gen}", "Terra:DEFAULT"))
-
+    
     println("By proceeding, you are agreeing to the Minecraft EULA: https://account.mojang.com/documents/minecraft_eula")
     file("$testDir/$dir/eula.txt").writeText("eula=true")
-
+    
     // clean up
     file("WorldGenTestServer").deleteRecursively()
 }
@@ -92,7 +96,7 @@ tasks.create("cleanWorlds") {
         deleteFolder(file("$testDir/paper/world"))
         deleteFolder(file("$testDir/paper/world_nether"))
         deleteFolder(file("$testDir/paper/world_the_end"))
-
+        
         deleteFolder(file("$testDir/purpur/world"))
         deleteFolder(file("$testDir/purpur/world_nether"))
         deleteFolder(file("$testDir/purpur/world_the_end"))
@@ -143,7 +147,7 @@ task<JavaExec>(name = "runPaper") {
     doFirst {
         copyTerra("paper")
     }
-
+    
     mainClass.set("io.papermc.paperclip.Paperclip")
     jvmArgs = jvmFlags
     maxHeapSize = testMem
@@ -161,7 +165,7 @@ task<JavaExec>(name = "runPurpur") {
     doFirst {
         copyTerra("purpur")
     }
-
+    
     mainClass.set("io.papermc.paperclip.Paperclip")
     jvmArgs = jvmFlags
     maxHeapSize = testMem

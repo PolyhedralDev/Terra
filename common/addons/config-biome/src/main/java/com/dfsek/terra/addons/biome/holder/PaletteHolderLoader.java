@@ -3,12 +3,13 @@ package com.dfsek.terra.addons.biome.holder;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.terra.api.world.generator.Palette;
 
 import java.lang.reflect.AnnotatedType;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+
+import com.dfsek.terra.api.world.generator.Palette;
+
 
 public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {
     @SuppressWarnings("unchecked")

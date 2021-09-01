@@ -11,8 +11,9 @@ import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.vector.Vector2;
 
-public final class RotationUtil {
 
+public final class RotationUtil {
+    
     /**
      * Rotate and mirror a coordinate pair.
      *
@@ -35,8 +36,8 @@ public final class RotationUtil {
         orig.setX(copy.getX());
         orig.setZ(copy.getZ());
     }
-
-
+    
+    
     public static Axis getRotatedAxis(Axis orig, Rotation r) {
         Axis other = orig;
         final boolean shouldSwitch = r.equals(Rotation.CW_90) || r.equals(Rotation.CCW_90);
@@ -50,12 +51,13 @@ public final class RotationUtil {
         }
         return other;
     }
-
+    
     /**
      * Method to rotate the incredibly obnoxious Rail.Shape enum
      *
      * @param orig Original shape
      * @param r    Rotate
+     *
      * @return Rotated/mirrored shape
      */
     @SuppressWarnings("fallthrough")
@@ -133,7 +135,35 @@ public final class RotationUtil {
         }
         return orig;
     }
-
+    
+    public static void rotateBlockData(BlockState data, Rotation r) {
+        data
+                .ifProperty(Properties.NORTH, state -> state.set(rotateCardinal(Properties.NORTH, r), state.get(Properties.NORTH)))
+                .ifProperty(Properties.SOUTH, state -> state.set(rotateCardinal(Properties.SOUTH, r), state.get(Properties.SOUTH)))
+                .ifProperty(Properties.EAST, state -> state.set(rotateCardinal(Properties.EAST, r), state.get(Properties.EAST)))
+                .ifProperty(Properties.WEST, state -> state.set(rotateCardinal(Properties.WEST, r), state.get(Properties.WEST)))
+                .ifProperty(Properties.DIRECTION, state -> state.set(Properties.DIRECTION, state.get(Properties.DIRECTION).rotate(r)))
+                .ifProperty(Properties.AXIS, state -> state.set(Properties.AXIS, getRotatedAxis(state.get(Properties.AXIS), r)))
+                .ifProperty(Properties.RAIL_SHAPE,
+                            state -> state.set(Properties.RAIL_SHAPE, getRotatedRail(state.get(Properties.RAIL_SHAPE), r)))
+                .ifProperty(Properties.NORTH_CONNECTION,
+                            state -> state.set(rotateRedstone(Properties.NORTH_CONNECTION, r), state.get(Properties.NORTH_CONNECTION)))
+                .ifProperty(Properties.SOUTH_CONNECTION,
+                            state -> state.set(rotateRedstone(Properties.SOUTH_CONNECTION, r), state.get(Properties.SOUTH_CONNECTION)))
+                .ifProperty(Properties.EAST_CONNECTION,
+                            state -> state.set(rotateRedstone(Properties.EAST_CONNECTION, r), state.get(Properties.EAST_CONNECTION)))
+                .ifProperty(Properties.WEST_CONNECTION,
+                            state -> state.set(rotateRedstone(Properties.WEST_CONNECTION, r), state.get(Properties.WEST_CONNECTION)))
+                .ifProperty(Properties.NORTH_HEIGHT,
+                            state -> state.set(rotateWall(Properties.NORTH_HEIGHT, r), state.get(Properties.NORTH_HEIGHT)))
+                .ifProperty(Properties.SOUTH_HEIGHT,
+                            state -> state.set(rotateWall(Properties.SOUTH_HEIGHT, r), state.get(Properties.SOUTH_HEIGHT)))
+                .ifProperty(Properties.EAST_HEIGHT,
+                            state -> state.set(rotateWall(Properties.EAST_HEIGHT, r), state.get(Properties.EAST_HEIGHT)))
+                .ifProperty(Properties.WEST_HEIGHT,
+                            state -> state.set(rotateWall(Properties.WEST_HEIGHT, r), state.get(Properties.WEST_HEIGHT)));
+    }
+    
     private static BooleanProperty rotateCardinal(BooleanProperty property, Rotation r) {
         switch(r) {
             case NONE:
@@ -159,7 +189,7 @@ public final class RotationUtil {
         }
         throw new IllegalStateException();
     }
-
+    
     private static EnumProperty<RedstoneConnection> rotateRedstone(EnumProperty<RedstoneConnection> property, Rotation r) {
         switch(r) {
             case NONE:
@@ -185,7 +215,7 @@ public final class RotationUtil {
         }
         throw new IllegalStateException();
     }
-
+    
     private static EnumProperty<WallHeight> rotateWall(EnumProperty<WallHeight> property, Rotation r) {
         switch(r) {
             case NONE:
@@ -210,24 +240,5 @@ public final class RotationUtil {
                 throw new IllegalStateException();
         }
         throw new IllegalStateException();
-    }
-
-    public static void rotateBlockData(BlockState data, Rotation r) {
-        data
-                .ifProperty(Properties.NORTH, state -> state.set(rotateCardinal(Properties.NORTH, r), state.get(Properties.NORTH)))
-                .ifProperty(Properties.SOUTH, state -> state.set(rotateCardinal(Properties.SOUTH, r), state.get(Properties.SOUTH)))
-                .ifProperty(Properties.EAST, state -> state.set(rotateCardinal(Properties.EAST, r), state.get(Properties.EAST)))
-                .ifProperty(Properties.WEST, state -> state.set(rotateCardinal(Properties.WEST, r), state.get(Properties.WEST)))
-                .ifProperty(Properties.DIRECTION, state -> state.set(Properties.DIRECTION, state.get(Properties.DIRECTION).rotate(r)))
-                .ifProperty(Properties.AXIS, state -> state.set(Properties.AXIS, getRotatedAxis(state.get(Properties.AXIS), r)))
-                .ifProperty(Properties.RAIL_SHAPE, state -> state.set(Properties.RAIL_SHAPE, getRotatedRail(state.get(Properties.RAIL_SHAPE), r)))
-                .ifProperty(Properties.NORTH_CONNECTION, state -> state.set(rotateRedstone(Properties.NORTH_CONNECTION, r), state.get(Properties.NORTH_CONNECTION)))
-                .ifProperty(Properties.SOUTH_CONNECTION, state -> state.set(rotateRedstone(Properties.SOUTH_CONNECTION, r), state.get(Properties.SOUTH_CONNECTION)))
-                .ifProperty(Properties.EAST_CONNECTION, state -> state.set(rotateRedstone(Properties.EAST_CONNECTION, r), state.get(Properties.EAST_CONNECTION)))
-                .ifProperty(Properties.WEST_CONNECTION, state -> state.set(rotateRedstone(Properties.WEST_CONNECTION, r), state.get(Properties.WEST_CONNECTION)))
-                .ifProperty(Properties.NORTH_HEIGHT, state -> state.set(rotateWall(Properties.NORTH_HEIGHT, r), state.get(Properties.NORTH_HEIGHT)))
-                .ifProperty(Properties.SOUTH_HEIGHT, state -> state.set(rotateWall(Properties.SOUTH_HEIGHT, r), state.get(Properties.SOUTH_HEIGHT)))
-                .ifProperty(Properties.EAST_HEIGHT, state -> state.set(rotateWall(Properties.EAST_HEIGHT, r), state.get(Properties.EAST_HEIGHT)))
-                .ifProperty(Properties.WEST_HEIGHT, state -> state.set(rotateWall(Properties.WEST_HEIGHT, r), state.get(Properties.WEST_HEIGHT)));
     }
 }

@@ -1,8 +1,5 @@
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import com.dfsek.terra.api.TerraPlugin;
-import com.dfsek.terra.api.inventory.Inventory;
-import com.dfsek.terra.api.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,16 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.inventory.Inventory;
+import com.dfsek.terra.api.inventory.ItemStack;
+
+
 /**
  * Class representation of a Loot Table to populate chest loot.
  */
 public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
     private final List<Pool> pools = new ArrayList<>();
-
+    
     /**
      * Instantiates a LootTable from a JSON String.
      *
      * @param json The JSON String representing the loot table.
+     *
      * @throws ParseException if malformed JSON is passed.
      */
     public LootTableImpl(String json, TerraPlugin main) throws ParseException {
@@ -32,16 +35,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
             pools.add(new Pool((JSONObject) pool, main));
         }
     }
-
-    @Override
-    public List<ItemStack> getLoot(Random r) {
-        List<ItemStack> itemList = new ArrayList<>();
-        for(Pool pool : pools) {
-            itemList.addAll(pool.getItems(r));
-        }
-        return itemList;
-    }
-
+    
     @Override
     public void fillInventory(Inventory i, Random r) {
         List<ItemStack> loot = getLoot(r);
@@ -66,5 +60,14 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
                 attempts++;
             }
         }
+    }
+    
+    @Override
+    public List<ItemStack> getLoot(Random r) {
+        List<ItemStack> itemList = new ArrayList<>();
+        for(Pool pool : pools) {
+            itemList.addAll(pool.getItems(r));
+        }
+        return itemList;
     }
 }

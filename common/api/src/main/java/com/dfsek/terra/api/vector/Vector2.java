@@ -1,7 +1,9 @@
 package com.dfsek.terra.api.vector;
 
-import com.dfsek.terra.api.util.MathUtil;
 import net.jafama.FastMath;
+
+import com.dfsek.terra.api.util.MathUtil;
+
 
 /**
  * oh yeah
@@ -9,7 +11,7 @@ import net.jafama.FastMath;
 public class Vector2 implements Cloneable {
     private double x;
     private double z;
-
+    
     /**
      * Create a vector with a given X and Z component
      *
@@ -20,47 +22,12 @@ public class Vector2 implements Cloneable {
         this.x = x;
         this.z = z;
     }
-
-    /**
-     * Get X component
-     *
-     * @return X component
-     */
-    public double getX() {
-        return x;
-    }
-
-    public Vector2 setX(double x) {
-        this.x = x;
-        return this;
-    }
-
-    public Vector2 clone() {
-        try {
-            return (Vector2) super.clone();
-        } catch(CloneNotSupportedException e) {
-            throw new Error(e);
-        }
-    }
-
-    /**
-     * Get Z component
-     *
-     * @return Z component
-     */
-    public double getZ() {
-        return z;
-    }
-
-    public Vector2 setZ(double z) {
-        this.z = z;
-        return this;
-    }
-
+    
     /**
      * Multiply X and Z components by a value.
      *
      * @param m Value to multiply
+     *
      * @return Mutated vector, for chaining.
      */
     public Vector2 multiply(double m) {
@@ -68,11 +35,12 @@ public class Vector2 implements Cloneable {
         z *= m;
         return this;
     }
-
+    
     /**
      * Add this vector to another.
      *
      * @param other Vector to add
+     *
      * @return Mutated vector, for chaining.
      */
     public Vector2 add(Vector2 other) {
@@ -80,11 +48,12 @@ public class Vector2 implements Cloneable {
         z += other.getZ();
         return this;
     }
-
+    
     /**
      * Subtract a vector from this vector,
      *
      * @param other Vector to subtract
+     *
      * @return Mutated vector, for chaining.
      */
     public Vector2 subtract(Vector2 other) {
@@ -92,7 +61,7 @@ public class Vector2 implements Cloneable {
         z -= other.getZ();
         return this;
     }
-
+    
     /**
      * Normalize this vector to length 1
      *
@@ -102,11 +71,12 @@ public class Vector2 implements Cloneable {
         divide(length());
         return this;
     }
-
+    
     /**
      * Divide X and Z components by a value.
      *
      * @param d Divisor
+     *
      * @return Mutated vector, for chaining.
      */
     public Vector2 divide(double d) {
@@ -114,7 +84,7 @@ public class Vector2 implements Cloneable {
         z /= d;
         return this;
     }
-
+    
     /**
      * Get the length of this Vector
      *
@@ -123,8 +93,7 @@ public class Vector2 implements Cloneable {
     public double length() {
         return FastMath.sqrt(lengthSquared());
     }
-
-
+    
     /**
      * Get the squared length of this Vector
      *
@@ -133,23 +102,23 @@ public class Vector2 implements Cloneable {
     public double lengthSquared() {
         return x * x + z * z;
     }
-
-
+    
     /**
      * Get the distance from this vector to another.
      *
      * @param other Another vector
+     *
      * @return Distance between vectors
      */
     public double distance(Vector2 other) {
         return FastMath.sqrt(distanceSquared(other));
     }
-
-
+    
     /**
      * Get the squared distance between 2 vectors.
      *
      * @param other Another vector
+     *
      * @return Squared distance
      */
     public double distanceSquared(Vector2 other) {
@@ -157,13 +126,53 @@ public class Vector2 implements Cloneable {
         double dz = other.getZ() - z;
         return dx * dx + dz * dz;
     }
-
-
+    
     public Vector3 extrude(double y) {
         return new Vector3(this.x, y, this.z);
     }
-
-
+    
+    public Vector2 add(double x, double z) {
+        this.x += x;
+        this.z += z;
+        return this;
+    }
+    
+    /**
+     * Get X component
+     *
+     * @return X component
+     */
+    public double getX() {
+        return x;
+    }
+    
+    public Vector2 setX(double x) {
+        this.x = x;
+        return this;
+    }
+    
+    /**
+     * Get Z component
+     *
+     * @return Z component
+     */
+    public double getZ() {
+        return z;
+    }
+    
+    public Vector2 setZ(double z) {
+        this.z = z;
+        return this;
+    }
+    
+    public int getBlockX() {
+        return FastMath.floorToInt(x);
+    }
+    
+    public int getBlockZ() {
+        return FastMath.floorToInt(z);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 17;
@@ -171,27 +180,21 @@ public class Vector2 implements Cloneable {
         hash = 31 * hash + Double.hashCode(z);
         return hash;
     }
-
+    
     public boolean equals(Object obj) {
         if(!(obj instanceof Vector2)) return false;
         Vector2 other = (Vector2) obj;
         return MathUtil.equals(this.x, other.x) && MathUtil.equals(this.z, other.z);
     }
-
-    public Vector2 add(double x, double z) {
-        this.x += x;
-        this.z += z;
-        return this;
+    
+    public Vector2 clone() {
+        try {
+            return (Vector2) super.clone();
+        } catch(CloneNotSupportedException e) {
+            throw new Error(e);
+        }
     }
-
-    public int getBlockX() {
-        return FastMath.floorToInt(x);
-    }
-
-    public int getBlockZ() {
-        return FastMath.floorToInt(z);
-    }
-
+    
     @Override
     public String toString() {
         return "(" + x + ", " + z + ")";

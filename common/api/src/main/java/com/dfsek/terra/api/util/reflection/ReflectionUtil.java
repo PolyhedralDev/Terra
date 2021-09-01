@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+
 public final class ReflectionUtil {
     public static Field[] getFields(@NotNull Class<?> type) {
         Field[] result = type.getDeclaredFields();
@@ -25,7 +26,7 @@ public final class ReflectionUtil {
         }
         return result;
     }
-
+    
     public static Method[] getMethods(@NotNull Class<?> type) {
         Method[] result = type.getDeclaredMethods();
         Class<?> parentClass = type.getSuperclass();
@@ -34,33 +35,34 @@ public final class ReflectionUtil {
         }
         return result;
     }
-
-    public static <T extends Annotation> void ifAnnotationPresent(AnnotatedElement element, Class<? extends T> annotation, Consumer<T> operation) {
+    
+    public static <T extends Annotation> void ifAnnotationPresent(AnnotatedElement element, Class<? extends T> annotation,
+                                                                  Consumer<T> operation) {
         T a = element.getAnnotation(annotation);
         if(a != null) operation.accept(a);
     }
-
+    
     public static Class<?> getRawType(Type type) {
-        if (type instanceof Class<?>) {
+        if(type instanceof Class<?>) {
             return (Class<?>) type;
-        } else if (type instanceof ParameterizedType) {
+        } else if(type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type rawType = parameterizedType.getRawType();
             return (Class<?>) rawType;
-        } else if (type instanceof GenericArrayType) {
-            Type componentType = ((GenericArrayType)type).getGenericComponentType();
+        } else if(type instanceof GenericArrayType) {
+            Type componentType = ((GenericArrayType) type).getGenericComponentType();
             return Array.newInstance(getRawType(componentType), 0).getClass();
-        } else if (type instanceof TypeVariable) {
+        } else if(type instanceof TypeVariable) {
             return Object.class;
-        } else if (type instanceof WildcardType) {
+        } else if(type instanceof WildcardType) {
             return getRawType(((WildcardType) type).getUpperBounds()[0]);
         } else {
             String className = type == null ? "null" : type.getClass().getName();
             throw new IllegalArgumentException("Expected a Class, ParameterizedType, or "
-                    + "GenericArrayType, but <" + type + "> is of type " + className);
+                                               + "GenericArrayType, but <" + type + "> is of type " + className);
         }
     }
-
+    
     public static String typeToString(Type type) {
         return type instanceof Class ? ((Class<?>) type).getName() : type.toString();
     }

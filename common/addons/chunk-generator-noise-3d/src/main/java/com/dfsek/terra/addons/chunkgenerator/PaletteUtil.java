@@ -7,6 +7,7 @@ import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.generator.Palette;
 import com.dfsek.terra.api.world.generator.Sampler;
 
+
 public final class PaletteUtil {
     public static Palette getPalette(int x, int y, int z, GenerationSettings c, Sampler sampler, PaletteInfo paletteInfo) {
         SlantHolder slant = paletteInfo.getSlantHolder();
@@ -16,7 +17,7 @@ public final class PaletteUtil {
                 return slant.getPalette(slope).getPalette(y);
             }
         }
-
+        
         return paletteInfo.getPaletteHolder().getPalette(y);
     }
 }

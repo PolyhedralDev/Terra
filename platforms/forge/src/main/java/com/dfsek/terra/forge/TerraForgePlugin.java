@@ -3,6 +3,7 @@ package com.dfsek.terra.forge;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
+
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addons.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
@@ -49,6 +50,7 @@ import com.dfsek.terra.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.world.TerraWorld;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -82,55 +84,59 @@ import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.zip.ZipFile;
 
+
 @Mod("terra")
 @Mod.EventBusSubscriber(modid = "terra", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TerraForgePlugin implements TerraPlugin {
-    public static final PopulatorFeature POPULATOR_FEATURE = (PopulatorFeature) new PopulatorFeature(NoFeatureConfig.CODEC).setRegistryName("terra", "terra");
-    public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configured(IFeatureConfig.NONE).decorated(DecoratedPlacement.NOPE.configured(NoPlacementConfig.INSTANCE));
-
+    public static final PopulatorFeature POPULATOR_FEATURE = (PopulatorFeature) new PopulatorFeature(NoFeatureConfig.CODEC).setRegistryName(
+            "terra", "terra");
+    public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configured(IFeatureConfig.NONE).decorated(
+            DecoratedPlacement.NOPE.configured(NoPlacementConfig.INSTANCE));
+    
     private static TerraForgePlugin INSTANCE;
     private final Map<DimensionType, Pair<ServerWorld, TerraWorld>> worldMap = new HashMap<>();
     private final EventManager eventManager = new TerraEventManager(this);
     private final GenericLoaders genericLoaders = new GenericLoaders(this);
     private final Profiler profiler = new ProfilerImpl();
-
+    
     private final CommandManager manager = new TerraCommandManager(this);
-
+    
     private final com.dfsek.terra.api.util.logging.Logger logger = new com.dfsek.terra.api.util.logging.Logger() {
         private final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
-
+        
         @Override
         public void info(String message) {
             logger.info(message);
         }
-
+        
         @Override
         public void warning(String message) {
             logger.warn(message);
         }
-
+        
         @Override
         public void severe(String message) {
             logger.error(message);
         }
     };
-
+    
     private final DebugLogger debugLogger = new DebugLogger(logger);
     private final ItemHandle itemHandle = new ForgeItemHandle();
     private final WorldHandle worldHandle = new ForgeWorldHandle();
     private final ConfigRegistry registry = new ConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedRegistry = new CheckedRegistry<>(registry);
-
+    
     private final ForgeAddon addon = new ForgeAddon(this);
-
+    
     private final AddonRegistry addonRegistry = new AddonRegistry(addon, this);
     private final LockedRegistry<TerraAddon> addonLockedRegistry = new LockedRegistry<>(addonRegistry);
     private final PluginConfig config = new PluginConfig();
     private final Transformer<String, Biome> biomeFixer = new Transformer.Builder<String, Biome>()
             .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse(id)), Validator.notNull())
-            .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse("minecraft:" + id.toLowerCase())), Validator.notNull()).build();
+            .addTransform(id -> ForgeRegistries.BIOMES.getValue(ResourceLocation.tryParse("minecraft:" + id.toLowerCase())),
+                          Validator.notNull()).build();
     private final File dataFolder;
-
+    
     public TerraForgePlugin() {
         if(INSTANCE != null) throw new IllegalStateException("Only one TerraPlugin instance may exist.");
         INSTANCE = this;
@@ -145,11 +151,11 @@ public class TerraForgePlugin implements TerraPlugin {
             e.printStackTrace(); // TODO do something here even though this should literally never happen
         }
     }
-
+    
     public static TerraForgePlugin getInstance() {
         return INSTANCE;
     }
-
+    
     @SubscribeEvent
     public static void setupListener(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
@@ -157,97 +163,30 @@ public class TerraForgePlugin implements TerraPlugin {
             Registry.register(Registry.CHUNK_GENERATOR, "terra:generator", ForgeChunkGeneratorWrapper.CODEC);
         });
     }
-
+    
     public void init() {
         logger.info("Initializing Terra...");
-
+        
         if(!addonRegistry.loadAll()) {
             throw new IllegalStateException("Failed to load addons. Please correct com.dfsek.terra.addon installations to continue.");
         }
         logger.info("Loaded addons.");
-
+        
         registry.loadAll(this);
         logger.info("Loaded packs.");
-
+        
         ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).unfreeze(); // Evil
-        getConfigRegistry().forEach(pack -> pack.getBiomeRegistry().forEach((id, biome) -> ForgeRegistries.BIOMES.register(ForgeUtil.createBiome(biome, pack, addon)))); // Register all Terra biomes.
+        getConfigRegistry().forEach(pack -> pack.getBiomeRegistry()
+                                                .forEach((id, biome) -> ForgeRegistries.BIOMES.register(
+                                                        ForgeUtil.createBiome(biome, pack, addon)))); // Register all Terra biomes.
         ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).freeze();
     }
-
-    @Override
-    public WorldHandle getWorldHandle() {
-        return worldHandle;
-    }
-
-    @Override
-    public TerraWorld getWorld(World world) {
-        return getWorld(((IWorld) world).dimensionType());
-    }
-
-    public TerraWorld getWorld(DimensionType type) {
-        TerraWorld world = worldMap.get(type).getRight();
-        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
-        return world;
-    }
-
-    /**
-     * evil code brought to you by Forge Mod Loader
-     * <p>
-     * Forge changes the JAR URI to something that cannot
-     * be resolved back to the original JAR, so we have to
-     * do this to get our JAR.
-     */
-    @Override
-    public JarFile getModJar() throws URISyntaxException, IOException {
-        File modsDir = new File("./mods");
-
-        if(!modsDir.exists()) return JarUtil.getJarFile();
-
-        for(File file : Objects.requireNonNull(modsDir.listFiles((dir, name) -> name.endsWith(".jar")))) {
-            try(ZipFile zipFile = new ZipFile(file)) {
-                if(zipFile.getEntry(Type.getInternalName(TerraPlugin.class) + ".class") != null) {
-                    return new JarFile(file);
-                }
-            }
-        }
-        return JarUtil.getJarFile();
-    }
-
+    
     @Override
     public com.dfsek.terra.api.util.logging.Logger logger() {
         return logger;
     }
-
-    @Override
-    public PluginConfig getTerraConfig() {
-        return config;
-    }
-
-    @Override
-    public File getDataFolder() {
-        return dataFolder;
-    }
-
-    @Override
-    public boolean isDebug() {
-        return config.isDebug();
-    }
-
-    @Override
-    public Language getLanguage() {
-        return LangUtil.getLanguage();
-    }
-
-    @Override
-    public CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return checkedRegistry;
-    }
-
-    @Override
-    public LockedRegistry<TerraAddon> getAddons() {
-        return addonLockedRegistry;
-    }
-
+    
     @Override
     public boolean reload() {
         config.load(this);
@@ -260,12 +199,7 @@ public class TerraForgePlugin implements TerraPlugin {
         });
         return succeed;
     }
-
-    @Override
-    public ItemHandle getItemHandle() {
-        return itemHandle;
-    }
-
+    
     @Override
     public void saveDefaultConfig() {
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
@@ -275,17 +209,12 @@ public class TerraForgePlugin implements TerraPlugin {
             e.printStackTrace();
         }
     }
-
+    
     @Override
     public String platformName() {
         return "Forge";
     }
-
-    @Override
-    public DebugLogger getDebugLogger() {
-        return debugLogger;
-    }
-
+    
     @Override
     public void register(TypeRegistry registry) {
         genericLoaders.register(registry);
@@ -298,43 +227,122 @@ public class TerraForgePlugin implements TerraPlugin {
                     return identifier;
                 });
     }
-
+    
+    @Override
+    public WorldHandle getWorldHandle() {
+        return worldHandle;
+    }
+    
+    @Override
+    public TerraWorld getWorld(World world) {
+        return getWorld(((IWorld) world).dimensionType());
+    }
+    
+    public TerraWorld getWorld(DimensionType type) {
+        TerraWorld world = worldMap.get(type).getRight();
+        if(world == null) throw new IllegalArgumentException("No world exists with dimension type " + type);
+        return world;
+    }
+    
+    /**
+     * evil code brought to you by Forge Mod Loader
+     * <p>
+     * Forge changes the JAR URI to something that cannot
+     * be resolved back to the original JAR, so we have to
+     * do this to get our JAR.
+     */
+    @Override
+    public JarFile getModJar() throws URISyntaxException, IOException {
+        File modsDir = new File("./mods");
+        
+        if(!modsDir.exists()) return JarUtil.getJarFile();
+        
+        for(File file : Objects.requireNonNull(modsDir.listFiles((dir, name) -> name.endsWith(".jar")))) {
+            try(ZipFile zipFile = new ZipFile(file)) {
+                if(zipFile.getEntry(Type.getInternalName(TerraPlugin.class) + ".class") != null) {
+                    return new JarFile(file);
+                }
+            }
+        }
+        return JarUtil.getJarFile();
+    }
+    
+    @Override
+    public PluginConfig getTerraConfig() {
+        return config;
+    }
+    
+    @Override
+    public File getDataFolder() {
+        return dataFolder;
+    }
+    
+    @Override
+    public boolean isDebug() {
+        return config.isDebug();
+    }
+    
+    @Override
+    public Language getLanguage() {
+        return LangUtil.getLanguage();
+    }
+    
+    @Override
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return checkedRegistry;
+    }
+    
+    @Override
+    public LockedRegistry<TerraAddon> getAddons() {
+        return addonLockedRegistry;
+    }
+    
+    @Override
+    public ItemHandle getItemHandle() {
+        return itemHandle;
+    }
+    
+    @Override
+    public DebugLogger getDebugLogger() {
+        return debugLogger;
+    }
+    
     @Override
     public EventManager getEventManager() {
         return eventManager;
     }
-
+    
     @Override
     public Profiler getProfiler() {
         return profiler;
     }
-
+    
     public CommandManager getManager() {
         return manager;
     }
-
+    
     public Map<DimensionType, Pair<ServerWorld, TerraWorld>> getWorldMap() {
         return worldMap;
     }
-
+    
     @Addon("Terra-Forge")
     @Author("Terra")
     @Version("1.0.0")
     public static final class ForgeAddon extends TerraAddon implements EventListener {
-
+        
         private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
-
+        
         private final TerraPlugin main;
-
+        
         private ForgeAddon(TerraPlugin main) {
             this.main = main;
         }
-
+        
         @Override
         public void initialize() {
             main.getEventManager().registerListener(this, this);
         }
-
+        
         @Priority(Priority.LOWEST)
         @Global
         public void injectTrees(ConfigPackPreLoadEvent event) {
@@ -364,13 +372,14 @@ public class TerraForgePlugin implements TerraPlugin {
             } catch(ConfigException e) {
                 e.printStackTrace();
             }
-
+            
             if(template.doRegistryInjection()) {
                 WorldGenRegistries.CONFIGURED_FEATURE.entrySet().forEach(entry -> {
                     if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getRegistryName())) {
                         try {
                             event.getPack().getTreeRegistry().add(entry.getKey().getRegistryName().toString(), (Tree) entry.getValue());
-                            main.getDebugLogger().info("Injected ConfiguredFeature " + entry.getKey().getRegistryName() + " as Tree: " + entry.getValue());
+                            main.getDebugLogger().info(
+                                    "Injected ConfiguredFeature " + entry.getKey().getRegistryName() + " as Tree: " + entry.getValue());
                         } catch(DuplicateEntryException ignored) {
                         }
                     }
@@ -378,29 +387,29 @@ public class TerraForgePlugin implements TerraPlugin {
             }
             templates.put(event.getPack(), Pair.of(template, null));
         }
-
+        
         @Priority(Priority.HIGHEST)
         @Global
         public void createInjectionOptions(ConfigPackPostLoadEvent event) {
             PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
-
+            
             try {
                 event.loadTemplate(template);
             } catch(ConfigException e) {
                 e.printStackTrace();
             }
-
+            
             templates.get(event.getPack()).setRight(template);
         }
-
-
+        
+        
         private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
             try {
                 registry.add(id, (Tree) tree);
             } catch(DuplicateEntryException ignore) {
             }
         }
-
+        
         public Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
             return templates;
         }

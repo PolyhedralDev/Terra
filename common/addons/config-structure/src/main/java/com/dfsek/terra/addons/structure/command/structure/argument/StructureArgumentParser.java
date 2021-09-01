@@ -7,10 +7,11 @@ import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
+
 public class StructureArgumentParser implements ArgumentParser<ConfiguredStructure> {
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public ConfiguredStructure parse(CommandSender sender, String arg) {
         return ((Player) sender).world().getConfig().getRegistry(ConfiguredStructure.class).get(arg);

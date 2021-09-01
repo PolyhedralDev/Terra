@@ -6,26 +6,24 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.Column;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class PatternLocator implements Locator {
     private final Pattern pattern;
     private final Range search;
-
+    
     public PatternLocator(Pattern pattern, Range search) {
         this.pattern = pattern;
         this.search = search;
     }
-
+    
     @Override
     public BinaryColumn getSuitableCoordinates(Column column) {
         BinaryColumn locations = new BinaryColumn(column.getMinY(), column.getMaxY());
-
+        
         for(int y : search) {
             if(pattern.matches(y, column)) locations.set(y);
         }
-
+        
         return locations;
     }
 }

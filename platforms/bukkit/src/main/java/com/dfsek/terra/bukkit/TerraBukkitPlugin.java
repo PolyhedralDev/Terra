@@ -1,5 +1,18 @@
 package com.dfsek.terra.bukkit;
 
+import io.papermc.lib.PaperLib;
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -14,23 +27,11 @@ import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
-import io.papermc.lib.PaperLib;
-import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 
 public class TerraBukkitPlugin extends JavaPlugin {
     public static final BukkitVersion BUKKIT_VERSION;
-
+    
     static {
         String ver = Bukkit.getServer().getClass().getPackage().getName();
         if(ver.contains("1_17")) BUKKIT_VERSION = BukkitVersion.V1_17;
@@ -40,32 +41,32 @@ public class TerraBukkitPlugin extends JavaPlugin {
         else if(ver.contains("1_13")) BUKKIT_VERSION = BukkitVersion.V1_13;
         else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
-
+    
     private final TerraPluginImpl terraPlugin = new TerraPluginImpl(this);
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
-
+    
     @Override
     public void onDisable() {
         BukkitChunkGeneratorWrapper.saveAll();
     }
-
+    
     @Override
     public void onEnable() {
         getLogger().info("Running on version " + BUKKIT_VERSION);
         if(BUKKIT_VERSION == BukkitVersion.UNKNOWN) {
             getLogger().warning("Terra is running on an unknown Bukkit version. Proceed with caution.");
         }
-
+        
         terraPlugin.getEventManager().callEvent(new PlatformInitializationEvent());
-
+        
         new Metrics(this, 9017); // Set up bStats.
-
+        
         PluginCommand c = Objects.requireNonNull(getCommand("terra"));
-
+        
         CommandManager manager = new TerraCommandManager(terraPlugin);
-
-
+        
+        
         try {
             CommandUtil.registerAll(manager);
             manager.register("save-data", SaveDataCommand.class);
@@ -77,18 +78,19 @@ public class TerraBukkitPlugin extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
+        
         BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
-
+        
         c.setExecutor(command);
         c.setTabCompleter(command);
-
-
+        
+        
         long save = terraPlugin.getTerraConfig().getDataSaveInterval();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, BukkitChunkGeneratorWrapper::saveAll, save, save); // Schedule population data saving
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, BukkitChunkGeneratorWrapper::saveAll, save,
+                                                         save); // Schedule population data saving
         Bukkit.getPluginManager().registerEvents(new CommonListener(terraPlugin), this); // Register master event listener
         PaperUtil.checkPaper(this);
-
+        
         if(PaperLib.isPaper()) {
             try {
                 Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
@@ -100,7 +102,17 @@ public class TerraBukkitPlugin extends JavaPlugin {
             registerSpigotEvents(false);
         }
     }
-
+    
+    @Override
+    public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
+        return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
+            if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
+            ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
+            worlds.put(worldName, pack);
+            return pack.getGeneratorProvider().newInstance(pack);
+        }));
+    }
+    
     private void registerSpigotEvents(boolean outdated) {
         if(outdated) {
             getLogger().severe("You are using an outdated version of Paper.");
@@ -119,48 +131,39 @@ public class TerraBukkitPlugin extends JavaPlugin {
             getLogger().severe("benefits that Paper offers), upgrade your server to Paper.");
             getLogger().severe("Find out more at https://papermc.io/");
         }
-
+        
         Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener
     }
-
-    @Override
-    public @Nullable ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-        return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
-            ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
-            worlds.put(worldName, pack);
-            return pack.getGeneratorProvider().newInstance(pack);
-        }));
-    }
-
+    
     public enum BukkitVersion {
         V1_13(13),
-
+        
         V1_14(14),
-
+        
         V1_15(15),
-
+        
         V1_16(16),
-
+        
         V1_17(17),
-
+        
         UNKNOWN(Integer.MAX_VALUE); // Assume unknown version is latest.
-
+        
         private final int index;
-
+        
         BukkitVersion(int index) {
             this.index = index;
         }
-
+        
         /**
          * Gets if this version is above or equal to another.
          *
          * @param other Other version
+         *
          * @return Whether this version is equal to or later than other.
          */
         public boolean above(BukkitVersion other) {
             return this.index >= other.index;
         }
     }
-
+    
 }

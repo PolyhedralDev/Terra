@@ -1,7 +1,7 @@
 package com.dfsek.terra
 
-import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
+import org.gradle.api.Project
 
 fun Project.getGitHash(): String {
     val stdout = ByteArrayOutputStream()

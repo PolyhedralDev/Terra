@@ -4,6 +4,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.forge.ForgeAdapter;
 import com.dfsek.terra.forge.block.ForgeBlockData;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
@@ -13,8 +14,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Locale;
 
-public class ForgeWorldHandle implements WorldHandle {
 
+public class ForgeWorldHandle implements WorldHandle {
+    
     @Override
     public ForgeBlockData createBlockData(String data) {
         BlockStateParser parser = new BlockStateParser(new StringReader(data), true);
@@ -26,7 +28,7 @@ public class ForgeWorldHandle implements WorldHandle {
             throw new IllegalArgumentException(e);
         }
     }
-
+    
     @Override
     public EntityType getEntity(String id) {
         ResourceLocation identifier = ResourceLocation.tryParse(id);
