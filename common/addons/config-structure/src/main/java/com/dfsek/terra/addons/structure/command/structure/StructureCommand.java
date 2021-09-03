@@ -5,6 +5,7 @@ import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.Subcommand;
 import com.dfsek.terra.api.entity.CommandSender;
 
+
 @Command(
         subcommands = {
                 @Subcommand(

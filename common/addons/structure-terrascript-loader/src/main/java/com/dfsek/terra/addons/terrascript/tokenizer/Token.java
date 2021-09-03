@@ -4,88 +4,88 @@ public class Token {
     private final String content;
     private final Type type;
     private final Position start;
-
+    
     public Token(String content, Type type, Position start) {
         this.content = content;
         this.type = type;
         this.start = start;
     }
-
-    public Type getType() {
-        return type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Position getPosition() {
-        return start;
-    }
-
+    
     @Override
     public String toString() {
         return type + ": '" + content + "'";
     }
-
+    
+    public Type getType() {
+        return type;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+    
+    public Position getPosition() {
+        return start;
+    }
+    
     public boolean isConstant() {
         return this.type.equals(Type.NUMBER) || this.type.equals(Type.STRING) || this.type.equals(Type.BOOLEAN);
     }
-
+    
     public boolean isBinaryOperator() {
         return type.equals(Type.ADDITION_OPERATOR)
-                || type.equals(Type.SUBTRACTION_OPERATOR)
-                || type.equals(Type.MULTIPLICATION_OPERATOR)
-                || type.equals(Type.DIVISION_OPERATOR)
-                || type.equals(Type.EQUALS_OPERATOR)
-                || type.equals(Type.NOT_EQUALS_OPERATOR)
-                || type.equals(Type.LESS_THAN_OPERATOR)
-                || type.equals(Type.GREATER_THAN_OPERATOR)
-                || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
-                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
-                || type.equals(Type.BOOLEAN_OR)
-                || type.equals(Type.BOOLEAN_AND)
-                || type.equals(Type.MODULO_OPERATOR);
+               || type.equals(Type.SUBTRACTION_OPERATOR)
+               || type.equals(Type.MULTIPLICATION_OPERATOR)
+               || type.equals(Type.DIVISION_OPERATOR)
+               || type.equals(Type.EQUALS_OPERATOR)
+               || type.equals(Type.NOT_EQUALS_OPERATOR)
+               || type.equals(Type.LESS_THAN_OPERATOR)
+               || type.equals(Type.GREATER_THAN_OPERATOR)
+               || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(Type.BOOLEAN_OR)
+               || type.equals(Type.BOOLEAN_AND)
+               || type.equals(Type.MODULO_OPERATOR);
     }
-
+    
     public boolean isStrictNumericOperator() {
         return type.equals(Type.SUBTRACTION_OPERATOR)
-                || type.equals(Type.MULTIPLICATION_OPERATOR)
-                || type.equals(Type.DIVISION_OPERATOR)
-                || type.equals(Type.GREATER_THAN_OPERATOR)
-                || type.equals(Type.LESS_THAN_OPERATOR)
-                || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
-                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
-                || type.equals(Type.MODULO_OPERATOR);
+               || type.equals(Type.MULTIPLICATION_OPERATOR)
+               || type.equals(Type.DIVISION_OPERATOR)
+               || type.equals(Type.GREATER_THAN_OPERATOR)
+               || type.equals(Type.LESS_THAN_OPERATOR)
+               || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(Type.MODULO_OPERATOR);
     }
-
+    
     public boolean isStrictBooleanOperator() {
         return type.equals(Type.BOOLEAN_AND)
-                || type.equals(Type.BOOLEAN_OR);
+               || type.equals(Type.BOOLEAN_OR);
     }
-
+    
     public boolean isVariableDeclaration() {
         return type.equals(Type.STRING_VARIABLE)
-                || type.equals(Type.BOOLEAN_VARIABLE)
-                || type.equals(Type.NUMBER_VARIABLE);
+               || type.equals(Type.BOOLEAN_VARIABLE)
+               || type.equals(Type.NUMBER_VARIABLE);
     }
-
+    
     public boolean isLoopLike() {
         return type.equals(Type.IF_STATEMENT)
-                || type.equals(Type.WHILE_LOOP)
-                || type.equals(Type.FOR_LOOP);
+               || type.equals(Type.WHILE_LOOP)
+               || type.equals(Type.FOR_LOOP);
     }
-
+    
     public boolean isIdentifier() {
         return type.equals(Type.IDENTIFIER);
     }
-
+    
     public enum Type {
         /**
          * Function identifier or language keyword
          */
         IDENTIFIER,
-
+        
         /**
          * Numeric literal
          */

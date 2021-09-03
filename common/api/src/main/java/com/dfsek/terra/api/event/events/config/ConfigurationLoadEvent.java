@@ -2,13 +2,15 @@ package com.dfsek.terra.api.event.events.config;
 
 import com.dfsek.tectonic.abstraction.AbstractConfiguration;
 import com.dfsek.tectonic.config.ConfigTemplate;
+
+import java.util.function.Consumer;
+
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
-import java.util.function.Consumer;
 
 /**
  * Fired when each individual configuration is loaded.
@@ -21,46 +23,49 @@ public class ConfigurationLoadEvent implements PackEvent, FailThroughEvent {
     private final AbstractConfiguration configuration;
     private final Consumer<ConfigTemplate> loader;
     private final ConfigType<?, ?> type;
-
+    
     private final Object loaded;
-
-    public ConfigurationLoadEvent(ConfigPack pack, AbstractConfiguration configuration, Consumer<ConfigTemplate> loader, ConfigType<?, ?> type, Object loaded) {
+    
+    public ConfigurationLoadEvent(ConfigPack pack, AbstractConfiguration configuration, Consumer<ConfigTemplate> loader,
+                                  ConfigType<?, ?> type, Object loaded) {
         this.pack = pack;
         this.configuration = configuration;
         this.loader = loader;
         this.type = type;
         this.loaded = loaded;
     }
-
-    @Override
-    public ConfigPack getPack() {
-        return pack;
-    }
-
-    public AbstractConfiguration getConfiguration() {
-        return configuration;
-    }
-
+    
     public <T extends ConfigTemplate> T load(T template) {
         loader.accept(template);
         return template;
     }
-
-    public ConfigType<?, ?> getType() {
-        return type;
-    }
-
+    
     public boolean is(Class<?> clazz) {
         return clazz.isAssignableFrom(type.getTypeKey().getRawType());
     }
-
+    
+    @Override
+    public ConfigPack getPack() {
+        return pack;
+    }
+    
+    public AbstractConfiguration getConfiguration() {
+        return configuration;
+    }
+    
+    public ConfigType<?, ?> getType() {
+        return type;
+    }
+    
     @SuppressWarnings("unchecked")
     public <T> T getLoadedObject(Class<T> clazz) {
         if(!clazz.isAssignableFrom(type.getTypeKey().getRawType()))
-            throw new ClassCastException("Cannot assign object from loader of type " + ReflectionUtil.typeToString(type.getTypeKey().getType()) + " to class " + clazz.getCanonicalName());
+            throw new ClassCastException(
+                    "Cannot assign object from loader of type " + ReflectionUtil.typeToString(type.getTypeKey().getType()) + " to class " +
+                    clazz.getCanonicalName());
         return (T) loaded;
     }
-
+    
     @SuppressWarnings("unchecked")
     public <T> T getLoadedObject() {
         return (T) loaded;

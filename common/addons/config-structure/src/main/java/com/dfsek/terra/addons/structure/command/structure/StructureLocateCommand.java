@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.structure.command.structure;
 
+import java.util.Locale;
+
 import com.dfsek.terra.addons.structure.command.AsyncStructureFinder;
 import com.dfsek.terra.addons.structure.command.structure.argument.StructureArgumentParser;
 import com.dfsek.terra.addons.structure.command.structure.completer.StructureCompleter;
@@ -19,53 +21,53 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.vector.Vector3;
 
-import java.util.Locale;
 
 @PlayerCommand
 @WorldCommand
-@Command(
-        arguments = {
-                @Argument(
-                        value = "structure",
-                        tabCompleter = StructureCompleter.class,
-                        argumentParser = StructureArgumentParser.class
-                ),
-                @Argument(
-                        value = "radius",
-                        required = false,
-                        defaultValue = "100",
-                        argumentParser = IntegerArgumentParser.class
-                )
-        },
-        switches = {
-                @Switch(
-                        value = "teleport",
-                        aliases = {"t", "tp"}
-                )
-        }
-)
+@Command(arguments = {
+        @Argument(
+                value = "structure",
+                tabCompleter = StructureCompleter.class,
+                argumentParser = StructureArgumentParser.class
+        ),
+        @Argument(
+                value = "radius",
+                required = false,
+                defaultValue = "100",
+                argumentParser = IntegerArgumentParser.class
+        )
+}, switches = @Switch(
+        value = "teleport",
+        aliases = { "t", "tp" }
+))
 public class StructureLocateCommand implements CommandTemplate {
     @Inject
     private TerraPlugin main;
-
+    
     @ArgumentTarget("structure")
     private ConfiguredStructure structure;
-
+    
     @ArgumentTarget("radius")
     private Integer radius;
-
+    
     @SwitchTarget("teleport")
     private boolean teleport;
-
+    
     @Override
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-
-        new Thread(new AsyncStructureFinder(player.world().getBiomeProvider(), structure, player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())), player.world(), 0, radius, location -> {
+        
+        new Thread(new AsyncStructureFinder(player.world().getBiomeProvider(), structure,
+                                            player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())),
+                                            player.world(), 0, radius, location -> {
             if(location != null) {
-                sender.sendMessage(String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", structure.getID().toLowerCase(Locale.ROOT), location.getBlockX(), location.getBlockZ(), location.add(new Vector3(0, player.position().getY(), 0)).distance(player.position())));
+                sender.sendMessage(
+                        String.format("The nearest %s is at [%d, ~, %d] (%.1f blocks away)", structure.getID().toLowerCase(Locale.ROOT),
+                                      location.getBlockX(), location.getBlockZ(),
+                                      location.add(new Vector3(0, player.position().getY(), 0)).distance(player.position())));
                 if(teleport) {
-                    main.runPossiblyUnsafeTask(() -> player.position(new Vector3(location.getX(), player.position().getY(), location.getZ())));
+                    main.runPossiblyUnsafeTask(
+                            () -> player.position(new Vector3(location.getX(), player.position().getY(), location.getZ())));
                 }
             } //else LangUtil.send("command.biome.unable-to-locate", sender);
         }, main), "Biome Location Thread").start();

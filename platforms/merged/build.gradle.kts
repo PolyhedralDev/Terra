@@ -1,8 +1,6 @@
-import java.lang.IllegalArgumentException
-
 val platformOverrides = mapOf(
-        "fabric" to "remapJar"
-)
+    "fabric" to "remapJar"
+                             )
 
 dependencies {
     "shadedApi"(project(":common:implementation"))
@@ -25,11 +23,11 @@ tasks["processResources"].dependsOn(dump)
 
 afterEvaluate {
     project(":platforms").subprojects.forEach {
-        if(it == this@afterEvaluate) return@forEach
-
+        if (it == this@afterEvaluate) return@forEach
+        
         val taskName = platformOverrides.getOrDefault(it.name, "jar")
         val task = it.tasks.named(taskName).get()
-        if(task !is AbstractArchiveTask) {
+        if (task !is AbstractArchiveTask) {
             throw IllegalArgumentException("Task dependency must be Archive Task: " + task.name)
         }
         tasks["dumpDependents"].dependsOn(task)

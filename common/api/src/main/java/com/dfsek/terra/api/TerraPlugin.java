@@ -1,5 +1,7 @@
 package com.dfsek.terra.api;
 
+import java.io.File;
+
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
@@ -12,40 +14,17 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 
-import java.io.File;
 
 /**
  * Represents a Terra mod/plugin instance.
  */
 public interface TerraPlugin extends LoaderRegistrar {
-    WorldHandle getWorldHandle();
-
     Logger logger();
-
-    PluginConfig getTerraConfig();
-
-    File getDataFolder();
-
-    Language getLanguage();
-
-    CheckedRegistry<ConfigPack> getConfigRegistry();
-
-    Registry<TerraAddon> getAddons();
-
+    
     boolean reload();
-
-    ItemHandle getItemHandle();
-
+    
     String platformName();
-
-    Logger getDebugLogger();
-
-    EventManager getEventManager();
-
-    default String getVersion() {
-        return "@VERSION@";
-    }
-
+    
     /**
      * Runs a task that may or may not be thread safe, depending on platform.
      * <p>
@@ -56,6 +35,28 @@ public interface TerraPlugin extends LoaderRegistrar {
     default void runPossiblyUnsafeTask(Runnable task) {
         task.run();
     }
-
+    
+    WorldHandle getWorldHandle();
+    
+    PluginConfig getTerraConfig();
+    
+    File getDataFolder();
+    
+    Language getLanguage();
+    
+    CheckedRegistry<ConfigPack> getConfigRegistry();
+    
+    Registry<TerraAddon> getAddons();
+    
+    ItemHandle getItemHandle();
+    
+    Logger getDebugLogger();
+    
+    EventManager getEventManager();
+    
+    default String getVersion() {
+        return "@VERSION@";
+    }
+    
     Profiler getProfiler();
 }

@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.noise.config.templates.noise.fractal;
 import com.dfsek.terra.addons.noise.samplers.noise.fractal.RidgedFractalSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+
 public class RidgedFractalTemplate extends FractalTemplate<RidgedFractalSampler> {
     @Override
     public NoiseSampler get() {

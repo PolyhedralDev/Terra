@@ -1,20 +1,20 @@
 package com.dfsek.terra.inject;
 
-import com.dfsek.terra.api.injection.Injector;
-import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.injection.exception.InjectionException;
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.dfsek.terra.api.injection.Injector;
+import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.injection.exception.InjectionException;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
+
 
 public class InjectorImpl<T> implements Injector<T> {
     private final T value;
     private final Set<Class<? extends T>> targets = new HashSet<>();
-
+    
     /**
      * Instantiate an Injector with a value to inject
      *
@@ -23,14 +23,14 @@ public class InjectorImpl<T> implements Injector<T> {
     public InjectorImpl(T value) {
         this.value = value;
     }
-
-
+    
+    
     @Override
     public void addExplicitTarget(Class<? extends T> target) {
         targets.add(target);
     }
-
-
+    
+    
     @Override
     public void inject(Object object) throws InjectionException {
         for(Field field : ReflectionUtil.getFields(object.getClass())) {

@@ -5,6 +5,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.vector.Vector2;
 import com.dfsek.terra.api.vector.Vector3;
 
+
 /**
  * NoiseSampler implementation for Cellular (Voronoi/Worley) Noise.
  */
@@ -117,7 +118,7 @@ public class CellularSampler extends NoiseFunction {
             -0.1842489331d, -0.9777375055d, -0.1004076743d, 0, 0.0775473789d, -0.9111505856d, 0.4047110257d, 0, 0.1399838409d,
             0.7601631212d, -0.6344734459d, 0, 0.4484419361d, -0.845289248d, 0.2904925424d, 0
     };
-
+    
     private static final double[] RAND_VECS_2D = {
             -0.2700222198d, -0.9628540911d, 0.3863092627d, -0.9223693152d, 0.04444859006d, -0.999011673d, -0.5992523158d, -0.8005602176d,
             -0.7819280288d, 0.6233687174d, 0.9464672271d, 0.3227999196d, -0.6514146797d, -0.7587218957d, 0.9378472289d, 0.347048376d,
@@ -183,70 +184,70 @@ public class CellularSampler extends NoiseFunction {
             -0.6995302564d, 0.7146029809d, 0.5263414922d, -0.85027327d, -0.5395221479d, 0.841971408d, 0.6579370318d, 0.7530729462d,
             0.01426758847d, -0.9998982128d, -0.6734383991d, 0.7392433447d, 0.639412098d, -0.7688642071d, 0.9211571421d, 0.3891908523d,
             -0.146637214d, -0.9891903394d, -0.782318098d, 0.6228791163d, -0.5039610839d, -0.8637263605d, -0.7743120191d, -0.6328039957d,
-    };
-
-
+            };
+    
+    
     private DistanceFunction distanceFunction = DistanceFunction.EuclideanSq;
     private ReturnType returnType = ReturnType.Distance;
     private double jitterModifier = 1.0;
-
+    
     private NoiseSampler noiseLookup;
-
+    
     public CellularSampler() {
         noiseLookup = new OpenSimplex2Sampler();
     }
-
+    
     public void setDistanceFunction(DistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;
     }
-
+    
     public void setJitterModifier(double jitterModifier) {
         this.jitterModifier = jitterModifier;
     }
-
+    
     public void setNoiseLookup(NoiseSampler noiseLookup) {
         this.noiseLookup = noiseLookup;
     }
-
+    
     public void setReturnType(ReturnType returnType) {
         this.returnType = returnType;
     }
-
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;
         int xr = fastRound(x);
         int yr = fastRound(y);
-
+        
         double distance0 = Double.MAX_VALUE;
         double distance1 = Double.MAX_VALUE;
         double distance2 = Double.MAX_VALUE;
-
+        
         int closestHash = 0;
-
+        
         double cellularJitter = 0.43701595 * jitterModifier;
-
+        
         int xPrimed = (xr - 1) * PRIME_X;
         int yPrimedBase = (yr - 1) * PRIME_Y;
-
+        
         Vector2 center = new Vector2(x, y);
-
+        
         switch(distanceFunction) {
             default:
             case Euclidean:
             case EuclideanSq:
                 for(int xi = xr - 1; xi <= xr + 1; xi++) {
                     int yPrimed = yPrimedBase;
-
+                    
                     for(int yi = yr - 1; yi <= yr + 1; yi++) {
                         int hash = hash(seed, xPrimed, yPrimed);
                         int idx = hash & (255 << 1);
-
+                        
                         double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
                         double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-
+                        
                         double newDistance = vecX * vecX + vecY * vecY;
-
+                        
                         distance1 = fastMax(fastMin(distance1, newDistance), distance0);
                         if(newDistance < distance0) {
                             distance0 = newDistance;
@@ -267,16 +268,16 @@ public class CellularSampler extends NoiseFunction {
             case Manhattan:
                 for(int xi = xr - 1; xi <= xr + 1; xi++) {
                     int yPrimed = yPrimedBase;
-
+                    
                     for(int yi = yr - 1; yi <= yr + 1; yi++) {
                         int hash = hash(seed, xPrimed, yPrimed);
                         int idx = hash & (255 << 1);
-
+                        
                         double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
                         double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-
+                        
                         double newDistance = fastAbs(vecX) + fastAbs(vecY);
-
+                        
                         distance1 = fastMax(fastMin(distance1, newDistance), distance0);
                         if(newDistance < distance0) {
                             distance0 = newDistance;
@@ -297,16 +298,16 @@ public class CellularSampler extends NoiseFunction {
             case Hybrid:
                 for(int xi = xr - 1; xi <= xr + 1; xi++) {
                     int yPrimed = yPrimedBase;
-
+                    
                     for(int yi = yr - 1; yi <= yr + 1; yi++) {
                         int hash = hash(seed, xPrimed, yPrimed);
                         int idx = hash & (255 << 1);
-
+                        
                         double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
                         double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-
+                        
                         double newDistance = (fastAbs(vecX) + fastAbs(vecY)) + (vecX * vecX + vecY * vecY);
-
+                        
                         distance1 = fastMax(fastMin(distance1, newDistance), distance0);
                         if(newDistance < distance0) {
                             distance0 = newDistance;
@@ -325,14 +326,14 @@ public class CellularSampler extends NoiseFunction {
                 }
                 break;
         }
-
+        
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
             distance0 = fastSqrt(distance0);
             if(returnType != ReturnType.CellValue) {
                 distance1 = fastSqrt(distance1);
             }
         }
-
+        
         switch(returnType) {
             case CellValue:
                 return closestHash * (1 / 2147483648.0);
@@ -364,46 +365,46 @@ public class CellularSampler extends NoiseFunction {
                 return 0;
         }
     }
-
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y, double z) {
         int seed = (int) sl;
         int xr = fastRound(x);
         int yr = fastRound(y);
         int zr = fastRound(z);
-
+        
         double distance0 = Double.MAX_VALUE;
         double distance1 = Double.MAX_VALUE;
         double distance2 = Double.MAX_VALUE;
         int closestHash = 0;
-
+        
         double cellularJitter = 0.39614353 * jitterModifier;
-
+        
         int xPrimed = (xr - 1) * PRIME_X;
         int yPrimedBase = (yr - 1) * PRIME_Y;
         int zPrimedBase = (zr - 1) * PRIME_Z;
-
+        
         Vector3 center = new Vector3(x, y, z);
-
+        
         switch(distanceFunction) {
             case Euclidean:
             case EuclideanSq:
                 for(int xi = xr - 1; xi <= xr + 1; xi++) {
                     int yPrimed = yPrimedBase;
-
+                    
                     for(int yi = yr - 1; yi <= yr + 1; yi++) {
                         int zPrimed = zPrimedBase;
-
+                        
                         for(int zi = zr - 1; zi <= zr + 1; zi++) {
                             int hash = hash(seed, xPrimed, yPrimed, zPrimed);
                             int idx = hash & (255 << 2);
-
+                            
                             double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
                             double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
                             double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
-
+                            
                             double newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
-
+                            
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
@@ -426,20 +427,20 @@ public class CellularSampler extends NoiseFunction {
             case Manhattan:
                 for(int xi = xr - 1; xi <= xr + 1; xi++) {
                     int yPrimed = yPrimedBase;
-
+                    
                     for(int yi = yr - 1; yi <= yr + 1; yi++) {
                         int zPrimed = zPrimedBase;
-
+                        
                         for(int zi = zr - 1; zi <= zr + 1; zi++) {
                             int hash = hash(seed, xPrimed, yPrimed, zPrimed);
                             int idx = hash & (255 << 2);
-
+                            
                             double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
                             double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
                             double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
-
+                            
                             double newDistance = fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ);
-
+                            
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
@@ -462,21 +463,21 @@ public class CellularSampler extends NoiseFunction {
             case Hybrid:
                 for(int xi = xr - 1; xi <= xr + 1; xi++) {
                     int yPrimed = yPrimedBase;
-
+                    
                     for(int yi = yr - 1; yi <= yr + 1; yi++) {
                         int zPrimed = zPrimedBase;
-
+                        
                         for(int zi = zr - 1; zi <= zr + 1; zi++) {
                             int hash = hash(seed, xPrimed, yPrimed, zPrimed);
                             int idx = hash & (255 << 2);
-
+                            
                             double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
                             double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
                             double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
-
+                            
                             double newDistance = (fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ)) +
-                                    (vecX * vecX + vecY * vecY + vecZ * vecZ);
-
+                                                 (vecX * vecX + vecY * vecY + vecZ * vecZ);
+                            
                             distance1 = fastMax(fastMin(distance1, newDistance), distance0);
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
@@ -500,14 +501,14 @@ public class CellularSampler extends NoiseFunction {
             default:
                 break;
         }
-
+        
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
             distance0 = fastSqrt(distance0);
             if(returnType != ReturnType.CellValue) {
                 distance1 = fastSqrt(distance1);
             }
         }
-
+        
         switch(returnType) {
             case CellValue:
                 return closestHash * (1 / 2147483648.0);
@@ -539,15 +540,15 @@ public class CellularSampler extends NoiseFunction {
                 return 0;
         }
     }
-
+    
     public enum DistanceFunction {
         Euclidean,
         EuclideanSq,
         Manhattan,
         Hybrid
     }
-
-
+    
+    
     public enum ReturnType {
         CellValue,
         Distance,

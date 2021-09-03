@@ -1,6 +1,9 @@
 package com.dfsek.terra.addons.feature.distributor;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
+
+import java.util.function.Supplier;
+
 import com.dfsek.terra.addons.feature.distributor.config.AndDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.NoiseDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
@@ -19,31 +22,32 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
-import java.util.function.Supplier;
 
 @Addon("config-distributors")
 @Version("1.0.0")
 @Author("Terra")
 public class DistributorAddon extends TerraAddon {
-    public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {
+    };
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void initialize() {
         main.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(DISTRIBUTOR_TOKEN);
-                    distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
-                    distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
-                    distributorRegistry.register("AND", AndDistributorTemplate::new);
-                    distributorRegistry.register("OR", OrDistributorTemplate::new);
-
-                    event.getPack()
-                            .applyLoader(Point.class, PointTemplate::new);
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
+                        DISTRIBUTOR_TOKEN);
+                distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
+                distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
+                distributorRegistry.register("AND", AndDistributorTemplate::new);
+                distributorRegistry.register("OR", OrDistributorTemplate::new);
+            
+                event.getPack()
+                     .applyLoader(Point.class, PointTemplate::new);
+            })
+            .failThrough();
     }
 }

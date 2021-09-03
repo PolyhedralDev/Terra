@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.structure.command.structure;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.dfsek.terra.addons.structure.command.structure.argument.ScriptArgumentParser;
 import com.dfsek.terra.addons.structure.command.structure.completer.RotationCompleter;
 import com.dfsek.terra.addons.structure.command.structure.completer.ScriptCompleter;
@@ -20,51 +23,43 @@ import com.dfsek.terra.api.injection.annotations.Inject;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 @PlayerCommand
 @DebugCommand
 @WorldCommand
-@Command(
-        arguments = {
-                @Argument(
-                        value = "structure",
-                        tabCompleter = ScriptCompleter.class,
-                        argumentParser = ScriptArgumentParser.class
-                ),
-                @Argument(
-                        value = "rotation",
-                        required = false,
-                        tabCompleter = RotationCompleter.class,
-                        argumentParser = IntegerArgumentParser.class,
-                        defaultValue = "0"
-                )
-        },
-        switches = {
-                @Switch(value = "chunk",
-                        aliases = "c"
-                )
-        },
-        usage = "/terra structure load [ROTATION] [-c]"
-)
+@Command(arguments = {
+        @Argument(
+                value = "structure",
+                tabCompleter = ScriptCompleter.class,
+                argumentParser = ScriptArgumentParser.class
+        ),
+        @Argument(
+                value = "rotation",
+                required = false,
+                tabCompleter = RotationCompleter.class,
+                argumentParser = IntegerArgumentParser.class,
+                defaultValue = "0"
+        )
+}, switches = @Switch(value = "chunk",
+                      aliases = "c"
+), usage = "/terra structure load [ROTATION] [-c]")
 public class StructureLoadCommand implements CommandTemplate {
     @ArgumentTarget("rotation")
-    private Integer rotation = 0;
-
+    private final Integer rotation = 0;
+    
     @SwitchTarget("chunk")
     private boolean chunk;
-
+    
     @ArgumentTarget("structure")
     private Structure script;
-
+    
     @Inject
     private TerraPlugin main;
-
+    
     @Override
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-
+        
         long t = System.nanoTime();
         Random random = new Random(ThreadLocalRandom.current().nextLong());
         Rotation r;
@@ -84,7 +79,7 @@ public class StructureLoadCommand implements CommandTemplate {
             script.generate(player.position(), player.world(), random, r);
         }
         long l = System.nanoTime() - t;
-
+        
         sender.sendMessage("Took " + ((double) l) / 1000000 + "ms");
     }
 }

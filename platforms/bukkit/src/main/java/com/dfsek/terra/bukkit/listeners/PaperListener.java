@@ -1,17 +1,19 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.TerraPlugin;
 import io.papermc.paper.event.world.StructureLocateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import com.dfsek.terra.api.TerraPlugin;
+
+
 public class PaperListener implements Listener {
     private final TerraPlugin main;
-
+    
     public PaperListener(TerraPlugin main) {
         this.main = main;
     }
-
+    
     @EventHandler
     public void onStructureLocate(StructureLocateEvent e) {
         /*String name = "minecraft:" + e.getType().getName();
@@ -19,7 +21,8 @@ public class PaperListener implements Listener {
         World w = BukkitAdapter.adapt(e.getWorld());
         ConfiguredStructure config = tw.getConfig().getRegistry(TerraStructure.class).get(tw.getConfig().getLocatable().get(name));
         if(config != null) {
-            AsyncStructureFinder finder = new AsyncStructureFinder(w.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin().toVector()), tw.getWorld(), 0, 500, location -> {
+            AsyncStructureFinder finder = new AsyncStructureFinder(w.getBiomeProvider(), config, BukkitAdapter.adapt(e.getOrigin()
+            .toVector()), tw.getWorld(), 0, 500, location -> {
                 if(location != null)
                     e.setResult(BukkitAdapter.adapt(location).toLocation(e.getWorld()));
                 main.getDebugLogger().info("Location: " + location);

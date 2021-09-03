@@ -6,6 +6,7 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.config.lang.LangUtil;
 
+
 @Command
 public class SaveDataCommand implements CommandTemplate {
     @Override

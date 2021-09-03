@@ -9,20 +9,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+
 public interface Loader {
-
+    
     Loader thenNames(Consumer<List<String>> consumer) throws ConfigException;
-
+    
     Loader thenEntries(Consumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException;
-
+    
     /**
      * Get a single file from this Loader.
      *
      * @param singleFile File to get
+     *
      * @return InputStream from file.
      */
     InputStream get(String singleFile) throws IOException;
-
+    
     /**
      * Open a subdirectory.
      *
@@ -30,7 +32,7 @@ public interface Loader {
      * @param extension
      */
     Loader open(String directory, String extension);
-
+    
     /**
      * Close all InputStreams opened.
      */

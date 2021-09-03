@@ -1,12 +1,5 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.state.properties.enums.Axis;
-import com.dfsek.terra.api.block.state.properties.enums.Half;
-import com.dfsek.terra.api.block.state.properties.enums.RailShape;
-import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
-import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
-import com.dfsek.terra.api.vector.Vector3;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.WallShape;
@@ -14,19 +7,28 @@ import net.minecraft.block.enums.WireConnection;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import com.dfsek.terra.api.block.state.properties.enums.Axis;
+import com.dfsek.terra.api.block.state.properties.enums.Half;
+import com.dfsek.terra.api.block.state.properties.enums.RailShape;
+import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
+import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
+import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.fabric.block.FabricBlockState;
+
+
 public final class FabricAdapter {
     public static BlockPos adapt(Vector3 v) {
         return new BlockPos(v.getBlockX(), v.getBlockY(), v.getBlockZ());
     }
-
+    
     public static Vector3 adapt(BlockPos pos) {
         return new Vector3(pos.getX(), pos.getY(), pos.getZ());
     }
-
+    
     public static FabricBlockState adapt(BlockState state) {
         return new FabricBlockState(state);
     }
-
+    
     public static Direction adapt(com.dfsek.terra.api.block.state.properties.enums.Direction direction) {
         switch(direction) {
             case SOUTH:
@@ -44,7 +46,7 @@ public final class FabricAdapter {
         }
         throw new IllegalArgumentException();
     }
-
+    
     public static com.dfsek.terra.api.block.state.properties.enums.Direction adapt(Direction direction) {
         switch(direction) {
             case SOUTH:
@@ -62,7 +64,7 @@ public final class FabricAdapter {
         }
         throw new IllegalArgumentException();
     }
-
+    
     public static WallHeight adapt(WallShape shape) {
         switch(shape) {
             case LOW:
@@ -74,7 +76,7 @@ public final class FabricAdapter {
         }
         throw new IllegalArgumentException();
     }
-
+    
     public static WallShape adapt(WallHeight shape) {
         switch(shape) {
             case LOW:
@@ -86,7 +88,7 @@ public final class FabricAdapter {
         }
         throw new IllegalArgumentException();
     }
-
+    
     public static RedstoneConnection adapt(WireConnection connection) {
         switch(connection) {
             case NONE:
@@ -98,7 +100,7 @@ public final class FabricAdapter {
         }
         throw new IllegalArgumentException();
     }
-
+    
     public static WireConnection adapt(RedstoneConnection connection) {
         switch(connection) {
             case NONE:
@@ -110,8 +112,8 @@ public final class FabricAdapter {
         }
         throw new IllegalArgumentException();
     }
-
-
+    
+    
     public static Half adapt(BlockHalf half) {
         switch(half) {
             case BOTTOM:
@@ -122,7 +124,7 @@ public final class FabricAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static BlockHalf adapt(Half half) {
         switch(half) {
             case TOP:
@@ -133,7 +135,7 @@ public final class FabricAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static RailShape adapt(net.minecraft.block.enums.RailShape railShape) {
         switch(railShape) {
             case EAST_WEST:
@@ -159,7 +161,7 @@ public final class FabricAdapter {
         }
         throw new IllegalStateException();
     }
-
+    
     public static net.minecraft.block.enums.RailShape adapt(RailShape railShape) {
         switch(railShape) {
             case EAST_WEST:
@@ -185,8 +187,8 @@ public final class FabricAdapter {
         }
         throw new IllegalStateException();
     }
-
-
+    
+    
     public static Axis adapt(Direction.Axis axis) {
         switch(axis) {
             case X:
@@ -199,7 +201,7 @@ public final class FabricAdapter {
                 throw new IllegalStateException();
         }
     }
-
+    
     public static Direction.Axis adapt(Axis axis) {
         switch(axis) {
             case Z:

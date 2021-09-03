@@ -1,30 +1,27 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.functions.def;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Item;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FunctionBlock<T> implements Item<T> {
     private final List<Item<?>> items;
     private final Position position;
     private final T defaultVal;
-
+    
     public FunctionBlock(List<Item<?>> items, T defaultVal, Position position) {
         this.items = items;
         this.position = position;
         this.defaultVal = defaultVal;
     }
-
-    public List<Item<?>> getItems() {
-        return items;
-    }
-
+    
     @SuppressWarnings("unchecked")
     @Override
     public synchronized T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
@@ -38,9 +35,13 @@ public class FunctionBlock<T> implements Item<T> {
         }
         return defaultVal;
     }
-
+    
     @Override
     public Position getPosition() {
         return position;
+    }
+    
+    public List<Item<?>> getItems() {
+        return items;
     }
 }
