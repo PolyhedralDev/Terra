@@ -25,6 +25,8 @@ dependencies {
     "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
     
     "shadedApi"("com.google.guava:guava:30.0-jre")
+    
+    "shadedApi"("cloud.commandframework", "cloud-bukkit", "1.5.0")
 }
 
 val jvmFlags = listOf(

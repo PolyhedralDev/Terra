@@ -1,5 +1,12 @@
 package com.dfsek.terra.bukkit;
 
+import cloud.commandframework.bukkit.BukkitCommandManager;
+import cloud.commandframework.execution.CommandExecutionCoordinator;
+
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
+
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -43,8 +50,24 @@ public class TerraBukkitPlugin extends JavaPlugin {
     }
     
     private final TerraPluginImpl terraPlugin = new TerraPluginImpl(this);
+    
+    private final cloud.commandframework.CommandManager<CommandSender> commandManager;
+    
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
+    
+    public TerraBukkitPlugin() {
+        try {
+            commandManager = new BukkitCommandManager<>(
+                    this,
+                    CommandExecutionCoordinator.simpleCoordinator(),
+                    BukkitAdapter::adapt,
+                    BukkitAdapter::adapt
+            );
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     
     @Override
     public void onDisable() {
@@ -62,27 +85,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         new Metrics(this, 9017); // Set up bStats.
         
-        PluginCommand c = Objects.requireNonNull(getCommand("terra"));
-        
-        CommandManager manager = new TerraCommandManager(terraPlugin);
-        
-        
-        try {
-            CommandUtil.registerAll(manager);
-            manager.register("save-data", SaveDataCommand.class);
-            manager.register("fix-chunk", FixChunkCommand.class);
-        } catch(MalformedCommandException e) { // This should never happen.
-            terraPlugin.logger().severe("Errors occurred while registering commands.");
-            e.printStackTrace();
-            terraPlugin.logger().severe("Please report this to Terra.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-        
-        BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
-        
-        c.setExecutor(command);
-        c.setTabCompleter(command);
+        terraPlugin.getEventManager().callEvent(new CommandRegistrationEvent(commandManager)); // Register commands
         
         
         long save = terraPlugin.getTerraConfig().getDataSaveInterval();
