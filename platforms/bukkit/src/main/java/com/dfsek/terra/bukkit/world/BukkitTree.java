@@ -46,6 +46,8 @@ public class BukkitTree implements Tree {
     public boolean plant(Location l, Random r) {
         try(ProfileFrame ignore = main.getProfiler().profile("bukkit_tree:" + delegate.toString().toLowerCase(Locale.ROOT))) {
             return ((BukkitWorld) l.getWorld()).getHandle().generateTree(BukkitAdapter.adapt(l), delegate);
+        } catch(IndexOutOfBoundsException ignored) { // Workaround for https://github.com/PaperMC/Paper/issues/6028
+            return false;
         }
     }
 
