@@ -18,7 +18,7 @@ import java.util.Properties;
 import java.util.Random;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.TerraPluginImpl;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
@@ -37,7 +37,7 @@ public abstract class GeneratorOptionsMixin {
             return;
         }
         
-        TerraPluginImpl main = FabricEntryPoint.getTerraPlugin();
+        TerraPluginImpl main = CommonEntryPoint.getTerraPlugin();
         
         String prop = properties.get("level-type").toString().trim();
         if(prop.startsWith("Terra")) {

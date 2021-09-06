@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 
 
@@ -31,7 +31,7 @@ public abstract class ServerWorldMixin {
                                   boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
             ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
-            FabricEntryPoint.getTerraPlugin().logger().info("Registered world " + this);
+            CommonEntryPoint.getTerraPlugin().logger().info("Registered world " + this);
         }
     }
 }

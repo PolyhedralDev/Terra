@@ -1,5 +1,7 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.entity.CommandSender;
+
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -29,7 +31,7 @@ import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
@@ -60,7 +62,7 @@ public final class FabricUtil {
         generationSettings.surfaceBuilder(
                 vanilla.getGenerationSettings().getSurfaceBuilder()); // It needs a surfacebuilder, even though we dont use it.
         
-        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FabricEntryPoint.POPULATOR_CONFIGURED_FEATURE);
+        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, CommonEntryPoint.POPULATOR_CONFIGURED_FEATURE);
         
         if(pack.vanillaCaves()) {
             for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {

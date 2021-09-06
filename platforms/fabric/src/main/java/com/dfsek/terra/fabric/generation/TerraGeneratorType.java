@@ -11,7 +11,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 
 
@@ -28,7 +28,7 @@ public class TerraGeneratorType extends GeneratorType {
     public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures,
                                                  boolean bonusChest) {
         GeneratorOptions options = super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
+        CommonEntryPoint.getTerraPlugin().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
         return options;
     }
     

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 
 
 @Mixin(Main.class)
@@ -17,7 +17,7 @@ public class ServerMainMixin {
                      target = "Lnet/minecraft/util/registry/DynamicRegistryManager;create()" +
                               "Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;"))
     private static void injectConstructor(String[] args, CallbackInfo ci) {
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(
+        CommonEntryPoint.getTerraPlugin().getEventManager().callEvent(
                 new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks and stuff
     }
 }

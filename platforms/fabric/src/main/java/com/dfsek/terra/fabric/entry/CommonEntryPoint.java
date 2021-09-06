@@ -1,6 +1,14 @@
-package com.dfsek.terra.fabric;
+package com.dfsek.terra.fabric.entry;
+
+import cloud.commandframework.execution.CommandExecutionCoordinator;
+import cloud.commandframework.fabric.FabricServerCommandManager;
+
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+import com.dfsek.terra.fabric.TerraPluginImpl;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -16,7 +24,7 @@ import com.dfsek.terra.fabric.generation.PopulatorFeature;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 
-public class FabricEntryPoint implements ModInitializer {
+public class CommonEntryPoint implements ModInitializer {
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(
             Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
@@ -36,5 +44,12 @@ public class FabricEntryPoint implements ModInitializer {
         
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
+    
+        FabricServerCommandManager<CommandSender> commandManager = new FabricServerCommandManager<>(
+                CommandExecutionCoordinator.simpleCoordinator(),
+                fabricClientCommandSource -> (CommandSender) fabricClientCommandSource,
+                commandSender -> (ServerCommandSource) commandSender);
+    
+        TERRA_PLUGIN.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
     }
 }

@@ -21,7 +21,7 @@ import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 
 
 @Mixin(ConfiguredFeature.class)
@@ -33,7 +33,7 @@ public abstract class ConfiguredFeatureMixin {
     @SuppressWarnings({ "ConstantConditions", "try" })
     public boolean terra$plant(Vector3 l, World world, Random r) {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
-        try(ProfileFrame ignore = FabricEntryPoint.getTerraPlugin().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
+        try(ProfileFrame ignore = CommonEntryPoint.getTerraPlugin().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             StructureWorldAccess fabricWorldAccess = ((StructureWorldAccess) world);
             ChunkGenerator generatorWrapper = ((ServerWorldAccess) world).toServerWorld().getChunkManager().getChunkGenerator();
             return generate(fabricWorldAccess, generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
@@ -41,8 +41,8 @@ public abstract class ConfiguredFeatureMixin {
     }
     
     public Set<BlockType> terra$getSpawnable() {
-        return MaterialSet.get(FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:grass_block"),
-                               FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:podzol"),
-                               FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:mycelium"));
+        return MaterialSet.get(CommonEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:grass_block"),
+                               CommonEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:podzol"),
+                               CommonEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:mycelium"));
     }
 }

@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.mixin.access.MobSpawnerLogicAccessor;
 
 
@@ -98,7 +98,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
                 case "type":
-                    terra$setSpawnedType(FabricEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
+                    terra$setSpawnedType(CommonEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
                     return;
                 case "delay":
                     terra$setDelay(Integer.parseInt(v));

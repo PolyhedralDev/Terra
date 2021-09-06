@@ -1,9 +1,16 @@
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.entity.CommandSender;
+
+import com.dfsek.terra.api.entity.Entity;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.WallShape;
 import net.minecraft.block.enums.WireConnection;
+import net.minecraft.client.network.ClientCommandSource;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -213,5 +220,14 @@ public final class FabricAdapter {
             default:
                 throw new IllegalStateException();
         }
+    }
+    
+    public static CommandSender adapt(ServerCommandSource source) {
+        try {
+            return (Entity) source.getEntityOrThrow();
+        } catch(CommandSyntaxException e) {
+            e.printStackTrace();
+        }
+        return (CommandSender) source;
     }
 }

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
 
@@ -23,7 +23,7 @@ public class TerraBiomeSource extends BiomeSource {
                                                                                                           Codec.STRING.fieldOf("pack").forGetter(ConfigPack::getID)
                                                                                                         )
                                                                                                   .apply(config, config.stable(
-                                                                                                          FabricEntryPoint.getTerraPlugin()
+                                                                                                          CommonEntryPoint.getTerraPlugin()
                                                                                                                           .getConfigRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                                                                                                               RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),

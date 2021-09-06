@@ -9,6 +9,8 @@ plugins {
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
+val fabricApi = "0.31.0+1.16"
+
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
@@ -32,6 +34,8 @@ dependencies {
         exclude(group = "org.apache.logging.log4j", module = "log4j-api")
         exclude(group = "org.apache.logging.log4j", module = "log4j-core")
     }
+    
+    "modImplementation"("cloud.commandframework", "cloud-fabric", "1.5.0")
 }
 
 tasks.named<ShadowJar>("shadowJar") {

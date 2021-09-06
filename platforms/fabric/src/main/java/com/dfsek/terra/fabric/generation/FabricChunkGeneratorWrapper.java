@@ -35,7 +35,7 @@ import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.util.FastRandom;
@@ -46,7 +46,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
                                 .forGetter(ConfigPack::getID)
-                                  ).apply(config, config.stable(FabricEntryPoint.getTerraPlugin().getConfigRegistry()::get)));
+                                  ).apply(config, config.stable(CommonEntryPoint.getTerraPlugin().getConfigRegistry()::get)));
     
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(

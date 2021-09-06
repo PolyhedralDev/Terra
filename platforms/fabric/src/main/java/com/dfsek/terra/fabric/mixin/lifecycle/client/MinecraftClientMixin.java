@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.entry.CommonEntryPoint;
 import com.dfsek.terra.fabric.generation.TerraGeneratorType;
 import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
 
@@ -24,8 +24,8 @@ public class MinecraftClientMixin {
                                         // sorta arbitrary position, after mod init, before window opens
                                         shift = At.Shift.BEFORE))
     public void injectConstructor(RunArgs args, CallbackInfo callbackInfo) {
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new PlatformInitializationEvent());
-        FabricEntryPoint.getTerraPlugin().getConfigRegistry().forEach(pack -> {
+        CommonEntryPoint.getTerraPlugin().getEventManager().callEvent(new PlatformInitializationEvent());
+        CommonEntryPoint.getTerraPlugin().getConfigRegistry().forEach(pack -> {
             final GeneratorType generatorType = new TerraGeneratorType(pack);
             //noinspection ConstantConditions
             ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getID()));
