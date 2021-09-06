@@ -19,8 +19,6 @@ import java.util.Optional;
 import com.dfsek.terra.api.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.command.CommandManager;
-import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
@@ -30,8 +28,6 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
-import com.dfsek.terra.commands.CommandUtil;
-import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
@@ -61,8 +57,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     private final GenericLoaders loaders = new GenericLoaders(this);
     
     private final PluginConfigImpl config = new PluginConfigImpl();
-    
-    private final CommandManager manager = new TerraCommandManager(this);
     
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
     
@@ -186,12 +180,6 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
         }
         logger().info("Loaded addons.");
         
-        try {
-            CommandUtil.registerAll(manager);
-        } catch(MalformedCommandException e) {
-            e.printStackTrace(); // TODO do something here even though this should literally never happen
-        }
-        
         
         logger().info("Finished initialization.");
     }
@@ -204,9 +192,5 @@ public abstract class AbstractTerraPlugin implements TerraPlugin {
     
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
-    }
-    
-    public CommandManager getManager() {
-        return manager;
     }
 }

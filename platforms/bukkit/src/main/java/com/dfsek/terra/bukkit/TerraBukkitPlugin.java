@@ -10,7 +10,6 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -18,22 +17,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import com.dfsek.terra.api.command.CommandManager;
-import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
-import com.dfsek.terra.bukkit.command.FixChunkCommand;
-import com.dfsek.terra.bukkit.command.SaveDataCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
-import com.dfsek.terra.commands.CommandUtil;
-import com.dfsek.terra.commands.TerraCommandManager;
 
 
 public class TerraBukkitPlugin extends JavaPlugin {
