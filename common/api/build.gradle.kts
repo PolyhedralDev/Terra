@@ -5,6 +5,6 @@ dependencies {
     
     "shadedApi"("net.jafama:jafama:2.3.2")
     
-    "compileOnly"("cloud.commandframework", "cloud-core", "1.5.0")
+    "api"("cloud.commandframework", "cloud-core", "1.5.0")
 }
 
