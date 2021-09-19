@@ -13,7 +13,7 @@ import com.dfsek.terra.api.addon.TerraAddon;
 public class ConfigPackAddonsTemplate implements ConfigTemplate {
     @Value("addons")
     @Default
-    private final Set<TerraAddon> addons = new HashSet<>();
+    private Set<TerraAddon> addons = new HashSet<>();
     
     
     public Set<TerraAddon> getAddons() {

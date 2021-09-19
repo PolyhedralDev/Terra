@@ -13,7 +13,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 public class BiomeFloraTemplate implements ObjectTemplate<BiomeFlora> {
     @Value("flora")
     @Default
-    private final @Meta List<@Meta FloraLayer> flora = Collections.emptyList();
+    private @Meta List<@Meta FloraLayer> flora = Collections.emptyList();
     
     @Override
     public BiomeFlora get() {

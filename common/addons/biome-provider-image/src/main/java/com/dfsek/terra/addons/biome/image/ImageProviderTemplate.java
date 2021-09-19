@@ -16,7 +16,7 @@ public class ImageProviderTemplate implements ObjectTemplate<BiomeProvider> {
     private final Registry<TerraBiome> biomes;
     @Value("resolution")
     @Default
-    private final int resolution = 1;
+    private int resolution = 1;
     @Value("image.name")
     private BufferedImage image;
     @Value("image.align")
