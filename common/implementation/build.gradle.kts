@@ -1,5 +1,5 @@
 dependencies {
-    "shadedApi"(project(":common:api"))
+    "shadedApi"(project(":common:api:core"))
     "shadedApi"(project(":common:loader:config"))
     "shadedApi"(project(":common:loader:addon"))
     

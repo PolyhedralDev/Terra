@@ -1,0 +1,1 @@
+Entry-Point: com.dfsek.terra.addons.manifest.ManifestLoaderEntry

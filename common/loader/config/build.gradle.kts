@@ -1,3 +1,3 @@
 dependencies {
-    "shadedApi"(project(":common:api"))
+    "shadedApi"(project(":common:api:core"))
 }
