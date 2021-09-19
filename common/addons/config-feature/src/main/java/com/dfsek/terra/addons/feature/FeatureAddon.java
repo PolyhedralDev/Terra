@@ -22,7 +22,7 @@ public class FeatureAddon extends TerraAddon {
         main.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), "FEATURE", 2))
+            .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), "FEATURE", 3))
             .failThrough();
     }
 }
