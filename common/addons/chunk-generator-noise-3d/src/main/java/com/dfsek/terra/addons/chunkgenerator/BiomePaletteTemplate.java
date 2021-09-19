@@ -14,7 +14,7 @@ import com.dfsek.terra.api.world.generator.Palette;
 public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     @Value("slant")
     @Default
-    private final @Meta SlantHolder slant;
+    private @Meta SlantHolder slant;
     @Value("palette")
     private @Meta PaletteHolder palette;
     @Value("ocean.level")
