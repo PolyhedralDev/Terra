@@ -352,6 +352,7 @@ public class ConfigPackImpl implements ConfigPack {
             if(registryMap.containsKey(configType.getTypeKey()
                                                  .getType())) { // Someone already registered something; we need to copy things to the
                 // new registry.
+                main.getDebugLogger().warning("Copying values from old registry for " + configType.getTypeKey());
                 registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
             selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
