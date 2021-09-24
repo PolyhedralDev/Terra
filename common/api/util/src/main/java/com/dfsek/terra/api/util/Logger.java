@@ -1,4 +1,4 @@
-package com.dfsek.terra.api;
+package com.dfsek.terra.api.util;
 
 public interface Logger {
     void info(String message);

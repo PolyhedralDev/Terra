@@ -1,6 +1,6 @@
 package com.dfsek.terra.util.logging;
 
-import com.dfsek.terra.api.Logger;
+import com.dfsek.terra.api.util.Logger;
 
 
 public class JavaLogger implements Logger {

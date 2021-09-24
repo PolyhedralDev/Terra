@@ -3,7 +3,7 @@ package com.dfsek.terra.config.lang;
 import java.io.File;
 import java.io.IOException;
 
-import com.dfsek.terra.api.Logger;
+import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Language;

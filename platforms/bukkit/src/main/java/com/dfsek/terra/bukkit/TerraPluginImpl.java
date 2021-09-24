@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.dfsek.terra.AbstractTerraPlugin;
-import com.dfsek.terra.api.Logger;
+import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
