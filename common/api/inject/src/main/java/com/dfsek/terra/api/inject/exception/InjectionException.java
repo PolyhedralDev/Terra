@@ -1,6 +1,6 @@
-package com.dfsek.terra.api.injection.exception;
+package com.dfsek.terra.api.inject.exception;
 
-import com.dfsek.terra.api.injection.Injector;
+import com.dfsek.terra.api.inject.Injector;
 
 
 /**

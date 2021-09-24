@@ -7,7 +7,7 @@ import com.dfsek.terra.api.addon.annotations.Author;
 import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 

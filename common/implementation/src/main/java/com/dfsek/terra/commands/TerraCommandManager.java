@@ -33,7 +33,7 @@ import com.dfsek.terra.api.command.exception.SwitchFormatException;
 import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
-import com.dfsek.terra.api.injection.exception.InjectionException;
+import com.dfsek.terra.api.inject.exception.InjectionException;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.inject.InjectorImpl;
 

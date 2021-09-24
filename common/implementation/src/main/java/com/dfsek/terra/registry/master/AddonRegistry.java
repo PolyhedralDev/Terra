@@ -13,7 +13,7 @@ import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.injection.exception.InjectionException;
+import com.dfsek.terra.api.inject.exception.InjectionException;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.inject.InjectorImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;

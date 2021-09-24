@@ -5,7 +5,7 @@ import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.config.lang.LangUtil;
 

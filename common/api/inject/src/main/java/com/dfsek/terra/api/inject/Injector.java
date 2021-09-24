@@ -1,7 +1,7 @@
-package com.dfsek.terra.api.injection;
+package com.dfsek.terra.api.inject;
 
-import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.injection.exception.InjectionException;
+import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.inject.exception.InjectionException;
 
 
 /**
