@@ -16,8 +16,8 @@ import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.vector.Vector2;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class LootFunction implements Function<Void> {

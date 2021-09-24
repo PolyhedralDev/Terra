@@ -17,8 +17,8 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.vector.Vector2;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class StructureFunction implements Function<Boolean> {

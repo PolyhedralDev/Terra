@@ -6,7 +6,7 @@ import org.bukkit.block.Sign;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 

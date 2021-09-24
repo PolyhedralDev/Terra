@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

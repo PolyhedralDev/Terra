@@ -9,7 +9,7 @@ import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector2;
 
 
 public final class RotationUtil {

@@ -3,7 +3,7 @@ package com.dfsek.terra.api.world;
 import java.util.List;
 
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public interface Flora {

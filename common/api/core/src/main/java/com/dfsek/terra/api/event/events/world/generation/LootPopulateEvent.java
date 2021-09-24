@@ -8,7 +8,7 @@ import com.dfsek.terra.api.event.events.AbstractCancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 /**
