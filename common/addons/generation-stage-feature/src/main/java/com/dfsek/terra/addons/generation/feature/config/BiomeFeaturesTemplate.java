@@ -14,7 +14,7 @@ import com.dfsek.terra.api.structure.feature.Feature;
 public class BiomeFeaturesTemplate implements ObjectTemplate<BiomeFeatures> {
     @Value("features")
     @Default
-    private final @Meta List<@Meta Feature> features = Collections.emptyList();
+    private @Meta List<@Meta Feature> features = Collections.emptyList();
     
     @Override
     public BiomeFeatures get() {

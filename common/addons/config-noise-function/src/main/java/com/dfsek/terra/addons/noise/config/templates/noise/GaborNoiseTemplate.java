@@ -11,23 +11,23 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     @Value("rotation")
     @Default
-    private final @Meta double rotation = 0.25;
+    private @Meta double rotation = 0.25;
     
     @Value("isotropic")
     @Default
-    private final @Meta boolean isotropic = true;
+    private @Meta boolean isotropic = true;
     
     @Value("deviation")
     @Default
-    private final @Meta double deviation = 1.0;
+    private @Meta double deviation = 1.0;
     
     @Value("impulses")
     @Default
-    private final @Meta double impulses = 64d;
+    private @Meta double impulses = 64d;
     
     @Value("frequency_0")
     @Default
-    private final @Meta double f0 = 0.625;
+    private @Meta double f0 = 0.625;
     
     @Override
     public NoiseSampler get() {

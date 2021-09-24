@@ -14,7 +14,7 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 public class BiomeStructuresTemplate implements ObjectTemplate<BiomeStructures> {
     @Value("structures")
     @Default
-    private final @Meta Set<@Meta ConfiguredStructure> structures = Collections.emptySet();
+    private @Meta Set<@Meta ConfiguredStructure> structures = Collections.emptySet();
     
     @Override
     public BiomeStructures get() {

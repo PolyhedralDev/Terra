@@ -3,6 +3,8 @@ package com.dfsek.terra.addons.noise.paralithic.noise;
 import com.dfsek.paralithic.functions.dynamic.Context;
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 
+import com.dfsek.paralithic.node.Statefulness;
+
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -29,7 +31,7 @@ public class NoiseFunction3 implements DynamicFunction {
     }
     
     @Override
-    public boolean isStateless() {
-        return false;
+    public Statefulness statefulness() {
+        return Statefulness.CONTEXTUAL;
     }
 }

@@ -13,7 +13,7 @@ import com.dfsek.terra.api.structure.feature.Distributor;
 public class NoiseDistributorTemplate implements ObjectTemplate<Distributor> {
     @Value("threshold")
     @Default
-    private final @Meta double threshold = 0;
+    private @Meta double threshold = 0;
     @Value("distribution")
     private @Meta NoiseSampler noise;
     

@@ -1,6 +1,5 @@
 rootProject.name = "Terra"
 
-include("common:api")
 include("common:implementation")
 
 include("common:loader:config")
@@ -14,6 +13,8 @@ fun includeImmediateChildren(dir: File, type: String) {
         include(addonDir)
     }
 }
+
+includeImmediateChildren(file("common/api"), "API")
 
 includeImmediateChildren(file("common/addons"), "addon")
 

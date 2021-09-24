@@ -7,6 +7,8 @@ import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.dynamic.Context;
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 
+import com.dfsek.paralithic.node.Statefulness;
+
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 
 
@@ -44,7 +46,7 @@ public class UserDefinedFunction implements DynamicFunction {
     }
     
     @Override
-    public boolean isStateless() {
-        return true;
+    public Statefulness statefulness() {
+        return Statefulness.STATELESS;
     }
 }

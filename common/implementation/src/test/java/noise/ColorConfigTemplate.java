@@ -11,8 +11,7 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class ColorConfigTemplate implements ConfigTemplate {
     @Value("enable")
     @Default
-    private @Meta
-    final boolean enable = false;
+    private @Meta boolean enable = false;
     @Value("colors")
     private @Meta ProbabilityCollection<@Meta Integer> colors;
     

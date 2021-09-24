@@ -3,7 +3,7 @@ package com.dfsek.terra.sponge;
 import com.google.inject.Inject;
 import org.spongepowered.api.Game;
 import org.spongepowered.plugin.PluginContainer;
-import org.spongepowered.plugin.jvm.Plugin;
+import org.spongepowered.plugin.builtin.jvm.Plugin;
 
 
 @Plugin("terra")

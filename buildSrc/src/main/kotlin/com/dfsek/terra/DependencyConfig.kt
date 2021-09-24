@@ -41,8 +41,8 @@ fun Project.configureDependencies() {
     
     if (project(":common:addons").subprojects.contains(this)) { // If this is an addon project, depend on the API.
         dependencies {
-            "compileOnly"(project(":common:api"))
-            "testImplementation"(project(":common:api"))
+            "compileOnly"(project(":common:api:core"))
+            "testImplementation"(project(":common:api:core"))
         }
     }
 }
