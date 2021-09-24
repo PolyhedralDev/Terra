@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.Sampler;
+import com.dfsek.terra.api.util.math.Sampler;
 
 
 public class SamplerCacheImpl implements com.dfsek.terra.api.world.generator.SamplerCache {

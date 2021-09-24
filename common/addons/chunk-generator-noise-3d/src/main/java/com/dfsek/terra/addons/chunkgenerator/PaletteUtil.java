@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.generator.Sampler;
+import com.dfsek.terra.api.util.math.Sampler;
 
 
 public final class PaletteUtil {

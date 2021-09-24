@@ -26,7 +26,7 @@ import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GenerationStage;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.generator.Sampler;
+import com.dfsek.terra.api.util.math.Sampler;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {

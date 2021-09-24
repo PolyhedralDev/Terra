@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.world.generator;
 
+import com.dfsek.terra.api.util.math.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

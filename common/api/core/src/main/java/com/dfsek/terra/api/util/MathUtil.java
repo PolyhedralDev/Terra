@@ -4,7 +4,7 @@ import net.jafama.FastMath;
 
 import java.util.List;
 
-import com.dfsek.terra.api.world.generator.Sampler;
+import com.dfsek.terra.api.util.math.Sampler;
 
 
 /**
