@@ -64,7 +64,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                                   
                          Errors occurred while registering commands.
                          Please report this to Terra.
-                         """, e);
+                         """.strip(), e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -108,7 +108,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                             |             message, ask the fork developer to update upstream.              |
                             |                                                                              |
                             |------------------------------------------------------------------------------|
-                            """, e);
+                            """.strip(), e);
             } else {
                 logger.warn("""
                             .------------------------------------------------------------------------------.
@@ -120,7 +120,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                             |                         more at https://papermc.io/                          |
                             |                                                                              |
                             |------------------------------------------------------------------------------|
-                            """, e);
+                            """.strip(), e);
                 
                 Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener
             }
@@ -138,6 +138,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }));
     }
     
+    @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
     private boolean doVersionCheck() {
         logger.info("Running on version {} with {}.", VersionUtil.getMinecraftVersionInfo(), VersionUtil.getSpigotVersionInfo());
         
@@ -190,10 +191,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  |                    Do not come ask us why it is not working.                     |
                                  |                                                                                  |
                                  |----------------------------------------------------------------------------------|
-                                 """);
+                                 """.strip());
                 };
                 runnable.run();
-                //noinspection deprecation
                 Bukkit.getScheduler().scheduleAsyncDelayedTask(this, runnable, 200L);
                 // Bukkit.shutdown(); // we're not *that* evil
                 setEnabled(false);
@@ -206,7 +206,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                             > I felt a great disturbance in the JVM,as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
                             > I fear something terrible has happened.
                             > - Astrash
-                            """);
+                            """.strip());
             }
         }
         return true;

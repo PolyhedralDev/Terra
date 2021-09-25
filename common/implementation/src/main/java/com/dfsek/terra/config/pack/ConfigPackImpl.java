@@ -273,79 +273,6 @@ public class ConfigPackImpl implements ConfigPack {
         return template.vanillaDecorations();
     }
     
-    @Override
-    public BiomeProvider getBiomeProviderBuilder() {
-        return seededBiomeProvider;
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> CheckedRegistry<T> getOrCreateRegistry(Type type) {
-        return (CheckedRegistry<T>) registryMap.computeIfAbsent(type, c -> {
-            OpenRegistry<T> registry = new OpenRegistryImpl<>();
-            selfLoader.registerLoader(c, registry);
-            abstractConfigLoader.registerLoader(c, registry);
-            logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
-            
-            if(type instanceof ParameterizedType param) {
-                Type base = param.getRawType();
-                if(base instanceof Class  // should always be true but we'll check anyways
-                   && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
-                    Type supplied = param.getActualTypeArguments()[0]; // Grab the supplied type
-                    if(supplied instanceof ParameterizedType suppliedParam) {
-                        Type suppliedBase = suppliedParam.getRawType();
-                        if(suppliedBase instanceof Class // should always be true but we'll check anyways
-                           && ObjectTemplate.class.isAssignableFrom((Class<?>) suppliedBase)) {
-                            Type templateType = suppliedParam.getActualTypeArguments()[0];
-                            GenericTemplateSupplierLoader<?> loader = new GenericTemplateSupplierLoader<>(
-                                    (Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
-                            selfLoader.registerLoader(templateType, loader);
-                            abstractConfigLoader.registerLoader(templateType, loader);
-                            logger.debug("Registered template loader for registry of class {}", ReflectionUtil.typeToString(templateType));
-                        }
-                    }
-                }
-            }
-            
-            return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
-        }).getRight();
-    }
-    
-    @Override
-    public List<GenerationStageProvider> getStages() {
-        return template.getStages();
-    }
-    
-    @Override
-    public Loader getLoader() {
-        return loader;
-    }
-    
-    @Override
-    public String getAuthor() {
-        return template.getAuthor();
-    }
-    
-    @Override
-    public String getVersion() {
-        return template.getVersion();
-    }
-    
-    @Override
-    public Map<String, String> getLocatable() {
-        return template.getLocatable();
-    }
-    
-    @Override
-    public RegistryFactory getRegistryFactory() {
-        return registryFactory;
-    }
-    
-    @Override
-    public ChunkGeneratorProvider getGeneratorProvider() {
-        return template.getGeneratorProvider();
-    }
-    
     @SuppressWarnings("unchecked")
     private ConfigTypeRegistry createRegistry() {
         return new ConfigTypeRegistry(main, (id, configType) -> {
@@ -353,7 +280,7 @@ public class ConfigPackImpl implements ConfigPack {
             if(registryMap.containsKey(configType.getTypeKey()
                                                  .getType())) { // Someone already registered something; we need to copy things to the
                 // new registry.
-                main.getDebugLogger().warning("Copying values from old registry for " + configType.getTypeKey());
+                logger.warn("Copying values from old registry for {}", configType.getTypeKey());
                 registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
             selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
@@ -431,6 +358,79 @@ public class ConfigPackImpl implements ConfigPack {
         main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
         logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
                     template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
+    }
+    
+    @Override
+    public BiomeProvider getBiomeProviderBuilder() {
+        return seededBiomeProvider;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> CheckedRegistry<T> getOrCreateRegistry(Type type) {
+        return (CheckedRegistry<T>) registryMap.computeIfAbsent(type, c -> {
+            OpenRegistry<T> registry = new OpenRegistryImpl<>();
+            selfLoader.registerLoader(c, registry);
+            abstractConfigLoader.registerLoader(c, registry);
+            logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
+            
+            if(type instanceof ParameterizedType param) {
+                Type base = param.getRawType();
+                if(base instanceof Class  // should always be true but we'll check anyways
+                   && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
+                    Type supplied = param.getActualTypeArguments()[0]; // Grab the supplied type
+                    if(supplied instanceof ParameterizedType suppliedParam) {
+                        Type suppliedBase = suppliedParam.getRawType();
+                        if(suppliedBase instanceof Class // should always be true but we'll check anyways
+                           && ObjectTemplate.class.isAssignableFrom((Class<?>) suppliedBase)) {
+                            Type templateType = suppliedParam.getActualTypeArguments()[0];
+                            GenericTemplateSupplierLoader<?> loader = new GenericTemplateSupplierLoader<>(
+                                    (Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
+                            selfLoader.registerLoader(templateType, loader);
+                            abstractConfigLoader.registerLoader(templateType, loader);
+                            logger.debug("Registered template loader for registry of class {}", ReflectionUtil.typeToString(templateType));
+                        }
+                    }
+                }
+            }
+            
+            return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
+        }).getRight();
+    }
+    
+    @Override
+    public List<GenerationStageProvider> getStages() {
+        return template.getStages();
+    }
+    
+    @Override
+    public Loader getLoader() {
+        return loader;
+    }
+    
+    @Override
+    public String getAuthor() {
+        return template.getAuthor();
+    }
+    
+    @Override
+    public String getVersion() {
+        return template.getVersion();
+    }
+    
+    @Override
+    public Map<String, String> getLocatable() {
+        return template.getLocatable();
+    }
+    
+    @Override
+    public RegistryFactory getRegistryFactory() {
+        return registryFactory;
+    }
+    
+    @Override
+    public ChunkGeneratorProvider getGeneratorProvider() {
+        return template.getGeneratorProvider();
     }
     
     protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {

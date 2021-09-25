@@ -13,7 +13,6 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.util.Logger;
 
 
 /**
