@@ -5,6 +5,7 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.Noise3DLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.NoiseLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
@@ -54,6 +55,7 @@ public class LocatorAddon extends TerraAddon {
                 locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
                 locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
                 locatorRegistry.register("NOISE", NoiseLocatorTemplate::new);
+                locatorRegistry.register("NOISE_3D", Noise3DLocatorTemplate::new);
             
                 locatorRegistry.register("AND", AndLocatorTemplate::new);
                 locatorRegistry.register("OR", OrLocatorTemplate::new);
