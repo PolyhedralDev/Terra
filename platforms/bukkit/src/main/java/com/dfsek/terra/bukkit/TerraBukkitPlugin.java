@@ -45,6 +45,10 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
+        if(!doVersionCheck()) {
+            return;
+        }
+        
         terraPlugin.getEventManager().callEvent(new PlatformInitializationEvent());
         
         new Metrics(this, 9017); // Set up bStats.
@@ -127,17 +131,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
     }
     
-    @Override
-    public @Nullable
-    ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-        return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
-            ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
-            worlds.put(worldName, pack);
-            return pack.getGeneratorProvider().newInstance(pack);
-        }));
-    }
-    
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
     private boolean doVersionCheck() {
         logger.info("Running on version {} with {}.", VersionUtil.getMinecraftVersionInfo(), VersionUtil.getSpigotVersionInfo());
@@ -210,5 +203,16 @@ public class TerraBukkitPlugin extends JavaPlugin {
             }
         }
         return true;
+    }
+    
+    @Override
+    public @Nullable
+    ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
+        return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
+            if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
+            ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
+            worlds.put(worldName, pack);
+            return pack.getGeneratorProvider().newInstance(pack);
+        }));
     }
 }
