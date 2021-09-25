@@ -8,6 +8,7 @@ import com.dfsek.terra.addons.feature.distributor.config.AndDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.NoiseDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.YesDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.util.Point;
 import com.dfsek.terra.addons.feature.distributor.util.PointTemplate;
 import com.dfsek.terra.api.TerraPlugin;
@@ -44,6 +45,8 @@ public class DistributorAddon extends TerraAddon {
                 distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
                 distributorRegistry.register("AND", AndDistributorTemplate::new);
                 distributorRegistry.register("OR", OrDistributorTemplate::new);
+                distributorRegistry.register("YES", YesDistributorTemplate::new);
+                distributorRegistry.register("NO", NoiseDistributorTemplate::new);
             
                 event.getPack()
                      .applyLoader(Point.class, PointTemplate::new);
