@@ -2,7 +2,6 @@ rootProject.name = "Terra"
 
 include("common:implementation")
 
-include("common:loader:config")
 include("common:loader:addon")
 
 fun includeImmediateChildren(dir: File, type: String) {

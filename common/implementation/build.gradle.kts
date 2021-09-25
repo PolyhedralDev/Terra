@@ -1,6 +1,5 @@
 dependencies {
-    "shadedApi"(project(":common:api:core"))
-    "shadedApi"(project(":common:loader:config"))
+    "shadedApi"(project(":common:api"))
     "shadedApi"(project(":common:loader:addon"))
     
     "shadedApi"("org.apache.commons:commons-rng-core:1.3")

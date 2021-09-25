@@ -21,9 +21,9 @@ import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
-import com.dfsek.terra.api.injection.annotations.Inject;
+import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 @PlayerCommand

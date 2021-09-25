@@ -2,10 +2,10 @@ package com.dfsek.terra.api.structure;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.StringIdentifiable;
+import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 

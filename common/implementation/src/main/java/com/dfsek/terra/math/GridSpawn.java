@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.dfsek.terra.api.util.PopulationUtil;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.util.FastRandom;
 
 

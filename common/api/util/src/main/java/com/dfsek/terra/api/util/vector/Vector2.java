@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.vector;
+package com.dfsek.terra.api.util.vector;
 
 import net.jafama.FastMath;
 

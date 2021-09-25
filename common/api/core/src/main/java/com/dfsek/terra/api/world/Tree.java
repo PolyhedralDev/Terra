@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Set;
 
 import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public interface Tree {

@@ -17,7 +17,7 @@ import com.dfsek.terra.addons.carver.carving.Worm;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
 

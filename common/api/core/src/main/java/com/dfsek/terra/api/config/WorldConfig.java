@@ -2,7 +2,7 @@ package com.dfsek.terra.api.config;
 
 import java.util.Map;
 
-import com.dfsek.terra.api.StringIdentifiable;
+import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

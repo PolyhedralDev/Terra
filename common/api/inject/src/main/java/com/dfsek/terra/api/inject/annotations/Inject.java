@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.injection.annotations;
+package com.dfsek.terra.api.inject.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

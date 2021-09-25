@@ -2,7 +2,7 @@ package com.dfsek.terra.api.block.entity;
 
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public interface BlockEntity extends Handle {

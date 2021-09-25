@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.world.generator;
 
+import com.dfsek.terra.api.util.math.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Random;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

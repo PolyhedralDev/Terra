@@ -18,7 +18,7 @@ import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
@@ -28,7 +28,7 @@ import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GenerationStage;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.world.generator.Sampler;
+import com.dfsek.terra.api.util.math.Sampler;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {

@@ -5,9 +5,9 @@ import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dfsek.terra.api.injection.Injector;
-import com.dfsek.terra.api.injection.annotations.Inject;
-import com.dfsek.terra.api.injection.exception.InjectionException;
+import com.dfsek.terra.api.inject.Injector;
+import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.inject.exception.InjectionException;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
 

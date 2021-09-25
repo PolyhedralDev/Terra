@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.structure;
 
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public interface StructureSpawn {

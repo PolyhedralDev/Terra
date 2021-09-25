@@ -2,8 +2,8 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.vector.Vector2;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 /**

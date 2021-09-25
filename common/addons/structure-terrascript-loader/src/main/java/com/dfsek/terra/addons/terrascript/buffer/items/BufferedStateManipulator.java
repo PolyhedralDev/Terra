@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.api.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
 

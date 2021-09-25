@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.dfsek.terra.api.StringIdentifiable;
+import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
