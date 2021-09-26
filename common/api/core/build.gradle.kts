@@ -7,5 +7,7 @@ dependencies {
     "shadedApi"("com.dfsek.tectonic:common:2.1.2")
     
     "shadedApi"("net.jafama:jafama:2.3.2")
+    
+    "shadedApi"("ca.solo-studios:strata:1.0.0")
 }
 
