@@ -11,7 +11,7 @@ import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemp
 import com.dfsek.terra.addons.feature.distributor.config.YesDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.util.Point;
 import com.dfsek.terra.addons.feature.distributor.util.PointTemplate;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -31,7 +31,7 @@ public class DistributorAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {
     };
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

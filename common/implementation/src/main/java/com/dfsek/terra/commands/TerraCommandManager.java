@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -40,13 +40,13 @@ import com.dfsek.terra.inject.InjectorImpl;
 
 public class TerraCommandManager implements CommandManager {
     private final Map<String, CommandHolder> commands = new HashMap<>();
-    private final InjectorImpl<TerraPlugin> pluginInjector;
-    private final TerraPlugin main;
+    private final InjectorImpl<Platform> pluginInjector;
+    private final Platform main;
     
-    public TerraCommandManager(TerraPlugin main) {
+    public TerraCommandManager(Platform main) {
         this.main = main;
         this.pluginInjector = new InjectorImpl<>(main);
-        pluginInjector.addExplicitTarget(TerraPlugin.class);
+        pluginInjector.addExplicitTarget(Platform.class);
     }
     
     @Override

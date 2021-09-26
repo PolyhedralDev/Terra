@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.config;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 public interface PluginConfig {
-    void load(TerraPlugin main);
+    void load(Platform main);
     
     boolean dumpDefaultConfig();
     

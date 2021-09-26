@@ -12,9 +12,9 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 @Author("Terra")
 @Version("1.0.0")
 public class InternalAddon extends TerraAddon {
-    private final AbstractTerraPlugin main;
+    private final AbstractPlatform main;
     
-    public InternalAddon(AbstractTerraPlugin main) {
+    public InternalAddon(AbstractPlatform main) {
         this.main = main;
     }
     

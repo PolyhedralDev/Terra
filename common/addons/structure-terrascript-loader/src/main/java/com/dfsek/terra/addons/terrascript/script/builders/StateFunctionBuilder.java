@@ -7,13 +7,13 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.StateFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 public class StateFunctionBuilder implements FunctionBuilder<StateFunction> {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public StateFunctionBuilder(TerraPlugin main) {
+    public StateFunctionBuilder(Platform main) {
         this.main = main;
     }
     

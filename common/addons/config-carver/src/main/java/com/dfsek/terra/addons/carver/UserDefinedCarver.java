@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 
 import com.dfsek.terra.addons.carver.carving.Carver;
 import com.dfsek.terra.addons.carver.carving.Worm;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -34,13 +34,13 @@ public class UserDefinedCarver extends Carver {
     private final Expression zRad;
     
     private final Map<Long, CarverCache> cacheMap = new ConcurrentHashMap<>();
-    private final TerraPlugin main;
+    private final Platform main;
     private double step = 2;
     private Range recalc = new ConstantRange(8, 10);
     private double recalcMagnitude = 3;
     
     public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash,
-                             int topCut, int bottomCut, CarverTemplate config, TerraPlugin main) throws ParseException {
+                             int topCut, int bottomCut, CarverTemplate config, Platform main) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;

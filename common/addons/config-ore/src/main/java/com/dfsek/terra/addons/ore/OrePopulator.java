@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.Chunk;
@@ -14,9 +14,9 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 
 
 public class OrePopulator implements GenerationStage {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public OrePopulator(TerraPlugin main) {
+    public OrePopulator(Platform main) {
         this.main = main;
     }
     

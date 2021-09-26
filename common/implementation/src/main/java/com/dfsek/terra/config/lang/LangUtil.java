@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Language;
 
@@ -12,7 +12,7 @@ import com.dfsek.terra.api.lang.Language;
 public final class LangUtil {
     private static Language language;
     
-    public static void load(String langID, TerraPlugin main) {
+    public static void load(String langID, Platform main) {
         Logger logger = main.logger();
         File file = new File(main.getDataFolder(), "lang");
         try {

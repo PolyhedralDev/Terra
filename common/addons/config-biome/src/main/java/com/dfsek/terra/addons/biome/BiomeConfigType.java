@@ -5,7 +5,7 @@ import com.dfsek.tectonic.loading.TypeLoader;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
@@ -35,7 +35,7 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
     
     @Override
-    public BiomeTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
+    public BiomeTemplate getTemplate(ConfigPack pack, Platform main) {
         return new BiomeTemplate(pack, main);
     }
     

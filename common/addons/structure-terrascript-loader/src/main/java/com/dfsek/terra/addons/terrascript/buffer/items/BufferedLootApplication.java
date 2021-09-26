@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.terrascript.buffer.items;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
@@ -15,10 +15,10 @@ import com.dfsek.terra.api.world.World;
 
 public class BufferedLootApplication implements BufferedItem {
     private final LootTable table;
-    private final TerraPlugin main;
+    private final Platform main;
     private final StructureScript structure;
     
-    public BufferedLootApplication(LootTable table, TerraPlugin main, StructureScript structure) {
+    public BufferedLootApplication(LootTable table, Platform main, StructureScript structure) {
         this.table = table;
         this.main = main;
         this.structure = structure;

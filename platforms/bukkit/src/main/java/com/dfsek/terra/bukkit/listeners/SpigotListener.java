@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 /**
@@ -18,9 +18,9 @@ import com.dfsek.terra.api.TerraPlugin;
  * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public SpigotListener(TerraPlugin main) {
+    public SpigotListener(Platform main) {
         this.main = main;
     }
     

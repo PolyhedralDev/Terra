@@ -10,7 +10,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -18,12 +18,12 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomeFunction implements Function<String> {
-    private final TerraPlugin main;
+    private final Platform main;
     private final Returnable<Number> x, y, z;
     private final Position position;
     
     
-    public BiomeFunction(TerraPlugin main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
+    public BiomeFunction(Platform main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.main = main;
         this.x = x;
         this.y = y;

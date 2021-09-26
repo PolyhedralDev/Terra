@@ -30,7 +30,7 @@ import com.dfsek.terra.addons.noise.samplers.noise.simplex.PerlinSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.SimplexSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.value.ValueCubicSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.value.ValueSampler;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -50,7 +50,7 @@ public class NoiseAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
     };
     @Inject
-    private TerraPlugin plugin;
+    private Platform plugin;
     
     @Override
     public void initialize() {

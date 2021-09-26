@@ -14,7 +14,7 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMut
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -40,7 +40,7 @@ public class BiomePipelineAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

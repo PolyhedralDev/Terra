@@ -3,7 +3,7 @@ package com.dfsek.terra.registry.config;
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.registry.OpenRegistryImpl;
@@ -12,9 +12,9 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     private final BiConsumer<String, ConfigType<?, ?>> callback;
     
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public ConfigTypeRegistry(TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
+    public ConfigTypeRegistry(Platform main, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
         this.main = main;

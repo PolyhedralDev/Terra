@@ -5,7 +5,7 @@ import org.bukkit.TreeType;
 import java.util.Locale;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.collection.MaterialSet;
@@ -17,9 +17,9 @@ import com.dfsek.terra.api.world.World;
 public class BukkitTree implements Tree {
     private final TreeType delegate;
     private final MaterialSet spawnable;
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public BukkitTree(TreeType delegate, TerraPlugin main) {
+    public BukkitTree(TreeType delegate, Platform main) {
         this.delegate = delegate;
         this.main = main;
         this.spawnable = getSpawnable(delegate);

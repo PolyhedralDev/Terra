@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -113,7 +113,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private @Meta Map<String, @Meta Integer> colors = new HashMap<>();
     // Plain ol' map, so platforms can decide what to do with colors (if anything).
     
-    public BiomeTemplate(ConfigPack pack, TerraPlugin main) {
+    public BiomeTemplate(ConfigPack pack, Platform main) {
         this.pack = pack;
     }
     

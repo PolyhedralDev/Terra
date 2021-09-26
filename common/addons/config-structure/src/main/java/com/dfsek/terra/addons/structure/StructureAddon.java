@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.structure;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -16,7 +16,7 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 @Author("Terra")
 public class StructureAddon extends TerraAddon {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

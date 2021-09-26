@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import com.dfsek.terra.addons.biome.command.biome.arg.BiomeArgumentParser;
 import com.dfsek.terra.addons.biome.command.biome.tab.BiomeTabCompleter;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
@@ -51,7 +51,7 @@ public class BiomeLocateCommand implements CommandTemplate {
     private boolean teleport;
     
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void execute(CommandSender sender) {

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.dfsek.terra.addons.carver.carving.Worm;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -25,7 +25,7 @@ public class CarverCache {
     private final LoadingCache<Long, List<Worm.WormPoint>> cache;
     private final UserDefinedCarver carver;
     
-    public CarverCache(World w, TerraPlugin main, UserDefinedCarver carver) {
+    public CarverCache(World w, Platform main, UserDefinedCarver carver) {
         this.carver = carver;
         cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getCarverCacheSize())
                             .build(new CacheLoader<>() {

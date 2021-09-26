@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;
@@ -34,9 +34,9 @@ public class CommonListener implements Listener {
                                   .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
                                   .add(TreeType.SWAMP, "SWAMP_OAK"))
             .addTransform(TreeType::toString).build();
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public CommonListener(TerraPlugin main) {
+    public CommonListener(Platform main) {
         this.main = main;
     }
     

@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
@@ -12,9 +12,9 @@ import com.dfsek.terra.api.world.World;
 public class BufferedEntity implements BufferedItem {
     
     private final EntityType type;
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public BufferedEntity(EntityType type, TerraPlugin main) {
+    public BufferedEntity(EntityType type, Platform main) {
         this.type = type;
         this.main = main;
     }

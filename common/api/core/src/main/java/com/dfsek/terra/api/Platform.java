@@ -19,7 +19,7 @@ import com.dfsek.terra.api.util.Logger;
 /**
  * Represents a Terra mod/plugin instance.
  */
-public interface TerraPlugin extends LoaderRegistrar {
+public interface Platform extends LoaderRegistrar {
     Logger logger();
     
     boolean reload();

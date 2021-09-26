@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.WorldConfig;
@@ -22,9 +22,9 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 public class CavePopulator implements GenerationStage, Chunkified {
     private static final Map<BlockType, BlockState> shiftStorage = new HashMap<>();
     // Persist BlockData created for shifts, to avoid re-calculating each time.
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public CavePopulator(TerraPlugin main) {
+    public CavePopulator(Platform main) {
         this.main = main;
     }
     

@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.feature.locator.locators;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
@@ -13,7 +13,7 @@ public class SurfaceLocator implements Locator {
     
     private final BlockState air;
     
-    public SurfaceLocator(Range search, TerraPlugin main) {
+    public SurfaceLocator(Range search, Platform main) {
         this.search = search;
         this.air = main.getWorldHandle().air();
     }

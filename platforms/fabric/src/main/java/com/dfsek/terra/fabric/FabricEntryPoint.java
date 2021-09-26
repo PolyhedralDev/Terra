@@ -20,9 +20,9 @@ public class FabricEntryPoint implements ModInitializer {
     public static final PopulatorFeature POPULATOR_FEATURE = new PopulatorFeature(DefaultFeatureConfig.CODEC);
     public static final ConfiguredFeature<?, ?> POPULATOR_CONFIGURED_FEATURE = POPULATOR_FEATURE.configure(FeatureConfig.DEFAULT).decorate(
             Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
-    private static final TerraPluginImpl TERRA_PLUGIN = new TerraPluginImpl();
+    private static final PlatformImpl TERRA_PLUGIN = new PlatformImpl();
     
-    public static TerraPluginImpl getTerraPlugin() {
+    public static PlatformImpl getTerraPlugin() {
         return TERRA_PLUGIN;
     }
     

@@ -6,13 +6,13 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.BiomeFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 public class BiomeFunctionBuilder implements FunctionBuilder<BiomeFunction> {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public BiomeFunctionBuilder(TerraPlugin main) {
+    public BiomeFunctionBuilder(Platform main) {
         this.main = main;
     }
     

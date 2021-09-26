@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
@@ -20,9 +20,9 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 
 
 public class StructurePopulator implements GenerationStage, Chunkified {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public StructurePopulator(TerraPlugin main) {
+    public StructurePopulator(Platform main) {
         this.main = main;
     }
     

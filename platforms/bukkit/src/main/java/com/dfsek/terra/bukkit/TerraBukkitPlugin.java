@@ -42,7 +42,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         else BUKKIT_VERSION = BukkitVersion.UNKNOWN;
     }
     
-    private final TerraPluginImpl terraPlugin = new TerraPluginImpl(this);
+    private final PlatformImpl terraPlugin = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     

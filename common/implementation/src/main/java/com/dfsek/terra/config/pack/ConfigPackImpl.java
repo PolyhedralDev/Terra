@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -85,7 +85,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
-    private final TerraPlugin main;
+    private final Platform main;
     private final Loader loader;
     
     private final Configuration configuration;
@@ -101,7 +101,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
-    public ConfigPackImpl(File folder, TerraPlugin main) throws ConfigException {
+    public ConfigPackImpl(File folder, Platform main) throws ConfigException {
         try {
             this.loader = new FolderLoader(folder.toPath());
             this.main = main;
@@ -144,7 +144,7 @@ public class ConfigPackImpl implements ConfigPack {
         toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
     
-    public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
+    public ConfigPackImpl(ZipFile file, Platform main) throws ConfigException {
         try {
             this.loader = new ZIPLoader(file);
             this.main = main;
@@ -361,7 +361,7 @@ public class ConfigPackImpl implements ConfigPack {
         });
     }
     
-    private void checkDeadEntries(TerraPlugin main) {
+    private void checkDeadEntries(Platform main) {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries()
                                                                                    .forEach((id, value) -> main.getDebugLogger()
                                                                                                                .warning("Dead entry in '" +
@@ -372,7 +372,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void load(long start, TerraPlugin main) throws ConfigException {
+    private void load(long start, Platform main) throws ConfigException {
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
         
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {

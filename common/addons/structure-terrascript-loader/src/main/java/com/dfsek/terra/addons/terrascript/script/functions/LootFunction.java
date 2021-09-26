@@ -12,7 +12,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -25,11 +25,11 @@ public class LootFunction implements Function<Void> {
     private final Returnable<String> data;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final TerraPlugin main;
+    private final Platform main;
     private final StructureScript script;
     
     public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z,
-                        Returnable<String> data, TerraPlugin main, Position position, StructureScript script) {
+                        Returnable<String> data, Platform main, Position position, StructureScript script) {
         this.registry = registry;
         this.position = position;
         this.data = data;

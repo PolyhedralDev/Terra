@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.api.inventory.ItemStack;
 
@@ -27,7 +27,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
      *
      * @throws ParseException if malformed JSON is passed.
      */
-    public LootTableImpl(String json, TerraPlugin main) throws ParseException {
+    public LootTableImpl(String json, Platform main) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         Object tableJSON = jsonParser.parse(json);
         JSONArray poolArray = (JSONArray) ((JSONObject) tableJSON).get("pools");

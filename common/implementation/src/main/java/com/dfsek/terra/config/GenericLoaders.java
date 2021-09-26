@@ -4,7 +4,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 
 import java.util.LinkedHashMap;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -19,9 +19,9 @@ import com.dfsek.terra.config.loaders.RangeLoader;
 
 
 public class GenericLoaders implements LoaderRegistrar {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public GenericLoaders(TerraPlugin main) {
+    public GenericLoaders(Platform main) {
         this.main = main;
     }
     

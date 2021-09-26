@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -25,7 +25,7 @@ import com.dfsek.terra.api.structure.Structure;
 @Version("1.0.0")
 public class TerraScriptAddon extends TerraAddon {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

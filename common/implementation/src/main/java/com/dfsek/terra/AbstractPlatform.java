@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
@@ -44,11 +44,11 @@ import com.dfsek.terra.util.logging.DebugLogger;
 
 
 /**
- * Skeleton implementation of {@link TerraPlugin}
+ * Skeleton implementation of {@link Platform}
  * <p>
  * Implementations must invoke {@link #load()} in their constructors.
  */
-public abstract class AbstractTerraPlugin implements TerraPlugin {
+public abstract class AbstractPlatform implements Platform {
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl(this);
     

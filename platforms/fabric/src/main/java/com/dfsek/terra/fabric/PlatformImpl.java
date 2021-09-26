@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import java.io.File;
 import java.util.Optional;
 
-import com.dfsek.terra.AbstractTerraPlugin;
+import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
@@ -22,13 +22,13 @@ import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.util.ProtoBiome;
 
 
-public class TerraPluginImpl extends AbstractTerraPlugin {
+public class PlatformImpl extends AbstractPlatform {
     
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
     
-    public TerraPluginImpl() {
+    public PlatformImpl() {
         load();
     }
     

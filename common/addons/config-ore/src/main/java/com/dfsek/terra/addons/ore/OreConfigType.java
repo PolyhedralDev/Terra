@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.ore;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.ore.ores.Ore;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
@@ -22,7 +22,7 @@ public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     }
     
     @Override
-    public OreTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
+    public OreTemplate getTemplate(ConfigPack pack, Platform main) {
         return new OreTemplate();
     }
     

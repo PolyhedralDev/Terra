@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -29,7 +29,7 @@ import com.dfsek.terra.api.util.vector.Vector3;
 @Command(arguments = @Argument("id"), usage = "/terra structure export <ID>")
 public class StructureExportCommand implements CommandTemplate {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @ArgumentTarget("id")
     private String id;

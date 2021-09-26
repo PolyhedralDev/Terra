@@ -14,7 +14,7 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 
 import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -76,7 +76,7 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     private int maxRecursion = 1000;
     
     @Override
-    public void load(TerraPlugin main) {
+    public void load(Platform main) {
         Logger logger = main.logger();
         logger.info("Loading config values");
         try(FileInputStream file = new FileInputStream(new File(main.getDataFolder(), "config.yml"))) {

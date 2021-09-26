@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
@@ -23,9 +23,9 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
     private final Map<Type, List<EventContextImpl<?>>> contextMap = new HashMap<>();
     
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public FunctionalEventHandlerImpl(TerraPlugin main) {
+    public FunctionalEventHandlerImpl(Platform main) {
         this.main = main;
     }
     

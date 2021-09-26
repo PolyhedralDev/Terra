@@ -19,7 +19,7 @@ import com.dfsek.terra.addons.feature.locator.config.pattern.OrPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.SingleBlockMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.SolidMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -42,7 +42,7 @@ public class LocatorAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<Pattern>>> PATTERN_TOKEN = new TypeKey<>() {
     };
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

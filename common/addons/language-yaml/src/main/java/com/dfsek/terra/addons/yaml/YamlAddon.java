@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.yaml;
 
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -17,7 +17,7 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @Author("Terra")
 public class YamlAddon extends TerraAddon {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

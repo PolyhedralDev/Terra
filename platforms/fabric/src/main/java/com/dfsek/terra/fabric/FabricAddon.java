@@ -33,10 +33,10 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 @Author("Terra")
 @Version("1.0.0")
 public final class FabricAddon extends TerraAddon {
-    private final TerraPluginImpl terraFabricPlugin;
+    private final PlatformImpl terraFabricPlugin;
     private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
-    public FabricAddon(TerraPluginImpl terraFabricPlugin) {
+    public FabricAddon(PlatformImpl terraFabricPlugin) {
         this.terraFabricPlugin = terraFabricPlugin;
     }
     

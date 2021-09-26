@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
@@ -18,10 +18,10 @@ public class EnchantFunction implements LootFunction {
     private final int min;
     private final int max;
     private final JSONArray disabled;
-    private final TerraPlugin main;
+    private final Platform main;
     
     
-    public EnchantFunction(int min, int max, JSONArray disabled, TerraPlugin main) {
+    public EnchantFunction(int min, int max, JSONArray disabled, Platform main) {
         this.max = max;
         this.min = min;
         this.disabled = disabled;

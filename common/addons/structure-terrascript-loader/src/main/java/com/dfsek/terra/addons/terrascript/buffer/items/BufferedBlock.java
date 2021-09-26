@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
@@ -11,10 +11,10 @@ import com.dfsek.terra.api.world.World;
 public class BufferedBlock implements BufferedItem {
     private final BlockState data;
     private final boolean overwrite;
-    private final TerraPlugin main;
+    private final Platform main;
     private final boolean waterlog;
     
-    public BufferedBlock(BlockState data, boolean overwrite, TerraPlugin main, boolean waterlog) {
+    public BufferedBlock(BlockState data, boolean overwrite, Platform main, boolean waterlog) {
         this.data = data;
         this.overwrite = overwrite;
         this.main = main;

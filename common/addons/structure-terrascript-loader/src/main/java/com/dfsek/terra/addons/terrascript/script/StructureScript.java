@@ -36,7 +36,7 @@ import com.dfsek.terra.addons.terrascript.script.builders.UnaryBooleanFunctionBu
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.ZeroArgFunctionBuilder;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
@@ -52,10 +52,10 @@ public class StructureScript implements Structure {
     private final Block block;
     private final String id;
     private final Cache<Vector3, StructureBuffer> cache;
-    private final TerraPlugin main;
+    private final Platform main;
     private String tempID;
     
-    public StructureScript(InputStream inputStream, TerraPlugin main, Registry<Structure> registry, Registry<LootTable> lootRegistry,
+    public StructureScript(InputStream inputStream, Platform main, Registry<Structure> registry, Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder<?>> functionRegistry) throws ParseException {
         Parser parser;
         try {

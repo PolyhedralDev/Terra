@@ -12,7 +12,7 @@ import com.dfsek.terra.addons.structure.structures.loot.functions.AmountFunction
 import com.dfsek.terra.addons.structure.structures.loot.functions.DamageFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.EnchantFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.LootFunction;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.ItemStack;
 
@@ -30,7 +30,7 @@ public class Entry {
      *
      * @param entry The JSON Object to instantiate from.
      */
-    public Entry(JSONObject entry, TerraPlugin main) {
+    public Entry(JSONObject entry, Platform main) {
         String id = entry.get("name").toString();
         this.item = main.getItemHandle().createItem(id);
         

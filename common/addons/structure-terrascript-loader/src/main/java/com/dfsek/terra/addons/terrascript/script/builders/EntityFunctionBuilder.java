@@ -7,13 +7,13 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.EntityFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 public class EntityFunctionBuilder implements FunctionBuilder<EntityFunction> {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public EntityFunctionBuilder(TerraPlugin main) {
+    public EntityFunctionBuilder(Platform main) {
         this.main = main;
     }
     

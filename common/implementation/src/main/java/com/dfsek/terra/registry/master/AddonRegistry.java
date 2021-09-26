@@ -11,7 +11,7 @@ import com.dfsek.terra.addon.AddonClassLoader;
 import com.dfsek.terra.addon.AddonPool;
 import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.inject.exception.InjectionException;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
@@ -20,13 +20,13 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 
 
 public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public AddonRegistry(TerraPlugin main) {
+    public AddonRegistry(Platform main) {
         this.main = main;
     }
     
-    public AddonRegistry(TerraAddon addon, TerraPlugin main) {
+    public AddonRegistry(TerraAddon addon, Platform main) {
         this.main = main;
         register(addon);
     }
@@ -49,12 +49,12 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     }
     
     public boolean loadAll() {
-        return loadAll(TerraPlugin.class.getClassLoader());
+        return loadAll(Platform.class.getClassLoader());
     }
     
     public boolean loadAll(ClassLoader parent) {
-        InjectorImpl<TerraPlugin> pluginInjector = new InjectorImpl<>(main);
-        pluginInjector.addExplicitTarget(TerraPlugin.class);
+        InjectorImpl<Platform> pluginInjector = new InjectorImpl<>(main);
+        pluginInjector.addExplicitTarget(Platform.class);
         
         boolean valid = true;
         File addonsFolder = new File(main.getDataFolder(), "addons");

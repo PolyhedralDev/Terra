@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.dfsek.terra.addons.structure.command.structure.argument.ScriptArgumentParser;
 import com.dfsek.terra.addons.structure.command.structure.completer.RotationCompleter;
 import com.dfsek.terra.addons.structure.command.structure.completer.ScriptCompleter;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
@@ -54,7 +54,7 @@ public class StructureLoadCommand implements CommandTemplate {
     private Structure script;
     
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void execute(CommandSender sender) {

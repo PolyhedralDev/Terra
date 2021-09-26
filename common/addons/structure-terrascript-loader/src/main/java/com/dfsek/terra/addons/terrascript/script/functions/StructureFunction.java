@@ -12,7 +12,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.rotation.Rotation;
@@ -26,11 +26,11 @@ public class StructureFunction implements Function<Boolean> {
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final TerraPlugin main;
+    private final Platform main;
     private final List<Returnable<String>> rotations;
     
     public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id,
-                             List<Returnable<String>> rotations, Registry<Structure> registry, Position position, TerraPlugin main) {
+                             List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform main) {
         this.registry = registry;
         this.id = id;
         this.position = position;

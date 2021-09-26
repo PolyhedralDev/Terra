@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderLoader;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolderLoader;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -23,7 +23,7 @@ import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 @Version("1.0.0")
 public class NoiseChunkGenerator3DAddon extends TerraAddon {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void initialize() {

@@ -5,7 +5,7 @@ import net.jafama.FastMath;
 import java.util.Map;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
@@ -17,7 +17,7 @@ import com.dfsek.terra.api.world.Chunk;
 public class VanillaOre extends Ore {
     private final Range sizeRange;
     
-    public VanillaOre(BlockState material, MaterialSet replaceable, boolean applyGravity, Range size, TerraPlugin main,
+    public VanillaOre(BlockState material, MaterialSet replaceable, boolean applyGravity, Range size, Platform main,
                       Map<BlockType, BlockState> materials) {
         super(material, replaceable, applyGravity, main, materials);
         this.sizeRange = size;

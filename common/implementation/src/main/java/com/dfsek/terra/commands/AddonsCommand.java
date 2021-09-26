@@ -1,6 +1,6 @@
 package com.dfsek.terra.commands;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.entity.CommandSender;
@@ -12,7 +12,7 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 )
 public class AddonsCommand implements CommandTemplate {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @Override
     public void execute(CommandSender sender) {

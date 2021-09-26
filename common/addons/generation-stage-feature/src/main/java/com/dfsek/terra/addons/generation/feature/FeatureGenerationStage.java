@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.generation.feature;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.PopulationUtil;
@@ -12,9 +12,9 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 
 
 public class FeatureGenerationStage implements GenerationStage {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public FeatureGenerationStage(TerraPlugin main) {
+    public FeatureGenerationStage(Platform main) {
         this.main = main;
     }
     

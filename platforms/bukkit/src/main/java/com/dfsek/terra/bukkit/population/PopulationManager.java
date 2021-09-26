@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.bukkit.TerraPluginImpl;
+import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.util.FastRandom;
@@ -26,9 +26,9 @@ import com.dfsek.terra.util.FastRandom;
 public class PopulationManager extends BlockPopulator {
     private final ChunkGenerator generator;
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public PopulationManager(ChunkGenerator generator, TerraPlugin main) {
+    public PopulationManager(ChunkGenerator generator, Platform main) {
         this.generator = generator;
         this.main = main;
     }
@@ -82,7 +82,7 @@ public class PopulationManager extends BlockPopulator {
             needsPop.add(new ChunkCoordinate(chunk));
             int x = chunk.getX();
             int z = chunk.getZ();
-            if(((TerraPluginImpl) main).getPlugin().isEnabled()) {
+            if(((PlatformImpl) main).getPlugin().isEnabled()) {
                 for(int xi = -1; xi <= 1; xi++) {
                     for(int zi = -1; zi <= 1; zi++) {
                         if(xi == 0 && zi == 0) continue;

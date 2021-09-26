@@ -8,16 +8,16 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.StructureFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
 
 
 public class StructureFunctionBuilder implements FunctionBuilder<StructureFunction> {
     private final Registry<Structure> registry;
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public StructureFunctionBuilder(Registry<Structure> registry, TerraPlugin main) {
+    public StructureFunctionBuilder(Registry<Structure> registry, Platform main) {
         this.registry = registry;
         this.main = main;
     }

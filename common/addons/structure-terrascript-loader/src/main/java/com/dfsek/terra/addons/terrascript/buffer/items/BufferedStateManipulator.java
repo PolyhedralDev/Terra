@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -8,10 +8,10 @@ import com.dfsek.terra.api.world.World;
 
 
 public class BufferedStateManipulator implements BufferedItem {
-    private final TerraPlugin main;
+    private final Platform main;
     private final String data;
     
-    public BufferedStateManipulator(TerraPlugin main, String state) {
+    public BufferedStateManipulator(Platform main, String state) {
         this.main = main;
         this.data = state;
     }

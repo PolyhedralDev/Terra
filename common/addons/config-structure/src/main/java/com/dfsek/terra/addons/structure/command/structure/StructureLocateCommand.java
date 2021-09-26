@@ -5,7 +5,7 @@ import java.util.Locale;
 import com.dfsek.terra.addons.structure.command.AsyncStructureFinder;
 import com.dfsek.terra.addons.structure.command.structure.argument.StructureArgumentParser;
 import com.dfsek.terra.addons.structure.command.structure.completer.StructureCompleter;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
@@ -42,7 +42,7 @@ import com.dfsek.terra.api.util.vector.Vector3;
 ))
 public class StructureLocateCommand implements CommandTemplate {
     @Inject
-    private TerraPlugin main;
+    private Platform main;
     
     @ArgumentTarget("structure")
     private ConfiguredStructure structure;

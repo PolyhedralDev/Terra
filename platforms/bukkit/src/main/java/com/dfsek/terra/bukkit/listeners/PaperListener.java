@@ -4,13 +4,13 @@ import io.papermc.paper.event.world.StructureLocateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 public class PaperListener implements Listener {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public PaperListener(TerraPlugin main) {
+    public PaperListener(Platform main) {
         this.main = main;
     }
     

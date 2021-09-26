@@ -9,13 +9,13 @@ import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.BlockFunction;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 
 
 public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
-    private final TerraPlugin main;
+    private final Platform main;
     
-    public BlockFunctionBuilder(TerraPlugin main) {
+    public BlockFunctionBuilder(Platform main) {
         this.main = main;
     }
     

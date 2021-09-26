@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.dfsek.terra.AbstractTerraPlugin;
+import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -22,14 +22,14 @@ import com.dfsek.terra.bukkit.world.BukkitBiome;
 import com.dfsek.terra.util.logging.JavaLogger;
 
 
-public class TerraPluginImpl extends AbstractTerraPlugin {
+public class PlatformImpl extends AbstractPlatform {
     private final ItemHandle itemHandle = new BukkitItemHandle();
     
     private final WorldHandle handle = new BukkitWorldHandle();
     
     private final TerraBukkitPlugin plugin;
     
-    public TerraPluginImpl(TerraBukkitPlugin plugin) {
+    public PlatformImpl(TerraBukkitPlugin plugin) {
         this.plugin = plugin;
         load();
     }

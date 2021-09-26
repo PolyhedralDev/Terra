@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
@@ -30,7 +30,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     private final ChunkGenerator delegate;
     
-    private final TerraPlugin main;
+    private final Platform main;
     
     private boolean needsLoad = true;
     

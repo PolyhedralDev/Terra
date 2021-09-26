@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
@@ -26,7 +26,7 @@ public class Pool {
      *
      * @param pool The JSON Object to instantiate from.
      */
-    public Pool(JSONObject pool, TerraPlugin main) {
+    public Pool(JSONObject pool, Platform main) {
         entries = new ProbabilityCollection<>();
         Object amount = pool.get("rolls");
         if(amount instanceof Long) {
