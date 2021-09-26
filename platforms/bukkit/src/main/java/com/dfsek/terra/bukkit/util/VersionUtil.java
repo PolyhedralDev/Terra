@@ -40,10 +40,6 @@ public final class VersionUtil {
         private final boolean spigot;
         private final boolean paper;
         private final boolean mohist;
-        private final boolean airplane;
-        private final boolean tuinity;
-        private final boolean purpur;
-        private final boolean yatopia;
         
         
         public SpigotVersionInfo() {
@@ -52,33 +48,6 @@ public final class VersionUtil {
             paper = PaperLib.isPaper();
             spigot = PaperLib.isSpigot();
             
-            boolean isTuinity = false;
-            try {
-                Class.forName("com.tuinity.tuinity.config.TuinityConfig");
-                isTuinity = true;
-            } catch(ClassNotFoundException ignored) { }
-            this.tuinity = isTuinity;
-            
-            boolean isAirplane = false;
-            try {
-                Class.forName("gg.airplane.AirplaneConfig");
-                isAirplane = true;
-            } catch(ClassNotFoundException ignored) { }
-            this.airplane = isAirplane;
-            
-            boolean isPurpur = false;
-            try {
-                Class.forName("net.pl3x.purpur.PurpurConfig");
-                isPurpur = true;
-            } catch(ClassNotFoundException ignored) { }
-            this.purpur = isPurpur;
-            
-            boolean isYatopia = false;
-            try {
-                Class.forName("org.yatopiamc.yatopia.server.YatopiaConfig");
-                isYatopia = true;
-            } catch(ClassNotFoundException ignored) { }
-            this.yatopia = isYatopia;
             
             boolean isMohist = false;
             try {
@@ -95,14 +64,6 @@ public final class VersionUtil {
         public String toString() {
             if(mohist)
                 return "Mohist...";
-            else if(yatopia)
-                return "Yaptopia";
-            else if(purpur)
-                return "Purpur";
-            else if(tuinity)
-                return "Tuinity";
-            else if(airplane)
-                return "Airplane";
             else if(paper)
                 return "Paper";
             else if(spigot)
@@ -110,11 +71,7 @@ public final class VersionUtil {
             else
                 return "Craftbukkit";
         }
-        
-        public boolean isAirplane() {
-            return airplane;
-        }
-        
+    
         public boolean isPaper() {
             return paper;
         }
@@ -122,21 +79,9 @@ public final class VersionUtil {
         public boolean isMohist() {
             return mohist;
         }
-        
-        public boolean isPurpur() {
-            return purpur;
-        }
-        
+    
         public boolean isSpigot() {
             return spigot;
-        }
-        
-        public boolean isTuinity() {
-            return tuinity;
-        }
-        
-        public boolean isYatopia() {
-            return yatopia;
         }
     }
     

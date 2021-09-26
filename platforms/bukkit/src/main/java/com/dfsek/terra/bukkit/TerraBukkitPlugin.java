@@ -139,10 +139,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
             logger.error("Terra does not work on version 1.16.5 at the moment.");
         
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
-            logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER JAR. PLEASE UPGRADE TO PAPER SPIGOT.");
-        
-        if(VersionUtil.getSpigotVersionInfo().isYatopia())
-            logger.warn("Yatopia is a highly unstable fork of spigot. You may experience various issues with it.");
+            logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER JAR. PLEASE UPGRADE TO PAPER.");
         
         if(VersionUtil.getSpigotVersionInfo().isMohist()) {
             if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {
