@@ -135,9 +135,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
     private boolean doVersionCheck() {
         logger.info("Running on version {} with {}.", VersionUtil.getMinecraftVersionInfo(), VersionUtil.getSpigotVersionInfo());
         
-        if(VersionUtil.getMinecraftVersionInfo().getMinor() < 17)
-            logger.error("Terra does not work on version 1.16.5 at the moment.");
-        
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
             logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER JAR. PLEASE UPGRADE TO PAPER.");
         
