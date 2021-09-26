@@ -136,7 +136,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         logger.info("Running on Minecraft version {} with server implementation {}.", VersionUtil.getMinecraftVersionInfo(), Bukkit.getServer().getName());
         
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
-            logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER JAR. PLEASE UPGRADE TO PAPER.");
+            logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER. PLEASE UPGRADE TO PAPER.");
         
         if(VersionUtil.getSpigotVersionInfo().isMohist()) {
             if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {

@@ -59,18 +59,6 @@ public final class VersionUtil {
             
             logger.debug("Spigot version info parsed successfully.");
         }
-        
-        @Override
-        public String toString() {
-            if(mohist)
-                return "Mohist...";
-            else if(paper)
-                return "Paper";
-            else if(spigot)
-                return "Spigot";
-            else
-                return "Craftbukkit";
-        }
     
         public boolean isPaper() {
             return paper;
