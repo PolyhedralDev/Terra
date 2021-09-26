@@ -39,7 +39,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
         T obj = get((String) o);
         StringBuilder keys = new StringBuilder("[");
         
-        objects.keySet().forEach(key -> keys.append(key + ", "));
+        objects.keySet().forEach(key -> keys.append(key).append(", "));
         
         if(obj == null)
             throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +

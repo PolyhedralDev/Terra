@@ -67,8 +67,8 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     }
     
     public boolean containsValue(double value) {
-        for(int i = 0; i < this.table.length; ++i) {
-            for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
+        for(Entry entry : this.table) {
+            for(Entry e = entry; e != null; e = e.next) {
                 if(value == e.value) {
                     return true;
                 }
@@ -152,7 +152,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     }
     
     public long memoryEstimate(int ptrsize) {
-        return (long) ptrsize * (long) (this.capMinus1 + this.size + 1) + (long) (this.size * 64 / 4);
+        return (long) ptrsize * (long) (this.capMinus1 + this.size + 1) + (this.size * 64L / 4);
     }
     
     public HashMapDoubleDouble.Iterator iterator() {

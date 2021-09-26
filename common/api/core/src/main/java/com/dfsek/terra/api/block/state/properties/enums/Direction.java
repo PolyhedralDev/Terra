@@ -28,32 +28,21 @@ public enum Direction {
     }
     
     public Direction rotate(Rotation rotation) {
-        switch(this) {
-            case UP:
-            case DOWN:
-                return this;
-            default:
-                return rotations[(this.rotation + rotation.getDegrees() / 90) % 4];
-        }
+        return switch(this) {
+            case UP, DOWN -> this;
+            default -> rotations[(this.rotation + rotation.getDegrees() / 90) % 4];
+        };
     }
     
     public Direction opposite() {
-        switch(this) {
-            case DOWN:
-                return UP;
-            case UP:
-                return DOWN;
-            case EAST:
-                return WEST;
-            case WEST:
-                return EAST;
-            case NORTH:
-                return SOUTH;
-            case SOUTH:
-                return NORTH;
-        }
-        
-        throw new IllegalStateException();
+        return switch(this) {
+            case DOWN -> UP;
+            case UP -> DOWN;
+            case EAST -> WEST;
+            case WEST -> EAST;
+            case NORTH -> SOUTH;
+            case SOUTH -> NORTH;
+        };
     }
     
     public int getModX() {

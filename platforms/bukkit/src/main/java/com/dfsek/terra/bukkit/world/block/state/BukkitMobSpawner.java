@@ -98,32 +98,15 @@ public class BukkitMobSpawner extends BukkitBlockEntity implements MobSpawner {
     public void applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
-                case "type":
-                    setSpawnedType(new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(v.toUpperCase())));
-                    return;
-                case "delay":
-                    setDelay(Integer.parseInt(v));
-                    return;
-                case "min_delay":
-                    setMinSpawnDelay(Integer.parseInt(v));
-                    return;
-                case "max_delay":
-                    setMaxSpawnDelay(Integer.parseInt(v));
-                    return;
-                case "spawn_count":
-                    setSpawnCount(Integer.parseInt(v));
-                    return;
-                case "spawn_range":
-                    setSpawnRange(Integer.parseInt(v));
-                    return;
-                case "max_nearby":
-                    setMaxNearbyEntities(Integer.parseInt(v));
-                    return;
-                case "required_player_range":
-                    setRequiredPlayerRange(Integer.parseInt(v));
-                    return;
-                default:
-                    throw new IllegalArgumentException("Invalid property: " + k);
+                case "type" -> setSpawnedType(new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(v.toUpperCase())));
+                case "delay" -> setDelay(Integer.parseInt(v));
+                case "min_delay" -> setMinSpawnDelay(Integer.parseInt(v));
+                case "max_delay" -> setMaxSpawnDelay(Integer.parseInt(v));
+                case "spawn_count" -> setSpawnCount(Integer.parseInt(v));
+                case "spawn_range" -> setSpawnRange(Integer.parseInt(v));
+                case "max_nearby" -> setMaxNearbyEntities(Integer.parseInt(v));
+                case "required_player_range" -> setRequiredPlayerRange(Integer.parseInt(v));
+                default -> throw new IllegalArgumentException("Invalid property: " + k);
             }
         });
     }

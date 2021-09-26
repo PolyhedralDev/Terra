@@ -16,33 +16,22 @@ public enum Rotation {
     }
     
     public static Rotation fromDegrees(int deg) {
-        switch(FastMath.floorMod(deg, 360)) {
-            case 0:
-                return Rotation.NONE;
-            case 90:
-                return Rotation.CW_90;
-            case 180:
-                return Rotation.CW_180;
-            case 270:
-                return Rotation.CCW_90;
-            default:
-                throw new IllegalArgumentException();
-        }
+        return switch(FastMath.floorMod(deg, 360)) {
+            case 0 -> Rotation.NONE;
+            case 90 -> Rotation.CW_90;
+            case 180 -> Rotation.CW_180;
+            case 270 -> Rotation.CCW_90;
+            default -> throw new IllegalArgumentException();
+        };
     }
     
     public Rotation inverse() {
-        switch(this) {
-            case NONE:
-                return NONE;
-            case CCW_90:
-                return CW_90;
-            case CW_90:
-                return CCW_90;
-            case CW_180:
-                return CW_180;
-            default:
-                throw new IllegalArgumentException();
-        }
+        return switch(this) {
+            case NONE -> NONE;
+            case CCW_90 -> CW_90;
+            case CW_90 -> CCW_90;
+            case CW_180 -> CW_180;
+        };
     }
     
     public Rotation rotate(Rotation rotation) {

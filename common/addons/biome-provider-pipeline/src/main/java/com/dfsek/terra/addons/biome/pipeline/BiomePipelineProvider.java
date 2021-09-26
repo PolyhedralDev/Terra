@@ -27,7 +27,7 @@ public class BiomePipelineProvider implements BiomeProvider {
         holderCache = CacheBuilder.newBuilder()
                                   .maximumSize(main == null ? 32 : main.getTerraConfig().getProviderCache())
                                   .build(
-                                          new CacheLoader<SeededVector, BiomeHolder>() {
+                                          new CacheLoader<>() {
                                               @Override
                                               public BiomeHolder load(@NotNull SeededVector key) {
                                                   return pipeline.getBiomes(key.x, key.z, key.seed);

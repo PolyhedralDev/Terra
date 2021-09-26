@@ -27,21 +27,16 @@ public class BukkitTree implements Tree {
     
     private MaterialSet getSpawnable(TreeType type) {
         WorldHandle handle = main.getWorldHandle();
-        switch(type) {
-            case CRIMSON_FUNGUS:
-                return MaterialSet.get(handle.createBlockData("minecraft:crimson_nylium"));
-            case WARPED_FUNGUS:
-                return MaterialSet.get(handle.createBlockData("minecraft:warped_nylium"));
-            case BROWN_MUSHROOM:
-            case RED_MUSHROOM:
-                return MaterialSet.get(handle.createBlockData("minecraft:mycelium"), handle.createBlockData("minecraft:grass_block"),
+        return switch(type) {
+            case CRIMSON_FUNGUS -> MaterialSet.get(handle.createBlockData("minecraft:crimson_nylium"));
+            case WARPED_FUNGUS -> MaterialSet.get(handle.createBlockData("minecraft:warped_nylium"));
+            case BROWN_MUSHROOM, RED_MUSHROOM -> MaterialSet.get(handle.createBlockData("minecraft:mycelium"),
+                                                                 handle.createBlockData("minecraft:grass_block"),
+                                                                 handle.createBlockData("minecraft:podzol"));
+            case CHORUS_PLANT -> MaterialSet.get(handle.createBlockData("minecraft:end_stone"));
+            default -> MaterialSet.get(handle.createBlockData("minecraft:grass_block"), handle.createBlockData("minecraft:dirt"),
                                        handle.createBlockData("minecraft:podzol"));
-            case CHORUS_PLANT:
-                return MaterialSet.get(handle.createBlockData("minecraft:end_stone"));
-            default:
-                return MaterialSet.get(handle.createBlockData("minecraft:grass_block"), handle.createBlockData("minecraft:dirt"),
-                                       handle.createBlockData("minecraft:podzol"));
-        }
+        };
     }
     
     @Override

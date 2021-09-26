@@ -23,12 +23,12 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
     
     @Override
     public Function<Void> build(List<Returnable<?>> argumentList, Position position) {
-        return new Function<Void>() {
+        return new Function<>() {
             @Override
             public ReturnType returnType() {
                 return ReturnType.VOID;
             }
-            
+    
             @SuppressWarnings("unchecked")
             @Override
             public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
@@ -36,7 +36,7 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
                                 (TerraImplementationArguments) implementationArguments);
                 return null;
             }
-            
+    
             @Override
             public Position getPosition() {
                 return position;

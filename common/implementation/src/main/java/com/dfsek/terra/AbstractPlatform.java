@@ -66,7 +66,7 @@ public abstract class AbstractPlatform implements Platform {
     
     private final AddonRegistry addonRegistry = new AddonRegistry(this);
     
-    private final Lazy<Logger> logger = Lazy.lazy(() -> createLogger());
+    private final Lazy<Logger> logger = Lazy.lazy(this::createLogger);
     private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
     
     @Override

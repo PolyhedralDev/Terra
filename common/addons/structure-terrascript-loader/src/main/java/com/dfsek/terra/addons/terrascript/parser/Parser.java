@@ -98,17 +98,14 @@ public class Parser {
         ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP);
         
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
-        
-        switch(identifier.getType()) {
-            case FOR_LOOP:
-                return parseForLoop(tokens, variableMap, identifier.getPosition());
-            case IF_STATEMENT:
-                return parseIfStatement(tokens, variableMap, identifier.getPosition(), loop);
-            case WHILE_LOOP:
-                return parseWhileLoop(tokens, variableMap, identifier.getPosition());
-            default:
-                throw new UnsupportedOperationException("Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
-        }
+    
+        return switch(identifier.getType()) {
+            case FOR_LOOP -> parseForLoop(tokens, variableMap, identifier.getPosition());
+            case IF_STATEMENT -> parseIfStatement(tokens, variableMap, identifier.getPosition(), loop);
+            case WHILE_LOOP -> parseWhileLoop(tokens, variableMap, identifier.getPosition());
+            default -> throw new UnsupportedOperationException(
+                    "Unknown keyword " + identifier.getContent() + ": " + identifier.getPosition());
+        };
     }
     
     private WhileKeyword parseWhileLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start)
