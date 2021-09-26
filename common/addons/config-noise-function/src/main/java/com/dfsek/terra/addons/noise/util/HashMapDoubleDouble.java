@@ -34,6 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 package com.dfsek.terra.addons.noise.util;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
@@ -144,9 +145,7 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     }
     
     public void clear() {
-        for(int i = 0; i < this.table.length; ++i) {
-            this.table[i] = null;
-        }
+        Arrays.fill(this.table, null);
         
         this.size = 0;
     }
