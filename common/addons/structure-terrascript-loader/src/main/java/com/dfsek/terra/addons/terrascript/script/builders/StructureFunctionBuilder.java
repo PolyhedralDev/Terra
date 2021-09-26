@@ -24,7 +24,7 @@ public class StructureFunctionBuilder implements FunctionBuilder<StructureFuncti
     
     @SuppressWarnings("unchecked")
     @Override
-    public StructureFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public StructureFunction build(List<Returnable<?>> argumentList, Position position) {
         if(argumentList.size() < 5) throw new ParseException("Expected rotations", position);
         
         return new StructureFunction((Returnable<Number>) argumentList.remove(0), (Returnable<Number>) argumentList.remove(0),

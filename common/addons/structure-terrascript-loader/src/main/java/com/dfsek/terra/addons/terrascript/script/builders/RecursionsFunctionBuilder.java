@@ -11,7 +11,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class RecursionsFunctionBuilder implements FunctionBuilder<RecursionsFunction> {
     @Override
-    public RecursionsFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public RecursionsFunction build(List<Returnable<?>> argumentList, Position position) {
         return new RecursionsFunction(position);
     }
     

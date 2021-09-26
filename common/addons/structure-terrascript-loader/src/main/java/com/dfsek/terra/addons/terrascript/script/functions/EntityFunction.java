@@ -25,7 +25,7 @@ public class EntityFunction implements Function<Void> {
     private final Platform platform;
     
     public EntityFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Platform platform,
-                          Position position) throws ParseException {
+                          Position position) {
         this.position = position;
         this.platform = platform;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Entity data must be constant", data.getPosition());

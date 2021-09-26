@@ -19,7 +19,7 @@ public class EntityFunctionBuilder implements FunctionBuilder<EntityFunction> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public EntityFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public EntityFunction build(List<Returnable<?>> argumentList, Position position) {
         return new EntityFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                   (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), platform, position);
     }

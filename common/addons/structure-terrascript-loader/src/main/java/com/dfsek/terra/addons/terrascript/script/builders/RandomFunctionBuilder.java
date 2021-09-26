@@ -12,7 +12,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public class RandomFunctionBuilder implements FunctionBuilder<RandomFunction> {
     @SuppressWarnings("unchecked")
     @Override
-    public RandomFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public RandomFunction build(List<Returnable<?>> argumentList, Position position) {
         return new RandomFunction((Returnable<Number>) argumentList.get(0), position);
     }
     

@@ -56,7 +56,7 @@ public class StructureScript implements Structure {
     private String tempID;
     
     public StructureScript(InputStream inputStream, Platform platform, Registry<Structure> registry, Registry<LootTable> lootRegistry,
-                           Registry<FunctionBuilder<?>> functionRegistry) throws ParseException {
+                           Registry<FunctionBuilder<?>> functionRegistry) {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream, Charset.defaultCharset()));

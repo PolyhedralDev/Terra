@@ -20,7 +20,7 @@ public class Tokenizer {
     private Token current;
     private Token last;
     
-    public Tokenizer(String data) throws ParseException {
+    public Tokenizer(String data) {
         reader = new Lookahead(new StringReader(data + '\0'));
         current = fetchCheck();
     }
@@ -32,7 +32,7 @@ public class Tokenizer {
      *
      * @throws ParseException If token does not exist
      */
-    public Token get() throws ParseException {
+    public Token get() {
         if(!hasNext()) throw new ParseException("Unexpected end of input", last.getPosition());
         return current;
     }
@@ -44,14 +44,14 @@ public class Tokenizer {
      *
      * @throws ParseException If token does not exist
      */
-    public Token consume() throws ParseException {
+    public Token consume() {
         if(!hasNext()) throw new ParseException("Unexpected end of input", last.getPosition());
         Token temp = current;
         current = fetchCheck();
         return temp;
     }
     
-    private Token fetchCheck() throws ParseException {
+    private Token fetchCheck() {
         Token fetch = fetch();
         if(fetch != null) {
             last = fetch;

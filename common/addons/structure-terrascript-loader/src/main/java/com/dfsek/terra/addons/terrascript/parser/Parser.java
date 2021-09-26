@@ -78,7 +78,7 @@ public class Parser {
      *
      * @throws ParseException If parsing fails.
      */
-    public Block parse() throws ParseException {
+    public Block parse() {
         Tokenizer tokens = new Tokenizer(data);
         
         // Parse ID
@@ -108,8 +108,7 @@ public class Parser {
         };
     }
     
-    private WhileKeyword parseWhileLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start)
-    throws ParseException {
+    private WhileKeyword parseWhileLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start) {
         Returnable<?> first = parseExpression(tokens, true, variableMap);
         ParserUtil.checkReturnType(first, Returnable.ReturnType.BOOLEAN);
         
@@ -118,8 +117,7 @@ public class Parser {
         return new WhileKeyword(parseStatementBlock(tokens, variableMap, true), (Returnable<Boolean>) first, start); // While loop
     }
     
-    private IfKeyword parseIfStatement(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start, boolean loop)
-    throws ParseException {
+    private IfKeyword parseIfStatement(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, Position start, boolean loop) {
         Returnable<?> condition = parseExpression(tokens, true, variableMap);
         ParserUtil.checkReturnType(condition, Returnable.ReturnType.BOOLEAN);
         
@@ -146,8 +144,7 @@ public class Parser {
         return new IfKeyword(statement, (Returnable<Boolean>) condition, elseIf, elseBlock, start); // If statement
     }
     
-    private Block parseStatementBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop)
-    throws ParseException {
+    private Block parseStatementBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) {
         
         if(tokens.get().getType().equals(Token.Type.BLOCK_BEGIN)) {
             ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
@@ -162,7 +159,7 @@ public class Parser {
         }
     }
     
-    private ForKeyword parseForLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> old, Position start) throws ParseException {
+    private ForKeyword parseForLoop(Tokenizer tokens, Map<String, Returnable.ReturnType> old, Position start) {
         Map<String, Returnable.ReturnType> variableMap = new HashMap<>(old); // New scope
         Token f = tokens.get();
         ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
@@ -191,8 +188,7 @@ public class Parser {
                               start);
     }
     
-    private Returnable<?> parseExpression(Tokenizer tokens, boolean full, Map<String, Returnable.ReturnType> variableMap)
-    throws ParseException {
+    private Returnable<?> parseExpression(Tokenizer tokens, boolean full, Map<String, Returnable.ReturnType> variableMap) {
         boolean booleanInverted = false; // Check for boolean not operator
         boolean negate = false;
         if(tokens.get().getType().equals(Token.Type.BOOLEAN_NOT)) {
@@ -235,7 +231,7 @@ public class Parser {
         return expression;
     }
     
-    private ConstantExpression<?> parseConstantExpression(Tokenizer tokens) throws ParseException {
+    private ConstantExpression<?> parseConstantExpression(Tokenizer tokens) {
         Token constantToken = tokens.consume();
         Position position = constantToken.getPosition();
         switch(constantToken.getType()) {
@@ -252,15 +248,14 @@ public class Parser {
         }
     }
     
-    private Returnable<?> parseGroup(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
+    private Returnable<?> parseGroup(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
         Returnable<?> expression = parseExpression(tokens, true, variableMap); // Parse inside of group as a separate expression
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
         return expression;
     }
     
-    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap)
-    throws ParseException {
+    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         Token binaryOperator = tokens.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
         
@@ -275,7 +270,7 @@ public class Parser {
         return assemble(left, right, binaryOperator);
     }
     
-    private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) throws ParseException {
+    private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) {
         if(binaryOperator.isStrictNumericOperator())
             ParserUtil.checkArithmeticOperation(left, right, binaryOperator); // Numeric type checking
         if(binaryOperator.isStrictBooleanOperator()) ParserUtil.checkBooleanOperation(left, right, binaryOperator); // Boolean type checking
@@ -315,8 +310,7 @@ public class Parser {
         }
     }
     
-    private Declaration<?> parseVariableDeclaration(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap)
-    throws ParseException {
+    private Declaration<?> parseVariableDeclaration(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         Token type = tokens.consume();
         ParserUtil.checkType(type, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
         
@@ -337,7 +331,7 @@ public class Parser {
         return new Declaration<>(tokens.get().getPosition(), identifier.getContent(), value, returnType);
     }
     
-    private Block parseBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> superVars, boolean loop) throws ParseException {
+    private Block parseBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> superVars, boolean loop) {
         List<Item<?>> parsedItems = new ArrayList<>();
         
         Map<String, Returnable.ReturnType> parsedVariables = new HashMap<>(
@@ -357,7 +351,7 @@ public class Parser {
         return new Block(parsedItems, first.getPosition());
     }
     
-    private Item<?> parseItem(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) throws ParseException {
+    private Item<?> parseItem(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) {
         Token token = tokens.get();
         if(loop) ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
                                       Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE,
@@ -383,7 +377,7 @@ public class Parser {
         else throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
     }
     
-    private Assignment<?> parseAssignment(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
+    private Assignment<?> parseAssignment(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         Token identifier = tokens.consume();
         
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER);
@@ -397,8 +391,7 @@ public class Parser {
         return new Assignment<>(value, identifier.getContent(), identifier.getPosition());
     }
     
-    private Function<?> parseFunction(Tokenizer tokens, boolean fullStatement, Map<String, Returnable.ReturnType> variableMap)
-    throws ParseException {
+    private Function<?> parseFunction(Tokenizer tokens, boolean fullStatement, Map<String, Returnable.ReturnType> variableMap) {
         Token identifier = tokens.consume();
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
         
@@ -440,7 +433,7 @@ public class Parser {
         return id;
     }
     
-    private List<Returnable<?>> getArgs(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) throws ParseException {
+    private List<Returnable<?>> getArgs(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         List<Returnable<?>> args = new ArrayList<>();
         
         while(!tokens.get().getType().equals(Token.Type.GROUP_END)) {

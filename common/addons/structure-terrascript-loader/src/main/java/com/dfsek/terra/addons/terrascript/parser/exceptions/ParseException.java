@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.terrascript.parser.exceptions;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
-public class ParseException extends Exception {
+public class ParseException extends RuntimeException {
     private static final long serialVersionUID = 6744390543046766386L;
     private final Position position;
     

@@ -26,7 +26,7 @@ public class PullFunction implements Function<Void> {
     private final Position position;
     
     public PullFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Platform platform,
-                        Position position) throws ParseException {
+                        Position position) {
         this.position = position;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant", data.getPosition());
         

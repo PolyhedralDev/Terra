@@ -21,7 +21,7 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public BlockFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public BlockFunction build(List<Returnable<?>> argumentList, Position position) {
         if(argumentList.size() < 4) throw new ParseException("Expected data", position);
         Returnable<Boolean> booleanReturnable = new BooleanConstant(true, position);
         if(argumentList.size() == 5) booleanReturnable = (Returnable<Boolean>) argumentList.get(4);

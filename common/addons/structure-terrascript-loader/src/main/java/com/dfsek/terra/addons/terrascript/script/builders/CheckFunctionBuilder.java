@@ -19,7 +19,7 @@ public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public CheckFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
+    public CheckFunction build(List<Returnable<?>> argumentList, Position position) {
         return new CheckFunction(platform, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                  (Returnable<Number>) argumentList.get(2), position);
     }
