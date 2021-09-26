@@ -17,13 +17,13 @@ public abstract class Ore {
     private final MaterialSet replaceable;
     private final boolean applyGravity;
     private final Map<BlockType, BlockState> materials;
-    protected Platform main;
+    protected Platform platform;
     
-    public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, Platform main, Map<BlockType, BlockState> materials) {
+    public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, Platform platform, Map<BlockType, BlockState> materials) {
         this.material = material;
         this.replaceable = replaceable;
         this.applyGravity = applyGravity;
-        this.main = main;
+        this.platform = platform;
         this.materials = materials;
     }
     

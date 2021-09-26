@@ -20,14 +20,14 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 
 
 public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
-    private final Platform main;
+    private final Platform platform;
     
-    public AddonRegistry(Platform main) {
-        this.main = main;
+    public AddonRegistry(Platform platform) {
+        this.platform = platform;
     }
     
-    public AddonRegistry(TerraAddon addon, Platform main) {
-        this.main = main;
+    public AddonRegistry(TerraAddon addon, Platform platform) {
+        this.platform = platform;
         register(addon);
     }
     
@@ -35,7 +35,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     public boolean register(String identifier, TerraAddon addon) {
         if(contains(identifier)) throw new IllegalArgumentException("Addon " + identifier + " is already registered.");
         addon.initialize();
-        main.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
+        platform.logger().info("Loaded addon " + addon.getName() + " v" + addon.getVersion() + ", by " + addon.getAuthor());
         return super.register(identifier, addon);
     }
     
@@ -53,18 +53,18 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     }
     
     public boolean loadAll(ClassLoader parent) {
-        InjectorImpl<Platform> pluginInjector = new InjectorImpl<>(main);
+        InjectorImpl<Platform> pluginInjector = new InjectorImpl<>(platform);
         pluginInjector.addExplicitTarget(Platform.class);
         
         boolean valid = true;
-        File addonsFolder = new File(main.getDataFolder(), "addons");
+        File addonsFolder = new File(platform.getDataFolder(), "addons");
         addonsFolder.mkdirs();
         
         AddonPool pool = new AddonPool();
         
         try {
             for(File jar : addonsFolder.listFiles(file -> file.getName().endsWith(".jar"))) {
-                main.logger().info("Loading Addon(s) from: " + jar.getName());
+                platform.logger().info("Loading Addon(s) from: " + jar.getName());
                 for(Class<? extends TerraAddon> addonClass : AddonClassLoader.fetchAddonClasses(jar, parent)) {
                     pool.add(new PreLoadAddon(addonClass, jar));
                 }
@@ -103,9 +103,9 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                     registerChecked(loadedAddon.getName(), loadedAddon);
                 } catch(DuplicateEntryException e) {
                     valid = false;
-                    main.logger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
-                    main.logger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
-                    main.logger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
+                    platform.logger().severe("Duplicate addon ID; addon with ID " + loadedAddon.getName() + " is already loaded.");
+                    platform.logger().severe("Existing addon class: " + get(loadedAddon.getName()).getClass().getCanonicalName());
+                    platform.logger().severe("Duplicate addon class: " + addonClass.getCanonicalName());
                 }
             }
         } catch(AddonLoadException | IOException e) {

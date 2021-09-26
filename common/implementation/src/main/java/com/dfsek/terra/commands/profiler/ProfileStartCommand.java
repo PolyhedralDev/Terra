@@ -12,11 +12,11 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @DebugCommand
 public class ProfileStartCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        main.getProfiler().start();
+        platform.getProfiler().start();
         sender.sendMessage("Profiling enabled.");
     }
 }

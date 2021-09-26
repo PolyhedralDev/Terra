@@ -29,7 +29,7 @@ import com.dfsek.terra.api.util.vector.Vector3;
 @Command(arguments = @Argument("id"), usage = "/terra structure export <ID>")
 public class StructureExportCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @ArgumentTarget("id")
     private String id;
@@ -38,7 +38,7 @@ public class StructureExportCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
         
-        Pair<Vector3, Vector3> l = main.getWorldHandle().getSelectedLocation(player);
+        Pair<Vector3, Vector3> l = platform.getWorldHandle().getSelectedLocation(player);
         
         Vector3 l1 = l.getLeft();
         Vector3 l2 = l.getRight();
@@ -75,7 +75,7 @@ public class StructureExportCommand implements CommandTemplate {
                     if(state instanceof Sign) {
                         Sign sign = (Sign) state;
                         if(sign.getLine(0).equals("[TERRA]")) {
-                            data = main.getWorldHandle().createBlockData(sign.getLine(2) + sign.getLine(3));
+                            data = platform.getWorldHandle().createBlockData(sign.getLine(2) + sign.getLine(3));
                         }
                     }
                     if(!data.isStructureVoid()) {
@@ -88,7 +88,7 @@ public class StructureExportCommand implements CommandTemplate {
             }
         }
         
-        File file = new File(main.getDataFolder() + File.separator + "export" + File.separator + "structures", id + ".tesf");
+        File file = new File(platform.getDataFolder() + File.separator + "export" + File.separator + "structures", id + ".tesf");
         try {
             file.getParentFile().mkdirs();
             file.createNewFile();

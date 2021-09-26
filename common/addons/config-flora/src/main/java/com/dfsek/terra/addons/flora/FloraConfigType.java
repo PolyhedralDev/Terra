@@ -22,7 +22,7 @@ public class FloraConfigType implements ConfigType<FloraTemplate, Structure> {
     }
     
     @Override
-    public FloraTemplate getTemplate(ConfigPack pack, Platform main) {
+    public FloraTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new FloraTemplate();
     }
     

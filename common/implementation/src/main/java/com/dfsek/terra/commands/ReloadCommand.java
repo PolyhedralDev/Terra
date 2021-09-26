@@ -13,11 +13,11 @@ import com.dfsek.terra.config.lang.LangUtil;
 )
 public class ReloadCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        if(!main.reload()) {
+        if(!platform.reload()) {
             LangUtil.send("command.reload-error", sender);
         } else {
             LangUtil.send("command.reload", sender);

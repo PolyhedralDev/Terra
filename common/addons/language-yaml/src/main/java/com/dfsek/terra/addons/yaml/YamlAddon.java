@@ -17,17 +17,17 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @Author("Terra")
 public class YamlAddon extends TerraAddon {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigurationDiscoveryEvent.class)
-            .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
-                main.getDebugLogger().info("Discovered config " + entry.getKey());
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigurationDiscoveryEvent.class)
+                .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
+                platform.getDebugLogger().info("Discovered config " + entry.getKey());
                 event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
             })))
-            .failThrough();
+                .failThrough();
     }
 }

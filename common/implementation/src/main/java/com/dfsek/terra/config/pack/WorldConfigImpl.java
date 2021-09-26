@@ -25,10 +25,10 @@ public class WorldConfigImpl implements WorldConfig {
     
     private final Map<Type, Registry<?>> registryMap = new HashMap<>();
     
-    public WorldConfigImpl(World world, ConfigPackImpl pack, Platform main) {
+    public WorldConfigImpl(World world, ConfigPackImpl pack, Platform platform) {
         this.world = world;
         this.pack = pack;
-        this.samplerCache = new SamplerCacheImpl(main, world);
+        this.samplerCache = new SamplerCacheImpl(platform, world);
         
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
         

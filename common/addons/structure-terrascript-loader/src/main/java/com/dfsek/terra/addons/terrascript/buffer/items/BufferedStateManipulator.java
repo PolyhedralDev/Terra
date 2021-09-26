@@ -8,11 +8,11 @@ import com.dfsek.terra.api.world.World;
 
 
 public class BufferedStateManipulator implements BufferedItem {
-    private final Platform main;
+    private final Platform platform;
     private final String data;
     
-    public BufferedStateManipulator(Platform main, String state) {
-        this.main = main;
+    public BufferedStateManipulator(Platform platform, String state) {
+        this.platform = platform;
         this.data = state;
     }
     
@@ -23,7 +23,7 @@ public class BufferedStateManipulator implements BufferedItem {
             state.applyState(data);
             state.update(false);
         } catch(Exception e) {
-            main.logger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
+            platform.logger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -42,16 +42,16 @@ public class LocatorAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<Pattern>>> PATTERN_TOKEN = new TypeKey<>() {
     };
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
-                locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(main));
+                locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(platform));
                 locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
                 locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
                 locatorRegistry.register("NOISE", NoiseLocatorTemplate::new);
@@ -60,7 +60,7 @@ public class LocatorAddon extends TerraAddon {
                 locatorRegistry.register("AND", AndLocatorTemplate::new);
                 locatorRegistry.register("OR", OrLocatorTemplate::new);
             })
-            .then(event -> {
+                .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
                 patternRegistry.register("MATCH_AIR", AirMatchPatternTemplate::new);
                 patternRegistry.register("MATCH_SOLID", SolidMatchPatternTemplate::new);
@@ -71,6 +71,6 @@ public class LocatorAddon extends TerraAddon {
                 patternRegistry.register("OR", OrPatternTemplate::new);
                 patternRegistry.register("NOT", NotPatternTemplate::new);
             })
-            .failThrough();
+                .failThrough();
     }
 }

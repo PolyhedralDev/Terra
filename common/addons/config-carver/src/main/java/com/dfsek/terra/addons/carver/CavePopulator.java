@@ -22,16 +22,16 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 public class CavePopulator implements GenerationStage, Chunkified {
     private static final Map<BlockType, BlockState> shiftStorage = new HashMap<>();
     // Persist BlockData created for shifts, to avoid re-calculating each time.
-    private final Platform main;
+    private final Platform platform;
     
-    public CavePopulator(Platform main) {
-        this.main = main;
+    public CavePopulator(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        try(ProfileFrame ignore = main.getProfiler().profile("carving")) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("carving")) {
             Random random = PopulationUtil.getRandom(chunk);
             WorldConfig config = world.getConfig();
             if(config.disableCarving()) return;
@@ -40,7 +40,7 @@ public class CavePopulator implements GenerationStage, Chunkified {
                 CarverTemplate template = c.getConfig();
                 Map<Vector3, BlockState> shiftCandidate = new HashMap<>();
                 c.carve(chunk.getX(), chunk.getZ(), world, (v, type) -> {
-                    try(ProfileFrame ignored = main.getProfiler().profile("carving:" + c.getConfig().getID())) {
+                    try(ProfileFrame ignored = platform.getProfiler().profile("carving:" + c.getConfig().getID())) {
                         BlockState m = chunk.getBlock(v.getBlockX(), v.getBlockY(), v.getBlockZ());
                         BlockType re = m.getBlockType();
                         switch(type) {

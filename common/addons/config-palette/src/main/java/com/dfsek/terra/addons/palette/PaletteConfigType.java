@@ -19,10 +19,10 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     public static final TypeKey<Palette> PALETTE_TYPE_TOKEN = new TypeKey<>() {
     };
     private final PaletteFactory factory = new PaletteFactory();
-    private final Platform main;
+    private final Platform platform;
     
-    public PaletteConfigType(Platform main) {
-        this.main = main;
+    public PaletteConfigType(Platform platform) {
+        this.platform = platform;
     }
     
     @Override
@@ -30,7 +30,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
         return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
             if(((String) c).startsWith("BLOCK:"))
                 return new PaletteImpl.Singleton(
-                        main.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
+                        platform.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
             Palette obj = registry.get((String) c);
             if(obj == null)
                 throw new LoadException("No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry.");
@@ -39,7 +39,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
     
     @Override
-    public PaletteTemplate getTemplate(ConfigPack pack, Platform main) {
+    public PaletteTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new PaletteTemplate();
     }
     

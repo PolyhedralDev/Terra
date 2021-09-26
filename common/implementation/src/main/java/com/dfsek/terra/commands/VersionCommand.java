@@ -13,11 +13,11 @@ import com.dfsek.terra.config.lang.LangUtil;
 )
 public class VersionCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        String terraVersion = main.getVersion();
-        LangUtil.send("command.version", sender, terraVersion, main.platformName());
+        String terraVersion = platform.getVersion();
+        LangUtil.send("command.version", sender, terraVersion, platform.platformName());
     }
 }

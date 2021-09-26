@@ -14,7 +14,7 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
     }
     
     @Override
-    public TerraBiome build(BiomeTemplate template, Platform main) {
+    public TerraBiome build(BiomeTemplate template, Platform platform) {
         UserDefinedGenerationSettings generator = new UserDefinedGenerationSettings(template.getNoiseEquation(),
                                                                                     template.getElevationEquation(),
                                                                                     template.getCarvingEquation(), template.getBiomeNoise(),

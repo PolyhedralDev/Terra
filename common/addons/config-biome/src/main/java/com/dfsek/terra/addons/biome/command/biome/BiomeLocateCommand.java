@@ -51,7 +51,7 @@ public class BiomeLocateCommand implements CommandTemplate {
     private boolean teleport;
     
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
@@ -59,7 +59,7 @@ public class BiomeLocateCommand implements CommandTemplate {
         Player player = (Player) sender;
         
         new Thread(new AsyncBiomeFinder(player.world().getBiomeProvider(), biome,
-                                        player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())),
+                                        player.position().clone().multiply((1D / platform.getTerraConfig().getBiomeSearchResolution())),
                                         player.world(), 0, radius, location -> {
             if(location != null) {
                 sender.sendMessage(
@@ -67,11 +67,11 @@ public class BiomeLocateCommand implements CommandTemplate {
                                       location.getBlockX(), location.getBlockZ(),
                                       location.add(new Vector3(0, player.position().getY(), 0)).distance(player.position())));
                 if(teleport) {
-                    main.runPossiblyUnsafeTask(
+                    platform.runPossiblyUnsafeTask(
                             () -> player.position(new Vector3(location.getX(), player.position().getY(), location.getZ())));
                 }
             } else sender.sendMessage("Unable to locate biome \"" + biome.getID() + "\"");
-        }, main), "Biome Location Thread").start();
+        }, platform), "Biome Location Thread").start();
         
     }
 }

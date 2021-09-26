@@ -17,17 +17,17 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @Version("1.0.0")
 public class BiomeAddon extends TerraAddon {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
                 event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
                 event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
             })
-            .failThrough();
+                .failThrough();
     }
 }

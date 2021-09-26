@@ -21,7 +21,7 @@ public class CarverFactory implements ConfigFactory<CarverTemplate, UserDefinedC
     }
     
     @Override
-    public UserDefinedCarver build(CarverTemplate config, Platform main) throws LoadException {
+    public UserDefinedCarver build(CarverTemplate config, Platform platform) throws LoadException {
         double[] start = { config.getStartX(), config.getStartY(), config.getStartZ() };
         double[] mutate = { config.getMutateX(), config.getMutateY(), config.getMutateZ() };
         List<String> radius = Arrays.asList(config.getRadMX(), config.getRadMY(), config.getRadMZ());
@@ -29,7 +29,7 @@ public class CarverFactory implements ConfigFactory<CarverTemplate, UserDefinedC
         UserDefinedCarver carver;
         try {
             carver = new UserDefinedCarver(config.getHeight(), config.getLength(), start, mutate, radius, new Scope(), hash,
-                                           config.getCutTop(), config.getCutBottom(), config, main);
+                                           config.getCutTop(), config.getCutBottom(), config, platform);
         } catch(ParseException e) {
             throw new LoadException("Unable to parse radius equations", e);
         }

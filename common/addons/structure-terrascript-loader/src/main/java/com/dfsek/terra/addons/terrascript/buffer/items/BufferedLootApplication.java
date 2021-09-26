@@ -15,12 +15,12 @@ import com.dfsek.terra.api.world.World;
 
 public class BufferedLootApplication implements BufferedItem {
     private final LootTable table;
-    private final Platform main;
+    private final Platform platform;
     private final StructureScript structure;
     
-    public BufferedLootApplication(LootTable table, Platform main, StructureScript structure) {
+    public BufferedLootApplication(LootTable table, Platform platform, StructureScript structure) {
         this.table = table;
-        this.main = main;
+        this.platform = platform;
         this.structure = structure;
     }
     
@@ -29,19 +29,19 @@ public class BufferedLootApplication implements BufferedItem {
         try {
             BlockEntity data = world.getBlockState(origin);
             if(!(data instanceof Container)) {
-                main.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
+                platform.logger().severe("Failed to place loot at " + origin + "; block " + data + " is not container.");
                 return;
             }
             Container container = (Container) data;
             
             LootPopulateEvent event = new LootPopulateEvent(container, table, world.getConfig().getPack(), structure);
-            main.getEventManager().callEvent(event);
+            platform.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
             
             event.getTable().fillInventory(container.getInventory(), new Random(origin.hashCode()));
             data.update(false);
         } catch(Exception e) {
-            main.logger().warning("Could not apply loot at " + origin + ": " + e.getMessage());
+            platform.logger().warning("Could not apply loot at " + origin + ": " + e.getMessage());
             e.printStackTrace();
         }
     }

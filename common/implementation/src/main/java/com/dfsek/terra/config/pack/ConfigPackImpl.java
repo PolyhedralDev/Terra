@@ -85,7 +85,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
-    private final Platform main;
+    private final Platform platform;
     private final Loader loader;
     
     private final Configuration configuration;
@@ -101,18 +101,18 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
-    public ConfigPackImpl(File folder, Platform main) throws ConfigException {
+    public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
         try {
             this.loader = new FolderLoader(folder.toPath());
-            this.main = main;
+            this.platform = platform;
             this.configTypeRegistry = createRegistry();
             long l = System.nanoTime();
             
             register(abstractConfigLoader);
-            main.register(abstractConfigLoader);
+            platform.register(abstractConfigLoader);
             
             register(selfLoader);
-            main.register(selfLoader);
+            platform.register(selfLoader);
             
             File pack = new File(folder, "pack.yml");
             
@@ -123,39 +123,39 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 selfLoader.load(template, configuration);
                 
-                main.logger().info("Loading config pack \"" + template.getID() + "\"");
-                load(l, main);
+                platform.logger().info("Loading config pack \"" + template.getID() + "\"");
+                load(l, platform);
                 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries(main);
+                checkDeadEntries(platform);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
         } catch(Exception e) {
-            main.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
+            platform.logger().severe("Failed to load config pack from folder \"" + folder.getAbsolutePath() + "\"");
             throw e;
         }
         toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
     
-    public ConfigPackImpl(ZipFile file, Platform main) throws ConfigException {
+    public ConfigPackImpl(ZipFile file, Platform platform) throws ConfigException {
         try {
             this.loader = new ZIPLoader(file);
-            this.main = main;
+            this.platform = platform;
             this.configTypeRegistry = createRegistry();
             long l = System.nanoTime();
             
             register(selfLoader);
-            main.register(selfLoader);
+            platform.register(selfLoader);
             
             register(abstractConfigLoader);
-            main.register(abstractConfigLoader);
+            platform.register(abstractConfigLoader);
             
             try {
                 ZipEntry pack = null;
@@ -173,24 +173,24 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 
                 selfLoader.load(template, configuration);
-                main.logger().info("Loading config pack \"" + template.getID() + "\"");
+                platform.logger().info("Loading config pack \"" + template.getID() + "\"");
                 
-                load(l, main);
+                load(l, platform);
                 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries(main);
+                checkDeadEntries(platform);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
         } catch(Exception e) {
-            main.logger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
+            platform.logger().severe("Failed to load config pack from ZIP archive \"" + file.getName() + "\"");
             throw e;
         }
         
@@ -221,7 +221,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     @Override
     public WorldConfigImpl toWorldConfig(World world) {
-        return new WorldConfigImpl(world, this, main);
+        return new WorldConfigImpl(world, this, platform);
     }
     
     @Override
@@ -281,7 +281,7 @@ public class ConfigPackImpl implements ConfigPack {
             OpenRegistry<T> registry = new OpenRegistryImpl<>();
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
-            main.getDebugLogger().info("Registered loader for registry of class " + ReflectionUtil.typeToString(c));
+            platform.getDebugLogger().info("Registered loader for registry of class " + ReflectionUtil.typeToString(c));
             
             if(type instanceof ParameterizedType) {
                 ParameterizedType param = (ParameterizedType) type;
@@ -299,7 +299,7 @@ public class ConfigPackImpl implements ConfigPack {
                                     (Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
                             selfLoader.registerLoader(templateType, loader);
                             abstractConfigLoader.registerLoader(templateType, loader);
-                            main.getDebugLogger().info(
+                            platform.getDebugLogger().info(
                                     "Registered template loader for registry of class " + ReflectionUtil.typeToString(templateType));
                         }
                     }
@@ -347,12 +347,12 @@ public class ConfigPackImpl implements ConfigPack {
     
     @SuppressWarnings("unchecked")
     private ConfigTypeRegistry createRegistry() {
-        return new ConfigTypeRegistry(main, (id, configType) -> {
+        return new ConfigTypeRegistry(platform, (id, configType) -> {
             OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
             if(registryMap.containsKey(configType.getTypeKey()
                                                  .getType())) { // Someone already registered something; we need to copy things to the
                 // new registry.
-                main.getDebugLogger().warning("Copying values from old registry for " + configType.getTypeKey());
+                platform.getDebugLogger().warning("Copying values from old registry for " + configType.getTypeKey());
                 registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
             }
             selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
@@ -361,10 +361,10 @@ public class ConfigPackImpl implements ConfigPack {
         });
     }
     
-    private void checkDeadEntries(Platform main) {
+    private void checkDeadEntries(Platform platform) {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries()
-                                                                                   .forEach((id, value) -> main.getDebugLogger()
-                                                                                                               .warning("Dead entry in '" +
+                                                                                   .forEach((id, value) -> platform.getDebugLogger()
+                                                                                                                   .warning("Dead entry in '" +
                                                                                                                         ReflectionUtil.typeToString(
                                                                                                                                 clazz) +
                                                                                                                         "' registry: '" +
@@ -372,7 +372,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void load(long start, Platform main) throws ConfigException {
+    private void load(long start, Platform platform) throws ConfigException {
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
         
         for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
@@ -381,7 +381,7 @@ public class ConfigPackImpl implements ConfigPack {
         
         Map<String, Configuration> configurations = new HashMap<>();
         
-        main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
         
         MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
@@ -415,24 +415,24 @@ public class ConfigPackImpl implements ConfigPack {
         
         for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
             CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
-            main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
+            platform.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
             for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(
                     configs.getOrDefault(configType, Collections.emptyList()))) {
                 try {
                     Object loaded = ((ConfigFactory) configType.getFactory()).build(
-                            selfLoader.load(configType.getTemplate(this, main), config), main);
+                            selfLoader.load(configType.getTemplate(this, platform), config), platform);
                     registry.register(config.getID(), loaded);
-                    main.getEventManager().callEvent(
+                    platform.getEventManager().callEvent(
                             new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
                 } catch(DuplicateEntryException e) {
                     throw new LoadException("Duplicate registry entry: ", e);
                 }
             }
-            main.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
+            platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
         }
         
-        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
-        main.logger().info(
+        platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
+        platform.logger().info(
                 "Loaded config pack \"" + template.getID() + "\" v" + template.getVersion() + " by " + template.getAuthor() + " in " +
                 (System.nanoTime() - start) / 1000000D + "ms.");
     }

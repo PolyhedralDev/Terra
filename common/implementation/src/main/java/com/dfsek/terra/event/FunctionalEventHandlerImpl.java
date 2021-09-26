@@ -23,10 +23,10 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
     private final Map<Type, List<EventContextImpl<?>>> contextMap = new HashMap<>();
     
-    private final Platform main;
+    private final Platform platform;
     
-    public FunctionalEventHandlerImpl(Platform main) {
-        this.main = main;
+    public FunctionalEventHandlerImpl(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("unchecked")
@@ -45,9 +45,9 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
                 if(context.isFailThrough() && event instanceof FailThroughEvent) throw e; // Rethrow if it's fail-through.
                 StringWriter writer = new StringWriter();
                 e.printStackTrace(new PrintWriter(writer));
-                main.logger().warning("Exception occurred during event handling:");
-                main.logger().warning(writer.toString());
-                main.logger().warning(
+                platform.logger().warning("Exception occurred during event handling:");
+                platform.logger().warning(writer.toString());
+                platform.logger().warning(
                         "Report this to the maintainers of " + context.getAddon().getName() + ", " + context.getAddon().getAuthor());
             }
         });

@@ -35,8 +35,8 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
     
     @Override
-    public BiomeTemplate getTemplate(ConfigPack pack, Platform main) {
-        return new BiomeTemplate(pack, main);
+    public BiomeTemplate getTemplate(ConfigPack pack, Platform platform) {
+        return new BiomeTemplate(pack, platform);
     }
     
     @Override

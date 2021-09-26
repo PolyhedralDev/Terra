@@ -71,7 +71,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.pack = configPack;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
-        delegate.getMain().logger().info("Loading world with config pack " + pack.getID());
+        delegate.getPlatform().logger().info("Loading world with config pack " + pack.getID());
         this.biomeSource = biomeSource;
         
         this.seed = seed;

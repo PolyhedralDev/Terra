@@ -10,7 +10,7 @@ import com.dfsek.terra.api.structure.Structure;
 
 public class ScriptArgumentParser implements ArgumentParser<Structure> {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public Structure parse(CommandSender sender, String arg) {

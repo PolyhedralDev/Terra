@@ -26,18 +26,18 @@ public class ImageBiomeProviderAddon extends TerraAddon {
     };
     
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
-                        PROVIDER_REGISTRY_KEY);
-                providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(TerraBiome.class)));
-            })
-            .failThrough();
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                            PROVIDER_REGISTRY_KEY);
+                    providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(TerraBiome.class)));
+                })
+                .failThrough();
     }
 }

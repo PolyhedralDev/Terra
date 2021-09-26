@@ -10,16 +10,16 @@ import com.dfsek.terra.api.Platform;
 
 
 public class BiomeFunctionBuilder implements FunctionBuilder<BiomeFunction> {
-    private final Platform main;
+    private final Platform platform;
     
-    public BiomeFunctionBuilder(Platform main) {
-        this.main = main;
+    public BiomeFunctionBuilder(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public BiomeFunction build(List<Returnable<?>> argumentList, Position position) {
-        return new BiomeFunction(main, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
+        return new BiomeFunction(platform, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                  (Returnable<Number>) argumentList.get(2), position);
     }
     

@@ -25,12 +25,12 @@ public class PullFunction implements Function<Void> {
     private final Returnable<Number> x, y, z;
     private final Position position;
     
-    public PullFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Platform main,
+    public PullFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Platform platform,
                         Position position) throws ParseException {
         this.position = position;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant", data.getPosition());
         
-        this.data = main.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
+        this.data = platform.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
         this.x = x;
         this.y = y;
         this.z = z;

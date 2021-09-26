@@ -10,7 +10,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public class BiomeArgumentParser implements ArgumentParser<TerraBiome> {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public TerraBiome parse(CommandSender sender, String arg) {

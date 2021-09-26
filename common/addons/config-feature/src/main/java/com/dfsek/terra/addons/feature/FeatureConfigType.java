@@ -23,7 +23,7 @@ public class FeatureConfigType implements ConfigType<FeatureTemplate, Feature> {
     }
     
     @Override
-    public FeatureTemplate getTemplate(ConfigPack pack, Platform main) {
+    public FeatureTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new FeatureTemplate();
     }
     

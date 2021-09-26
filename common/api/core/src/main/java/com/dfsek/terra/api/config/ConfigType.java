@@ -10,7 +10,7 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public interface ConfigType<T extends AbstractableTemplate, R> {
     Supplier<OpenRegistry<R>> registrySupplier(ConfigPack pack);
     
-    T getTemplate(ConfigPack pack, Platform main);
+    T getTemplate(ConfigPack pack, Platform platform);
     
     ConfigFactory<T, R> getFactory();
     

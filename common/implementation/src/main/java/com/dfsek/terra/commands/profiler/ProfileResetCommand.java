@@ -12,11 +12,11 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @DebugCommand
 public class ProfileResetCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        main.getProfiler().reset();
+        platform.getProfiler().reset();
         sender.sendMessage("Profiler reset.");
     }
 }

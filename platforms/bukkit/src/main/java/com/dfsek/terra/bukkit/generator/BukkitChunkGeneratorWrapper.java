@@ -30,7 +30,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     private final ChunkGenerator delegate;
     
-    private final Platform main;
+    private final Platform platform;
     
     private boolean needsLoad = true;
     
@@ -38,8 +38,8 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate) {
         this.delegate = delegate;
-        this.main = delegate.getMain();
-        this.popMan = new PopulationManager(delegate, main);
+        this.platform = delegate.getPlatform();
+        this.popMan = new PopulationManager(delegate, platform);
     }
     
     

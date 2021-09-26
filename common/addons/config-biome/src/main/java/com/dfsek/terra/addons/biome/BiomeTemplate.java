@@ -113,7 +113,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private @Meta Map<String, @Meta Integer> colors = new HashMap<>();
     // Plain ol' map, so platforms can decide what to do with colors (if anything).
     
-    public BiomeTemplate(ConfigPack pack, Platform main) {
+    public BiomeTemplate(ConfigPack pack, Platform platform) {
         this.pack = pack;
     }
     

@@ -12,11 +12,11 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 
 public class EventManagerImpl implements EventManager {
     private final Map<Class<?>, EventHandler> handlers = new HashMap<>();
-    private final Platform main;
+    private final Platform platform;
     
-    public EventManagerImpl(Platform main) {
-        this.main = main;
-        registerHandler(FunctionalEventHandler.class, new FunctionalEventHandlerImpl(main)); // default handler
+    public EventManagerImpl(Platform platform) {
+        this.platform = platform;
+        registerHandler(FunctionalEventHandler.class, new FunctionalEventHandlerImpl(platform)); // default handler
     }
     
     @Override

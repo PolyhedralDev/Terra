@@ -13,9 +13,9 @@ public class SurfaceLocator implements Locator {
     
     private final BlockState air;
     
-    public SurfaceLocator(Range search, Platform main) {
+    public SurfaceLocator(Range search, Platform platform) {
         this.search = search;
-        this.air = main.getWorldHandle().air();
+        this.air = platform.getWorldHandle().air();
     }
     
     @Override

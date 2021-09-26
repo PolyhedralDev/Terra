@@ -24,7 +24,7 @@ public interface ChunkGenerator {
     
     ConfigPack getConfigPack();
     
-    Platform getMain();
+    Platform getPlatform();
     
     List<GenerationStage> getGenerationStages();
     

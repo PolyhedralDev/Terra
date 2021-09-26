@@ -15,14 +15,14 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @Author("Terra")
 public class FeatureAddon extends TerraAddon {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), "FEATURE", 3))
-            .failThrough();
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), "FEATURE", 3))
+                .failThrough();
     }
 }

@@ -12,9 +12,9 @@ import com.dfsek.terra.api.lang.Language;
 public final class LangUtil {
     private static Language language;
     
-    public static void load(String langID, Platform main) {
-        Logger logger = main.logger();
-        File file = new File(main.getDataFolder(), "lang");
+    public static void load(String langID, Platform platform) {
+        Logger logger = platform.logger();
+        File file = new File(platform.getDataFolder(), "lang");
         try {
             File file1 = new File(file, langID + ".yml");
             logger.info(file1.getAbsolutePath());

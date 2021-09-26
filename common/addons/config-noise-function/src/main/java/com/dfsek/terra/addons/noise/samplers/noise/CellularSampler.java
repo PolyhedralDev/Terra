@@ -333,7 +333,7 @@ public class CellularSampler extends NoiseFunction {
                 distance1 = fastSqrt(distance1);
             }
         }
-    
+        
         return switch(returnType) {
             case CellValue -> closestHash * (1 / 2147483648.0);
             case Distance -> distance0 - 1;
@@ -493,7 +493,7 @@ public class CellularSampler extends NoiseFunction {
                 distance1 = fastSqrt(distance1);
             }
         }
-    
+        
         return switch(returnType) {
             case CellValue -> closestHash * (1 / 2147483648.0);
             case Distance -> distance0 - 1;

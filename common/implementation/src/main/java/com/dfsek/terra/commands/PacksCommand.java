@@ -15,11 +15,11 @@ import com.dfsek.terra.config.lang.LangUtil;
 )
 public class PacksCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        CheckedRegistry<ConfigPack> registry = main.getConfigRegistry();
+        CheckedRegistry<ConfigPack> registry = platform.getConfigRegistry();
         
         if(registry.entries().size() == 0) {
             LangUtil.send("command.packs.none", sender);

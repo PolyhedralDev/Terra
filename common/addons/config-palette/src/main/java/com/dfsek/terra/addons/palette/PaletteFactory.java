@@ -9,7 +9,7 @@ import com.dfsek.terra.api.world.generator.Palette;
 
 public class PaletteFactory implements ConfigFactory<PaletteTemplate, Palette> {
     @Override
-    public Palette build(PaletteTemplate config, Platform main) {
+    public Palette build(PaletteTemplate config, Platform platform) {
         NoisePalette palette = new NoisePalette(config.getNoise());
         for(PaletteLayerHolder layer : config.getPalette()) {
             palette.add(layer.getLayer(), layer.getSize(), layer.getSampler());

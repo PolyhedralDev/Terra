@@ -26,18 +26,18 @@ public class StructureFunction implements Function<Boolean> {
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final Platform main;
+    private final Platform platform;
     private final List<Returnable<String>> rotations;
     
     public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id,
-                             List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform main) {
+                             List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform platform) {
         this.registry = registry;
         this.id = id;
         this.position = position;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.main = main;
+        this.platform = platform;
         this.rotations = rotations;
     }
     
@@ -50,7 +50,7 @@ public class StructureFunction implements Function<Boolean> {
     public Boolean apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
-        if(arguments.getRecursions() > main.getTerraConfig().getMaxRecursion())
+        if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
         
         Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(),
@@ -61,7 +61,7 @@ public class StructureFunction implements Function<Boolean> {
         String app = id.apply(implementationArguments, variableMap);
         Structure script = registry.get(app);
         if(script == null) {
-            main.logger().severe("No such structure " + app);
+            platform.logger().severe("No such structure " + app);
             return null;
         }
         
@@ -70,7 +70,7 @@ public class StructureFunction implements Function<Boolean> {
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
-            main.logger().severe("Invalid rotation " + rotString);
+            platform.logger().severe("Invalid rotation " + rotString);
             return null;
         }
         

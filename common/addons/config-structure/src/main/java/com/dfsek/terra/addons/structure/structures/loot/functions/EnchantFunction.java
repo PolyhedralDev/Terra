@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
+import com.dfsek.terra.api.Platform;
+
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 
@@ -8,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
@@ -18,14 +19,14 @@ public class EnchantFunction implements LootFunction {
     private final int min;
     private final int max;
     private final JSONArray disabled;
-    private final Platform main;
+    private final Platform platform;
     
     
-    public EnchantFunction(int min, int max, JSONArray disabled, Platform main) {
+    public EnchantFunction(int min, int max, JSONArray disabled, Platform platform) {
         this.max = max;
         this.min = min;
         this.disabled = disabled;
-        this.main = main;
+        this.platform = platform;
     }
     
     /**
@@ -42,7 +43,7 @@ public class EnchantFunction implements LootFunction {
         
         double enchant = (r.nextDouble() * (max - min)) + min;
         List<Enchantment> possible = new ArrayList<>();
-        for(Enchantment ench : main.getItemHandle().getEnchantments()) {
+        for(Enchantment ench : platform.getItemHandle().getEnchantments()) {
             if(ench.canEnchantItem(original) && (disabled == null || !this.disabled.contains(ench.getID()))) {
                 possible.add(ench);
             }
@@ -60,7 +61,7 @@ public class EnchantFunction implements LootFunction {
             try {
                 meta.addEnchantment(chosen, FastMath.max(lvl, 1));
             } catch(IllegalArgumentException e) {
-                main.logger().warning(
+                platform.logger().warning(
                         "Attempted to enchant " + original.getType() + " with " + chosen + " at level " + FastMath.max(lvl, 1) +
                         ", but an unexpected exception occurred! Usually this is caused by a misbehaving enchantment plugin.");
             }

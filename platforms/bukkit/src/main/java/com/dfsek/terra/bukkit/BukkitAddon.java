@@ -11,10 +11,10 @@ import com.dfsek.terra.api.addon.annotations.Version;
 @Version("1.0.0")
 @Author("Terra")
 final class BukkitAddon extends TerraAddon {
-    private final Platform main;
+    private final Platform platform;
     
-    public BukkitAddon(Platform main) {
-        this.main = main;
+    public BukkitAddon(Platform platform) {
+        this.platform = platform;
     }
     
     @Override

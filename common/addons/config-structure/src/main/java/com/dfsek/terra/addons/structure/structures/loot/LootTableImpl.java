@@ -27,12 +27,12 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
      *
      * @throws ParseException if malformed JSON is passed.
      */
-    public LootTableImpl(String json, Platform main) throws ParseException {
+    public LootTableImpl(String json, Platform platform) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         Object tableJSON = jsonParser.parse(json);
         JSONArray poolArray = (JSONArray) ((JSONObject) tableJSON).get("pools");
         for(Object pool : poolArray) {
-            pools.add(new Pool((JSONObject) pool, main));
+            pools.add(new Pool((JSONObject) pool, platform));
         }
     }
     

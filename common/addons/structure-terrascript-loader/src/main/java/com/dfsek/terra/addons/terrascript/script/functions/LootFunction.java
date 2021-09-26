@@ -25,18 +25,18 @@ public class LootFunction implements Function<Void> {
     private final Returnable<String> data;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final Platform main;
+    private final Platform platform;
     private final StructureScript script;
     
     public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z,
-                        Returnable<String> data, Platform main, Position position, StructureScript script) {
+                        Returnable<String> data, Platform platform, Position position, StructureScript script) {
         this.registry = registry;
         this.position = position;
         this.data = data;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.main = main;
+        this.platform = platform;
         this.script = script;
     }
     
@@ -52,11 +52,11 @@ public class LootFunction implements Function<Void> {
         LootTable table = registry.get(id);
         
         if(table == null) {
-            main.logger().severe("No such loot table " + id);
+            platform.logger().severe("No such loot table " + id);
             return null;
         }
         
-        arguments.getBuffer().addItem(new BufferedLootApplication(table, main, script),
+        arguments.getBuffer().addItem(new BufferedLootApplication(table, platform, script),
                                       new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
                                                   FastMath.roundToInt(xz.getZ())));
         return null;

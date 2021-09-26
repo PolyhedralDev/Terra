@@ -7,5 +7,5 @@ import com.dfsek.terra.api.Platform;
 
 
 public interface ConfigFactory<C extends ConfigTemplate, O> {
-    O build(C config, Platform main) throws LoadException;
+    O build(C config, Platform platform) throws LoadException;
 }

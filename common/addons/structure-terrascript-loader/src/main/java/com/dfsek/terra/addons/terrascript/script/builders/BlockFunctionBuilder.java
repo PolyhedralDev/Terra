@@ -13,10 +13,10 @@ import com.dfsek.terra.api.Platform;
 
 
 public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
-    private final Platform main;
+    private final Platform platform;
     
-    public BlockFunctionBuilder(Platform main) {
-        this.main = main;
+    public BlockFunctionBuilder(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("unchecked")
@@ -28,11 +28,11 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
         if(argumentList.get(3) instanceof StringConstant) {
             return new BlockFunction.Constant((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                               (Returnable<Number>) argumentList.get(2), (StringConstant) argumentList.get(3),
-                                              booleanReturnable, main, position);
+                                              booleanReturnable, platform, position);
         }
         return new BlockFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                  (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), booleanReturnable,
-                                 main, position);
+                                 platform, position);
     }
     
     @Override

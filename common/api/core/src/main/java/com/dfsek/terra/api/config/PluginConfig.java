@@ -4,7 +4,7 @@ import com.dfsek.terra.api.Platform;
 
 
 public interface PluginConfig {
-    void load(Platform main);
+    void load(Platform platform);
     
     boolean dumpDefaultConfig();
     

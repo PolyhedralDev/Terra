@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.structure.structures.loot;
 
+import com.dfsek.terra.api.Platform;
+
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
@@ -26,7 +27,7 @@ public class Pool {
      *
      * @param pool The JSON Object to instantiate from.
      */
-    public Pool(JSONObject pool, Platform main) {
+    public Pool(JSONObject pool, Platform platform) {
         entries = new ProbabilityCollection<>();
         Object amount = pool.get("rolls");
         if(amount instanceof Long) {
@@ -38,7 +39,7 @@ public class Pool {
         }
         
         for(Object entryJSON : (JSONArray) pool.get("entries")) {
-            Entry entry = new Entry((JSONObject) entryJSON, main);
+            Entry entry = new Entry((JSONObject) entryJSON, platform);
             entries.add(entry, FastMath.toIntExact(entry.getWeight()));
         }
     }

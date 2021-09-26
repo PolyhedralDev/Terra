@@ -16,18 +16,18 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
  * Class to hold config packs
  */
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
-    public void load(File folder, Platform main) throws ConfigException {
-        ConfigPack pack = new ConfigPackImpl(folder, main);
+    public void load(File folder, Platform platform) throws ConfigException {
+        ConfigPack pack = new ConfigPackImpl(folder, platform);
         register(pack.getID(), pack);
     }
     
-    public boolean loadAll(Platform main) {
+    public boolean loadAll(Platform platform) {
         boolean valid = true;
-        File packsFolder = new File(main.getDataFolder(), "packs");
+        File packsFolder = new File(platform.getDataFolder(), "packs");
         packsFolder.mkdirs();
         for(File dir : packsFolder.listFiles(File::isDirectory)) {
             try {
-                load(dir, main);
+                load(dir, platform);
             } catch(ConfigException e) {
                 e.printStackTrace();
                 valid = false;
@@ -35,8 +35,8 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         }
         for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra"))) {
             try {
-                main.getDebugLogger().info("Loading ZIP archive: " + zip.getName());
-                load(new ZipFile(zip), main);
+                platform.getDebugLogger().info("Loading ZIP archive: " + zip.getName());
+                load(new ZipFile(zip), platform);
             } catch(IOException | ConfigException e) {
                 e.printStackTrace();
                 valid = false;
@@ -45,8 +45,8 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         return valid;
     }
     
-    public void load(ZipFile file, Platform main) throws ConfigException {
-        ConfigPackImpl pack = new ConfigPackImpl(file, main);
+    public void load(ZipFile file, Platform platform) throws ConfigException {
+        ConfigPackImpl pack = new ConfigPackImpl(file, platform);
         register(pack.getTemplate().getID(), pack);
     }
 }

@@ -19,7 +19,7 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 )
 public class GetBlockCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {

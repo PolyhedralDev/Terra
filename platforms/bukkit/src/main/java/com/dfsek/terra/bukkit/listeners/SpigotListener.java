@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.listeners;
 
+import com.dfsek.terra.api.Platform;
+
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -7,8 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
-
-import com.dfsek.terra.api.Platform;
 
 
 /**
@@ -18,10 +18,10 @@ import com.dfsek.terra.api.Platform;
  * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
-    private final Platform main;
+    private final Platform platform;
     
-    public SpigotListener(Platform main) {
-        this.main = main;
+    public SpigotListener(Platform platform) {
+        this.platform = platform;
     }
     
     @EventHandler(priority = EventPriority.NORMAL)
@@ -53,9 +53,9 @@ public class SpigotListener implements Listener {
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
         if(!(e.getEntity() instanceof Villager)) return;
         if(((Villager) e.getEntity()).getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
-            main.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
-            main.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
-            main.logger().severe("at the source, and doesn't require us to do stupid band-aids.");
+            platform.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
+            platform.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
+            platform.logger().severe("at the source, and doesn't require us to do stupid band-aids.");
             e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
         }
     }
@@ -63,9 +63,9 @@ public class SpigotListener implements Listener {
     @EventHandler
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
         if(e.getProfession().equals(Villager.Profession.CARTOGRAPHER)) {
-            main.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
-            main.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
-            main.logger().severe("at the source, and doesn't require us to do stupid band-aids.");
+            platform.logger().severe("Prevented server crash by stopping Cartographer villager from spawning.");
+            platform.logger().severe("Please upgrade to Paper, which has a StructureLocateEvent that fixes this issue");
+            platform.logger().severe("at the source, and doesn't require us to do stupid band-aids.");
             e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
             e.setCancelled(true);
         }

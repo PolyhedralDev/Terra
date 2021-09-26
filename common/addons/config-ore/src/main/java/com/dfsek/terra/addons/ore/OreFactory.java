@@ -9,8 +9,8 @@ import com.dfsek.terra.api.config.ConfigFactory;
 
 public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
     @Override
-    public Ore build(OreTemplate config, Platform main) {
+    public Ore build(OreTemplate config, Platform platform) {
         BlockState m = config.getMaterial();
-        return new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), main, config.getMaterialOverrides());
+        return new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), platform, config.getMaterialOverrides());
     }
 }

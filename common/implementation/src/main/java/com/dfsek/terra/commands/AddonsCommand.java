@@ -12,12 +12,12 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 )
 public class AddonsCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
         sender.sendMessage("Installed Addons:");
-        main.getAddons().forEach(
+        platform.getAddons().forEach(
                 addon -> sender.sendMessage(" - " + addon.getName() + " v" + addon.getVersion() + " by " + addon.getAuthor()));
     }
 }

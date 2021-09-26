@@ -12,13 +12,13 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @DebugCommand
 public class ProfileQueryCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
         StringBuilder data = new StringBuilder("Terra Profiler data dump: \n");
-        main.getProfiler().getTimings().forEach((id, timings) -> data.append(id).append(": ").append(timings.toString()).append('\n'));
-        main.logger().info(data.toString());
+        platform.getProfiler().getTimings().forEach((id, timings) -> data.append(id).append(": ").append(timings.toString()).append('\n'));
+        platform.logger().info(data.toString());
         sender.sendMessage("Profiler data dumped to console.");
     }
 }

@@ -16,14 +16,14 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 @Author("Terra")
 public class StructureAddon extends TerraAddon {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
-            .failThrough();
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
+                .failThrough();
     }
 }

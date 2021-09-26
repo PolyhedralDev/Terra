@@ -42,7 +42,7 @@ import com.dfsek.terra.api.util.vector.Vector3;
 ))
 public class StructureLocateCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @ArgumentTarget("structure")
     private ConfiguredStructure structure;
@@ -58,7 +58,7 @@ public class StructureLocateCommand implements CommandTemplate {
         Player player = (Player) sender;
         
         new Thread(new AsyncStructureFinder(player.world().getBiomeProvider(), structure,
-                                            player.position().clone().multiply((1D / main.getTerraConfig().getBiomeSearchResolution())),
+                                            player.position().clone().multiply((1D / platform.getTerraConfig().getBiomeSearchResolution())),
                                             player.world(), 0, radius, location -> {
             if(location != null) {
                 sender.sendMessage(
@@ -66,10 +66,10 @@ public class StructureLocateCommand implements CommandTemplate {
                                       location.getBlockX(), location.getBlockZ(),
                                       location.add(new Vector3(0, player.position().getY(), 0)).distance(player.position())));
                 if(teleport) {
-                    main.runPossiblyUnsafeTask(
+                    platform.runPossiblyUnsafeTask(
                             () -> player.position(new Vector3(location.getX(), player.position().getY(), location.getZ())));
                 }
             } //else LangUtil.send("command.biome.unable-to-locate", sender);
-        }, main), "Biome Location Thread").start();
+        }, platform), "Biome Location Thread").start();
     }
 }

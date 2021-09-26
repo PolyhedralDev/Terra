@@ -13,7 +13,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 
 public class BiomeTabCompleter implements TabCompleter {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public List<String> complete(CommandSender sender) {

@@ -10,7 +10,7 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
 public class StructureArgumentParser implements ArgumentParser<ConfiguredStructure> {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public ConfiguredStructure parse(CommandSender sender, String arg) {

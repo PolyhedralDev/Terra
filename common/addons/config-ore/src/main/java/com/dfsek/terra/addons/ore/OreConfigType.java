@@ -22,7 +22,7 @@ public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     }
     
     @Override
-    public OreTemplate getTemplate(ConfigPack pack, Platform main) {
+    public OreTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new OreTemplate();
     }
     

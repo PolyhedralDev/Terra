@@ -25,18 +25,18 @@ public class SingleBiomeProviderAddon extends TerraAddon {
     };
     
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                         PROVIDER_REGISTRY_KEY);
                 providerRegistry.register("SINGLE", SingleBiomeProviderTemplate::new);
             })
-            .failThrough();
+                .failThrough();
     }
 }

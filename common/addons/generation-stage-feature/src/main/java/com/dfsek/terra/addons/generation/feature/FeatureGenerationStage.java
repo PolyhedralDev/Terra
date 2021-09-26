@@ -12,16 +12,16 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 
 
 public class FeatureGenerationStage implements GenerationStage {
-    private final Platform main;
+    private final Platform platform;
     
-    public FeatureGenerationStage(Platform main) {
-        this.main = main;
+    public FeatureGenerationStage(Platform platform) {
+        this.platform = platform;
     }
     
     @Override
     @SuppressWarnings("try")
     public void populate(World world, Chunk chunk) {
-        try(ProfileFrame ignore = main.getProfiler().profile("feature")) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("feature")) {
             int cx = chunk.getX() << 4;
             int cz = chunk.getZ() << 4;
             long seed = world.getSeed();

@@ -12,11 +12,11 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 @DebugCommand
 public class ProfileStopCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        main.getProfiler().stop();
+        platform.getProfiler().stop();
         sender.sendMessage("Profiling disabled.");
     }
 }

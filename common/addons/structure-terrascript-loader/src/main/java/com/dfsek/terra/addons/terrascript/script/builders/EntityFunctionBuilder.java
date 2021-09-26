@@ -11,17 +11,17 @@ import com.dfsek.terra.api.Platform;
 
 
 public class EntityFunctionBuilder implements FunctionBuilder<EntityFunction> {
-    private final Platform main;
+    private final Platform platform;
     
-    public EntityFunctionBuilder(Platform main) {
-        this.main = main;
+    public EntityFunctionBuilder(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public EntityFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
         return new EntityFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                  (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), main, position);
+                                  (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), platform, position);
     }
     
     @Override

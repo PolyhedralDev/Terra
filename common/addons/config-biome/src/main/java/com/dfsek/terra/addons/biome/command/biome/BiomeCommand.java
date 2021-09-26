@@ -24,7 +24,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 @PlayerCommand
 public class BiomeCommand implements CommandTemplate {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {

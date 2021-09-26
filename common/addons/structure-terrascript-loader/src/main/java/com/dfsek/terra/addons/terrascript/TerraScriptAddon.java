@@ -25,20 +25,20 @@ import com.dfsek.terra.api.structure.Structure;
 @Version("1.0.0")
 public class TerraScriptAddon extends TerraAddon {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
                 CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                 CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
                 event.getPack().getLoader().open("", ".tesf").thenEntries(entries -> {
                     for(Map.Entry<String, InputStream> entry : entries) {
                         try {
-                            StructureScript structureScript = new StructureScript(entry.getValue(), main, structureRegistry, lootRegistry,
+                            StructureScript structureScript = new StructureScript(entry.getValue(), platform, structureRegistry, lootRegistry,
                                                                                   event.getPack().getRegistryFactory().create());
                             structureRegistry.register(structureScript.getID(), structureScript);
                         } catch(ParseException e) {
@@ -47,6 +47,6 @@ public class TerraScriptAddon extends TerraAddon {
                     }
                 }).close();
             })
-            .failThrough();
+                .failThrough();
     }
 }

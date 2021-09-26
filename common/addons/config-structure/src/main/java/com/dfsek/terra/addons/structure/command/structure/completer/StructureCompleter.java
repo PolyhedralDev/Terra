@@ -13,7 +13,7 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
 public class StructureCompleter implements TabCompleter {
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public List<String> complete(CommandSender sender) {

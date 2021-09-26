@@ -7,7 +7,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 public interface AddonLoader {
     /**
      * Load all addons.
-     * @param main TerraPlugin instance.
+     * @param platform TerraPlugin instance.
      */
-    void load(Platform main, CheckedRegistry<Addon> addons);
+    void load(Platform platform, CheckedRegistry<Addon> addons);
 }

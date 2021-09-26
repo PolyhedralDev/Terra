@@ -15,11 +15,11 @@ import com.dfsek.terra.api.structure.Structure;
 
 public class StructureFunctionBuilder implements FunctionBuilder<StructureFunction> {
     private final Registry<Structure> registry;
-    private final Platform main;
+    private final Platform platform;
     
-    public StructureFunctionBuilder(Registry<Structure> registry, Platform main) {
+    public StructureFunctionBuilder(Registry<Structure> registry, Platform platform) {
         this.registry = registry;
-        this.main = main;
+        this.platform = platform;
     }
     
     @SuppressWarnings("unchecked")
@@ -30,7 +30,7 @@ public class StructureFunctionBuilder implements FunctionBuilder<StructureFuncti
         return new StructureFunction((Returnable<Number>) argumentList.remove(0), (Returnable<Number>) argumentList.remove(0),
                                      (Returnable<Number>) argumentList.remove(0), (Returnable<String>) argumentList.remove(0),
                                      argumentList.stream().map(item -> ((Returnable<String>) item)).collect(Collectors.toList()), registry,
-                                     position, main);
+                                     position, platform);
     }
     
     @Override

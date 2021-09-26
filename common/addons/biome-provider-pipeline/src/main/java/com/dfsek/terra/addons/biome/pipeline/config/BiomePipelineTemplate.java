@@ -16,7 +16,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class BiomePipelineTemplate extends BiomeProviderTemplate {
-    private final Platform main;
+    private final Platform platform;
     @Value("pipeline.initial-size")
     @Default
     private @Meta int initialSize = 2;
@@ -27,8 +27,8 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     @Value("pipeline.source")
     private @Meta BiomeSource source;
     
-    public BiomePipelineTemplate(Platform main) {
-        this.main = main;
+    public BiomePipelineTemplate(Platform platform) {
+        this.platform = platform;
     }
     
     @Override
@@ -36,6 +36,6 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
         BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize);
         stages.forEach(biomePipelineBuilder::addStage);
         BiomePipeline pipeline = biomePipelineBuilder.build(source);
-        return new BiomePipelineProvider(pipeline, main, resolution, blend, blendAmp);
+        return new BiomePipelineProvider(pipeline, platform, resolution, blend, blendAmp);
     }
 }

@@ -31,14 +31,14 @@ public class DistributorAddon extends TerraAddon {
     public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {
     };
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
                         DISTRIBUTOR_TOKEN);
                 distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
@@ -51,6 +51,6 @@ public class DistributorAddon extends TerraAddon {
                 event.getPack()
                      .applyLoader(Point.class, PointTemplate::new);
             })
-            .failThrough();
+                .failThrough();
     }
 }

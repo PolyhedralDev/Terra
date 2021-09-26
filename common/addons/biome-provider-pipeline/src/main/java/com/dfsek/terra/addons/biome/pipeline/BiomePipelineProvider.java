@@ -20,12 +20,12 @@ public class BiomePipelineProvider implements BiomeProvider {
     private final NoiseSampler mutator;
     private final double noiseAmp;
     
-    public BiomePipelineProvider(BiomePipeline pipeline, Platform main, int resolution, NoiseSampler mutator, double noiseAmp) {
+    public BiomePipelineProvider(BiomePipeline pipeline, Platform platform, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
         holderCache = CacheBuilder.newBuilder()
-                                  .maximumSize(main == null ? 32 : main.getTerraConfig().getProviderCache())
+                                  .maximumSize(platform == null ? 32 : platform.getTerraConfig().getProviderCache())
                                   .build(
                                           new CacheLoader<>() {
                                               @Override

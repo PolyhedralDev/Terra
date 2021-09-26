@@ -11,16 +11,16 @@ import com.dfsek.terra.api.Platform;
 
 
 public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
-    private final Platform main;
+    private final Platform platform;
     
-    public CheckFunctionBuilder(Platform main) {
-        this.main = main;
+    public CheckFunctionBuilder(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public CheckFunction build(List<Returnable<?>> argumentList, Position position) throws ParseException {
-        return new CheckFunction(main, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
+        return new CheckFunction(platform, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                  (Returnable<Number>) argumentList.get(2), position);
     }
     

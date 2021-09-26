@@ -11,13 +11,13 @@ import com.dfsek.terra.api.world.World;
 public class BufferedBlock implements BufferedItem {
     private final BlockState data;
     private final boolean overwrite;
-    private final Platform main;
+    private final Platform platform;
     private final boolean waterlog;
     
-    public BufferedBlock(BlockState data, boolean overwrite, Platform main, boolean waterlog) {
+    public BufferedBlock(BlockState data, boolean overwrite, Platform platform, boolean waterlog) {
         this.data = data;
         this.overwrite = overwrite;
-        this.main = main;
+        this.platform = platform;
         this.waterlog = waterlog;
     }
     
@@ -32,8 +32,8 @@ public class BufferedBlock implements BufferedItem {
                 world.setBlockData(origin, data);
             }
         } catch(RuntimeException e) {
-            main.logger().severe("Failed to place block at location " + origin + ": " + e.getMessage());
-            main.getDebugLogger().stack(e);
+            platform.logger().severe("Failed to place block at location " + origin + ": " + e.getMessage());
+            platform.getDebugLogger().stack(e);
         }
     }
 }

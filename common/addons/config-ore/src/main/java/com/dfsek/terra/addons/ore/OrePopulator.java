@@ -14,16 +14,16 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 
 
 public class OrePopulator implements GenerationStage {
-    private final Platform main;
+    private final Platform platform;
     
-    public OrePopulator(Platform main) {
-        this.main = main;
+    public OrePopulator(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("ore")) {
             if(world.getConfig().disableOres()) return;
             
             for(int cx = -1; cx <= 1; cx++) {

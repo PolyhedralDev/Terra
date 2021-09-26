@@ -19,12 +19,12 @@ import com.dfsek.terra.api.world.generator.SamplerCache;
 
 
 public class CheckFunction implements Function<String> {
-    private final Platform main;
+    private final Platform platform;
     private final Returnable<Number> x, y, z;
     private final Position position;
     
-    public CheckFunction(Platform main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
-        this.main = main;
+    public CheckFunction(Platform platform, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
+        this.platform = platform;
         this.x = x;
         this.y = y;
         this.z = z;

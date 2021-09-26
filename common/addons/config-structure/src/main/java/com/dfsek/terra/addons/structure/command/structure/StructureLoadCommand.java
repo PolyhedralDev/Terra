@@ -54,7 +54,7 @@ public class StructureLoadCommand implements CommandTemplate {
     private Structure script;
     
     @Inject
-    private Platform main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
