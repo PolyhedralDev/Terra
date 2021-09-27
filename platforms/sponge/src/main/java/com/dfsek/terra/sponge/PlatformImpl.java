@@ -4,17 +4,18 @@ import org.spongepowered.api.Sponge;
 
 import java.io.File;
 
-import com.dfsek.terra.AbstractTerraPlugin;
+
+import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.sponge.handle.SpongeWorldHandle;
 
 
-public class TerraPluginImpl extends AbstractTerraPlugin {
+public class PlatformImpl extends AbstractPlatform {
     private final TerraSpongePlugin plugin;
     private final SpongeWorldHandle worldHandle = new SpongeWorldHandle();
     
-    public TerraPluginImpl(TerraSpongePlugin plugin) {
+    public PlatformImpl(TerraSpongePlugin plugin) {
         this.plugin = plugin;
         load();
     }

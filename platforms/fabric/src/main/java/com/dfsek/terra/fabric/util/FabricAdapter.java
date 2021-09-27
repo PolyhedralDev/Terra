@@ -30,188 +30,119 @@ public final class FabricAdapter {
     }
     
     public static Direction adapt(com.dfsek.terra.api.block.state.properties.enums.Direction direction) {
-        switch(direction) {
-            case SOUTH:
-                return Direction.SOUTH;
-            case NORTH:
-                return Direction.NORTH;
-            case WEST:
-                return Direction.WEST;
-            case EAST:
-                return Direction.EAST;
-            case UP:
-                return Direction.UP;
-            case DOWN:
-                return Direction.DOWN;
-        }
-        throw new IllegalArgumentException();
+        return switch(direction) {
+            case SOUTH -> Direction.SOUTH;
+            case NORTH -> Direction.NORTH;
+            case WEST -> Direction.WEST;
+            case EAST -> Direction.EAST;
+            case UP -> Direction.UP;
+            case DOWN -> Direction.DOWN;
+        };
     }
     
     public static com.dfsek.terra.api.block.state.properties.enums.Direction adapt(Direction direction) {
-        switch(direction) {
-            case SOUTH:
-                return com.dfsek.terra.api.block.state.properties.enums.Direction.SOUTH;
-            case NORTH:
-                return com.dfsek.terra.api.block.state.properties.enums.Direction.NORTH;
-            case WEST:
-                return com.dfsek.terra.api.block.state.properties.enums.Direction.WEST;
-            case EAST:
-                return com.dfsek.terra.api.block.state.properties.enums.Direction.EAST;
-            case UP:
-                return com.dfsek.terra.api.block.state.properties.enums.Direction.UP;
-            case DOWN:
-                return com.dfsek.terra.api.block.state.properties.enums.Direction.DOWN;
-        }
-        throw new IllegalArgumentException();
+        return switch(direction) {
+            case SOUTH -> com.dfsek.terra.api.block.state.properties.enums.Direction.SOUTH;
+            case NORTH -> com.dfsek.terra.api.block.state.properties.enums.Direction.NORTH;
+            case WEST -> com.dfsek.terra.api.block.state.properties.enums.Direction.WEST;
+            case EAST -> com.dfsek.terra.api.block.state.properties.enums.Direction.EAST;
+            case UP -> com.dfsek.terra.api.block.state.properties.enums.Direction.UP;
+            case DOWN -> com.dfsek.terra.api.block.state.properties.enums.Direction.DOWN;
+        };
     }
     
     public static WallHeight adapt(WallShape shape) {
-        switch(shape) {
-            case LOW:
-                return WallHeight.LOW;
-            case NONE:
-                return WallHeight.NONE;
-            case TALL:
-                return WallHeight.TALL;
-        }
-        throw new IllegalArgumentException();
+        return switch(shape) {
+            case LOW -> WallHeight.LOW;
+            case NONE -> WallHeight.NONE;
+            case TALL -> WallHeight.TALL;
+        };
     }
     
     public static WallShape adapt(WallHeight shape) {
-        switch(shape) {
-            case LOW:
-                return WallShape.LOW;
-            case NONE:
-                return WallShape.NONE;
-            case TALL:
-                return WallShape.TALL;
-        }
-        throw new IllegalArgumentException();
+        return switch(shape) {
+            case LOW -> WallShape.LOW;
+            case NONE -> WallShape.NONE;
+            case TALL -> WallShape.TALL;
+        };
     }
     
     public static RedstoneConnection adapt(WireConnection connection) {
-        switch(connection) {
-            case NONE:
-                return RedstoneConnection.NONE;
-            case UP:
-                return RedstoneConnection.UP;
-            case SIDE:
-                return RedstoneConnection.SIDE;
-        }
-        throw new IllegalArgumentException();
+        return switch(connection) {
+            case NONE -> RedstoneConnection.NONE;
+            case UP -> RedstoneConnection.UP;
+            case SIDE -> RedstoneConnection.SIDE;
+        };
     }
     
     public static WireConnection adapt(RedstoneConnection connection) {
-        switch(connection) {
-            case NONE:
-                return WireConnection.NONE;
-            case UP:
-                return WireConnection.UP;
-            case SIDE:
-                return WireConnection.SIDE;
-        }
-        throw new IllegalArgumentException();
+        return switch(connection) {
+            case NONE -> WireConnection.NONE;
+            case UP -> WireConnection.UP;
+            case SIDE -> WireConnection.SIDE;
+        };
     }
     
     
     public static Half adapt(BlockHalf half) {
-        switch(half) {
-            case BOTTOM:
-                return Half.BOTTOM;
-            case TOP:
-                return Half.TOP;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(half) {
+            case BOTTOM -> Half.BOTTOM;
+            case TOP -> Half.TOP;
+        };
     }
     
     public static BlockHalf adapt(Half half) {
-        switch(half) {
-            case TOP:
-                return BlockHalf.TOP;
-            case BOTTOM:
-                return BlockHalf.BOTTOM;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(half) {
+            case TOP -> BlockHalf.TOP;
+            case BOTTOM -> BlockHalf.BOTTOM;
+            default -> throw new IllegalStateException();
+        };
     }
     
     public static RailShape adapt(net.minecraft.block.enums.RailShape railShape) {
-        switch(railShape) {
-            case EAST_WEST:
-                return RailShape.EAST_WEST;
-            case NORTH_EAST:
-                return RailShape.NORTH_EAST;
-            case NORTH_WEST:
-                return RailShape.NORTH_WEST;
-            case SOUTH_EAST:
-                return RailShape.SOUTH_EAST;
-            case SOUTH_WEST:
-                return RailShape.SOUTH_WEST;
-            case NORTH_SOUTH:
-                return RailShape.NORTH_SOUTH;
-            case ASCENDING_EAST:
-                return RailShape.ASCENDING_EAST;
-            case ASCENDING_NORTH:
-                return RailShape.ASCENDING_NORTH;
-            case ASCENDING_SOUTH:
-                return RailShape.ASCENDING_SOUTH;
-            case ASCENDING_WEST:
-                return RailShape.ASCENDING_WEST;
-        }
-        throw new IllegalStateException();
+        return switch(railShape) {
+            case EAST_WEST -> RailShape.EAST_WEST;
+            case NORTH_EAST -> RailShape.NORTH_EAST;
+            case NORTH_WEST -> RailShape.NORTH_WEST;
+            case SOUTH_EAST -> RailShape.SOUTH_EAST;
+            case SOUTH_WEST -> RailShape.SOUTH_WEST;
+            case NORTH_SOUTH -> RailShape.NORTH_SOUTH;
+            case ASCENDING_EAST -> RailShape.ASCENDING_EAST;
+            case ASCENDING_NORTH -> RailShape.ASCENDING_NORTH;
+            case ASCENDING_SOUTH -> RailShape.ASCENDING_SOUTH;
+            case ASCENDING_WEST -> RailShape.ASCENDING_WEST;
+        };
     }
     
     public static net.minecraft.block.enums.RailShape adapt(RailShape railShape) {
-        switch(railShape) {
-            case EAST_WEST:
-                return net.minecraft.block.enums.RailShape.EAST_WEST;
-            case NORTH_EAST:
-                return net.minecraft.block.enums.RailShape.NORTH_EAST;
-            case NORTH_WEST:
-                return net.minecraft.block.enums.RailShape.NORTH_WEST;
-            case SOUTH_EAST:
-                return net.minecraft.block.enums.RailShape.SOUTH_EAST;
-            case SOUTH_WEST:
-                return net.minecraft.block.enums.RailShape.SOUTH_WEST;
-            case NORTH_SOUTH:
-                return net.minecraft.block.enums.RailShape.NORTH_SOUTH;
-            case ASCENDING_EAST:
-                return net.minecraft.block.enums.RailShape.ASCENDING_EAST;
-            case ASCENDING_NORTH:
-                return net.minecraft.block.enums.RailShape.ASCENDING_NORTH;
-            case ASCENDING_SOUTH:
-                return net.minecraft.block.enums.RailShape.ASCENDING_SOUTH;
-            case ASCENDING_WEST:
-                return net.minecraft.block.enums.RailShape.ASCENDING_WEST;
-        }
-        throw new IllegalStateException();
+        return switch(railShape) {
+            case EAST_WEST -> net.minecraft.block.enums.RailShape.EAST_WEST;
+            case NORTH_EAST -> net.minecraft.block.enums.RailShape.NORTH_EAST;
+            case NORTH_WEST -> net.minecraft.block.enums.RailShape.NORTH_WEST;
+            case SOUTH_EAST -> net.minecraft.block.enums.RailShape.SOUTH_EAST;
+            case SOUTH_WEST -> net.minecraft.block.enums.RailShape.SOUTH_WEST;
+            case NORTH_SOUTH -> net.minecraft.block.enums.RailShape.NORTH_SOUTH;
+            case ASCENDING_EAST -> net.minecraft.block.enums.RailShape.ASCENDING_EAST;
+            case ASCENDING_NORTH -> net.minecraft.block.enums.RailShape.ASCENDING_NORTH;
+            case ASCENDING_SOUTH -> net.minecraft.block.enums.RailShape.ASCENDING_SOUTH;
+            case ASCENDING_WEST -> net.minecraft.block.enums.RailShape.ASCENDING_WEST;
+        };
     }
     
     
     public static Axis adapt(Direction.Axis axis) {
-        switch(axis) {
-            case X:
-                return Axis.X;
-            case Y:
-                return Axis.Y;
-            case Z:
-                return Axis.Z;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(axis) {
+            case X -> Axis.X;
+            case Y -> Axis.Y;
+            case Z -> Axis.Z;
+        };
     }
     
     public static Direction.Axis adapt(Axis axis) {
-        switch(axis) {
-            case Z:
-                return Direction.Axis.Z;
-            case Y:
-                return Direction.Axis.Y;
-            case X:
-                return Direction.Axis.X;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch(axis) {
+            case Z -> Direction.Axis.Z;
+            case Y -> Direction.Axis.Y;
+            case X -> Direction.Axis.X;
+        };
     }
 }

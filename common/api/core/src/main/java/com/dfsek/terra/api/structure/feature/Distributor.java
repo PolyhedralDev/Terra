@@ -10,4 +10,12 @@ public interface Distributor {
     default Distributor or(Distributor other) {
         return (x, z, seed) -> this.matches(x, z, seed) || other.matches(x, z, seed);
     }
+    
+    static Distributor yes() {
+        return (x, z, seed) -> true;
+    }
+    
+    static Distributor no() {
+        return (x, z, seed) -> false;
+    }
 }

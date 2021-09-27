@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
+import com.dfsek.terra.api.Platform;
+
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
@@ -10,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
@@ -22,14 +23,14 @@ public class EnchantFunction implements LootFunction {
     private final int min;
     private final int max;
     private final JSONArray disabled;
-    private final TerraPlugin main;
+    private final Platform platform;
     
     
-    public EnchantFunction(int min, int max, JSONArray disabled, TerraPlugin main) {
+    public EnchantFunction(int min, int max, JSONArray disabled, Platform platform) {
         this.max = max;
         this.min = min;
         this.disabled = disabled;
-        this.main = main;
+        this.platform = platform;
     }
     
     /**
@@ -46,7 +47,7 @@ public class EnchantFunction implements LootFunction {
         
         double enchant = (r.nextDouble() * (max - min)) + min;
         List<Enchantment> possible = new ArrayList<>();
-        for(Enchantment ench : main.getItemHandle().getEnchantments()) {
+        for(Enchantment ench : platform.getItemHandle().getEnchantments()) {
             if(ench.canEnchantItem(original) && (disabled == null || !this.disabled.contains(ench.getID()))) {
                 possible.add(ench);
             }

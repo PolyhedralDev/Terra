@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.terrascript.buffer.items;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -13,11 +13,11 @@ import com.dfsek.terra.api.world.World;
 public class BufferedStateManipulator implements BufferedItem {
     private static final Logger logger = LoggerFactory.getLogger(BufferedStateManipulator.class);
     
-    private final TerraPlugin main;
+    private final Platform platform;
     private final String data;
     
-    public BufferedStateManipulator(TerraPlugin main, String state) {
-        this.main = main;
+    public BufferedStateManipulator(Platform platform, String state) {
+        this.platform = platform;
         this.data = state;
     }
     

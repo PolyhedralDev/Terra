@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -24,7 +24,7 @@ public interface ChunkGenerator {
     
     ConfigPack getConfigPack();
     
-    TerraPlugin getMain();
+    Platform getPlatform();
     
     List<GenerationStage> getGenerationStages();
     

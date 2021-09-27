@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.api.Platform;
+
 import net.jafama.FastMath;
 
 import java.util.HashMap;
@@ -13,7 +15,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
@@ -23,19 +24,19 @@ import com.dfsek.terra.api.util.vector.Vector3;
 public class BlockFunction implements Function<Void> {
     protected final Returnable<Number> x, y, z;
     protected final Returnable<String> blockData;
-    protected final TerraPlugin main;
+    protected final Platform platform;
     private final Map<String, BlockState> data = new HashMap<>();
     private final Returnable<Boolean> overwrite;
     private final Position position;
     
     public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> blockData,
-                         Returnable<Boolean> overwrite, TerraPlugin main, Position position) {
+                         Returnable<Boolean> overwrite, Platform platform, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.blockData = blockData;
         this.overwrite = overwrite;
-        this.main = main;
+        this.platform = platform;
         this.position = position;
     }
     
@@ -66,13 +67,13 @@ public class BlockFunction implements Function<Void> {
         
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         arguments.getBuffer().addItem(
-                new BufferedBlock(rot, overwrite.apply(implementationArguments, variableMap), main, arguments.isWaterlog()),
+                new BufferedBlock(rot, overwrite.apply(implementationArguments, variableMap), platform, arguments.isWaterlog()),
                 new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
                             FastMath.roundToInt(xz.getZ())));
     }
     
     protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
-        return data.computeIfAbsent(blockData.apply(arguments, variableMap), main.getWorldHandle()::createBlockData);
+        return data.computeIfAbsent(blockData.apply(arguments, variableMap), platform.getWorldHandle()::createBlockData);
     }
     
     
@@ -80,9 +81,9 @@ public class BlockFunction implements Function<Void> {
         private final BlockState state;
         
         public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData,
-                        Returnable<Boolean> overwrite, TerraPlugin main, Position position) {
-            super(x, y, z, blockData, overwrite, main, position);
-            this.state = main.getWorldHandle().createBlockData(blockData.getConstant());
+                        Returnable<Boolean> overwrite, Platform platform, Position position) {
+            super(x, y, z, blockData, overwrite, platform, position);
+            this.state = platform.getWorldHandle().createBlockData(blockData.getConstant());
         }
         
         @Override

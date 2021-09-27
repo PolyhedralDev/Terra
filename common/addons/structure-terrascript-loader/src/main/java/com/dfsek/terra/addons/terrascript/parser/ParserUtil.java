@@ -90,17 +90,13 @@ public class ParserUtil {
     }
     
     public static Returnable.ReturnType getVariableReturnType(Token varToken) throws ParseException {
-        switch(varToken.getType()) {
-            case NUMBER_VARIABLE:
-                return Returnable.ReturnType.NUMBER;
-            case STRING_VARIABLE:
-                return Returnable.ReturnType.STRING;
-            case BOOLEAN_VARIABLE:
-                return Returnable.ReturnType.BOOLEAN;
-            default:
-                throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration",
-                                         varToken.getPosition());
-        }
+        return switch(varToken.getType()) {
+            case NUMBER_VARIABLE -> Returnable.ReturnType.NUMBER;
+            case STRING_VARIABLE -> Returnable.ReturnType.STRING;
+            case BOOLEAN_VARIABLE -> Returnable.ReturnType.BOOLEAN;
+            default -> throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration",
+                                                varToken.getPosition());
+        };
     }
     
     public static boolean hasPrecedence(Token.Type first, Token.Type second) {

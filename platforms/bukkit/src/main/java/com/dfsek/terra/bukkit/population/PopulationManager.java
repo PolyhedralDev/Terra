@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.population;
 
+import com.dfsek.terra.api.Platform;
+
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,13 +10,12 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.bukkit.TerraPluginImpl;
+import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 import com.dfsek.terra.util.FastRandom;
@@ -26,11 +27,11 @@ import com.dfsek.terra.util.FastRandom;
 public class PopulationManager extends BlockPopulator {
     private final ChunkGenerator generator;
     private final HashSet<ChunkCoordinate> needsPop = new HashSet<>();
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public PopulationManager(ChunkGenerator generator, TerraPlugin main) {
+    public PopulationManager(ChunkGenerator generator, Platform platform) {
         this.generator = generator;
-        this.main = main;
+        this.platform = platform;
     }
     
     public static File getDataFolder(World w) {
@@ -77,12 +78,12 @@ public class PopulationManager extends BlockPopulator {
     @Override
     @SuppressWarnings("try")
     public void populate(org.bukkit.@NotNull World world, @NotNull Random random, org.bukkit.@NotNull Chunk source) {
-        try(ProfileFrame ignore = main.getProfiler().profile("popman")) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("popman")) {
             Chunk chunk = BukkitAdapter.adapt(source);
             needsPop.add(new ChunkCoordinate(chunk));
             int x = chunk.getX();
             int z = chunk.getZ();
-            if(((TerraPluginImpl) main).getPlugin().isEnabled()) {
+            if(((PlatformImpl) platform).getPlugin().isEnabled()) {
                 for(int xi = -1; xi <= 1; xi++) {
                     for(int zi = -1; zi <= 1; zi++) {
                         if(xi == 0 && zi == 0) continue;

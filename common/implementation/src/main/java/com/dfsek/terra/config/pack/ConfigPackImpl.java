@@ -35,7 +35,7 @@ import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -89,7 +89,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Scope varScope = new Scope();
-    private final TerraPlugin main;
+    private final Platform platform;
     private final Loader loader;
     
     private final Configuration configuration;
@@ -105,18 +105,18 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
-    public ConfigPackImpl(File folder, TerraPlugin main) throws ConfigException {
+    public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
         try {
             this.loader = new FolderLoader(folder.toPath());
-            this.main = main;
+            this.platform = platform;
             this.configTypeRegistry = createRegistry();
             long l = System.nanoTime();
             
             register(abstractConfigLoader);
-            main.register(abstractConfigLoader);
+            platform.register(abstractConfigLoader);
             
             register(selfLoader);
-            main.register(selfLoader);
+            platform.register(selfLoader);
             
             File pack = new File(folder, "pack.yml");
             
@@ -127,17 +127,17 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 selfLoader.load(template, configuration);
                 
                 logger.info("Loading config pack \"{}\"", template.getID());
-                load(l, main);
+                load(l, platform);
                 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries(main);
+                checkDeadEntries(platform);
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
@@ -148,18 +148,18 @@ public class ConfigPackImpl implements ConfigPack {
         toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
     }
     
-    public ConfigPackImpl(ZipFile file, TerraPlugin main) throws ConfigException {
+    public ConfigPackImpl(ZipFile file, Platform platform) throws ConfigException {
         try {
             this.loader = new ZIPLoader(file);
-            this.main = main;
+            this.platform = platform;
             this.configTypeRegistry = createRegistry();
             long l = System.nanoTime();
             
             register(selfLoader);
-            main.register(selfLoader);
+            platform.register(selfLoader);
             
             register(abstractConfigLoader);
-            main.register(abstractConfigLoader);
+            platform.register(abstractConfigLoader);
             
             try {
                 ZipEntry pack = null;
@@ -177,19 +177,19 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                main.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 
                 selfLoader.load(template, configuration);
                 logger.info("Loading config pack \"" + template.getID() + "\"");
                 
-                load(l, main);
+                load(l, platform);
                 
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries(main);
+                checkDeadEntries(platform);
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
@@ -225,7 +225,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     @Override
     public WorldConfigImpl toWorldConfig(World world) {
-        return new WorldConfigImpl(world, this, main);
+        return new WorldConfigImpl(world, this, platform);
     }
     
     @Override
@@ -273,93 +273,6 @@ public class ConfigPackImpl implements ConfigPack {
         return template.vanillaDecorations();
     }
     
-    @SuppressWarnings("unchecked")
-    private ConfigTypeRegistry createRegistry() {
-        return new ConfigTypeRegistry(main, (id, configType) -> {
-            OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
-            if(registryMap.containsKey(configType.getTypeKey()
-                                                 .getType())) { // Someone already registered something; we need to copy things to the
-                // new registry.
-                logger.warn("Copying values from old registry for {}", configType.getTypeKey());
-                registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
-            }
-            selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
-            abstractConfigLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
-            registryMap.put(configType.getTypeKey().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
-        });
-    }
-    
-    private void checkDeadEntries(TerraPlugin main) {
-        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft())
-                .getDeadEntries()
-                .forEach((id, value) -> logger.warn("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
-    }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void load(long start, TerraPlugin main) throws ConfigException {
-        configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
-        
-        for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
-            varScope.create(var.getKey(), var.getValue());
-        }
-        
-        Map<String, Configuration> configurations = new HashMap<>();
-        
-        main.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
-        
-        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-        
-        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
-        
-        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
-        
-        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        
-        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-        
-        Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
-        
-        for(Configuration configuration : configurations.values()) { // Sort the configs
-            if(configuration.contains("type")) { // Only sort configs with type key
-                ProtoConfig config = new ProtoConfig();
-                selfLoader.load(config, configuration);
-                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
-            }
-        }
-        
-        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
-            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
-            main.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
-            for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(
-                    configs.getOrDefault(configType, Collections.emptyList()))) {
-                try {
-                    Object loaded = ((ConfigFactory) configType.getFactory()).build(
-                            selfLoader.load(configType.getTemplate(this, main), config), main);
-                    registry.register(config.getID(), loaded);
-                    main.getEventManager().callEvent(
-                            new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
-                } catch(DuplicateEntryException e) {
-                    throw new LoadException("Duplicate registry entry: ", e);
-                }
-            }
-            main.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
-        }
-        
-        main.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
-        logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
-                    template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
-    }
-    
     @Override
     public BiomeProvider getBiomeProviderBuilder() {
         return seededBiomeProvider;
@@ -373,7 +286,7 @@ public class ConfigPackImpl implements ConfigPack {
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
             logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
-            
+        
             if(type instanceof ParameterizedType param) {
                 Type base = param.getRawType();
                 if(base instanceof Class  // should always be true but we'll check anyways
@@ -393,7 +306,7 @@ public class ConfigPackImpl implements ConfigPack {
                     }
                 }
             }
-            
+        
             return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }
@@ -432,6 +345,93 @@ public class ConfigPackImpl implements ConfigPack {
     public ChunkGeneratorProvider getGeneratorProvider() {
         return template.getGeneratorProvider();
     }
+    
+    @SuppressWarnings("unchecked")
+    private ConfigTypeRegistry createRegistry() {
+        return new ConfigTypeRegistry(platform, (id, configType) -> {
+            OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
+            if(registryMap.containsKey(configType.getTypeKey()
+                                                 .getType())) { // Someone already registered something; we need to copy things to the
+                // new registry.
+                logger.warn("Copying values from old registry for {}", configType.getTypeKey());
+                registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+            }
+            selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
+            abstractConfigLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
+            registryMap.put(configType.getTypeKey().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+        });
+    }
+    
+    private void checkDeadEntries(TerraPlugin main) {
+        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft())
+                .getDeadEntries()
+                .forEach((id, value) -> logger.warn("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void load(long start, Platform platform) throws ConfigException {
+        configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
+        
+        for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
+            varScope.create(var.getKey(), var.getValue());
+        }
+        
+        Map<String, Configuration> configurations = new HashMap<>();
+        
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
+        
+        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        
+        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
+        
+        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+        
+        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        
+        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        
+        Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
+        
+        for(Configuration configuration : configurations.values()) { // Sort the configs
+            if(configuration.contains("type")) { // Only sort configs with type key
+                ProtoConfig config = new ProtoConfig();
+                selfLoader.load(config, configuration);
+                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+            }
+        }
+        
+        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
+            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
+            platform.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
+            for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(
+                    configs.getOrDefault(configType, Collections.emptyList()))) {
+                try {
+                    Object loaded = ((ConfigFactory) configType.getFactory()).build(
+                            selfLoader.load(configType.getTemplate(this, platform), config), platform);
+                    registry.register(config.getID(), loaded);
+                    platform.getEventManager().callEvent(
+                            new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
+                } catch(DuplicateEntryException e) {
+                    throw new LoadException("Duplicate registry entry: ", e);
+                }
+            }
+            platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
+        }
+        
+        platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
+        logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
+                    template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
+   }
     
     protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;

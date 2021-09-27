@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Language;
 
@@ -22,8 +22,9 @@ public final class LangUtil {
     
     private LangUtil() { }
     
-    public static void load(String langID, TerraPlugin main) {
-        File file = new File(main.getDataFolder(), "lang");
+    public static void load(String langID, Platform platform) {
+        Logger logger = platform.logger();
+        File file = new File(platform.getDataFolder(), "lang");
         try {
             File file1 = new File(file, langID + ".yml");
             logger.info(file1.getAbsolutePath());

@@ -4,7 +4,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 
 import java.util.LinkedHashMap;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -19,10 +19,10 @@ import com.dfsek.terra.config.loaders.RangeLoader;
 
 
 public class GenericLoaders implements LoaderRegistrar {
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public GenericLoaders(TerraPlugin main) {
-        this.main = main;
+    public GenericLoaders(Platform platform) {
+        this.platform = platform;
     }
     
     @Override
@@ -32,11 +32,11 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
         
-        if(main != null) {
-            registry.registerLoader(TerraAddon.class, main.getAddons())
+        if(platform != null) {
+            registry.registerLoader(TerraAddon.class, platform.getAddons())
                     .registerLoader(BlockType.class,
-                                    (t, object, cf) -> main.getWorldHandle().createBlockData((String) object).getBlockType())
-                    .registerLoader(BlockState.class, (t, object, cf) -> main.getWorldHandle().createBlockData((String) object));
+                                    (t, object, cf) -> platform.getWorldHandle().createBlockData((String) object).getBlockType())
+                    .registerLoader(BlockState.class, (t, object, cf) -> platform.getWorldHandle().createBlockData((String) object));
         }
     }
 }

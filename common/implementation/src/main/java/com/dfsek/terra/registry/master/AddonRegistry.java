@@ -13,7 +13,7 @@ import com.dfsek.terra.addon.AddonClassLoader;
 import com.dfsek.terra.addon.AddonPool;
 import com.dfsek.terra.addon.PreLoadAddon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.exception.InjectionException;
@@ -25,14 +25,14 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AddonRegistry.class);
     
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public AddonRegistry(TerraPlugin main) {
-        this.main = main;
+    public AddonRegistry(Platform platform) {
+        this.platform = platform;
     }
     
-    public AddonRegistry(TerraAddon addon, TerraPlugin main) {
-        this.main = main;
+    public AddonRegistry(TerraAddon addon, Platform platform) {
+        this.platform = platform;
         register(addon);
     }
     
@@ -54,16 +54,16 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
     }
     
     public boolean loadAll() {
-        return loadAll(TerraPlugin.class.getClassLoader());
+        return loadAll(Platform.class.getClassLoader());
     }
     
     @SuppressWarnings({ "NestedTryStatement", "ThrowCaughtLocally" })
     public boolean loadAll(ClassLoader parent) {
-        InjectorImpl<TerraPlugin> pluginInjector = new InjectorImpl<>(main);
-        pluginInjector.addExplicitTarget(TerraPlugin.class);
+        InjectorImpl<Platform> pluginInjector = new InjectorImpl<>(platform);
+        pluginInjector.addExplicitTarget(Platform.class);
         
         boolean valid = true;
-        File addonsFolder = new File(main.getDataFolder(), "addons");
+        File addonsFolder = new File(platform.getDataFolder(), "addons");
         addonsFolder.mkdirs();
         
         AddonPool pool = new AddonPool();

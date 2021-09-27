@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.structure.command.structure.completer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
@@ -13,7 +13,7 @@ import com.dfsek.terra.api.structure.Structure;
 
 public class ScriptCompleter implements TabCompleter {
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @Override
     public List<String> complete(CommandSender sender) {

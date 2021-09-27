@@ -1,6 +1,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+
+import com.dfsek.terra.api.Platform;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -18,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
@@ -43,12 +45,12 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 
 
 /**
- * Skeleton implementation of {@link TerraPlugin}
+ * Skeleton implementation of {@link Platform}
  * <p>
  * Implementations must invoke {@link #load()} in their constructors.
  */
-public abstract class AbstractTerraPlugin implements TerraPlugin {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractTerraPlugin.class);
+public abstract class AbstractPlatform implements Platform {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractPlatform.class);
     
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl(this);

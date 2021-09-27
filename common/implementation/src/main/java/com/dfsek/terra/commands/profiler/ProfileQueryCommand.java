@@ -3,7 +3,7 @@ package com.dfsek.terra.commands.profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.type.DebugCommand;
@@ -17,12 +17,12 @@ public class ProfileQueryCommand implements CommandTemplate {
     private static final Logger logger = LoggerFactory.getLogger(ProfileQueryCommand.class);
     
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
         StringBuilder data = new StringBuilder("Terra Profiler data dump: \n");
-        main.getProfiler().getTimings().forEach((id, timings) -> data.append(id).append(": ").append(timings.toString()).append('\n'));
+        platform.getProfiler().getTimings().forEach((id, timings) -> data.append(id).append(": ").append(timings.toString()).append('\n'));
         logger.info(data.toString());
         sender.sendMessage("Profiler data dumped to console.");
     }

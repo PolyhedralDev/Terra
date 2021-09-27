@@ -7,7 +7,7 @@ import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -20,14 +20,14 @@ public class BiomePipelineProvider implements BiomeProvider {
     private final NoiseSampler mutator;
     private final double noiseAmp;
     
-    public BiomePipelineProvider(BiomePipeline pipeline, TerraPlugin main, int resolution, NoiseSampler mutator, double noiseAmp) {
+    public BiomePipelineProvider(BiomePipeline pipeline, Platform platform, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
         holderCache = CacheBuilder.newBuilder()
-                                  .maximumSize(main == null ? 32 : main.getTerraConfig().getProviderCache())
+                                  .maximumSize(platform == null ? 32 : platform.getTerraConfig().getProviderCache())
                                   .build(
-                                          new CacheLoader<SeededVector, BiomeHolder>() {
+                                          new CacheLoader<>() {
                                               @Override
                                               public BiomeHolder load(@NotNull SeededVector key) {
                                                   return pipeline.getBiomes(key.x, key.z, key.seed);

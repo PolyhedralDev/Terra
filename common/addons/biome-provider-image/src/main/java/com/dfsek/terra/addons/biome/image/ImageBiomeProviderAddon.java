@@ -4,7 +4,7 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -26,18 +26,18 @@ public class ImageBiomeProviderAddon extends TerraAddon {
     };
     
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
-                        PROVIDER_REGISTRY_KEY);
-                providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(TerraBiome.class)));
-            })
-            .failThrough();
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                            PROVIDER_REGISTRY_KEY);
+                    providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(TerraBiome.class)));
+                })
+                .failThrough();
     }
 }

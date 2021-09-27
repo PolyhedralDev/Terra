@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.structure;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -16,14 +16,14 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 @Author("Terra")
 public class StructureAddon extends TerraAddon {
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @Override
     public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
-            .failThrough();
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
+                .failThrough();
     }
 }

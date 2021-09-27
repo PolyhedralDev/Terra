@@ -114,9 +114,9 @@ please [include as many details as possible](#how-do-i-submit-a-good-bug-report)
 - Make sure that this is not a *specific* compatibility issue with another
   terrain generation mod. Do not request *specific* compatibility with mods or
   plugins (e.g. "Compatibility with TechCraft v7"). That should be implemented
-  in an addon, **not** in the main project.
+  in an addon, **not** in the platform project.
   *General* compatibility (e.g. "Ability to pull Vanilla/Modded features from
-  parent biomes") will be considered in the main project.
+  parent biomes") will be considered in the platform project.
 - Search for
   any [already existing issues](https://github.com/PolyhedralDev/Terra/issues?q=is%3Aissue+)
   open with your problem. If you open a duplicate, it will be closed as such.
@@ -200,7 +200,7 @@ please [include as many details as possible](#how-do-i-submit-a-good-enhancement
 
 Enhancement suggestions are tracked
 as [GitHub issues](https://guides.github.com/features/issues/). Create an issue
-on our main repository and provide the following information:
+on our platform repository and provide the following information:
 
 - **Use a clear and descriptive title** for the issue to identify the
   suggestion.
@@ -243,7 +243,7 @@ accepted.
 
 Pull Requests are tracked
 as [GitHub Pull Requests](https://guides.github.com/activities/forking/#making-a-pull-request)
-. Create a pr on our main repository and provide the following information:
+. Create a pr on our platform repository and provide the following information:
 
 - **Use a clear and descriptive title** to identify the pull request.
 - **State what this pull request adds/fixes**.
@@ -347,7 +347,7 @@ TODO
 #### General Compatibility
 
 General compatibility (example: injection of Vanilla structures/features/carvers
-into packs) is acceptable in the main project.
+into packs) is acceptable in the platform project.
 
 - General compatibility features should be *disabled by default*. Having things
   auto-injected causes unpredictable behaviour that is annoying to diagnose.
@@ -365,7 +365,7 @@ into packs) is acceptable in the main project.
 
 #### Specific Compatibility
 
-Specific compatibility should *not* be put in the main project. (Example: Adding
+Specific compatibility should *not* be put in the platform project. (Example: Adding
 the ability to generate TechCraft v7's doo-dads with a TerraScript function)
 
 Having specific compatibilities leads to tons of extra dependencies to keep

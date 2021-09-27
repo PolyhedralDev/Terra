@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
@@ -20,12 +20,12 @@ public class BufferedLootApplication implements BufferedItem {
     private static final Logger logger = LoggerFactory.getLogger(BufferedLootApplication.class);
     
     private final LootTable table;
-    private final TerraPlugin main;
+    private final Platform platform;
     private final StructureScript structure;
     
-    public BufferedLootApplication(LootTable table, TerraPlugin main, StructureScript structure) {
+    public BufferedLootApplication(LootTable table, Platform platform, StructureScript structure) {
         this.table = table;
-        this.main = main;
+        this.platform = platform;
         this.structure = structure;
     }
     
@@ -39,7 +39,7 @@ public class BufferedLootApplication implements BufferedItem {
             }
     
             LootPopulateEvent event = new LootPopulateEvent(container, table, world.getConfig().getPack(), structure);
-            main.getEventManager().callEvent(event);
+            platform.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
             
             event.getTable().fillInventory(container.getInventory(), new Random(origin.hashCode()));

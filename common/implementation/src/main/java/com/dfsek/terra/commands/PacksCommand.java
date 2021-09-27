@@ -1,6 +1,6 @@
 package com.dfsek.terra.commands;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -15,11 +15,11 @@ import com.dfsek.terra.config.lang.LangUtil;
 )
 public class PacksCommand implements CommandTemplate {
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
-        CheckedRegistry<ConfigPack> registry = main.getConfigRegistry();
+        CheckedRegistry<ConfigPack> registry = platform.getConfigRegistry();
         
         if(registry.entries().isEmpty()) {
             LangUtil.send("command.packs.none", sender);
@@ -27,8 +27,6 @@ public class PacksCommand implements CommandTemplate {
         }
         
         LangUtil.send("command.packs.main", sender);
-        registry.entries().forEach(entry -> {
-            LangUtil.send("command.packs.pack", sender, entry.getID(), entry.getAuthor(), entry.getVersion());
-        });
+        registry.entries().forEach(entry -> LangUtil.send("command.packs.pack", sender, entry.getID(), entry.getAuthor(), entry.getVersion()));
     }
 }

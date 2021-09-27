@@ -38,7 +38,7 @@ import com.dfsek.terra.addons.terrascript.script.builders.UnaryBooleanFunctionBu
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.ZeroArgFunctionBuilder;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
@@ -56,10 +56,10 @@ public class StructureScript implements Structure {
     private final Block block;
     private final String id;
     private final Cache<Vector3, StructureBuffer> cache;
-    private final TerraPlugin main;
+    private final Platform platform;
     private String tempID;
     
-    public StructureScript(InputStream inputStream, TerraPlugin main, Registry<Structure> registry, Registry<LootTable> lootRegistry,
+    public StructureScript(InputStream inputStream, Platform platform, Registry<Structure> registry, Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder<?>> functionRegistry) throws ParseException {
         Parser parser;
         try {
@@ -71,20 +71,20 @@ public class StructureScript implements Structure {
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
         
         parser
-                .registerFunction("block", new BlockFunctionBuilder(main))
-                .registerFunction("debugBlock", new BlockFunctionBuilder(main))
-                .registerFunction("check", new CheckFunctionBuilder(main))
-                .registerFunction("structure", new StructureFunctionBuilder(registry, main))
+                .registerFunction("block", new BlockFunctionBuilder(platform))
+                .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
+                .registerFunction("check", new CheckFunctionBuilder(platform))
+                .registerFunction("structure", new StructureFunctionBuilder(registry, platform))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())
                 .registerFunction("setMark", new SetMarkFunctionBuilder())
                 .registerFunction("getMark", new GetMarkFunctionBuilder())
-                .registerFunction("pull", new PullFunctionBuilder(main))
-                .registerFunction("loot", new LootFunctionBuilder(main, lootRegistry, this))
-                .registerFunction("entity", new EntityFunctionBuilder(main))
-                .registerFunction("getBiome", new BiomeFunctionBuilder(main))
+                .registerFunction("pull", new PullFunctionBuilder(platform))
+                .registerFunction("loot", new LootFunctionBuilder(platform, lootRegistry, this))
+                .registerFunction("entity", new EntityFunctionBuilder(platform))
+                .registerFunction("getBiome", new BiomeFunctionBuilder(platform))
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
-                .registerFunction("state", new StateFunctionBuilder(main))
+                .registerFunction("state", new StateFunctionBuilder(platform))
                 .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
                 .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(),
                                                                                 Returnable.ReturnType.NUMBER))
@@ -117,21 +117,21 @@ public class StructureScript implements Structure {
                 .registerFunction("min", new BinaryNumberFunctionBuilder(
                         (number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
         
-        if(!main.getTerraConfig().isDebugScript()) {
+        if(!platform.getTerraConfig().isDebugScript()) {
             parser.ignoreFunction("debugBlock");
         }
         
         block = parser.parse();
         this.id = parser.getID();
         tempID = id;
-        this.main = main;
-        this.cache = CacheBuilder.newBuilder().maximumSize(main.getTerraConfig().getStructureCache()).build();
+        this.platform = platform;
+        this.cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getStructureCache()).build();
     }
     
     @Override
     @SuppressWarnings("try")
     public boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_chunk:" + id)) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_chunk:" + id)) {
             StructureBuffer buffer = computeBuffer(location, world, random, rotation);
             buffer.paste(location, chunk);
             return buffer.succeeded();
@@ -141,7 +141,7 @@ public class StructureScript implements Structure {
     @Override
     @SuppressWarnings("try")
     public boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_recursive:" + id)) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_recursive:" + id)) {
             return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
         }
     }
@@ -149,7 +149,7 @@ public class StructureScript implements Structure {
     @Override
     @SuppressWarnings("try")
     public boolean generate(Vector3 location, World world, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_direct:" + id)) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
             DirectBuffer buffer = new DirectBuffer(location, world);
             return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
         }
@@ -157,7 +157,7 @@ public class StructureScript implements Structure {
     
     @SuppressWarnings("try")
     public boolean test(Vector3 location, World world, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = main.getProfiler().profile("terrascript_test:" + id)) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_test:" + id)) {
             StructureBuffer buffer = computeBuffer(location, world, random, rotation);
             return buffer.succeeded();
         }

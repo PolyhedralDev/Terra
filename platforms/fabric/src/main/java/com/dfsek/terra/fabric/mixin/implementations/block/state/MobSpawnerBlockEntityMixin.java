@@ -97,32 +97,15 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public void terra$applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
-                case "type":
-                    terra$setSpawnedType(FabricEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
-                    return;
-                case "delay":
-                    terra$setDelay(Integer.parseInt(v));
-                    return;
-                case "min_delay":
-                    terra$setMinSpawnDelay(Integer.parseInt(v));
-                    return;
-                case "max_delay":
-                    terra$setMaxSpawnDelay(Integer.parseInt(v));
-                    return;
-                case "spawn_count":
-                    terra$setSpawnCount(Integer.parseInt(v));
-                    return;
-                case "spawn_range":
-                    terra$setSpawnRange(Integer.parseInt(v));
-                    return;
-                case "max_nearby":
-                    terra$setMaxNearbyEntities(Integer.parseInt(v));
-                    return;
-                case "required_player_range":
-                    terra$setRequiredPlayerRange(Integer.parseInt(v));
-                    return;
-                default:
-                    throw new IllegalArgumentException("Invalid property: " + k);
+                case "type" -> terra$setSpawnedType(FabricEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
+                case "delay" -> terra$setDelay(Integer.parseInt(v));
+                case "min_delay" -> terra$setMinSpawnDelay(Integer.parseInt(v));
+                case "max_delay" -> terra$setMaxSpawnDelay(Integer.parseInt(v));
+                case "spawn_count" -> terra$setSpawnCount(Integer.parseInt(v));
+                case "spawn_range" -> terra$setSpawnRange(Integer.parseInt(v));
+                case "max_nearby" -> terra$setMaxNearbyEntities(Integer.parseInt(v));
+                case "required_player_range" -> terra$setRequiredPlayerRange(Integer.parseInt(v));
+                default -> throw new IllegalArgumentException("Invalid property: " + k);
             }
         });
     }

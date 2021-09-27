@@ -1,6 +1,9 @@
 package com.dfsek.terra.api.world;
 
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.structure.feature.BinaryColumn;
+
+import java.util.function.IntConsumer;
 
 
 /**
@@ -18,4 +21,8 @@ public interface Column {
     int getMinY();
     
     int getMaxY();
+    
+    void forEach(IntConsumer function);
+    
+    BinaryColumn newBinaryColumn();
 }

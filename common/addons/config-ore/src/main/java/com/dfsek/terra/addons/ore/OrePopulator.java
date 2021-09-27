@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.world.Chunk;
@@ -14,16 +14,16 @@ import com.dfsek.terra.api.world.generator.GenerationStage;
 
 
 public class OrePopulator implements GenerationStage {
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public OrePopulator(TerraPlugin main) {
-        this.main = main;
+    public OrePopulator(Platform platform) {
+        this.platform = platform;
     }
     
     @SuppressWarnings("try")
     @Override
     public void populate(@NotNull World world, @NotNull Chunk chunk) {
-        try(ProfileFrame ignore = main.getProfiler().profile("ore")) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("ore")) {
             if(world.getConfig().disableOres()) return;
             
             for(int cx = -1; cx <= 1; cx++) {

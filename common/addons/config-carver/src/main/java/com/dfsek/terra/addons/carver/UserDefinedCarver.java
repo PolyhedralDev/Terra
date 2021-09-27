@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 
 import com.dfsek.terra.addons.carver.carving.Carver;
 import com.dfsek.terra.addons.carver.carving.Worm;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -34,13 +34,13 @@ public class UserDefinedCarver extends Carver {
     private final Expression zRad;
     
     private final Map<Long, CarverCache> cacheMap = new ConcurrentHashMap<>();
-    private final TerraPlugin main;
+    private final Platform platform;
     private double step = 2;
     private Range recalc = new ConstantRange(8, 10);
     private double recalcMagnitude = 3;
     
     public UserDefinedCarver(Range height, Range length, double[] start, double[] mutate, List<String> radii, Scope parent, long hash,
-                             int topCut, int bottomCut, CarverTemplate config, TerraPlugin main) throws ParseException {
+                             int topCut, int bottomCut, CarverTemplate config, Platform platform) throws ParseException {
         super(height.getMin(), height.getMax());
         this.length = length;
         this.start = start;
@@ -49,7 +49,7 @@ public class UserDefinedCarver extends Carver {
         this.topCut = topCut;
         this.bottomCut = bottomCut;
         this.config = config;
-        this.main = main;
+        this.platform = platform;
         
         Parser p = new Parser();
         
@@ -74,7 +74,7 @@ public class UserDefinedCarver extends Carver {
     @Override
     public void carve(int chunkX, int chunkZ, World w, BiConsumer<Vector3, CarvingType> consumer) {
         synchronized(cacheMap) {
-            CarverCache cache = cacheMap.computeIfAbsent(w.getSeed(), world -> new CarverCache(w, main, this));
+            CarverCache cache = cacheMap.computeIfAbsent(w.getSeed(), world -> new CarverCache(w, platform, this));
             int carvingRadius = getCarvingRadius();
             for(int x = chunkX - carvingRadius; x <= chunkX + carvingRadius; x++) {
                 for(int z = chunkZ - carvingRadius; z <= chunkZ + carvingRadius; z++) {

@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.feature;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
@@ -23,7 +23,7 @@ public class FeatureConfigType implements ConfigType<FeatureTemplate, Feature> {
     }
     
     @Override
-    public FeatureTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
+    public FeatureTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new FeatureTemplate();
     }
     

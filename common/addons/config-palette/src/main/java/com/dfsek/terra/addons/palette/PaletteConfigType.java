@@ -6,7 +6,7 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.palette.palette.PaletteImpl;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
@@ -19,10 +19,10 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     public static final TypeKey<Palette> PALETTE_TYPE_TOKEN = new TypeKey<>() {
     };
     private final PaletteFactory factory = new PaletteFactory();
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public PaletteConfigType(TerraPlugin main) {
-        this.main = main;
+    public PaletteConfigType(Platform platform) {
+        this.platform = platform;
     }
     
     @Override
@@ -30,7 +30,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
         return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
             if(((String) c).startsWith("BLOCK:"))
                 return new PaletteImpl.Singleton(
-                        main.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
+                        platform.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
             Palette obj = registry.get((String) c);
             if(obj == null)
                 throw new LoadException("No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry.");
@@ -39,7 +39,7 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
     
     @Override
-    public PaletteTemplate getTemplate(ConfigPack pack, TerraPlugin main) {
+    public PaletteTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new PaletteTemplate();
     }
     

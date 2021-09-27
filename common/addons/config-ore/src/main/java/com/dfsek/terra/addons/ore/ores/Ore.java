@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.ore.ores;
 import java.util.Map;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.collection.MaterialSet;
@@ -17,13 +17,13 @@ public abstract class Ore {
     private final MaterialSet replaceable;
     private final boolean applyGravity;
     private final Map<BlockType, BlockState> materials;
-    protected TerraPlugin main;
+    protected Platform platform;
     
-    public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, TerraPlugin main, Map<BlockType, BlockState> materials) {
+    public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, Platform platform, Map<BlockType, BlockState> materials) {
         this.material = material;
         this.replaceable = replaceable;
         this.applyGravity = applyGravity;
-        this.main = main;
+        this.platform = platform;
         this.materials = materials;
     }
     

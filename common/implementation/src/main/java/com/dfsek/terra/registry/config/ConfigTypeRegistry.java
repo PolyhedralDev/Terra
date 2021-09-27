@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.registry.OpenRegistryImpl;
@@ -17,12 +17,12 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     
     private final BiConsumer<String, ConfigType<?, ?>> callback;
     
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public ConfigTypeRegistry(TerraPlugin main, BiConsumer<String, ConfigType<?, ?>> callback) {
+    public ConfigTypeRegistry(Platform platform, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
-        this.main = main;
+        this.platform = platform;
     }
     
     @Override

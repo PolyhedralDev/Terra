@@ -9,12 +9,12 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
 @Plugin("terra")
 public class TerraSpongePlugin {
     private final PluginContainer plugin;
-    private final TerraPluginImpl terraPlugin;
+    private final PlatformImpl terraPlugin;
     
     @Inject
     public TerraSpongePlugin(PluginContainer plugin, Game game) {
         this.plugin = plugin;
-        this.terraPlugin = new TerraPluginImpl(this);
+        this.terraPlugin = new PlatformImpl(this);
         game.eventManager().registerListeners(plugin, new SpongeListener(this));
     }
     
@@ -22,7 +22,7 @@ public class TerraSpongePlugin {
         return plugin;
     }
     
-    public TerraPluginImpl getTerraPlugin() {
+    public PlatformImpl getTerraPlugin() {
         return terraPlugin;
     }
 }

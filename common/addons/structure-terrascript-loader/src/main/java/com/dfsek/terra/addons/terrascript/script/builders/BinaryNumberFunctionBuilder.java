@@ -22,19 +22,19 @@ public class BinaryNumberFunctionBuilder implements FunctionBuilder<Function<Num
     
     @Override
     public Function<Number> build(List<Returnable<?>> argumentList, Position position) {
-        return new Function<Number>() {
+        return new Function<>() {
             @Override
             public ReturnType returnType() {
                 return ReturnType.NUMBER;
             }
-            
+    
             @SuppressWarnings("unchecked")
             @Override
             public Number apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
                 return function.apply(((Returnable<Number>) argumentList.get(0)).apply(implementationArguments, variableMap),
                                       ((Returnable<Number>) argumentList.get(1)).apply(implementationArguments, variableMap));
             }
-            
+    
             @Override
             public Position getPosition() {
                 return position;

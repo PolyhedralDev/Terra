@@ -18,7 +18,9 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 /**
  * Represents a Terra mod/plugin instance.
  */
-public interface TerraPlugin extends LoaderRegistrar {
+public interface Platform extends LoaderRegistrar {
+    Logger logger();
+    
     boolean reload();
     
     String platformName();

@@ -23,15 +23,9 @@ public final class RotationUtil {
     public static void rotateVector(Vector2 orig, Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
-            case CW_90:
-                copy.setX(orig.getZ()).setZ(-orig.getX());
-                break;
-            case CCW_90:
-                copy.setX(-orig.getZ()).setZ(orig.getX());
-                break;
-            case CW_180:
-                copy.multiply(-1);
-                break;
+            case CW_90 -> copy.setX(orig.getZ()).setZ(-orig.getX());
+            case CCW_90 -> copy.setX(-orig.getZ()).setZ(orig.getX());
+            case CW_180 -> copy.multiply(-1);
         }
         orig.setX(copy.getX());
         orig.setZ(copy.getZ());
@@ -64,74 +58,44 @@ public final class RotationUtil {
     public static RailShape getRotatedRail(RailShape orig, Rotation r) {
         switch(r) {
             case CCW_90:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return RailShape.SOUTH_WEST;
-                    case NORTH_SOUTH:
-                        return RailShape.EAST_WEST;
-                    case SOUTH_WEST:
-                        return RailShape.SOUTH_EAST;
-                    case SOUTH_EAST:
-                        return RailShape.NORTH_EAST;
-                    case EAST_WEST:
-                        return RailShape.NORTH_SOUTH;
-                    case NORTH_EAST:
-                        return RailShape.NORTH_WEST;
-                    case ASCENDING_EAST:
-                        return RailShape.ASCENDING_NORTH;
-                    case ASCENDING_WEST:
-                        return RailShape.ASCENDING_SOUTH;
-                    case ASCENDING_NORTH:
-                        return RailShape.ASCENDING_WEST;
-                    case ASCENDING_SOUTH:
-                        return RailShape.ASCENDING_EAST;
-                }
+                return switch(orig) {
+                    case NORTH_WEST -> RailShape.SOUTH_WEST;
+                    case NORTH_SOUTH -> RailShape.EAST_WEST;
+                    case SOUTH_WEST -> RailShape.SOUTH_EAST;
+                    case SOUTH_EAST -> RailShape.NORTH_EAST;
+                    case EAST_WEST -> RailShape.NORTH_SOUTH;
+                    case NORTH_EAST -> RailShape.NORTH_WEST;
+                    case ASCENDING_EAST -> RailShape.ASCENDING_NORTH;
+                    case ASCENDING_WEST -> RailShape.ASCENDING_SOUTH;
+                    case ASCENDING_NORTH -> RailShape.ASCENDING_WEST;
+                    case ASCENDING_SOUTH -> RailShape.ASCENDING_EAST;
+                };
             case CW_90:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return RailShape.NORTH_EAST;
-                    case NORTH_SOUTH:
-                        return RailShape.EAST_WEST;
-                    case SOUTH_WEST:
-                        return RailShape.NORTH_WEST;
-                    case SOUTH_EAST:
-                        return RailShape.SOUTH_WEST;
-                    case EAST_WEST:
-                        return RailShape.NORTH_SOUTH;
-                    case NORTH_EAST:
-                        return RailShape.SOUTH_EAST;
-                    case ASCENDING_EAST:
-                        return RailShape.ASCENDING_SOUTH;
-                    case ASCENDING_WEST:
-                        return RailShape.ASCENDING_NORTH;
-                    case ASCENDING_NORTH:
-                        return RailShape.ASCENDING_EAST;
-                    case ASCENDING_SOUTH:
-                        return RailShape.ASCENDING_WEST;
-                }
+                return switch(orig) {
+                    case NORTH_WEST -> RailShape.NORTH_EAST;
+                    case NORTH_SOUTH -> RailShape.EAST_WEST;
+                    case SOUTH_WEST -> RailShape.NORTH_WEST;
+                    case SOUTH_EAST -> RailShape.SOUTH_WEST;
+                    case EAST_WEST -> RailShape.NORTH_SOUTH;
+                    case NORTH_EAST -> RailShape.SOUTH_EAST;
+                    case ASCENDING_EAST -> RailShape.ASCENDING_SOUTH;
+                    case ASCENDING_WEST -> RailShape.ASCENDING_NORTH;
+                    case ASCENDING_NORTH -> RailShape.ASCENDING_EAST;
+                    case ASCENDING_SOUTH -> RailShape.ASCENDING_WEST;
+                };
             case CW_180:
-                switch(orig) {
-                    case NORTH_WEST:
-                        return RailShape.SOUTH_EAST;
-                    case NORTH_SOUTH:
-                        return RailShape.NORTH_SOUTH;
-                    case SOUTH_WEST:
-                        return RailShape.NORTH_EAST;
-                    case SOUTH_EAST:
-                        return RailShape.NORTH_WEST;
-                    case EAST_WEST:
-                        return RailShape.EAST_WEST;
-                    case NORTH_EAST:
-                        return RailShape.SOUTH_WEST;
-                    case ASCENDING_EAST:
-                        return RailShape.ASCENDING_WEST;
-                    case ASCENDING_WEST:
-                        return RailShape.ASCENDING_EAST;
-                    case ASCENDING_NORTH:
-                        return RailShape.ASCENDING_SOUTH;
-                    case ASCENDING_SOUTH:
-                        return RailShape.ASCENDING_NORTH;
-                }
+                return switch(orig) {
+                    case NORTH_WEST -> RailShape.SOUTH_EAST;
+                    case NORTH_SOUTH -> RailShape.NORTH_SOUTH;
+                    case SOUTH_WEST -> RailShape.NORTH_EAST;
+                    case SOUTH_EAST -> RailShape.NORTH_WEST;
+                    case EAST_WEST -> RailShape.EAST_WEST;
+                    case NORTH_EAST -> RailShape.SOUTH_WEST;
+                    case ASCENDING_EAST -> RailShape.ASCENDING_WEST;
+                    case ASCENDING_WEST -> RailShape.ASCENDING_EAST;
+                    case ASCENDING_NORTH -> RailShape.ASCENDING_SOUTH;
+                    case ASCENDING_SOUTH -> RailShape.ASCENDING_NORTH;
+                };
         }
         return orig;
     }

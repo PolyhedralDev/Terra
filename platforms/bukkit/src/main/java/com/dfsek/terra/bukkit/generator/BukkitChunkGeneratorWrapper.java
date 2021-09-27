@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
@@ -33,7 +33,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     private final ChunkGenerator delegate;
     
-    private final TerraPlugin main;
+    private final Platform platform;
     
     private boolean needsLoad = true;
     
@@ -41,8 +41,8 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate) {
         this.delegate = delegate;
-        this.main = delegate.getMain();
-        this.popMan = new PopulationManager(delegate, main);
+        this.platform = delegate.getPlatform();
+        this.popMan = new PopulationManager(delegate, platform);
     }
     
     

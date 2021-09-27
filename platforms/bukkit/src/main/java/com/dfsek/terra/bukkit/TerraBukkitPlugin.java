@@ -34,7 +34,7 @@ import com.dfsek.terra.commands.TerraCommandManager;
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
     
-    private final TerraPluginImpl terraPlugin = new TerraPluginImpl(this);
+    private final PlatformImpl terraPlugin = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
     private final Map<String, ConfigPack> worlds = new HashMap<>();
     

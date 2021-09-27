@@ -1,10 +1,11 @@
 package com.dfsek.terra.addons.biome.command.biome;
 
+import com.dfsek.terra.api.Platform;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -23,15 +24,15 @@ public class AsyncBiomeFinder implements Runnable {
     protected final int centerX;
     protected final int centerZ;
     protected final World world;
-    protected final TerraPlugin main;
+    protected final Platform platform;
     private final Consumer<Vector3> callback;
     protected int searchSize = 1;
     
     public AsyncBiomeFinder(BiomeProvider provider, TerraBiome target, @NotNull Vector3 origin, World world, int startRadius, int maxRadius,
-                            Consumer<Vector3> callback, TerraPlugin main) {
+                            Consumer<Vector3> callback, Platform platform) {
         this.provider = provider;
         this.target = target;
-        this.main = main;
+        this.platform = platform;
         this.startRadius = startRadius;
         this.maxRadius = maxRadius;
         this.centerX = origin.getBlockX();
@@ -41,7 +42,7 @@ public class AsyncBiomeFinder implements Runnable {
     }
     
     public Vector3 finalizeVector(Vector3 orig) {
-        return orig.multiply(main.getTerraConfig().getBiomeSearchResolution());
+        return orig.multiply(platform.getTerraConfig().getBiomeSearchResolution());
     }
     
     @Override
@@ -90,7 +91,7 @@ public class AsyncBiomeFinder implements Runnable {
      * @return TerraBiome at coordinates
      */
     public boolean isValid(int x, int z, TerraBiome target) {
-        int res = main.getTerraConfig().getBiomeSearchResolution();
+        int res = platform.getTerraConfig().getBiomeSearchResolution();
         return getProvider().getBiome(x * res, z * res, world.getSeed()).equals(target);
     }
     

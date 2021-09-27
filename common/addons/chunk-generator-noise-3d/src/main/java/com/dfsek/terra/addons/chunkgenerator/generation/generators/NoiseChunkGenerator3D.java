@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
+import com.dfsek.terra.api.Platform;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -12,7 +14,6 @@ import java.util.Random;
 import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
@@ -35,21 +36,21 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private static final Logger logger = LoggerFactory.getLogger(NoiseChunkGenerator3D.class);
     
     private final ConfigPack configPack;
-    private final TerraPlugin main;
+    private final Platform platform;
     private final List<GenerationStage> generationStages = new ArrayList<>();
     
     private final BlockState air;
     
-    public NoiseChunkGenerator3D(ConfigPack c, TerraPlugin main) {
+    public NoiseChunkGenerator3D(ConfigPack c, Platform platform) {
         this.configPack = c;
-        this.main = main;
-        this.air = main.getWorldHandle().air();
+        this.platform = platform;
+        this.air = platform.getWorldHandle().air();
         c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
     }
     
     @SuppressWarnings("try")
-    static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, TerraPlugin main) {
-        try(ProfileFrame ignore = main.getProfiler().profile("biomes")) {
+    static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, Platform platform) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("biomes")) {
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
             long seed = world.getSeed();
@@ -69,7 +70,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     @Override
     @SuppressWarnings("try")
     public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
-        try(ProfileFrame ignore = main.getProfiler().profile("chunk_base_3d")) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
             BiomeProvider grid = world.getBiomeProvider();
             
             int xOrig = (chunkX << 4);
@@ -129,7 +130,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
-        biomes(world, chunkX, chunkZ, biome, main);
+        biomes(world, chunkX, chunkZ, biome, platform);
     }
     
     @Override
@@ -143,8 +144,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     @Override
-    public TerraPlugin getMain() {
-        return main;
+    public Platform getPlatform() {
+        return platform;
     }
     
     @Override

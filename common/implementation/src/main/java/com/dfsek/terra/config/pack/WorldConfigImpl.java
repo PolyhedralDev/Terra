@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.Registry;
@@ -25,10 +25,10 @@ public class WorldConfigImpl implements WorldConfig {
     
     private final Map<Type, Registry<?>> registryMap = new HashMap<>();
     
-    public WorldConfigImpl(World world, ConfigPackImpl pack, TerraPlugin main) {
+    public WorldConfigImpl(World world, ConfigPackImpl pack, Platform platform) {
         this.world = world;
         this.pack = pack;
-        this.samplerCache = new SamplerCacheImpl(main, world);
+        this.samplerCache = new SamplerCacheImpl(platform, world);
         
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
         

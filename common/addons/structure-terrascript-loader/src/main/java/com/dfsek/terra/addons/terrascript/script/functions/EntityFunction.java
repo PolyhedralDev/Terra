@@ -11,7 +11,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
@@ -22,15 +22,15 @@ public class EntityFunction implements Function<Void> {
     private final EntityType data;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    private final TerraPlugin main;
+    private final Platform platform;
     
-    public EntityFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, TerraPlugin main,
+    public EntityFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Platform platform,
                           Position position) throws ParseException {
         this.position = position;
-        this.main = main;
+        this.platform = platform;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Entity data must be constant", data.getPosition());
         
-        this.data = main.getWorldHandle().getEntity(((ConstantExpression<String>) data).getConstant());
+        this.data = platform.getWorldHandle().getEntity(((ConstantExpression<String>) data).getConstant());
         this.x = x;
         this.y = y;
         this.z = z;
@@ -44,7 +44,7 @@ public class EntityFunction implements Function<Void> {
         
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
-        arguments.getBuffer().addItem(new BufferedEntity(data, main),
+        arguments.getBuffer().addItem(new BufferedEntity(data, platform),
                                       new Vector3(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()));
         return null;
     }

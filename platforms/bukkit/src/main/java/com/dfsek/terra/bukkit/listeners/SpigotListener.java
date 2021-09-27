@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.listeners;
 
+import com.dfsek.terra.api.Platform;
+
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,8 +12,6 @@ import org.bukkit.event.entity.VillagerCareerChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.TerraPlugin;
-
 
 /**
  * Listener to load on Spigot servers, contains Villager crash prevention and hacky ender eye redirection.
@@ -20,12 +20,11 @@ import com.dfsek.terra.api.TerraPlugin;
  * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
+    private final Platform platform;
     private static final Logger logger = LoggerFactory.getLogger(SpigotListener.class);
     
-    private final TerraPlugin main;
-    
-    public SpigotListener(TerraPlugin main) {
-        this.main = main;
+    public SpigotListener(Platform platform) {
+        this.platform = platform;
     }
     
     @EventHandler(priority = EventPriority.NORMAL)

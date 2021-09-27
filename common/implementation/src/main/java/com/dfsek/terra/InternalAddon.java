@@ -15,11 +15,10 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 @Author("Terra")
 @Version("1.0.0")
 public class InternalAddon extends TerraAddon {
+    private final AbstractPlatform main;
     private static final Logger logger = LoggerFactory.getLogger(InternalAddon.class);
     
-    private final AbstractTerraPlugin main;
-    
-    public InternalAddon(AbstractTerraPlugin main) {
+    public InternalAddon(AbstractPlatform main) {
         this.main = main;
     }
     

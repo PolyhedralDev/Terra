@@ -30,9 +30,7 @@ public class ProfilerTest {
         PROFILER.push("thing4");
         PROFILER.pop("thing4");
         
-        PROFILER.getTimings().forEach((id, timings) -> {
-            System.out.println(id + ": " + timings.toString());
-        });
+        PROFILER.getTimings().forEach((id, timings) -> System.out.println(id + ": " + timings.toString()));
     }
     
     private static void doThing() throws InterruptedException {

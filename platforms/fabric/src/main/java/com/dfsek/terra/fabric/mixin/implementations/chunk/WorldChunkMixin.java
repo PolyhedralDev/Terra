@@ -22,7 +22,7 @@ import com.dfsek.terra.fabric.block.FabricBlockState;
 public abstract class WorldChunkMixin {
     @Final
     @Shadow
-    private net.minecraft.world.World world;
+    net.minecraft.world.World world;
     
     @Shadow
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);

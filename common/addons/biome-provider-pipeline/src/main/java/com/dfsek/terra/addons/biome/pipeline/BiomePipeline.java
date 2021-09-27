@@ -43,7 +43,7 @@ public class BiomePipeline {
     
     public static final class BiomePipelineBuilder {
         private final int init;
-        List<Stage> stages = new ArrayList<>();
+        private final List<Stage> stages = new ArrayList<>();
         private int expand;
         
         public BiomePipelineBuilder(int init) {

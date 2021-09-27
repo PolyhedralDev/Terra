@@ -3,7 +3,7 @@ package com.dfsek.terra.commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.entity.CommandSender;
@@ -18,12 +18,12 @@ public class ReloadCommand implements CommandTemplate {
     private static final Logger logger = LoggerFactory.getLogger(ReloadCommand.class);
     
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @Override
     public void execute(CommandSender sender) {
         logger.info("Reloading Terra...");
-        if(main.reload()) {
+        if(platform.reload()) {
             logger.info("Terra reloaded successfully.");
             LangUtil.send("command.reload", sender);
         } else {

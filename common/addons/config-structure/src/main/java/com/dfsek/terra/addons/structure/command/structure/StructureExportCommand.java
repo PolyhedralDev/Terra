@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -34,7 +34,7 @@ public class StructureExportCommand implements CommandTemplate {
     private static final Logger logger = LoggerFactory.getLogger(StructureExportCommand.class);
     
     @Inject
-    private TerraPlugin main;
+    private Platform platform;
     
     @ArgumentTarget("id")
     private String id;
@@ -43,7 +43,7 @@ public class StructureExportCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
         
-        Pair<Vector3, Vector3> area = main.getWorldHandle().getSelectedLocation(player);
+        Pair<Vector3, Vector3> area = platform.getWorldHandle().getSelectedLocation(player);
         
         Vector3 firstCorner = area.getLeft();
         Vector3 secondCorner = area.getRight();
@@ -78,7 +78,7 @@ public class StructureExportCommand implements CommandTemplate {
                     BlockEntity state = player.world().getBlockState(x, y, z);
                     if(state instanceof Sign sign) {
                         if("[TERRA]".equals(sign.getLine(0))) {
-                            data = main.getWorldHandle().createBlockData(sign.getLine(2) + sign.getLine(3));
+                            data = platform.getWorldHandle().createBlockData(sign.getLine(2) + sign.getLine(3));
                         }
                     }
                     if(!data.isStructureVoid()) {
@@ -91,7 +91,7 @@ public class StructureExportCommand implements CommandTemplate {
             }
         }
         
-        File file = new File(main.getDataFolder() + File.separator + "export" + File.separator + "structures", id + ".tesf");
+        File file = new File(platform.getDataFolder() + File.separator + "export" + File.separator + "structures", id + ".tesf");
         try {
             file.getParentFile().mkdirs();
             file.createNewFile();

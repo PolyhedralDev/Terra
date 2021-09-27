@@ -1,5 +1,7 @@
 package com.dfsek.terra.commands;
 
+import com.dfsek.terra.api.Platform;
+
 import net.jafama.FastMath;
 
 import java.lang.reflect.Field;
@@ -12,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -40,13 +41,13 @@ import com.dfsek.terra.inject.InjectorImpl;
 
 public class TerraCommandManager implements CommandManager {
     private final Map<String, CommandHolder> commands = new HashMap<>();
-    private final InjectorImpl<TerraPlugin> pluginInjector;
-    private final TerraPlugin main;
+    private final InjectorImpl<Platform> pluginInjector;
+    private final Platform platform;
     
-    public TerraCommandManager(TerraPlugin main) {
-        this.main = main;
-        this.pluginInjector = new InjectorImpl<>(main);
-        pluginInjector.addExplicitTarget(TerraPlugin.class);
+    public TerraCommandManager(Platform platform) {
+        this.platform = platform;
+        this.pluginInjector = new InjectorImpl<>(platform);
+        pluginInjector.addExplicitTarget(Platform.class);
     }
     
     @Override
@@ -81,7 +82,7 @@ public class TerraCommandManager implements CommandManager {
     private void execute(CommandHolder commandHolder, CommandSender sender, List<String> args) throws CommandException {
         Class<? extends CommandTemplate> commandClass = commandHolder.clazz;
         
-        if(commandClass.isAnnotationPresent(DebugCommand.class) && !main.getTerraConfig().isDebugCommands()) {
+        if(commandClass.isAnnotationPresent(DebugCommand.class) && !platform.getTerraConfig().isDebugCommands()) {
             sender.sendMessage("Command must be executed with debug commands enabled.");
             return;
         }

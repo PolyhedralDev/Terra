@@ -34,6 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 package com.dfsek.terra.addons.noise.util;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
@@ -67,8 +68,8 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     }
     
     public boolean containsValue(double value) {
-        for(int i = 0; i < this.table.length; ++i) {
-            for(HashMapDoubleDouble.Entry e = this.table[i]; e != null; e = e.next) {
+        for(Entry entry : this.table) {
+            for(Entry e = entry; e != null; e = e.next) {
                 if(value == e.value) {
                     return true;
                 }
@@ -144,15 +145,13 @@ public class HashMapDoubleDouble extends HashIntrinsic {
     }
     
     public void clear() {
-        for(int i = 0; i < this.table.length; ++i) {
-            this.table[i] = null;
-        }
+        Arrays.fill(this.table, null);
         
         this.size = 0;
     }
     
     public long memoryEstimate(int ptrsize) {
-        return (long) ptrsize * (long) (this.capMinus1 + this.size + 1) + (long) (this.size * 64 / 4);
+        return (long) ptrsize * (long) (this.capMinus1 + this.size + 1) + (this.size * 64L / 4);
     }
     
     public HashMapDoubleDouble.Iterator iterator() {

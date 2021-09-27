@@ -10,7 +10,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -19,12 +19,12 @@ import com.dfsek.terra.api.world.generator.SamplerCache;
 
 
 public class CheckFunction implements Function<String> {
-    private final TerraPlugin main;
+    private final Platform platform;
     private final Returnable<Number> x, y, z;
     private final Position position;
     
-    public CheckFunction(TerraPlugin main, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
-        this.main = main;
+    public CheckFunction(Platform platform, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
+        this.platform = platform;
         this.x = x;
         this.y = y;
         this.z = z;

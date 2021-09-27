@@ -13,7 +13,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.TerraPlugin;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
@@ -25,12 +25,12 @@ public class PullFunction implements Function<Void> {
     private final Returnable<Number> x, y, z;
     private final Position position;
     
-    public PullFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, TerraPlugin main,
+    public PullFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data, Platform platform,
                         Position position) throws ParseException {
         this.position = position;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant", data.getPosition());
         
-        this.data = main.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
+        this.data = platform.getWorldHandle().createBlockData(((ConstantExpression<String>) data).getConstant());
         this.x = x;
         this.y = y;
         this.z = z;
