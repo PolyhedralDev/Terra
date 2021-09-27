@@ -23,7 +23,6 @@ public final class LangUtil {
     private LangUtil() { }
     
     public static void load(String langID, Platform platform) {
-        Logger logger = platform.logger();
         File file = new File(platform.getDataFolder(), "lang");
         try {
             File file1 = new File(file, langID + ".yml");

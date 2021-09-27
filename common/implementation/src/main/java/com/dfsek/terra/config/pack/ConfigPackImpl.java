@@ -137,7 +137,7 @@ public class ConfigPackImpl implements ConfigPack {
                 ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries(platform);
+                checkDeadEntries();
             } catch(FileNotFoundException e) {
                 throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
@@ -189,7 +189,7 @@ public class ConfigPackImpl implements ConfigPack {
                 
                 selfLoader.load(packPostTemplate, configuration);
                 seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries(platform);
+                checkDeadEntries();
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
@@ -362,7 +362,7 @@ public class ConfigPackImpl implements ConfigPack {
         });
     }
     
-    private void checkDeadEntries(TerraPlugin main) {
+    private void checkDeadEntries() {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft())
                 .getDeadEntries()
                 .forEach((id, value) -> logger.warn("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
