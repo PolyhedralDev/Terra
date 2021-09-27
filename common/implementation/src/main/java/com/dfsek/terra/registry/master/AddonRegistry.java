@@ -114,7 +114,7 @@ public class AddonRegistry extends OpenRegistryImpl<TerraAddon> {
                                  Duplicate addon ID; addon with ID {} is already loaded.
                                  Existing addon class: {}
                                  Duplicate addon class: {}
-                                 """,
+                                 """.strip(),
                                  loadedAddon.getName(),
                                  get(loadedAddon.getName()).getClass().getCanonicalName(),
                                  addonClass.getCanonicalName());
