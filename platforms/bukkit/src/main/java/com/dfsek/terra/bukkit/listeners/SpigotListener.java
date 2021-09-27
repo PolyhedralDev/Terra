@@ -64,7 +64,7 @@ public class SpigotListener implements Listener {
                          |   that fixes this issue at the source, and doesn't require us to do    |
                          |                           stupid band-aids.                            |
                          |------------------------------------------------------------------------|
-                         """);
+                         """.strip());
             e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
         }
     }
@@ -79,7 +79,7 @@ public class SpigotListener implements Listener {
                          |  fixes this issue at the source, and doesn't require us to do stupid   |
                          |                               band-aids.                               |
                          |------------------------------------------------------------------------|
-                         """);
+                         """.strip());
             e.getEntity().setProfession(Villager.Profession.NITWIT); // Give villager new profession to prevent server crash.
             e.setCancelled(true);
         }
