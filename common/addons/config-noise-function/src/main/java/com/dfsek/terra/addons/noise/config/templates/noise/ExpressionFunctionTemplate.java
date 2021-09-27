@@ -33,16 +33,19 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Value("expression")
     private @Meta String equation;
     
-    @Value("functions")
+    @Value("samplers")
     @Default
-    private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> functions = new LinkedHashMap<>();
+    private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> samplers = new LinkedHashMap<>();
     
     @Value("functions")
     @Default
-    private @Meta LinkedHashMap<String, @Meta FunctionTemplate> expressions = new LinkedHashMap<>();
+    private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
     
-    public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> otherFunctions) {
+    private final Map<String, FunctionTemplate> globalFunctions;
+    
+    public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> otherFunctions, Map<String, FunctionTemplate> samplers) {
         this.otherFunctions = otherFunctions;
+        this.globalFunctions = samplers;
     }
     
     @Override
@@ -68,8 +71,12 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     
     private Map<String, Function> generateFunctions() throws ParseException {
         Map<String, Function> noiseFunctionMap = new HashMap<>();
+    
+        for(Map.Entry<String, FunctionTemplate> entry : globalFunctions.entrySet()) {
+            noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
+        }
         
-        for(Map.Entry<String, FunctionTemplate> entry : expressions.entrySet()) {
+        for(Map.Entry<String, FunctionTemplate> entry : functions.entrySet()) {
             noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
         }
         
@@ -79,7 +86,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
             } else noiseFunctionMap.put(id, new NoiseFunction3(function.getSampler()));
         });
         
-        functions.forEach((id, function) -> {
+        samplers.forEach((id, function) -> {
             if(function.getDimensions() == 2) {
                 noiseFunctionMap.put(id, new NoiseFunction2(function.getSampler()));
             } else noiseFunctionMap.put(id, new NoiseFunction3(function.getSampler()));

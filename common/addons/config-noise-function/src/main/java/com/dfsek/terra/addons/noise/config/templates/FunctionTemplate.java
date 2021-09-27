@@ -13,7 +13,7 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     @Value("arguments")
     private List<String> args;
     
-    @Value("function")
+    @Value("expression")
     private @Meta String function;
     
     @Override

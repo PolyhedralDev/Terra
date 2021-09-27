@@ -3,11 +3,13 @@ package com.dfsek.terra.addons.noise;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
+import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
@@ -64,7 +66,8 @@ public class NoiseAddon extends TerraAddon {
                        .applyLoader(CellularSampler.DistanceFunction.class,
                                     (t, o, l) -> CellularSampler.DistanceFunction.valueOf((String) o))
                        .applyLoader(CellularSampler.ReturnType.class, (t, o, l) -> CellularSampler.ReturnType.valueOf((String) o))
-                       .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new);
+                       .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
+                       .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
             
                   noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
                   noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
@@ -97,13 +100,15 @@ public class NoiseAddon extends TerraAddon {
             
                   noiseRegistry.register("KERNEL", KernelTemplate::new);
             
-                  Map<String, DimensionApplicableNoiseSampler> packFunctions = new HashMap<>();
-                  noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packFunctions));
+                  Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
+                  Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
+                  noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packSamplers, packFunctions));
             
             
                   NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
                   event.loadTemplate(template);
-                  packFunctions.putAll(template.getNoiseBuilderMap());
+                  packSamplers.putAll(template.getSamplers());
+                  packFunctions.putAll(template.getFunctions());
               })
               .failThrough();
     }
