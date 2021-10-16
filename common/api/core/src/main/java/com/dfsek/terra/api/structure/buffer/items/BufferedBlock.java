@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.buffer.items;
+package com.dfsek.terra.api.structure.buffer.items;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;

@@ -7,7 +7,7 @@ import net.jafama.FastMath;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.addons.terrascript.buffer.items.BufferedBlock;
+import com.dfsek.terra.api.structure.buffer.items.BufferedBlock;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
