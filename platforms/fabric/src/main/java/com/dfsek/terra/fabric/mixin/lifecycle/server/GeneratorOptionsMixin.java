@@ -37,7 +37,7 @@ public abstract class GeneratorOptionsMixin {
             return;
         }
         
-        PlatformImpl main = FabricEntryPoint.getTerraPlugin();
+        PlatformImpl main = FabricEntryPoint.getPlatform();
         
         String prop = properties.get("level-type").toString().trim();
         if(prop.startsWith("Terra")) {

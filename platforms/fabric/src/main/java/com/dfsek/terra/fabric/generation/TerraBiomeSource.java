@@ -23,7 +23,7 @@ public class TerraBiomeSource extends BiomeSource {
                                                                                                           Codec.STRING.fieldOf("pack").forGetter(ConfigPack::getID)
                                                                                                         )
                                                                                                   .apply(config, config.stable(
-                                                                                                          FabricEntryPoint.getTerraPlugin()
+                                                                                                          FabricEntryPoint.getPlatform()
                                                                                                                           .getConfigRegistry()::get))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                                                                                                               RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),

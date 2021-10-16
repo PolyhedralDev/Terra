@@ -22,7 +22,7 @@ public class FabricEntryPoint implements ModInitializer {
             Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE));
     private static final PlatformImpl TERRA_PLUGIN = new PlatformImpl();
     
-    public static PlatformImpl getTerraPlugin() {
+    public static PlatformImpl getPlatform() {
         return TERRA_PLUGIN;
     }
     

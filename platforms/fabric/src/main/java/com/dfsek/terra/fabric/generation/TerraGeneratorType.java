@@ -28,7 +28,7 @@ public class TerraGeneratorType extends GeneratorType {
     public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures,
                                                  boolean bonusChest) {
         GeneratorOptions options = super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
+        FabricEntryPoint.getPlatform().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
         return options;
     }
     

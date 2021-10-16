@@ -97,7 +97,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public void terra$applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
-                case "type" -> terra$setSpawnedType(FabricEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
+                case "type" -> terra$setSpawnedType(FabricEntryPoint.getPlatform().getWorldHandle().getEntity(v));
                 case "delay" -> terra$setDelay(Integer.parseInt(v));
                 case "min_delay" -> terra$setMinSpawnDelay(Integer.parseInt(v));
                 case "max_delay" -> terra$setMaxSpawnDelay(Integer.parseInt(v));

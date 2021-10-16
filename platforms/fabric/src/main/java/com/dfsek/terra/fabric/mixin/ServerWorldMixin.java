@@ -31,7 +31,8 @@ public abstract class ServerWorldMixin {
                                   boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
             ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
-            FabricEntryPoint.getTerraPlugin().logger().info("Registered world " + this);
+            FabricEntryPoint.getPlatform().addWorld((ServerWorld) (Object) this);
+            FabricEntryPoint.getPlatform().logger().info("Registered world " + this);
         }
     }
 }

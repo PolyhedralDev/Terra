@@ -46,7 +46,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
                                 .forGetter(ConfigPack::getID)
-                                  ).apply(config, config.stable(FabricEntryPoint.getTerraPlugin().getConfigRegistry()::get)));
+                                  ).apply(config, config.stable(FabricEntryPoint.getPlatform().getConfigRegistry()::get)));
     
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(

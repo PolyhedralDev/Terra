@@ -24,8 +24,8 @@ public class MinecraftClientMixin {
                                         // sorta arbitrary position, after mod init, before window opens
                                         shift = At.Shift.BEFORE))
     public void injectConstructor(RunArgs args, CallbackInfo callbackInfo) {
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new PlatformInitializationEvent());
-        FabricEntryPoint.getTerraPlugin().getConfigRegistry().forEach(pack -> {
+        FabricEntryPoint.getPlatform().getEventManager().callEvent(new PlatformInitializationEvent());
+        FabricEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> {
             final GeneratorType generatorType = new TerraGeneratorType(pack);
             //noinspection ConstantConditions
             ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getID()));

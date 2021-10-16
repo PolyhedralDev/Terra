@@ -38,7 +38,7 @@ public abstract class CommandManagerMixin {
                      target = "Lcom/mojang/brigadier/CommandDispatcher;findAmbiguities(Lcom/mojang/brigadier/AmbiguityConsumer;)V",
                      remap = false))
     private void injectTerraCommands(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
-        com.dfsek.terra.api.command.CommandManager manager = FabricEntryPoint.getTerraPlugin().getManager();
+        com.dfsek.terra.api.command.CommandManager manager = FabricEntryPoint.getPlatform().getManager();
         int max = manager.getMaxArgumentDepth();
         RequiredArgumentBuilder<ServerCommandSource, String> arg = argument("arg" + (max - 1), StringArgumentType.word());
         for(int i = 0; i < max; i++) {
