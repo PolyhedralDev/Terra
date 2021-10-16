@@ -11,10 +11,9 @@ import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import com.dfsek.terra.addons.terrascript.buffer.DirectBuffer;
-import com.dfsek.terra.addons.terrascript.buffer.StructureBuffer;
+import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
+import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.addons.terrascript.parser.Parser;
-import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;

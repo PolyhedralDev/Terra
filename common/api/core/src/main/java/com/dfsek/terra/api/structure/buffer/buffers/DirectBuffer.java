@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.buffer;
+package com.dfsek.terra.api.structure.buffer.buffers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

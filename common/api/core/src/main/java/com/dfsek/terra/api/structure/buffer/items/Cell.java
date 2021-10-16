@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.terrascript.buffer;
+package com.dfsek.terra.api.structure.buffer.items;
 
 import java.util.ArrayList;
 import java.util.List;

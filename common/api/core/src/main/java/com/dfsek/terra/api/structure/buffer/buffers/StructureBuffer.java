@@ -1,4 +1,6 @@
-package com.dfsek.terra.addons.terrascript.buffer;
+package com.dfsek.terra.api.structure.buffer.buffers;
+
+import com.dfsek.terra.api.structure.buffer.items.Cell;
 
 import net.jafama.FastMath;
 
