@@ -16,11 +16,11 @@ public final class RotationUtil {
     
     /**
      * Rotate and mirror a coordinate pair.
-     *
-     * @param orig Vector to rotate.
+     *  @param orig Vector to rotate.
      * @param r    Rotation
+     * @return
      */
-    public static void rotateVector(Vector2 orig, Rotation r) {
+    public static Vector2 rotateVector(Vector2 orig, Rotation r) {
         Vector2 copy = orig.clone();
         switch(r) {
             case CW_90 -> copy.setX(orig.getZ()).setZ(-orig.getX());
@@ -29,6 +29,7 @@ public final class RotationUtil {
         }
         orig.setX(copy.getX());
         orig.setZ(copy.getZ());
+        return orig;
     }
     
     
