@@ -44,7 +44,9 @@ public class SpongeStructure implements Structure {
                     continue;
                 }
                 for(int y = 0; y < blocks[z].length; y++) {
-                    world.setBlockData(bX+rX, bY+y, bZ+rZ, blocks[x][z][y]);
+                    BlockState state = blocks[x][z][y];
+                    if(state == null) continue;
+                    world.setBlockData(bX+rX, bY+y, bZ+rZ, state);
                 }
             }
         }
@@ -59,7 +61,9 @@ public class SpongeStructure implements Structure {
                 int rX = r.getBlockX();
                 int rZ = r.getBlockZ();
                 for(int y = 0; y < blocks[z].length; y++) {
-                    buffer.addItem(new BufferedBlock(blocks[x][z][y], true, platform, false), new Vector3(rX, y, rZ));
+                    BlockState state = blocks[x][z][y];
+                    if(state == null) continue;
+                    buffer.addItem(new BufferedBlock(state, true, platform, false), new Vector3(rX, y, rZ));
                 }
             }
         }
@@ -77,7 +81,9 @@ public class SpongeStructure implements Structure {
                 int rX = r.getBlockX();
                 int rZ = r.getBlockZ();
                 for(int y = 0; y < blocks[z].length; y++) {
-                    world.setBlockData(bX+rX, bY+y, bZ+rZ, blocks[x][z][y]);
+                    BlockState state = blocks[x][z][y];
+                    if(state == null) continue;
+                    world.setBlockData(bX+rX, bY+y, bZ+rZ, state);
                 }
             }
         }

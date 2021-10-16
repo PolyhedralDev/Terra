@@ -1,9 +1,18 @@
 package com.dfsek.terra.addons.sponge;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.annotations.Addon;
+import com.dfsek.terra.api.addon.annotations.Author;
+import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.structure.Structure;
 
 import net.querz.nbt.io.NBTDeserializer;
-import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.IntTag;
@@ -16,20 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.structure.Structure;
-
-
+@Addon("structure-sponge-loader")
+@Author("Terra")
+@Version("1.0.0")
 public class SpongeSchematicAddon extends TerraAddon {
     @Inject
     private Platform platform;
-    
-    
     
     
     @Override
@@ -41,7 +42,8 @@ public class SpongeSchematicAddon extends TerraAddon {
                     CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                     event.getPack().getLoader().open("", ".schem").thenEntries(entries -> {
                         for(Map.Entry<String, InputStream> entry : entries) {
-                        
+                            String id = entry.getKey().substring(0, entry.getKey().length() - ".schem".length());
+                            structureRegistry.register(id, convert(entry.getValue(), id));
                         }
                     }).close();
                 })
@@ -49,7 +51,7 @@ public class SpongeSchematicAddon extends TerraAddon {
     }
     
     
-    public String convert(InputStream in) {
+    public SpongeStructure convert(InputStream in, String id) {
         try {
             CompoundTag baseTag = (CompoundTag) new NBTDeserializer(false).fromStream(detectDecompression(in)).getTag();
             int wid = baseTag.getShort("Width");
@@ -65,30 +67,31 @@ public class SpongeSchematicAddon extends TerraAddon {
                 data.put(((IntTag) entry.getValue()).asInt(), entry.getKey());
             }
             
-            byte[] arr =  blocks.getValue();
-            ScriptBuilder builder = new ScriptBuilder();
-            for(int x = 0; x < hei; x++) {
-                for(int y = 0; y < wid; y++) {
-                    for(int z = 0; z < len; z++) {
-                        String block = data.get((int) arr[x+z*wid+y*wid*len]);
+            BlockState[][][] states = new BlockState[wid][len][hei];
+            
+            byte[] arr = blocks.getValue();
+            for(int x = 0; x < wid; x++) {
+                for(int z = 0; z < len; z++) {
+                    for(int y = 0; y < hei; y++) {
+                        String block = data.get((int) arr[x + z * wid + y * wid * len]);
                         if(block.startsWith("minecraft:structure_void")) continue;
-                        builder.block(x, y, z, block);
+                        states[x][z][y] = platform.getWorldHandle().createBlockData(block);
                     }
                 }
             }
             
-            return builder.build();
+            return new SpongeStructure(states, platform, id);
         } catch(IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Failed to parse Sponge schematic: ", e);
         }
-        return null;
     }
+    
     private static InputStream detectDecompression(InputStream is) throws IOException {
         PushbackInputStream pbis = new PushbackInputStream(is, 2);
         int signature = (pbis.read() & 0xFF) + (pbis.read() << 8);
         pbis.unread(signature >> 8);
         pbis.unread(signature & 0xFF);
-        if (signature == GZIPInputStream.GZIP_MAGIC) {
+        if(signature == GZIPInputStream.GZIP_MAGIC) {
             return new GZIPInputStream(pbis);
         }
         return pbis;
