@@ -40,3 +40,6 @@
 [submodule "common/addons/config-structure"]
 	path = common/addons/config-structure
 	url = https://github.com/PolyhedralDev/Terra-config-structure
+[submodule "common/addons/generation-stage-feature"]
+	path = common/addons/generation-stage-feature
+	url = https://github.com/PolyhedralDev/Terra-generation-stage-feature
