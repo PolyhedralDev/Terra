@@ -3,6 +3,7 @@ package com.dfsek.terra.fabric;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
 
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -50,6 +51,11 @@ public class PlatformImpl extends AbstractPlatform {
         LangUtil.load(getTerraConfig().getLanguage(), this); // Load language.
         boolean succeed = getRawConfigRegistry().loadAll(this);
     
+        worlds.forEach(world -> {
+            FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
+            chunkGeneratorWrapper.setPack(getConfigRegistry().get(chunkGeneratorWrapper.getPack().getID()));
+        });
+        
         return succeed;
     }
     

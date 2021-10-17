@@ -60,10 +60,10 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                                                                                             );
     
     private final long seed;
-    private final ChunkGenerator delegate;
+    private ChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;
     
-    private final ConfigPack pack;
+    private ConfigPack pack;
     private ServerWorld world;
     
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
@@ -77,6 +77,13 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.seed = seed;
     }
     
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
+        this.delegate = pack.getGeneratorProvider().newInstance(pack);
+        biomeSource.setPack(pack);
+        
+        delegate.getPlatform().logger().info("Loading world with config pack " + pack.getID());
+    }
     
     @Override
     protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
