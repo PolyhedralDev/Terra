@@ -38,7 +38,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
-        String list = objects.keySet().stream().reduce("", (a, b) -> a + "\n - " + b);
+        String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
         
         if(objects.isEmpty()) list = "[ ]";
         
