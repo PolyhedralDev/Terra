@@ -18,6 +18,7 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.StringUtil;
 
 
 @Addon("structure-terrascript-loader")
@@ -33,20 +34,22 @@ public class TerraScriptAddon extends TerraAddon {
                 .getHandler(FunctionalEventHandler.class)
                 .register(this, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
-                CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
-                event.getPack().getLoader().open("", ".tesf").thenEntries(entries -> {
-                    for(Map.Entry<String, InputStream> entry : entries) {
-                        try {
-                            StructureScript structureScript = new StructureScript(entry.getValue(), platform, structureRegistry, lootRegistry,
-                                                                                  event.getPack().getRegistryFactory().create());
-                            structureRegistry.register(structureScript.getID(), structureScript);
-                        } catch(ParseException e) {
-                            throw new LoadException("Failed to load script: ", e);
+                    CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
+                    CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
+                    event.getPack().getLoader().open("", ".tesf").thenEntries(entries -> {
+                        for(Map.Entry<String, InputStream> entry : entries) {
+                            try {
+                                String id = StringUtil.fileName(entry.getKey());
+                                StructureScript structureScript = new StructureScript(entry.getValue(), id, platform, structureRegistry,
+                                                                                      lootRegistry,
+                                                                                      event.getPack().getRegistryFactory().create());
+                                structureRegistry.register(structureScript.getID(), structureScript);
+                            } catch(ParseException e) {
+                                throw new LoadException("Failed to load script: ", e);
+                            }
                         }
-                    }
-                }).close();
-            })
+                    }).close();
+                })
                 .failThrough();
     }
 }

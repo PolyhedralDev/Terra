@@ -12,6 +12,8 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.Structure;
 
+import com.dfsek.terra.api.util.StringUtil;
+
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -42,7 +44,7 @@ public class SpongeSchematicAddon extends TerraAddon {
                     CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                     event.getPack().getLoader().open("", ".schem").thenEntries(entries -> {
                         for(Map.Entry<String, InputStream> entry : entries) {
-                            String id = entry.getKey().substring(0, entry.getKey().length() - ".schem".length());
+                            String id = StringUtil.fileName(entry.getKey());
                             structureRegistry.register(id, convert(entry.getValue(), id));
                         }
                     }).close();

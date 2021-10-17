@@ -190,9 +190,6 @@ public class Tokenizer {
         if(tokenString.equals("fail"))
             return new Token(tokenString, Token.Type.FAIL, new Position(reader.getLine(), reader.getIndex()));
         
-        if(tokenString.equals("id"))
-            return new Token(tokenString, Token.Type.ID, new Position(reader.getLine(), reader.getIndex()));
-        
         return new Token(tokenString, Token.Type.IDENTIFIER, new Position(reader.getLine(), reader.getIndex()));
     }
     

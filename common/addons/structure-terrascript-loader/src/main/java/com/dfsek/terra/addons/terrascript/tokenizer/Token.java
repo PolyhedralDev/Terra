@@ -219,10 +219,6 @@ public class Token {
          */
         FAIL,
         /**
-         * ID declaration
-         */
-        ID,
-        /**
          * For loop initializer token
          */
         FOR_LOOP,

@@ -55,8 +55,6 @@ public class Parser {
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
     private final List<String> ignoredFunctions = new ArrayList<>();
     
-    private String id;
-    
     public Parser(String data) {
         this.data = data;
     }
@@ -79,17 +77,7 @@ public class Parser {
      * @throws ParseException If parsing fails.
      */
     public Block parse() {
-        Tokenizer tokens = new Tokenizer(data);
-        
-        // Parse ID
-        ParserUtil.checkType(tokens.consume(), Token.Type.ID); // First token must be ID
-        Token idToken = tokens.get();
-        ParserUtil.checkType(tokens.consume(), Token.Type.STRING); // Second token must be string literal containing ID
-        ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
-        this.id = idToken.getContent();
-        
-        
-        return parseBlock(tokens, new HashMap<>(), false);
+        return parseBlock(new Tokenizer(data), new HashMap<>(), false);
     }
     
     private Keyword<?> parseLoopLike(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap, boolean loop) throws ParseException {
@@ -427,10 +415,6 @@ public class Parser {
             return builder.build(args, identifier.getPosition());
         }
         throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());
-    }
-    
-    public String getID() {
-        return id;
     }
     
     private List<Returnable<?>> getArgs(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {

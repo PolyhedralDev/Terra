@@ -52,9 +52,8 @@ public class StructureScript implements Structure {
     private final String id;
     private final Cache<Vector3, StructureBuffer> cache;
     private final Platform platform;
-    private String tempID;
     
-    public StructureScript(InputStream inputStream, Platform platform, Registry<Structure> registry, Registry<LootTable> lootRegistry,
+    public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry, Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder<?>> functionRegistry) {
         Parser parser;
         try {
@@ -62,6 +61,7 @@ public class StructureScript implements Structure {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
+        this.id = id;
         
         functionRegistry.forEach(parser::registerFunction); // Register registry functions.
         
@@ -92,7 +92,7 @@ public class StructureScript implements Structure {
                 .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
                                                                                   Returnable.ReturnType.NUMBER))
                 .registerFunction("print",
-                                  new UnaryStringFunctionBuilder(string -> platform.getDebugLogger().info("[" + tempID + "] " + string)))
+                                  new UnaryStringFunctionBuilder(string -> platform.getDebugLogger().info("[" + id + "] " + string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder(
                         (number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
@@ -117,8 +117,6 @@ public class StructureScript implements Structure {
         }
         
         block = parser.parse();
-        this.id = parser.getID();
-        tempID = id;
         this.platform = platform;
         this.cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getStructureCache()).build();
     }
