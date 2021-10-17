@@ -28,3 +28,6 @@
 [submodule "common/addons/config-locators"]
 	path = common/addons/config-locators
 	url = https://github.com/PolyhedralDev/Terra-config-locators
+[submodule "common/addons/config-noise-function"]
+	path = common/addons/config-noise-function
+	url = https://github.com/PolyhedralDev/Terra-config-noise-function
