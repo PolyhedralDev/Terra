@@ -45,7 +45,7 @@ public class TerraScriptAddon extends TerraAddon {
                                                                                       event.getPack().getRegistryFactory().create());
                                 structureRegistry.register(structureScript.getID(), structureScript);
                             } catch(ParseException e) {
-                                throw new LoadException("Failed to load script: ", e);
+                                throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);
                             }
                         }
                     }).close();
