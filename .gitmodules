@@ -19,3 +19,6 @@
 [submodule "common/addons/config-distributors"]
 	path = common/addons/config-distributors
 	url = https://github.com/PolyhedralDev/Terra-config-distributors
+[submodule "common/addons/config-feature"]
+	path = common/addons/config-feature
+	url = https://github.com/PolyhedralDev/Terra-config-feature
