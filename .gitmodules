@@ -46,3 +46,6 @@
 [submodule "common/addons/generation-stage-structure"]
 	path = common/addons/generation-stage-structure
 	url = https://github.com/PolyhedralDev/Terra-generation-stage-structure
+[submodule "common/addons/language-yaml"]
+	path = common/addons/language-yaml
+	url = https://github.com/PolyhedralDev/Terra-language-yaml
