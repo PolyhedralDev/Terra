@@ -14,16 +14,4 @@ public interface CheckedRegistry<T> extends Registry<T> {
      */
     void register(String identifier, T value) throws DuplicateEntryException;
     
-    /**
-     * Add a value to the registry, without checking presence beforehand.
-     * <p>
-     * Use of this method is generally discouraged, as it is bad practice to overwrite registry values.
-     *
-     * @param identifier Identifier to assign value.
-     * @param value      Value to register.
-     *
-     * @deprecated Use of {@link #register(String, Object)} is encouraged.
-     */
-    @Deprecated
-    void registerUnchecked(String identifier, T value);
 }
