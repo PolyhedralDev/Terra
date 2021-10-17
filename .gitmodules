@@ -34,3 +34,6 @@
 [submodule "common/addons/config-ore"]
 	path = common/addons/config-ore
 	url = https://github.com/PolyhedralDev/Terra-config-ore
+[submodule "common/addons/config-palette"]
+	path = common/addons/config-palette
+	url = https://github.com/PolyhedralDev/Terra-config-palette
