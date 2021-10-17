@@ -1,6 +1,7 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 
 import java.lang.reflect.AnnotatedType;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,8 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
     private final Map<String, Entry<T>> objects;
+    
+    private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
     
     public OpenRegistryImpl() {
         objects = new HashMap<>();
@@ -66,6 +70,8 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     public boolean register(String identifier, Entry<T> value) {
+        if(!ID_PATTERN.matcher(identifier).matches())
+            throw new IllegalArgumentException("Registry ID must only contain alphanumeric characters, hyphens, and underscores. \"" + identifier + "\" is not a valid ID.");
         boolean exists = objects.containsKey(identifier);
         objects.put(identifier, value);
         return exists;
