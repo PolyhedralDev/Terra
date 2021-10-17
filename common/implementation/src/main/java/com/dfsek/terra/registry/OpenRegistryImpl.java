@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.registry.OpenRegistry;
@@ -37,14 +38,13 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
-        StringBuilder keys = new StringBuilder("[");
+        String list = objects.keySet().stream().reduce("", (a, b) -> a + "\n - " + b);
         
-        objects.keySet().forEach(key -> keys.append(key).append(", "));
+        if(objects.isEmpty()) list = "[ ]";
         
         if(obj == null)
             throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                    "\" was found in this registry. Registry contains items: " + keys.substring(0, keys.length() - 2) +
-                                    "]");
+                                    "\" was found in this registry. Registry contains items: " + list);
         return obj;
     }
     
