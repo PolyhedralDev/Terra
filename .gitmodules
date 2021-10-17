@@ -55,3 +55,6 @@
 [submodule "common/addons/structure-sponge-loader"]
 	path = common/addons/structure-sponge-loader
 	url = https://github.com/PolyhedralDev/Terra-structure-sponge-loader
+[submodule "common/addons/structure-terrascript-loader"]
+	path = common/addons/structure-terrascript-loader
+	url = https://github.com/PolyhedralDev/Terra-structure-terrascript-loader
