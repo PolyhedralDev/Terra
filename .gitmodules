@@ -31,3 +31,6 @@
 [submodule "common/addons/config-noise-function"]
 	path = common/addons/config-noise-function
 	url = https://github.com/PolyhedralDev/Terra-config-noise-function
+[submodule "common/addons/config-ore"]
+	path = common/addons/config-ore
+	url = https://github.com/PolyhedralDev/Terra-config-ore
