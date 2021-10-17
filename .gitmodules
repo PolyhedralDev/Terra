@@ -4,3 +4,6 @@
 [submodule "common/addons/biome-provider-pipeline"]
 	path = common/addons/biome-provider-pipeline
 	url = https://github.com/PolyhedralDev/Terra-biome-provider-pipeline
+[submodule "common/addons/biome-provider-single"]
+	path = common/addons/biome-provider-single
+	url = https://github.com/PolyhedralDev/Terra-biome-provider-single
