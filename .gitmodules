@@ -13,3 +13,6 @@
 [submodule "common/addons/config-biome"]
 	path = common/addons/config-biome
 	url = https://github.com/PolyhedralDev/Terra-config-biome
+[submodule "common/addons/config-carver"]
+	path = common/addons/config-carver
+	url = https://github.com/PolyhedralDev/Terra-config-carver
