@@ -381,7 +381,7 @@ public class ConfigPackImpl implements ConfigPack {
         
         Map<String, Configuration> configurations = new HashMap<>();
         
-        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, configurations::put)); // Create all the configs.
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, (s, c) -> configurations.put(s.replace("\\","/"), c))); // Create all the configs.
         
         MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
         selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
