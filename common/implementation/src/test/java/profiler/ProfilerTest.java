@@ -3,14 +3,16 @@ package profiler;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
 
+import org.junit.jupiter.api.Test;
+
 
 public class ProfilerTest {
     private static final Profiler PROFILER = new ProfilerImpl();
     
-    //@Test
-    public static void main(String... a) throws InterruptedException {
+    @Test
+    public void testProfiler() throws InterruptedException {
         //PROFILER.start();
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < 100; i++) {
             doThing();
         }
         
