@@ -1,6 +1,7 @@
 dependencies {
     "shadedApi"(project(":common:api:util"))
     "shadedApi"(project(":common:api:noise"))
+    "shadedApi"(project(":common:api:registry"))
     
     "shadedApi"("com.dfsek:Paralithic:0.5.0")
     

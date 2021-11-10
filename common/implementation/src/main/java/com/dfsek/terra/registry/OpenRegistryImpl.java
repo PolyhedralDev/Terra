@@ -1,7 +1,6 @@
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.exception.ValidationException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 
 import java.lang.reflect.AnnotatedType;
@@ -13,7 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.registry.OpenRegistry;
