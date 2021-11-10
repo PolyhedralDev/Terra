@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.noise;
 
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
