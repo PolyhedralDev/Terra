@@ -1,1 +1,1 @@
-Bootstrap-Addon-Entry-Point: com.dfsek.terra.addons.manifest.ManifestLoaderEntry
+Bootstrap-Addon-Entry-Point: com.dfsek.terra.addons.manifest.impl.ManifestAddonLoader
