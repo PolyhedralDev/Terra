@@ -1,6 +1,6 @@
 package com.dfsek.terra.addon.exception;
 
-public class AddonLoadException extends Exception {
+public class AddonLoadException extends RuntimeException {
     private static final long serialVersionUID = -4949084729296580176L;
     
     public AddonLoadException(String message) {

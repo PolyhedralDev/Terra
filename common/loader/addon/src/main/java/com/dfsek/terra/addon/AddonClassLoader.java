@@ -23,10 +23,6 @@ public class AddonClassLoader extends URLClassLoader {
         super(urls, parent);
     }
     
-    public AddonClassLoader(URL[] urls) {
-        super(urls);
-    }
-    
     @SuppressWarnings("unchecked")
     public static Set<Class<? extends TerraAddon>> fetchAddonClasses(File file, ClassLoader parent) throws IOException {
         JarFile jarFile = new JarFile(file);
