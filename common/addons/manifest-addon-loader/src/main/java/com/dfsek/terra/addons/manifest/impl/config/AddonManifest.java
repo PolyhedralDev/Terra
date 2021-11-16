@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.manifest.impl.config;
 
 import ca.solostudios.strata.version.Version;
+import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.config.ConfigTemplate;
@@ -9,6 +10,7 @@ import com.dfsek.terra.api.util.StringIdentifiable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -33,7 +35,7 @@ public class AddonManifest implements ConfigTemplate, StringIdentifiable {
     
     @Value("depends")
     @Default
-    private List<DependencyConfig> dependencies = Collections.emptyList();
+    private Map<String, VersionRange> dependencies;
     
     @Value("website")
     private WebsiteConfig website;
@@ -67,7 +69,7 @@ public class AddonManifest implements ConfigTemplate, StringIdentifiable {
         return website;
     }
     
-    public List<DependencyConfig> getDependencies() {
+    public Map<String, VersionRange> getDependencies() {
         return dependencies;
     }
 }
