@@ -5,9 +5,11 @@ import com.dfsek.tectonic.exception.LoadException;
 import java.io.InputStream;
 import java.util.Map;
 
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -21,18 +23,19 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
 
 
-@Addon("structure-terrascript-loader")
-@Author("Terra")
-@Version("1.0.0")
-public class TerraScriptAddon extends TerraAddon {
+
+public class TerraScriptAddon implements AddonInitializer {
     @Inject
     private Platform platform;
+    
+    @Inject
+    private BaseAddon addon;
     
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                     CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
