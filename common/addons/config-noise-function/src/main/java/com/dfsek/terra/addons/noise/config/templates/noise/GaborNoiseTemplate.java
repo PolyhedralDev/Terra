@@ -8,6 +8,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
+@SuppressWarnings("FieldMayBeFinal")
 public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     @Value("rotation")
     @Default

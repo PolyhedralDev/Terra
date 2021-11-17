@@ -26,22 +26,18 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFunction> {
     private final Map<String, DimensionApplicableNoiseSampler> otherFunctions;
+    private final Map<String, FunctionTemplate> globalFunctions;
     @Value("variables")
     @Default
     private @Meta Map<String, @Meta Double> vars = new HashMap<>();
-    
     @Value("expression")
     private @Meta String equation;
-    
     @Value("samplers")
     @Default
     private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> samplers = new LinkedHashMap<>();
-    
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
-    
-    private final Map<String, FunctionTemplate> globalFunctions;
     
     public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> otherFunctions, Map<String, FunctionTemplate> samplers) {
         this.otherFunctions = otherFunctions;
@@ -71,7 +67,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     
     private Map<String, Function> generateFunctions() throws ParseException {
         Map<String, Function> noiseFunctionMap = new HashMap<>();
-    
+        
         for(Map.Entry<String, FunctionTemplate> entry : globalFunctions.entrySet()) {
             noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
         }
