@@ -38,7 +38,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
         
         try {
             return Files.walk(addonsFolder, 1)
-                        .filter(path -> path.toFile().isFile() && path.getFileName().endsWith(".jar"))
+                        .filter(path -> path.toFile().isFile() && path.toString().endsWith(".jar"))
                         .flatMap(path -> {
                             try {
                                 JarFile jar = new JarFile(path.toFile());

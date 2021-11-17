@@ -28,7 +28,8 @@ public class AddonManifest implements ConfigTemplate, StringIdentifiable {
     private String license;
     
     @Value("contributors")
-    private List<String> contributors;
+    @Default
+    private List<String> contributors = Collections.emptyList();
     
     @Value("entrypoints")
     private List<String> entryPoints;
