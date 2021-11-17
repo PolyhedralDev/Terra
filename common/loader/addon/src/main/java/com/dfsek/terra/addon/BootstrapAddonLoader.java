@@ -3,6 +3,7 @@ package com.dfsek.terra.addon;
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
+import com.dfsek.terra.api.inject.Injector;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -43,6 +44,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
                                     if(!(in instanceof BootstrapBaseAddon)) {
                                         throw new AddonLoadException(in.getClass() + " does not extend " + BootstrapBaseAddon.class);
                                     }
+                                    platform.logger().info("Loaded bootstrap addon " + ((BootstrapBaseAddon<?>) in).getID());
                                     return (BootstrapBaseAddon<?>) in;
                                 } catch(InvocationTargetException e) {
                                     throw new AddonLoadException("Exception occurred while instantiating addon: ", e);

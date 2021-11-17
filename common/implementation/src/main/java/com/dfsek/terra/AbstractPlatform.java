@@ -200,12 +200,15 @@ public abstract class AbstractPlatform implements Platform {
         platformInjector.addExplicitTarget(Platform.class);
         
         bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
-                            .forEach(bootstrap -> bootstrap.loadAddons(addonsFolder, getClass().getClassLoader())
-                                                           .forEach(addon -> {
-                                                               platformInjector.inject(addon);
-                                                               addon.initialize();
-                                                               addonRegistry.register(addon.getID(), addon);
-                                                           }));
+                            .forEach(bootstrap -> {
+                                platformInjector.inject(bootstrap);
+                                bootstrap.loadAddons(addonsFolder, getClass().getClassLoader())
+                                         .forEach(addon -> {
+                                             platformInjector.inject(addon);
+                                             addon.initialize();
+                                             addonRegistry.register(addon.getID(), addon);
+                                         });
+                            });
         
         eventManager
                 .getHandler(FunctionalEventHandler.class)
