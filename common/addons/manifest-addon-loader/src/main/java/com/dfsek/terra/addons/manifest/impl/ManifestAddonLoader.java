@@ -16,6 +16,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
 import com.dfsek.terra.addons.manifest.impl.config.WebsiteConfig;
 import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionLoader;
@@ -27,9 +28,9 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 
-public class ManifestAddonLoader implements BootstrapBaseAddon {
+public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
     @Override
-    public Iterable<BaseAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
+    public Iterable<ManifestAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
         ConfigLoader manifestLoader = new ConfigLoader();
         manifestLoader.registerLoader(Version.class, new VersionLoader())
                       .registerLoader(VersionRange.class, new VersionRangeLoader())
@@ -58,10 +59,10 @@ public class ManifestAddonLoader implements BootstrapBaseAddon {
                                     return manifest.getEntryPoints().stream().map(entryPoint -> {
                                         try {
                                             Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
-                                            if(!(in instanceof BaseAddon)) {
-                                                throw new AddonException(in.getClass() + " does not extend " + BaseAddon.class);
+                                            if(!(in instanceof AddonInitializer)) {
+                                                throw new AddonException(in.getClass() + " does not extend " + AddonInitializer.class);
                                             }
-                                            return (BaseAddon) in;
+                                            return new ManifestAddon(manifest);
                                         } catch(InvocationTargetException e) {
                                             throw new AddonException("Exception occurred while instantiating addon: ", e);
                                         } catch(NoSuchMethodException | IllegalAccessException | InstantiationException e) {
