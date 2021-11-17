@@ -19,7 +19,9 @@ import com.dfsek.terra.addons.feature.locator.config.pattern.OrPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.SingleBlockMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.SolidMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -32,10 +34,8 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
-@Addon("config-locators")
-@Version("1.0.0")
-@Author("Terra")
-public class LocatorAddon extends TerraAddon {
+
+public class LocatorAddon implements AddonInitializer {
     
     public static final TypeKey<Supplier<ObjectTemplate<Locator>>> LOCATOR_TOKEN = new TypeKey<>() {
     };
@@ -44,11 +44,14 @@ public class LocatorAddon extends TerraAddon {
     @Inject
     private Platform platform;
     
+    @Inject
+    private BaseAddon addon;
+    
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                 locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(platform));
