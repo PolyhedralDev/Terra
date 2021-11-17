@@ -24,12 +24,19 @@ import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionRangeLoader;
 import com.dfsek.terra.addons.manifest.impl.exception.AddonException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestNotPresentException;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
+import com.dfsek.terra.api.inject.annotations.Inject;
 
 
 public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
+    @Inject
+    private Platform platform;
+    
     @Override
     public Iterable<ManifestAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
+        platform.logger().info("Loading addons...");
+        
         ConfigLoader manifestLoader = new ConfigLoader();
         manifestLoader.registerLoader(Version.class, new VersionLoader())
                       .registerLoader(VersionRange.class, new VersionRangeLoader())
@@ -40,17 +47,22 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                         .filter(path -> path.toFile().isFile() && path.toString().endsWith(".jar"))
                         .flatMap(path -> {
                             try {
+                                platform.getDebugLogger().info("Loading addon from JAR " + path);
                                 JarFile jar = new JarFile(path.toFile());
                     
                                 JarEntry manifestEntry = jar.getJarEntry("terra.addon.yml");
                                 if(manifestEntry == null) {
                                     throw new ManifestNotPresentException("Addon " + path + " does not contain addon manifest.");
                                 }
+                                
+                                
                     
                                 try {
                                     AddonManifest manifest = manifestLoader.load(new AddonManifest(),
                                                                                  new YamlConfiguration(jar.getInputStream(manifestEntry),
                                                                                                        "terra.addon.yml"));
+    
+                                    platform.logger().info("Loading addon " + manifest.getID());
                                     
                                     ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ path.toUri().toURL() },
                                                                                                    getClass().getClassLoader());
