@@ -14,10 +14,6 @@ import com.dfsek.terra.addons.feature.distributor.util.PointTemplate;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
@@ -41,18 +37,18 @@ public class DistributorAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
-                        DISTRIBUTOR_TOKEN);
-                distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
-                distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
-                distributorRegistry.register("AND", AndDistributorTemplate::new);
-                distributorRegistry.register("OR", OrDistributorTemplate::new);
-                distributorRegistry.register("YES", YesDistributorTemplate::new);
-                distributorRegistry.register("NO", NoiseDistributorTemplate::new);
+                    CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
+                            DISTRIBUTOR_TOKEN);
+                    distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
+                    distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
+                    distributorRegistry.register("AND", AndDistributorTemplate::new);
+                    distributorRegistry.register("OR", OrDistributorTemplate::new);
+                    distributorRegistry.register("YES", YesDistributorTemplate::new);
+                    distributorRegistry.register("NO", NoiseDistributorTemplate::new);
             
-                event.getPack()
-                     .applyLoader(Point.class, PointTemplate::new);
-            })
+                    event.getPack()
+                         .applyLoader(Point.class, PointTemplate::new);
+                })
                 .failThrough();
     }
 }

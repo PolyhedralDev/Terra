@@ -10,6 +10,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.Distributor;
 
 
+@SuppressWarnings("FieldMayBeFinal")
 public class NoiseDistributorTemplate implements ObjectTemplate<Distributor> {
     @Value("threshold")
     @Default
