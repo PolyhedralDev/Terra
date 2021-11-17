@@ -4,7 +4,9 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -18,21 +20,21 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-@Addon("biome-provider-image")
-@Author("Terra")
-@Version("1.0.0")
-public class ImageBiomeProviderAddon extends TerraAddon {
+public class ImageBiomeProviderAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
     
     @Inject
     private Platform platform;
     
+    @Inject
+    private BaseAddon addon;
+    
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                             PROVIDER_REGISTRY_KEY);
