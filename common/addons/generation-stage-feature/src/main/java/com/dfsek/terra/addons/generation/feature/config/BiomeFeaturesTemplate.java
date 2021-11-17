@@ -11,6 +11,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.feature.Feature;
 
 
+@SuppressWarnings("FieldMayBeFinal")
 public class BiomeFeaturesTemplate implements ObjectTemplate<BiomeFeatures> {
     @Value("features")
     @Default

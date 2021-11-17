@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.generation.feature;
 
+import java.util.function.IntConsumer;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.world.Column;
 import com.dfsek.terra.api.world.World;
-
-import java.util.function.IntConsumer;
 
 
 public class ColumnImpl implements Column {
