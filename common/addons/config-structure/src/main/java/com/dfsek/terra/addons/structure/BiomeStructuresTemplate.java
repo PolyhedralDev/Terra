@@ -11,6 +11,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 
 
+@SuppressWarnings("FieldMayBeFinal")
 public class BiomeStructuresTemplate implements ObjectTemplate<BiomeStructures> {
     @Value("structures")
     @Default

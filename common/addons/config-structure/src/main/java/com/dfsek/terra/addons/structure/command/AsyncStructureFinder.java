@@ -1,11 +1,10 @@
 package com.dfsek.terra.addons.structure.command;
 
-import com.dfsek.terra.api.Platform;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;

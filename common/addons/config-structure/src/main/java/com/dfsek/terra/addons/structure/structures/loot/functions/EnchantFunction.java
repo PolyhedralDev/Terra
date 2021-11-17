@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 
@@ -10,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;

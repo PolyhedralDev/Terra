@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -10,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 

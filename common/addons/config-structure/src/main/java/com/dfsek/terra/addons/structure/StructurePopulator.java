@@ -1,12 +1,11 @@
 package com.dfsek.terra.addons.structure;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;

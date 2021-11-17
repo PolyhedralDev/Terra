@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,6 +12,7 @@ import com.dfsek.terra.addons.structure.structures.loot.functions.AmountFunction
 import com.dfsek.terra.addons.structure.structures.loot.functions.DamageFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.EnchantFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.LootFunction;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.ItemStack;
 
