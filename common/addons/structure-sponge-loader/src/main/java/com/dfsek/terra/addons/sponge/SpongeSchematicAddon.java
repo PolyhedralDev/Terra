@@ -1,6 +1,8 @@
 package com.dfsek.terra.addons.sponge;
 
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -27,19 +29,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-@Addon("structure-sponge-loader")
-@Author("Terra")
-@Version("1.0.0")
-public class SpongeSchematicAddon extends TerraAddon {
+public class SpongeSchematicAddon implements AddonInitializer {
     @Inject
     private Platform platform;
     
+    @Inject
+    private BaseAddon addon;
     
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                     event.getPack().getLoader().open("", ".schem").thenEntries(entries -> {
