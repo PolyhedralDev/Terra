@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.carver;
 
-import com.dfsek.terra.api.Platform;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -13,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.dfsek.terra.addons.carver.carving.Worm;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
