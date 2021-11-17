@@ -17,10 +17,6 @@ import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
@@ -50,24 +46,25 @@ public class BiomePipelineAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
-                        PROVIDER_REGISTRY_KEY);
-                providerRegistry.register("PIPELINE", () -> new BiomePipelineTemplate(platform));
-            })
+                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                            PROVIDER_REGISTRY_KEY);
+                    providerRegistry.register("PIPELINE", () -> new BiomePipelineTemplate(platform));
+                })
                 .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(
-                        SOURCE_REGISTRY_KEY);
-                sourceRegistry.register("NOISE", NoiseSourceTemplate::new);
-            })
+                    CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(
+                            SOURCE_REGISTRY_KEY);
+                    sourceRegistry.register("NOISE", NoiseSourceTemplate::new);
+                })
                 .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(STAGE_REGISTRY_KEY);
-                stageRegistry.register("FRACTAL_EXPAND", ExpanderStageTemplate::new);
-                stageRegistry.register("SMOOTH", SmoothMutatorTemplate::new);
-                stageRegistry.register("REPLACE", ReplaceMutatorTemplate::new);
-                stageRegistry.register("REPLACE_LIST", ReplaceListMutatorTemplate::new);
-                stageRegistry.register("BORDER", BorderMutatorTemplate::new);
-                stageRegistry.register("BORDER_LIST", BorderListMutatorTemplate::new);
-            })
+                    CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(
+                            STAGE_REGISTRY_KEY);
+                    stageRegistry.register("FRACTAL_EXPAND", ExpanderStageTemplate::new);
+                    stageRegistry.register("SMOOTH", SmoothMutatorTemplate::new);
+                    stageRegistry.register("REPLACE", ReplaceMutatorTemplate::new);
+                    stageRegistry.register("REPLACE_LIST", ReplaceListMutatorTemplate::new);
+                    stageRegistry.register("BORDER", BorderMutatorTemplate::new);
+                    stageRegistry.register("BORDER_LIST", BorderListMutatorTemplate::new);
+                })
                 .failThrough();
     }
 }
