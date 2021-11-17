@@ -29,23 +29,23 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                event.getPack().getOrCreateRegistry(ChunkGeneratorProvider.class).register("NOISE_3D",
-                                                                                           pack -> new NoiseChunkGenerator3D(pack,
-                                                                                                                             platform));
-                event.getPack()
-                     .applyLoader(SlantHolder.class, new SlantHolderLoader())
-                     .applyLoader(PaletteHolder.class, new PaletteHolderLoader());
-            })
+                    event.getPack().getOrCreateRegistry(ChunkGeneratorProvider.class).register("NOISE_3D",
+                                                                                               pack -> new NoiseChunkGenerator3D(pack,
+                                                                                                                                 platform));
+                    event.getPack()
+                         .applyLoader(SlantHolder.class, new SlantHolderLoader())
+                         .applyLoader(PaletteHolder.class, new PaletteHolderLoader());
+                })
                 .failThrough();
         
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigurationLoadEvent.class)
                 .then(event -> {
-                if(event.is(TerraBiome.class)) {
-                    event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
-                }
-            })
+                    if(event.is(TerraBiome.class)) {
+                        event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
+                    }
+                })
                 .failThrough();
     }
 }

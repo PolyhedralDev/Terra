@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,11 +10,13 @@ import java.util.Random;
 import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
+import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
@@ -27,7 +27,6 @@ import com.dfsek.terra.api.world.generator.ChunkData;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GenerationStage;
 import com.dfsek.terra.api.world.generator.Palette;
-import com.dfsek.terra.api.util.math.Sampler;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {
