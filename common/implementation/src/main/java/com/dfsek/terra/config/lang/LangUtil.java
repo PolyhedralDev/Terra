@@ -3,10 +3,10 @@ package com.dfsek.terra.config.lang;
 import java.io.File;
 import java.io.IOException;
 
-import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Language;
+import com.dfsek.terra.api.util.Logger;
 
 
 public final class LangUtil {

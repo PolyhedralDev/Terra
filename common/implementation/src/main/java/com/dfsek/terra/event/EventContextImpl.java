@@ -1,7 +1,5 @@
 package com.dfsek.terra.event;
 
-import com.dfsek.terra.api.addon.BaseAddon;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
@@ -9,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.functional.EventContext;

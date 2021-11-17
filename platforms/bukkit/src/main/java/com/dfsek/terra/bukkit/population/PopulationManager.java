@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.population;
 
-import com.dfsek.terra.api.Platform;
-
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +8,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;

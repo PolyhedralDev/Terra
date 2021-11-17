@@ -3,7 +3,6 @@ package com.dfsek.terra.api;
 import java.io.File;
 
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;

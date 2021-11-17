@@ -59,7 +59,7 @@ public class DirectWorld implements World {
     
     @Override
     public void setBlockData(int x, int y, int z, BlockState data, boolean physics) {
-    
+
     }
     
     @Override

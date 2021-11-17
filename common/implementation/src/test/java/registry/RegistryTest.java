@@ -1,13 +1,12 @@
 package registry;
 
+import org.junit.jupiter.api.Test;
+
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
-
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
-
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +24,7 @@ public class RegistryTest {
     @Test
     public void openRegistryChecked() {
         OpenRegistry<String> test = new OpenRegistryImpl<>();
-    
+        
         test.registerChecked("test", "bazinga");
         
         try {
@@ -41,7 +40,7 @@ public class RegistryTest {
         CheckedRegistry<String> test = new CheckedRegistryImpl<>(new OpenRegistryImpl<>());
         
         test.register("test", "bazinga");
-    
+        
         assertEquals(test.get("test"), "bazinga");
         
         try {

@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.Platform;
-
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
@@ -11,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Tree;

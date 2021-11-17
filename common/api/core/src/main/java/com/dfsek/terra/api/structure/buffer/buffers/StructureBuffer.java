@@ -1,7 +1,5 @@
 package com.dfsek.terra.api.structure.buffer.buffers;
 
-import com.dfsek.terra.api.structure.buffer.items.Cell;
-
 import net.jafama.FastMath;
 
 import java.util.LinkedHashMap;
@@ -9,6 +7,7 @@ import java.util.Map;
 
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
+import com.dfsek.terra.api.structure.buffer.items.Cell;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;

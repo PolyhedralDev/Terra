@@ -1,39 +1,13 @@
 package profiler;
 
+import org.junit.jupiter.api.Test;
+
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
-
-import org.junit.jupiter.api.Test;
 
 
 public class ProfilerTest {
     private static final Profiler PROFILER = new ProfilerImpl();
-    
-    @Test
-    public void testProfiler() throws InterruptedException {
-        //PROFILER.start();
-        for(int i = 0; i < 100; i++) {
-            doThing();
-        }
-        
-        for(int i = 0; i < 100; i++) {
-            doThirdOtherThing();
-        }
-        
-        for(int i = 0; i < 100; i++) {
-            doOtherThing();
-        }
-        PROFILER.stop();
-        PROFILER.push("thing");
-        PROFILER.push("thing2");
-        PROFILER.start();
-        PROFILER.pop("thing2");
-        PROFILER.pop("thing");
-        PROFILER.push("thing4");
-        PROFILER.pop("thing4");
-        
-        PROFILER.getTimings().forEach((id, timings) -> System.out.println(id + ": " + timings.toString()));
-    }
     
     private static void doThing() throws InterruptedException {
         PROFILER.push("thing");
@@ -61,5 +35,31 @@ public class ProfilerTest {
         PROFILER.push("thing4");
         Thread.sleep(2);
         PROFILER.pop("thing4");
+    }
+    
+    @Test
+    public void testProfiler() throws InterruptedException {
+        //PROFILER.start();
+        for(int i = 0; i < 100; i++) {
+            doThing();
+        }
+
+        for(int i = 0; i < 100; i++) {
+            doThirdOtherThing();
+        }
+
+        for(int i = 0; i < 100; i++) {
+            doOtherThing();
+        }
+        PROFILER.stop();
+        PROFILER.push("thing");
+        PROFILER.push("thing2");
+        PROFILER.start();
+        PROFILER.pop("thing2");
+        PROFILER.pop("thing");
+        PROFILER.push("thing4");
+        PROFILER.pop("thing4");
+
+        PROFILER.getTimings().forEach((id, timings) -> System.out.println(id + ": " + timings.toString()));
     }
 }

@@ -10,6 +10,7 @@ import java.util.Set;
 import com.dfsek.terra.api.addon.TerraAddon;
 
 
+@SuppressWarnings("FieldMayBeFinal")
 public class ConfigPackAddonsTemplate implements ConfigTemplate {
     @Value("addons")
     @Default

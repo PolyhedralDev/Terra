@@ -2,10 +2,6 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
-
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.util.FabricUtil;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -14,16 +10,15 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.config.lang.LangUtil;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.util.ProtoBiome;
@@ -37,12 +32,12 @@ public class PlatformImpl extends AbstractPlatform {
     
     private final Set<ServerWorld> worlds = new HashSet<>();
     
-    public void addWorld(ServerWorld world) {
-        worlds.add(world);
-    }
-    
     public PlatformImpl() {
         load();
+    }
+    
+    public void addWorld(ServerWorld world) {
+        worlds.add(world);
     }
     
     @Override
@@ -50,7 +45,7 @@ public class PlatformImpl extends AbstractPlatform {
         getTerraConfig().load(this);
         LangUtil.load(getTerraConfig().getLanguage(), this); // Load language.
         boolean succeed = getRawConfigRegistry().loadAll(this);
-    
+        
         worlds.forEach(world -> {
             FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
             chunkGeneratorWrapper.setPack(getConfigRegistry().get(chunkGeneratorWrapper.getPack().getID()));

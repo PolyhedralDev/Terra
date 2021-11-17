@@ -4,5 +4,5 @@ import com.dfsek.terra.api.util.StringIdentifiable;
 
 
 public interface BaseAddon extends StringIdentifiable {
-    default void initialize() {}
+    default void initialize() { }
 }

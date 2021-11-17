@@ -18,6 +18,7 @@ public class ServerMainMixin {
                               "Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;"))
     private static void injectConstructor(String[] args, CallbackInfo ci) {
         FabricEntryPoint.getPlatform().getEventManager().callEvent(
-                new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks and stuff
+                new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks
+        // and stuff
     }
 }

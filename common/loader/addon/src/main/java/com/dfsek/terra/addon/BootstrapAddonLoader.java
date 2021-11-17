@@ -1,10 +1,5 @@
 package com.dfsek.terra.addon;
 
-import com.dfsek.terra.addon.exception.AddonLoadException;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
-import com.dfsek.terra.api.inject.Injector;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+
+import com.dfsek.terra.addon.exception.AddonLoadException;
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 
 public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAddon<?>> {
@@ -32,13 +31,13 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
                                 platform.logger().info("Loading bootstrap addon from JAR " + path);
                                 JarFile jar = new JarFile(path.toFile());
                                 String entry = jar.getManifest().getMainAttributes().getValue("Bootstrap-Addon-Entry-Point");
-                                
+                    
                                 if(entry == null) {
                                     throw new AddonLoadException("No Bootstrap-Addon-Entry-Point attribute defined in addon manifest.");
                                 }
-                                
-                                AddonClassLoader loader = new AddonClassLoader(new URL[] {path.toUri().toURL()}, parent);
-    
+                    
+                                AddonClassLoader loader = new AddonClassLoader(new URL[]{ path.toUri().toURL() }, parent);
+                    
                                 try {
                                     Object in = loader.loadClass(entry).getConstructor().newInstance();
                                     if(!(in instanceof BootstrapBaseAddon)) {
@@ -53,7 +52,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
                                 } catch(ClassNotFoundException e) {
                                     throw new AddonLoadException("Entry point " + entry + " not found in JAR.");
                                 }
-    
+                    
                             } catch(IOException e) {
                                 throw new UncheckedIOException(e);
                             }

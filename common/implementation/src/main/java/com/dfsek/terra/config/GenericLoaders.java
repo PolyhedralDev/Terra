@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;

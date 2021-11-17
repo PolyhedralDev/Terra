@@ -25,9 +25,8 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
-    private final Map<String, Entry<T>> objects;
-    
     private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
+    private final Map<String, Entry<T>> objects;
     
     public OpenRegistryImpl() {
         objects = new HashMap<>();
@@ -69,7 +68,9 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     public boolean register(String identifier, Entry<T> value) {
         if(!ID_PATTERN.matcher(identifier).matches())
-            throw new IllegalArgumentException("Registry ID must only contain alphanumeric characters, hyphens, and underscores. \"" + identifier + "\" is not a valid ID.");
+            throw new IllegalArgumentException(
+                    "Registry ID must only contain alphanumeric characters, hyphens, and underscores. \"" + identifier +
+                    "\" is not a valid ID.");
         boolean exists = objects.containsKey(identifier);
         objects.put(identifier, value);
         return exists;

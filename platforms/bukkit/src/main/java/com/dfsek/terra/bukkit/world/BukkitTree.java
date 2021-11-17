@@ -1,12 +1,11 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.Platform;
-
 import org.bukkit.TreeType;
 
 import java.util.Locale;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.collection.MaterialSet;

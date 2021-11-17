@@ -13,6 +13,10 @@ import com.dfsek.terra.api.inject.impl.InjectorImpl;
  * @param <T> Type of object to inject.
  */
 public interface Injector<T> {
+    static <T1> Injector<T1> get(T1 value) {
+        return new InjectorImpl<>(value);
+    }
+    
     /**
      * Add an explicit class as a target. Useful for applications where subclasses may cause issues with DI.
      *
@@ -38,8 +42,4 @@ public interface Injector<T> {
      *                            </ul>
      */
     void inject(Object object) throws InjectionException;
-    
-    static <T1> Injector<T1> get(T1 value) {
-        return new InjectorImpl<>(value);
-    }
 }

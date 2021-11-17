@@ -123,7 +123,8 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(
+                        new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 selfLoader.load(template, configuration);
                 
@@ -173,7 +174,8 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(
+                        new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 
                 selfLoader.load(template, configuration);
@@ -364,11 +366,13 @@ public class ConfigPackImpl implements ConfigPack {
     private void checkDeadEntries(Platform platform) {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft()).getDeadEntries()
                                                                                    .forEach((id, value) -> platform.getDebugLogger()
-                                                                                                                   .warning("Dead entry in '" +
-                                                                                                                        ReflectionUtil.typeToString(
-                                                                                                                                clazz) +
-                                                                                                                        "' registry: '" +
-                                                                                                                        id + "'")));
+                                                                                                                   .warning(
+                                                                                                                           "Dead entry in" +
+                                                                                                                           " '" +
+                                                                                                                           ReflectionUtil.typeToString(
+                                                                                                                                   clazz) +
+                                                                                                                           "' registry: '" +
+                                                                                                                           id + "'")));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })

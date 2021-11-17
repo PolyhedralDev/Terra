@@ -16,8 +16,10 @@ public final class RotationUtil {
     
     /**
      * Rotate and mirror a coordinate pair.
-     *  @param orig Vector to rotate.
+     *
+     * @param orig Vector to rotate.
      * @param r    Rotation
+     *
      * @return
      */
     public static Vector2 rotateVector(Vector2 orig, Rotation r) {

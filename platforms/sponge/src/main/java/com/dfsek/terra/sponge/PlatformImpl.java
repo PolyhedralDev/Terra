@@ -5,9 +5,9 @@ import org.spongepowered.api.Sponge;
 import java.io.File;
 
 import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.sponge.handle.SpongeWorldHandle;
 
 

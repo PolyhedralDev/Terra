@@ -1,7 +1,5 @@
 package com.dfsek.terra.commands;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 
 import java.lang.reflect.Field;
@@ -14,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -35,8 +34,8 @@ import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.inject.exception.InjectionException;
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.inject.impl.InjectorImpl;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
 
 public class TerraCommandManager implements CommandManager {

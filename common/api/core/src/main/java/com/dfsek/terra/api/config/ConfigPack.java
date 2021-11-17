@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

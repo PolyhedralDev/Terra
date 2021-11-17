@@ -7,14 +7,12 @@ import org.bukkit.entity.EntityType;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.Optional;
 
 import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
@@ -81,11 +79,6 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     protected Logger createLogger() {
         return new JavaLogger(plugin.getLogger());
-    }
-    
-    @Override
-    protected Optional<TerraAddon> getPlatformAddon() {
-        return Optional.of(new BukkitAddon(this));
     }
     
     private BukkitBiome parseBiome(String id) throws LoadException {

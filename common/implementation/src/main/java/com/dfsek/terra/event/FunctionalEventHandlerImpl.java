@@ -12,7 +12,6 @@ import java.util.Map;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;

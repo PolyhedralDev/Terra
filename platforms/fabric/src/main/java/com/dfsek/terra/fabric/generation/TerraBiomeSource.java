@@ -36,10 +36,6 @@ public class TerraBiomeSource extends BiomeSource {
     private final long seed;
     private ConfigPack pack;
     
-    public void setPack(ConfigPack pack) {
-        this.pack = pack;
-    }
-    
     public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream()
                     .filter(biome -> Objects.requireNonNull(biomes.getId(biome))
@@ -48,6 +44,10 @@ public class TerraBiomeSource extends BiomeSource {
                     .collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
+        this.pack = pack;
+    }
+    
+    public void setPack(ConfigPack pack) {
         this.pack = pack;
     }
     

@@ -1,10 +1,10 @@
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.Platform;
-
 import io.papermc.paper.event.world.StructureLocateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import com.dfsek.terra.api.Platform;
 
 
 public class PaperListener implements Listener {
