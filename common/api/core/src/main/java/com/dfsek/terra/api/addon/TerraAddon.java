@@ -11,7 +11,7 @@ import com.dfsek.terra.api.addon.annotations.Version;
 /**
  * Represents an entry point for an com.dfsek.terra.addon. Implementations must be annotated with {@link Addon}.
  */
-public abstract class TerraAddon {
+public abstract class TerraAddon implements BaseAddon {
     /**
      * Invoked immediately after an com.dfsek.terra.addon is loaded.
      */
@@ -49,5 +49,10 @@ public abstract class TerraAddon {
                     "Addon annotation not present"); // This should never happen; the presence of this annotation is checked by the com
         // .dfsek.terra.addon loader.
         return addon.value();
+    }
+    
+    @Override
+    public String getID() {
+        return getName();
     }
 }

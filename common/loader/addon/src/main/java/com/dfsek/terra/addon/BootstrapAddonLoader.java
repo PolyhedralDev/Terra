@@ -1,7 +1,6 @@
 package com.dfsek.terra.addon;
 
 import com.dfsek.terra.addon.exception.AddonLoadException;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 import java.io.IOException;
@@ -14,9 +13,9 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 
-public class BootstrapAddonLoader implements BootstrapBaseAddon {
+public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAddon<?>> {
     @Override
-    public Iterable<BaseAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
+    public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, ClassLoader parent) {
         Path bootstrapAddons = addonsFolder.resolve("bootstrap");
         
         try {
@@ -33,7 +32,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon {
                                     if(!(in instanceof BootstrapBaseAddon)) {
                                         throw new AddonLoadException(in.getClass() + " does not extend " + BootstrapBaseAddon.class);
                                     }
-                                    return (BaseAddon) in;
+                                    return (BootstrapBaseAddon<?>) in;
                                 } catch(InvocationTargetException e) {
                                     throw new AddonLoadException("Exception occurred while instantiating addon: ", e);
                                 } catch(NoSuchMethodException | IllegalAccessException | InstantiationException e) {

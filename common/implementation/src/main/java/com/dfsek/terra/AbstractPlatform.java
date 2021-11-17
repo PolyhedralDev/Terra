@@ -2,7 +2,15 @@ package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
 
+import com.dfsek.terra.addon.BootstrapAddonLoader;
 import com.dfsek.terra.api.Platform;
+
+import com.dfsek.terra.api.addon.BaseAddon;
+
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.registry.LockedRegistryImpl;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -40,7 +48,6 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
-import com.dfsek.terra.registry.master.AddonRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.util.logging.DebugLogger;
 
@@ -66,7 +73,9 @@ public abstract class AbstractPlatform implements Platform {
     
     private final CommandManager manager = new TerraCommandManager(this);
     
-    private final AddonRegistry addonRegistry = new AddonRegistry(this);
+    private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>());
+    
+    private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
     
     private final Lazy<Logger> logger = Lazy.lazy(this::createLogger);
     private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
@@ -97,8 +106,8 @@ public abstract class AbstractPlatform implements Platform {
     }
     
     @Override
-    public Registry<TerraAddon> getAddons() {
-        return addonRegistry;
+    public Registry<BaseAddon> getAddons() {
+        return lockedAddonRegistry;
     }
     
     @Override
@@ -126,7 +135,7 @@ public abstract class AbstractPlatform implements Platform {
         
         logger().info("Initializing Terra...");
         
-        getPlatformAddon().ifPresent(addonRegistry::register);
+        getPlatformAddon().ifPresent(addon -> addonRegistry.register(addon.getID(), addon));
         
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
             File configFile = new File(getDataFolder(), "config.yml");
@@ -181,11 +190,25 @@ public abstract class AbstractPlatform implements Platform {
             profiler.start();
         }
         
-        addonRegistry.register(new InternalAddon(this));
+        InternalAddon internalAddon = new InternalAddon();
+    
+        addonRegistry.register(internalAddon.getID(), internalAddon);
         
-        if(!addonRegistry.loadAll(getClass().getClassLoader())) { // load all addons
-            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
-        }
+        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
+        
+        
+        eventManager
+            .getHandler(FunctionalEventHandler.class)
+            .register(internalAddon, PlatformInitializationEvent.class)
+            .then(event -> {
+                logger().info("Loading config packs...");
+                getRawConfigRegistry().loadAll(this);
+                logger().info("Loaded packs.");
+            })
+            .global();
+    
+    
+    
         logger().info("Loaded addons.");
         
         try {
@@ -200,7 +223,7 @@ public abstract class AbstractPlatform implements Platform {
     
     protected abstract Logger createLogger();
     
-    protected Optional<TerraAddon> getPlatformAddon() {
+    protected Optional<BaseAddon> getPlatformAddon() {
         return Optional.empty();
     }
     

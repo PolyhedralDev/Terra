@@ -5,6 +5,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import java.util.LinkedHashMap;
 
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -33,7 +34,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
         
         if(platform != null) {
-            registry.registerLoader(TerraAddon.class, platform.getAddons())
+            registry.registerLoader(BaseAddon.class, platform.getAddons())
                     .registerLoader(BlockType.class,
                                     (t, object, cf) -> platform.getWorldHandle().createBlockData((String) object).getBlockType())
                     .registerLoader(BlockState.class, (t, object, cf) -> platform.getWorldHandle().createBlockData((String) object));
