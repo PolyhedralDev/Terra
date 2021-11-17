@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: config-ore
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.ore.OreAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-config-ore/issues
+  source: https://github.com/PolyhedralDev/Terra-config-ore
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
