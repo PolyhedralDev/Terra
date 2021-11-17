@@ -12,6 +12,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
+@SuppressWarnings("FieldMayBeFinal")
 public class ImageProviderTemplate implements ObjectTemplate<BiomeProvider> {
     private final Registry<TerraBiome> biomes;
     @Value("resolution")
