@@ -4,7 +4,7 @@ contributors:
 id: config-flora
 version: 0.1.0
 entrypoints:
-  - "com.dfsek.terra.addons.feature.FeatureAddon"
+  - "com.dfsek.terra.addons.flora.FloraAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra-config-flora/issues
   source: https://github.com/PolyhedralDev/Terra-config-flora
