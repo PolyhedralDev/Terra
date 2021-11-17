@@ -192,7 +192,7 @@ public abstract class AbstractPlatform implements Platform {
         
         addonRegistry.register(internalAddon.getID(), internalAddon);
         
-        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
+        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
         
         Path addonsFolder = getDataFolder().toPath().resolve("addons");
         
