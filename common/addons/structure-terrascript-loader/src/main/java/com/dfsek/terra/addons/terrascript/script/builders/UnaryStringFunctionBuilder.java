@@ -26,14 +26,14 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
             public ReturnType returnType() {
                 return ReturnType.VOID;
             }
-    
+            
             @SuppressWarnings("unchecked")
             @Override
             public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
                 function.accept(((Returnable<String>) argumentList.get(0)).apply(implementationArguments, variableMap));
                 return null;
             }
-    
+            
             @Override
             public Position getPosition() {
                 return position;

@@ -86,7 +86,7 @@ public class Parser {
         ParserUtil.checkType(identifier, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP);
         
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
-    
+        
         return switch(identifier.getType()) {
             case FOR_LOOP -> parseForLoop(tokens, variableMap, identifier.getPosition());
             case IF_STATEMENT -> parseIfStatement(tokens, variableMap, identifier.getPosition(), loop);
@@ -243,7 +243,8 @@ public class Parser {
         return expression;
     }
     
-    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
+    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens,
+                                                       Map<String, Returnable.ReturnType> variableMap) {
         Token binaryOperator = tokens.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
         

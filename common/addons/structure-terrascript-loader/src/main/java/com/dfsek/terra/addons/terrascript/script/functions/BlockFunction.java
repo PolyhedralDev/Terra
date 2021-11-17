@@ -1,13 +1,10 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.api.structure.buffer.items.BufferedBlock;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
@@ -15,7 +12,9 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.structure.buffer.items.BufferedBlock;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;

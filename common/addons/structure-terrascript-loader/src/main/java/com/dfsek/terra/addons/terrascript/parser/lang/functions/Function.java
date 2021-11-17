@@ -14,12 +14,12 @@ public interface Function<T> extends Returnable<T> {
         public ReturnType returnType() {
             return null;
         }
-    
+        
         @Override
         public Object apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
             return null;
         }
-    
+        
         @Override
         public Position getPosition() {
             return null;

@@ -28,12 +28,12 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
             public ReturnType returnType() {
                 return type;
             }
-    
+            
             @Override
             public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
                 return function.apply((TerraImplementationArguments) implementationArguments);
             }
-    
+            
             @Override
             public Position getPosition() {
                 return position;

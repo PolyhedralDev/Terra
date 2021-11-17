@@ -11,8 +11,6 @@ import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
-import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -41,6 +39,8 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.buffer.Buffer;
+import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
+import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.api.structure.rotation.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
@@ -53,7 +53,8 @@ public class StructureScript implements Structure {
     private final Cache<Vector3, StructureBuffer> cache;
     private final Platform platform;
     
-    public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry, Registry<LootTable> lootRegistry,
+    public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry,
+                           Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder<?>> functionRegistry) {
         Parser parser;
         try {
