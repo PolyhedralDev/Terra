@@ -1,7 +1,9 @@
 package com.dfsek.terra.addons.generation.feature;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeaturesTemplate;
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -14,18 +16,19 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
 
 
-@Addon("generation-stage-feature")
-@Version("1.0.0")
-@Author("Terra")
-public class FeatureGenerationAddon extends TerraAddon {
+
+public class FeatureGenerationAddon implements AddonInitializer {
     @Inject
     private Platform platform;
+    
+    @Inject
+    private BaseAddon addon;
     
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack()
                                 .getOrCreateRegistry(GenerationStageProvider.class)
                                 .register("FEATURE", pack -> new FeatureGenerationStage(platform)))
@@ -33,7 +36,7 @@ public class FeatureGenerationAddon extends TerraAddon {
         
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigurationLoadEvent.class)
+                .register(addon, ConfigurationLoadEvent.class)
                 .then(event -> {
                 if(event.is(TerraBiome.class)) {
                     event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());
