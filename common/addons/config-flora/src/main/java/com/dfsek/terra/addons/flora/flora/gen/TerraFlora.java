@@ -40,7 +40,7 @@ public class TerraFlora implements Structure {
         this.ceiling = ceiling;
         this.distribution = distribution;
         this.id = id;
-    
+        
         this.layers = new ArrayList<>();
         layers.forEach(layer -> {
             for(int i = 0; i < layer.getLayers(); i++) {
@@ -88,10 +88,10 @@ public class TerraFlora implements Structure {
         boolean doRotation = testRotation.size() > 0;
         int size = layers.size();
         int c = ceiling ? -1 : 1;
-    
+        
         EnumSet<Direction> faces = doRotation ? getFaces(location.clone().add(0, c, 0), world) : EnumSet.noneOf(Direction.class);
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
-    
+        
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
             BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(),
@@ -99,7 +99,7 @@ public class TerraFlora implements Structure {
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(
                         new Random(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
-            
+                
                 data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
                     .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))
                     .setIfPresent(Properties.SOUTH, faces.contains(Direction.SOUTH))

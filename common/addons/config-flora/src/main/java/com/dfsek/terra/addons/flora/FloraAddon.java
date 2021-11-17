@@ -10,7 +10,6 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
 
-
 public class FloraAddon implements AddonInitializer {
     @Inject
     private Platform platform;
@@ -24,9 +23,9 @@ public class FloraAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                event.getPack().registerConfigType(new FloraConfigType(), "FLORA", 2);
-                event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
-            })
+                    event.getPack().registerConfigType(new FloraConfigType(), "FLORA", 2);
+                    event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
+                })
                 .failThrough();
     }
 }

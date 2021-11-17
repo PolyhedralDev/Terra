@@ -7,7 +7,6 @@ import com.dfsek.tectonic.annotations.Value;
 import java.util.List;
 
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
-import com.dfsek.terra.addons.flora.flora.gen.TerraFlora;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
