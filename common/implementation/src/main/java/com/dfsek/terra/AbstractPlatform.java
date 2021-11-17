@@ -1,17 +1,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-
-import com.dfsek.terra.addon.BootstrapAddonLoader;
-import com.dfsek.terra.api.Platform;
-
-import com.dfsek.terra.api.addon.BaseAddon;
-
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.registry.LockedRegistryImpl;
-import com.dfsek.terra.registry.OpenRegistryImpl;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
@@ -23,21 +12,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.addon.BootstrapAddonLoader;
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.commands.CommandUtil;
@@ -46,8 +41,11 @@ import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.event.EventManagerImpl;
+import com.dfsek.terra.inject.InjectorImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.LockedRegistryImpl;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.util.logging.DebugLogger;
 
@@ -191,24 +189,35 @@ public abstract class AbstractPlatform implements Platform {
         }
         
         InternalAddon internalAddon = new InternalAddon();
-    
+        
         addonRegistry.register(internalAddon.getID(), internalAddon);
         
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
         
+        Path addonsFolder = getDataFolder().toPath().resolve("addons");
+        
+        Injector<Platform> platformInjector = new InjectorImpl<>(this);
+        platformInjector.addExplicitTarget(Platform.class);
+        
+        bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
+                            .forEach(bootstrap -> bootstrap.loadAddons(addonsFolder, getClass().getClassLoader())
+                                                           .forEach(addon -> {
+                                                               platformInjector.inject(addon);
+                                                               addon.initialize();
+                                                               addonRegistry.register(addon.getID(), addon);
+                                                           }));
         
         eventManager
-            .getHandler(FunctionalEventHandler.class)
-            .register(internalAddon, PlatformInitializationEvent.class)
-            .then(event -> {
-                logger().info("Loading config packs...");
-                getRawConfigRegistry().loadAll(this);
-                logger().info("Loaded packs.");
-            })
-            .global();
-    
-    
-    
+                .getHandler(FunctionalEventHandler.class)
+                .register(internalAddon, PlatformInitializationEvent.class)
+                .then(event -> {
+                    logger().info("Loading config packs...");
+                    getRawConfigRegistry().loadAll(this);
+                    logger().info("Loaded packs.");
+                })
+                .global();
+        
+        
         logger().info("Loaded addons.");
         
         try {
