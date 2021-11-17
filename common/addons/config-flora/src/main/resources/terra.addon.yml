@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: config-flora
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.feature.FeatureAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-config-flora/issues
+  source: https://github.com/PolyhedralDev/Terra-config-flora
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
