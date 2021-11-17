@@ -10,7 +10,6 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
 
-
 public class BiomeAddon implements AddonInitializer {
     @Inject
     private Platform platform;
@@ -24,9 +23,9 @@ public class BiomeAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
-                event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
-            })
+                    event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
+                    event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
+                })
                 .failThrough();
     }
 }
