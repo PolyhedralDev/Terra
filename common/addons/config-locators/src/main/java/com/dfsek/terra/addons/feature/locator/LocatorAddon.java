@@ -22,17 +22,12 @@ import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-
 
 
 public class LocatorAddon implements AddonInitializer {
@@ -53,27 +48,27 @@ public class LocatorAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
-                locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(platform));
-                locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
-                locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
-                locatorRegistry.register("NOISE", NoiseLocatorTemplate::new);
-                locatorRegistry.register("NOISE_3D", Noise3DLocatorTemplate::new);
+                    CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
+                    locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(platform));
+                    locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
+                    locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
+                    locatorRegistry.register("NOISE", NoiseLocatorTemplate::new);
+                    locatorRegistry.register("NOISE_3D", Noise3DLocatorTemplate::new);
             
-                locatorRegistry.register("AND", AndLocatorTemplate::new);
-                locatorRegistry.register("OR", OrLocatorTemplate::new);
-            })
+                    locatorRegistry.register("AND", AndLocatorTemplate::new);
+                    locatorRegistry.register("OR", OrLocatorTemplate::new);
+                })
                 .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
-                patternRegistry.register("MATCH_AIR", AirMatchPatternTemplate::new);
-                patternRegistry.register("MATCH_SOLID", SolidMatchPatternTemplate::new);
-                patternRegistry.register("MATCH", SingleBlockMatchPatternTemplate::new);
-                patternRegistry.register("MATCH_SET", BlockSetMatchPatternTemplate::new);
+                    CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
+                    patternRegistry.register("MATCH_AIR", AirMatchPatternTemplate::new);
+                    patternRegistry.register("MATCH_SOLID", SolidMatchPatternTemplate::new);
+                    patternRegistry.register("MATCH", SingleBlockMatchPatternTemplate::new);
+                    patternRegistry.register("MATCH_SET", BlockSetMatchPatternTemplate::new);
             
-                patternRegistry.register("AND", AndPatternTemplate::new);
-                patternRegistry.register("OR", OrPatternTemplate::new);
-                patternRegistry.register("NOT", NotPatternTemplate::new);
-            })
+                    patternRegistry.register("AND", AndPatternTemplate::new);
+                    patternRegistry.register("OR", OrPatternTemplate::new);
+                    patternRegistry.register("NOT", NotPatternTemplate::new);
+                })
                 .failThrough();
     }
 }
