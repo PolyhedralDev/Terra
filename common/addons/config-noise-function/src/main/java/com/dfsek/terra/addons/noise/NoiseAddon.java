@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
@@ -32,6 +33,7 @@ import com.dfsek.terra.addons.noise.samplers.noise.simplex.SimplexSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.value.ValueCubicSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.value.ValueSampler;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -44,20 +46,20 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
-@Addon("config-noise-function")
-@Author("Terra")
-@Version("1.0.0")
-public class NoiseAddon extends TerraAddon {
+public class NoiseAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
     };
     @Inject
     private Platform plugin;
     
+    @Inject
+    private BaseAddon addon;
+    
     @Override
     public void initialize() {
         plugin.getEventManager()
               .getHandler(FunctionalEventHandler.class)
-              .register(this, ConfigPackPreLoadEvent.class)
+              .register(addon, ConfigPackPreLoadEvent.class)
               .then(event -> {
                   CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
                           NOISE_SAMPLER_TOKEN);
