@@ -14,7 +14,9 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMut
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -27,10 +29,7 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-@Addon("biome-provider-pipeline")
-@Author("Terra")
-@Version("1.0.0")
-public class BiomePipelineAddon extends TerraAddon {
+public class BiomePipelineAddon implements AddonInitializer {
     
     public static final TypeKey<Supplier<ObjectTemplate<BiomeSource>>> SOURCE_REGISTRY_KEY = new TypeKey<>() {
     };
@@ -42,11 +41,14 @@ public class BiomePipelineAddon extends TerraAddon {
     @Inject
     private Platform platform;
     
+    @Inject
+    private BaseAddon addon;
+    
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                         PROVIDER_REGISTRY_KEY);
