@@ -19,7 +19,8 @@ public abstract class Ore {
     private final Map<BlockType, BlockState> materials;
     protected Platform platform;
     
-    public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, Platform platform, Map<BlockType, BlockState> materials) {
+    public Ore(BlockState material, MaterialSet replaceable, boolean applyGravity, Platform platform,
+               Map<BlockType, BlockState> materials) {
         this.material = material;
         this.replaceable = replaceable;
         this.applyGravity = applyGravity;

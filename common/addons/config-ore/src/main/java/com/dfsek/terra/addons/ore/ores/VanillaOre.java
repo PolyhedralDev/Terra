@@ -1,12 +1,11 @@
 package com.dfsek.terra.addons.ore.ores;
 
-import com.dfsek.terra.api.Platform;
-
 import net.jafama.FastMath;
 
 import java.util.Map;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
