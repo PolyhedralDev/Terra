@@ -11,7 +11,9 @@ import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemp
 import com.dfsek.terra.addons.feature.distributor.config.YesDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.util.Point;
 import com.dfsek.terra.addons.feature.distributor.util.PointTemplate;
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
@@ -24,20 +26,20 @@ import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
-@Addon("config-distributors")
-@Version("1.0.0")
-@Author("Terra")
-public class DistributorAddon extends TerraAddon {
+public class DistributorAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<Distributor>>> DISTRIBUTOR_TOKEN = new TypeKey<>() {
     };
     @Inject
     private Platform platform;
     
+    @Inject
+    private BaseAddon addon;
+    
     @Override
     public void initialize() {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigPackPreLoadEvent.class)
+                .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
                         DISTRIBUTOR_TOKEN);
