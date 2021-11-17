@@ -112,10 +112,6 @@ public class PlatformImpl extends AbstractPlatform {
         };
     }
     
-    @Override
-    protected Optional<TerraAddon> getPlatformAddon() {
-        return Optional.of(new FabricAddon(this));
-    }
     
     private ProtoBiome parseBiome(String id) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);

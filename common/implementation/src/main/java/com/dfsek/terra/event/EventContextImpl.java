@@ -1,5 +1,7 @@
 package com.dfsek.terra.event;
 
+import com.dfsek.terra.api.addon.BaseAddon;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
@@ -16,14 +18,14 @@ import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
 public class EventContextImpl<T extends Event> implements EventContext<T>, Comparable<EventContextImpl<?>> {
     private final List<Consumer<T>> actions = new ArrayList<>();
-    private final TerraAddon addon;
+    private final BaseAddon addon;
     private final Type eventType;
     private final FunctionalEventHandlerImpl parent;
     private int priority;
     private boolean failThrough = false;
     private boolean global = false;
     
-    public EventContextImpl(TerraAddon addon, Type eventType, FunctionalEventHandlerImpl parent) {
+    public EventContextImpl(BaseAddon addon, Type eventType, FunctionalEventHandlerImpl parent) {
         this.addon = addon;
         this.eventType = eventType;
         this.parent = parent;
@@ -75,7 +77,7 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
         return priority;
     }
     
-    public TerraAddon getAddon() {
+    public BaseAddon getAddon() {
         return addon;
     }
     

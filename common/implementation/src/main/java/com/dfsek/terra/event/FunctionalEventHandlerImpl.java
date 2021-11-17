@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
@@ -48,20 +49,20 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
                 platform.logger().warning("Exception occurred during event handling:");
                 platform.logger().warning(writer.toString());
                 platform.logger().warning(
-                        "Report this to the maintainers of " + context.getAddon().getName() + ", " + context.getAddon().getAuthor());
+                        "Report this to the maintainers of " + context.getAddon().getID());
             }
         });
     }
     
     @Override
-    public <T extends Event> EventContext<T> register(TerraAddon addon, Class<T> clazz) {
+    public <T extends Event> EventContext<T> register(BaseAddon addon, Class<T> clazz) {
         EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz, this);
         contextMap.computeIfAbsent(clazz, c -> new ArrayList<>()).add(eventContext);
         return eventContext;
     }
     
     @Override
-    public <T extends Event> EventContext<T> register(TerraAddon addon, TypeKey<T> clazz) {
+    public <T extends Event> EventContext<T> register(BaseAddon addon, TypeKey<T> clazz) {
         EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz.getType(), this);
         contextMap.computeIfAbsent(clazz.getType(), c -> new ArrayList<>()).add(eventContext);
         return eventContext;
