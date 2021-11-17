@@ -41,7 +41,7 @@ import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.event.EventManagerImpl;
-import com.dfsek.terra.inject.InjectorImpl;
+import com.dfsek.terra.api.inject.impl.InjectorImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;

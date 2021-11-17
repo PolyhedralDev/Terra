@@ -15,7 +15,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.inject.exception.InjectionException;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.inject.InjectorImpl;
+import com.dfsek.terra.api.inject.impl.InjectorImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 

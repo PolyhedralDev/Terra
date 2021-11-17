@@ -1,4 +1,4 @@
-package com.dfsek.terra.inject;
+package com.dfsek.terra.api.inject.impl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
