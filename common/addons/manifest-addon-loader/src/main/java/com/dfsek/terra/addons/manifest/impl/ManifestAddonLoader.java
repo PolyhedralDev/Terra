@@ -24,7 +24,6 @@ import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionRangeLoader;
 import com.dfsek.terra.addons.manifest.impl.exception.AddonException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestNotPresentException;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 
@@ -52,9 +51,9 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                                     AddonManifest manifest = manifestLoader.load(new AddonManifest(),
                                                                                  new YamlConfiguration(jar.getInputStream(manifestEntry),
                                                                                                        "terra.addon.yml"));
-                        
+                                    
                                     ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ path.toUri().toURL() },
-                                                                                                   parent);
+                                                                                                   getClass().getClassLoader());
                         
                                     return manifest.getEntryPoints().stream().map(entryPoint -> {
                                         try {
