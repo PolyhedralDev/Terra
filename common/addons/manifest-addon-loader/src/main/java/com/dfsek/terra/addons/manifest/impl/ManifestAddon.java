@@ -1,13 +1,13 @@
 package com.dfsek.terra.addons.manifest.impl;
 
+import java.util.List;
+
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.annotations.Inject;
-
-import java.util.List;
 
 
 public class ManifestAddon implements BaseAddon {

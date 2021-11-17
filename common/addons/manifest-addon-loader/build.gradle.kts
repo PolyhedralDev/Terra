@@ -3,7 +3,7 @@ dependencies {
     "shadedImplementation"("com.dfsek.tectonic:yaml:2.1.2")
 }
 
-tasks.withType<Jar>() {
+tasks.withType<Jar> {
     manifest {
         attributes("Bootstrap-Addon-Entry-Point" to "com.dfsek.terra.addons.manifest.impl.ManifestAddonLoader")
     }

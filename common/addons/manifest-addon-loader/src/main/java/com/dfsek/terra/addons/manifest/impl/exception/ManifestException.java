@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.manifest.impl.exception;
 
-public class ManifestException extends AddonException{
+public class ManifestException extends AddonException {
     public ManifestException(String message) {
         super(message);
     }

@@ -54,19 +54,18 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                                 if(manifestEntry == null) {
                                     throw new ManifestNotPresentException("Addon " + path + " does not contain addon manifest.");
                                 }
-                                
-                                
+                    
                     
                                 try {
                                     AddonManifest manifest = manifestLoader.load(new AddonManifest(),
                                                                                  new YamlConfiguration(jar.getInputStream(manifestEntry),
                                                                                                        "terra.addon.yml"));
-    
+                        
                                     platform.logger().info("Loading addon " + manifest.getID());
-                                    
+                        
                                     ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ path.toUri().toURL() },
                                                                                                    getClass().getClassLoader());
-                                    
+                        
                                     return new ManifestAddon(manifest, manifest.getEntryPoints().stream().map(entryPoint -> {
                                         try {
                                             Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
