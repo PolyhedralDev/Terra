@@ -1,5 +1,9 @@
 package com.dfsek.terra.addons.sponge;
 
+import net.jafama.FastMath;
+
+import java.util.Random;
+
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
@@ -11,10 +15,6 @@ import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-
-import net.jafama.FastMath;
-
-import java.util.Random;
 
 
 public class SpongeStructure implements Structure {
@@ -40,13 +40,13 @@ public class SpongeStructure implements Structure {
                 Vector2 r = RotationUtil.rotateVector(new Vector2(x, z), rotation);
                 int rX = r.getBlockX();
                 int rZ = r.getBlockZ();
-                if(FastMath.floorDiv(bX+rX, 16) != chunk.getX() || FastMath.floorDiv(bZ+rZ, 16) != chunk.getZ()) {
+                if(FastMath.floorDiv(bX + rX, 16) != chunk.getX() || FastMath.floorDiv(bZ + rZ, 16) != chunk.getZ()) {
                     continue;
                 }
                 for(int y = 0; y < blocks[z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
-                    world.setBlockData(bX+rX, bY+y, bZ+rZ, state);
+                    world.setBlockData(bX + rX, bY + y, bZ + rZ, state);
                 }
             }
         }
@@ -83,7 +83,7 @@ public class SpongeStructure implements Structure {
                 for(int y = 0; y < blocks[z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
-                    world.setBlockData(bX+rX, bY+y, bZ+rZ, state);
+                    world.setBlockData(bX + rX, bY + y, bZ + rZ, state);
                 }
             }
         }

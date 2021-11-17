@@ -1,21 +1,5 @@
 package com.dfsek.terra.addons.sponge;
 
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.structure.Structure;
-
-import com.dfsek.terra.api.util.StringUtil;
-
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -29,12 +13,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.StringUtil;
+
+
 public class SpongeSchematicAddon implements AddonInitializer {
     @Inject
     private Platform platform;
     
     @Inject
     private BaseAddon addon;
+    
+    private static InputStream detectDecompression(InputStream is) throws IOException {
+        PushbackInputStream pbis = new PushbackInputStream(is, 2);
+        int signature = (pbis.read() & 0xFF) + (pbis.read() << 8);
+        pbis.unread(signature >> 8);
+        pbis.unread(signature & 0xFF);
+        if(signature == GZIPInputStream.GZIP_MAGIC) {
+            return new GZIPInputStream(pbis);
+        }
+        return pbis;
+    }
     
     @Override
     public void initialize() {
@@ -52,7 +59,6 @@ public class SpongeSchematicAddon implements AddonInitializer {
                 })
                 .failThrough();
     }
-    
     
     public SpongeStructure convert(InputStream in, String id) {
         try {
@@ -87,16 +93,5 @@ public class SpongeSchematicAddon implements AddonInitializer {
         } catch(IOException e) {
             throw new IllegalArgumentException("Failed to parse Sponge schematic: ", e);
         }
-    }
-    
-    private static InputStream detectDecompression(InputStream is) throws IOException {
-        PushbackInputStream pbis = new PushbackInputStream(is, 2);
-        int signature = (pbis.read() & 0xFF) + (pbis.read() << 8);
-        pbis.unread(signature >> 8);
-        pbis.unread(signature & 0xFF);
-        if(signature == GZIPInputStream.GZIP_MAGIC) {
-            return new GZIPInputStream(pbis);
-        }
-        return pbis;
     }
 }
