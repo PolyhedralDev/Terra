@@ -5,10 +5,6 @@ import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
@@ -27,9 +23,9 @@ public class YamlAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigurationDiscoveryEvent.class)
                 .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
-                platform.getDebugLogger().info("Discovered config " + entry.getKey());
-                event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
-            })))
+                    platform.getDebugLogger().info("Discovered config " + entry.getKey());
+                    event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
+                })))
                 .failThrough();
     }
 }
