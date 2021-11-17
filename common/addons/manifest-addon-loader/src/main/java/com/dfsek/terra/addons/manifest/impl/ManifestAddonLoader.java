@@ -45,7 +45,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
         try {
             return Files.walk(addonsFolder, 1)
                         .filter(path -> path.toFile().isFile() && path.toString().endsWith(".jar"))
-                        .flatMap(path -> {
+                        .map(path -> {
                             try {
                                 platform.getDebugLogger().info("Loading addon from JAR " + path);
                                 JarFile jar = new JarFile(path.toFile());
@@ -66,14 +66,14 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                                     
                                     ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ path.toUri().toURL() },
                                                                                                    getClass().getClassLoader());
-                        
-                                    return manifest.getEntryPoints().stream().map(entryPoint -> {
+                                    
+                                    return new ManifestAddon(manifest, manifest.getEntryPoints().stream().map(entryPoint -> {
                                         try {
                                             Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
                                             if(!(in instanceof AddonInitializer)) {
                                                 throw new AddonException(in.getClass() + " does not extend " + AddonInitializer.class);
                                             }
-                                            return new ManifestAddon(manifest);
+                                            return (AddonInitializer) in;
                                         } catch(InvocationTargetException e) {
                                             throw new AddonException("Exception occurred while instantiating addon: ", e);
                                         } catch(NoSuchMethodException | IllegalAccessException | InstantiationException e) {
@@ -81,7 +81,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                                         } catch(ClassNotFoundException e) {
                                             throw new AddonException("Entry point " + entryPoint + " not found in JAR.");
                                         }
-                                    });
+                                    }).collect(Collectors.toList()));
                         
                                 } catch(LoadException e) {
                                     throw new ManifestException("Failed to load addon manifest", e);
