@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: config-distributors
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.feature.distributor.DistributorAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-config-distributors/issues
+  source: https://github.com/PolyhedralDev/Terra-config-distributors
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
