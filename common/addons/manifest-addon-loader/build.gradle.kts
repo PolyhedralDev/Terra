@@ -8,3 +8,5 @@ tasks.withType<Jar>() {
         attributes("Bootstrap-Addon-Entry-Point" to "com.dfsek.terra.addons.manifest.impl.ManifestAddonLoader")
     }
 }
+
+project.extra.set("bootstrap", true)
