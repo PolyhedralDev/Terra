@@ -1,5 +1,6 @@
 package com.dfsek.terra.config.pack;
 
+import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.abstraction.AbstractConfiguration;
@@ -34,7 +35,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
@@ -90,7 +91,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final Configuration configuration;
     
-    private final Set<TerraAddon> addons;
+    private final Map<BaseAddon, VersionRange> addons;
     
     private final BiomeProvider seededBiomeProvider;
     
@@ -237,7 +238,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public Set<TerraAddon> addons() {
+    public Map<BaseAddon, VersionRange> addons() {
         return addons;
     }
     

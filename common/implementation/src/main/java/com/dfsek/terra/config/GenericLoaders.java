@@ -1,5 +1,6 @@
 package com.dfsek.terra.config;
 
+import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.loading.TypeRegistry;
 
 import java.util.LinkedHashMap;
@@ -16,6 +17,7 @@ import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
+import com.dfsek.terra.config.loaders.VersionRangeLoader;
 
 
 public class GenericLoaders implements LoaderRegistrar {
@@ -30,6 +32,7 @@ public class GenericLoaders implements LoaderRegistrar {
         registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
                 .registerLoader(Range.class, new RangeLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
+                .registerLoader(VersionRange.class, new VersionRangeLoader())
                 .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
         
         if(platform != null) {

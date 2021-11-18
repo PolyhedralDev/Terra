@@ -35,7 +35,7 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
         contextMap.getOrDefault(event.getClass(), Collections.emptyList()).forEach(context -> {
             try {
                 if(event instanceof PackEvent) {
-                    if((context.isGlobal() || ((PackEvent) event).getPack().addons().contains(context.getAddon()))) {
+                    if((context.isGlobal() || ((PackEvent) event).getPack().addons().containsKey(context.getAddon()))) {
                         ((EventContextImpl<Event>) context).handle(event);
                     }
                 } else {
