@@ -2,6 +2,9 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
+
+import com.dfsek.terra.api.addon.BaseAddon;
+
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -10,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
@@ -52,6 +56,11 @@ public class PlatformImpl extends AbstractPlatform {
         });
         
         return succeed;
+    }
+    
+    @Override
+    protected Optional<BaseAddon> platformAddon() {
+        return Optional.of(new FabricAddon(this));
     }
     
     @Override

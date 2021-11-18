@@ -1,6 +1,9 @@
 package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.ConfigException;
+
+import com.dfsek.terra.api.addon.BaseAddon;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -29,10 +32,7 @@ import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
 
-@Addon("terra-fabric")
-@Author("Terra")
-@Version("1.0.0")
-public final class FabricAddon extends TerraAddon {
+public final class FabricAddon implements BaseAddon {
     private final PlatformImpl terraFabricPlugin;
     private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
@@ -117,5 +117,10 @@ public final class FabricAddon extends TerraAddon {
     
     public Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
         return templates;
+    }
+    
+    @Override
+    public String getID() {
+        return "terra-fabric";
     }
 }

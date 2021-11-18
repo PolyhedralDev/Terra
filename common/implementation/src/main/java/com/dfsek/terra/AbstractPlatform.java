@@ -118,6 +118,10 @@ public abstract class AbstractPlatform implements Platform {
         return eventManager;
     }
     
+    protected Optional<BaseAddon> platformAddon() {
+        return Optional.empty();
+    }
+    
     @Override
     public Profiler getProfiler() {
         return profiler;
@@ -191,6 +195,11 @@ public abstract class AbstractPlatform implements Platform {
         InternalAddon internalAddon = new InternalAddon();
         
         addonRegistry.register(internalAddon.getID(), internalAddon);
+        
+        platformAddon().ifPresent(baseAddon -> {
+            baseAddon.initialize();
+            addonRegistry.register(baseAddon.getID(), baseAddon);
+        });
         
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
         
