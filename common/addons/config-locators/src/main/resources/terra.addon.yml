@@ -10,3 +10,6 @@ website:
   source: https://github.com/PolyhedralDev/Terra-config-locators
   docs: https://github.com/PolyhedralDev/Terra/wiki
 license: GNU LGPL v3.0
+depends:
+  config-feature: "0.1.+"
+  generation-stage-feature: "0.1.+"
