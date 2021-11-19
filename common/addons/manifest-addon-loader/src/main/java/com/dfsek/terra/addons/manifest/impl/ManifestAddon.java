@@ -1,6 +1,10 @@
 package com.dfsek.terra.addons.manifest.impl;
 
 import java.util.List;
+import java.util.Map;
+
+import ca.solostudios.strata.version.Version;
+import ca.solostudios.strata.version.VersionRange;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
@@ -42,5 +46,19 @@ public class ManifestAddon implements BaseAddon {
             platformInjector.inject(initializer);
             initializer.initialize();
         });
+    }
+    
+    public AddonManifest getManifest() {
+        return manifest;
+    }
+    
+    @Override
+    public Map<String, VersionRange> getDependencies() {
+        return manifest.getDependencies();
+    }
+    
+    @Override
+    public Version getVersion() {
+        return manifest.getVersion();
     }
 }

@@ -36,7 +36,7 @@ public class AddonManifest implements ConfigTemplate, StringIdentifiable {
     
     @Value("depends")
     @Default
-    private Map<String, VersionRange> dependencies;
+    private Map<String, VersionRange> dependencies = Collections.emptyMap();
     
     @Value("website")
     private WebsiteConfig website;
