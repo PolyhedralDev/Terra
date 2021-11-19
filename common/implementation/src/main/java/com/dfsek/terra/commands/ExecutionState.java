@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.commands;
 
 import java.util.HashMap;
@@ -13,15 +30,15 @@ public final class ExecutionState {
     private final Map<String, String> args = new HashMap<>();
     private final CommandSender sender;
     
-    protected ExecutionState(CommandSender sender) {
+    public ExecutionState(CommandSender sender) {
         this.sender = sender;
     }
     
-    protected void addSwitch(String flag) {
+    public void addSwitch(String flag) {
         switches.add(flag);
     }
     
-    protected void addArgument(String arg, String value) {
+    public void addArgument(String arg, String value) {
         args.put(arg, value);
     }
     

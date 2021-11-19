@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.util;
 
 import net.jafama.FastMath;
@@ -145,7 +152,7 @@ public final class MathUtil {
             r = FastMath.sqrt(-FastMath.log(r));
             
             if(r <= 5) {
-                r += -1.6;
+                r -= 1.6;
                 val = (((((((r * 7.7454501427834140764e-4 +
                              .0227238449892691845833) * r + .24178072517745061177) *
                            r + 1.27045825245236838258) * r +
@@ -159,7 +166,7 @@ public final class MathUtil {
                            r + 1.6763848301838038494) * r +
                           2.05319162663775882187) * r + 1);
             } else {
-                r += -5;
+                r -= 5;
                 val = (((((((r * 2.01033439929228813265e-7 +
                              2.71155556874348757815e-5) * r +
                             .0012426609473880784386) * r + .026532189526576123093) *

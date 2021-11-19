@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.util;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -20,7 +27,7 @@ public final class RotationUtil {
      * @param orig Vector to rotate.
      * @param r    Rotation
      *
-     * @return
+     * @return Rotated vector
      */
     public static Vector2 rotateVector(Vector2 orig, Rotation r) {
         Vector2 copy = orig.clone();
@@ -59,48 +66,45 @@ public final class RotationUtil {
      */
     @SuppressWarnings("fallthrough")
     public static RailShape getRotatedRail(RailShape orig, Rotation r) {
-        switch(r) {
-            case CCW_90:
-                return switch(orig) {
-                    case NORTH_WEST -> RailShape.SOUTH_WEST;
-                    case NORTH_SOUTH -> RailShape.EAST_WEST;
-                    case SOUTH_WEST -> RailShape.SOUTH_EAST;
-                    case SOUTH_EAST -> RailShape.NORTH_EAST;
-                    case EAST_WEST -> RailShape.NORTH_SOUTH;
-                    case NORTH_EAST -> RailShape.NORTH_WEST;
-                    case ASCENDING_EAST -> RailShape.ASCENDING_NORTH;
-                    case ASCENDING_WEST -> RailShape.ASCENDING_SOUTH;
-                    case ASCENDING_NORTH -> RailShape.ASCENDING_WEST;
-                    case ASCENDING_SOUTH -> RailShape.ASCENDING_EAST;
-                };
-            case CW_90:
-                return switch(orig) {
-                    case NORTH_WEST -> RailShape.NORTH_EAST;
-                    case NORTH_SOUTH -> RailShape.EAST_WEST;
-                    case SOUTH_WEST -> RailShape.NORTH_WEST;
-                    case SOUTH_EAST -> RailShape.SOUTH_WEST;
-                    case EAST_WEST -> RailShape.NORTH_SOUTH;
-                    case NORTH_EAST -> RailShape.SOUTH_EAST;
-                    case ASCENDING_EAST -> RailShape.ASCENDING_SOUTH;
-                    case ASCENDING_WEST -> RailShape.ASCENDING_NORTH;
-                    case ASCENDING_NORTH -> RailShape.ASCENDING_EAST;
-                    case ASCENDING_SOUTH -> RailShape.ASCENDING_WEST;
-                };
-            case CW_180:
-                return switch(orig) {
-                    case NORTH_WEST -> RailShape.SOUTH_EAST;
-                    case NORTH_SOUTH -> RailShape.NORTH_SOUTH;
-                    case SOUTH_WEST -> RailShape.NORTH_EAST;
-                    case SOUTH_EAST -> RailShape.NORTH_WEST;
-                    case EAST_WEST -> RailShape.EAST_WEST;
-                    case NORTH_EAST -> RailShape.SOUTH_WEST;
-                    case ASCENDING_EAST -> RailShape.ASCENDING_WEST;
-                    case ASCENDING_WEST -> RailShape.ASCENDING_EAST;
-                    case ASCENDING_NORTH -> RailShape.ASCENDING_SOUTH;
-                    case ASCENDING_SOUTH -> RailShape.ASCENDING_NORTH;
-                };
-        }
-        return orig;
+        return switch(r) {
+            case CCW_90 -> switch(orig) {
+                case NORTH_WEST -> RailShape.SOUTH_WEST;
+                case NORTH_SOUTH -> RailShape.EAST_WEST;
+                case SOUTH_WEST -> RailShape.SOUTH_EAST;
+                case SOUTH_EAST -> RailShape.NORTH_EAST;
+                case EAST_WEST -> RailShape.NORTH_SOUTH;
+                case NORTH_EAST -> RailShape.NORTH_WEST;
+                case ASCENDING_EAST -> RailShape.ASCENDING_NORTH;
+                case ASCENDING_WEST -> RailShape.ASCENDING_SOUTH;
+                case ASCENDING_NORTH -> RailShape.ASCENDING_WEST;
+                case ASCENDING_SOUTH -> RailShape.ASCENDING_EAST;
+            };
+            case CW_90 -> switch(orig) {
+                case NORTH_WEST -> RailShape.NORTH_EAST;
+                case NORTH_SOUTH -> RailShape.EAST_WEST;
+                case SOUTH_WEST -> RailShape.NORTH_WEST;
+                case SOUTH_EAST -> RailShape.SOUTH_WEST;
+                case EAST_WEST -> RailShape.NORTH_SOUTH;
+                case NORTH_EAST -> RailShape.SOUTH_EAST;
+                case ASCENDING_EAST -> RailShape.ASCENDING_SOUTH;
+                case ASCENDING_WEST -> RailShape.ASCENDING_NORTH;
+                case ASCENDING_NORTH -> RailShape.ASCENDING_EAST;
+                case ASCENDING_SOUTH -> RailShape.ASCENDING_WEST;
+            };
+            case CW_180 -> switch(orig) {
+                case NORTH_WEST -> RailShape.SOUTH_EAST;
+                case NORTH_SOUTH -> RailShape.NORTH_SOUTH;
+                case SOUTH_WEST -> RailShape.NORTH_EAST;
+                case SOUTH_EAST -> RailShape.NORTH_WEST;
+                case EAST_WEST -> RailShape.EAST_WEST;
+                case NORTH_EAST -> RailShape.SOUTH_WEST;
+                case ASCENDING_EAST -> RailShape.ASCENDING_WEST;
+                case ASCENDING_WEST -> RailShape.ASCENDING_EAST;
+                case ASCENDING_NORTH -> RailShape.ASCENDING_SOUTH;
+                case ASCENDING_SOUTH -> RailShape.ASCENDING_NORTH;
+            };
+            default -> orig;
+        };
     }
     
     public static void rotateBlockData(BlockState data, Rotation r) {

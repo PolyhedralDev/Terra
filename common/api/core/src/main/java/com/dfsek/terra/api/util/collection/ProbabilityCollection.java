@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.util.collection;
 
 import org.jetbrains.annotations.NotNull;
@@ -102,7 +109,7 @@ public class ProbabilityCollection<E> implements Collection<E> {
     @SuppressWarnings("SuspiciousToArrayCall")
     @NotNull
     @Override
-    public <T> T @NotNull [] toArray(@NotNull T[] a) {
+    public <T> T @NotNull [] toArray(@NotNull T @NotNull [] a) {
         return cont.keySet().toArray(a);
     }
     
