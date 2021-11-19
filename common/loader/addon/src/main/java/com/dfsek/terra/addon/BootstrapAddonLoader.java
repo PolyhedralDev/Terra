@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.version.Version;
+
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
@@ -16,6 +19,8 @@ import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAddon<?>> {
     private final Platform platform;
+    
+    private static final Version VERSION = Versions.getVersion(1, 0, 0);
     
     public BootstrapAddonLoader(Platform platform) { this.platform = platform; }
     
@@ -65,5 +70,10 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     @Override
     public String getID() {
         return "BOOTSTRAP";
+    }
+    
+    @Override
+    public Version getVersion() {
+        return VERSION;
     }
 }

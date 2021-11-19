@@ -13,11 +13,13 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.dfsek.terra.addon.BootstrapAddonLoader;
+import com.dfsek.terra.addon.DependencySorter;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandManager;
@@ -137,8 +139,6 @@ public abstract class AbstractPlatform implements Platform {
         
         logger().info("Initializing Terra...");
         
-        getPlatformAddon().ifPresent(addon -> addonRegistry.register(addon.getID(), addon));
-        
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
             File configFile = new File(getDataFolder(), "config.yml");
             if(!configFile.exists()) {
@@ -192,13 +192,17 @@ public abstract class AbstractPlatform implements Platform {
             profiler.start();
         }
         
+        List<BaseAddon> addonList = new ArrayList<>();
+        
         InternalAddon internalAddon = new InternalAddon();
         
-        addonRegistry.register(internalAddon.getID(), internalAddon);
+        addonList.add(internalAddon);
+        
+        getPlatformAddon().ifPresent(addonList::add);
         
         platformAddon().ifPresent(baseAddon -> {
             baseAddon.initialize();
-            addonRegistry.register(baseAddon.getID(), baseAddon);
+            addonList.add(baseAddon);
         });
         
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
@@ -212,12 +216,16 @@ public abstract class AbstractPlatform implements Platform {
                             .forEach(bootstrap -> {
                                 platformInjector.inject(bootstrap);
                                 bootstrap.loadAddons(addonsFolder, getClass().getClassLoader())
-                                         .forEach(addon -> {
-                                             platformInjector.inject(addon);
-                                             addon.initialize();
-                                             addonRegistry.register(addon.getID(), addon);
-                                         });
+                                         .forEach(addonList::add);
                             });
+        
+        DependencySorter sorter = new DependencySorter();
+        addonList.forEach(sorter::add);
+        sorter.sort().forEach(addon -> {
+            platformInjector.inject(addon);
+            addon.initialize();
+            addonRegistry.register(addon.getID(), addon);
+        });
         
         eventManager
                 .getHandler(FunctionalEventHandler.class)

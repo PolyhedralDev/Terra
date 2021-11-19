@@ -1,5 +1,7 @@
 package com.dfsek.terra.fabric;
 
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.ConfigException;
 
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -16,7 +18,6 @@ import java.util.Map;
 import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.addon.annotations.Addon;
 import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
@@ -33,6 +34,7 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 public final class FabricAddon implements BaseAddon {
+    private static final Version VERSION = Versions.getVersion(1, 0, 0);
     private final PlatformImpl terraFabricPlugin;
     private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
@@ -105,6 +107,11 @@ public final class FabricAddon implements BaseAddon {
                              terraFabricPlugin.logger().info("Biomes registered.");
                          })
                          .global();
+    }
+    
+    @Override
+    public Version getVersion() {
+        return VERSION;
     }
     
     
