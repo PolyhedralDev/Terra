@@ -1,10 +1,20 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in this module's root directory.
+ */
+
 package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
 
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.io.Serial;
+
 
 public class EOFException extends TokenizerException {
     
+    @Serial
     private static final long serialVersionUID = 3980047409902809440L;
     
     public EOFException(String message, Position position) {
