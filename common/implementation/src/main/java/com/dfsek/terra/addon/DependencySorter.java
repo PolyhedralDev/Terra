@@ -42,25 +42,31 @@ public class DependencySorter {
                 
                 sortDependencies(dependency, sort);
                 
-                if(sort.contains(dependency)) {
-                    throw new CircularDependencyException(
-                            "Addon " + addon.getID() + " has circular dependency beginning with " + dependency.getID());
-                }
-                
-                
                 sort.add(dependency); // add it to the list.
             }
         });
     }
     
+    private void checkDependencies(BaseAddon base, BaseAddon current) {
+        current.getDependencies().forEach((id, range) -> {
+            BaseAddon dependency = addons.get(id);
+            if(dependency.getID().equals(base.getID())) {
+                throw new CircularDependencyException(
+                        "Addon " + base.getID() + " has circular dependency beginning with " + dependency.getID());
+            }
+            checkDependencies(base, dependency);
+        });
+    }
     public List<BaseAddon> sort() {
         List<BaseAddon> sorted = new ArrayList<>();
         
         for(int i = addonList.size() - 1; i >= 0; i--) {
             BaseAddon addon = addonList.get(i);
+            
+            checkDependencies(addon, addon);
+            
             addonList.remove(i);
-    
-            System.out.println(addon.getID() + ": " + visited.get(addon.getID()));
+            
             if(!visited.get(addon.getID())) {
                 sortDependencies(addon, sorted);
             }
