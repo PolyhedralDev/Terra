@@ -10,3 +10,5 @@ website:
   source: https://github.com/PolyhedralDev/Terra-config-feature
   docs: https://github.com/PolyhedralDev/Terra/wiki
 license: GNU LGPL v3.0
+depends:
+  generation-stage-feature: "0.1.+"
