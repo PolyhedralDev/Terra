@@ -25,11 +25,6 @@ public class FeatureConfigType implements ConfigType<FeatureTemplate, Feature> {
     private final FeatureFactory factory = new FeatureFactory();
     
     @Override
-    public Supplier<OpenRegistry<Feature>> registrySupplier(ConfigPack pack) {
-        return pack.getRegistryFactory()::create;
-    }
-    
-    @Override
     public FeatureTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new FeatureTemplate();
     }
