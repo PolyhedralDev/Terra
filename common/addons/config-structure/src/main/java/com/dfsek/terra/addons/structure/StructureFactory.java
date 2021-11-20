@@ -15,6 +15,6 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 public class StructureFactory implements ConfigFactory<StructureTemplate, ConfiguredStructure> {
     @Override
     public ConfiguredStructure build(StructureTemplate config, Platform platform) {
-        return new TerraStructure(config.getStructures(), config.getY(), config.getSpawn());
+        return new TerraStructure(config.getStructures(), config.getY(), config.getSpawn(), config.getID());
     }
 }

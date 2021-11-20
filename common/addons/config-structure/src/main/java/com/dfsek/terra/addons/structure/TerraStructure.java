@@ -19,10 +19,13 @@ public class TerraStructure implements ConfiguredStructure {
     private final Range spawnStart;
     private final StructureSpawn spawn;
     
-    public TerraStructure(ProbabilityCollection<Structure> structures, Range spawnStart, StructureSpawn spawn) {
+    private final String id;
+    
+    public TerraStructure(ProbabilityCollection<Structure> structures, Range spawnStart, StructureSpawn spawn, String id) {
         this.structure = structures;
         this.spawnStart = spawnStart;
         this.spawn = spawn;
+        this.id = id;
     }
     
     @Override
@@ -42,6 +45,6 @@ public class TerraStructure implements ConfiguredStructure {
     
     @Override
     public String getID() {
-        return null;
+        return id;
     }
 }
