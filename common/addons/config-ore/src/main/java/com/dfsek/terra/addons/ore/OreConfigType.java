@@ -24,11 +24,6 @@ public class OreConfigType implements ConfigType<OreTemplate, Ore> {
     private final OreFactory factory = new OreFactory();
     
     @Override
-    public Supplier<OpenRegistry<Ore>> registrySupplier(ConfigPack pack) {
-        return pack.getRegistryFactory()::create;
-    }
-    
-    @Override
     public OreTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new OreTemplate();
     }
