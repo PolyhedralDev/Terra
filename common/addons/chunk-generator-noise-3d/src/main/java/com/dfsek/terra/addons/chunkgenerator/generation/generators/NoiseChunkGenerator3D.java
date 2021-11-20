@@ -102,12 +102,9 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     int sea = paletteInfo.getSeaLevel();
                     Palette seaPalette = paletteInfo.getOcean();
                     
-                    boolean justSet = false;
-                    BlockState data = null;
+                    BlockState data;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
-                            justSet = true;
-                            
                             data = PaletteUtil.getPalette(x, y, z, generationSettings, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
                                                                                                                  seed);
                             chunk.setBlock(x, y, z, data);
@@ -115,12 +112,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                             paletteLevel++;
                         } else if(y <= sea) {
                             chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig, seed));
-                            
-                            justSet = false;
                             paletteLevel = 0;
                         } else {
-                            
-                            justSet = false;
                             paletteLevel = 0;
                         }
                     }
@@ -176,24 +169,5 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         } else if(y <= paletteInfo.getSeaLevel()) {
             return paletteInfo.getOcean().get(paletteInfo.getSeaLevel() - y, x, y, z, world.getSeed());
         } else return air;
-    }
-    
-    private boolean placeStair(BlockState orig, ChunkData chunk, Vector3 block, double thresh, Sampler sampler, BlockState stairNew) {
-        
-        if(sampler.sample(block.getBlockX() - 0.55, block.getY(), block.getZ()) > thresh) {
-            stairNew.set(Properties.DIRECTION, Direction.WEST);
-        } else if(sampler.sample(block.getBlockX(), block.getY(), block.getZ() - 0.55) > thresh) {
-            stairNew.set(Properties.DIRECTION, Direction.NORTH);
-        } else if(sampler.sample(block.getBlockX(), block.getY(), block.getZ() + 0.55) > thresh) {
-            stairNew.set(Properties.DIRECTION, Direction.SOUTH);
-        } else if(sampler.sample(block.getX() + 0.55, block.getY(), block.getZ()) > thresh) {
-            stairNew.set(Properties.DIRECTION, Direction.EAST);
-        } else stairNew = null;
-        if(stairNew != null) {
-            stairNew.setIfPresent(Properties.WATERLOGGED, orig.getBlockType().isWater());
-            chunk.setBlock(block.getBlockX(), block.getBlockY(), block.getBlockZ(), stairNew);
-            return true;
-        }
-        return false;
     }
 }
