@@ -28,7 +28,7 @@ public class StructureAddon implements AddonInitializer {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().applyLoader(ConfiguredStructure.class, (t, o, l) -> null))
+                .then(event -> event.getPack().registerConfigType(new StructureConfigType(), "STRUCTURE", 2))
                 .failThrough();
     }
 }
