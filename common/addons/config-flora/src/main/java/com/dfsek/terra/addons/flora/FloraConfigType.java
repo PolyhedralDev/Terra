@@ -24,11 +24,6 @@ public class FloraConfigType implements ConfigType<FloraTemplate, Structure> {
     private final FloraFactory factory = new FloraFactory();
     
     @Override
-    public Supplier<OpenRegistry<Structure>> registrySupplier(ConfigPack pack) {
-        return pack.getRegistryFactory()::create;
-    }
-    
-    @Override
     public FloraTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new FloraTemplate();
     }
