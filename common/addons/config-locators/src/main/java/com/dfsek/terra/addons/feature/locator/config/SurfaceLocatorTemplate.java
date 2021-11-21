@@ -29,6 +29,6 @@ public class SurfaceLocatorTemplate implements ObjectTemplate<Locator> {
     
     @Override
     public Locator get() {
-        return new SurfaceLocator(range, platform);
+        return new SurfaceLocator(range);
     }
 }

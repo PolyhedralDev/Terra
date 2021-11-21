@@ -18,20 +18,16 @@ import com.dfsek.terra.api.world.Column;
 public class SurfaceLocator implements Locator {
     private final Range search;
     
-    private final BlockState air;
-    
-    public SurfaceLocator(Range search, Platform platform) {
+    public SurfaceLocator(Range search) {
         this.search = search;
-        this.air = platform.getWorldHandle().air();
     }
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column column) {
         BinaryColumn location = new BinaryColumn(column.getMinY(), column.getMaxY());
         for(int y : search) {
-            if(column.getBlock(y).matches(air) && !column.getBlock(y - 1).matches(air)) {
+            if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
                 location.set(y);
-                return location;
             }
         }
         return location;
