@@ -74,9 +74,6 @@ public final class FabricUtil {
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         
-        
-        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FabricEntryPoint.POPULATOR_CONFIGURED_FEATURE.method_39595());
-        
         if(pack.vanillaCaves()) {
             for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
                 for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {

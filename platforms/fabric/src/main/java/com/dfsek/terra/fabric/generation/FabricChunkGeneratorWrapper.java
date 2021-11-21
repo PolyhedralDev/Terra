@@ -43,6 +43,7 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.SpawnHelper;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.BiomeAccess;
@@ -223,13 +224,25 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     @Override
+    public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
+        delegate.getGenerationStages().forEach(populator -> {
+            if(!(populator instanceof Chunkified)) {
+                populator.populate((World) world, (com.dfsek.terra.api.world.Chunk) world);
+            }
+        });
+        if(pack.vanillaFlora()) {
+            super.generateFeatures(world, chunk, structureAccessor);
+        }
+    }
+    
+    @Override
     public int getSeaLevel() {
-        return 0; //fixme
+        return 64; //fixme
     }
     
     @Override
     public int getMinimumY() {
-        return 0; //fixmw
+        return -64; //fixmw
     }
     
     @Override

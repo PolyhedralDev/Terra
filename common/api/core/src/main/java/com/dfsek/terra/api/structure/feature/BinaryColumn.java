@@ -31,7 +31,7 @@ public class BinaryColumn {
     public void forEach(IntConsumer consumer) {
         for(int y = 0; y < data.length; y++) {
             if(data[y]) {
-                consumer.accept(y - minY);
+                consumer.accept(y + minY);
             }
         }
     }
