@@ -8,11 +8,6 @@ repositories {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
-}
-
 dependencies {
     "shadedApi"(project(":common:implementation"))
     "annotationProcessor"("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
