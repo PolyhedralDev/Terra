@@ -31,7 +31,6 @@ import com.dfsek.terra.util.FastRandom;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
-import net.minecraft.class_6748;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
@@ -52,6 +51,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil.NoiseValuePoint;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep.Carver;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.*;
@@ -169,7 +169,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         if(!accessor.hasStructureReferences(pos)) {
             return super.getEntitySpawnList(biome, accessor, group, pos);
         } else {
-            if(accessor.method_38854(pos, StructureFeature.SWAMP_HUT).hasChildren()) {
+            if(accessor.getStructureAt(pos, StructureFeature.SWAMP_HUT).hasChildren()) {
                 if(group == SpawnGroup.MONSTER) {
                     return SwampHutFeature.MONSTER_SPAWNS;
                 }
@@ -188,7 +188,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                     return OceanMonumentFeature.MONSTER_SPAWNS;
                 }
                 
-                if(accessor.method_38854(pos, StructureFeature.FORTRESS).hasChildren()) {
+                if(accessor.getStructureAt(pos, StructureFeature.FORTRESS).hasChildren()) {
                     return NetherFortressFeature.MONSTER_SPAWNS;
                 }
             }
@@ -210,7 +210,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     @Override
-    public CompletableFuture<Chunk> populateNoise(Executor executor, class_6748 arg, StructureAccessor structureAccessor, Chunk chunk) {
+    public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             World world = (World) ((StructureAccessorAccessor) structureAccessor).getWorld();
             delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
