@@ -16,11 +16,6 @@ import com.dfsek.terra.api.entity.CommandSender;
 @Command(
         subcommands = {
                 @Subcommand(
-                        clazz = StructureExportCommand.class,
-                        value = "export",
-                        aliases = "ex"
-                ),
-                @Subcommand(
                         clazz = StructureLoadCommand.class,
                         value = "load",
                         aliases = "ld"
