@@ -27,14 +27,4 @@ public interface WorldHandle {
     
     EntityType getEntity(String id);
     
-    /**
-     * Get the locations selected by a player. (Usually via WorldEdit)
-     *
-     * @param player Player to get locations for
-     *
-     * @return Pair of locations.
-     */
-    default Pair<Vector3, Vector3> getSelectedLocation(Player player) {
-        throw new UnsupportedOperationException("Cannot get selection on this platform.");
-    }
 }

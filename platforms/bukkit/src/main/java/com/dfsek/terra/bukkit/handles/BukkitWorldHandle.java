@@ -26,12 +26,8 @@ import java.util.Locale;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.bukkit.structure.WorldEditUtil;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
@@ -64,10 +60,5 @@ public class BukkitWorldHandle implements WorldHandle {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid entity identifier " + id);
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
-    
-    @Override
-    public Pair<Vector3, Vector3> getSelectedLocation(Player player) {
-        org.bukkit.Location[] locations = WorldEditUtil.getSelectionLocations(BukkitAdapter.adapt(player));
-        return Pair.of(BukkitAdapter.adapt(locations[0]), BukkitAdapter.adapt(locations[1]));
-    }
+
 }

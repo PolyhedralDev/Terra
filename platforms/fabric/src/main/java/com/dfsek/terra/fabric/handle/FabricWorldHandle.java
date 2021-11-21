@@ -28,13 +28,10 @@ import net.minecraft.util.registry.Registry;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
-import com.dfsek.terra.fabric.util.WorldEditUtil;
 
 
 public class FabricWorldHandle implements WorldHandle {
@@ -75,13 +72,4 @@ public class FabricWorldHandle implements WorldHandle {
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);
     }
     
-    @Override
-    public Pair<Vector3, Vector3> getSelectedLocation(Player player) {
-        try {
-            Class.forName("com.sk89q.worldedit.WorldEdit");
-        } catch(ClassNotFoundException e) {
-            throw new IllegalStateException("WorldEdit is not installed.");
-        }
-        return WorldEditUtil.getSelection(player);
-    }
 }

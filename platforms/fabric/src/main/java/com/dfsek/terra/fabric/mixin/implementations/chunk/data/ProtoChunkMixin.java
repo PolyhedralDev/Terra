@@ -38,7 +38,7 @@ public abstract class ProtoChunkMixin {
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(), false);
+        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(), false);
     }
     
     public @NotNull BlockState terra$getBlock(int x, int y, int z) {

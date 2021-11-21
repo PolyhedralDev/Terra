@@ -21,6 +21,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.MobSpawnerLogic;
@@ -48,7 +49,8 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public abstract MobSpawnerLogic getLogic();
     
     public EntityType terra$getSpawnedType() {
-        return (EntityType) Registry.ENTITY_TYPE.get(((MobSpawnerLogicAccessor) getLogic()).callGetEntityId(world, pos));
+        return (EntityType) Registry.ENTITY_TYPE.get(
+                Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id")));
     }
     
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {

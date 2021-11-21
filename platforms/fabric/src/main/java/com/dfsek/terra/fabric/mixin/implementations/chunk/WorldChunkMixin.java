@@ -53,7 +53,7 @@ public abstract class WorldChunkMixin {
     }
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(), false);
+        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(), false);
     }
     
     public @NotNull BlockState terra$getBlock(int x, int y, int z) {
@@ -61,11 +61,11 @@ public abstract class WorldChunkMixin {
     }
     
     public int terra$getX() {
-        return ((net.minecraft.world.chunk.Chunk) this).getPos().x;
+        return ((net.minecraft.world.chunk.Chunk) (Object) this).getPos().x;
     }
     
     public int terra$getZ() {
-        return ((net.minecraft.world.chunk.Chunk) this).getPos().z;
+        return ((net.minecraft.world.chunk.Chunk) (Object) this).getPos().z;
     }
     
     public World terra$getWorld() {

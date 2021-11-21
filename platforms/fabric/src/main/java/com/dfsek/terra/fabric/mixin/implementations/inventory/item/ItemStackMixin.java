@@ -46,7 +46,7 @@ public abstract class ItemStackMixin {
     public abstract boolean isDamageable();
     
     @Shadow
-    public abstract void setTag(@Nullable NbtCompound tag);
+    public abstract void setNbt(@Nullable NbtCompound tag);
     
     public int terra$getAmount() {
         return getCount();
@@ -66,7 +66,7 @@ public abstract class ItemStackMixin {
     
     @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
-        setTag(((ItemStack) (Object) meta).getTag());
+        setNbt(((ItemStack) (Object) meta).getNbt());
     }
     
     @Intrinsic

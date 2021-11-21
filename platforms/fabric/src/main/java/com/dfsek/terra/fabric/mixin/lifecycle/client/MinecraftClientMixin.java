@@ -45,7 +45,7 @@ public class MinecraftClientMixin {
         FabricEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> {
             final GeneratorType generatorType = new TerraGeneratorType(pack);
             //noinspection ConstantConditions
-            ((GeneratorTypeAccessor) generatorType).setTranslationKey(new LiteralText("Terra:" + pack.getID()));
+            ((GeneratorTypeAccessor) generatorType).setDisplayName(new LiteralText("Terra:" + pack.getID()));
             GeneratorTypeAccessor.getValues().add(1, generatorType);
         });
     }

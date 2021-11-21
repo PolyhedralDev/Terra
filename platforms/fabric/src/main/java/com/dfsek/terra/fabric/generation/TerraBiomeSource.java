@@ -34,6 +34,8 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
+import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
+
 
 public class TerraBiomeSource extends BiomeSource {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
@@ -79,7 +81,7 @@ public class TerraBiomeSource extends BiomeSource {
     }
     
     @Override
-    public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
+    public Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         TerraBiome biome = pack.getBiomeProviderBuilder().getBiome(biomeX << 2, biomeZ << 2, seed);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }

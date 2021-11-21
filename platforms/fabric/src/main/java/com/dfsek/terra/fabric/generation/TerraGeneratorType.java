@@ -50,8 +50,7 @@ public class TerraGeneratorType extends GeneratorType {
     }
     
     @Override
-    protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry,
-                                               Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
+    protected ChunkGenerator getChunkGenerator(DynamicRegistryManager manager, long seed) {
+        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack);
     }
 }

@@ -34,6 +34,6 @@ public interface GeneratorTypeAccessor {
     }
     
     @Mutable
-    @Accessor("translationKey")
-    void setTranslationKey(Text translationKey);
+    @Accessor("displayName")
+    void setDisplayName(Text translationKey);
 }

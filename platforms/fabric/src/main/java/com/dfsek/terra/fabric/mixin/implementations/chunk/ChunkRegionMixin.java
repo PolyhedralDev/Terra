@@ -36,26 +36,27 @@ import com.dfsek.terra.fabric.block.FabricBlockState;
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = Chunk.class, prefix = "terraChunk$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
-    @Final
+    
     @Shadow
-    private ChunkPos centerPos;
+    @Final
+    private net.minecraft.world.chunk.Chunk centerPos;
     
     public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState blockState, boolean physics) {
-        ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4)),
+        ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)),
                                                     ((FabricBlockState) blockState).getHandle(), 0);
     }
     
     public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {
         return new FabricBlockState(
-                ((ChunkRegion) (Object) this).getBlockState(new BlockPos(x + (centerPos.x << 4), y, z + (centerPos.z << 4))));
+                ((ChunkRegion) (Object) this).getBlockState(new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4))));
     }
     
     public int terraChunk$getX() {
-        return centerPos.x;
+        return centerPos.getPos().x;
     }
     
     public int terraChunk$getZ() {
-        return centerPos.z;
+        return centerPos.getPos().z;
     }
     
     public World terraChunk$getWorld() {

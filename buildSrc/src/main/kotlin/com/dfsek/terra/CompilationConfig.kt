@@ -21,8 +21,8 @@ fun Project.configureCompilation() {
     apply(plugin = "idea")
     
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
     }
     
     tasks.withType<JavaCompile> {

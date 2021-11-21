@@ -76,8 +76,8 @@ public abstract class GeneratorOptionsMixin {
             Registry<DimensionType> dimensionTypes = registryManager.get(Registry.DIMENSION_TYPE_KEY);
             Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
             Registry<ChunkGeneratorSettings> chunkGeneratorSettings = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
-            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(dimensionTypes, biomeRegistry,
-                                                                                                            chunkGeneratorSettings, l);
+            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(registryManager,
+                                                                                                            l, false);
             
             prop = prop.substring(prop.indexOf(":") + 1);
             

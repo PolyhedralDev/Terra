@@ -74,10 +74,8 @@ public final class FabricUtil {
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         
-        generationSettings.surfaceBuilder(
-                vanilla.getGenerationSettings().getSurfaceBuilder()); // It needs a surfacebuilder, even though we dont use it.
         
-        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FabricEntryPoint.POPULATOR_CONFIGURED_FEATURE);
+        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FabricEntryPoint.POPULATOR_CONFIGURED_FEATURE.method_39595());
         
         if(pack.vanillaCaves()) {
             for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
@@ -144,8 +142,6 @@ public final class FabricUtil {
         return new Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
-                .depth(vanilla.getDepth())
-                .scale(vanilla.getScale())
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
