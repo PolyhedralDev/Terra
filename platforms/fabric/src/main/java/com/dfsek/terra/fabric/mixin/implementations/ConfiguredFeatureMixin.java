@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.implementations;
 
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +50,7 @@ public abstract class ConfiguredFeatureMixin {
     @SuppressWarnings({ "ConstantConditions", "try" })
     public boolean terra$plant(Vector3 l, World world, Random r) {
         String id = BuiltinRegistries.CONFIGURED_FEATURE.getId((ConfiguredFeature<?, ?>) (Object) this).toString();
-        try(ProfileFrame ignore = FabricEntryPoint.getTerraPlugin().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
+        try(ProfileFrame ignore = FabricEntryPoint.getPlatform().getProfiler().profile("fabric_tree:" + id.toLowerCase(Locale.ROOT))) {
             StructureWorldAccess fabricWorldAccess = ((StructureWorldAccess) world);
             ChunkGenerator generatorWrapper = ((ServerWorldAccess) world).toServerWorld().getChunkManager().getChunkGenerator();
             return generate(fabricWorldAccess, generatorWrapper, r, new BlockPos(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
@@ -41,8 +58,8 @@ public abstract class ConfiguredFeatureMixin {
     }
     
     public Set<BlockType> terra$getSpawnable() {
-        return MaterialSet.get(FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:grass_block"),
-                               FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:podzol"),
-                               FabricEntryPoint.getTerraPlugin().getWorldHandle().createBlockData("minecraft:mycelium"));
+        return MaterialSet.get(FabricEntryPoint.getPlatform().getWorldHandle().createBlockData("minecraft:grass_block"),
+                               FabricEntryPoint.getPlatform().getWorldHandle().createBlockData("minecraft:podzol"),
+                               FabricEntryPoint.getPlatform().getWorldHandle().createBlockData("minecraft:mycelium"));
     }
 }

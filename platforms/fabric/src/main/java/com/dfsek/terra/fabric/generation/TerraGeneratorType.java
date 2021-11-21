@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.generation;
 
 import net.fabricmc.api.EnvType;
@@ -28,13 +45,12 @@ public class TerraGeneratorType extends GeneratorType {
     public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures,
                                                  boolean bonusChest) {
         GeneratorOptions options = super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
+        FabricEntryPoint.getPlatform().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
         return options;
     }
     
     @Override
-    protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry,
-                                               Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, pack), seed, pack);
+    protected ChunkGenerator getChunkGenerator(DynamicRegistryManager manager, long seed) {
+        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack);
     }
 }

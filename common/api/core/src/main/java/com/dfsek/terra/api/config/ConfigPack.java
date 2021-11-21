@@ -1,17 +1,25 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.config;
 
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
-import com.dfsek.terra.api.addon.TerraAddon;
+import ca.solostudios.strata.version.VersionRange;
+
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -24,7 +32,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     
     void registerConfigType(ConfigType<?, ?> type, String id, int priority);
     
-    Set<TerraAddon> addons();
+    Map<BaseAddon, VersionRange> addons();
     
     boolean vanillaMobs();
     

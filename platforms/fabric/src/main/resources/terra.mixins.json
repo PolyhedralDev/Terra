@@ -1,9 +1,9 @@
 {
-    "required":           true,
-    "minVersion":         "0.8",
-    "package":            "com.dfsek.terra.fabric.mixin",
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.dfsek.terra.fabric.mixin",
     "compatibilityLevel": "JAVA_16",
-    "mixins":             [
+    "mixins": [
         "CommandManagerMixin",
         "ServerWorldMixin",
         "StructureAccessorAccessor",
@@ -33,16 +33,16 @@
         "implementations.world.ChunkRegionMixin",
         "implementations.world.ServerWorldMixin"
     ],
-    "client":             [
+    "client": [
         "access.GeneratorTypeAccessor",
         "lifecycle.client.MinecraftClientMixin"
     ],
-    "server":             [
+    "server": [
         "lifecycle.server.GeneratorOptionsMixin",
         "lifecycle.server.ServerMainMixin"
     ],
-    "injectors":          {
+    "injectors": {
         "defaultRequire": 1
     },
-    "refmap":             "terra-refmap.json"
+    "refmap": "terra-refmap.json"
 }

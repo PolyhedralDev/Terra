@@ -1,15 +1,31 @@
+
+<img align="left" width="64" height="64" src="https://raw.githubusercontent.com/wiki/PolyhedralDev/Terra/images/terra_logo.png" alt="Terra Logo">
+
 # Terra
 
-Terra is an incredibly powerful free & open-source data-driven,
-platform-agnostic world generator. It allows you to create a world exactly to
-your specifications, with no knowledge of Java required.
+Terra is a modern world generation modding platform, primarily for Minecraft.
+Terra allows complete customization of world generation with an advanced API,
+tightly integrated with a powerful configuration system.
+
+Terra consists of several parts:
+
+* A voxel world generation API with emphasis on configuration and extensibility
+* Several platform implementations, the layer between the API and the platform
+    it's running on.
+* An addon loader, which allows interfacing with the Terra API in a 
+    platform-agnostic setting
+* Several "core addons," which implement the "default" configurations of Terra.
+    These addons can be thought of as the config "standard library"
+
+Terra currently officially supports the Fabric mod loader and the Bukkit API
+(Paper and friends). We welcome Pull Requests implementing additional platforms!
 
 ## Downloads:
 
-* Paper+ servers (Paper, Tuinity, Purpur,
-  etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
 * Fabric: [Modrinth](https://modrinth.com/mod/terra)
   / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
+* Paper+ servers (Paper, Tuinity, Purpur,
+  etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
 
 ## Building and Running Terra
 

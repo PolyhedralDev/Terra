@@ -1,11 +1,10 @@
 import com.dfsek.terra.addonDir
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
-import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id("fabric-loom").version("0.8-SNAPSHOT")
+    id("fabric-loom").version("0.10.55")
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
@@ -17,34 +16,30 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
+val minecraft = "1.18-pre1"
+val yarn = "4"
+val fabricLoader = "0.12.5"
+
 
 dependencies {
     "shadedApi"(project(":common:implementation"))
     
     "shadedImplementation"("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1")
     
-    "minecraft"("com.mojang:minecraft:1.17.1")
-    "mappings"("net.fabricmc:yarn:1.17.1+build.1:v2")
-    "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
-    
-    "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
-        exclude(group = "com.google.guava", module = "guava")
-        exclude(group = "com.google.code.gson", module = "gson")
-        exclude(group = "it.unimi.dsi", module = "fastutil")
-        exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-        exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+    "minecraft"("com.mojang:minecraft:$minecraft")
+    "mappings"("net.fabricmc:yarn:$minecraft+build.$yarn:v2")
+    "modImplementation"("net.fabricmc:fabric-loader:$fabricLoader")
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
+}
+
+loom {
+    accessWidenerPath.set(file("src/main/resources/terra.accesswidener"))
+    mixin {
+        defaultRefmapName.set("terra-refmap.json")
     }
-}
-
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.json", "com.dfsek.terra.lib.json")
-    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
-}
-
-
-configure<LoomGradleExtension> {
-    accessWidener("src/main/resources/terra.accesswidener")
-    refmapName = "terra-refmap.json"
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {

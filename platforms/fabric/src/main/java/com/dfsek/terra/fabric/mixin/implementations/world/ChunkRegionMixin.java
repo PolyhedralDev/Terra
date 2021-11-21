@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
 import net.minecraft.block.FluidBlock;
@@ -6,9 +23,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.TickScheduler;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.ChunkStatus;
+import net.minecraft.world.tick.OrderedTick;
+import net.minecraft.world.tick.QueryableTickScheduler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -51,7 +69,7 @@ public abstract class ChunkRegionMixin {
     private long seed;
     
     @Shadow
-    public abstract TickScheduler<Fluid> getFluidTickScheduler();
+    public abstract QueryableTickScheduler<Fluid> getFluidTickScheduler();
     
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
@@ -74,8 +92,8 @@ public abstract class ChunkRegionMixin {
         BlockPos pos = new BlockPos(x, y, z);
         ((ChunkRegion) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(), physics ? 3 : 1042);
         if(physics && ((FabricBlockState) data).getHandle().getBlock() instanceof FluidBlock) {
-            getFluidTickScheduler().schedule(pos, ((FluidBlock) ((FabricBlockState) data).getHandle().getBlock()).getFluidState(
-                    ((FabricBlockState) data).getHandle()).getFluid(), 0);
+            getFluidTickScheduler().scheduleTick(OrderedTick.create(((FluidBlock) ((FabricBlockState) data).getHandle().getBlock()).getFluidState(
+                    ((FabricBlockState) data).getHandle()).getFluid(), pos));
         }
     }
     

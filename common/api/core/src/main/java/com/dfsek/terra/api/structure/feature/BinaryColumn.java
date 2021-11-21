@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.structure.feature;
 
 import java.util.function.IntConsumer;
@@ -24,7 +31,7 @@ public class BinaryColumn {
     public void forEach(IntConsumer consumer) {
         for(int y = 0; y < data.length; y++) {
             if(data[y]) {
-                consumer.accept(y - minY);
+                consumer.accept(y + minY);
             }
         }
     }

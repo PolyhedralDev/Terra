@@ -5,6 +5,7 @@ import java.util.function.Predicate
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.jvm.tasks.Jar
+import org.gradle.kotlin.dsl.extra
 import kotlin.streams.asStream
 
 
@@ -23,7 +24,8 @@ fun Project.addonDir(dir: File, task: Task) {
         project(":common:addons").subprojects.forEach { addonProject ->
             val jar = (addonProject.tasks.named("jar").get() as Jar)
             
-            val target = File(dir, jar.archiveFileName.get())
+            val boot = if (addonProject.project.extra.has("bootstrap") && addonProject.project.extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+            val target = File(dir, boot + jar.archiveFileName.get())
             
             val base = "${jar.archiveBaseName.get()}-${project.version}"
             
@@ -36,6 +38,6 @@ fun Project.addonDir(dir: File, task: Task) {
 
 fun matchingAddons(dir: File, matcher: Predicate<File>): Set<File> {
     val matching = HashSet<File>()
-    dir.walk().maxDepth(1).asStream().filter(matcher).forEach(matching::add)
+    dir.walk().asStream().filter(matcher).forEach(matching::add)
     return matching
 }

@@ -1,35 +1,21 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.generation;
-
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.structure.StructureManager;
-import net.minecraft.util.collection.Pool;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.HeightLimitView;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.StructuresConfig;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.feature.StructureFeature;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.World;
@@ -42,6 +28,40 @@ import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
 import com.dfsek.terra.util.FastRandom;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.block.BlockState;
+import net.minecraft.class_6748;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.structure.StructureManager;
+import net.minecraft.util.collection.Pool;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.HeightLimitView;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.SpawnHelper;
+import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil.NoiseValuePoint;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.GenerationStep.Carver;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.StructuresConfig;
+import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.feature.*;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
     private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
@@ -50,7 +70,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
                                 .forGetter(ConfigPack::getID)
-                                  ).apply(config, config.stable(FabricEntryPoint.getTerraPlugin().getConfigRegistry()::get)));
+                                  ).apply(config, config.stable(FabricEntryPoint.getPlatform().getConfigRegistry()::get)));
     
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -64,10 +84,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                                                                                             );
     
     private final long seed;
-    private final ChunkGenerator delegate;
     private final TerraBiomeSource biomeSource;
-    
-    private final ConfigPack pack;
+    private ChunkGenerator delegate;
+    private ConfigPack pack;
     private ServerWorld world;
     
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
@@ -81,7 +100,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.seed = seed;
     }
     
-    
     @Override
     protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
         return CODEC;
@@ -93,11 +111,16 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     @Override
-    public void carve(long seed, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver) {
-        if(pack.vanillaCaves()) {
-            super.carve(seed, access, chunk, carver);
-        }
+    public MultiNoiseSampler getMultiNoiseSampler() {
+        return (x, y, z) -> new NoiseValuePoint(0, 0, 0, 0, 0, 0);
     }
+    
+    @Override
+    public void carve(ChunkRegion chunkRegion, long seed, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk,
+                      Carver generationStep) {
+        
+    }
+    
     
     @Nullable
     @Override
@@ -127,8 +150,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     @Override
-    public void buildSurface(ChunkRegion region, Chunk chunk) {
-        // No-op
+    public void buildSurface(ChunkRegion region, StructureAccessor structures, Chunk chunk) {
+        // no op
     }
     
     @Override
@@ -137,41 +160,49 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             int cx = region.getCenterPos().x;
             int cy = region.getCenterPos().z;
             Biome biome = region.getBiome((new ChunkPos(cx, cy)).getStartPos());
-            ChunkRandom chunkRandom = new ChunkRandom();
-            chunkRandom.setPopulationSeed(region.getSeed(), cx << 4, cy << 4);
-            SpawnHelper.populateEntities(region, biome, region.getCenterPos(), chunkRandom);
+            SpawnHelper.populateEntities(region, biome, region.getCenterPos(), region.getRandom());
         }
     }
     
+    @Override
+    public int getWorldHeight() {
+        return 256; //fixme
+    }
+    
     public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
-        if(accessor.getStructureAt(pos, true, StructureFeature.SWAMP_HUT).hasChildren()) {
+        if(!accessor.hasStructureReferences(pos)) {
+            return super.getEntitySpawnList(biome, accessor, group, pos);
+        } else {
+            if(accessor.method_38854(pos, StructureFeature.SWAMP_HUT).hasChildren()) {
+                if(group == SpawnGroup.MONSTER) {
+                    return SwampHutFeature.MONSTER_SPAWNS;
+                }
+                
+                if(group == SpawnGroup.CREATURE) {
+                    return SwampHutFeature.CREATURE_SPAWNS;
+                }
+            }
+            
             if(group == SpawnGroup.MONSTER) {
-                return StructureFeature.SWAMP_HUT.getMonsterSpawns();
+                if(accessor.getStructureAt(pos, StructureFeature.PILLAGER_OUTPOST).hasChildren()) {
+                    return PillagerOutpostFeature.MONSTER_SPAWNS;
+                }
+                
+                if(accessor.getStructureAt(pos, StructureFeature.MONUMENT).hasChildren()) {
+                    return OceanMonumentFeature.MONSTER_SPAWNS;
+                }
+                
+                if(accessor.method_38854(pos, StructureFeature.FORTRESS).hasChildren()) {
+                    return NetherFortressFeature.MONSTER_SPAWNS;
+                }
             }
             
-            if(group == SpawnGroup.CREATURE) {
-                return StructureFeature.SWAMP_HUT.getCreatureSpawns();
-            }
+            return (group == SpawnGroup.UNDERGROUND_WATER_CREATURE || group == SpawnGroup.AXOLOTLS) && accessor.getStructureAt(pos,
+                                                                                                                               StructureFeature.MONUMENT)
+                                                                                                               .hasChildren()
+                   ? SpawnSettings.EMPTY_ENTRY_POOL
+                   : super.getEntitySpawnList(biome, accessor, group, pos);
         }
-        
-        if(group == SpawnGroup.MONSTER) {
-            if(accessor.getStructureAt(pos, false, StructureFeature.PILLAGER_OUTPOST).hasChildren()) {
-                return StructureFeature.PILLAGER_OUTPOST.getMonsterSpawns();
-            }
-            
-            if(accessor.getStructureAt(pos, false, StructureFeature.MONUMENT).hasChildren()) {
-                return StructureFeature.MONUMENT.getMonsterSpawns();
-            }
-            
-            if(accessor.getStructureAt(pos, true, StructureFeature.FORTRESS).hasChildren()) {
-                return StructureFeature.FORTRESS.getMonsterSpawns();
-            }
-        }
-        
-        return group == SpawnGroup.UNDERGROUND_WATER_CREATURE && accessor.getStructureAt(pos, false, StructureFeature.MONUMENT)
-                                                                         .hasChildren()
-               ? StructureFeature.MONUMENT.getUndergroundWaterCreatureSpawns()
-               : super.getEntitySpawnList(biome, accessor, group, pos);
     }
     
     @Override
@@ -183,9 +214,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     @Override
-    public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
+    public CompletableFuture<Chunk> populateNoise(Executor executor, class_6748 arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
-            World world = (World) ((StructureAccessorAccessor) accessor).getWorld();
+            World world = (World) ((StructureAccessorAccessor) structureAccessor).getWorld();
             delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
             delegate.getGenerationStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
@@ -194,6 +225,28 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             });
             return chunk;
         }, executor);
+    }
+    
+    @Override
+    public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
+        delegate.getGenerationStages().forEach(populator -> {
+            if(!(populator instanceof Chunkified)) {
+                populator.populate((World) world, (com.dfsek.terra.api.world.Chunk) world);
+            }
+        });
+        if(pack.vanillaFlora()) {
+            super.generateFeatures(world, chunk, structureAccessor);
+        }
+    }
+    
+    @Override
+    public int getSeaLevel() {
+        return 64; //fixme
+    }
+    
+    @Override
+    public int getMinimumY() {
+        return -64; //fixmw
     }
     
     @Override
@@ -230,6 +283,14 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     public ConfigPack getPack() {
         return pack;
+    }
+    
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
+        this.delegate = pack.getGeneratorProvider().newInstance(pack);
+        biomeSource.setPack(pack);
+        
+        delegate.getPlatform().logger().info("Loading world with config pack " + pack.getID());
     }
     
     public void setWorld(ServerWorld world) {

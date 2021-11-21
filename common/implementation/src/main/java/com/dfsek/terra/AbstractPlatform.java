@@ -1,9 +1,23 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
-
-import com.dfsek.terra.api.Platform;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -17,16 +31,25 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.addon.BootstrapAddonLoader;
+import com.dfsek.terra.addon.DependencySorter;
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.inject.Injector;
+import com.dfsek.terra.api.inject.impl.InjectorImpl;
 import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -40,7 +63,8 @@ import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
-import com.dfsek.terra.registry.master.AddonRegistry;
+import com.dfsek.terra.registry.LockedRegistryImpl;
+import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 
 
@@ -66,7 +90,9 @@ public abstract class AbstractPlatform implements Platform {
     
     private final CommandManager manager = new TerraCommandManager(this);
     
-    private final AddonRegistry addonRegistry = new AddonRegistry(this);
+    private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>());
+    
+    private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
     
     @Override
     public void register(TypeRegistry registry) {
@@ -89,13 +115,17 @@ public abstract class AbstractPlatform implements Platform {
     }
     
     @Override
-    public Registry<TerraAddon> getAddons() {
-        return addonRegistry;
+    public Registry<BaseAddon> getAddons() {
+        return lockedAddonRegistry;
     }
     
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+    
+    protected Optional<BaseAddon> platformAddon() {
+        return Optional.empty();
     }
     
     @Override
@@ -112,8 +142,6 @@ public abstract class AbstractPlatform implements Platform {
         LOADED.set(true);
         
         logger.info("Initializing Terra...");
-        
-        getPlatformAddon().ifPresent(addonRegistry::register);
         
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
             File configFile = new File(getDataFolder(), "config.yml");
@@ -167,11 +195,52 @@ public abstract class AbstractPlatform implements Platform {
             profiler.start();
         }
         
-        addonRegistry.register(new InternalAddon(this));
+        List<BaseAddon> addonList = new ArrayList<>();
         
-        if(!addonRegistry.loadAll(getClass().getClassLoader())) { // load all addons
-            throw new IllegalStateException("Failed to load addons. Please correct addon installations to continue.");
-        }
+        InternalAddon internalAddon = new InternalAddon();
+        
+        addonList.add(internalAddon);
+        
+        getPlatformAddon().ifPresent(addonList::add);
+        
+        platformAddon().ifPresent(baseAddon -> {
+            baseAddon.initialize();
+            addonList.add(baseAddon);
+        });
+        
+        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
+        
+        Path addonsFolder = getDataFolder().toPath().resolve("addons");
+        
+        Injector<Platform> platformInjector = new InjectorImpl<>(this);
+        platformInjector.addExplicitTarget(Platform.class);
+        
+        bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
+                            .forEach(bootstrap -> {
+                                platformInjector.inject(bootstrap);
+                                bootstrap.loadAddons(addonsFolder, getClass().getClassLoader())
+                                         .forEach(addonList::add);
+                            });
+        
+        DependencySorter sorter = new DependencySorter();
+        addonList.forEach(sorter::add);
+        sorter.sort().forEach(addon -> {
+            platformInjector.inject(addon);
+            addon.initialize();
+            addonRegistry.register(addon.getID(), addon);
+        });
+        
+        eventManager
+                .getHandler(FunctionalEventHandler.class)
+                .register(internalAddon, PlatformInitializationEvent.class)
+                .then(event -> {
+                    logger.info("Loading config packs...");
+                    getRawConfigRegistry().loadAll(this);
+                    logger.info("Loaded packs.");
+                })
+                .global();
+        
+        
         logger.info("Loaded addons.");
         
         try {
@@ -184,7 +253,7 @@ public abstract class AbstractPlatform implements Platform {
         logger.info("Finished initialization.");
     }
     
-    protected Optional<TerraAddon> getPlatformAddon() {
+    protected Optional<BaseAddon> getPlatformAddon() {
         return Optional.empty();
     }
     

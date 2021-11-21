@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.exception.LoadException;
@@ -7,7 +24,6 @@ import org.bukkit.entity.EntityType;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.Optional;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -74,11 +90,6 @@ public class PlatformImpl extends AbstractPlatform {
                 .registerLoader(Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         
-    }
-    
-    @Override
-    protected Optional<TerraAddon> getPlatformAddon() {
-        return Optional.of(new BukkitAddon(this));
     }
     
     private BukkitBiome parseBiome(String id) throws LoadException {

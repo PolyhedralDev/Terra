@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.handle;
 
 import com.mojang.brigadier.StringReader;
@@ -11,13 +28,10 @@ import net.minecraft.util.registry.Registry;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
-import com.dfsek.terra.fabric.util.WorldEditUtil;
 
 
 public class FabricWorldHandle implements WorldHandle {
@@ -58,13 +72,4 @@ public class FabricWorldHandle implements WorldHandle {
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);
     }
     
-    @Override
-    public Pair<Vector3, Vector3> getSelectedLocation(Player player) {
-        try {
-            Class.forName("com.sk89q.worldedit.WorldEdit");
-        } catch(ClassNotFoundException e) {
-            throw new IllegalStateException("WorldEdit is not installed.");
-        }
-        return WorldEditUtil.getSelection(player);
-    }
 }

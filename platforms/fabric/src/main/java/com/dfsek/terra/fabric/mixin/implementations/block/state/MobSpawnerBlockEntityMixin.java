@@ -1,9 +1,27 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.MobSpawnerLogic;
@@ -31,7 +49,8 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public abstract MobSpawnerLogic getLogic();
     
     public EntityType terra$getSpawnedType() {
-        return (EntityType) Registry.ENTITY_TYPE.get(((MobSpawnerLogicAccessor) getLogic()).callGetEntityId(world, pos));
+        return (EntityType) Registry.ENTITY_TYPE.get(
+                Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id")));
     }
     
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {
@@ -97,7 +116,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public void terra$applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
-                case "type" -> terra$setSpawnedType(FabricEntryPoint.getTerraPlugin().getWorldHandle().getEntity(v));
+                case "type" -> terra$setSpawnedType(FabricEntryPoint.getPlatform().getWorldHandle().getEntity(v));
                 case "delay" -> terra$setDelay(Integer.parseInt(v));
                 case "min_delay" -> terra$setMinSpawnDelay(Integer.parseInt(v));
                 case "max_delay" -> terra$setMaxSpawnDelay(Integer.parseInt(v));

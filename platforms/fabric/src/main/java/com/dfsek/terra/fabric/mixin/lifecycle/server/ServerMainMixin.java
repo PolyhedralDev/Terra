@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
 import net.minecraft.server.Main;
@@ -17,7 +34,8 @@ public class ServerMainMixin {
                      target = "Lnet/minecraft/util/registry/DynamicRegistryManager;create()" +
                               "Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;"))
     private static void injectConstructor(String[] args, CallbackInfo ci) {
-        FabricEntryPoint.getTerraPlugin().getEventManager().callEvent(
-                new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks and stuff
+        FabricEntryPoint.getPlatform().getEventManager().callEvent(
+                new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks
+        // and stuff
     }
 }

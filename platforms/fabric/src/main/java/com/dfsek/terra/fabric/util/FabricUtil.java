@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.util;
 
 import com.mojang.serialization.Lifecycle;
@@ -56,11 +73,6 @@ public final class FabricUtil {
         Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-        
-        generationSettings.surfaceBuilder(
-                vanilla.getGenerationSettings().getSurfaceBuilder()); // It needs a surfacebuilder, even though we dont use it.
-        
-        generationSettings.feature(GenerationStep.Feature.VEGETAL_DECORATION, FabricEntryPoint.POPULATOR_CONFIGURED_FEATURE);
         
         if(pack.vanillaCaves()) {
             for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
@@ -127,8 +139,6 @@ public final class FabricUtil {
         return new Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
-                .depth(vanilla.getDepth())
-                .scale(vanilla.getScale())
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())

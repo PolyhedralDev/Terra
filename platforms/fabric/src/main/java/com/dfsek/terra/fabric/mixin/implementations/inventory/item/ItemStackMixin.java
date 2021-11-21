@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.implementations.inventory.item;
 
 import net.minecraft.item.ItemStack;
@@ -29,7 +46,7 @@ public abstract class ItemStackMixin {
     public abstract boolean isDamageable();
     
     @Shadow
-    public abstract void setTag(@Nullable NbtCompound tag);
+    public abstract void setNbt(@Nullable NbtCompound tag);
     
     public int terra$getAmount() {
         return getCount();
@@ -49,7 +66,7 @@ public abstract class ItemStackMixin {
     
     @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
-        setTag(((ItemStack) (Object) meta).getTag());
+        setNbt(((ItemStack) (Object) meta).getNbt());
     }
     
     @Intrinsic

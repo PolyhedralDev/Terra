@@ -7,7 +7,7 @@ include("common:loader:addon")
 fun includeImmediateChildren(dir: File, type: String) {
     dir.walkTopDown().maxDepth(1).forEach {
         if (!it.isDirectory || !File(it, "build.gradle.kts").exists()) return@forEach
-        val addonDir = it.relativeTo(file(".")).path.replace("/", ":")
+        val addonDir = it.relativeTo(file(".")).path.replace("/", ":").replace("\\", ":")
         println("Including $type directory \"$addonDir\" as subproject.")
         include(addonDir)
     }
@@ -25,17 +25,5 @@ pluginManagement {
             name = "Fabric"
         }
         gradlePluginPortal()
-    }
-}
-
-plugins {
-    id("com.gradle.enterprise") version "3.4.1"
-}
-
-gradleEnterprise {
-    buildScan {
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
-//        publishAlwaysIf(true)
     }
 }

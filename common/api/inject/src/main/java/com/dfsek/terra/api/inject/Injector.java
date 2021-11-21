@@ -1,7 +1,15 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.inject;
 
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.inject.exception.InjectionException;
+import com.dfsek.terra.api.inject.impl.InjectorImpl;
 
 
 /**
@@ -12,6 +20,10 @@ import com.dfsek.terra.api.inject.exception.InjectionException;
  * @param <T> Type of object to inject.
  */
 public interface Injector<T> {
+    static <T1> Injector<T1> get(T1 value) {
+        return new InjectorImpl<>(value);
+    }
+    
     /**
      * Add an explicit class as a target. Useful for applications where subclasses may cause issues with DI.
      *

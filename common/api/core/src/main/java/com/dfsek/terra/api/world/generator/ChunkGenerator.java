@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.world.generator;
 
-import com.dfsek.terra.api.util.math.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -9,6 +15,7 @@ import java.util.Random;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;

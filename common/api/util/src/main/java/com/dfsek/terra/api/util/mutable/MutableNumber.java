@@ -1,7 +1,18 @@
+/*
+ * Copyright (c) 2020-2021 Polyhedral Development
+ *
+ * The Terra API is licensed under the terms of the MIT License. For more details,
+ * reference the LICENSE file in the common/api directory.
+ */
+
 package com.dfsek.terra.api.util.mutable;
+
+import java.io.Serial;
+
 
 public abstract class MutableNumber<T extends Number> extends Number implements MutablePrimitive<T> {
     
+    @Serial
     private static final long serialVersionUID = 8619508342781664393L;
     protected T value;
     

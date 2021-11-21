@@ -1,37 +1,37 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.version.Version;
 
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.addon.BaseAddon;
 
 
-@Addon("terra")
-@Author("Terra")
-@Version("1.0.0")
-public class InternalAddon extends TerraAddon {
-    private final AbstractPlatform main;
-    private static final Logger logger = LoggerFactory.getLogger(InternalAddon.class);
-    
-    public InternalAddon(AbstractPlatform main) {
-        this.main = main;
+public class InternalAddon implements BaseAddon {
+    private static final Version VERSION = Versions.getVersion(1, 0, 0);
+    @Override
+    public String getID() {
+        return "terra";
     }
     
     @Override
-    public void initialize() {
-        main.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, PlatformInitializationEvent.class)
-            .then(event -> {
-                logger.info("Loading config packs...");
-                main.getRawConfigRegistry().loadAll(main);
-                logger.info("Loaded packs.");
-            })
-            .global();
+    public Version getVersion() {
+        return VERSION;
     }
 }

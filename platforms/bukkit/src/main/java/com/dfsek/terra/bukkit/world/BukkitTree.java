@@ -1,12 +1,28 @@
-package com.dfsek.terra.bukkit.world;
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-import com.dfsek.terra.api.Platform;
+package com.dfsek.terra.bukkit.world;
 
 import org.bukkit.TreeType;
 
 import java.util.Locale;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.collection.MaterialSet;

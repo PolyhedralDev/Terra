@@ -1,5 +1,23 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.config.pack;
 
+import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
 import com.dfsek.tectonic.abstraction.AbstractConfiguration;
@@ -36,7 +54,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.TerraAddon;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
@@ -94,7 +112,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final Configuration configuration;
     
-    private final Set<TerraAddon> addons;
+    private final Map<BaseAddon, VersionRange> addons;
     
     private final BiomeProvider seededBiomeProvider;
     
@@ -127,7 +145,8 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(
+                        new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 selfLoader.load(template, configuration);
                 
@@ -177,7 +196,8 @@ public class ConfigPackImpl implements ConfigPack {
                 selfLoader.load(addonsTemplate, configuration);
                 this.addons = addonsTemplate.getAddons();
                 
-                platform.getEventManager().callEvent(new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
+                platform.getEventManager().callEvent(
+                        new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
                 
                 
                 selfLoader.load(template, configuration);
@@ -239,7 +259,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public Set<TerraAddon> addons() {
+    public Map<BaseAddon, VersionRange> addons() {
         return addons;
     }
     
@@ -286,7 +306,7 @@ public class ConfigPackImpl implements ConfigPack {
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
             logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
-        
+            
             if(type instanceof ParameterizedType param) {
                 Type base = param.getRawType();
                 if(base instanceof Class  // should always be true but we'll check anyways
@@ -306,7 +326,7 @@ public class ConfigPackImpl implements ConfigPack {
                     }
                 }
             }
-        
+            
             return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }
@@ -431,7 +451,7 @@ public class ConfigPackImpl implements ConfigPack {
         platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
         logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
                     template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
-   }
+    }
     
     protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;

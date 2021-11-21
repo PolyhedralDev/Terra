@@ -1,3 +1,20 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
@@ -11,6 +28,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.registry.OpenRegistry;
@@ -24,6 +42,7 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
+    private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
     private final Map<String, Entry<T>> objects;
     
     public OpenRegistryImpl() {
@@ -37,14 +56,13 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         T obj = get((String) o);
-        StringBuilder keys = new StringBuilder("[");
+        String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
         
-        objects.keySet().forEach(key -> keys.append(key).append(", "));
+        if(objects.isEmpty()) list = "[ ]";
         
         if(obj == null)
             throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                    "\" was found in this registry. Registry contains items: " + keys.substring(0, keys.length() - 2) +
-                                    "]");
+                                    "\" was found in this registry. Registry contains items: " + list);
         return obj;
     }
     
@@ -66,6 +84,10 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     public boolean register(String identifier, Entry<T> value) {
+        if(!ID_PATTERN.matcher(identifier).matches())
+            throw new IllegalArgumentException(
+                    "Registry ID must only contain alphanumeric characters, hyphens, and underscores. \"" + identifier +
+                    "\" is not a valid ID.");
         boolean exists = objects.containsKey(identifier);
         objects.put(identifier, value);
         return exists;

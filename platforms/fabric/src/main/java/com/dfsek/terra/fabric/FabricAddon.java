@@ -1,6 +1,28 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric;
 
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.ConfigException;
+
+import com.dfsek.terra.api.addon.BaseAddon;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -12,10 +34,6 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
-import com.dfsek.terra.api.addon.annotations.Author;
-import com.dfsek.terra.api.addon.annotations.Version;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
@@ -31,10 +49,8 @@ import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
 
-@Addon("terra-fabric")
-@Author("Terra")
-@Version("1.0.0")
-public final class FabricAddon extends TerraAddon {
+public final class FabricAddon implements BaseAddon {
+    private static final Version VERSION = Versions.getVersion(1, 0, 0);
     private final PlatformImpl terraFabricPlugin;
     private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
     
@@ -114,6 +130,11 @@ public final class FabricAddon extends TerraAddon {
                          .global();
     }
     
+    @Override
+    public Version getVersion() {
+        return VERSION;
+    }
+    
     
     private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
         try {
@@ -124,5 +145,10 @@ public final class FabricAddon extends TerraAddon {
     
     public Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
         return templates;
+    }
+    
+    @Override
+    public String getID() {
+        return "terra-fabric";
     }
 }

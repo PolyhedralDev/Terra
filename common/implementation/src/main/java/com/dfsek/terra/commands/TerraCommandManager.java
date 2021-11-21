@@ -1,6 +1,21 @@
-package com.dfsek.terra.commands;
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-import com.dfsek.terra.api.Platform;
+package com.dfsek.terra.commands;
 
 import net.jafama.FastMath;
 
@@ -14,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Argument;
@@ -35,8 +51,8 @@ import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.inject.exception.InjectionException;
+import com.dfsek.terra.api.inject.impl.InjectorImpl;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.inject.InjectorImpl;
 
 
 public class TerraCommandManager implements CommandManager {

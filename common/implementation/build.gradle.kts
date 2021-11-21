@@ -9,5 +9,5 @@ dependencies {
     "shadedImplementation"("com.dfsek.tectonic:yaml:2.1.2")
     
     "shadedImplementation"("org.yaml:snakeyaml:1.27")
-    "shadedImplementation"("org.ow2.asm:asm:9.0")
+    "shadedImplementation"("org.ow2.asm:asm:9.2")
 }

@@ -1,17 +1,24 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.addon;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
-import com.dfsek.terra.api.addon.TerraAddon;
-import com.dfsek.terra.api.addon.annotations.Addon;
 
 
 public class AddonClassLoader extends URLClassLoader {
@@ -21,43 +28,5 @@ public class AddonClassLoader extends URLClassLoader {
     
     public AddonClassLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
-    }
-    
-    public AddonClassLoader(URL[] urls) {
-        super(urls);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static Set<Class<? extends TerraAddon>> fetchAddonClasses(File file, ClassLoader parent) throws IOException {
-        JarFile jarFile = new JarFile(file);
-        Enumeration<JarEntry> entries = jarFile.entries();
-        
-        try(AddonClassLoader loader = new AddonClassLoader(new URL[]{ file.toURI().toURL() }, parent)) {
-            
-            Set<Class<? extends TerraAddon>> set = new HashSet<>();
-            while(entries.hasMoreElements()) {
-                JarEntry entry = entries.nextElement();
-                
-                if(entry.isDirectory() || !entry.getName().endsWith(".class")) continue;
-                String className = entry.getName().substring(0, entry.getName().length() - 6).replace('/', '.');
-                
-                try {
-                    Class<?> clazz = loader.loadClass(className);
-                    
-                    Addon addon = clazz.getAnnotation(Addon.class);
-                    
-                    if(addon == null) continue;
-                    
-                    if(!TerraAddon.class.isAssignableFrom(clazz))
-                        throw new IllegalArgumentException(String.format("Addon class \"%s\" must extend TerraAddon.", clazz));
-                    
-                    set.add((Class<? extends TerraAddon>) clazz);
-                } catch(ClassNotFoundException e) {
-                    throw new IllegalStateException(e); // this should literally never happen, if it does something is very wrong
-                }
-            }
-            
-            return set;
-        }
     }
 }
