@@ -205,9 +205,6 @@ Temporary Items
 # binary files
 *.bin
 
-# Config files
-*.conf
-
 # Database files
 *.db
 
