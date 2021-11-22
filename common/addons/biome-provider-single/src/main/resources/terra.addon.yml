@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: biome-provider-single
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.biome.single.SingleBiomeProviderAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-biome-provider-single/issues
+  source: https://github.com/PolyhedralDev/Terra-biome-provider-single
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
