@@ -19,8 +19,6 @@ public interface PluginConfig {
     
     boolean isDebugCommands();
     
-    boolean isDebugLogging();
-    
     boolean isDebugProfiler();
     
     boolean isDebugScript();
