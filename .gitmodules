@@ -1,6 +1,3 @@
-[submodule "common/addons/biome-provider-single"]
-	path = common/addons/biome-provider-single
-	url = https://github.com/PolyhedralDev/Terra-biome-provider-single
 [submodule "common/addons/chunk-generator-noise-3d"]
 	path = common/addons/chunk-generator-noise-3d
 	url = https://github.com/PolyhedralDev/Terra-chunk-generator-noise-3d
