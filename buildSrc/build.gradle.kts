@@ -9,6 +9,6 @@ repositories {
 }
 
 dependencies {
-    "implementation"("gradle.plugin.com.github.jengelman.gradle.plugins:shadow:+")
-    "implementation"("org.yaml:snakeyaml:1.27")
+    implementation("gradle.plugin.com.github.jengelman.gradle.plugins:shadow:+")
+    implementation("org.yaml:snakeyaml:1.27")
 }

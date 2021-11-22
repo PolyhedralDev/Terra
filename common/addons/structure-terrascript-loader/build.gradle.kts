@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    "shadedApi"("commons-io:commons-io:2.6")
-    "shadedApi"(project(":common:addons:manifest-addon-loader"))
+    shadedApi("commons-io:commons-io:2.6")
+    shadedApi(project(":common:addons:manifest-addon-loader"))
 }
 
 tasks.named<ShadowJar>("shadowJar") {

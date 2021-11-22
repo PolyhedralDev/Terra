@@ -1,3 +1,3 @@
 dependencies {
-    "shadedApi"(project(":common:addons:manifest-addon-loader"))
+    shadedApi(project(":common:addons:manifest-addon-loader"))
 }

@@ -3,7 +3,7 @@ afterEvaluate {
         if(it != project) {
             println("Project: ${it.name}")
             dependencies {
-                "shadedApi"(it)
+                shadedApi(it)
             }
         }
     }

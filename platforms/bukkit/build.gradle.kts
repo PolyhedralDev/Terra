@@ -15,18 +15,16 @@ val paperURL = "https://papermc.io/api/v1/paper/%version%/latest/download/"
 val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/final/purpurclip.jar"
 
 dependencies {
-    "shadedApi"(project(":common:implementation:base"))
+    shadedApi(project(":common:implementation:base"))
     
     shadedImplementation("org.slf4j:slf4j-log4j12:1.7.32")
     
-    "compileOnly"("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
-    "shadedImplementation"("io.papermc:paperlib:1.0.5")
+    compileOnly("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
+    shadedImplementation("io.papermc:paperlib:1.0.5")
     
-    "shadedImplementation"("org.bstats:bstats-bukkit:1.7")
+    shadedImplementation("org.bstats:bstats-bukkit:1.7")
     
-    "compileOnly"("com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT")
-    
-    "shadedApi"("com.google.guava:guava:30.0-jre")
+    shadedApi("com.google.guava:guava:30.0-jre")
 }
 
 val jvmFlags = listOf(
