@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: config-structure
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.structure.StructureAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-config-structure/issues
+  source: https://github.com/PolyhedralDev/Terra-config-structure
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
