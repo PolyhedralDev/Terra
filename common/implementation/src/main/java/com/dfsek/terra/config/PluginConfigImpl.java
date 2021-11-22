@@ -33,7 +33,6 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.util.Logger;
 
 
 @SuppressWarnings("FieldMayBeFinal")

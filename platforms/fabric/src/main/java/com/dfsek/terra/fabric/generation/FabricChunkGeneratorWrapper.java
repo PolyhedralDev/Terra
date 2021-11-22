@@ -17,17 +17,6 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.ChunkData;
-import com.dfsek.terra.api.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.api.world.generator.GeneratorWrapper;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.block.FabricBlockState;
-import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
-import com.dfsek.terra.util.FastRandom;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -46,21 +35,35 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil.NoiseValuePoint;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.GenerationStep.Carver;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.NetherFortressFeature;
+import net.minecraft.world.gen.feature.OceanMonumentFeature;
+import net.minecraft.world.gen.feature.PillagerOutpostFeature;
+import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.feature.SwampHutFeature;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.world.generator.Chunkified;
+import com.dfsek.terra.api.world.generator.GeneratorWrapper;
+import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.block.FabricBlockState;
+import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
+import com.dfsek.terra.util.FastRandom;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -110,15 +113,17 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
     }
     
-    @Override
-    public MultiNoiseSampler getMultiNoiseSampler() {
-        return (x, y, z) -> new NoiseValuePoint(0, 0, 0, 0, 0, 0);
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
+        this.delegate = pack.getGeneratorProvider().newInstance(pack);
+        biomeSource.setPack(pack);
+        
+        logger.debug("Loading world with config pack {}", pack.getID());
     }
     
     @Override
-    public void carve(ChunkRegion chunkRegion, long seed, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk,
-                      Carver generationStep) {
-        
+    public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
+        return (x, y, z) -> new MultiNoiseUtil.NoiseValuePoint(0, 0, 0, 0, 0, 0);
     }
     
     
@@ -285,12 +290,10 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return pack;
     }
     
-    public void setPack(ConfigPack pack) {
-        this.pack = pack;
-        this.delegate = pack.getGeneratorProvider().newInstance(pack);
-        biomeSource.setPack(pack);
+    @Override
+    public void carve(ChunkRegion chunkRegion, long seed, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk,
+                      GenerationStep.Carver generationStep) {
         
-        delegate.getPlatform().logger().info("Loading world with config pack " + pack.getID());
     }
     
     public void setWorld(ServerWorld world) {

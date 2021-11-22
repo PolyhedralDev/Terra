@@ -37,6 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 
 

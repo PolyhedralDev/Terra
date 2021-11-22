@@ -29,7 +29,6 @@ import java.util.Objects;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.lang.Language;
-import com.dfsek.terra.api.util.Logger;
 
 
 public final class LangUtil {

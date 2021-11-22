@@ -94,43 +94,16 @@ public abstract class AbstractPlatform implements Platform {
     
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
     
-    @Override
-    public void register(TypeRegistry registry) {
-        loaders.register(registry);
+    public ConfigRegistry getRawConfigRegistry() {
+        return configRegistry;
     }
     
-    @Override
-    public PluginConfig getTerraConfig() {
-        return config;
-    }
-    
-    @Override
-    public Language getLanguage() {
-        return LangUtil.getLanguage();
-    }
-    
-    @Override
-    public CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return checkedConfigRegistry;
-    }
-    
-    @Override
-    public Registry<BaseAddon> getAddons() {
-        return lockedAddonRegistry;
-    }
-    
-    @Override
-    public EventManager getEventManager() {
-        return eventManager;
+    public CommandManager getManager() {
+        return manager;
     }
     
     protected Optional<BaseAddon> platformAddon() {
         return Optional.empty();
-    }
-    
-    @Override
-    public Profiler getProfiler() {
-        return profiler;
     }
     
     protected void load() {
@@ -257,11 +230,38 @@ public abstract class AbstractPlatform implements Platform {
         return Optional.empty();
     }
     
-    public ConfigRegistry getRawConfigRegistry() {
-        return configRegistry;
+    @Override
+    public void register(TypeRegistry registry) {
+        loaders.register(registry);
     }
     
-    public CommandManager getManager() {
-        return manager;
+    @Override
+    public PluginConfig getTerraConfig() {
+        return config;
+    }
+    
+    @Override
+    public Language getLanguage() {
+        return LangUtil.getLanguage();
+    }
+    
+    @Override
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return checkedConfigRegistry;
+    }
+    
+    @Override
+    public Registry<BaseAddon> getAddons() {
+        return lockedAddonRegistry;
+    }
+    
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+    
+    @Override
+    public Profiler getProfiler() {
+        return profiler;
     }
 }

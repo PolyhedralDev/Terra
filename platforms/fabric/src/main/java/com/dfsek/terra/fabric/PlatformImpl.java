@@ -19,9 +19,6 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
-
-import com.dfsek.terra.api.addon.BaseAddon;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -33,9 +30,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
