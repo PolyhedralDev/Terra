@@ -38,8 +38,7 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
-        if(String.class.equals(t.getType()) && c instanceof String) { // String is final so we use #equals
-            String candidate = (String) c;
+        if(String.class.equals(t.getType()) && c instanceof String candidate) { // String is final so we use #equals
             StringSubstitutor substitutor = new StringSubstitutor(key -> {
                 Object meta = getMetaValue(key);
                 if(!(meta instanceof String) && !(meta instanceof Number) && !(meta instanceof Character) && !(meta instanceof Boolean)) {

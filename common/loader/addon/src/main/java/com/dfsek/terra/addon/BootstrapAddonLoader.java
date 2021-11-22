@@ -17,6 +17,11 @@
 
 package com.dfsek.terra.addon;
 
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.version.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
@@ -26,31 +31,29 @@ import java.nio.file.Path;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
-import ca.solostudios.strata.Versions;
-import ca.solostudios.strata.version.Version;
-
 import com.dfsek.terra.addon.exception.AddonLoadException;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 
 public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAddon<?>> {
-    private final Platform platform;
-    
+    private static final Logger logger = LoggerFactory.getLogger(BootstrapAddonLoader.class);
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
+    
+    private final Platform platform;
     
     public BootstrapAddonLoader(Platform platform) { this.platform = platform; }
     
     @Override
     public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, ClassLoader parent) {
         Path bootstrapAddons = addonsFolder.resolve("bootstrap");
-        platform.logger().info("Loading bootstrap addons from " + bootstrapAddons);
+        logger.info("Loading bootstrap addons from {}", bootstrapAddons);
         try {
             return Files.walk(bootstrapAddons, 1)
                         .filter(path -> path.toFile().isFile() && path.toString().endsWith(".jar"))
                         .map(path -> {
                             try {
-                                platform.logger().info("Loading bootstrap addon from JAR " + path);
+                                logger.info("Loading bootstrap addon from JAR {}", path);
                                 JarFile jar = new JarFile(path.toFile());
                                 String entry = jar.getManifest().getMainAttributes().getValue("Bootstrap-Addon-Entry-Point");
                     
@@ -65,7 +68,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
                                     if(!(in instanceof BootstrapBaseAddon)) {
                                         throw new AddonLoadException(in.getClass() + " does not extend " + BootstrapBaseAddon.class);
                                     }
-                                    platform.logger().info("Loaded bootstrap addon " + ((BootstrapBaseAddon<?>) in).getID());
+                                    logger.info("Loaded bootstrap addon {}", ((BootstrapBaseAddon<?>) in).getID());
                                     return (BootstrapBaseAddon<?>) in;
                                 } catch(InvocationTargetException e) {
                                     throw new AddonLoadException("Exception occurred while instantiating addon: ", e);

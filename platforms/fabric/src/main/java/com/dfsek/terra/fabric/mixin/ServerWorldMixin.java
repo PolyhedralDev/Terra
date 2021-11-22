@@ -27,6 +27,8 @@ import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.level.storage.LevelStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,6 +43,8 @@ import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
+    private static final Logger logger = LoggerFactory.getLogger(ServerWorldMixin.class);
+    
     @Inject(method = "<init>", at = @At("RETURN"))
     public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session,
                                   ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType,
@@ -49,7 +53,7 @@ public abstract class ServerWorldMixin {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
             ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
             FabricEntryPoint.getPlatform().addWorld((ServerWorld) (Object) this);
-            FabricEntryPoint.getPlatform().logger().info("Registered world " + this);
+            logger.info("Registered world {}", this);
         }
     }
 }

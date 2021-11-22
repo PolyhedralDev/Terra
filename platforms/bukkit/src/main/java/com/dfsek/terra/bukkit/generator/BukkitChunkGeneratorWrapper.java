@@ -20,6 +20,8 @@ package com.dfsek.terra.bukkit.generator;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +42,7 @@ import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
+    private static final Logger logger = LoggerFactory.getLogger(BukkitChunkGeneratorWrapper.class);
     
     private static final Map<com.dfsek.terra.api.world.World, PopulationManager> popMap = new HashMap<>();
     
@@ -61,17 +64,17 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     
     public static synchronized void saveAll() {
-        for(Map.Entry<com.dfsek.terra.api.world.World, PopulationManager> e : popMap.entrySet()) {
+        for(Map.Entry<com.dfsek.terra.api.world.World, PopulationManager> entry : popMap.entrySet()) {
             try {
-                e.getValue().saveBlocks(e.getKey());
-            } catch(IOException ioException) {
-                ioException.printStackTrace();
+                entry.getValue().saveBlocks(entry.getKey());
+            } catch(IOException e) {
+                logger.error("Error occurred while saving population manager", e);
             }
         }
     }
     
-    public static synchronized void fixChunk(Chunk c) {
-        popMap.get(c.getWorld()).checkNeighbors(c.getX(), c.getZ(), c.getWorld());
+    public static synchronized void fixChunk(Chunk chunk) {
+        popMap.get(chunk.getWorld()).checkNeighbors(chunk.getX(), chunk.getZ(), chunk.getWorld());
     }
     
     private void load(com.dfsek.terra.api.world.World w) {
@@ -80,7 +83,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         } catch(FileNotFoundException ignore) {
         
         } catch(IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("Error occurred while loading terra world", e);
         }
         popMap.put(w, popMan);
         needsLoad = false;

@@ -20,6 +20,8 @@ package com.dfsek.terra;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -52,8 +54,6 @@ import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.Logger;
-import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
@@ -66,7 +66,6 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
-import com.dfsek.terra.util.logging.DebugLogger;
 
 
 /**
@@ -75,9 +74,10 @@ import com.dfsek.terra.util.logging.DebugLogger;
  * Implementations must invoke {@link #load()} in their constructors.
  */
 public abstract class AbstractPlatform implements Platform {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractPlatform.class);
+    
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl(this);
-    
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
@@ -94,56 +94,16 @@ public abstract class AbstractPlatform implements Platform {
     
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
     
-    private final Lazy<Logger> logger = Lazy.lazy(this::createLogger);
-    private final Lazy<DebugLogger> debugLogger = Lazy.lazy(() -> new DebugLogger(logger()));
-    
-    @Override
-    public void register(TypeRegistry registry) {
-        loaders.register(registry);
+    public ConfigRegistry getRawConfigRegistry() {
+        return configRegistry;
     }
     
-    @Override
-    public Logger logger() {
-        return logger.value();
-    }
-    
-    @Override
-    public PluginConfig getTerraConfig() {
-        return config;
-    }
-    
-    @Override
-    public Language getLanguage() {
-        return LangUtil.getLanguage();
-    }
-    
-    @Override
-    public CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return checkedConfigRegistry;
-    }
-    
-    @Override
-    public Registry<BaseAddon> getAddons() {
-        return lockedAddonRegistry;
-    }
-    
-    @Override
-    public Logger getDebugLogger() {
-        return debugLogger.value();
-    }
-    
-    @Override
-    public EventManager getEventManager() {
-        return eventManager;
+    public CommandManager getManager() {
+        return manager;
     }
     
     protected Optional<BaseAddon> platformAddon() {
         return Optional.empty();
-    }
-    
-    @Override
-    public Profiler getProfiler() {
-        return profiler;
     }
     
     protected void load() {
@@ -154,7 +114,7 @@ public abstract class AbstractPlatform implements Platform {
         }
         LOADED.set(true);
         
-        logger().info("Initializing Terra...");
+        logger.info("Initializing Terra...");
         
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
             File configFile = new File(getDataFolder(), "config.yml");
@@ -162,7 +122,7 @@ public abstract class AbstractPlatform implements Platform {
                 FileUtils.copyInputStreamToFile(stream, configFile);
             }
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error("Error loading config.yml resource from jar", e);
         }
         
         
@@ -173,16 +133,17 @@ public abstract class AbstractPlatform implements Platform {
         if(config.dumpDefaultConfig()) {
             try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
                 if(resourcesConfig == null) {
-                    logger().info("No resources config found. Skipping resource dumping.");
+                    logger.info("No resources config found. Skipping resource dumping.");
                     return;
                 }
                 String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
                 Map<String, List<String>> resources = new Yaml().load(resourceYaml);
                 resources.forEach((dir, entries) -> entries.forEach(entry -> {
-                    String resourcePath = dir + "/" + entry;
+                    String resourcePath = String.format("%s/%s", dir, entry);
                     File resource = new File(getDataFolder(), resourcePath);
-                    if(resource.exists()) return; // dont overwrite
-                    logger().info("Dumping resource " + resource.getAbsolutePath());
+                    if(resource.exists())
+                        return; // dont overwrite
+                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
                     try {
                         resource.getParentFile().mkdirs();
                         resource.createNewFile();
@@ -197,13 +158,11 @@ public abstract class AbstractPlatform implements Platform {
                     }
                 }));
             } catch(IOException e) {
-                e.printStackTrace();
+                logger.error("Error while dumping resources...", e);
             }
         } else {
-            getDebugLogger().info("Skipping resource dumping.");
+            logger.info("Skipping resource dumping.");
         }
-        
-        debugLogger.value().setDebug(config.isDebugLogging()); // enable debug logger if applicable
         
         if(config.isDebugProfiler()) { // if debug.profiler is enabled, start profiling
             profiler.start();
@@ -248,36 +207,61 @@ public abstract class AbstractPlatform implements Platform {
                 .getHandler(FunctionalEventHandler.class)
                 .register(internalAddon, PlatformInitializationEvent.class)
                 .then(event -> {
-                    logger().info("Loading config packs...");
+                    logger.info("Loading config packs...");
                     getRawConfigRegistry().loadAll(this);
-                    logger().info("Loaded packs.");
+                    logger.info("Loaded packs.");
                 })
                 .global();
         
         
-        logger().info("Loaded addons.");
+        logger.info("Loaded addons.");
         
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {
-            e.printStackTrace(); // TODO do something here even though this should literally never happen
+            logger.error("Error registering commands", e);
         }
         
         
-        logger().info("Finished initialization.");
+        logger.info("Finished initialization.");
     }
-    
-    protected abstract Logger createLogger();
     
     protected Optional<BaseAddon> getPlatformAddon() {
         return Optional.empty();
     }
     
-    public ConfigRegistry getRawConfigRegistry() {
-        return configRegistry;
+    @Override
+    public void register(TypeRegistry registry) {
+        loaders.register(registry);
     }
     
-    public CommandManager getManager() {
-        return manager;
+    @Override
+    public PluginConfig getTerraConfig() {
+        return config;
+    }
+    
+    @Override
+    public Language getLanguage() {
+        return LangUtil.getLanguage();
+    }
+    
+    @Override
+    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+        return checkedConfigRegistry;
+    }
+    
+    @Override
+    public Registry<BaseAddon> getAddons() {
+        return lockedAddonRegistry;
+    }
+    
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+    
+    @Override
+    public Profiler getProfiler() {
+        return profiler;
     }
 }

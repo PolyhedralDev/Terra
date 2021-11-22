@@ -17,8 +17,9 @@
 
 package com.dfsek.terra.event;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +39,8 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
+    private static final Logger logger = LoggerFactory.getLogger(FunctionalEventHandlerImpl.class);
+    
     private final Map<Type, List<EventContextImpl<?>>> contextMap = new HashMap<>();
     
     private final Platform platform;
@@ -59,13 +62,11 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
                     ((EventContextImpl<Event>) context).handle(event);
                 }
             } catch(Exception e) {
-                if(context.isFailThrough() && event instanceof FailThroughEvent) throw e; // Rethrow if it's fail-through.
-                StringWriter writer = new StringWriter();
-                e.printStackTrace(new PrintWriter(writer));
-                platform.logger().warning("Exception occurred during event handling:");
-                platform.logger().warning(writer.toString());
-                platform.logger().warning(
-                        "Report this to the maintainers of " + context.getAddon().getID());
+                if(context.isFailThrough() && event instanceof FailThroughEvent)
+                    throw e; // Rethrow if it's fail-through.
+                // else warn
+                logger.warn("Exception occurred during event handling. Report this to the maintainers of {}@{}",
+                            context.getAddon().getID(), context.getAddon().getVersion().getFormatted(), e);
             }
         });
     }

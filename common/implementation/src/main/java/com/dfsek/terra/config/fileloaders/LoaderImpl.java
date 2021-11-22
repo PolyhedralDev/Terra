@@ -18,6 +18,8 @@
 package com.dfsek.terra.config.fileloaders;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +34,8 @@ import com.dfsek.terra.api.config.Loader;
 
 
 public abstract class LoaderImpl implements Loader {
+    private static final Logger logger = LoggerFactory.getLogger(LoaderImpl.class);
+    
     protected final Map<String, InputStream> streams = new HashMap<>();
     
     @Override
@@ -54,7 +58,7 @@ public abstract class LoaderImpl implements Loader {
      */
     @Override
     public LoaderImpl open(String directory, String extension) {
-        if(streams.size() != 0) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
+        if(!streams.isEmpty()) throw new IllegalStateException("Attempted to load new directory before closing existing InputStreams");
         load(directory, extension);
         return this;
     }
@@ -68,7 +72,7 @@ public abstract class LoaderImpl implements Loader {
             try {
                 input.close();
             } catch(IOException e) {
-                e.printStackTrace();
+                logger.error("Error occurred while loading", e);
             }
         });
         streams.clear();

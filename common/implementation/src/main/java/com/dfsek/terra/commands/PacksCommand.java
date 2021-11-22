@@ -38,7 +38,7 @@ public class PacksCommand implements CommandTemplate {
     public void execute(CommandSender sender) {
         CheckedRegistry<ConfigPack> registry = platform.getConfigRegistry();
         
-        if(registry.entries().size() == 0) {
+        if(registry.entries().isEmpty()) {
             LangUtil.send("command.packs.none", sender);
             return;
         }

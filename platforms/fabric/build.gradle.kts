@@ -24,6 +24,9 @@ val fabricLoader = "0.12.5"
 dependencies {
     "shadedApi"(project(":common:implementation"))
     
+    shadedImplementation("org.slf4j:slf4j-log4j12:1.7.32")
+//    shadedImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1")
+    
     "minecraft"("com.mojang:minecraft:$minecraft")
     "mappings"("net.fabricmc:yarn:$minecraft+build.$yarn:v2")
     "modImplementation"("net.fabricmc:fabric-loader:$fabricLoader")
