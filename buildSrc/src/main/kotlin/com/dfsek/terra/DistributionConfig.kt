@@ -14,6 +14,7 @@ import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.named
 import org.yaml.snakeyaml.DumperOptions
@@ -90,7 +91,10 @@ fun Project.configureDistribution() {
             
             project(":common:addons").subprojects.forEach { addonProject ->
                 val jar = (addonProject.tasks.named("jar").get() as Jar).archiveFileName.get()
-                resources.computeIfAbsent("addons") { ArrayList() }.add(jar)
+                resources.computeIfAbsent(
+                    if (addonProject.project.extra.has("bootstrap") && addonProject.project.extra.get("bootstrap") as Boolean) "addons/bootstrap"
+                    else "addons"
+                                         ) { ArrayList() }.add(jar)
             }
             
             val options = DumperOptions()
