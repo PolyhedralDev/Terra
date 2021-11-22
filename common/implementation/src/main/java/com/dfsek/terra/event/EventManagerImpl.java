@@ -33,7 +33,7 @@ public class EventManagerImpl implements EventManager {
     
     public EventManagerImpl(Platform platform) {
         this.platform = platform;
-        registerHandler(FunctionalEventHandler.class, new FunctionalEventHandlerImpl(platform)); // default handler
+        registerHandler(FunctionalEventHandler.class, new FunctionalEventHandlerImpl()); // default handler
     }
     
     @Override

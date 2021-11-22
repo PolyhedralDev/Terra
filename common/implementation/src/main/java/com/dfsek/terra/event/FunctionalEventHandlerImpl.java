@@ -43,12 +43,6 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
     
     private final Map<Type, List<EventContextImpl<?>>> contextMap = new HashMap<>();
     
-    private final Platform platform;
-    
-    public FunctionalEventHandlerImpl(Platform platform) {
-        this.platform = platform;
-    }
-    
     @SuppressWarnings("unchecked")
     @Override
     public void handle(Event event) {
