@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: config-palette
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.palette.PaletteAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-config-palette/issues
+  source: https://github.com/PolyhedralDev/Terra-config-palette
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
