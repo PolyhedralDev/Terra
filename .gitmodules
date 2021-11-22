@@ -1,6 +1,3 @@
-[submodule "common/addons/config-carver"]
-	path = common/addons/config-carver
-	url = https://github.com/PolyhedralDev/Terra-config-carver
 [submodule "common/addons/config-distributors"]
 	path = common/addons/config-distributors
 	url = https://github.com/PolyhedralDev/Terra-config-distributors
