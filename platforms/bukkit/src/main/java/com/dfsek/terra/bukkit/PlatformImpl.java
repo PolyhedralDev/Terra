@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.Locale;
 
 import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.addon.TerraAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -85,8 +84,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry
-                .registerLoader(BlockState.class, (t, o, l) -> handle.createBlockData((String) o))
+        registry.registerLoader(BlockState.class, (t, o, l) -> handle.createBlockData((String) o))
                 .registerLoader(Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         
