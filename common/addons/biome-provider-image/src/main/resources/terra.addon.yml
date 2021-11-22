@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: biome-provider-image
+version: 0.1.0
+entrypoints:
+  - "com.dfsek.terra.addons.biome.image.ImageBiomeProviderAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-biome-provider-image/issues
+  source: https://github.com/PolyhedralDev/Terra-biome-provider-image
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
