@@ -1,6 +1,3 @@
-[submodule "common/addons/manifest-addon-loader"]
-	path = common/addons/manifest-addon-loader
-	url = https://github.com/PolyhedralDev/Terra-manifest-addon-loader
 [submodule "common/addons/structure-sponge-loader"]
 	path = common/addons/structure-sponge-loader
 	url = https://github.com/PolyhedralDev/Terra-structure-sponge-loader
