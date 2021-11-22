@@ -1,6 +1,3 @@
-[submodule "common/addons/biome-provider-image"]
-	path = common/addons/biome-provider-image
-	url = https://github.com/PolyhedralDev/Terra-biome-provider-image
 [submodule "common/addons/biome-provider-pipeline"]
 	path = common/addons/biome-provider-pipeline
 	url = https://github.com/PolyhedralDev/Terra-biome-provider-pipeline
