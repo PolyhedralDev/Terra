@@ -58,6 +58,3 @@
 [submodule "common/addons/structure-terrascript-loader"]
 	path = common/addons/structure-terrascript-loader
 	url = https://github.com/PolyhedralDev/Terra-structure-terrascript-loader
-[submodule "common/addons/api-addon-loader"]
-	path = common/addons/api-addon-loader
-	url = https://github.com/PolyhedralDev/Terra-api-addon-loader
