@@ -18,6 +18,8 @@
 package com.dfsek.terra.registry.master;
 
 import com.dfsek.tectonic.exception.ConfigException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +35,8 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
  * Class to hold config packs
  */
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigRegistry.class);
+    
     public void load(File folder, Platform platform) throws ConfigException {
         ConfigPack pack = new ConfigPackImpl(folder, platform);
         register(pack.getID(), pack);
@@ -46,16 +50,16 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
             try {
                 load(dir, platform);
             } catch(ConfigException e) {
-                e.printStackTrace();
+                logger.error("Error loading config pack {}", dir.getName(), e);
                 valid = false;
             }
         }
         for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra"))) {
             try {
-                platform.getDebugLogger().info("Loading ZIP archive: " + zip.getName());
+                logger.info("Loading ZIP archive: " + zip.getName());
                 load(new ZipFile(zip), platform);
             } catch(IOException | ConfigException e) {
-                e.printStackTrace();
+                logger.error("Error loading config pack {}", zip.getName(), e);
                 valid = false;
             }
         }

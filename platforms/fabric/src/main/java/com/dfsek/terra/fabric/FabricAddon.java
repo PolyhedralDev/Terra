@@ -28,6 +28,8 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +52,8 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 public final class FabricAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     private final PlatformImpl terraFabricPlugin;
+    private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
+    
     private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
     public FabricAddon(PlatformImpl terraFabricPlugin) {
@@ -66,17 +70,19 @@ public final class FabricAddon implements BaseAddon {
                              try {
                                  event.loadTemplate(template);
                              } catch(ConfigException e) {
-                                 e.printStackTrace();
+                                 logger.error("Error loading config template", e);
                              }
             
                              if(template.doRegistryInjection()) {
+                                 logger.info("Injecting structures into Terra");
+                
                                  BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
                                      if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
                                          try {
-                                             event.getPack().getCheckedRegistry(Tree.class).register(entry.getKey().getValue().toString(),
-                                                                                                     (Tree) entry.getValue());
-                                             terraFabricPlugin.getDebugLogger().info(
-                                                     "Injected ConfiguredFeature " + entry.getKey().getValue() + " as Tree.");
+                                             event.getPack()
+                                                  .getCheckedRegistry(Tree.class)
+                                                  .register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
+                                             logger.info("Injected ConfiguredFeature {} as Tree.", entry.getKey().getValue());
                                          } catch(DuplicateEntryException ignored) {
                                          }
                                      }
@@ -95,7 +101,7 @@ public final class FabricAddon implements BaseAddon {
                              try {
                                  event.loadTemplate(template);
                              } catch(ConfigException e) {
-                                 e.printStackTrace();
+                                 logger.error("Error loading config template", e);
                              }
             
                              templates.get(event.getPack()).setRight(template);
@@ -107,18 +113,19 @@ public final class FabricAddon implements BaseAddon {
                          .getHandler(FunctionalEventHandler.class)
                          .register(this, BiomeRegistrationEvent.class)
                          .then(event -> {
-                             terraFabricPlugin.logger().info("Registering biomes...");
+                             logger.info("Registering biomes...");
+            
                              Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
-                             terraFabricPlugin.getConfigRegistry().forEach(pack -> pack.getCheckedRegistry(TerraBiome.class)
-                                                                                       .forEach(
-                                                                                               (id, biome) -> FabricUtil.registerOrOverwrite(
-                                                                                                       biomeRegistry, Registry.BIOME_KEY,
-                                                                                                       new Identifier("terra",
-                                                                                                                      FabricUtil.createBiomeID(
-                                                                                                                              pack, id)),
-                                                                                                       FabricUtil.createBiome(biome, pack,
-                                                                                                                              event.getRegistryManager())))); // Register all Terra biomes.
-                             terraFabricPlugin.logger().info("Biomes registered.");
+                             terraFabricPlugin.getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
+                                 pack.getCheckedRegistry(TerraBiome.class)
+                                     .forEach((id, biome) -> {
+                                         Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
+                                         Biome fabricBiome = FabricUtil.createBiome(biome, pack, event.getRegistryManager());
+                    
+                                         FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, identifier, fabricBiome);
+                                     });
+                             });
+                             logger.info("Biomes registered.");
                          })
                          .global();
     }

@@ -21,6 +21,7 @@ import org.spongepowered.api.Sponge;
 
 import java.io.File;
 
+
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -60,25 +61,5 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public ItemHandle getItemHandle() {
         return null;
-    }
-    
-    @Override
-    protected Logger createLogger() {
-        return new Logger() {
-            @Override
-            public void info(String message) {
-                plugin.getPluginContainer().logger().info(message);
-            }
-            
-            @Override
-            public void warning(String message) {
-                plugin.getPluginContainer().logger().warn(message);
-            }
-            
-            @Override
-            public void severe(String message) {
-                plugin.getPluginContainer().logger().error(message);
-            }
-        };
     }
 }

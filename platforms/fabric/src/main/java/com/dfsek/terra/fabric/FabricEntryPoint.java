@@ -20,13 +20,18 @@ package com.dfsek.terra.fabric;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 
 public class FabricEntryPoint implements ModInitializer {
+    private static final Logger logger = LoggerFactory.getLogger(FabricEntryPoint.class);
+    
     private static final PlatformImpl TERRA_PLUGIN = new PlatformImpl();
+    
     
     public static PlatformImpl getPlatform() {
         return TERRA_PLUGIN;
@@ -34,6 +39,7 @@ public class FabricEntryPoint implements ModInitializer {
     
     @Override
     public void onInitialize() {
+        logger.info("Initializing Terra Fabric mod...");
         // register the things
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);

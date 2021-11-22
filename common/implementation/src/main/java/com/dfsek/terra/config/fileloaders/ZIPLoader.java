@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.config.fileloaders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -25,6 +28,8 @@ import java.util.zip.ZipFile;
 
 
 public class ZIPLoader extends LoaderImpl {
+    private static final Logger logger = LoggerFactory.getLogger(ZIPLoader.class);
+    
     private final ZipFile file;
     
     public ZIPLoader(ZipFile file) {
@@ -50,7 +55,7 @@ public class ZIPLoader extends LoaderImpl {
                     String rel = entry.getName().substring(directory.length());
                     streams.put(rel, file.getInputStream(entry));
                 } catch(IOException e) {
-                    e.printStackTrace();
+                    logger.error("Error while loading file from zip", e);
                 }
             }
         }

@@ -19,14 +19,10 @@ package com.dfsek.terra.fabric;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
-
-import com.dfsek.terra.api.addon.BaseAddon;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
-import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.util.HashSet;
@@ -34,9 +30,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.Logger;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
@@ -103,34 +99,13 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry
-                .registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
+        registry.registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
-                    if(identifier == null) throw new LoadException("Invalid identifier: " + o);
+                    if(identifier == null)
+                        throw new LoadException("Invalid identifier: " + o);
                     return identifier;
                 });
-    }
-    
-    @Override
-    protected Logger createLogger() {
-        final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
-        return new Logger() {
-            @Override
-            public void info(String message) {
-                log4jLogger.info(message);
-            }
-            
-            @Override
-            public void warning(String message) {
-                log4jLogger.warn(message);
-            }
-            
-            @Override
-            public void severe(String message) {
-                log4jLogger.error(message);
-            }
-        };
     }
     
     
