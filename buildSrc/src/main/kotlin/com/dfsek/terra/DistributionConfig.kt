@@ -57,7 +57,9 @@ fun Project.configureDistribution() {
                 val jar = (addonProject.tasks.named("jar").get() as Jar)
                 println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}.")
                 
-                val entry = ZipEntry("addons/${jar.archiveFileName.get()}")
+                val boot = if(addonProject.project.extra.has("bootstrap") && addonProject.project.extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+                
+                val entry = ZipEntry("addons/$boot${jar.archiveFileName.get()}")
                 zip.putNextEntry(entry)
                 FileInputStream(jar.archiveFile.get().asFile).copyTo(zip)
                 zip.closeEntry()

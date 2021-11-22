@@ -150,6 +150,7 @@ public abstract class AbstractPlatform implements Platform {
                     } catch(IOException e) {
                         throw new UncheckedIOException(e);
                     }
+                    logger.debug("Copying resource {}", resourcePath);
                     try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
                         OutputStream os = new FileOutputStream(resource)) {
                         IOUtils.copy(is, os);
