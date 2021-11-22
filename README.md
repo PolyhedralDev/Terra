@@ -1,4 +1,3 @@
-
 <img align="left" width="64" height="64" src="https://raw.githubusercontent.com/wiki/PolyhedralDev/Terra/images/terra_logo.png" alt="Terra Logo">
 
 # Terra
@@ -11,11 +10,11 @@ Terra consists of several parts:
 
 * A voxel world generation API with emphasis on configuration and extensibility
 * Several platform implementations, the layer between the API and the platform
-    it's running on.
-* An addon loader, which allows interfacing with the Terra API in a 
-    platform-agnostic setting
+  it's running on.
+* An addon loader, which allows interfacing with the Terra API in a
+  platform-agnostic setting
 * Several "core addons," which implement the "default" configurations of Terra.
-    These addons can be thought of as the config "standard library"
+  These addons can be thought of as the config "standard library"
 
 Terra currently officially supports the Fabric mod loader and the Bukkit API
 (Paper and friends). We welcome Pull Requests implementing additional platforms!
@@ -60,13 +59,35 @@ To run Minecraft with Terra in the IDE (for testing) use the following tasks:
     * `runClient` - Run a Minecraft Fabric client with Terra installed.
     * `runServer` - Run a Minecraft Fabric server with Terra installed.
 
-
 ## Contributing
 
 Contributions are welcome! If you want to see a feature in Terra, please, open
 an issue, or implement it yourself and submit a PR!
 Join the discord [here](https://discord.gg/PXUEbbF) if you would like to talk
 more about the project!
+
+## Licensing
+
+Parts of Terra are licensed under either the MIT License or the GNU General
+Public License, version 3.0
+
+Our API is licensed under the [MIT License](LICENSE), to ensure
+that everyone is able to freely use it however they want.
+
+Our core addons are also licensed under the [MIT License](LICENSE)
+, to ensure that people can freely use code from them to learn and make their
+own addons, without worrying about GPL infection.
+
+Our platform-agnostic implementations and platform implementations are licensed
+under
+the [GNU General Public License, version 3.0](common/implementation/LICENSE).
+This is to ensure that our implementations remain free software, wherever they
+are used.
+
+If you're not sure which license a particular file is under, check:
+
+* The file's header
+* The LICENSE file in the closest parent folder of the file in question
 
 ## Beta
 
