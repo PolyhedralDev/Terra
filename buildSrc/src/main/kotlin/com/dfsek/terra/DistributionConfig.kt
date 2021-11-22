@@ -27,11 +27,8 @@ fun Project.configureDistribution() {
         group = "terra"
         doFirst {
             file("${buildDir}/resources/main/packs/").deleteRecursively()
-            
-            val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/default.zip")
+            val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/latest/default.zip")
             downloadPack(defaultPackUrl, project)
-            val netherPackUrl = URL("https://github.com/PolyhedralDev/TerraDefaultConfig/releases/download/latest/nether.zip")
-            downloadPack(netherPackUrl, project)
         }
     }
     
