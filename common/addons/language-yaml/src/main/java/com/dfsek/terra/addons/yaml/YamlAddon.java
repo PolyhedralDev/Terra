@@ -16,8 +16,13 @@ import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class YamlAddon implements AddonInitializer {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(YamlAddon.class);
     @Inject
     private Platform platform;
     
@@ -30,7 +35,7 @@ public class YamlAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigurationDiscoveryEvent.class)
                 .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
-                    platform.getDebugLogger().info("Discovered config " + entry.getKey());
+                    LOGGER.debug("Discovered config {}", entry.getKey());
                     event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
                 })))
                 .failThrough();
