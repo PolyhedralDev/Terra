@@ -28,12 +28,12 @@ fun Project.configureDependencies() {
     }
     
     repositories {
-        maven { url = uri("https://maven.enginehub.org/repo/") }
-        maven { url = uri("https://repo.codemc.org/repository/maven-public") }
-        maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-        maven { url = uri("https://maven.fabricmc.net/") }
-        gradlePluginPortal()
         mavenCentral()
+        gradlePluginPortal()
+        maven { url = uri("https://maven.fabricmc.net/") }
+        maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+        maven { url = uri("https://repo.codemc.org/repository/maven-public") }
+        maven { url = uri("https://maven.enginehub.org/repo/") }
     }
     
     dependencies {
