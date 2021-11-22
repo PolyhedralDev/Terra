@@ -30,6 +30,14 @@ allprojects {
         reports.html.required.set(false)
         reports.junitXml.required.set(false)
     }
+    
+    tasks.withType<Copy>().configureEach {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    
+    tasks.withType<Jar>().configureEach {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 }
 
 afterEvaluate {
