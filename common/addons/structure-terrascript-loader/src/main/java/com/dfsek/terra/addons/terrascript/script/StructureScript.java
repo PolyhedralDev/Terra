@@ -53,12 +53,17 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class StructureScript implements Structure {
     private final Block block;
     private final String id;
     private final Cache<Vector3, StructureBuffer> cache;
     private final Platform platform;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     
     public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry,
                            Registry<LootTable> lootRegistry,
@@ -100,7 +105,7 @@ public class StructureScript implements Structure {
                 .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
                                                                                   Returnable.ReturnType.NUMBER))
                 .registerFunction("print",
-                                  new UnaryStringFunctionBuilder(string -> platform.getDebugLogger().info("[" + id + "] " + string)))
+                                  new UnaryStringFunctionBuilder(string -> LOGGER.debug("[TerraScript:{}] {}", id, string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder(
                         (number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
@@ -180,8 +185,7 @@ public class StructureScript implements Structure {
         try {
             return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
-            platform.logger().severe("Failed to generate structure at " + arguments.getBuffer().getOrigin() + ": " + e.getMessage());
-            platform.getDebugLogger().stack(e);
+            LOGGER.error("Failed to generate structure at {}", arguments.getBuffer().getOrigin(), e);
             return false;
         }
     }

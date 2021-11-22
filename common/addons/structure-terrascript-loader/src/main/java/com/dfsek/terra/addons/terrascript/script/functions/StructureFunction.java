@@ -27,6 +27,9 @@ import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class StructureFunction implements Function<Boolean> {
     private final Registry<Structure> registry;
@@ -36,6 +39,7 @@ public class StructureFunction implements Function<Boolean> {
     private final Platform platform;
     private final List<Returnable<String>> rotations;
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(StructureFunction.class);
     public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id,
                              List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform platform) {
         this.registry = registry;
@@ -68,7 +72,7 @@ public class StructureFunction implements Function<Boolean> {
         String app = id.apply(implementationArguments, variableMap);
         Structure script = registry.get(app);
         if(script == null) {
-            platform.logger().severe("No such structure " + app);
+            LOGGER.warn("No such structure {}", app);
             return null;
         }
         
@@ -77,7 +81,7 @@ public class StructureFunction implements Function<Boolean> {
         try {
             rotation1 = Rotation.valueOf(rotString);
         } catch(IllegalArgumentException e) {
-            platform.logger().severe("Invalid rotation " + rotString);
+            LOGGER.warn("Invalid rotation {}", rotString);
             return null;
         }
         

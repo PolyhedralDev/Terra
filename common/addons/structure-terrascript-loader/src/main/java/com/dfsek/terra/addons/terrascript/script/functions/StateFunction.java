@@ -47,7 +47,7 @@ public class StateFunction implements Function<Void> {
                                  z.apply(implementationArguments, variableMap).doubleValue());
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
-        arguments.getBuffer().addItem(new BufferedStateManipulator(platform, data.apply(implementationArguments, variableMap)),
+        arguments.getBuffer().addItem(new BufferedStateManipulator(data.apply(implementationArguments, variableMap)),
                                       new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
                                                   FastMath.roundToInt(xz.getZ())));
         return null;

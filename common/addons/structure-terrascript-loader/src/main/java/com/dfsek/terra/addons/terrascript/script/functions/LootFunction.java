@@ -26,6 +26,9 @@ import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class LootFunction implements Function<Void> {
     private final Registry<LootTable> registry;
@@ -34,6 +37,8 @@ public class LootFunction implements Function<Void> {
     private final Position position;
     private final Platform platform;
     private final StructureScript script;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(LootFunction.class);
     
     public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z,
                         Returnable<String> data, Platform platform, Position position, StructureScript script) {
@@ -59,7 +64,7 @@ public class LootFunction implements Function<Void> {
         LootTable table = registry.get(id);
         
         if(table == null) {
-            platform.logger().severe("No such loot table " + id);
+            LOGGER.error("No such loot table {}", id);
             return null;
         }
         

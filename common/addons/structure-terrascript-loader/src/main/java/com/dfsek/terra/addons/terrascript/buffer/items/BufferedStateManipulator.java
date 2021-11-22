@@ -13,13 +13,16 @@ import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class BufferedStateManipulator implements BufferedItem {
-    private final Platform platform;
     private final String data;
     
-    public BufferedStateManipulator(Platform platform, String state) {
-        this.platform = platform;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BufferedStateManipulator.class);
+    
+    public BufferedStateManipulator(String state) {
         this.data = state;
     }
     
@@ -30,7 +33,7 @@ public class BufferedStateManipulator implements BufferedItem {
             state.applyState(data);
             state.update(false);
         } catch(Exception e) {
-            platform.logger().warning("Could not apply BlockState at " + origin + ": " + e.getMessage());
+            LOGGER.warn("Could not apply BlockState at {}", origin, e);
             e.printStackTrace();
         }
     }
