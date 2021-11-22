@@ -43,10 +43,6 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     @Default
     private boolean debugCommands = false;
     
-    @Value("debug.log")
-    @Default
-    private boolean debugLog = false; // TODO: 2021-08-30 remove me
-    
     @Value("debug.profiler")
     @Default
     private boolean debugProfiler = false;
@@ -126,11 +122,6 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     @Override
     public boolean isDebugCommands() {
         return debugCommands;
-    }
-    
-    @Override
-    public boolean isDebugLogging() {
-        return debugLog;
     }
     
     @Override
