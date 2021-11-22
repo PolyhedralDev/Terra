@@ -7,18 +7,20 @@
 
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
+
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.inventory.ItemStack;
-import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 public class EnchantFunction implements LootFunction {
@@ -26,6 +28,8 @@ public class EnchantFunction implements LootFunction {
     private final int max;
     private final JSONArray disabled;
     private final Platform platform;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnchantFunction.class);
     
     
     public EnchantFunction(int min, int max, JSONArray disabled, Platform platform) {
@@ -67,9 +71,10 @@ public class EnchantFunction implements LootFunction {
             try {
                 meta.addEnchantment(chosen, FastMath.max(lvl, 1));
             } catch(IllegalArgumentException e) {
-                platform.logger().warning(
-                        "Attempted to enchant " + original.getType() + " with " + chosen + " at level " + FastMath.max(lvl, 1) +
-                        ", but an unexpected exception occurred! Usually this is caused by a misbehaving enchantment plugin.");
+                LOGGER.warn(
+                        "Attempted to enchant {} with {} at level {}, but an unexpected exception occurred! Usually this is caused by a " +
+                        "misbehaving enchantment plugin.",
+                        original.getType(), chosen, FastMath.max(lvl, 1));
             }
         }
         original.setItemMeta(meta);
