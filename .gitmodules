@@ -1,6 +1,3 @@
-[submodule "common/addons/config-flora"]
-	path = common/addons/config-flora
-	url = https://github.com/PolyhedralDev/Terra-config-flora
 [submodule "common/addons/config-locators"]
 	path = common/addons/config-locators
 	url = https://github.com/PolyhedralDev/Terra-config-locators
