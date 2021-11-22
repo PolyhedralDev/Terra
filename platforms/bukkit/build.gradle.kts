@@ -17,7 +17,12 @@ val purpurURL = "https://ci.pl3x.net/job/Purpur/lastSuccessfulBuild/artifact/fin
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    shadedImplementation("org.slf4j:slf4j-log4j12:1.7.32")
+    shadedApi("org.slf4j:slf4j-api:1.8.0-beta4") {
+        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+    }
+    shadedImplementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.14.1") {
+        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+    }
     
     compileOnly("io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT")
     shadedImplementation("io.papermc:paperlib:1.0.5")
