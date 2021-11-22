@@ -1,6 +1,3 @@
-[submodule "common/addons/config-feature"]
-	path = common/addons/config-feature
-	url = https://github.com/PolyhedralDev/Terra-config-feature
 [submodule "common/addons/config-flora"]
 	path = common/addons/config-flora
 	url = https://github.com/PolyhedralDev/Terra-config-flora
