@@ -93,10 +93,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
                     
-                    if(paletteInfo == null) {
-                        platform.logger().info("null palette: " + biome.getID());
-                    }
-                    
                     GenerationSettings generationSettings = biome.getGenerator();
                     
                     int sea = paletteInfo.getSeaLevel();
