@@ -1,0 +1,11 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: generation-stage-structure
+version: 0.1.0
+entrypoints: []
+website:
+  issues: https://github.com/PolyhedralDev/Terra-generation-stage-structure/issues
+  source: https://github.com/PolyhedralDev/Terra-generation-stage-structure
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
