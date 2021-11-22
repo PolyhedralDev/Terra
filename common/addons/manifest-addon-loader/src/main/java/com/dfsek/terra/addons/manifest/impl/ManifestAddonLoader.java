@@ -36,16 +36,18 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
-    @Inject
-    private Platform platform;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManifestAddonLoader.class);
     
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     
     @Override
     public Iterable<ManifestAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
-        platform.logger().info("Loading addons...");
+        LOGGER.info("Loading addons...");
         
         ConfigLoader manifestLoader = new ConfigLoader();
         manifestLoader.registerLoader(Version.class, new VersionLoader())
@@ -57,7 +59,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                  .filter(path -> path.toFile().isFile() && path.toString().endsWith(".jar"))
                  .map(path -> {
                      try {
-                         platform.getDebugLogger().info("Loading addon from JAR " + path);
+                         LOGGER.debug("Loading addon from JAR {}", path);
                          JarFile jar = new JarFile(path.toFile());
             
                          JarEntry manifestEntry = jar.getJarEntry("terra.addon.yml");
@@ -71,7 +73,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                                                                           new YamlConfiguration(jar.getInputStream(manifestEntry),
                                                                                                 "terra.addon.yml"));
                 
-                             platform.logger().info("Loading addon " + manifest.getID());
+                             LOGGER.info("Loading addon {}", manifest.getID());
                 
                              ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ path.toUri().toURL() },
                                                                                             getClass().getClassLoader());

@@ -20,6 +20,9 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ManifestAddon implements BaseAddon {
     private final AddonManifest manifest;
@@ -28,6 +31,8 @@ public class ManifestAddon implements BaseAddon {
     
     @Inject
     private Platform platform;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManifestAddon.class);
     
     public ManifestAddon(AddonManifest manifest, List<AddonInitializer> initializers) {
         this.manifest = manifest;
@@ -46,9 +51,10 @@ public class ManifestAddon implements BaseAddon {
         Injector<Platform> platformInjector = Injector.get(platform);
         platformInjector.addExplicitTarget(Platform.class);
         
-        platform.logger().info("Initializing addon " + getID());
+        LOGGER.info("Initializing addon " + getID());
         
         initializers.forEach(initializer -> {
+            LOGGER.debug("Invoking entry point {}", initializer.getClass());
             addonInjector.inject(initializer);
             platformInjector.inject(initializer);
             initializer.initialize();
