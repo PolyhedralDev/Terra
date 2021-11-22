@@ -77,7 +77,7 @@ public abstract class AbstractPlatform implements Platform {
     private static final Logger logger = LoggerFactory.getLogger(AbstractPlatform.class);
     
     private static final MutableBoolean LOADED = new MutableBoolean(false);
-    private final EventManager eventManager = new EventManagerImpl(this);
+    private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
@@ -174,12 +174,7 @@ public abstract class AbstractPlatform implements Platform {
         
         addonList.add(internalAddon);
         
-        getPlatformAddon().ifPresent(addonList::add);
-        
-        platformAddon().ifPresent(baseAddon -> {
-            baseAddon.initialize();
-            addonList.add(baseAddon);
-        });
+        platformAddon().ifPresent(addonList::add);
         
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
         
@@ -224,10 +219,6 @@ public abstract class AbstractPlatform implements Platform {
         
         
         logger.info("Finished initialization.");
-    }
-    
-    protected Optional<BaseAddon> getPlatformAddon() {
-        return Optional.empty();
     }
     
     @Override

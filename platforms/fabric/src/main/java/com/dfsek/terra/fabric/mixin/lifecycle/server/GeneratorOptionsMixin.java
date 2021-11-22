@@ -25,7 +25,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GeneratorOptions;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -75,7 +74,6 @@ public abstract class GeneratorOptionsMixin {
             boolean generateStructures = generate_structures == null || Boolean.parseBoolean(generate_structures);
             Registry<DimensionType> dimensionTypes = registryManager.get(Registry.DIMENSION_TYPE_KEY);
             Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-            Registry<ChunkGeneratorSettings> chunkGeneratorSettings = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
             SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(registryManager,
                                                                                                             l, false);
             

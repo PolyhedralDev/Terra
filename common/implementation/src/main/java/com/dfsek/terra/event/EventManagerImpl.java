@@ -29,10 +29,8 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 
 public class EventManagerImpl implements EventManager {
     private final Map<Class<?>, EventHandler> handlers = new HashMap<>();
-    private final Platform platform;
     
-    public EventManagerImpl(Platform platform) {
-        this.platform = platform;
+    public EventManagerImpl() {
         registerHandler(FunctionalEventHandler.class, new FunctionalEventHandlerImpl()); // default handler
     }
     
