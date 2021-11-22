@@ -20,7 +20,6 @@ package com.dfsek.terra.event;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.event.EventHandler;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.Event;

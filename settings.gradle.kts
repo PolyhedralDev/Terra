@@ -1,8 +1,5 @@
 rootProject.name = "Terra"
 
-include("common:implementation")
-
-include("common:loader:addon")
 
 fun includeImmediateChildren(dir: File, type: String) {
     dir.walkTopDown().maxDepth(1).forEach {
@@ -14,6 +11,8 @@ fun includeImmediateChildren(dir: File, type: String) {
 }
 
 includeImmediateChildren(file("common/api"), "API")
+
+includeImmediateChildren(file("common/implementation"), "implementation")
 
 includeImmediateChildren(file("common/addons"), "addon")
 
