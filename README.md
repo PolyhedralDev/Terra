@@ -11,7 +11,7 @@ Terra consists of several parts:
 * A voxel world generation API with emphasis on configuration and extensibility
 * Several platform implementations, the layer between the API and the platform
   it's running on.
-* An addon loader, which allows interfacing with the Terra API in a
+* An addon loader, which allows addons to interface with the Terra API in a
   platform-agnostic setting
 * Several "core addons," which implement the "default" configurations of Terra.
   These addons can be thought of as the config "standard library"
@@ -69,20 +69,17 @@ more about the project!
 ## Licensing
 
 Parts of Terra are licensed under either the MIT License or the GNU General
-Public License, version 3.0
+Public License, version 3.0.
 
-Our API is licensed under the [MIT License](LICENSE), to ensure
-that everyone is able to freely use it however they want.
-
-Our core addons are also licensed under the [MIT License](LICENSE)
-, to ensure that people can freely use code from them to learn and make their
-own addons, without worrying about GPL infection.
-
-Our platform-agnostic implementations and platform implementations are licensed
-under
-the [GNU General Public License, version 3.0](common/implementation/LICENSE).
-This is to ensure that our implementations remain free software, wherever they
-are used.
+* Our API is licensed under the [MIT License](LICENSE), to ensure that everyone
+  is able to freely use it however they want.
+* Our core addons are also licensed under the [MIT License](LICENSE), to ensure
+  that people can freely use code from them to learn and make their own addons,
+  without worrying about GPL infection.
+* Our platform-agnostic implementations and platform implementations are
+  licensed under
+  the [GNU General Public License, version 3.0](common/implementation/LICENSE),
+  to ensure that they remain free software wherever they are used.
 
 If you're not sure which license a particular file is under, check:
 
