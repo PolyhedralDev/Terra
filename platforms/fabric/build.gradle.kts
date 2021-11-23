@@ -25,10 +25,10 @@ dependencies {
     shadedApi(project(":common:implementation:base"))
     
     shadedApi("org.slf4j:slf4j-api:1.7.32") {
-        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, but we want slf4j 1.7.")
     }
-    shadedImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1") {
-        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+    shaded("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1") {
+        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, but we want slf4j 1.7.")
         exclude("org.apache.logging.log4j")
     }
     
