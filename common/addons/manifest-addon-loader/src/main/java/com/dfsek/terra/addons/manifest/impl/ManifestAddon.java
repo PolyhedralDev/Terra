@@ -7,11 +7,13 @@
 
 package com.dfsek.terra.addons.manifest.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
@@ -19,9 +21,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.annotations.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class ManifestAddon implements BaseAddon {
@@ -32,7 +31,7 @@ public class ManifestAddon implements BaseAddon {
     @Inject
     private Platform platform;
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManifestAddon.class);
+    private static final Logger logger = LoggerFactory.getLogger(ManifestAddon.class);
     
     public ManifestAddon(AddonManifest manifest, List<AddonInitializer> initializers) {
         this.manifest = manifest;
@@ -47,14 +46,14 @@ public class ManifestAddon implements BaseAddon {
     public void initialize() {
         Injector<BaseAddon> addonInjector = Injector.get(this);
         addonInjector.addExplicitTarget(BaseAddon.class);
-        
+    
         Injector<Platform> platformInjector = Injector.get(platform);
         platformInjector.addExplicitTarget(Platform.class);
-        
-        LOGGER.info("Initializing addon " + getID());
-        
+    
+        logger.info("Initializing addon {}", getID());
+    
         initializers.forEach(initializer -> {
-            LOGGER.debug("Invoking entry point {}", initializer.getClass());
+            logger.debug("Invoking entry point {}", initializer.getClass());
             addonInjector.inject(initializer);
             platformInjector.inject(initializer);
             initializer.initialize();

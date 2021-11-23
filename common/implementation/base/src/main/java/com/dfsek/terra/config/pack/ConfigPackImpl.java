@@ -201,7 +201,7 @@ public class ConfigPackImpl implements ConfigPack {
                 
                 
                 selfLoader.load(template, configuration);
-                logger.info("Loading config pack \"" + template.getID() + "\"");
+                logger.info("Loading config pack \"{}\"", template.getID());
                 
                 load(l, platform);
                 

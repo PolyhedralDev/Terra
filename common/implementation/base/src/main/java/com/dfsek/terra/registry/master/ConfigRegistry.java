@@ -56,7 +56,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         }
         for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra"))) {
             try {
-                logger.info("Loading ZIP archive: " + zip.getName());
+                logger.info("Loading ZIP archive: {}", zip.getName());
                 load(new ZipFile(zip), platform);
             } catch(IOException | ConfigException e) {
                 logger.error("Error loading config pack {}", zip.getName(), e);
