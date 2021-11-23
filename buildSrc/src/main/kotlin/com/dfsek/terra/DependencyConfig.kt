@@ -24,6 +24,7 @@ fun Project.configureDependencies() {
         api.extendsFrom(this)
     }
     val shadedImplementation by configurations.creating {
+        shaded.extendsFrom(this)
         implementation.extendsFrom(this)
     }
     
