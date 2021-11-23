@@ -16,8 +16,8 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("org.yaml", "com.dfsek.terra.lib.yaml")
 }
 
-val minecraft = "1.18-pre5"
-val yarn = "4"
+val minecraft = "1.18-pre6"
+val yarn = "3"
 val fabricLoader = "0.12.5"
 
 
