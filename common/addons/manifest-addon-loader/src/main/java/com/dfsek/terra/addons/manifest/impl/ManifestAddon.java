@@ -24,18 +24,19 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 
 
 public class ManifestAddon implements BaseAddon {
+    private static final Logger logger = LoggerFactory.getLogger(ManifestAddon.class);
     private final AddonManifest manifest;
-    
     private final List<AddonInitializer> initializers;
-    
     @Inject
     private Platform platform;
-    
-    private static final Logger logger = LoggerFactory.getLogger(ManifestAddon.class);
     
     public ManifestAddon(AddonManifest manifest, List<AddonInitializer> initializers) {
         this.manifest = manifest;
         this.initializers = initializers;
+    }
+    
+    public AddonManifest getManifest() {
+        return manifest;
     }
     
     @Override
@@ -46,22 +47,18 @@ public class ManifestAddon implements BaseAddon {
     public void initialize() {
         Injector<BaseAddon> addonInjector = Injector.get(this);
         addonInjector.addExplicitTarget(BaseAddon.class);
-    
+        
         Injector<Platform> platformInjector = Injector.get(platform);
         platformInjector.addExplicitTarget(Platform.class);
-    
-        logger.info("Initializing addon {}", getID());
-    
+        
+        logger.debug("Initializing addon {}", getID());
+        
         initializers.forEach(initializer -> {
             logger.debug("Invoking entry point {}", initializer.getClass());
             addonInjector.inject(initializer);
             platformInjector.inject(initializer);
             initializer.initialize();
         });
-    }
-    
-    public AddonManifest getManifest() {
-        return manifest;
     }
     
     @Override
