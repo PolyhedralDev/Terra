@@ -20,18 +20,21 @@ val minecraft = "1.18-pre7"
 val yarn = "3"
 val fabricLoader = "0.12.5"
 
-
+// Do not shade because minecraft already includes it
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    shadedApi("org.slf4j:slf4j-api:1.8.0-beta4") {
+    shadedApi("org.slf4j:slf4j-api:1.7.32") {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
     }
-    shadedImplementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.14.1") {
+    shadedImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1") {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+        exclude("org.apache.logging.log4j")
     }
     
-    minecraft("com.mojang:minecraft:$minecraft")
+    minecraft("com.mojang:minecraft:$minecraft") {
+        exclude("org.slf4j")
+    }
     mappings("net.fabricmc:yarn:$minecraft+build.$yarn:v2")
     modImplementation("net.fabricmc:fabric-loader:$fabricLoader")
 }
