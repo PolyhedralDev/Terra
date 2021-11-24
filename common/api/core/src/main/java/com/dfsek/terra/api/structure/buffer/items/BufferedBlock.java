@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.structure.buffer.items;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
-
+@Experimental
 public class BufferedBlock implements BufferedItem {
     private static final Logger logger = LoggerFactory.getLogger(BufferedBlock.class);
     

@@ -13,7 +13,10 @@ import java.util.Random;
 import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.api.inventory.ItemStack;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
+
+@Experimental
 public interface LootTable {
     /**
      * Fills an Inventory with loot.

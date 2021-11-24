@@ -14,7 +14,10 @@ import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
+
+@Experimental
 public class Cell implements BufferedItem {
     private final List<BufferedItem> items = new ArrayList<>();
     private String mark;

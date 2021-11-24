@@ -9,7 +9,10 @@ package com.dfsek.terra.api.structure;
 
 import com.dfsek.terra.api.util.vector.Vector3;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
+
+@Experimental
 public interface StructureSpawn {
     /**
      * Get nearest spawn point

@@ -16,10 +16,13 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
+
 
 /**
  * Buffer implementation that directly pastes to the world.
  */
+@Experimental
 public class DirectBuffer implements Buffer {
     private final Vector3 origin;
     private final World target;

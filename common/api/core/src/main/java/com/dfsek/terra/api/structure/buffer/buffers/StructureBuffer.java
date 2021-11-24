@@ -19,7 +19,10 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
+
+@Experimental
 public class StructureBuffer implements Buffer {
     private final Map<Vector3, Cell> bufferedItemMap = new LinkedHashMap<>();
     private final Vector3 origin;
