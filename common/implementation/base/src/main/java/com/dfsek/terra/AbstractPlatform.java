@@ -180,17 +180,35 @@ public abstract class AbstractPlatform implements Platform {
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
         
         Path addonsFolder = getDataFolder().toPath().resolve("addons");
-        
+    
         Injector<Platform> platformInjector = new InjectorImpl<>(this);
         platformInjector.addExplicitTarget(Platform.class);
-        
+    
         bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
-                            .forEach(bootstrap -> {
-                                platformInjector.inject(bootstrap);
-                                bootstrap.loadAddons(addonsFolder, getClass().getClassLoader())
-                                         .forEach(addonList::add);
-                            });
+                            .forEach(bootstrapAddon -> {
+                                platformInjector.inject(bootstrapAddon);
         
+                                bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
+                                              .forEach(addonList::add);
+                            });
+    
+        if(logger.isInfoEnabled()) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Loading ")
+                   .append(addonList.size())
+                   .append(" Terra addons:");
+        
+            for(BaseAddon addon : addonList) {
+                builder.append("\n        ")
+                       .append("- ")
+                       .append(addon.getID())
+                       .append("@")
+                       .append(addon.getVersion().getFormatted());
+            }
+        
+            logger.info(builder.toString());
+        }
+    
         DependencySorter sorter = new DependencySorter();
         addonList.forEach(sorter::add);
         sorter.sort().forEach(addon -> {
@@ -198,20 +216,19 @@ public abstract class AbstractPlatform implements Platform {
             addon.initialize();
             addonRegistry.register(addon.getID(), addon);
         });
-        
-        eventManager
-                .getHandler(FunctionalEventHandler.class)
-                .register(internalAddon, PlatformInitializationEvent.class)
-                .then(event -> {
-                    logger.info("Loading config packs...");
-                    getRawConfigRegistry().loadAll(this);
-                    logger.info("Loaded packs.");
-                })
-                .global();
-        
-        
-        logger.info("Loaded addons.");
-        
+    
+        eventManager.getHandler(FunctionalEventHandler.class)
+                    .register(internalAddon, PlatformInitializationEvent.class)
+                    .then(event -> {
+                        logger.info("Loading config packs...");
+                        configRegistry.loadAll(this);
+                        logger.info("Loaded packs.");
+                    })
+                    .global();
+    
+    
+        logger.info("Terra addons successfully loaded.");
+    
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {
