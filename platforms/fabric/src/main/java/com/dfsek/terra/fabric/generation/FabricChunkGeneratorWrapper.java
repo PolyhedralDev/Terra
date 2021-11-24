@@ -47,7 +47,6 @@ import net.minecraft.world.gen.feature.OceanMonumentFeature;
 import net.minecraft.world.gen.feature.PillagerOutpostFeature;
 import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.SwampHutFeature;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,34 +123,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
         return (x, y, z) -> new MultiNoiseUtil.NoiseValuePoint(0, 0, 0, 0, 0, 0);
-    }
-    
-    
-    @Nullable
-    @Override
-    public BlockPos locateStructure(ServerWorld world, StructureFeature<?> feature, BlockPos center, int radius,
-                                    boolean skipExistingChunks) {
-        /*
-        if(!pack.disableStructures()) {
-            String name = Objects.requireNonNull(Registry.STRUCTURE_FEATURE.getId(feature)).toString();
-            TerraWorld terraWorld = TerraFabricPlugin.getInstance().getWorld((World) world);
-            ConfiguredStructure located = pack.getRegistry(TerraStructure.class).get(pack.getLocatable().get(name));
-            if(located != null) {
-                CompletableFuture<BlockPos> result = new CompletableFuture<>();
-                AsyncStructureFinder finder = new AsyncStructureFinder(terraWorld.getBiomeProvider(), located, FabricAdapter.adapt
-                (center), terraWorld.getWorld(), 0, 500, location -> {
-                    result.complete(FabricAdapter.adapt(location));
-                }, TerraFabricPlugin.getInstance());
-                finder.run(); // Do this synchronously.
-                try {
-                    return result.get();
-                } catch(InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-         */
-        return super.locateStructure(world, feature, center, radius, skipExistingChunks);
     }
     
     @Override
