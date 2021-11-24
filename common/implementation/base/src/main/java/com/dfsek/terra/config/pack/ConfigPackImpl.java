@@ -385,7 +385,7 @@ public class ConfigPackImpl implements ConfigPack {
     private void checkDeadEntries() {
         registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft())
                 .getDeadEntries()
-                .forEach((id, value) -> logger.warn("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
+                .forEach((id, value) -> logger.debug("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
