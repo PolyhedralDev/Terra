@@ -47,11 +47,6 @@ public abstract class ItemStackMetaMixin {
     @Shadow
     public abstract void addEnchantment(net.minecraft.enchantment.Enchantment enchantment, int level);
     
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
     public void terra$addEnchantment(Enchantment enchantment, int level) {
         addEnchantment((net.minecraft.enchantment.Enchantment) enchantment, level);
     }
