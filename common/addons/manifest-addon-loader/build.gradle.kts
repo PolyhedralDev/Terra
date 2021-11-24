@@ -5,7 +5,7 @@ dependencies {
 
 tasks.withType<Jar> {
     manifest {
-        attributes("Bootstrap-Addon-Entry-Point" to "com.dfsek.terra.addons.manifest.impl.ManifestAddonLoader")
+        attributes("Terra-Bootstrap-Addon-Entry-Point" to "com.dfsek.terra.addons.manifest.impl.ManifestAddonLoader")
     }
 }
 

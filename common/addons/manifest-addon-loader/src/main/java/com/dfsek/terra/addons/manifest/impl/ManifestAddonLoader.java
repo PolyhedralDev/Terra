@@ -67,6 +67,10 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                 
                 logger.debug("Loading addon {}@{}", manifest.getID(), manifest.getVersion());
                 
+                if(manifest.getSchemaVersion() != 1) {
+                    throw new AddonException("Addon " + manifest.getID() + " has unknown schema version: " + manifest.getSchemaVersion());
+                }
+                
                 @SuppressWarnings({ "IOResourceOpenedButNotSafelyClosed", "resource" })
                 ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ addonPath.toUri().toURL() },
                                                                                getClass().getClassLoader());

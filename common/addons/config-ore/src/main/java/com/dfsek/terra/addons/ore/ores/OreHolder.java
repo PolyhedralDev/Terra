@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 /**
@@ -20,8 +20,8 @@ import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
 public class OreHolder {
     private final List<Entry> entries = new ArrayList<>();
     
-    public void forEach(BiConsumer<String, ImmutablePair<Ore, OreConfig>> consumer) {
-        entries.forEach(entry -> consumer.accept(entry.getId(), ImmutablePair.of(entry.getOre(), entry.getConfig())));
+    public void forEach(BiConsumer<String, Pair<Ore, OreConfig>> consumer) {
+        entries.forEach(entry -> consumer.accept(entry.getId(), Pair.of(entry.getOre(), entry.getConfig())));
     }
     
     public OreHolder add(Ore ore, OreConfig config, String id) {
