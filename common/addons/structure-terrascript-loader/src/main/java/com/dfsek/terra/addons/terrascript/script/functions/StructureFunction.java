@@ -22,7 +22,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;

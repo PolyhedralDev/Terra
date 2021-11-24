@@ -16,10 +16,9 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.items.BufferedBlock;
-import com.dfsek.terra.api.structure.rotation.Rotation;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.integer.Vector2Int;
 import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 
@@ -44,9 +43,9 @@ public class SpongeStructure implements Structure {
         int bZ = location.getBlockZ();
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
-                Vector2 r = RotationUtil.rotateVector(new Vector2(x, z), rotation);
-                int rX = r.getBlockX();
-                int rZ = r.getBlockZ();
+                Vector2Int r = Vector2Int.of(x, z).rotate(rotation);
+                int rX = r.getX();
+                int rZ = r.getZ();
                 if(FastMath.floorDiv(bX + rX, 16) != chunk.getX() || FastMath.floorDiv(bZ + rZ, 16) != chunk.getZ()) {
                     continue;
                 }
@@ -64,9 +63,9 @@ public class SpongeStructure implements Structure {
     public boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions) {
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
-                Vector2 r = RotationUtil.rotateVector(new Vector2(x, z), rotation);
-                int rX = r.getBlockX();
-                int rZ = r.getBlockZ();
+                Vector2Int r = Vector2Int.of(x, z).rotate(rotation);
+                int rX = r.getX();
+                int rZ = r.getZ();
                 for(int y = 0; y < blocks[z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
@@ -84,9 +83,9 @@ public class SpongeStructure implements Structure {
         int bZ = location.getBlockZ();
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
-                Vector2 r = RotationUtil.rotateVector(new Vector2(x, z), rotation);
-                int rX = r.getBlockX();
-                int rZ = r.getBlockZ();
+                Vector2Int r = Vector2Int.of(x, z).rotate(rotation);
+                int rX = r.getX();
+                int rZ = r.getZ();
                 for(int y = 0; y < blocks[z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;

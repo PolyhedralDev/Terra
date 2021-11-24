@@ -28,7 +28,7 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.util.Rotation;
 
 
 @PlayerCommand

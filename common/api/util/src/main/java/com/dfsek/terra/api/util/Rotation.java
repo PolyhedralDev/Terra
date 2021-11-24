@@ -5,7 +5,7 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.structure.rotation;
+package com.dfsek.terra.api.util;
 
 import net.jafama.FastMath;
 

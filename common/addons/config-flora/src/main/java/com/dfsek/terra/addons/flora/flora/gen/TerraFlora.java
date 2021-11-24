@@ -20,7 +20,7 @@ import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.buffer.Buffer;
-import com.dfsek.terra.api.structure.rotation.Rotation;
+import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.vector.Vector3;
