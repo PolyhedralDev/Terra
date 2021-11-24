@@ -3,7 +3,8 @@ contributors:
   - Terra contributors
 id: generation-stage-structure
 version: 0.1.0
-entrypoints: []
+entrypoints:
+  - "com.dfsek.terra.addons.generation.structure.StructureGenerationAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra-generation-stage-structure/issues
   source: https://github.com/PolyhedralDev/Terra-generation-stage-structure
