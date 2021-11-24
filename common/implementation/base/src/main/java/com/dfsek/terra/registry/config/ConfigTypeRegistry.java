@@ -34,12 +34,9 @@ public class ConfigTypeRegistry extends OpenRegistryImpl<ConfigType<?, ?>> {
     
     private final BiConsumer<String, ConfigType<?, ?>> callback;
     
-    private final Platform platform;
-    
     public ConfigTypeRegistry(Platform platform, BiConsumer<String, ConfigType<?, ?>> callback) {
         super(new LinkedHashMap<>()); // Ordered
         this.callback = callback;
-        this.platform = platform;
     }
     
     @Override

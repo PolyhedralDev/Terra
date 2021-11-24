@@ -137,13 +137,6 @@ public final class FabricAddon implements BaseAddon {
     }
     
     
-    private void injectTree(CheckedRegistry<Tree> registry, String id, ConfiguredFeature<?, ?> tree) {
-        try {
-            registry.register(id, (Tree) tree);
-        } catch(DuplicateEntryException ignore) {
-        }
-    }
-    
     public Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
         return templates;
     }
