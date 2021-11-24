@@ -177,7 +177,7 @@ public abstract class AbstractPlatform implements Platform {
         
         platformAddon().ifPresent(addonList::add);
         
-        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader(this);
+        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
         
         Path addonsFolder = getDataFolder().toPath().resolve("addons");
     
