@@ -61,7 +61,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
 }
 
 
-tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
+tasks.register<TaskModrinthUpload>("publishModrinth") {
     dependsOn("remapShadedJar")
     group = "fabric"
     token = System.getenv("MODRINTH_SECRET")
@@ -69,7 +69,6 @@ tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     versionNumber = "${project.version}-fabric"
     uploadFile = remapped.get().archiveFile.get().asFile
     releaseType = "beta"
-    addGameVersion("1.16.4")
-    addGameVersion("1.16.5")
+    addGameVersion(minecraft)
     addLoader("fabric")
 }
