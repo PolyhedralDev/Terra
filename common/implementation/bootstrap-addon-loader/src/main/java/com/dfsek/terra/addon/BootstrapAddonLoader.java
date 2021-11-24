@@ -45,10 +45,10 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     private BootstrapBaseAddon<?> loadAddon(Path addonPath, ClassLoader parent) {
         logger.debug("Loading bootstrap addon from JAR {}", addonPath);
         try(JarFile jar = new JarFile(addonPath.toFile())) {
-            String entry = jar.getManifest().getMainAttributes().getValue("Bootstrap-Addon-Entry-Point");
+            String entry = jar.getManifest().getMainAttributes().getValue("Terra-Bootstrap-Addon-Entry-Point");
             
             if(entry == null) {
-                throw new AddonLoadException("No Bootstrap-Addon-Entry-Point attribute defined in addon manifest.");
+                throw new AddonLoadException("No Terra-Bootstrap-Addon-Entry-Point attribute defined in addon's MANIFEST.MF.");
             }
             
             //noinspection NestedTryStatement
