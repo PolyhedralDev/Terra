@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.addon.exception.AddonLoadException;
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 
