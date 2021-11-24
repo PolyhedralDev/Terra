@@ -71,7 +71,7 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
-import com.dfsek.terra.api.util.generic.pair.ImmutablePair;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -116,12 +116,12 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final BiomeProvider seededBiomeProvider;
     
-    private final Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
+    private final Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
     
     private final ConfigTypeRegistry configTypeRegistry;
     
     
-    private final TreeMap<Integer, List<ImmutablePair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
+    private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
     public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
         try {
@@ -255,7 +255,7 @@ public class ConfigPackImpl implements ConfigPack {
             if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config ID: " + id);
             contained.add(id);
         }));
-        configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(ImmutablePair.of(id, type));
+        configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(Pair.of(id, type));
     }
     
     @Override
@@ -327,7 +327,7 @@ public class ConfigPackImpl implements ConfigPack {
                 }
             }
             
-            return ImmutablePair.of(registry, new CheckedRegistryImpl<>(registry));
+            return Pair.of(registry, new CheckedRegistryImpl<>(registry));
         }).getRight();
     }
     
@@ -378,7 +378,7 @@ public class ConfigPackImpl implements ConfigPack {
             }
             selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
             abstractConfigLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
-            registryMap.put(configType.getTypeKey().getType(), ImmutablePair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
+            registryMap.put(configType.getTypeKey().getType(), Pair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
         });
     }
     
@@ -453,7 +453,7 @@ public class ConfigPackImpl implements ConfigPack {
                     template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
     }
     
-    protected Map<Type, ImmutablePair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
+    protected Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;
     }
     
@@ -464,18 +464,18 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     @SuppressWarnings("unchecked")
     public <T> CheckedRegistry<T> getRegistry(Type type) {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(type, ImmutablePair.ofNull()).getRight();
+        return (CheckedRegistry<T>) registryMap.getOrDefault(type, Pair.ofNull()).getRight();
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(type, ImmutablePair.ofNull()).getRight();
+        return (CheckedRegistry<T>) registryMap.getOrDefault(type, Pair.ofNull()).getRight();
     }
     
     @SuppressWarnings("unchecked")
     protected <T> OpenRegistry<T> getOpenRegistry(Class<T> clazz) {
-        return (OpenRegistry<T>) registryMap.getOrDefault(clazz, ImmutablePair.ofNull()).getLeft();
+        return (OpenRegistry<T>) registryMap.getOrDefault(clazz, Pair.ofNull()).getLeft();
     }
     
     @Override

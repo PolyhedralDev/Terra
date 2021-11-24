@@ -23,6 +23,8 @@ import com.dfsek.tectonic.exception.ConfigException;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 
+import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -40,7 +42,6 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.world.Tree;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
@@ -54,7 +55,7 @@ public final class FabricAddon implements BaseAddon {
     private final PlatformImpl terraFabricPlugin;
     private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
     
-    private final Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
+    private final Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
     public FabricAddon(PlatformImpl terraFabricPlugin) {
         this.terraFabricPlugin = terraFabricPlugin;
@@ -88,7 +89,7 @@ public final class FabricAddon implements BaseAddon {
                                      }
                                  });
                              }
-                             templates.put(event.getPack(), Pair.of(template, null));
+                             templates.put(event.getPack(), Mutable.of(template, null));
                          })
                          .global();
         
@@ -143,7 +144,7 @@ public final class FabricAddon implements BaseAddon {
         }
     }
     
-    public Map<ConfigPack, Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
+    public Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
         return templates;
     }
     
