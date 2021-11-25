@@ -2,9 +2,9 @@ import com.dfsek.terra.configureCompilation
 import com.dfsek.terra.configureDependencies
 import com.dfsek.terra.configureDistribution
 import com.dfsek.terra.configurePublishing
-import com.dfsek.terra.getGitHash
+import com.dfsek.terra.version
 
-val versionObj = Version("6", "0", "0", true)
+val versionObj = version("6", "0", "0", true)
 
 allprojects {
     version = versionObj
@@ -43,19 +43,5 @@ allprojects {
 afterEvaluate {
     project(":platforms").subprojects.forEach { // Platform projects are where distribution happens
         it.configureDistribution()
-    }
-}
-
-/**
- * Version class that does version stuff.
- */
-@Suppress("MemberVisibilityCanBePrivate")
-class Version(val major: String, val minor: String, val revision: String, val preRelease: Boolean = false) {
-    
-    override fun toString(): String {
-        return if (!preRelease)
-            "$major.$minor.$revision"
-        else //Only use git hash if it's a prerelease.
-            "$major.$minor.$revision-BETA+${getGitHash()}"
     }
 }
