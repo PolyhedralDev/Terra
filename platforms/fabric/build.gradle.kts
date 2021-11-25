@@ -11,11 +11,6 @@ plugins {
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.json", "com.dfsek.terra.lib.json")
-    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
-}
-
 val minecraft = "1.18-pre8"
 val yarn = "4"
 val fabricLoader = "0.12.5"
@@ -63,7 +58,6 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
 tasks.withType<Jar>() {
     finalizedBy(remapped)
 }
-
 
 tasks.register<TaskModrinthUpload>("publishModrinth") {
     dependsOn("remapShadedJar")
