@@ -60,6 +60,10 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     remapAccessWidener.set(true)
 }
 
+tasks.withType<Jar>() {
+    finalizedBy(remapped)
+}
+
 
 tasks.register<TaskModrinthUpload>("publishModrinth") {
     dependsOn("remapShadedJar")
