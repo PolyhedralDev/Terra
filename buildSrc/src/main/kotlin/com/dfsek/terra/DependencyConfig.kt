@@ -19,10 +19,14 @@ fun Project.configureDependencies() {
     val compileOnly by configurations.getting
     
     val shaded by configurations.creating
+    
+    @Suppress("UNUSED_VARIABLE")
     val shadedApi by configurations.creating {
         shaded.extendsFrom(this)
         api.extendsFrom(this)
     }
+    
+    @Suppress("UNUSED_VARIABLE")
     val shadedImplementation by configurations.creating {
         shaded.extendsFrom(this)
         implementation.extendsFrom(this)
@@ -41,7 +45,7 @@ fun Project.configureDependencies() {
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
         testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
         compileOnly("org.jetbrains:annotations:23.0.0")
-    
+        
         compileOnly("com.google.guava:guava:30.0-jre")
         testImplementation("com.google.guava:guava:30.0-jre")
     }
