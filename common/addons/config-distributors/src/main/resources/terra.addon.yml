@@ -2,7 +2,7 @@ schema-version: 1
 contributors:
   - Terra contributors
 id: config-distributors
-version: 0.1.0
+version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.feature.distributor.DistributorAddon"
 website:

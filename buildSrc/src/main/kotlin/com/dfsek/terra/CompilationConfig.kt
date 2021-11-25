@@ -13,6 +13,7 @@ import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.jvm.tasks.ProcessResources
+import org.apache.tools.ant.filters.ReplaceTokens
 
 fun Project.configureCompilation() {
     apply(plugin = "maven-publish")
@@ -34,14 +35,13 @@ fun Project.configureCompilation() {
     
     tasks.withType<ProcessResources> {
         include("**/*.*")
-        filter<org.apache.tools.ant.filters.ReplaceTokens>(
+        filter<ReplaceTokens>(
             "tokens" to mapOf(
-                "VERSION" to project.version.toString(),
-                "DESCRIPTION" to project.properties["terra.description"],
-                "WIKI" to project.properties["terra.wiki"],
-                "SOURCE" to project.properties["terra.source"],
-                "ISSUES" to project.properties["terra.issues"],
-                "LICENSE" to project.properties["terra.license"]
+                "DESCRIPTION" to properties["terra.description"],
+                "WIKI" to properties["terra.wiki"],
+                "SOURCE" to properties["terra.source"],
+                "ISSUES" to properties["terra.issues"],
+                "LICENSE" to properties["terra.license"]
                              )
                                                           )
     }

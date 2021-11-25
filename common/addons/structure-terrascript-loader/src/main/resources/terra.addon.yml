@@ -2,7 +2,7 @@ schema-version: 1
 contributors:
   - Terra contributors
 id: structure-terrascript-loader
-version: 0.1.0
+version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.terrascript.TerraScriptAddon"
 website:

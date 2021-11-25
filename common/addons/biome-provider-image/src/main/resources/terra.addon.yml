@@ -2,7 +2,7 @@ schema-version: 1
 contributors:
   - Terra contributors
 id: biome-provider-image
-version: 0.1.0
+version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.biome.image.ImageBiomeProviderAddon"
 website:

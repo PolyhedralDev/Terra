@@ -1,4 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.dfsek.terra.version
+
+version = version("0.1.0")
+
 
 plugins {
     id("com.github.johnrengelman.shadow")

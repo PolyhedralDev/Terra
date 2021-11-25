@@ -2,22 +2,29 @@ import com.dfsek.terra.configureCompilation
 import com.dfsek.terra.configureDependencies
 import com.dfsek.terra.configureDistribution
 import com.dfsek.terra.configurePublishing
+import com.dfsek.terra.configureVersioning
 import com.dfsek.terra.version
 import com.dfsek.terra.versionProjects
 import com.dfsek.terra.preRelease
+
+
+preRelease(true)
 
 versionProjects(":common:api", version("6.0.0"))
 versionProjects(":common:implementation", version("6.0.0"))
 versionProjects(":platforms", version("6.0.0"))
 
-preRelease(true)
-
 
 allprojects {
     group = "com.dfsek.terra"
     
-    configureDependencies()
+    
+    afterEvaluate {
+        configureVersioning()
+    }
+    
     configureCompilation()
+    configureDependencies()
     configurePublishing()
     
     tasks.withType<JavaCompile>().configureEach {

@@ -2,7 +2,7 @@ schema-version: 1
 contributors:
   - Terra contributors
 id: generation-stage-feature
-version: 0.1.0
+version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.generation.feature.FeatureGenerationAddon"
 website:
