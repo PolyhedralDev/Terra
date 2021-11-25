@@ -2,10 +2,10 @@ import com.dfsek.terra.configureCompilation
 import com.dfsek.terra.configureDependencies
 import com.dfsek.terra.configureDistribution
 import com.dfsek.terra.configurePublishing
-import com.dfsek.terra.configureVersioning
+import com.dfsek.terra.forSubProjects
+import com.dfsek.terra.preRelease
 import com.dfsek.terra.version
 import com.dfsek.terra.versionProjects
-import com.dfsek.terra.preRelease
 
 
 preRelease(true)
@@ -17,11 +17,6 @@ versionProjects(":platforms", version("6.0.0"))
 
 allprojects {
     group = "com.dfsek.terra"
-    
-    
-    afterEvaluate {
-        configureVersioning()
-    }
     
     configureCompilation()
     configureDependencies()
@@ -54,7 +49,13 @@ allprojects {
 }
 
 afterEvaluate {
-    project(":platforms").subprojects.forEach { // Platform projects are where distribution happens
-        it.configureDistribution()
+    forSubProjects(":platforms") {
+        configureDistribution()
+    }
+    forSubProjects(":common:addons") {
+        dependencies {
+            "compileOnly"(project(":common:api"))
+            "testImplementation"(project(":common:api"))
+        }
     }
 }

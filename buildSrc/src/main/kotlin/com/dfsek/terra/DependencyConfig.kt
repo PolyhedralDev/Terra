@@ -49,11 +49,4 @@ fun Project.configureDependencies() {
         compileOnly("com.google.guava:guava:30.0-jre")
         testImplementation("com.google.guava:guava:30.0-jre")
     }
-    
-    if (project(":common:addons").subprojects.contains(this)) { // If this is an addon project, depend on the API.
-        dependencies {
-            compileOnly(project(":common:api"))
-            testImplementation(project(":common:api"))
-        }
-    }
 }

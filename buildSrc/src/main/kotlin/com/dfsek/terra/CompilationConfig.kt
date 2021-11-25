@@ -43,7 +43,18 @@ fun Project.configureCompilation() {
                 "ISSUES" to properties["terra.issues"],
                 "LICENSE" to properties["terra.license"]
                              )
-                                                          )
+                             )
+    }
+    
+    afterEvaluate {
+        tasks.withType<ProcessResources> {
+            include("**/*.*")
+            filter<ReplaceTokens>(
+                "tokens" to mapOf(
+                    "VERSION" to version.toString()
+                                 )
+                                 )
+        }
     }
     
     tasks.withType<Javadoc> {

@@ -21,13 +21,13 @@ fun Project.addonDir(dir: File, task: Task) {
             println("Deleting old addon: " + it.absolutePath)
             it.delete()
         }
-        project(":common:addons").subprojects.forEach { addonProject ->
-            val jar = (addonProject.tasks.named("jar").get() as Jar)
+        forSubProjects(":common:addons") {
+            val jar = (tasks.named("jar").get() as Jar)
             
-            val boot = if (addonProject.project.extra.has("bootstrap") && addonProject.project.extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+            val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
             val target = File(dir, boot + jar.archiveFileName.get())
             
-            val base = "${jar.archiveBaseName.get()}-${project.version}"
+            val base = "${jar.archiveBaseName.get()}-${version}"
             
             println("Copying addon ${jar.archiveFileName.get()} to ${target.absolutePath}. Base name: $base")
             

@@ -34,9 +34,9 @@ fun Project.configureDistribution() {
     
     val installAddons = tasks.create("installAddons") {
         group = "terra"
-        project(":common:addons").subprojects.forEach {
-            it.afterEvaluate {
-                dependsOn(it.tasks.getByName("build")) // Depend on addon JARs
+        forSubProjects(":common:addons") {
+            afterEvaluate {
+                dependsOn(tasks.getByName("build")) // Depend on addon JARs
             }
         }
         
@@ -52,12 +52,12 @@ fun Project.configureDistribution() {
             dest.parentFile.mkdirs()
             
             val zip = ZipOutputStream(FileOutputStream(dest))
-            
-            project(":common:addons").subprojects.forEach { addonProject ->
-                val jar = (addonProject.tasks.named("jar").get() as Jar)
+    
+            forSubProjects(":common:addons") {
+                val jar = (tasks.named("jar").get() as Jar)
                 println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}.")
                 
-                val boot = if(addonProject.project.extra.has("bootstrap") && addonProject.project.extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+                val boot = if(extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
                 
                 val entry = ZipEntry("addons/$boot${jar.archiveFileName.get()}")
                 zip.putNextEntry(entry)
@@ -88,10 +88,10 @@ fun Project.configureDistribution() {
                 resources.computeIfAbsent("lang") { ArrayList() }.add(it.name)
             }
             
-            project(":common:addons").subprojects.forEach { addonProject ->
-                val jar = (addonProject.tasks.named("jar").get() as Jar).archiveFileName.get()
+            forSubProjects(":common:addons") {
+                val jar = (tasks.named("jar").get() as Jar).archiveFileName.get()
                 resources.computeIfAbsent(
-                    if (addonProject.project.extra.has("bootstrap") && addonProject.project.extra.get("bootstrap") as Boolean) "addons/bootstrap"
+                    if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "addons/bootstrap"
                     else "addons"
                                          ) { ArrayList() }.add(jar)
             }
