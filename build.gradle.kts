@@ -5,9 +5,9 @@ import com.dfsek.terra.configurePublishing
 import com.dfsek.terra.version
 import com.dfsek.terra.versionProjects
 
-versionProjects(":common:api", version("0.6.0"))
-versionProjects(":common:implementation", version("0.6.0"))
-versionProjects(":platforms", version("0.6.0"))
+versionProjects(":common:api", version("6.0.0"))
+versionProjects(":common:implementation", version("6.0.0"))
+versionProjects(":platforms", version("6.0.0"))
 
 
 allprojects {
