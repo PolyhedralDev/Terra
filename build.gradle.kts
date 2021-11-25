@@ -4,10 +4,13 @@ import com.dfsek.terra.configureDistribution
 import com.dfsek.terra.configurePublishing
 import com.dfsek.terra.version
 import com.dfsek.terra.versionProjects
+import com.dfsek.terra.preRelease
 
 versionProjects(":common:api", version("6.0.0"))
 versionProjects(":common:implementation", version("6.0.0"))
 versionProjects(":platforms", version("6.0.0"))
+
+preRelease(true)
 
 
 allprojects {
