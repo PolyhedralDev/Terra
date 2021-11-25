@@ -19,11 +19,3 @@ fun Project.gitClone(name: String) {
         standardOutput = stdout
     }
 }
-
-fun Project.version(major: String, minor: String, revision: String, preRelease: Boolean = false): String {
-    return if (!preRelease)
-        "$major.$minor.$revision"
-    else //Only use git hash if it's a prerelease.
-        "$major.$minor.$revision-BETA+${getGitHash()}"
-}
-

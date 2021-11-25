@@ -3,11 +3,14 @@ import com.dfsek.terra.configureDependencies
 import com.dfsek.terra.configureDistribution
 import com.dfsek.terra.configurePublishing
 import com.dfsek.terra.version
+import com.dfsek.terra.versionProjects
 
-val versionObj = version("6", "0", "0", true)
+versionProjects(":common:api", version("0.6.0"))
+versionProjects(":common:implementation", version("0.6.0"))
+versionProjects(":platforms", version("0.6.0"))
+
 
 allprojects {
-    version = versionObj
     group = "com.dfsek.terra"
     
     configureDependencies()
