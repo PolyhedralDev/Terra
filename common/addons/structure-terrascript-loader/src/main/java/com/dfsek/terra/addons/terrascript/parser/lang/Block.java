@@ -33,8 +33,7 @@ public class Block implements Item<Block.ReturnInfo<?>> {
         Map<String, Variable<?>> scope = new HashMap<>(variableMap);
         for(Item<?> item : items) {
             Object result = item.apply(implementationArguments, scope);
-            if(result instanceof ReturnInfo) {
-                ReturnInfo<?> level = (ReturnInfo<?>) result;
+            if(result instanceof ReturnInfo<?> level) {
                 if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
             }
         }

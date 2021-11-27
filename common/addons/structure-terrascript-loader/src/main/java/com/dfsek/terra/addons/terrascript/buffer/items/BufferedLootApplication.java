@@ -40,12 +40,11 @@ public class BufferedLootApplication implements BufferedItem {
     public void paste(Vector3 origin, World world) {
         try {
             BlockEntity data = world.getBlockState(origin);
-            if(!(data instanceof Container)) {
+            if(!(data instanceof Container container)) {
                 LOGGER.error("Failed to place loot at {}; block {} is not a container", origin, data);
                 return;
             }
-            Container container = (Container) data;
-            
+    
             LootPopulateEvent event = new LootPopulateEvent(container, table, world.getConfig().getPack(), structure);
             platform.getEventManager().callEvent(event);
             if(event.isCancelled()) return;

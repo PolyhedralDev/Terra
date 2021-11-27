@@ -62,8 +62,7 @@ public class ChunkCoordinate implements Serializable {
     
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof ChunkCoordinate)) return false;
-        ChunkCoordinate other = (ChunkCoordinate) obj;
+        if(!(obj instanceof ChunkCoordinate other)) return false;
         return other.getX() == x && other.getZ() == z;
     }
 }

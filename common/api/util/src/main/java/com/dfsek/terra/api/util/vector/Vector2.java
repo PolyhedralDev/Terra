@@ -189,8 +189,7 @@ public class Vector2 implements Cloneable {
     }
     
     public boolean equals(Object obj) {
-        if(!(obj instanceof Vector2)) return false;
-        Vector2 other = (Vector2) obj;
+        if(!(obj instanceof Vector2 other)) return false;
         return MathUtil.equals(this.x, other.x) && MathUtil.equals(this.z, other.z);
     }
     

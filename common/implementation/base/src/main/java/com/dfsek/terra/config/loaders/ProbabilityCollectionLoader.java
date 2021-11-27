@@ -35,8 +35,7 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
     public ProbabilityCollection<Object> load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
         ProbabilityCollection<Object> collection = new ProbabilityCollection<>();
         
-        if(type instanceof AnnotatedParameterizedType) {
-            AnnotatedParameterizedType pType = (AnnotatedParameterizedType) type;
+        if(type instanceof AnnotatedParameterizedType pType) {
             AnnotatedType generic = pType.getAnnotatedActualTypeArguments()[0];
             if(o instanceof Map) {
                 Map<Object, Integer> map = (Map<Object, Integer>) o;

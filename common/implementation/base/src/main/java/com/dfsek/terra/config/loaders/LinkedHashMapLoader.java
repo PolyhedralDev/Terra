@@ -33,8 +33,7 @@ public class LinkedHashMapLoader implements TypeLoader<LinkedHashMap<Object, Obj
     public LinkedHashMap<Object, Object> load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> config = (Map<String, Object>) c;
         LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
-        if(t instanceof AnnotatedParameterizedType) {
-            AnnotatedParameterizedType pType = (AnnotatedParameterizedType) t;
+        if(t instanceof AnnotatedParameterizedType pType) {
             AnnotatedType key = pType.getAnnotatedActualTypeArguments()[0];
             AnnotatedType value = pType.getAnnotatedActualTypeArguments()[1];
             for(Map.Entry<String, Object> entry : config.entrySet()) {

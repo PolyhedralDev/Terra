@@ -38,39 +38,31 @@ public class TypeKey<T> {
             return true;
         } else if(a instanceof Class) {
             return a.equals(b);
-        } else if(a instanceof ParameterizedType) {
-            if(!(b instanceof ParameterizedType)) {
+        } else if(a instanceof ParameterizedType pa) {
+            if(!(b instanceof ParameterizedType pb)) {
                 return false;
             }
-            
-            ParameterizedType pa = (ParameterizedType) a;
-            ParameterizedType pb = (ParameterizedType) b;
+    
             return Objects.equals(pa.getOwnerType(), pb.getOwnerType())
                    && pa.getRawType().equals(pb.getRawType())
                    && Arrays.equals(pa.getActualTypeArguments(), pb.getActualTypeArguments());
-        } else if(a instanceof GenericArrayType) {
-            if(!(b instanceof GenericArrayType)) {
+        } else if(a instanceof GenericArrayType ga) {
+            if(!(b instanceof GenericArrayType gb)) {
                 return false;
             }
-            
-            GenericArrayType ga = (GenericArrayType) a;
-            GenericArrayType gb = (GenericArrayType) b;
+    
             return equals(ga.getGenericComponentType(), gb.getGenericComponentType());
-        } else if(a instanceof WildcardType) {
-            if(!(b instanceof WildcardType)) {
+        } else if(a instanceof WildcardType wa) {
+            if(!(b instanceof WildcardType wb)) {
                 return false;
             }
-            
-            WildcardType wa = (WildcardType) a;
-            WildcardType wb = (WildcardType) b;
+    
             return Arrays.equals(wa.getUpperBounds(), wb.getUpperBounds())
                    && Arrays.equals(wa.getLowerBounds(), wb.getLowerBounds());
-        } else if(a instanceof TypeVariable) {
-            if(!(b instanceof TypeVariable)) {
+        } else if(a instanceof TypeVariable<?> va) {
+            if(!(b instanceof TypeVariable<?> vb)) {
                 return false;
             }
-            TypeVariable<?> va = (TypeVariable<?>) a;
-            TypeVariable<?> vb = (TypeVariable<?>) b;
             return va.getGenericDeclaration() == vb.getGenericDeclaration()
                    && va.getName().equals(vb.getName());
         } else {

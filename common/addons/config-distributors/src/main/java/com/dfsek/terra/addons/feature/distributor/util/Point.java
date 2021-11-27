@@ -34,8 +34,7 @@ public class Point {
     
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Point)) return false;
-        Point that = (Point) obj;
+        if(!(obj instanceof Point that)) return false;
         return this.x == that.x && this.z == that.z;
     }
 }

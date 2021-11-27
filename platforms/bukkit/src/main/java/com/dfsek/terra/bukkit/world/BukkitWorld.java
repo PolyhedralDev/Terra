@@ -127,8 +127,7 @@ public class BukkitWorld implements World {
     
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof BukkitWorld)) return false;
-        BukkitWorld other = (BukkitWorld) obj;
+        if(!(obj instanceof BukkitWorld other)) return false;
         return other.getHandle().equals(delegate);
     }
     

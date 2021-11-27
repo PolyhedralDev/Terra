@@ -328,8 +328,7 @@ public class Vector3 implements Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Vector3)) return false;
-        Vector3 other = (Vector3) obj;
+        if(!(obj instanceof Vector3 other)) return false;
         return MathUtil.equals(x, other.getX()) && MathUtil.equals(y, other.getY()) && MathUtil.equals(z, other.getZ());
     }
     

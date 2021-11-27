@@ -52,8 +52,7 @@ public final class ReflectionUtil {
     public static Class<?> getRawType(Type type) {
         if(type instanceof Class<?>) {
             return (Class<?>) type;
-        } else if(type instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) type;
+        } else if(type instanceof ParameterizedType parameterizedType) {
             Type rawType = parameterizedType.getRawType();
             return (Class<?>) rawType;
         } else if(type instanceof GenericArrayType) {

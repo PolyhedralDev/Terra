@@ -54,7 +54,8 @@ public abstract class BlockEntityMixin {
     }
     
     public boolean terra$update(boolean applyPhysics) {
-        if(hasWorld()) world.getChunk(pos).setBlockEntity((net.minecraft.block.entity.BlockEntity) (Object) this);
+        if(hasWorld()) //noinspection ConstantConditions
+            world.getChunk(pos).setBlockEntity((net.minecraft.block.entity.BlockEntity) (Object) this);
         return true;
     }
     

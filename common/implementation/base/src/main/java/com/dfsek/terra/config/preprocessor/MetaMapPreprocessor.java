@@ -44,11 +44,9 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
-        if(t.getType() instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) t.getType();
-            if(parameterizedType.getRawType() instanceof Class) { // Should always be true but we check anyways
-                Class<?> baseClass = (Class<?>) parameterizedType.getRawType();
-                
+        if(t.getType() instanceof ParameterizedType parameterizedType) {
+            if(parameterizedType.getRawType() instanceof Class<?> baseClass) { // Should always be true but we check anyways
+    
                 if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // Map metaconfig
                     Map<Object, Object> map = (Map<Object, Object>) c;
                     
