@@ -22,6 +22,8 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.addon.InternalAddon;
 
+import com.dfsek.terra.api.util.StringIdentifiable;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -38,6 +40,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -195,7 +198,7 @@ public abstract class AbstractPlatform implements Platform {
                                 bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
                                               .forEach(addonList::add);
                             });
-    
+        addonList.sort(Comparator.comparing(StringIdentifiable::getID));
         if(logger.isInfoEnabled()) {
             StringBuilder builder = new StringBuilder();
             builder.append("Loading ")
