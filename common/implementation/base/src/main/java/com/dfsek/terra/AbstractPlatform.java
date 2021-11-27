@@ -18,6 +18,10 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.loading.TypeRegistry;
+
+import com.dfsek.terra.addon.EphemeralAddon;
+import com.dfsek.terra.addon.InternalAddon;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -33,9 +37,9 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.dfsek.terra.addon.BootstrapAddonLoader;
 import com.dfsek.terra.addon.DependencySorter;
@@ -102,8 +106,8 @@ public abstract class AbstractPlatform implements Platform {
         return manager;
     }
     
-    protected Optional<BaseAddon> platformAddon() {
-        return Optional.empty();
+    protected Iterable<BaseAddon> platformAddon() {
+        return Collections.emptySet();
     }
     
     protected void load() {
@@ -175,7 +179,7 @@ public abstract class AbstractPlatform implements Platform {
         
         addonList.add(internalAddon);
         
-        platformAddon().ifPresent(addonList::add);
+        platformAddon().forEach(addonList::add);
         
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
         
@@ -214,7 +218,9 @@ public abstract class AbstractPlatform implements Platform {
         sorter.sort().forEach(addon -> {
             platformInjector.inject(addon);
             addon.initialize();
-            addonRegistry.register(addon.getID(), addon);
+            if(!(addon instanceof EphemeralAddon)) { // ephemeral addons exist only for version checking
+                addonRegistry.register(addon.getID(), addon);
+            }
         });
     
         eventManager.getHandler(FunctionalEventHandler.class)

@@ -17,15 +17,26 @@
 
 package com.dfsek.terra.fabric;
 
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.parser.tokenizer.ParseException;
+import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
+
+import com.dfsek.terra.addon.EphemeralAddon;
+
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.MinecraftVersion;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -40,9 +51,12 @@ import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.util.ProtoBiome;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class PlatformImpl extends AbstractPlatform {
-    
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlatformImpl.class);
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
@@ -72,8 +86,33 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    protected Optional<BaseAddon> platformAddon() {
-        return Optional.of(new FabricAddon(this));
+    protected Iterable<BaseAddon> platformAddon() {
+        List<BaseAddon> addons = new ArrayList<>();
+        
+        addons.add(new FabricAddon(this));
+        
+        String mcVersion = MinecraftVersion.CURRENT.getReleaseTarget();
+        try {
+            addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
+        } catch(ParseException e) {
+            try {
+                addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion + ".0"), "minecraft"));
+            } catch(ParseException ex) {
+                LOGGER.warn("Failed to parse Minecraft version", e);
+            }
+        }
+        
+        FabricLoader.getInstance().getAllMods().forEach(mod -> {
+            if(mod.getMetadata().getId().equals("terra")) return;
+            try {
+                Version version = Versions.parseVersion(mod.getMetadata().getVersion().getFriendlyString());
+                addons.add(new EphemeralAddon(version, "fabric:" + mod.getMetadata().getId()));
+            } catch(ParseException e) {
+                LOGGER.warn("Mod {}, version {} does not follow semantic versioning specification.", mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString());
+            }
+        });
+        
+        return addons;
     }
     
     @Override

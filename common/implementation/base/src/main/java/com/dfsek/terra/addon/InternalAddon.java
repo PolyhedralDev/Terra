@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra;
+package com.dfsek.terra.addon;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
