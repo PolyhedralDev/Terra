@@ -9,7 +9,6 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 
 
@@ -350,7 +349,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.getNoiseSeeded(sl, centerX, centerY);
+            case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
@@ -510,7 +509,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.getNoiseSeeded(sl, center.getX(), center.getY(), center.getZ());
+            case NoiseLookup -> noiseLookup.noise(sl, center.getX(), center.getY(), center.getZ());
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;

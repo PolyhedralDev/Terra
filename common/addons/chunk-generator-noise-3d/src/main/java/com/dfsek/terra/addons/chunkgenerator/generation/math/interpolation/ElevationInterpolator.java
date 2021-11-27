@@ -37,7 +37,7 @@ public class ElevationInterpolator {
                 for(int xi = -smooth; xi <= smooth; xi++) {
                     for(int zi = -smooth; zi <= smooth; zi++) {
                         GenerationSettings gen = gens[x + 1 + smooth + xi][z + 1 + smooth + zi];
-                        noise += gen.getElevationSampler().getNoiseSeeded(seed, xOrigin + x, zOrigin + z) * gen.getElevationWeight();
+                        noise += gen.getElevationSampler().noise(seed, xOrigin + x, zOrigin + z) * gen.getElevationWeight();
                         div += gen.getElevationWeight();
                     }
                 }

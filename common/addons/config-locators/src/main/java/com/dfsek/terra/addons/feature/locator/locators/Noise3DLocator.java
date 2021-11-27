@@ -27,7 +27,7 @@ public class Noise3DLocator implements Locator {
         int x = column.getX();
         int z = column.getZ();
         column.forEach(y -> {
-            if(sampler.getNoiseSeeded(seed, x, y, z) > 0) results.set(y);
+            if(sampler.noise(seed, x, y, z) > 0) results.set(y);
         });
         return results;
     }

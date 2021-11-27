@@ -46,8 +46,8 @@ public class BiomePipelineProvider implements BiomeProvider {
     
     @Override
     public TerraBiome getBiome(int x, int z, long seed) {
-        x += mutator.getNoiseSeeded(seed + 1, x, z) * noiseAmp;
-        z += mutator.getNoiseSeeded(seed + 2, x, z) * noiseAmp;
+        x += mutator.noise(seed + 1, x, z) * noiseAmp;
+        z += mutator.noise(seed + 2, x, z) * noiseAmp;
         
         
         x = FastMath.floorToInt(FastMath.floorDiv(x, resolution));
@@ -82,9 +82,8 @@ public class BiomePipelineProvider implements BiomeProvider {
         
         @Override
         public boolean equals(Object obj) {
-            if(!(obj instanceof SeededVector)) return false;
-            SeededVector that = (SeededVector) obj;
-            
+            if(!(obj instanceof SeededVector that)) return false;
+    
             return this.seed == that.seed && this.x == that.x && this.z == that.z;
         }
     }

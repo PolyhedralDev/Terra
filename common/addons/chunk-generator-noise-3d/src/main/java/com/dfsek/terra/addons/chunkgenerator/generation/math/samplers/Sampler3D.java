@@ -22,7 +22,7 @@ public class Sampler3D implements Sampler {
     
     public Sampler3D(int x, int z, BiomeProvider provider, World world, int elevationSmooth) {
         this.interpolator = new ChunkInterpolator3D(world, x, z, provider, (generator, coord) -> generator.getBaseSampler()
-                                                                                                          .getNoiseSeeded(coord,
+                                                                                                          .noise(coord,
                                                                                                                           world.getSeed()));
         this.elevationInterpolator = new ElevationInterpolator(world, x, z, provider, elevationSmooth);
     }

@@ -23,6 +23,6 @@ public class NoiseDistributor implements Distributor {
     
     @Override
     public boolean matches(int x, int z, long seed) {
-        return sampler.getNoiseSeeded(seed, x, z) > threshold;
+        return sampler.noise(seed, x, z) > threshold;
     }
 }

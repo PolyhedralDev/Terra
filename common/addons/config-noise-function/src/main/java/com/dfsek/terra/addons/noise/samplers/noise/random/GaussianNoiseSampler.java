@@ -24,8 +24,8 @@ public class GaussianNoiseSampler extends NoiseFunction {
     public double getNoiseRaw(long seed, double x, double y) {
         double v1, v2, s;
         do {
-            v1 = whiteNoiseSampler.getNoiseSeeded(seed++, x, y);
-            v2 = whiteNoiseSampler.getNoiseSeeded(seed++, x, y);
+            v1 = whiteNoiseSampler.noise(seed++, x, y);
+            v2 = whiteNoiseSampler.noise(seed++, x, y);
             s = v1 * v1 + v2 * v2;
         } while(s >= 1 || s == 0);
         double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
@@ -36,8 +36,8 @@ public class GaussianNoiseSampler extends NoiseFunction {
     public double getNoiseRaw(long seed, double x, double y, double z) {
         double v1, v2, s;
         do {
-            v1 = whiteNoiseSampler.getNoiseSeeded(seed++, x, y, z);
-            v2 = whiteNoiseSampler.getNoiseSeeded(seed++, x, y, z);
+            v1 = whiteNoiseSampler.noise(seed++, x, y, z);
+            v2 = whiteNoiseSampler.noise(seed++, x, y, z);
             s = v1 * v1 + v2 * v2;
         } while(s >= 1 || s == 0);
         double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);

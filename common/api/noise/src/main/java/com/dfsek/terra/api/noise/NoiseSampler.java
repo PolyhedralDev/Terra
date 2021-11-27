@@ -18,35 +18,35 @@ public interface NoiseSampler {
     static NoiseSampler zero() {
         return new NoiseSampler() {
             @Override
-            public double getNoiseSeeded(long seed, double x, double y) {
+            public double noise(long seed, double x, double y) {
                 return 0;
             }
             
             @Override
-            public double getNoiseSeeded(long seed, double x, double y, double z) {
+            public double noise(long seed, double x, double y, double z) {
                 return 0;
             }
         };
     }
     
-    default double getNoiseSeeded(Vector3 vector3, long seed) {
-        return getNoiseSeeded(seed, vector3.getX(), vector3.getY(), vector3.getZ());
+    default double noise(Vector3 vector3, long seed) {
+        return noise(seed, vector3.getX(), vector3.getY(), vector3.getZ());
     }
     
-    default double getNoiseSeeded(Vector3Int vector3, long seed) {
-        return getNoiseSeeded(seed, vector3.getX(), vector3.getY(), vector3.getZ());
+    default double noise(Vector3Int vector3, long seed) {
+        return noise(seed, vector3.getX(), vector3.getY(), vector3.getZ());
     }
     
     
-    default double getNoiseSeeded(Vector2 vector2, long seed) {
-        return getNoiseSeeded(seed, vector2.getX(), vector2.getZ());
+    default double noise(Vector2 vector2, long seed) {
+        return noise(seed, vector2.getX(), vector2.getZ());
     }
     
-    default double getNoiseSeeded(Vector2Int vector2, long seed) {
-        return getNoiseSeeded(seed, vector2.getX(), vector2.getZ());
+    default double noise(Vector2Int vector2, long seed) {
+        return noise(seed, vector2.getX(), vector2.getZ());
     }
     
-    double getNoiseSeeded(long seed, double x, double y);
+    double noise(long seed, double x, double y);
     
-    double getNoiseSeeded(long seed, double x, double y, double z);
+    double noise(long seed, double x, double y, double z);
 }

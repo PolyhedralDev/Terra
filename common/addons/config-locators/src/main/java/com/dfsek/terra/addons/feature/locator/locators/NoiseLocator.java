@@ -30,7 +30,7 @@ public class NoiseLocator implements Locator {
         
         long seed = column.getWorld().getSeed();
         samplers.forEach(sampler -> {
-            int y = FastMath.floorToInt(sampler.getNoiseSeeded(seed, column.getX(), column.getX()));
+            int y = FastMath.floorToInt(sampler.noise(seed, column.getX(), column.getX()));
             if(y >= column.getMaxY() || y < column.getMinY()) return;
             results.set(y);
         });

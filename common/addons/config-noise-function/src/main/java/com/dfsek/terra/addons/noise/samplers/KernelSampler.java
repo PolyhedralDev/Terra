@@ -25,14 +25,14 @@ public class KernelSampler implements NoiseSampler {
     }
     
     @Override
-    public double getNoiseSeeded(long seed, double x, double y) {
+    public double noise(long seed, double x, double y) {
         x *= frequency;
         y *= frequency;
         double accumulator = 0;
         
         for(int kx = 0; kx < kernel.length; kx++) {
             for(int ky = 0; ky < kernel[kx].length; ky++) {
-                accumulator += in.getNoiseSeeded(seed, x + kx, y + ky) * kernel[kx][ky];
+                accumulator += in.noise(seed, x + kx, y + ky) * kernel[kx][ky];
             }
         }
         
@@ -40,7 +40,7 @@ public class KernelSampler implements NoiseSampler {
     }
     
     @Override
-    public double getNoiseSeeded(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z) {
         x *= frequency;
         y *= frequency;
         z *= frequency;
@@ -48,7 +48,7 @@ public class KernelSampler implements NoiseSampler {
         
         for(int kx = 0; kx < kernel.length; kx++) {
             for(int ky = 0; ky < kernel[kx].length; ky++) {
-                accumulator += in.getNoiseSeeded(seed, x + kx, y, z + ky) * kernel[kx][ky];
+                accumulator += in.noise(seed, x + kx, y, z + ky) * kernel[kx][ky];
             }
         }
         

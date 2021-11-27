@@ -28,7 +28,7 @@ public class NoiseFunction2 implements DynamicFunction {
     
     @Override
     public double eval(Context context, double... args) {
-        return gen.getNoiseSeeded(((SeedContext) context).getSeed(), args[0], args[1]);
+        return gen.noise(((SeedContext) context).getSeed(), args[0], args[1]);
     }
     
     @Override

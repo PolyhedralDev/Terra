@@ -21,7 +21,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         double amp = fractalBounding;
         
         for(int i = 0; i < octaves; i++) {
-            double noise = input.getNoiseSeeded(seed++, x, y);
+            double noise = input.noise(seed++, x, y);
             sum += noise * amp;
             amp *= lerp(1.0, fastMin(noise + 1, 2) * 0.5, weightedStrength);
             
@@ -39,7 +39,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         double amp = fractalBounding;
         
         for(int i = 0; i < octaves; i++) {
-            double noise = input.getNoiseSeeded(seed++, x, y, z);
+            double noise = input.noise(seed++, x, y, z);
             sum += noise * amp;
             amp *= lerp(1.0, (noise + 1) * 0.5, weightedStrength);
             

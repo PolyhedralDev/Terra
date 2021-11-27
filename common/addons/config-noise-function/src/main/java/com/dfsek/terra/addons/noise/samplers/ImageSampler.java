@@ -27,15 +27,15 @@ public class ImageSampler implements NoiseSampler {
     }
     
     @Override
-    public double getNoiseSeeded(long seed, double x, double y) {
+    public double noise(long seed, double x, double y) {
         return ((channel.getChannel(image.getRGB(FastMath.floorMod(FastMath.floorToInt(x * frequency), image.getWidth()),
                                                  FastMath.floorMod(FastMath.floorToInt(y * frequency), image.getHeight()))) / 255D) - 0.5) *
                2;
     }
     
     @Override
-    public double getNoiseSeeded(long seed, double x, double y, double z) {
-        return getNoiseSeeded(seed, x, y);
+    public double noise(long seed, double x, double y, double z) {
+        return noise(seed, x, y);
     }
     
     public enum Channel {
