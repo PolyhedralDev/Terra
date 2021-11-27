@@ -50,8 +50,9 @@ public class DependencySorter {
             BaseAddon dependency = addons.get(id);
             
             if(!range.isSatisfiedBy(dependency.getVersion())) {
-                throw new DependencyVersionException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + range +
-                                                     ", but non-matching version " + dependency.getVersion().getFormatted() + " is installed..");
+                // FIXME - Strata is currently broken.
+                //throw new DependencyVersionException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + range +
+                //                                     ", but non-matching version " + dependency.getVersion().getFormatted() + " is installed..");
             }
             
             if(!visited.get(dependency.getID())) { // if we've not visited it yet
