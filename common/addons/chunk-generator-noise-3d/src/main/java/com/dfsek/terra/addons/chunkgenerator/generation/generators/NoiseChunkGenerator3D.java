@@ -19,13 +19,9 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.state.properties.base.Properties;
-import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.math.Sampler;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
@@ -48,25 +44,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
-    }
-    
-    @SuppressWarnings("try")
-    static void biomes(@NotNull World world, int chunkX, int chunkZ, @NotNull BiomeGrid biome, Platform platform) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("biomes")) {
-            int xOrig = (chunkX << 4);
-            int zOrig = (chunkZ << 4);
-            long seed = world.getSeed();
-            BiomeProvider grid = world.getBiomeProvider();
-            for(int x = 0; x < 4; x++) {
-                for(int z = 0; z < 4; z++) {
-                    int cx = xOrig + (x << 2);
-                    int cz = zOrig + (z << 2);
-                    TerraBiome b = grid.getBiome(cx, cz, seed);
-                    
-                    biome.setBiome(cx, cz, b.getVanillaBiomes().get(b.getGenerator().getBiomeNoise(), cx, 0, cz, world.getSeed()));
-                }
-            }
-        }
     }
     
     @Override
@@ -117,11 +94,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
             }
             return chunk;
         }
-    }
-    
-    @Override
-    public void generateBiomes(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biome) {
-        biomes(world, chunkX, chunkZ, biome, platform);
     }
     
     @Override

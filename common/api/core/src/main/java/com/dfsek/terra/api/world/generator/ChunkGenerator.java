@@ -17,16 +17,12 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.BiomeGrid;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public interface ChunkGenerator {
     ChunkData generateChunkData(@NotNull World world, Random random, int x, int z, ChunkData original);
-    
-    void generateBiomes(@NotNull World world, @NotNull Random random, int x, int z, @NotNull BiomeGrid biome);
-    
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
     
     ConfigPack getConfigPack();

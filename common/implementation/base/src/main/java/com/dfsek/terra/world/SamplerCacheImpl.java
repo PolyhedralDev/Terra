@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.world;
 
+import com.dfsek.terra.api.world.generator.SamplerCache;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -29,7 +31,7 @@ import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.world.World;
 
 
-public class SamplerCacheImpl implements com.dfsek.terra.api.world.generator.SamplerCache {
+public class SamplerCacheImpl implements SamplerCache {
     private final LoadingCache<Long, Sampler> cache;
     
     public SamplerCacheImpl(Platform platform, World world) {

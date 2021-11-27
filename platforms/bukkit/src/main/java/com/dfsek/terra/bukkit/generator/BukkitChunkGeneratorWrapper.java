@@ -38,7 +38,6 @@ import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.bukkit.population.PopulationManager;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.bukkit.world.BukkitBiomeGrid;
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
@@ -50,15 +49,13 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     private final ChunkGenerator delegate;
     
-    private final Platform platform;
-    
     private boolean needsLoad = true;
     
     private WorldConfig worldConfig;
     
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate) {
         this.delegate = delegate;
-        this.platform = delegate.getPlatform();
+        Platform platform = delegate.getPlatform();
         this.popMan = new PopulationManager(delegate, platform);
     }
     
@@ -96,7 +93,6 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         }
         com.dfsek.terra.api.world.World bukkitWorld = BukkitAdapter.adapt(world);
         if(needsLoad) load(bukkitWorld); // Load population data for world.
-        delegate.generateBiomes(bukkitWorld, random, x, z, new BukkitBiomeGrid(biome));
         return (ChunkData) delegate.generateChunkData(bukkitWorld, random, x, z, new BukkitChunkData(createChunkData(world))).getHandle();
     }
     
