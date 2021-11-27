@@ -6,7 +6,6 @@ import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
-import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.repositories
 
 fun Project.configureDependencies() {

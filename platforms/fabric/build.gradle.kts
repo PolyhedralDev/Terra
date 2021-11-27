@@ -56,7 +56,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     remapAccessWidener.set(true)
 }
 
-tasks.withType<Jar>() {
+tasks.withType<Jar> {
     finalizedBy(remapped)
 }
 
