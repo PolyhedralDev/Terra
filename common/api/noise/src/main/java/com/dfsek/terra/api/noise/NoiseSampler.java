@@ -10,6 +10,8 @@ package com.dfsek.terra.api.noise;
 
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.integer.Vector2Int;
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 
 
 public interface NoiseSampler {
@@ -31,7 +33,16 @@ public interface NoiseSampler {
         return getNoiseSeeded(seed, vector3.getX(), vector3.getY(), vector3.getZ());
     }
     
+    default double getNoiseSeeded(Vector3Int vector3, long seed) {
+        return getNoiseSeeded(seed, vector3.getX(), vector3.getY(), vector3.getZ());
+    }
+    
+    
     default double getNoiseSeeded(Vector2 vector2, long seed) {
+        return getNoiseSeeded(seed, vector2.getX(), vector2.getZ());
+    }
+    
+    default double getNoiseSeeded(Vector2Int vector2, long seed) {
         return getNoiseSeeded(seed, vector2.getX(), vector2.getZ());
     }
     
