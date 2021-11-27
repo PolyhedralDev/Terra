@@ -21,15 +21,15 @@ import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.ProtoChunk;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 
-public class BukkitChunkData implements ChunkData {
+public class BukkitProtoChunk implements ProtoChunk {
     
     private final ChunkGenerator.ChunkData delegate;
     
-    public BukkitChunkData(ChunkGenerator.ChunkData delegate) {
+    public BukkitProtoChunk(ChunkGenerator.ChunkData delegate) {
         this.delegate = delegate;
     }
     

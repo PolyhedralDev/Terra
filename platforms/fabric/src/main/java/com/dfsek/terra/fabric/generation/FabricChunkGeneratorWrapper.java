@@ -55,7 +55,7 @@ import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.ProtoChunk;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.Chunkified;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
@@ -193,7 +193,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             World world = (World) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ChunkData) chunk);
+            delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ProtoChunk) chunk);
             delegate.getGenerationStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
                     populator.populate(world, (com.dfsek.terra.api.world.Chunk) world);

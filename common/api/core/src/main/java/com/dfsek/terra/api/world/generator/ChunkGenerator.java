@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.world.generator;
 
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,7 +24,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public interface ChunkGenerator {
-    ChunkData generateChunkData(@NotNull World world, Random random, int x, int z, ChunkData original);
+    void generateChunkData(@NotNull World world, Random random, int x, int z, ProtoChunk original);
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
     
     ConfigPack getConfigPack();
@@ -35,5 +37,9 @@ public interface ChunkGenerator {
     
     default BlockState getBlock(World world, Vector3 vector3) {
         return getBlock(world, vector3.getBlockX(), vector3.getBlockY(), vector3.getBlockZ());
+    }
+    
+    default BlockState getBlock(World world, Vector3Int vector3) {
+        return getBlock(world, vector3.getX(), vector3.getY(), vector3.getZ());
     }
 }

@@ -26,7 +26,7 @@ import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.ChunkData;
+import com.dfsek.terra.api.world.generator.ProtoChunk;
 import com.dfsek.terra.api.world.generator.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GenerationStage;
 import com.dfsek.terra.api.world.generator.Palette;
@@ -48,7 +48,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     @SuppressWarnings("try")
-    public ChunkData generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ChunkData chunk) {
+    public void generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ProtoChunk chunk) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
             BiomeProvider grid = world.getBiomeProvider();
             
@@ -92,7 +92,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     }
                 }
             }
-            return chunk;
         }
     }
     
