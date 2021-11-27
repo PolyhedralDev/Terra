@@ -22,25 +22,22 @@ import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
-
-import com.dfsek.terra.addon.EphemeralAddon;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -50,9 +47,6 @@ import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
 import com.dfsek.terra.fabric.util.ProtoBiome;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class PlatformImpl extends AbstractPlatform {
@@ -103,12 +97,16 @@ public class PlatformImpl extends AbstractPlatform {
         }
         
         FabricLoader.getInstance().getAllMods().forEach(mod -> {
-            if(mod.getMetadata().getId().equals("terra")) return;
+            String id = mod.getMetadata().getId();
+            if(id.equals("terra") || id.equals("minecraft") || id.equals("java")) return;
             try {
                 Version version = Versions.parseVersion(mod.getMetadata().getVersion().getFriendlyString());
-                addons.add(new EphemeralAddon(version, "fabric:" + mod.getMetadata().getId()));
+                addons.add(new EphemeralAddon(version, "fabric:" + id));
             } catch(ParseException e) {
-                LOGGER.warn("Mod {}, version {} does not follow semantic versioning specification.", mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString());
+                LOGGER.warn(
+                        "Mod {}, version {} does not follow semantic versioning specification, Terra addons will be unable to depend on " +
+                        "it.",
+                        id, mod.getMetadata().getVersion().getFriendlyString());
             }
         });
         
