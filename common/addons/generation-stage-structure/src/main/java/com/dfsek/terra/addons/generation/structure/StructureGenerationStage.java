@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.generation.structure;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.GenerationStage;
+import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public class StructureGenerationStage implements GenerationStage {

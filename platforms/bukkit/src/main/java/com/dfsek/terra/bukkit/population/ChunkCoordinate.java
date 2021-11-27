@@ -21,7 +21,7 @@ package com.dfsek.terra.bukkit.population;
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.bukkit.world.BukkitWorld;
 
 

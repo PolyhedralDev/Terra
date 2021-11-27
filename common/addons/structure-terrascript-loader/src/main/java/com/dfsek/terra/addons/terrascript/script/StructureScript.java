@@ -50,7 +50,7 @@ import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
 import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.World;
 
 import org.slf4j.Logger;

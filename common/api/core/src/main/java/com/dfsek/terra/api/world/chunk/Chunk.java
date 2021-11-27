@@ -5,9 +5,11 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world;
+package com.dfsek.terra.api.world.chunk;
 
 import com.dfsek.terra.api.block.state.BlockState;
+
+import com.dfsek.terra.api.world.World;
 
 import org.jetbrains.annotations.NotNull;
 

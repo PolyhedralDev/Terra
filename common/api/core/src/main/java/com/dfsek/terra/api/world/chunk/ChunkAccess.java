@@ -5,7 +5,7 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world;
+package com.dfsek.terra.api.world.chunk;
 
 import org.jetbrains.annotations.NotNull;
 

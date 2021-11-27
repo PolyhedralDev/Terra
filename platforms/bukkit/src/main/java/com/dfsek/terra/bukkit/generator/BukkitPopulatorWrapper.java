@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 

@@ -17,10 +17,11 @@
 
 package com.dfsek.terra.bukkit.world;
 
+import com.dfsek.terra.api.world.chunk.Chunk;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 
 

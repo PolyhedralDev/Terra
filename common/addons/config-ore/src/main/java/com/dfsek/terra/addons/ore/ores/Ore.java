@@ -15,7 +15,7 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public abstract class Ore {

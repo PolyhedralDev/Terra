@@ -13,9 +13,9 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.GenerationStage;
+import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public class FeatureGenerationStage implements GenerationStage {

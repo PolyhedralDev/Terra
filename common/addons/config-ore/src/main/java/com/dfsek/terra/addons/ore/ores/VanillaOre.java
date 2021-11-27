@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.ore.ores;
 
+import com.dfsek.terra.api.world.chunk.Chunk;
+
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -18,7 +20,6 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
 
 
 public class VanillaOre extends Ore {

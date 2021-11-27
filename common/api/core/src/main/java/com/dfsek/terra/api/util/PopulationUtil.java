@@ -9,7 +9,7 @@ package com.dfsek.terra.api.util;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public final class PopulationUtil {

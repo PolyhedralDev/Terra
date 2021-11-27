@@ -21,7 +21,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.generator.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 

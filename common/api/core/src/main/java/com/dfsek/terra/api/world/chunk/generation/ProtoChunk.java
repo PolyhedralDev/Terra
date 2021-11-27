@@ -5,9 +5,10 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation;
 
-import com.dfsek.terra.api.world.ChunkAccess;
+
+import com.dfsek.terra.api.world.chunk.ChunkAccess;
 
 
 public interface ProtoChunk extends ChunkAccess {

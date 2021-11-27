@@ -5,9 +5,9 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation.stage;
 
-import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.World;
 
 

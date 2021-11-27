@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.world.generator.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 

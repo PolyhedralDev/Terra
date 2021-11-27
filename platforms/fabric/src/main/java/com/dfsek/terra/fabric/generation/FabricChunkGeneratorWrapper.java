@@ -55,9 +55,9 @@ import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.ProtoChunk;
-import com.dfsek.terra.api.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.block.FabricBlockState;
@@ -196,7 +196,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ProtoChunk) chunk);
             delegate.getGenerationStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
-                    populator.populate(world, (com.dfsek.terra.api.world.Chunk) world);
+                    populator.populate(world, (com.dfsek.terra.api.world.chunk.Chunk) world);
                 }
             });
             return chunk;
@@ -207,7 +207,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
         delegate.getGenerationStages().forEach(populator -> {
             if(!(populator instanceof Chunkified)) {
-                populator.populate((World) world, (com.dfsek.terra.api.world.Chunk) world);
+                populator.populate((World) world, (com.dfsek.terra.api.world.chunk.Chunk) world);
             }
         });
         if(pack.vanillaFlora()) {

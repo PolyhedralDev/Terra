@@ -8,6 +8,7 @@
 package com.dfsek.terra.api.world.generator;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 
 public interface ChunkGeneratorProvider {

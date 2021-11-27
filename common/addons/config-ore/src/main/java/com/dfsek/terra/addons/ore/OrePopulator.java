@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.ore;
 
+import com.dfsek.terra.api.world.chunk.Chunk;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -14,10 +16,9 @@ import java.util.Random;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.generator.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public class OrePopulator implements GenerationStage {

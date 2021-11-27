@@ -5,7 +5,7 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation.stage;
 
 /**
  * Marker interface that marks a feature as "chunkified" (only modifying one chunk at a time)

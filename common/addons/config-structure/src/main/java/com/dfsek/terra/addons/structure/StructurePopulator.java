@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.structure;
 
+import com.dfsek.terra.api.world.chunk.Chunk;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,11 +21,10 @@ import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.api.world.generator.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public class StructurePopulator implements GenerationStage, Chunkified {

@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.carver;
 
+import com.dfsek.terra.api.world.chunk.Chunk;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -20,10 +22,9 @@ import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
 import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.generator.Chunkified;
-import com.dfsek.terra.api.world.generator.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public class CavePopulator implements GenerationStage, Chunkified {

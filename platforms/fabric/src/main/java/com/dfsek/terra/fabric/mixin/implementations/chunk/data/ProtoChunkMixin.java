@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.generator.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 
 

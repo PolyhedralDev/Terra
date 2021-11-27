@@ -10,7 +10,7 @@ package com.dfsek.terra.addons.terrascript.buffer;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.Chunk;
+import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.World;
 
 
