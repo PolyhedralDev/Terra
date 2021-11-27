@@ -24,7 +24,7 @@ dependencies {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
     }
     
-    compileOnly("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.18-rc3-R0.1-SNAPSHOT")
     shadedImplementation("io.papermc:paperlib:1.0.5")
     
     shadedImplementation("org.bstats:bstats-bukkit:1.7")
