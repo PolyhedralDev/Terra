@@ -36,8 +36,6 @@ import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
-import com.dfsek.terra.bukkit.command.FixChunkCommand;
-import com.dfsek.terra.bukkit.command.SaveDataCommand;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
@@ -53,12 +51,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     private final PlatformImpl terraPlugin = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.generator.ChunkGenerator> generatorMap = new HashMap<>();
-    private final Map<String, ConfigPack> worlds = new HashMap<>();
-    
-    @Override
-    public void onDisable() {
-        BukkitChunkGeneratorWrapper.saveAll();
-    }
     
     @Override
     public void onEnable() {
@@ -77,8 +69,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         try {
             CommandUtil.registerAll(manager);
-            manager.register("save-data", SaveDataCommand.class);
-            manager.register("fix-chunk", FixChunkCommand.class);
         } catch(MalformedCommandException e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
@@ -96,9 +86,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         cmd.setTabCompleter(command);
         
         
-        long save = terraPlugin.getTerraConfig().getDataSaveInterval();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, BukkitChunkGeneratorWrapper::saveAll, save,
-                                                         save); // Schedule population data saving
         Bukkit.getPluginManager().registerEvents(new CommonListener(terraPlugin), this); // Register master event listener
         PaperUtil.checkPaper(this);
         
@@ -222,8 +209,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
             ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
-            worlds.put(worldName, pack);
             return pack.getGeneratorProvider().newInstance(pack);
-        }));
+        }), terraPlugin.getRawConfigRegistry().get(id));
     }
 }
