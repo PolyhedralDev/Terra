@@ -46,7 +46,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     
     boolean vanillaFlora();
     
-    BiomeProvider getBiomeProviderBuilder();
+    BiomeProvider getBiomeProvider();
     
     <T> CheckedRegistry<T> getOrCreateRegistry(Type clazz);
     

@@ -82,11 +82,11 @@ public class TerraBiomeSource extends BiomeSource {
     
     @Override
     public Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
-        TerraBiome biome = pack.getBiomeProviderBuilder().getBiome(biomeX << 2, biomeZ << 2, seed);
+        TerraBiome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }
     
     public BiomeProvider getProvider() {
-        return pack.getBiomeProviderBuilder();
+        return pack.getBiomeProvider();
     }
 }

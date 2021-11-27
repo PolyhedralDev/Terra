@@ -51,7 +51,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public @Nullable BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
-        return new BukkitBiomeProvider(pack.getBiomeProviderBuilder());
+        return new BukkitBiomeProvider(pack.getBiomeProvider());
     }
     
     @Override

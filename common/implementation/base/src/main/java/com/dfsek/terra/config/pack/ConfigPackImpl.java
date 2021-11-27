@@ -294,7 +294,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public BiomeProvider getBiomeProviderBuilder() {
+    public BiomeProvider getBiomeProvider() {
         return seededBiomeProvider;
     }
     

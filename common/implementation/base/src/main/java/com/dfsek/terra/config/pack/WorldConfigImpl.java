@@ -49,7 +49,7 @@ public class WorldConfigImpl implements WorldConfig {
         
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
         
-        this.provider = pack.getBiomeProviderBuilder();
+        this.provider = pack.getBiomeProvider();
     }
     
     @Override
