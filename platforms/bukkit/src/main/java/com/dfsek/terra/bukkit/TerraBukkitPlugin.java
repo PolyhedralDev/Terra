@@ -86,7 +86,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         cmd.setTabCompleter(command);
         
         
-        Bukkit.getPluginManager().registerEvents(new CommonListener(terraPlugin), this); // Register master event listener
+        Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
         
         try {

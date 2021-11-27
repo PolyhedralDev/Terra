@@ -20,29 +20,21 @@ package com.dfsek.terra.fabric;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.ConfigException;
-
-import com.dfsek.terra.api.addon.BaseAddon;
-
-import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
-
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.api.world.Tree;
+import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
@@ -72,22 +64,6 @@ public final class FabricAddon implements BaseAddon {
                                  event.loadTemplate(template);
                              } catch(ConfigException e) {
                                  logger.error("Error loading config template", e);
-                             }
-            
-                             if(template.doRegistryInjection()) {
-                                 logger.info("Injecting structures into Terra");
-                
-                                 BuiltinRegistries.CONFIGURED_FEATURE.getEntries().forEach(entry -> {
-                                     if(!template.getExcludedRegistryFeatures().contains(entry.getKey().getValue())) {
-                                         try {
-                                             event.getPack()
-                                                  .getCheckedRegistry(Tree.class)
-                                                  .register(entry.getKey().getValue().toString(), (Tree) entry.getValue());
-                                             logger.info("Injected ConfiguredFeature {} as Tree.", entry.getKey().getValue());
-                                         } catch(DuplicateEntryException ignored) {
-                                         }
-                                     }
-                                 });
                              }
                              templates.put(event.getPack(), Mutable.of(template, null));
                          })
