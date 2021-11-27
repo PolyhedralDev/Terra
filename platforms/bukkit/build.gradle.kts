@@ -11,7 +11,7 @@ val mcVersion = "1.17.1"
 val testDir = "target/server"
 val testMem = "3G"
 
-val paperURL = "https://papermc.io/api/v1/paper/%version%/latest/download/"
+val paperURL = "https://kennytv.eu/Paper-1.18-rc3-R0.1-EXPERIMENTAL-1.jar"
 val purpurURL = "https://api.pl3x.net/v2/purpur/%version%/latest/download"
 
 dependencies {
@@ -40,7 +40,7 @@ val jvmFlags = listOf(
     "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90",
     "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem",
     "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
-    "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear", "-javaagent:paperclip.jar"
+    "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear", /*"-javaagent:paperclip.jar"*/
                      )
 
 fun downloadPaperclip(url: String, dir: String) {
