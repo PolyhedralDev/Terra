@@ -19,7 +19,7 @@ dependencies {
     }
     
     annotationProcessor("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
-    shadedImplementation("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
+    implementation("org.spongepowered:spongeapi:9.0.0-SNAPSHOT")
     annotationProcessor("org.spongepowered:mixin:0.8.2:processor")
 }
 
