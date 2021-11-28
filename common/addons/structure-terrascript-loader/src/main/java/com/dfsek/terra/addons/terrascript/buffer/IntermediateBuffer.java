@@ -10,8 +10,8 @@ package com.dfsek.terra.addons.terrascript.buffer;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 
 
 public class IntermediateBuffer implements Buffer {
@@ -29,7 +29,7 @@ public class IntermediateBuffer implements Buffer {
     }
     
     @Override
-    public void paste(Vector3 origin, World world) {
+    public void paste(Vector3 origin, ServerWorld world) {
         // no-op
     }
     

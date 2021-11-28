@@ -21,7 +21,7 @@ import org.bukkit.Location;
 
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
@@ -49,14 +49,14 @@ public class BukkitPlayer implements Player {
     }
     
     @Override
-    public void world(World world) {
+    public void world(ServerWorld world) {
         Location newLoc = delegate.getLocation().clone();
         newLoc.setWorld(BukkitAdapter.adapt(world));
         delegate.teleport(newLoc);
     }
     
     @Override
-    public World world() {
+    public ServerWorld world() {
         return BukkitAdapter.adapt(delegate.getWorld());
     }
     

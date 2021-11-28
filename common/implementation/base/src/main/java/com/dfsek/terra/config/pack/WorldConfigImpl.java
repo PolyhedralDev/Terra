@@ -25,7 +25,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.registry.LockedRegistryImpl;
@@ -37,12 +37,12 @@ public class WorldConfigImpl implements WorldConfig {
     
     private final BiomeProvider provider;
     
-    private final World world;
+    private final ServerWorld world;
     private final ConfigPackImpl pack;
     
     private final Map<Type, Registry<?>> registryMap = new HashMap<>();
     
-    public WorldConfigImpl(World world, ConfigPackImpl pack, Platform platform) {
+    public WorldConfigImpl(ServerWorld world, ConfigPackImpl pack, Platform platform) {
         this.world = world;
         this.pack = pack;
         this.samplerCache = new SamplerCacheImpl(platform, world);
@@ -89,7 +89,7 @@ public class WorldConfigImpl implements WorldConfig {
     }
     
     @Override
-    public World getWorld() {
+    public ServerWorld getWorld() {
         return world;
     }
     

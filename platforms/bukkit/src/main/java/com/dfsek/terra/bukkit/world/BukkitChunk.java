@@ -22,7 +22,7 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 
 
 public class BukkitChunk implements Chunk {
@@ -63,7 +63,7 @@ public class BukkitChunk implements Chunk {
     }
     
     @Override
-    public World getWorld() {
+    public ServerWorld getWorld() {
         return BukkitAdapter.adapt(delegate.getWorld());
     }
 }

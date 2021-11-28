@@ -18,6 +18,8 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.terra.api.world.access.ServerWorld;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -36,7 +38,6 @@ import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
@@ -173,11 +174,11 @@ public final class BukkitAdapter {
         return ((BukkitCommandSender) sender).getHandle();
     }
     
-    public static World adapt(org.bukkit.World world) {
-        return new BukkitWorld(world);
+    public static ServerWorld adapt(org.bukkit.World world) {
+        return new BukkitServerWorld(world);
     }
     
-    public static org.bukkit.World adapt(World world) {
+    public static org.bukkit.World adapt(ServerWorld world) {
         return (org.bukkit.World) world.getHandle();
     }
     

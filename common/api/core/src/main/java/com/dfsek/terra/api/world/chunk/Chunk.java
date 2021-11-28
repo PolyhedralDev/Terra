@@ -9,7 +9,7 @@ package com.dfsek.terra.api.world.chunk;
 
 import com.dfsek.terra.api.block.state.BlockState;
 
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,5 +27,5 @@ public interface Chunk extends ChunkAccess {
     
     int getZ();
     
-    World getWorld();
+    ServerWorld getWorld();
 }

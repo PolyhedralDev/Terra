@@ -21,7 +21,7 @@ import org.bukkit.Location;
 
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
@@ -48,14 +48,14 @@ public class BukkitEntity implements Entity {
     }
     
     @Override
-    public void world(World world) {
+    public void world(ServerWorld world) {
         Location newLoc = entity.getLocation().clone();
         newLoc.setWorld(BukkitAdapter.adapt(world));
         entity.teleport(newLoc);
     }
     
     @Override
-    public World world() {
+    public ServerWorld world() {
         return BukkitAdapter.adapt(entity.getWorld());
     }
     

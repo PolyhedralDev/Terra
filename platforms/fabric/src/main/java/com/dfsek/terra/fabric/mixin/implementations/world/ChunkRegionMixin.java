@@ -21,7 +21,6 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
@@ -48,7 +47,7 @@ import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.fabric.block.FabricBlockState;
@@ -64,7 +63,7 @@ public abstract class ChunkRegionMixin {
     
     @Shadow
     @Final
-    private ServerWorld world;
+    private net.minecraft.server.world.ServerWorld world;
     
     @Shadow
     @Final
@@ -79,9 +78,9 @@ public abstract class ChunkRegionMixin {
     
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
-    public void injectConstructor(ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i,
+    public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i,
                                   CallbackInfo ci) {
-        this.config = ((World) world).getConfig();
+        this.config = ((ServerWorld) world).getConfig();
     }
     
     @SuppressWarnings("deprecation")
@@ -146,8 +145,8 @@ public abstract class ChunkRegionMixin {
         return centerPos.getPos().z;
     }
     
-    public World terraWorld$getWorld() {
-        return (World) world;
+    public ServerWorld terraWorld$getWorld() {
+        return (ServerWorld) world;
     }
     
     public WorldConfig terraWorld$getConfig() {

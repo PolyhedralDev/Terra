@@ -11,7 +11,7 @@ import java.util.Map;
 
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.StringIdentifiable;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 
@@ -31,7 +31,7 @@ public interface WorldConfig extends StringIdentifiable {
     
     <T> Registry<T> getRegistry(Class<T> clazz);
     
-    World getWorld();
+    ServerWorld getWorld();
     
     SamplerCache getSamplerCache();
     

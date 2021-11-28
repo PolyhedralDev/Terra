@@ -30,6 +30,9 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.api.world.access.ServerWorld;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,11 +76,10 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;
-import com.dfsek.terra.config.dummy.DummyWorld;
+import com.dfsek.terra.config.dummy.DummyServerWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
@@ -164,7 +166,7 @@ public class ConfigPackImpl implements ConfigPack {
             logger.error("Failed to load config pack from folder \"{}\"", folder.getAbsolutePath(), e);
             throw e;
         }
-        toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
+        toWorldConfig(new DummyServerWorld()); // Build now to catch any errors immediately.
     }
     
     public ConfigPackImpl(ZipFile file, Platform platform) throws ConfigException {
@@ -218,7 +220,7 @@ public class ConfigPackImpl implements ConfigPack {
             throw e;
         }
         
-        toWorldConfig(new DummyWorld()); // Build now to catch any errors immediately.
+        toWorldConfig(new DummyServerWorld()); // Build now to catch any errors immediately.
     }
     
     @Override
@@ -244,7 +246,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public WorldConfigImpl toWorldConfig(World world) {
+    public WorldConfigImpl toWorldConfig(ServerWorld world) {
         return new WorldConfigImpl(world, this, platform);
     }
     

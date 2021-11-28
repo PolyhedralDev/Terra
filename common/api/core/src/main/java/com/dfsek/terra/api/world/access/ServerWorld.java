@@ -11,7 +11,7 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
 
 
-public interface World extends WritableWorld {
+public interface ServerWorld extends WritableWorld {
     Chunk getChunkAt(int x, int z);
     
     default Chunk getChunkAt(Vector3 location) {

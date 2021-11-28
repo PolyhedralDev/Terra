@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.chunk;
 
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
 
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +30,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 
 
@@ -59,8 +59,8 @@ public abstract class ChunkRegionMixin {
         return centerPos.getPos().z;
     }
     
-    public World terraChunk$getWorld() {
-        return (World) this;
+    public ServerWorld terraChunk$getWorld() {
+        return (ServerWorld) this;
     }
     
     // getHandle already added in world/ChunkRegionMixin.

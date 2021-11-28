@@ -17,13 +17,13 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
@@ -56,7 +56,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
@@ -90,7 +89,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private final TerraBiomeSource biomeSource;
     private ChunkGenerator delegate;
     private ConfigPack pack;
-    private ServerWorld world;
+    private net.minecraft.server.world.ServerWorld world;
     
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
         super(biomeSource, new StructuresConfig(false));
@@ -228,9 +227,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
-        int height = ((World) world).getMaxHeight();
-        while(height >= ((World) world).getMinHeight() && !heightmap.getBlockPredicate().test(
-                ((FabricBlockState) ((World) world).getGenerator().getBlock((World) world, x, height - 1, z)).getHandle())) {
+        int height = ((ServerWorld) world).getMaxHeight();
+        while(height >= ((ServerWorld) world).getMinHeight() && !heightmap.getBlockPredicate().test(
+                ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, height - 1, z)).getHandle())) {
             height--;
         }
         return height;
@@ -240,7 +239,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
-            array[y] = ((FabricBlockState) ((World) world).getGenerator().getBlock((World) world, x, y, z)).getHandle();
+            array[y] = ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }
@@ -268,7 +267,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         
     }
     
-    public void setWorld(ServerWorld world) {
+    public void setWorld(net.minecraft.server.world.ServerWorld world) {
         this.world = world;
     }
     

@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.world;
 
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 
 import com.google.common.cache.CacheBuilder;
@@ -28,13 +29,12 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.math.Sampler;
-import com.dfsek.terra.api.world.access.World;
 
 
 public class SamplerCacheImpl implements SamplerCache {
     private final LoadingCache<Long, Sampler> cache;
     
-    public SamplerCacheImpl(Platform platform, World world) {
+    public SamplerCacheImpl(Platform platform, ServerWorld world) {
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
                             .build(new CacheLoader<>() {
                                 @Override

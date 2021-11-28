@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.access.WritableWorld;
 
 import com.google.common.cache.Cache;
@@ -53,7 +54,6 @@ import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,7 +164,7 @@ public class StructureScript implements Structure {
     }
     
     @SuppressWarnings("try")
-    public boolean test(Vector3 location, World world, Random random, Rotation rotation) {
+    public boolean test(Vector3 location, ServerWorld world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_test:" + id)) {
             StructureBuffer buffer = computeBuffer(location, world, random, rotation);
             return buffer.succeeded();

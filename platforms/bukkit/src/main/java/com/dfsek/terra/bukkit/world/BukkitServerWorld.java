@@ -25,9 +25,8 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitEntity;
@@ -38,10 +37,10 @@ import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 import org.bukkit.Location;
 
 
-public class BukkitWorld implements World {
+public class BukkitServerWorld implements ServerWorld {
     private final org.bukkit.World delegate;
     
-    public BukkitWorld(org.bukkit.World delegate) {
+    public BukkitServerWorld(org.bukkit.World delegate) {
         this.delegate = delegate;
     }
     
@@ -125,7 +124,7 @@ public class BukkitWorld implements World {
     
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof BukkitWorld other)) return false;
+        if(!(obj instanceof BukkitServerWorld other)) return false;
         return other.getHandle().equals(delegate);
     }
     

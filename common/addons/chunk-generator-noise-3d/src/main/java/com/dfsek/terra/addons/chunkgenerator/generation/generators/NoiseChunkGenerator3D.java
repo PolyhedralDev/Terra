@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.access.WritableWorld;
 
 import net.jafama.FastMath;
@@ -23,7 +24,6 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.math.Sampler;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -99,7 +99,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     @Override
-    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth) {
+    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, ServerWorld world, int elevationSmooth) {
         return new Sampler3D(chunkX, chunkZ, provider, world, elevationSmooth);
     }
     
@@ -119,7 +119,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     @Override
-    public BlockState getBlock(World world, int x, int y, int z) {
+    public BlockState getBlock(ServerWorld world, int x, int y, int z) {
         BiomeProvider provider = world.getBiomeProvider();
         TerraBiome biome = provider.getBiome(x, z, world.getSeed());
         Sampler sampler = world.getConfig().getSamplerCache().get(x, z);

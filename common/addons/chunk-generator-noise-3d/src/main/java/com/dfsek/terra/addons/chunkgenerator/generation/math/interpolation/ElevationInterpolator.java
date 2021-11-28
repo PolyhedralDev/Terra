@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
@@ -15,7 +15,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class ElevationInterpolator {
     private final double[][] values = new double[18][18];
     
-    public ElevationInterpolator(World world, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
+    public ElevationInterpolator(ServerWorld world, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         

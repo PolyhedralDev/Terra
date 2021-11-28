@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.structure.buffer.buffers;
 
+import com.dfsek.terra.api.world.access.ServerWorld;
+
 import net.jafama.FastMath;
 
 import java.util.LinkedHashMap;
@@ -17,7 +19,6 @@ import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.structure.buffer.items.Cell;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
@@ -41,7 +42,7 @@ public class StructureBuffer implements Buffer {
         }));
     }
     
-    public void paste(Vector3 origin, World world) {
+    public void paste(Vector3 origin, ServerWorld world) {
         bufferedItemMap.forEach(((vector3, item) -> item.paste(origin.clone().add(vector3), world)));
     }
     

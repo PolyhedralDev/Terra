@@ -8,7 +8,7 @@
 package com.dfsek.terra.api.entity;
 
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 
 
 public interface Entity extends CommandSender {
@@ -16,7 +16,7 @@ public interface Entity extends CommandSender {
     
     void position(Vector3 position);
     
-    void world(World world);
+    void world(ServerWorld world);
     
-    World world();
+    ServerWorld world();
 }

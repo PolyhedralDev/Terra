@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.UUID;
 
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.access.ServerWorld;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 
 
@@ -62,8 +62,8 @@ public abstract class EntityMixin {
         teleport(location.getX(), location.getY(), location.getZ());
     }
     
-    public World terra$world() {
-        return (World) world;
+    public ServerWorld terra$world() {
+        return (ServerWorld) world;
     }
     
     public void terra$sendMessage(String message) {
