@@ -138,15 +138,15 @@ public abstract class ChunkRegionMixin {
                                                                 .getBiomeSource()).getProvider();
     }
     
-    public int terra$getCenterChunkX() {
+    public int terraWorld$centerChunkX() {
         return centerPos.getPos().x;
     }
     
-    public int terra$getCenterChunkZ() {
+    public int terraWorld$centerChunkZ() {
         return centerPos.getPos().z;
     }
     
-    public World terra$getWorld() {
+    public World terraWorld$getWorld() {
         return (World) world;
     }
     
