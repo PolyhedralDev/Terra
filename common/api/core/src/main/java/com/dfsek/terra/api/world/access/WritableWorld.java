@@ -27,32 +27,10 @@ public interface WritableWorld extends ReadableWorld {
     void setBlockData(int x, int y, int z, BlockState data, boolean physics);
     
     
-    long getSeed();
-
-    int getMaxHeight();
-
-    BlockState getBlockData(int x, int y, int z);
-
-    BlockEntity getBlockState(int x, int y, int z);
-    
-    default BlockState getBlockData(Vector3 position) {
-        return getBlockData(position.getBlockX(), position.getBlockY(), position.getBlockZ());
-    }
-    
-    default BlockEntity getBlockState(Vector3 position) {
-        return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
-    }
-    int getMinHeight();
-    
     default Entity spawnEntity(Vector3 location, EntityType entityType) {
         return spawnEntity(location.getX(), location.getY(), location.getZ(), entityType);
     }
     
     Entity spawnEntity(double x, double y, double z, EntityType entityType);
     
-    ChunkGenerator getGenerator();
-    
-    BiomeProvider getBiomeProvider();
-    
-    WorldConfig getConfig();
 }
