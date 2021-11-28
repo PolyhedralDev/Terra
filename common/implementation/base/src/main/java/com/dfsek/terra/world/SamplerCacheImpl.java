@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.math.Sampler;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 
 public class SamplerCacheImpl implements SamplerCache {

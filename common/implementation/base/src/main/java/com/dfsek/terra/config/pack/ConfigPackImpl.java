@@ -73,7 +73,7 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.generator.GenerationStageProvider;

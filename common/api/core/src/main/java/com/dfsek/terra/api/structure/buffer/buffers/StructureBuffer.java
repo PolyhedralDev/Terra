@@ -17,7 +17,7 @@ import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.structure.buffer.items.Cell;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 

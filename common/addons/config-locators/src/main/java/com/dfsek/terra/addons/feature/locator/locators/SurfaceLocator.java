@@ -7,12 +7,10 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.world.Column;
+import com.dfsek.terra.api.world.access.Column;
 
 
 public class SurfaceLocator implements Locator {

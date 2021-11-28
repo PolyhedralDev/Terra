@@ -21,7 +21,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 
 

@@ -5,11 +5,8 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world;
+package com.dfsek.terra.api.world.access;
 
-import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;

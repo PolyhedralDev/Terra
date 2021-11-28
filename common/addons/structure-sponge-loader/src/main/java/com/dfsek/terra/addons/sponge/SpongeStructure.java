@@ -20,7 +20,7 @@ import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.integer.Vector2Int;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 
 public class SpongeStructure implements Structure {

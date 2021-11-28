@@ -21,7 +21,7 @@ import org.bukkit.Location;
 
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 

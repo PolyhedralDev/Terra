@@ -8,7 +8,7 @@
 package com.dfsek.terra.api.world.chunk.generation.stage;
 
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 
 public interface GenerationStage {

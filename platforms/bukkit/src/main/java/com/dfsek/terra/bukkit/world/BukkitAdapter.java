@@ -36,7 +36,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;

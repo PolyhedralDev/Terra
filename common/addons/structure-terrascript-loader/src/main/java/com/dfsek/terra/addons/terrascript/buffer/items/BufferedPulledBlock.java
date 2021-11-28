@@ -10,7 +10,7 @@ package com.dfsek.terra.addons.terrascript.buffer.items;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 
 public class BufferedPulledBlock implements BufferedItem {

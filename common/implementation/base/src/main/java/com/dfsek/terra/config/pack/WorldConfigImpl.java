@@ -25,7 +25,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 import com.dfsek.terra.registry.LockedRegistryImpl;

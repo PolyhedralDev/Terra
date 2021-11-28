@@ -8,6 +8,7 @@
 package com.dfsek.terra.api.world;
 
 
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.chunk.ChunkAccess;
 
 

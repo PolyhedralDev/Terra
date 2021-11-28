@@ -17,7 +17,7 @@ import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

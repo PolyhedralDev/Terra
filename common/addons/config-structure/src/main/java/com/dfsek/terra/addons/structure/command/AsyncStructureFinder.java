@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 

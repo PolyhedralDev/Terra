@@ -8,7 +8,7 @@
 package com.dfsek.terra.api.structure.buffer;
 
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 

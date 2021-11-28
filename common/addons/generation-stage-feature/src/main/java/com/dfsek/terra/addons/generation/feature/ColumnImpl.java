@@ -11,8 +11,8 @@ import java.util.function.IntConsumer;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
-import com.dfsek.terra.api.world.Column;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.Column;
+import com.dfsek.terra.api.world.access.World;
 
 
 public class ColumnImpl implements Column {

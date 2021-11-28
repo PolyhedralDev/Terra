@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.feature.locator.patterns;
 
-import com.dfsek.terra.api.world.Column;
+import com.dfsek.terra.api.world.access.Column;
 
 
 public interface Pattern {

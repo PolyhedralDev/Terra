@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world;
+package com.dfsek.terra.api.world.access;
 
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.entity.BlockEntity;

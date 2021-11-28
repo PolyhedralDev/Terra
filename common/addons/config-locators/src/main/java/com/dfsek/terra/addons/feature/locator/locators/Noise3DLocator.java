@@ -10,7 +10,7 @@ package com.dfsek.terra.addons.feature.locator.locators;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
-import com.dfsek.terra.api.world.Column;
+import com.dfsek.terra.api.world.access.Column;
 
 
 public class Noise3DLocator implements Locator {

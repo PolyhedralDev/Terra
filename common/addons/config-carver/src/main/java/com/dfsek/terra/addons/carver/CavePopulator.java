@@ -22,7 +22,7 @@ import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 

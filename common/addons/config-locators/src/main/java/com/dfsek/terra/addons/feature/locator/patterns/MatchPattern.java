@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.world.Column;
+import com.dfsek.terra.api.world.access.Column;
 
 
 public class MatchPattern implements Pattern {

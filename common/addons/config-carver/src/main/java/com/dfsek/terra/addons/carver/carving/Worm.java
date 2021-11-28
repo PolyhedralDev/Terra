@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.access.World;
 
 
 public abstract class Worm {

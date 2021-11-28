@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.structure.feature;
 
-import com.dfsek.terra.api.world.Column;
+import com.dfsek.terra.api.world.access.Column;
 
 
 public interface Locator {
