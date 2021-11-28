@@ -31,7 +31,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

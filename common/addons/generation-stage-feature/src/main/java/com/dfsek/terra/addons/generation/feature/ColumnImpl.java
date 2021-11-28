@@ -12,7 +12,7 @@ import java.util.function.IntConsumer;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.world.access.Column;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 public class ColumnImpl<T extends WritableWorld> implements Column<T> {

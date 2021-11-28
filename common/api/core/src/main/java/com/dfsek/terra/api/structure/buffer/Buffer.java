@@ -9,7 +9,7 @@ package com.dfsek.terra.api.structure.buffer;
 
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 

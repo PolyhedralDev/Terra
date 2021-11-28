@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 import com.mojang.serialization.Codec;

@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.structure.buffer.items;
 
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.slf4j.Logger;

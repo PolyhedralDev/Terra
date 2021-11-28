@@ -18,7 +18,7 @@
 package com.dfsek.terra.bukkit.world;
 
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.world;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 
 import com.google.common.cache.CacheBuilder;

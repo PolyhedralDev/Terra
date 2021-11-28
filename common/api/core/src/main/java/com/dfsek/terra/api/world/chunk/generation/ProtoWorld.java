@@ -1,7 +1,7 @@
 package com.dfsek.terra.api.world.chunk.generation;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface ProtoWorld extends WritableWorld {

@@ -11,7 +11,7 @@ import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
 
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

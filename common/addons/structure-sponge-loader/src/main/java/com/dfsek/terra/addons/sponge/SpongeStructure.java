@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 import net.jafama.FastMath;
 

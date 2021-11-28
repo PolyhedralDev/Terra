@@ -9,8 +9,8 @@ package com.dfsek.terra.api.world.chunk.generation;
 
 import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 import org.jetbrains.annotations.NotNull;

@@ -13,7 +13,7 @@ import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.structure.feature.Feature;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 public class ConfiguredFeature implements Feature {

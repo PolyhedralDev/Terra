@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.world.access;
+package com.dfsek.terra.api.world;
 
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.config.WorldConfig;

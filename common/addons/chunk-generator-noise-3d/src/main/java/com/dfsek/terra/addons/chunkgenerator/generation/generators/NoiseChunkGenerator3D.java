@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;

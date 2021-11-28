@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.biome.command.biome;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 
 import org.jetbrains.annotations.NotNull;
 

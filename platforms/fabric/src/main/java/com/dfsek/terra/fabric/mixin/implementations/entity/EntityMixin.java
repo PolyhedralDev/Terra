@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.UUID;
 
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 
 

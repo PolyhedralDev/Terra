@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.structure.buffer.buffers;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 
 import net.jafama.FastMath;
 

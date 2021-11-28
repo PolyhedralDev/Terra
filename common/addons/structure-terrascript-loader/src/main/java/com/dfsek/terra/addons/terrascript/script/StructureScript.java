@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

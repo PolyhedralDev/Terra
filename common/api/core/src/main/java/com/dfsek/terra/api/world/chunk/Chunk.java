@@ -9,7 +9,7 @@ package com.dfsek.terra.api.world.chunk;
 
 import com.dfsek.terra.api.block.state.BlockState;
 
-import com.dfsek.terra.api.world.access.ServerWorld;
+import com.dfsek.terra.api.world.ServerWorld;
 
 import org.jetbrains.annotations.NotNull;
 

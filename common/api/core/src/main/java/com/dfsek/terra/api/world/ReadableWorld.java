@@ -1,6 +1,5 @@
-package com.dfsek.terra.api.world.access;
+package com.dfsek.terra.api.world;
 
-import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.vector.Vector3;

@@ -8,7 +8,7 @@
 package com.dfsek.terra.api.structure.feature;
 
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface Feature {

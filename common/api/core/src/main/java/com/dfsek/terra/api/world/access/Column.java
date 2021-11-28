@@ -11,6 +11,7 @@ import java.util.function.IntConsumer;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 /**

@@ -12,7 +12,7 @@ import java.util.Random;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.world.access.WritableWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 public class TerraImplementationArguments implements ImplementationArguments {
