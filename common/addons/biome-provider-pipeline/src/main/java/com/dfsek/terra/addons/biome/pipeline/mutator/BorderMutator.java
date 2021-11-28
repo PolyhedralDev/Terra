@@ -12,6 +12,10 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
 
 public class BorderMutator implements BiomeMutator {
     private final String border;
@@ -43,5 +47,13 @@ public class BorderMutator implements BiomeMutator {
             }
         }
         return origin;
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        Set<TerraBiome> biomeSet = new HashSet<>();
+        biomes.forEach(biomeSet::add);
+        biomeSet.addAll(replace.getContents().stream().filter(Objects::nonNull).toList());
+        return biomeSet;
     }
 }

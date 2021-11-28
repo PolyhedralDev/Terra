@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.biome.single;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
+import java.util.Collections;
+
 
 public class SingleBiomeProvider implements BiomeProvider {
     private final TerraBiome biome;
@@ -21,5 +23,10 @@ public class SingleBiomeProvider implements BiomeProvider {
     @Override
     public TerraBiome getBiome(int x, int z, long seed) {
         return biome;
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes() {
+        return Collections.singleton(biome);
     }
 }

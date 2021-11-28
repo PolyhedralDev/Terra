@@ -12,6 +12,10 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
 
 public class ReplaceMutator implements BiomeMutator {
     private final String replaceableTag;
@@ -31,5 +35,23 @@ public class ReplaceMutator implements BiomeMutator {
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         return viewPoint.getBiome(0, 0);
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        Set<TerraBiome> biomeSet = new HashSet<>();
+        Set<TerraBiome> reject = new HashSet<>();
+        biomes.forEach(biome -> {
+            if(!biome.getTags().contains(replaceableTag)) {
+                biomeSet.add(biome);
+            } else {
+                reject.add(biome);
+            }
+        });
+        biomeSet.addAll(replace.getContents().stream().flatMap(terraBiome -> {
+            if(terraBiome == null) return reject.stream();
+            return Stream.of(terraBiome);
+        }).toList());
+        return biomeSet;
     }
 }

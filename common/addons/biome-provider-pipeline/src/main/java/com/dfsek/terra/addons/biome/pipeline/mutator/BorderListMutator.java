@@ -7,7 +7,10 @@
 
 package com.dfsek.terra.addons.biome.pipeline.mutator;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -52,5 +55,14 @@ public class BorderListMutator implements BiomeMutator {
             }
         }
         return origin;
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        Set<TerraBiome> biomeSet = new HashSet<>();
+        biomes.forEach(biomeSet::add);
+        biomeSet.addAll(replaceDefault.getContents().stream().filter(Objects::nonNull).toList());
+        replace.forEach((biome, collection) -> biomeSet.addAll(collection.getContents()));
+        return biomeSet;
     }
 }

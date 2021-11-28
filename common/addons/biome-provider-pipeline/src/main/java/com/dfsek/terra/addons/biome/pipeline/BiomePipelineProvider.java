@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -18,6 +20,9 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class BiomePipelineProvider implements BiomeProvider {
@@ -58,6 +63,17 @@ public class BiomePipelineProvider implements BiomeProvider {
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
         return holderCache.getUnchecked(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
                                                                                    z - fdZ * pipeline.getSize());
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes() {
+        Set<TerraBiome> biomeSet = new HashSet<>();
+        pipeline.getSource().getBiomes().forEach(biomeSet::add);
+        Iterable<TerraBiome> result = biomeSet;
+        for(Stage stage : pipeline.getStages()) {
+            result = stage.getBiomes(result); // pass through all stages
+        }
+        return result;
     }
     
     private static final class SeededVector {

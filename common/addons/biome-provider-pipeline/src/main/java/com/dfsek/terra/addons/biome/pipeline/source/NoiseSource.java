@@ -25,4 +25,9 @@ public class NoiseSource implements BiomeSource {
     public TerraBiome getBiome(double x, double z, long seed) {
         return biomes.get(sampler, x, z, seed);
     }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes() {
+        return biomes.getContents();
+    }
 }

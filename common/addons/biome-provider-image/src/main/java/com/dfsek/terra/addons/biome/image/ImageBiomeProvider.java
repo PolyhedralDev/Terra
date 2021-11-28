@@ -51,6 +51,11 @@ public class ImageBiomeProvider implements BiomeProvider {
                                                       }));
     }
     
+    @Override
+    public Iterable<TerraBiome> getBiomes() {
+        return colorBiomeMap.values();
+    }
+    
     public enum Align {
         CENTER {
             @Override

@@ -10,6 +10,9 @@ package com.dfsek.terra.addons.biome.pipeline.stages;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.api.world.biome.TerraBiome;
+
+import java.util.Collections;
 
 
 public class ExpanderStage implements Stage {
@@ -29,7 +32,8 @@ public class ExpanderStage implements Stage {
         return true;
     }
     
-    public enum Type {
-        FRACTAL
+    @Override
+    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        return biomes;
     }
 }

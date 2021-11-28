@@ -10,6 +10,7 @@ package com.dfsek.terra.addons.biome.pipeline.stages;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.api.world.biome.TerraBiome;
 
 
 public class MutatorStage implements Stage {
@@ -28,6 +29,11 @@ public class MutatorStage implements Stage {
     @Override
     public boolean isExpansion() {
         return false;
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        return mutator.getBiomes(biomes);
     }
     
     public enum Type {

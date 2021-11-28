@@ -13,6 +13,10 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 public interface BiomeMutator {
     TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed);
     
+    default Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        return biomes;
+    }
+    
     class ViewPoint {
         private final BiomeHolder biomes;
         private final int offX;

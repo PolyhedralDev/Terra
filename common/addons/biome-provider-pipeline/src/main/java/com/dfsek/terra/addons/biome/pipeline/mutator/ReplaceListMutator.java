@@ -7,7 +7,10 @@
 
 package com.dfsek.terra.addons.biome.pipeline.mutator;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -41,5 +44,31 @@ public class ReplaceListMutator implements BiomeMutator {
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         return center;
+    }
+    
+    @Override
+    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+        Set<TerraBiome> biomeSet = new HashSet<>();
+        
+        Set<TerraBiome> reject = new HashSet<>();
+        
+        biomes.forEach(biome -> {
+            if(!biome.getTags().contains(defaultTag) && !replace.containsKey(biome)) {
+                biomeSet.add(biome);
+            } else {
+                reject.add(biome);
+            }
+        });
+        biomeSet.addAll(replaceDefault.getContents().stream().flatMap(terraBiome -> {
+            if(terraBiome == null) return reject.stream();
+            return Stream.of(terraBiome);
+        }).toList());
+        replace.forEach((biome, collection) -> {
+            biomeSet.addAll(collection.getContents().stream().map(terraBiome -> {
+                if(terraBiome == null) return biome;
+                return terraBiome;
+            }).toList());
+        });
+        return biomeSet;
     }
 }

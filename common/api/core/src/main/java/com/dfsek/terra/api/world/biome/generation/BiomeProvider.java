@@ -22,4 +22,6 @@ public interface BiomeProvider {
     default TerraBiome getBiome(Vector3 vector3, long seed) {
         return getBiome(vector3.getBlockX(), vector3.getBlockZ(), seed);
     }
+    
+    Iterable<TerraBiome> getBiomes();
 }

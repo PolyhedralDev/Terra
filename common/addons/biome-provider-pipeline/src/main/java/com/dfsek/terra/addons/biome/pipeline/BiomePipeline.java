@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
@@ -42,6 +43,14 @@ public class BiomePipeline {
         holder.fill(source, seed);
         for(Stage stage : stages) holder = stage.apply(holder, seed);
         return holder;
+    }
+    
+    public BiomeSource getSource() {
+        return source;
+    }
+    
+    public List<Stage> getStages() {
+        return Collections.unmodifiableList(stages);
     }
     
     public int getSize() {
