@@ -20,7 +20,7 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.api.world.generator.ChunkGeneratorProvider;
+import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
 public class NoiseChunkGenerator3DAddon implements AddonInitializer {

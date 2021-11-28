@@ -5,7 +5,7 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation.util;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;

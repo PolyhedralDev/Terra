@@ -23,7 +23,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.generator.SamplerCache;
+import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
 
 
 public class CheckFunction implements Function<String> {
@@ -72,7 +72,7 @@ public class CheckFunction implements Function<String> {
     private String apply(Vector3 vector, WritableWorld world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
-        SamplerCache cache = world.getConfig().getSamplerCache();
+        SamplerProvider cache = world.getConfig().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);
         
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
@@ -85,7 +85,7 @@ public class CheckFunction implements Function<String> {
         //return "OCEAN"; // Below sea level
     }
     
-    private double sample(int x, int y, int z, SamplerCache cache) {
+    private double sample(int x, int y, int z, SamplerProvider cache) {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
         return cache.get(x, z).sample(x - (cx << 4), y, z - (cz << 4));

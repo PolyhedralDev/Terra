@@ -5,7 +5,7 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.access;
+package com.dfsek.terra.api.world.chunk.generation.util;
 
 import java.util.function.IntConsumer;
 

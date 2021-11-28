@@ -13,7 +13,7 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.generator.SamplerCache;
+import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
 
 
 public interface WorldConfig extends StringIdentifiable {
@@ -33,7 +33,7 @@ public interface WorldConfig extends StringIdentifiable {
     
     ServerWorld getWorld();
     
-    SamplerCache getSamplerCache();
+    SamplerProvider getSamplerCache();
     
     BiomeProvider getProvider();
     

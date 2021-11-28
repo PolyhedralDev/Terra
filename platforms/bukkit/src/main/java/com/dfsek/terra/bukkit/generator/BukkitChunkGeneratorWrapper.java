@@ -30,14 +30,13 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.api.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 

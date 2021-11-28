@@ -15,7 +15,7 @@ import java.lang.reflect.AnnotatedType;
 import java.util.List;
 import java.util.Map;
 
-import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {

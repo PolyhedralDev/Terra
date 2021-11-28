@@ -19,7 +19,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {

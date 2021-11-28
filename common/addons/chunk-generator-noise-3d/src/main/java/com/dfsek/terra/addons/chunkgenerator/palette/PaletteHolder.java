@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.palette;
 
-import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class PaletteHolder {

@@ -5,7 +5,7 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation.util.math;
 
 import java.util.Map;
 

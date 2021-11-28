@@ -13,7 +13,7 @@ import java.util.List;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 /**

@@ -5,15 +5,13 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation.util.math;
 
 import com.dfsek.terra.api.util.math.Sampler;
 
 
-public interface SamplerCache {
+public interface SamplerProvider {
     Sampler get(int x, int z);
-    
-    void clear();
     
     Sampler getChunk(int cx, int cz);
 }

@@ -5,12 +5,12 @@
  * reference the LICENSE file in the common/api directory.
  */
 
-package com.dfsek.terra.api.world.generator;
+package com.dfsek.terra.api.world.chunk.generation.util.provider;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 
-public interface GenerationStageProvider {
-    GenerationStage newInstance(ConfigPack pack);
+public interface ChunkGeneratorProvider {
+    ChunkGenerator newInstance(ConfigPack pack);
 }

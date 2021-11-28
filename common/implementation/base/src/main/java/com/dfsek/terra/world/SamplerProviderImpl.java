@@ -18,7 +18,7 @@
 package com.dfsek.terra.world;
 
 import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.generator.SamplerCache;
+import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -31,10 +31,10 @@ import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.math.Sampler;
 
 
-public class SamplerCacheImpl implements SamplerCache {
+public class SamplerProviderImpl implements SamplerProvider {
     private final LoadingCache<Long, Sampler> cache;
     
-    public SamplerCacheImpl(Platform platform, ServerWorld world) {
+    public SamplerProviderImpl(Platform platform, ServerWorld world) {
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
                             .build(new CacheLoader<>() {
                                 @Override
@@ -52,12 +52,6 @@ public class SamplerCacheImpl implements SamplerCache {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
         return getChunk(cx, cz);
-    }
-    
-    @Override
-    public void clear() {
-        cache.invalidateAll();
-        cache.cleanUp();
     }
     
     @Override

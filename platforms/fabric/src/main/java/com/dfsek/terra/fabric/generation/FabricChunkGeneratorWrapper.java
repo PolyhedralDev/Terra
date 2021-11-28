@@ -59,7 +59,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
-import com.dfsek.terra.api.world.generator.GeneratorWrapper;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;

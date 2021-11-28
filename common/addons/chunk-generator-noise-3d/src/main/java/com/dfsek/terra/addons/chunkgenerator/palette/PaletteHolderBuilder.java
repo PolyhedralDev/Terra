@@ -12,7 +12,7 @@ import net.jafama.FastMath;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.dfsek.terra.api.world.generator.Palette;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class PaletteHolderBuilder {
