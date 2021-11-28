@@ -157,7 +157,7 @@ task<JavaExec>(name = "runPaper") {
     jvmArgs = jvmFlags
     maxHeapSize = testMem
     minHeapSize = testMem
-    //args = listOf("nogui")
+    args = listOf("nogui")
     workingDir = file("$testDir/paper")
     classpath = files("$testDir/paper/paperclip.jar")
 }
