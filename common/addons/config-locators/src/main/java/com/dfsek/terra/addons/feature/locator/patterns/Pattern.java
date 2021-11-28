@@ -11,7 +11,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
 public interface Pattern {
-    boolean matches(int y, Column column);
+    boolean matches(int y, Column<?> column);
     
     default Pattern and(Pattern that) {
         return (y, column) -> this.matches(y, column) && that.matches(y, column);
