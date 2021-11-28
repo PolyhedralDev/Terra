@@ -20,6 +20,8 @@ package com.dfsek.terra.bukkit.generator;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -43,5 +45,10 @@ public class BukkitPopulatorWrapper extends BlockPopulator {
                 populator.populate(BukkitAdapter.adapt(world), BukkitAdapter.adapt(source));
             }
         });
+    }
+    
+    @Override
+    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull LimitedRegion limitedRegion) {
+        super.populate(worldInfo, random, x, z, limitedRegion);
     }
 }

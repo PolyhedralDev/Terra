@@ -43,10 +43,6 @@ public class BukkitWorld implements World {
         this.delegate = delegate;
     }
     
-    public String getName() {
-        return delegate.getName();
-    }
-    
     public UUID getUID() {
         return delegate.getUID();
     }
