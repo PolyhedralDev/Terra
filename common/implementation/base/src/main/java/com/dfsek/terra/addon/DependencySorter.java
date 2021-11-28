@@ -50,9 +50,9 @@ public class DependencySorter {
             BaseAddon dependency = addons.get(id);
             
             if(!range.isSatisfiedBy(dependency.getVersion())) {
-                // FIXME - Strata is currently broken.
-                //throw new DependencyVersionException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + range +
-                //                                     ", but non-matching version " + dependency.getVersion().getFormatted() + " is installed..");
+                throw new DependencyVersionException(
+                        "Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + range.getFormatted() +
+                        ", but non-matching version " + dependency.getVersion().getFormatted() + " is installed.");
             }
             
             if(!visited.get(dependency.getID())) { // if we've not visited it yet
@@ -75,6 +75,7 @@ public class DependencySorter {
             checkDependencies(base, dependency);
         });
     }
+    
     public List<BaseAddon> sort() {
         List<BaseAddon> sorted = new ArrayList<>();
         
@@ -88,7 +89,7 @@ public class DependencySorter {
             if(!visited.get(addon.getID())) {
                 sortDependencies(addon, sorted);
             }
-    
+            
             if(!visited.get(addon.getID())) {
                 sorted.add(addon);
                 visited.put(addon.getID(), true);
