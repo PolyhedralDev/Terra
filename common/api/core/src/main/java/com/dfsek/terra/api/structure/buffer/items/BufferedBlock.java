@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.structure.buffer.items;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class BufferedBlock implements BufferedItem {
     }
     
     @Override
-    public void paste(Vector3 origin, WorldAccess world) {
+    public void paste(Vector3 origin, WritableWorld world) {
         try {
             BlockState current = world.getBlockData(origin);
             if(overwrite || current.isAir()) {

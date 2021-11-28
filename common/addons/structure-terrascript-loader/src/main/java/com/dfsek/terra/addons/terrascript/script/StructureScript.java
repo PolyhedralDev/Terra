@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -138,7 +138,7 @@ public class StructureScript implements Structure {
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3 location, WorldAccess world, Chunk chunk, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, WritableWorld world, Chunk chunk, Random random, Rotation rotation) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_chunk:" + id)) {
             StructureBuffer buffer = computeBuffer(location, world, random, rotation);
             buffer.paste(location, chunk);
@@ -148,7 +148,7 @@ public class StructureScript implements Structure {
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Buffer buffer, WorldAccess world, Random random, Rotation rotation, int recursions) {
+    public boolean generate(Buffer buffer, WritableWorld world, Random random, Rotation rotation, int recursions) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_recursive:" + id)) {
             return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
         }
@@ -156,7 +156,7 @@ public class StructureScript implements Structure {
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3 location, WorldAccess world, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
             DirectBuffer buffer = new DirectBuffer(location, world);
             return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
@@ -171,7 +171,7 @@ public class StructureScript implements Structure {
         }
     }
     
-    private StructureBuffer computeBuffer(Vector3 location, WorldAccess world, Random random, Rotation rotation) {
+    private StructureBuffer computeBuffer(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
         try {
             return cache.get(location, () -> {
                 StructureBuffer buf = new StructureBuffer(location);

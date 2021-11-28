@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +49,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     @SuppressWarnings("try")
-    public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldAccess world,
+    public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                                   int chunkZ,
                                   int chunkX) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {

@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import net.jafama.FastMath;
 
@@ -23,7 +23,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.generator.SamplerCache;
 
 
@@ -70,7 +69,7 @@ public class CheckFunction implements Function<String> {
         return ReturnType.STRING;
     }
     
-    private String apply(Vector3 vector, WorldAccess world) {
+    private String apply(Vector3 vector, WritableWorld world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
         SamplerCache cache = world.getConfig().getSamplerCache();

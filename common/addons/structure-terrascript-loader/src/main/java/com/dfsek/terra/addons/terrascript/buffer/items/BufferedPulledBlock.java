@@ -10,7 +10,7 @@ package com.dfsek.terra.addons.terrascript.buffer.items;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 
 public class BufferedPulledBlock implements BufferedItem {
@@ -21,7 +21,7 @@ public class BufferedPulledBlock implements BufferedItem {
     }
     
     @Override
-    public void paste(Vector3 origin, WorldAccess world) {
+    public void paste(Vector3 origin, WritableWorld world) {
         Vector3 mutable = origin.clone();
         while(mutable.getY() > world.getMinHeight()) {
             if(!world.getBlockData(mutable).isAir()) {

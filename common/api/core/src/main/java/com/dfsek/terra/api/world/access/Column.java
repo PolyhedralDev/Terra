@@ -16,7 +16,7 @@ import com.dfsek.terra.api.structure.feature.BinaryColumn;
 /**
  * A single vertical column of a world.
  */
-public interface Column<T extends WorldAccess> {
+public interface Column<T extends WritableWorld> {
     int getX();
     
     int getZ();

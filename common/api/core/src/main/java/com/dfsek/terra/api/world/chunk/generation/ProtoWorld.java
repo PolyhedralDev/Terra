@@ -1,10 +1,10 @@
 package com.dfsek.terra.api.world.chunk.generation;
 
 import com.dfsek.terra.api.world.access.World;
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 
-public interface ProtoWorld extends WorldAccess {
+public interface ProtoWorld extends WritableWorld {
     int centerChunkX();
     
     int centerChunkZ();

@@ -7,16 +7,11 @@
 
 package com.dfsek.terra.api.world.access;
 
-import com.dfsek.terra.api.config.WorldConfig;
-import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 
-public interface World extends WorldAccess {
+public interface World extends WritableWorld {
     Chunk getChunkAt(int x, int z);
     
     default Chunk getChunkAt(Vector3 location) {

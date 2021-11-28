@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import net.jafama.FastMath;
 
@@ -38,7 +38,7 @@ public class SpongeStructure implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3 location, WorldAccess world, Chunk chunk, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, WritableWorld world, Chunk chunk, Random random, Rotation rotation) {
         int bX = location.getBlockX();
         int bY = location.getBlockY();
         int bZ = location.getBlockZ();
@@ -61,7 +61,7 @@ public class SpongeStructure implements Structure {
     }
     
     @Override
-    public boolean generate(Buffer buffer, WorldAccess world, Random random, Rotation rotation, int recursions) {
+    public boolean generate(Buffer buffer, WritableWorld world, Random random, Rotation rotation, int recursions) {
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
                 Vector2Int r = Vector2Int.of(x, z).rotate(rotation);
@@ -78,7 +78,7 @@ public class SpongeStructure implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3 location, WorldAccess world, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
         int bX = location.getBlockX();
         int bY = location.getBlockY();
         int bZ = location.getBlockZ();

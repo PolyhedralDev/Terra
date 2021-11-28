@@ -13,7 +13,7 @@ import java.util.List;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
@@ -24,7 +24,7 @@ public class Cell implements BufferedItem {
     private String mark;
     
     @Override
-    public void paste(Vector3 origin, WorldAccess world) {
+    public void paste(Vector3 origin, WritableWorld world) {
         items.forEach(item -> item.paste(origin.clone(), world));
     }
     

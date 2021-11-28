@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.flora.flora.gen;
 
-import com.dfsek.terra.api.world.access.WorldAccess;
+import com.dfsek.terra.api.world.access.WritableWorld;
 
 import net.jafama.FastMath;
 
@@ -27,7 +27,6 @@ import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 
 
 public class TerraFlora implements Structure {
@@ -58,7 +57,7 @@ public class TerraFlora implements Structure {
         });
     }
     
-    private void test(EnumSet<Direction> faces, Direction f, Vector3 b, WorldAccess world) {
+    private void test(EnumSet<Direction> faces, Direction f, Vector3 b, WritableWorld world) {
         if(testRotation.contains(
                 world.getBlockData(b.getBlockX() + f.getModX(), b.getBlockY() + f.getModY(), b.getBlockZ() + f.getModZ()).getBlockType()))
             faces.add(f);
@@ -68,7 +67,7 @@ public class TerraFlora implements Structure {
         return layers.get(FastMath.max(FastMath.min(layer, layers.size() - 1), 0));
     }
     
-    private EnumSet<Direction> getFaces(Vector3 b, WorldAccess world) {
+    private EnumSet<Direction> getFaces(Vector3 b, WritableWorld world) {
         EnumSet<Direction> faces = EnumSet.noneOf(Direction.class);
         test(faces, Direction.NORTH, b, world);
         test(faces, Direction.SOUTH, b, world);
@@ -83,17 +82,17 @@ public class TerraFlora implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3 location, WorldAccess world, Chunk chunk, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, WritableWorld world, Chunk chunk, Random random, Rotation rotation) {
         return generate(location, world, random, rotation);
     }
     
     @Override
-    public boolean generate(Buffer buffer, WorldAccess world, Random random, Rotation rotation, int recursions) {
+    public boolean generate(Buffer buffer, WritableWorld world, Random random, Rotation rotation, int recursions) {
         return generate(buffer.getOrigin(), world, random, rotation);
     }
     
     @Override
-    public boolean generate(Vector3 location, WorldAccess world, Random random, Rotation rotation) {
+    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
         boolean doRotation = testRotation.size() > 0;
         int size = layers.size();
         int c = ceiling ? -1 : 1;
