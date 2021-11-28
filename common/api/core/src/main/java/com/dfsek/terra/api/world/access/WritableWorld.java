@@ -11,7 +11,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 
-public interface WritableWorld extends Handle {
+public interface WritableWorld extends ReadableWorld {
     default void setBlockData(Vector3 position, BlockState data, boolean physics) {
         setBlockData(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
     }
