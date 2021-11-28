@@ -5,6 +5,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.access.World;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 import com.dfsek.terra.bukkit.BukkitEntity;
@@ -76,5 +77,10 @@ public class BukkitProtoWorld implements ProtoWorld {
     @Override
     public int centerChunkZ() {
         return delegate.getCenterChunkZ();
+    }
+    
+    @Override
+    public World getWorld() {
+        return new BukkitWorld(delegate.getWorld());
     }
 }
