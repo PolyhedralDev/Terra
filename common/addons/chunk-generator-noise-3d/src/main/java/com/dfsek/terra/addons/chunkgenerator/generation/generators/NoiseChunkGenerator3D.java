@@ -7,12 +7,13 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
+import com.dfsek.terra.api.world.access.WorldAccess;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
@@ -48,7 +49,9 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     @SuppressWarnings("try")
-    public void generateChunkData(@NotNull World world, Random random, int chunkX, int chunkZ, ProtoChunk chunk) {
+    public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldAccess world,
+                                  int chunkZ,
+                                  int chunkX) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
             BiomeProvider grid = world.getBiomeProvider();
             

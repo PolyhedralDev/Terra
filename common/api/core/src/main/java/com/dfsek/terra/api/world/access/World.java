@@ -22,10 +22,4 @@ public interface World extends WorldAccess {
     default Chunk getChunkAt(Vector3 location) {
         return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
-    
-    ChunkGenerator getGenerator();
-    
-    BiomeProvider getBiomeProvider();
-    
-    WorldConfig getConfig();
 }

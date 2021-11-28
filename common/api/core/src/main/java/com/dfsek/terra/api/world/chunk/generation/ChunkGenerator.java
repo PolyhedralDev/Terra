@@ -9,12 +9,12 @@ package com.dfsek.terra.api.world.chunk.generation;
 
 import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 
+import com.dfsek.terra.api.world.access.WorldAccess;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -26,7 +26,8 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public interface ChunkGenerator {
-    void generateChunkData(@NotNull World world, Random random, int x, int z, ProtoChunk original);
+    void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldAccess world,
+                           int chunkZ, int chunkX);
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
     
     ConfigPack getConfigPack();

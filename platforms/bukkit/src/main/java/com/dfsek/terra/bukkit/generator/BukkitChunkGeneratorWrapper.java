@@ -19,6 +19,8 @@ package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.config.ConfigPack;
 
+import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
@@ -59,7 +61,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         if(this.worldConfig == null) {
             this.worldConfig = delegate.getConfigPack().toWorldConfig(BukkitAdapter.adapt(Bukkit.getWorld(worldInfo.getUID())));
         }
-        delegate.generateChunkData(worldConfig.getWorld(), random, x, z, new BukkitProtoChunk(chunkData));
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), worldConfig.getWorld(), z, x);
     }
     
     @Override

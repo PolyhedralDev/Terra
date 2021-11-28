@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -62,7 +64,6 @@ import com.dfsek.terra.api.world.generator.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
-import com.dfsek.terra.util.FastRandom;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -193,7 +194,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             World world = (World) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            delegate.generateChunkData(world, new FastRandom(), chunk.getPos().x, chunk.getPos().z, (ProtoChunk) chunk);
+            delegate.generateChunkData((ProtoChunk) chunk, (ProtoWorld) world, chunk.getPos().z, chunk.getPos().x);
             delegate.getGenerationStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
                     populator.populate(world, (com.dfsek.terra.api.world.chunk.Chunk) world);
