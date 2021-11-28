@@ -21,7 +21,7 @@ public class SurfaceLocator implements Locator {
     }
     
     @Override
-    public BinaryColumn getSuitableCoordinates(Column column) {
+    public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumn location = new BinaryColumn(column.getMinY(), column.getMaxY());
         for(int y : search) {
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {

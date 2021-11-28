@@ -13,14 +13,14 @@ import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.access.WorldAccess;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
 
 
 public interface Structure extends StringIdentifiable {
-    boolean generate(Vector3 location, World world, Chunk chunk, Random random, Rotation rotation);
+    boolean generate(Vector3 location, WorldAccess world, Chunk chunk, Random random, Rotation rotation);
     
-    boolean generate(Buffer buffer, World world, Random random, Rotation rotation, int recursions);
+    boolean generate(Buffer buffer, WorldAccess world, Random random, Rotation rotation, int recursions);
     
-    boolean generate(Vector3 location, World world, Random random, Rotation rotation);
+    boolean generate(Vector3 location, WorldAccess world, Random random, Rotation rotation);
 }

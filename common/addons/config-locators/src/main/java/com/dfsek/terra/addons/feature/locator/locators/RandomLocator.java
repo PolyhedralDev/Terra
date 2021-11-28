@@ -26,7 +26,7 @@ public class RandomLocator implements Locator {
     }
     
     @Override
-    public BinaryColumn getSuitableCoordinates(Column column) {
+    public BinaryColumn getSuitableCoordinates(Column<?> column) {
         long seed = column.getWorld().getSeed();
         seed = 31 * seed + column.getX();
         seed = 31 * seed + column.getZ();

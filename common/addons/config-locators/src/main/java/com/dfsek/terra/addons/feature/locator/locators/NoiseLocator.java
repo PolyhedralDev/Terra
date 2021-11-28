@@ -25,7 +25,7 @@ public class NoiseLocator implements Locator {
     }
     
     @Override
-    public BinaryColumn getSuitableCoordinates(Column column) {
+    public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumn results = new BinaryColumn(column.getMinY(), column.getMaxY());
         
         long seed = column.getWorld().getSeed();

@@ -21,7 +21,7 @@ public class Noise3DLocator implements Locator {
     }
     
     @Override
-    public BinaryColumn getSuitableCoordinates(Column column) {
+    public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumn results = column.newBinaryColumn();
         long seed = column.getWorld().getSeed();
         int x = column.getX();

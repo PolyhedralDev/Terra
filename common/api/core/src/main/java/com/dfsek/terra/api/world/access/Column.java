@@ -16,14 +16,14 @@ import com.dfsek.terra.api.structure.feature.BinaryColumn;
 /**
  * A single vertical column of a world.
  */
-public interface Column {
+public interface Column<T extends WorldAccess> {
     int getX();
     
     int getZ();
     
     BlockState getBlock(int y);
     
-    World getWorld();
+    T getWorld();
     
     int getMinY();
     

@@ -8,12 +8,13 @@
 package com.dfsek.terra.api.structure.buffer;
 
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+
+import com.dfsek.terra.api.world.access.WorldAccess;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
 
 @Experimental
 public interface BufferedItem {
-    void paste(Vector3 origin, World world);
+    void paste(Vector3 origin, WorldAccess world);
 }

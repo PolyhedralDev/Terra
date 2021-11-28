@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.api.world.access.WorldAccess;
+
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -68,7 +70,7 @@ public class CheckFunction implements Function<String> {
         return ReturnType.STRING;
     }
     
-    private String apply(Vector3 vector, World world) {
+    private String apply(Vector3 vector, WorldAccess world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
         SamplerCache cache = world.getConfig().getSamplerCache();

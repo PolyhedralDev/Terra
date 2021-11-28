@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
@@ -26,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.tick.OrderedTick;
 import net.minecraft.world.tick.QueryableTickScheduler;
@@ -57,7 +58,7 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = World.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
     private WorldConfig config;
     
@@ -71,6 +72,10 @@ public abstract class ChunkRegionMixin {
     
     @Shadow
     public abstract QueryableTickScheduler<Fluid> getFluidTickScheduler();
+    
+    @Shadow
+    @Final
+    private Chunk centerPos;
     
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
@@ -107,10 +112,6 @@ public abstract class ChunkRegionMixin {
         return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
     }
     
-    public Chunk terraWorld$getChunkAt(int x, int z) {
-        return (Chunk) ((ChunkRegion) (Object) this).getChunk(x, z);
-    }
-    
     @Intrinsic(displace = true)
     public BlockState terraWorld$getBlockData(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
@@ -135,6 +136,18 @@ public abstract class ChunkRegionMixin {
                                                                 .getChunkManager()
                                                                 .getChunkGenerator()
                                                                 .getBiomeSource()).getProvider();
+    }
+    
+    public int terra$getCenterChunkX() {
+        return centerPos.getPos().x;
+    }
+    
+    public int terra$getCenterChunkZ() {
+        return centerPos.getPos().z;
+    }
+    
+    public World terra$getWorld() {
+        return (World) world;
     }
     
     public WorldConfig terraWorld$getConfig() {

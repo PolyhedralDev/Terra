@@ -13,6 +13,7 @@ import java.util.Map;
 import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.access.WorldAccess;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.access.World;
 
@@ -25,10 +26,10 @@ import org.jetbrains.annotations.ApiStatus.Experimental;
 @Experimental
 public class DirectBuffer implements Buffer {
     private final Vector3 origin;
-    private final World target;
+    private final WorldAccess target;
     private final Map<Vector3, String> marks = new LinkedHashMap<>();
     
-    public DirectBuffer(Vector3 origin, World target) {
+    public DirectBuffer(Vector3 origin, WorldAccess target) {
         this.origin = origin;
         this.target = target;
     }

@@ -1,8 +1,7 @@
 package com.dfsek.terra.addons.generation.structure;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.world.access.World;
-import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
@@ -12,7 +11,7 @@ public class StructureGenerationStage implements GenerationStage {
     public StructureGenerationStage(Platform platform) { this.platform = platform; }
     
     @Override
-    public void populate(World world, Chunk chunk) {
+    public void populate(ProtoWorld world) {
     
     }
 }

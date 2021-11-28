@@ -17,7 +17,8 @@ import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+
+import com.dfsek.terra.api.world.access.WorldAccess;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class BufferedLootApplication implements BufferedItem {
     }
     
     @Override
-    public void paste(Vector3 origin, World world) {
+    public void paste(Vector3 origin, WorldAccess world) {
         try {
             BlockEntity data = world.getBlockState(origin);
             if(!(data instanceof Container container)) {

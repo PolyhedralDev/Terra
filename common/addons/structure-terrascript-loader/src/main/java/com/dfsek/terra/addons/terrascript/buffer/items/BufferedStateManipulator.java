@@ -10,7 +10,8 @@ package com.dfsek.terra.addons.terrascript.buffer.items;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
+
+import com.dfsek.terra.api.world.access.WorldAccess;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class BufferedStateManipulator implements BufferedItem {
     }
     
     @Override
-    public void paste(Vector3 origin, World world) {
+    public void paste(Vector3 origin, WorldAccess world) {
         try {
             BlockEntity state = world.getBlockState(origin);
             state.applyState(data);

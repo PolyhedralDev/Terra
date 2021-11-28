@@ -30,7 +30,6 @@ public class OreAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     event.getPack().registerConfigType(new OreConfigType(), "ORE", 1);
-                    event.getPack().getOrCreateRegistry(GenerationStageProvider.class).register("ORE", pack -> new OrePopulator(platform));
                 })
                 .failThrough();
     }

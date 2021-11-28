@@ -19,5 +19,5 @@ public interface Locator {
         return column -> this.getSuitableCoordinates(column).or(that.getSuitableCoordinates(column));
     }
     
-    BinaryColumn getSuitableCoordinates(Column column);
+    BinaryColumn getSuitableCoordinates(Column<?> column);
 }

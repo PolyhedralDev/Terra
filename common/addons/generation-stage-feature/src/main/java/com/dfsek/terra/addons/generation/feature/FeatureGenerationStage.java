@@ -13,9 +13,10 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.access.World;
-import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+
+import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage {
@@ -27,23 +28,23 @@ public class FeatureGenerationStage implements GenerationStage {
     
     @Override
     @SuppressWarnings("try")
-    public void populate(World world, Chunk chunk) {
+    public void populate(ProtoWorld world) {
         try(ProfileFrame ignore = platform.getProfiler().profile("feature")) {
-            int cx = chunk.getX() << 4;
-            int cz = chunk.getZ() << 4;
+            int cx = world.centerChunkX() << 4;
+            int cz = world.centerChunkZ() << 4;
             long seed = world.getSeed();
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     int tx = cx + x;
                     int tz = cz + z;
-                    ColumnImpl column = new ColumnImpl(tx, tz, world);
+                    ColumnImpl<ProtoWorld> column = new ColumnImpl<>(tx, tz, world);
                     world.getBiomeProvider().getBiome(tx, tz, seed).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
                         if(feature.getDistributor().matches(tx, tz, seed)) {
                             feature.getLocator()
                                    .getSuitableCoordinates(column)
                                    .forEach(y ->
                                                     feature.getStructure(world, tx, y, tz)
-                                                           .generate(new Vector3(tx, y, tz), world, PopulationUtil.getRandom(chunk),
+                                                           .generate(new Vector3(tx, y, tz), world, new Random(PopulationUtil.getCarverChunkSeed(world.centerChunkX(), world.centerChunkZ(), seed)),
                                                                      Rotation.NONE)
                                            );
                         }

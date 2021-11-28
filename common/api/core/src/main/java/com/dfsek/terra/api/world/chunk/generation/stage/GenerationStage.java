@@ -7,10 +7,9 @@
 
 package com.dfsek.terra.api.world.chunk.generation.stage;
 
-import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.api.world.access.World;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 
 public interface GenerationStage {
-    void populate(World world, Chunk chunk);
+    void populate(ProtoWorld world);
 }
