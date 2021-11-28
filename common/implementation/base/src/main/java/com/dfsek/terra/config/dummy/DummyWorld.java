@@ -31,7 +31,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 public class DummyWorld implements World {
     @Override
-    public Entity spawnEntity(Vector3 location, EntityType entityType) {
+    public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         throw new UnsupportedOperationException("Cannot spawn entity in DummyWorld");
     }
     

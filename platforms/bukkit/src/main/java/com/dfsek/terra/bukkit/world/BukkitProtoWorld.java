@@ -2,12 +2,19 @@ package com.dfsek.terra.bukkit.world;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
+import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 
+import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
+
+import org.bukkit.Location;
 import org.bukkit.generator.LimitedRegion;
 
 
@@ -52,6 +59,13 @@ public class BukkitProtoWorld implements ProtoWorld {
     @Override
     public int getMinHeight() {
         return delegate.getWorld().getMinHeight();
+    }
+    
+    @Override
+    public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
+        return new BukkitEntity(
+                delegate.spawnEntity(new Location(delegate.getWorld(), x, y, z), ((BukkitEntityType) entityType).getHandle()));
+    
     }
     
     @Override

@@ -35,6 +35,8 @@ import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
+import org.bukkit.Location;
+
 
 public class BukkitWorld implements World {
     private final org.bukkit.World delegate;
@@ -56,9 +58,9 @@ public class BukkitWorld implements World {
     }
     
     @Override
-    public Entity spawnEntity(Vector3 location, EntityType entityType) {
+    public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         return new BukkitEntity(
-                delegate.spawnEntity(BukkitAdapter.adapt(location).toLocation(delegate), ((BukkitEntityType) entityType).getHandle()));
+                delegate.spawnEntity(new Location(delegate, x, y, z), ((BukkitEntityType) entityType).getHandle()));
     }
     
     @Override

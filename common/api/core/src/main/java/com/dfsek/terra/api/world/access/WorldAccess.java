@@ -3,6 +3,8 @@ package com.dfsek.terra.api.world.access;
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
 
 
@@ -38,4 +40,10 @@ public interface WorldAccess extends Handle {
         return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
     int getMinHeight();
+    
+    default Entity spawnEntity(Vector3 location, EntityType entityType) {
+        return spawnEntity(location.getX(), location.getY(), location.getZ(), entityType);
+    }
+    
+    Entity spawnEntity(double x, double y, double z, EntityType entityType);
 }

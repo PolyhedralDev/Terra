@@ -17,9 +17,6 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 
 public interface World extends WorldAccess {
-    Entity spawnEntity(Vector3 location, EntityType entityType);
-    
-    
     Chunk getChunkAt(int x, int z);
     
     default Chunk getChunkAt(Vector3 location) {
