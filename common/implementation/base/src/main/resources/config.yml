@@ -1,3 +1,10 @@
+# This file contains core configuration options for Terra
+#
+# As you can see, there is not that much to configure here.
+# For advanced configuration, use config packs. Config
+# packs are loaded from the packs directory. Check the
+# wiki for information regarding config pack development.
+
 debug:
   commands: false
   log: false
