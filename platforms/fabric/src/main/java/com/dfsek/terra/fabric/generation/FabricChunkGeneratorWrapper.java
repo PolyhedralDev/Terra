@@ -62,7 +62,7 @@ import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.block.FabricBlockState;
-import com.dfsek.terra.fabric.mixin.StructureAccessorAccessor;
+import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {

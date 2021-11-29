@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric.mixin;
+package com.dfsek.terra.fabric.mixin.access;
 
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.StructureAccessor;

@@ -6,7 +6,7 @@
     "mixins": [
         "CommandManagerMixin",
         "ServerWorldMixin",
-        "StructureAccessorAccessor",
+        "access.StructureAccessorAccessor",
         "access.BiomeEffectsAccessor",
         "access.MobSpawnerLogicAccessor",
         "access.StateAccessor",
