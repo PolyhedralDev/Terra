@@ -57,7 +57,6 @@ import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.impl.InjectorImpl;
-import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
@@ -66,7 +65,6 @@ import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
-import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
@@ -134,8 +132,6 @@ public abstract class AbstractPlatform implements Platform {
         
         
         config.load(this); // load config.yml
-        
-        LangUtil.load(config.getLanguage(), this); // load language
         
         if(config.dumpDefaultConfig()) {
             try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
@@ -256,11 +252,6 @@ public abstract class AbstractPlatform implements Platform {
     @Override
     public PluginConfig getTerraConfig() {
         return config;
-    }
-    
-    @Override
-    public Language getLanguage() {
-        return LangUtil.getLanguage();
     }
     
     @Override

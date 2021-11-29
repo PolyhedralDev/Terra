@@ -24,7 +24,6 @@ import com.dfsek.terra.api.command.annotation.type.DebugCommand;
 import com.dfsek.terra.api.command.annotation.type.PlayerCommand;
 import com.dfsek.terra.api.command.annotation.type.WorldCommand;
 import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.config.lang.LangUtil;
 
 
 @Command(
@@ -42,6 +41,11 @@ import com.dfsek.terra.config.lang.LangUtil;
 public class ProfileCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
-        LangUtil.send("command.profile.main-menu", sender);
+        sender.sendMessage("""
+                                 ---------------Terra/profile---------------"
+                                 - "start - Starts the profiler"
+                                 - "stop  - Stops the profiler"
+                                 - "query - Fetches profiler data"
+                                 - "reset - Resets profiler data""");
     }
 }

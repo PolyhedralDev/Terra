@@ -15,7 +15,6 @@ import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.lang.Language;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
@@ -46,8 +45,6 @@ public interface Platform extends LoaderRegistrar {
     PluginConfig getTerraConfig();
     
     File getDataFolder();
-    
-    Language getLanguage();
     
     CheckedRegistry<ConfigPack> getConfigRegistry();
     

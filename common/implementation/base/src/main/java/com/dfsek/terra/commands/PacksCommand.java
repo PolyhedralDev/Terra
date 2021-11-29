@@ -24,7 +24,6 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.config.lang.LangUtil;
 
 
 @Command(
@@ -39,12 +38,9 @@ public class PacksCommand implements CommandTemplate {
         CheckedRegistry<ConfigPack> registry = platform.getConfigRegistry();
         
         if(registry.entries().isEmpty()) {
-            LangUtil.send("command.packs.none", sender);
+            sender.sendMessage("No packs installed");
             return;
         }
-        
-        LangUtil.send("command.packs.main", sender);
-        registry.entries().forEach(
-                entry -> LangUtil.send("command.packs.pack", sender, entry.getID(), entry.getAuthor(), entry.getVersion()));
+        registry.entries().forEach(configPack -> sender.sendMessage(" - " + configPack.getID() + "@" + configPack.getVersion()));
     }
 }

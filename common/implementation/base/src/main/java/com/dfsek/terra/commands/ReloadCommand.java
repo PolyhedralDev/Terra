@@ -25,7 +25,6 @@ import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.config.lang.LangUtil;
 
 
 @Command(
@@ -42,10 +41,10 @@ public class ReloadCommand implements CommandTemplate {
         logger.info("Reloading Terra...");
         if(platform.reload()) {
             logger.info("Terra reloaded successfully.");
-            LangUtil.send("command.reload", sender);
+            sender.sendMessage("Terra reloaded successfully.");
         } else {
-            logger.warn("Terra failed to reload.");
-            LangUtil.send("command.reload-error", sender);
+            logger.error("Terra failed to reload.");
+            sender.sendMessage("Terra failed to reload. See logs for more information.");
         }
     }
 }

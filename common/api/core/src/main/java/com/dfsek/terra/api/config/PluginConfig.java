@@ -15,27 +15,19 @@ public interface PluginConfig {
     
     boolean dumpDefaultConfig();
     
-    String getLanguage();
-    
     boolean isDebugCommands();
     
     boolean isDebugProfiler();
     
     boolean isDebugScript();
     
-    long getDataSaveInterval();
-    
     int getBiomeSearchResolution();
-    
-    int getCarverCacheSize();
     
     int getStructureCache();
     
     int getSamplerCache();
     
     int getMaxRecursion();
-    
-    int getBiomeCache();
     
     int getProviderCache();
 }

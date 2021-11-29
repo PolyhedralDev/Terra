@@ -23,6 +23,9 @@ import com.dfsek.tectonic.config.ConfigTemplate;
 import com.dfsek.tectonic.exception.ConfigException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.api.config.PluginConfig;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +39,7 @@ import com.dfsek.terra.api.Platform;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.config.PluginConfig {
+public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     private static final Logger logger = LoggerFactory.getLogger(PluginConfigImpl.class);
     
     @Value("debug.commands")
@@ -50,10 +53,6 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     @Value("debug.script")
     @Default
     private boolean debugScript = false;
-    
-    @Value("language")
-    @Default
-    private String language = "en_us";
     
     @Value("data-save")
     @Default
@@ -113,12 +112,6 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     public boolean dumpDefaultConfig() {
         return dumpDefaultData;
     }
-    
-    @Override
-    public String getLanguage() {
-        return language;
-    }
-    
     @Override
     public boolean isDebugCommands() {
         return debugCommands;
@@ -135,18 +128,8 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     }
     
     @Override
-    public long getDataSaveInterval() {
-        return dataSave.toMillis() / 20L;
-    }
-    
-    @Override
     public int getBiomeSearchResolution() {
         return biomeSearch;
-    }
-    
-    @Override
-    public int getCarverCacheSize() {
-        return carverCache;
     }
     
     @Override
@@ -162,11 +145,6 @@ public class PluginConfigImpl implements ConfigTemplate, com.dfsek.terra.api.con
     @Override
     public int getMaxRecursion() {
         return maxRecursion;
-    }
-    
-    @Override
-    public int getBiomeCache() {
-        return biomeCache;
     }
     
     @Override

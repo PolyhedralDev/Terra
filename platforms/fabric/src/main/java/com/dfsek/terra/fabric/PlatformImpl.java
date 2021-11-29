@@ -42,7 +42,6 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.Lazy;
-import com.dfsek.terra.config.lang.LangUtil;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
@@ -68,7 +67,6 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        LangUtil.load(getTerraConfig().getLanguage(), this); // Load language.
         boolean succeed = getRawConfigRegistry().loadAll(this);
         
         worlds.forEach(world -> {

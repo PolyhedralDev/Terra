@@ -22,7 +22,6 @@ import com.dfsek.terra.api.command.CommandTemplate;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.config.lang.LangUtil;
 
 
 @Command(
@@ -35,6 +34,6 @@ public class VersionCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         String terraVersion = platform.getVersion();
-        LangUtil.send("command.version", sender, terraVersion, platform.platformName());
+        sender.sendMessage("Running Terra version " + terraVersion);
     }
 }
