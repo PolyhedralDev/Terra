@@ -13,8 +13,7 @@ fun Project.configurePublishing() {
     configure<PublishingExtension> {
         publications {
             create<MavenPublication>("mavenJava") {
-                artifact(tasks["sourcesJar"])
-                artifact(tasks["jar"])
+                from(components["java"])
             }
         }
         
