@@ -38,7 +38,10 @@ fun preRelease(preRelease: Boolean) {
 fun Project.versionProjects(project: String, version: String) {
     forSubProjects(project) {
         this.version = version
+        println("Setting version of $path to $version")
     }
+    project(project).version = version
+    println("Setting version of $project to $version")
 }
 
 fun Project.version(version: String): String {
