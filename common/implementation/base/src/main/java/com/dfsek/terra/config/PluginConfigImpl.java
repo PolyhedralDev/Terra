@@ -54,17 +54,9 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Default
     private boolean debugScript = false;
     
-    @Value("data-save")
-    @Default
-    private Duration dataSave = Duration.parse("PT6M");
-    
     @Value("biome-search-resolution")
     @Default
     private int biomeSearch = 4;
-    
-    @Value("cache.carver")
-    @Default
-    private int carverCache = 256;
     
     @Value("cache.structure")
     @Default
@@ -73,10 +65,6 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Value("cache.sampler")
     @Default
     private int samplerCache = 64;
-    
-    @Value("cache.biome")
-    @Default
-    private int biomeCache = 512;
     
     @Value("cache.biome-provider")
     @Default
