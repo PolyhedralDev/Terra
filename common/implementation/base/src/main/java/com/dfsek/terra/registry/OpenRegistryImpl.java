@@ -34,6 +34,10 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
+import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
+
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * Registry implementation with read/write access. For internal use only.
@@ -55,24 +59,26 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @Override
     public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
-        T obj = get((String) o);
-        String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
-        
-        if(objects.isEmpty()) list = "[ ]";
-        
-        if(obj == null)
+        T obj;
+        try {
+            obj = get((String) o);
+        } catch(NoSuchEntryException e) {
+            String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
+            if(objects.isEmpty()) list = "[ ]";
             throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
                                     "\" was found in this registry. Registry contains items: " + list);
+        }
+        
         return obj;
     }
     
     @Override
-    public boolean register(String identifier, T value) {
+    public boolean register(@NotNull String identifier, @NotNull T value) {
         return register(identifier, new Entry<>(value));
     }
     
     @Override
-    public void registerChecked(String identifier, T value) throws DuplicateEntryException {
+    public void registerChecked(@NotNull String identifier, @NotNull T value) throws DuplicateEntryException {
         if(objects.containsKey(identifier))
             throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
         register(identifier, value);
@@ -95,32 +101,36 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public T get(String identifier) {
-        return objects.getOrDefault(identifier, (Entry<T>) NULL).getValue();
+    public @NotNull T get(@NotNull String identifier) {
+        T value = objects.getOrDefault(identifier, (Entry<T>) NULL).getValue();
+        if(value == null) {
+            throw new NoSuchEntryException("Entry " + identifier + " is not present in registry.");
+        }
+        return value;
     }
     
     @Override
-    public boolean contains(String identifier) {
+    public boolean contains(@NotNull String identifier) {
         return objects.containsKey(identifier);
     }
     
     @Override
-    public void forEach(Consumer<T> consumer) {
+    public void forEach(@NotNull Consumer<T> consumer) {
         objects.forEach((id, obj) -> consumer.accept(obj.getRaw()));
     }
     
     @Override
-    public void forEach(BiConsumer<String, T> consumer) {
+    public void forEach(@NotNull BiConsumer<String, T> consumer) {
         objects.forEach((id, entry) -> consumer.accept(id, entry.getRaw()));
     }
     
     @Override
-    public Collection<T> entries() {
+    public @NotNull Collection<T> entries() {
         return objects.values().stream().map(Entry::getRaw).collect(Collectors.toList());
     }
     
     @Override
-    public Set<String> keys() {
+    public @NotNull Set<String> keys() {
         return objects.keySet();
     }
     

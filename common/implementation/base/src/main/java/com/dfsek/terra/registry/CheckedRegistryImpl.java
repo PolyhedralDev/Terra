@@ -29,6 +29,7 @@ import java.util.function.Consumer;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -44,37 +45,37 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
     
     @Override
-    public void register(String identifier, T value) throws DuplicateEntryException {
+    public void register(@NotNull String identifier, @NotNull T value) throws DuplicateEntryException {
         registry.registerChecked(identifier, value);
     }
     
     @Override
-    public T get(String identifier) {
+    public @NotNull T get(@NotNull String identifier) {
         return registry.get(identifier);
     }
     
     @Override
-    public boolean contains(String identifier) {
+    public boolean contains(@NotNull String identifier) {
         return registry.contains(identifier);
     }
     
     @Override
-    public void forEach(Consumer<T> consumer) {
+    public void forEach(@NotNull Consumer<T> consumer) {
         registry.forEach(consumer);
     }
     
     @Override
-    public void forEach(BiConsumer<String, T> consumer) {
+    public void forEach(@NotNull BiConsumer<String, T> consumer) {
         registry.forEach(consumer);
     }
     
     @Override
-    public Collection<T> entries() {
+    public @NotNull Collection<T> entries() {
         return registry.entries();
     }
     
     @Override
-    public Set<String> keys() {
+    public @NotNull Set<String> keys() {
         return registry.keys();
     }
     

@@ -9,6 +9,8 @@ package com.dfsek.terra.api.registry;
 
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public interface CheckedRegistry<T> extends Registry<T> {
     /**
@@ -19,6 +21,5 @@ public interface CheckedRegistry<T> extends Registry<T> {
      *
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
-    void register(String identifier, T value) throws DuplicateEntryException;
-    
+    void register(@NotNull String identifier, @NotNull T value) throws DuplicateEntryException;
 }

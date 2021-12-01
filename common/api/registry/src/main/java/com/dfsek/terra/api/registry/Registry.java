@@ -9,6 +9,11 @@ package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.loading.TypeLoader;
 
+import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -23,7 +28,9 @@ public interface Registry<T> extends TypeLoader<T> {
      *
      * @return Value matching the identifier, {@code null} if no value is present.
      */
-    T get(String identifier);
+    @NotNull
+    @Contract(pure = true)
+    T get(@NotNull String identifier) throws NoSuchEntryException;
     
     /**
      * Check if the registry contains a value.
@@ -32,27 +39,30 @@ public interface Registry<T> extends TypeLoader<T> {
      *
      * @return Whether the registry contains the value.
      */
-    boolean contains(String identifier);
+    @Contract(pure = true)
+    boolean contains(@NotNull String identifier);
     
     /**
      * Perform the given action for every value in the registry.
      *
      * @param consumer Action to perform on value.
      */
-    void forEach(Consumer<T> consumer);
+    void forEach(@NotNull Consumer<T> consumer);
     
     /**
      * Perform an action for every key-value pair in the registry.
      *
      * @param consumer Action to perform on pair.
      */
-    void forEach(BiConsumer<String, T> consumer);
+    void forEach(@NotNull BiConsumer<String, T> consumer);
     
     /**
      * Get the entries of this registry as a {@link Set}.
      *
      * @return Set containing all entries.
      */
+    @NotNull
+    @Contract(pure = true)
     Collection<T> entries();
     
     /**
@@ -60,5 +70,7 @@ public interface Registry<T> extends TypeLoader<T> {
      *
      * @return Keys in registry
      */
+    @NotNull
+    @Contract(pure = true)
     Set<String> keys();
 }
