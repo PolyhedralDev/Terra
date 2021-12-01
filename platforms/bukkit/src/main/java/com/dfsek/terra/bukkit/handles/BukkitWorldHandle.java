@@ -23,13 +23,13 @@ import org.bukkit.Material;
 
 import java.util.Locale;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
+
+import org.jetbrains.annotations.NotNull;
 
 
 public class BukkitWorldHandle implements WorldHandle {
@@ -40,23 +40,18 @@ public class BukkitWorldHandle implements WorldHandle {
     }
     
     @Override
-    public BlockState createBlockData(String data) {
+    public @NotNull BlockState createBlockData(@NotNull String data) {
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data);
         return BukkitBlockState.newInstance(bukkitData);
     }
     
     @Override
-    public BlockState air() {
+    public @NotNull BlockState air() {
         return air;
     }
     
     @Override
-    public BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt) {
-        return null;
-    }
-    
-    @Override
-    public EntityType getEntity(String id) {
+    public @NotNull EntityType getEntity(String id) {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid entity identifier " + id);
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }

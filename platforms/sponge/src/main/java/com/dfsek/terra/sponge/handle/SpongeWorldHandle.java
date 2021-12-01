@@ -17,14 +17,13 @@
 
 package com.dfsek.terra.sponge.handle;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.block.BlockTypes;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.Lazy;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.sponge.block.SpongeBlockState;
 
 
@@ -36,22 +35,17 @@ public class SpongeWorldHandle implements WorldHandle {
     }
     
     @Override
-    public BlockState createBlockData(String data) {
+    public @NotNull BlockState createBlockData(@NotNull String data) {
         return new SpongeBlockState(org.spongepowered.api.block.BlockState.fromString(data));
     }
     
     @Override
-    public BlockState air() {
+    public @NotNull BlockState air() {
         return air.value();
     }
     
     @Override
-    public BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt) {
-        return null;
-    }
-    
-    @Override
-    public EntityType getEntity(String id) {
-        return null;
+    public @NotNull EntityType getEntity(@NotNull String id) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -22,16 +22,15 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
-import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 
 public class FabricWorldHandle implements WorldHandle {
@@ -39,7 +38,7 @@ public class FabricWorldHandle implements WorldHandle {
     private static final com.dfsek.terra.api.block.state.BlockState AIR = FabricAdapter.adapt(Blocks.AIR.getDefaultState());
     
     @Override
-    public FabricBlockState createBlockData(String data) {
+    public @NotNull FabricBlockState createBlockData(@NotNull String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
             BlockState state = parser.parse(true).getBlockState();
@@ -51,22 +50,12 @@ public class FabricWorldHandle implements WorldHandle {
     }
     
     @Override
-    public com.dfsek.terra.api.block.state.BlockState air() {
+    public com.dfsek.terra.api.block.state.@NotNull BlockState air() {
         return AIR;
     }
     
     @Override
-    public BlockEntity createBlockEntity(Vector3 location, com.dfsek.terra.api.block.state.BlockState block, String snbt) {
-        try {
-            return (BlockEntity) net.minecraft.block.entity.BlockEntity.createFromNbt(FabricAdapter.adapt(location), (BlockState) block,
-                                                                                      StringNbtReader.parse(snbt));
-        } catch(CommandSyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    @Override
-    public EntityType getEntity(String id) {
+    public @NotNull EntityType getEntity(@NotNull String id) {
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse(id);
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);

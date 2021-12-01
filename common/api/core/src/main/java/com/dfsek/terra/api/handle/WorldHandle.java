@@ -12,17 +12,22 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * Interface to be implemented for world manipulation.
  */
 public interface WorldHandle {
-    BlockState createBlockData(String data);
+    @NotNull
+    @Contract("_ -> new")
+    BlockState createBlockData(@NotNull String data);
     
+    @NotNull
+    @Contract(pure = true)
     BlockState air();
     
-    BlockEntity createBlockEntity(Vector3 location, BlockState block, String snbt);
-    
-    EntityType getEntity(String id);
-    
+    @NotNull
+    EntityType getEntity(@NotNull String id);
 }
