@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.sponge;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.Sponge;
 
 import java.io.File;
@@ -43,22 +44,22 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    public String platformName() {
+    public @NotNull String platformName() {
         return "Sponge";
     }
     
     @Override
-    public WorldHandle getWorldHandle() {
+    public @NotNull WorldHandle getWorldHandle() {
         return worldHandle;
     }
     
     @Override
-    public File getDataFolder() {
+    public @NotNull File getDataFolder() {
         return Sponge.configManager().pluginConfig(plugin.getPluginContainer()).directory().toFile();
     }
     
     @Override
-    public ItemHandle getItemHandle() {
+    public @NotNull ItemHandle getItemHandle() {
         return null;
     }
 }

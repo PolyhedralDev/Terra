@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.api;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -27,6 +30,8 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 public interface Platform extends LoaderRegistrar {
     boolean reload();
     
+    @NotNull
+    @Contract(pure = true)
     String platformName();
     
     /**
@@ -36,27 +41,44 @@ public interface Platform extends LoaderRegistrar {
      *
      * @param task Task to be run.
      */
-    default void runPossiblyUnsafeTask(Runnable task) {
+    default void runPossiblyUnsafeTask(@NotNull Runnable task) {
         task.run();
     }
     
+    @NotNull
+    @Contract(pure = true)
     WorldHandle getWorldHandle();
     
+    @NotNull
+    @Contract(pure = true)
     PluginConfig getTerraConfig();
     
+    @NotNull
+    @Contract(pure = true)
     File getDataFolder();
     
+    @NotNull
+    @Contract(pure = true)
     CheckedRegistry<ConfigPack> getConfigRegistry();
     
+    @NotNull
+    @Contract(pure = true)
     Registry<BaseAddon> getAddons();
     
+    @NotNull
+    @Contract(pure = true)
     ItemHandle getItemHandle();
     
+    @NotNull
+    @Contract(pure = true)
     EventManager getEventManager();
     
-    default String getVersion() {
+    @Contract(pure = true)
+    default @NotNull String getVersion() {
         return "@VERSION@";
     }
     
+    @NotNull
+    @Contract(pure = true)
     Profiler getProfiler();
 }

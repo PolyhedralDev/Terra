@@ -27,6 +27,7 @@ import net.minecraft.MinecraftVersion;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,22 +113,22 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    public String platformName() {
+    public @NotNull String platformName() {
         return "Fabric";
     }
     
     @Override
-    public WorldHandle getWorldHandle() {
+    public @NotNull WorldHandle getWorldHandle() {
         return worldHandle;
     }
     
     @Override
-    public File getDataFolder() {
+    public @NotNull File getDataFolder() {
         return dataFolder.value();
     }
     
     @Override
-    public ItemHandle getItemHandle() {
+    public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
     }
     

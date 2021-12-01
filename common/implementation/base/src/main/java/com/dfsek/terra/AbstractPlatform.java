@@ -26,6 +26,7 @@ import com.dfsek.terra.api.util.StringIdentifiable;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -250,27 +251,27 @@ public abstract class AbstractPlatform implements Platform {
     }
     
     @Override
-    public PluginConfig getTerraConfig() {
+    public @NotNull PluginConfig getTerraConfig() {
         return config;
     }
     
     @Override
-    public CheckedRegistry<ConfigPack> getConfigRegistry() {
+    public @NotNull CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedConfigRegistry;
     }
     
     @Override
-    public Registry<BaseAddon> getAddons() {
+    public @NotNull Registry<BaseAddon> getAddons() {
         return lockedAddonRegistry;
     }
     
     @Override
-    public EventManager getEventManager() {
+    public @NotNull EventManager getEventManager() {
         return eventManager;
     }
     
     @Override
-    public Profiler getProfiler() {
+    public @NotNull Profiler getProfiler() {
         return profiler;
     }
 }

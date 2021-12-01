@@ -34,6 +34,8 @@ import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.world.BukkitBiome;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class PlatformImpl extends AbstractPlatform {
     private final ItemHandle itemHandle = new BukkitItemHandle();
@@ -57,27 +59,27 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    public String platformName() {
+    public @NotNull String platformName() {
         return "Bukkit";
     }
     
     @Override
-    public void runPossiblyUnsafeTask(Runnable task) {
+    public void runPossiblyUnsafeTask(@NotNull Runnable task) {
         Bukkit.getScheduler().runTask(plugin, task);
     }
     
     @Override
-    public WorldHandle getWorldHandle() {
+    public @NotNull WorldHandle getWorldHandle() {
         return handle;
     }
     
     @Override
-    public File getDataFolder() {
+    public @NotNull File getDataFolder() {
         return plugin.getDataFolder();
     }
     
     @Override
-    public ItemHandle getItemHandle() {
+    public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
     }
     
