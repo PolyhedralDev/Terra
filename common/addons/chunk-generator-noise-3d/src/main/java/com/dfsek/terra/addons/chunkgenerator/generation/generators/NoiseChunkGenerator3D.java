@@ -104,11 +104,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     @Override
-    public ConfigPack getConfigPack() {
-        return configPack;
-    }
-    
-    @Override
     public List<GenerationStage> getGenerationStages() {
         return generationStages;
     }

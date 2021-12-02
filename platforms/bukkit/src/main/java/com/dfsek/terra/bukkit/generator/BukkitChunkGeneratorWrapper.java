@@ -60,7 +60,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
         if(this.worldConfig == null) {
-            this.worldConfig = delegate.getConfigPack().toWorldConfig(BukkitAdapter.adapt(Bukkit.getWorld(worldInfo.getUID())));
+            this.worldConfig = pack.toWorldConfig(BukkitAdapter.adapt(Bukkit.getWorld(worldInfo.getUID())));
         }
         delegate.generateChunkData(new BukkitProtoChunk(chunkData), worldConfig.getWorld(), z, x);
     }
@@ -77,22 +77,22 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public boolean shouldGenerateCaves() {
-        return delegate.getConfigPack().vanillaCaves();
+        return pack.vanillaCaves();
     }
     
     @Override
     public boolean shouldGenerateDecorations() {
-        return delegate.getConfigPack().vanillaFlora();
+        return pack.vanillaFlora();
     }
     
     @Override
     public boolean shouldGenerateMobs() {
-        return delegate.getConfigPack().vanillaMobs();
+        return pack.vanillaMobs();
     }
     
     @Override
     public boolean shouldGenerateStructures() {
-        return delegate.getConfigPack().vanillaStructures();
+        return pack.vanillaStructures();
     }
     
     public WorldConfig getWorldConfig() {
