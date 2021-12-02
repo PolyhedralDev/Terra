@@ -70,26 +70,25 @@ public class StructureFunction implements Function<Boolean> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         String app = id.apply(implementationArguments, variableMap);
-        Structure script = registry.get(app);
-        if(script == null) {
-            LOGGER.warn("No such structure {}", app);
-            return null;
-        }
-        
-        Rotation rotation1;
-        String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, variableMap);
-        try {
-            rotation1 = Rotation.valueOf(rotString);
-        } catch(IllegalArgumentException e) {
-            LOGGER.warn("Invalid rotation {}", rotString);
-            return null;
-        }
-        
-        Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
-                                     FastMath.roundToInt(xz.getZ()));
-        
-        return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getWorld(), arguments.getRandom(),
-                               arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+        return registry.get(app).map(script -> {
+            Rotation rotation1;
+            String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, variableMap);
+            try {
+                rotation1 = Rotation.valueOf(rotString);
+            } catch(IllegalArgumentException e) {
+                LOGGER.warn("Invalid rotation {}", rotString);
+                return null;
+            }
+    
+            Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
+                                         FastMath.roundToInt(xz.getZ()));
+    
+            return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getWorld(), arguments.getRandom(),
+                                   arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+        }).orElseGet(() -> {
+            LOGGER.error("No such structure {}", app);
+            return false;
+        });
     }
     
     @Override

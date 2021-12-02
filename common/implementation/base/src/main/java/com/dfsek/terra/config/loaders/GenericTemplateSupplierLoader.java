@@ -43,12 +43,11 @@ public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
     public T load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
         try {
-            if(!registry.contains((String) map.get("type"))) {
-                throw new LoadException("No such entry: " + map.get("type"));
-            }
-            ObjectTemplate<T> template = registry.get(((String) map.get("type"))).get();
-            loader.load(template, new MapConfiguration(map));
-            return template.get();
+            return loader
+                    .load(registry
+                                  .get(((String) map.get("type")))
+                                  .orElseThrow(() -> new LoadException("No such entry: " + map.get("type")))
+                                  .get(), new MapConfiguration(map)).get();
         } catch(ConfigException e) {
             throw new LoadException("Unable to load object: ", e);
         }

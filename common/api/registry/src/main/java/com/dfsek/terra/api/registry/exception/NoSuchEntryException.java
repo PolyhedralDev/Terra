@@ -5,7 +5,4 @@ public class NoSuchEntryException extends RuntimeException {
         super(message);
     }
     
-    public NoSuchEntryException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

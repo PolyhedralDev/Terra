@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import net.jafama.FastMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -25,9 +27,6 @@ import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class LootFunction implements Function<Void> {
@@ -61,16 +60,12 @@ public class LootFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         String id = data.apply(implementationArguments, variableMap);
-        LootTable table = registry.get(id);
-        
-        if(table == null) {
-            LOGGER.error("No such loot table {}", id);
-            return null;
-        }
-        
-        arguments.getBuffer().addItem(new BufferedLootApplication(table, platform, script),
-                                      new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
-                                                  FastMath.roundToInt(xz.getZ())));
+        registry.get(id).ifPresentOrElse(table -> arguments.getBuffer().addItem(new BufferedLootApplication(table, platform, script),
+                                                                                new Vector3(FastMath.roundToInt(xz.getX()),
+                                                                                            y.apply(implementationArguments, variableMap)
+                                                                                             .intValue(),
+                                                                                            FastMath.roundToInt(xz.getZ()))),
+                                         () -> LOGGER.error("No such loot table {}", id));
         return null;
     }
     

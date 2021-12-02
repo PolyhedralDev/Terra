@@ -72,7 +72,7 @@ public class PlatformImpl extends AbstractPlatform {
         
         worlds.forEach(world -> {
             FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
-            chunkGeneratorWrapper.setPack(getConfigRegistry().get(chunkGeneratorWrapper.getPack().getID()));
+            chunkGeneratorWrapper.setPack(getConfigRegistry().get(chunkGeneratorWrapper.getPack().getID()).orElseThrow());
         });
         
         return succeed;

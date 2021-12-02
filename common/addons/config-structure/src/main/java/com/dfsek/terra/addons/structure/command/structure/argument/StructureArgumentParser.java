@@ -21,6 +21,6 @@ public class StructureArgumentParser implements ArgumentParser<ConfiguredStructu
     
     @Override
     public ConfiguredStructure parse(CommandSender sender, String arg) {
-        return ((Player) sender).world().getConfig().getRegistry(ConfiguredStructure.class).get(arg);
+        return ((Player) sender).world().getConfig().getRegistry(ConfiguredStructure.class).get(arg).orElse(null);
     }
 }

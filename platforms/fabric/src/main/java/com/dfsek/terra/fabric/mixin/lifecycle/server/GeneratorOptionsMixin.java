@@ -78,10 +78,10 @@ public abstract class GeneratorOptionsMixin {
                                                                                                             l, false);
             
             prop = prop.substring(prop.indexOf(":") + 1);
-            
-            ConfigPack config = main.getConfigRegistry().get(prop);
-            
-            if(config == null) throw new IllegalArgumentException("No such pack " + prop);
+    
+            String finalProp = prop;
+            ConfigPack config = main.getConfigRegistry().get(prop).orElseThrow(() -> new IllegalArgumentException(
+                    "No such pack " + finalProp));
             
             main.getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
             

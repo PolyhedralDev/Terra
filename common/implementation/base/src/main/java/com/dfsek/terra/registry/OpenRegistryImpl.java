@@ -19,11 +19,13 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
@@ -33,10 +35,6 @@ import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-
-import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
-
-import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -59,17 +57,12 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @Override
     public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
-        T obj;
-        try {
-            obj = get((String) o);
-        } catch(NoSuchEntryException e) {
+        return get((String) o).orElseThrow(() -> {
             String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
             if(objects.isEmpty()) list = "[ ]";
-            throw new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                    "\" was found in this registry. Registry contains items: " + list);
-        }
-        
-        return obj;
+            return new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
+                                     "\" was found in this registry. Registry contains items: " + list);
+        });
     }
     
     @Override
@@ -101,12 +94,8 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public @NotNull T get(@NotNull String identifier) {
-        T value = objects.getOrDefault(identifier, (Entry<T>) NULL).getValue();
-        if(value == null) {
-            throw new NoSuchEntryException("Entry " + identifier + " is not present in registry.");
-        }
-        return value;
+    public Optional<T> get(@NotNull String identifier) {
+        return Optional.ofNullable(objects.getOrDefault(identifier, (Entry<T>) NULL).getValue());
     }
     
     @Override

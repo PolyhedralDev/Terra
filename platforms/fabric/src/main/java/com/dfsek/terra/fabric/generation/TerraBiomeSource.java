@@ -24,6 +24,7 @@ import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,16 +35,19 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
-import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
-
 
 public class TerraBiomeSource extends BiomeSource {
     public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
                                                                                                           Codec.STRING.fieldOf("pack").forGetter(ConfigPack::getID)
                                                                                                         )
                                                                                                   .apply(config, config.stable(
-                                                                                                          FabricEntryPoint.getPlatform()
-                                                                                                                          .getConfigRegistry()::get))));
+                                                                                                          id -> FabricEntryPoint.getPlatform()
+                                                                                                                                .getConfigRegistry()
+                                                                                                                                .get(id)
+                                                                                                                                .orElseThrow(
+                                                                                                                                        () -> new IllegalArgumentException(
+                                                                                                                                                "No such config pack " +
+                                                                                                                                                id))))));
     public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                                                                                                               RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
                                                                                                               Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),

@@ -34,10 +34,8 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     public Supplier<OpenRegistry<TerraBiome>> registrySupplier(ConfigPack pack) {
         return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<TerraBiome>) (t, c, loader) -> {
             if(c.equals("SELF")) return null;
-            TerraBiome obj = registry.get((String) c);
-            if(obj == null)
-                throw new LoadException("No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry.");
-            return obj;
+            return registry.get((String) c).orElseThrow(() -> new LoadException(
+                    "No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry."));
         });
     }
     

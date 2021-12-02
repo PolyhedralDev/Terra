@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -28,9 +29,8 @@ public interface Registry<T> extends TypeLoader<T> {
      *
      * @return Value matching the identifier, {@code null} if no value is present.
      */
-    @NotNull
     @Contract(pure = true)
-    T get(@NotNull String identifier) throws NoSuchEntryException;
+    Optional<T> get(@NotNull String identifier);
     
     /**
      * Check if the registry contains a value.

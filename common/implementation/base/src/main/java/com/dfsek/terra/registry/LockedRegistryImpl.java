@@ -22,6 +22,7 @@ import com.dfsek.tectonic.loading.ConfigLoader;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -44,7 +45,7 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public @NotNull T get(@NotNull String identifier) {
+    public Optional<T> get(@NotNull String identifier) {
         return registry.get(identifier);
     }
     
