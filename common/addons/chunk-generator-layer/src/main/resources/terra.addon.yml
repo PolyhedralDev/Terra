@@ -4,7 +4,7 @@ contributors:
 id: chunk-generator-layer
 version: @VERSION@
 entrypoints:
-  - "com.dfsek.terra.addons.chunkgenerator.layer.LayerChunkGeneratorAddon"
+  - "com.dfsek.terra.addons.chunkgenerator.layer.LayeredChunkGeneratorAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra-chunk-generator-noise-3d/issues
   source: https://github.com/PolyhedralDev/Terra-chunk-generator-noise-3d
