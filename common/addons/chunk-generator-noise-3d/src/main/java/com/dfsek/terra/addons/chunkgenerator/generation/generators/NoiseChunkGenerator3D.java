@@ -109,11 +109,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     @Override
-    public Platform getPlatform() {
-        return platform;
-    }
-    
-    @Override
     public List<GenerationStage> getGenerationStages() {
         return generationStages;
     }

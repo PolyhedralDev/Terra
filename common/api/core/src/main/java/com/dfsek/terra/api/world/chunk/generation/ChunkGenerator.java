@@ -32,8 +32,6 @@ public interface ChunkGenerator {
     
     ConfigPack getConfigPack();
     
-    Platform getPlatform();
-    
     List<GenerationStage> getGenerationStages();
     
     BlockState getBlock(ServerWorld world, int x, int y, int z);
