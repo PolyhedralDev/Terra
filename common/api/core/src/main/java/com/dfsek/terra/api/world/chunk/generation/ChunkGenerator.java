@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.world.chunk.generation;
 
+import com.dfsek.terra.api.world.World;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -24,7 +26,7 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 public interface ChunkGenerator {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                            int chunkZ, int chunkX);
-    Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, ServerWorld world, int elevationSmooth);
+    Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
     
     List<GenerationStage> getGenerationStages();
     

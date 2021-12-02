@@ -19,16 +19,6 @@ import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
 public interface WorldConfig extends StringIdentifiable {
     int elevationBlend();
     
-    boolean disableTrees();
-    
-    boolean disableCarving();
-    
-    boolean disableOres();
-    
-    boolean disableFlora();
-    
-    boolean disableStructures();
-    
     <T> Registry<T> getRegistry(Class<T> clazz);
     
     ServerWorld getWorld();
@@ -39,11 +29,5 @@ public interface WorldConfig extends StringIdentifiable {
     
     ConfigPack getPack();
     
-    String getAuthor();
-    
-    String getVersion();
-    
     Map<String, String> getLocatable();
-    
-    boolean isDisableSaplings();
 }

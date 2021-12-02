@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.World;
+
 import net.jafama.FastMath;
 
 import java.util.HashMap;
@@ -39,7 +41,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
      * @param chunkZ   Z coordinate of the chunk.
      * @param provider Biome Provider to use for biome fetching.
      */
-    public ChunkInterpolator3D(ServerWorld w, int chunkX, int chunkZ, BiomeProvider provider,
+    public ChunkInterpolator3D(World w, int chunkX, int chunkZ, BiomeProvider provider,
                                BiFunction<GenerationSettings, Vector3, Double> noiseGetter) {
         this.noiseGetter = noiseGetter;
         int xOrigin = chunkX << 4;

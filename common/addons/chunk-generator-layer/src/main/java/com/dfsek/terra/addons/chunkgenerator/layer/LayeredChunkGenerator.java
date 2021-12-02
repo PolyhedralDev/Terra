@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.chunkgenerator.layer;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -21,7 +22,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
     }
     
     @Override
-    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, ServerWorld world, int elevationSmooth) {
+    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth) {
         return null;
     }
     

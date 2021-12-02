@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
 import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
 
 import net.jafama.FastMath;
@@ -99,7 +100,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     @Override
-    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, ServerWorld world, int elevationSmooth) {
+    public Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth) {
         return new Sampler3D(chunkX, chunkZ, provider, world, elevationSmooth);
     }
     

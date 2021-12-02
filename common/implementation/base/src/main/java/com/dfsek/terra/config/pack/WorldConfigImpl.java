@@ -58,31 +58,6 @@ public class WorldConfigImpl implements WorldConfig {
     }
     
     @Override
-    public boolean disableTrees() {
-        return pack.getTemplate().disableTrees();
-    }
-    
-    @Override
-    public boolean disableCarving() {
-        return pack.getTemplate().disableCarvers();
-    }
-    
-    @Override
-    public boolean disableOres() {
-        return pack.getTemplate().disableOres();
-    }
-    
-    @Override
-    public boolean disableFlora() {
-        return pack.getTemplate().disableFlora();
-    }
-    
-    @Override
-    public boolean disableStructures() {
-        return pack.getTemplate().disableStructures();
-    }
-    
-    @Override
     @SuppressWarnings("unchecked")
     public <T> Registry<T> getRegistry(Class<T> clazz) {
         return (LockedRegistryImpl<T>) registryMap.get(clazz);
@@ -109,23 +84,8 @@ public class WorldConfigImpl implements WorldConfig {
     }
     
     @Override
-    public String getAuthor() {
-        return pack.getAuthor();
-    }
-    
-    @Override
-    public String getVersion() {
-        return pack.getVersion();
-    }
-    
-    @Override
     public Map<String, String> getLocatable() {
         return pack.getLocatable();
-    }
-    
-    @Override
-    public boolean isDisableSaplings() {
-        return getTemplate().isDisableSaplings();
     }
     
     @Override
