@@ -205,11 +205,10 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     @Override
     public @Nullable
-    ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
+    ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            if(!terraPlugin.getConfigRegistry().contains(id)) throw new IllegalArgumentException("No such config pack \"" + id + "\"");
-            ConfigPack pack = terraPlugin.getConfigRegistry().get(id);
+            ConfigPack pack = terraPlugin.getConfigRegistry().get(id).orElseThrow(() -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
-        }), terraPlugin.getRawConfigRegistry().get(id));
+        }), terraPlugin.getRawConfigRegistry().get(id).orElseThrow());
     }
 }
