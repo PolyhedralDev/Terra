@@ -28,7 +28,6 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageP
 
 
 public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder, StringIdentifiable {
-    WorldConfig toWorldConfig(ServerWorld world);
     
     void registerConfigType(ConfigType<?, ?> type, String id, int priority);
     

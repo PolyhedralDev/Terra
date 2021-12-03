@@ -73,7 +73,6 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
@@ -237,11 +236,6 @@ public class ConfigPackImpl implements ConfigPack {
                 .registerLoader(ConfigType.class, configTypeRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader));
         registryMap.forEach((clazz, reg) -> registry.registerLoader(clazz, reg.getLeft()));
-    }
-    
-    @Override
-    public WorldConfigImpl toWorldConfig(ServerWorld world) {
-        return new WorldConfigImpl(world, this, platform);
     }
     
     @Override
