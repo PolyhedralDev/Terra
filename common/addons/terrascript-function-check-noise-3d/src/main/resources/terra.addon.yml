@@ -1,7 +1,7 @@
 schema-version: 1
 contributors:
   - Terra contributors
-id: structure-terrascript-loader
+id: structure-function-check-noise-3d
 version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addon.terrascript.check.TerraScriptCheckFunctionAddon"
