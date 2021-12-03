@@ -152,7 +152,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getWorldHeight() {
-        return 256; //fixme
+        return world.getTopY();
     }
     
     public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
@@ -227,12 +227,12 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getSeaLevel() {
-        return 64; //fixme
+        return world.getSeaLevel();
     }
     
     @Override
     public int getMinimumY() {
-        return -64; //fixmw
+        return world.getBottomY();
     }
     
     @Override
