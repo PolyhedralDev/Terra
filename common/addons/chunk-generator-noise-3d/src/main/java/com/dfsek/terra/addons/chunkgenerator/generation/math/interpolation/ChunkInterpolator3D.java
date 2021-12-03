@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.World;
 
 import net.jafama.FastMath;
@@ -36,20 +35,22 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
     
     /**
      * Instantiates a 3D ChunkInterpolator3D at a pair of chunk coordinates.
-     *
-     * @param chunkX   X coordinate of the chunk.
+     *  @param chunkX   X coordinate of the chunk.
      * @param chunkZ   Z coordinate of the chunk.
      * @param provider Biome Provider to use for biome fetching.
+     * @param min
+     * @param max
      */
-    public ChunkInterpolator3D(World w, int chunkX, int chunkZ, BiomeProvider provider,
-                               BiFunction<GenerationSettings, Vector3, Double> noiseGetter) {
+    public ChunkInterpolator3D(long seed, int chunkX, int chunkZ, BiomeProvider provider,
+                               BiFunction<GenerationSettings, Vector3, Double> noiseGetter, int min, int max) {
         this.noiseGetter = noiseGetter;
+        this.min = min;
+        this.max = max;
+        
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         
-        this.max = w.getMaxHeight();
-        this.min = w.getMinHeight();
-        int range = max - min + 1;
+        int range = this.max - this.min + 1;
         
         int size = range >> 2;
         
@@ -57,7 +58,6 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
         
         double[][][] noiseStorage = new double[5][5][size + 1];
         
-        long seed = w.getSeed();
         
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
@@ -76,7 +76,7 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
                 }
                 
                 for(int y = 0; y < size + 1; y++) {
-                    noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, (y << 2) + min, (z << 2) + zOrigin);
+                    noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, (y << 2) + this.min, (z << 2) + zOrigin);
                 }
             }
         }

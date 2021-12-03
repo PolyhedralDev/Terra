@@ -46,7 +46,7 @@ public class BufferedLootApplication implements BufferedItem {
                 return;
             }
     
-            LootPopulateEvent event = new LootPopulateEvent(container, table, world.getConfig().getPack(), structure);
+            LootPopulateEvent event = new LootPopulateEvent(container, table, world.getPack(), structure);
             platform.getEventManager().callEvent(event);
             if(event.isCancelled()) return;
             

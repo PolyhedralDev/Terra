@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
+import com.dfsek.terra.api.config.ConfigPack;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerChunkManager;
@@ -60,7 +62,7 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 @Mixin(net.minecraft.server.world.ServerWorld.class)
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ServerWorldMixin {
-    private WorldConfig config;
+    private ConfigPack config;
     @Shadow
     @Final
     private ServerChunkManager chunkManager;
@@ -80,7 +82,7 @@ public abstract class ServerWorldMixin {
                                   net.minecraft.world.gen.chunk.ChunkGenerator chunkGenerator, boolean debugWorld, long seed,
                                   List<Spawner> spawners, boolean shouldTickTime, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
-            config = ((FabricChunkGeneratorWrapper) chunkGenerator).getPack().toWorldConfig((ServerWorld) this);
+            config = ((FabricChunkGeneratorWrapper) chunkGenerator).getPack();
         }
     }
     
@@ -129,7 +131,7 @@ public abstract class ServerWorldMixin {
         return ((TerraBiomeSource) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager().getChunkGenerator().getBiomeSource()).getProvider();
     }
     
-    public WorldConfig terra$getConfig() {
+    public ConfigPack terra$getPack() {
         return config;
     }
     

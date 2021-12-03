@@ -209,6 +209,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             ConfigPack pack = platform.getConfigRegistry().get(id).orElseThrow(() -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
-        }), platform.getRawConfigRegistry().get(id).orElseThrow(), platform);
+        }), platform.getRawConfigRegistry().get(id).orElseThrow());
     }
 }

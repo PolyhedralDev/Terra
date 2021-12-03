@@ -28,7 +28,6 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.registry.LockedRegistryImpl;
-import com.dfsek.terra.world.SamplerProviderImpl;
 
 
 public class WorldConfigImpl implements WorldConfig {

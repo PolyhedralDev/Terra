@@ -21,6 +21,6 @@ public class ScriptArgumentParser implements ArgumentParser<Structure> {
     
     @Override
     public Structure parse(CommandSender sender, String arg) {
-        return ((Player) sender).world().getConfig().getRegistry(Structure.class).get(arg).orElse(null);
+        return ((Player) sender).world().getPack().getRegistry(Structure.class).get(arg).orElse(null);
     }
 }

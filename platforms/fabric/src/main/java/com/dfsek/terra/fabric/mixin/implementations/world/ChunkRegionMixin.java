@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 import net.minecraft.block.FluidBlock;
@@ -59,7 +60,7 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
 public abstract class ChunkRegionMixin {
-    private WorldConfig config;
+    private ConfigPack config;
     
     @Shadow
     @Final
@@ -80,7 +81,7 @@ public abstract class ChunkRegionMixin {
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
     public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i,
                                   CallbackInfo ci) {
-        this.config = ((ServerWorld) world).getConfig();
+        this.config = ((ServerWorld) world).getPack();
     }
     
     @SuppressWarnings("deprecation")
@@ -149,7 +150,7 @@ public abstract class ChunkRegionMixin {
         return (ServerWorld) world;
     }
     
-    public WorldConfig terraWorld$getConfig() {
+    public ConfigPack terraWorld$getPack() {
         return config;
     }
     

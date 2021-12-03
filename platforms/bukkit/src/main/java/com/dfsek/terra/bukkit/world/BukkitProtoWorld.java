@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.world;
 
+import com.dfsek.terra.api.config.ConfigPack;
+
 import org.bukkit.Location;
 import org.bukkit.generator.LimitedRegion;
 
@@ -76,6 +78,11 @@ public class BukkitProtoWorld implements ProtoWorld {
     @Override
     public BiomeProvider getBiomeProvider() {
         return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getPack().getBiomeProvider();
+    }
+    
+    @Override
+    public ConfigPack getPack() {
+        return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getPack();
     }
     
     @Override

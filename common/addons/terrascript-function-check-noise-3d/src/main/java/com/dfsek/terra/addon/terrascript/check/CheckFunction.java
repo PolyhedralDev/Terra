@@ -7,23 +7,24 @@
 
 package com.dfsek.terra.addon.terrascript.check;
 
-import com.dfsek.terra.api.world.WritableWorld;
+import com.dfsek.terra.api.world.World;
 
 import net.jafama.FastMath;
 
 import java.util.Map;
 
+import com.dfsek.terra.addons.chunkgenerator.generation.generators.NoiseChunkGenerator3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProviderImpl;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 public class CheckFunction implements Function<String> {
@@ -70,8 +71,8 @@ public class CheckFunction implements Function<String> {
     private String apply(Vector3 vector, WritableWorld world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
-        SamplerProvider cache = world.getGenerator().getSamplerCache();
-        double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);
+        SamplerProviderImpl cache = ((NoiseChunkGenerator3D) world.getGenerator()).samplerProvider();
+        double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache, world);
         
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
         
@@ -83,9 +84,9 @@ public class CheckFunction implements Function<String> {
         //return "OCEAN"; // Below sea level
     }
     
-    private double sample(int x, int y, int z, SamplerProvider cache) {
+    private double sample(int x, int y, int z, SamplerProviderImpl cache, World world) {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
-        return cache.get(x, z).sample(x - (cx << 4), y, z - (cz << 4));
+        return cache.get(x, z, world).sample(x - (cx << 4), y, z - (cz << 4));
     }
 }

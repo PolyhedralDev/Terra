@@ -30,9 +30,6 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.world.ServerWorld;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,10 +73,10 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
-import com.dfsek.terra.config.dummy.DummyServerWorld;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;

@@ -17,8 +17,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
+import com.dfsek.terra.api.world.World;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -28,35 +27,38 @@ import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.math.Sampler;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-public class SamplerProviderImpl implements SamplerProvider {
-    private final LoadingCache<Long, Sampler> cache;
+public class SamplerProviderImpl {
+    private final LoadingCache<Pair<Long, World>, Sampler> cache;
     
-    public SamplerProviderImpl(Platform platform, ServerWorld world) {
+    
+    
+    public SamplerProviderImpl(Platform platform, BiomeProvider provider, int elevationSmooth) {
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
                             .build(new CacheLoader<>() {
                                 @Override
-                                public Sampler load(@NotNull Long key) {
+                                public Sampler load(@NotNull Pair<Long, World> pair) {
+                                    long key = pair.getLeft();
                                     int cx = (int) (key >> 32);
-                                    int cz = (int) key.longValue();
-                                    return world.getGenerator().createSampler(cx, cz, world.getBiomeProvider(), world,
-                                                                              world.getConfig().elevationBlend());
+                                    int cz = (int) key;
+                                    World world = pair.getRight();
+                                    return new Sampler3D(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight(), provider, elevationSmooth);
                                 }
                             });
     }
     
-    @Override
-    public Sampler get(int x, int z) {
+    public Sampler get(int x, int z, World world) {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
-        return getChunk(cx, cz);
+        return getChunk(cx, cz, world);
     }
     
-    @Override
-    public Sampler getChunk(int cx, int cz) {
+    public Sampler getChunk(int cx, int cz, World world) {
         long key = MathUtil.squash(cx, cz);
-        return cache.getUnchecked(key);
+        return cache.getUnchecked(Pair.of(key, world));
     }
 }

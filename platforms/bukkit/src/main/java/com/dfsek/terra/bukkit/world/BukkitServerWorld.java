@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -42,18 +43,6 @@ public class BukkitServerWorld implements ServerWorld {
     
     public BukkitServerWorld(org.bukkit.World delegate) {
         this.delegate = delegate;
-    }
-    
-    public UUID getUID() {
-        return delegate.getUID();
-    }
-    
-    public boolean isChunkGenerated(int x, int z) {
-        return delegate.isChunkGenerated(x, z);
-    }
-    
-    public File getWorldFolder() {
-        return delegate.getWorldFolder();
     }
     
     @Override
@@ -104,12 +93,12 @@ public class BukkitServerWorld implements ServerWorld {
     
     @Override
     public BiomeProvider getBiomeProvider() {
-        return ((BukkitChunkGeneratorWrapper) delegate.getGenerator()).getWorldConfig().getProvider();
+        return ((BukkitChunkGeneratorWrapper) delegate.getGenerator()).getPack().getBiomeProvider();
     }
     
     @Override
-    public WorldConfig getConfig() {
-        return ((BukkitChunkGeneratorWrapper) delegate.getGenerator()).getWorldConfig();
+    public ConfigPack getPack() {
+        return ((BukkitChunkGeneratorWrapper) delegate.getGenerator()).getPack();
     }
     
     @Override

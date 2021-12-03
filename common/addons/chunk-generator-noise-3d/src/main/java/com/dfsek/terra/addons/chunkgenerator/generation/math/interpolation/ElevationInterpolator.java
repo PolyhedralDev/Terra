@@ -16,11 +16,9 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class ElevationInterpolator {
     private final double[][] values = new double[18][18];
     
-    public ElevationInterpolator(World world, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
+    public ElevationInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
-        
-        long seed = world.getSeed();
         
         GenerationSettings[][] gens = new GenerationSettings[18 + 2 * smooth][18 + 2 * smooth];
         

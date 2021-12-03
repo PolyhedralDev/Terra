@@ -17,16 +17,6 @@
 
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigPack;
-
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
-
-import com.dfsek.terra.bukkit.world.BukkitServerWorld;
-
-import com.dfsek.terra.world.SamplerProviderImpl;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
@@ -40,8 +30,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
+import com.dfsek.terra.bukkit.world.BukkitServerWorld;
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
@@ -51,12 +46,10 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private ServerWorld terraWorld;
     
     private final ConfigPack pack;
-    private final Platform platform;
     
-    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, Platform platform) {
+    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack) {
         this.delegate = delegate;
         this.pack = pack;
-        this.platform = platform;
     }
     
     @Override
