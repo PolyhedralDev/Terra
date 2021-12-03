@@ -39,10 +39,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     
     boolean vanillaCaves();
     
-    boolean disableStructures();
-    
-    boolean doBetaCarvers();
-    
     boolean vanillaFlora();
     
     BiomeProvider getBiomeProvider();
@@ -64,8 +60,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     String getAuthor();
     
     String getVersion();
-    
-    Map<String, String> getLocatable();
     
     RegistryFactory getRegistryFactory();
     

@@ -269,16 +269,6 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public boolean disableStructures() {
-        return template.disableStructures();
-    }
-    
-    @Override
-    public boolean doBetaCarvers() {
-        return template.doBetaCarvers();
-    }
-    
-    @Override
     public boolean vanillaFlora() {
         return template.vanillaDecorations();
     }
@@ -339,11 +329,6 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public String getVersion() {
         return template.getVersion();
-    }
-    
-    @Override
-    public Map<String, String> getLocatable() {
-        return template.getLocatable();
     }
     
     @Override
