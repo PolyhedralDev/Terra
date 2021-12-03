@@ -72,7 +72,7 @@ public class CheckFunction implements Function<String> {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
         SamplerProviderImpl cache = ((NoiseChunkGenerator3D) world.getGenerator()).samplerProvider();
-        double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache, world);
+        double comp = sample(vector.getX(), vector.getY(), vector.getZ(), cache, world);
         
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
         
@@ -84,9 +84,9 @@ public class CheckFunction implements Function<String> {
         //return "OCEAN"; // Below sea level
     }
     
-    private double sample(int x, int y, int z, SamplerProviderImpl cache, World world) {
-        int cx = FastMath.floorDiv(x, 16);
-        int cz = FastMath.floorDiv(z, 16);
-        return cache.get(x, z, world).sample(x - (cx << 4), y, z - (cz << 4));
+    private double sample(double x, double y, double z, SamplerProviderImpl cache, World world) {
+        int cx = FastMath.floorDiv((int) x, 16);
+        int cz = FastMath.floorDiv((int) z, 16);
+        return cache.getChunk(cx, cz, world).sample(x - (cx << 4), y, z - (cz << 4));
     }
 }
