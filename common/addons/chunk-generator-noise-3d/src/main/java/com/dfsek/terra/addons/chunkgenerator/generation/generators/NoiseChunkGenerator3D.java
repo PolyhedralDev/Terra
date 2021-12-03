@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
@@ -37,6 +38,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {
+    private final Context context = new Context();
     private final ConfigPack configPack;
     private final Platform platform;
     private final List<GenerationStage> generationStages = new ArrayList<>();
@@ -137,5 +139,10 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         } else if(y <= paletteInfo.getSeaLevel()) {
             return paletteInfo.getOcean().get(paletteInfo.getSeaLevel() - y, x, y, z, world.getSeed());
         } else return air;
+    }
+    
+    @Override
+    public Context getContext() {
+        return context;
     }
 }

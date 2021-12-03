@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.world.chunk.generation;
 
+import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.world.World;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
-public interface ChunkGenerator {
+public interface ChunkGenerator extends PropertyHolder {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                            int chunkZ, int chunkX);
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
