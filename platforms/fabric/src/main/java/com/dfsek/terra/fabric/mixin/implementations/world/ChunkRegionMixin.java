@@ -158,6 +158,8 @@ public abstract class ChunkRegionMixin {
         return this;
     }
     
+    
+    // TODO remove this; we shouldnt need it anymore
     /**
      * We need regions delegating to the same world
      * to have the same hashcode. This
