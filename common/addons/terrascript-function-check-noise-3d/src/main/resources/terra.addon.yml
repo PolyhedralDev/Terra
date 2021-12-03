@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: structure-terrascript-loader
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.terrascript.TerraScriptAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra-structure-terrascript-loader/issues
+  source: https://github.com/PolyhedralDev/Terra-structure-terrascript-loader
+  docs: https://github.com/PolyhedralDev/Terra/wiki
+license: GNU LGPL v3.0
