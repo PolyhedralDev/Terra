@@ -70,7 +70,7 @@ public class CheckFunction implements Function<String> {
     private String apply(Vector3 vector, WritableWorld world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
-        SamplerProvider cache = world.getConfig().getSamplerCache();
+        SamplerProvider cache = world.getGenerator().getSamplerCache();
         double comp = sample(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), cache);
         
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.

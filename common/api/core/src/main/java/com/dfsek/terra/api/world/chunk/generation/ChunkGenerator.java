@@ -24,7 +24,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
-public interface ChunkGenerator extends PropertyHolder {
+public interface ChunkGenerator {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                            int chunkZ, int chunkX);
     Sampler createSampler(int chunkX, int chunkZ, BiomeProvider provider, World world, int elevationSmooth);
