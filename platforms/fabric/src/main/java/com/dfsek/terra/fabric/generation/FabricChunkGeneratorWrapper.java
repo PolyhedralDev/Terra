@@ -49,6 +49,9 @@ import net.minecraft.world.gen.feature.OceanMonumentFeature;
 import net.minecraft.world.gen.feature.PillagerOutpostFeature;
 import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.SwampHutFeature;
+import net.minecraft.world.gen.random.AtomicSimpleRandom;
+import net.minecraft.world.gen.random.ChunkRandom;
+import net.minecraft.world.gen.random.RandomSeed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,10 +142,11 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public void populateEntities(ChunkRegion region) {
         if(pack.vanillaMobs()) {
-            int cx = region.getCenterPos().x;
-            int cy = region.getCenterPos().z;
-            Biome biome = region.getBiome((new ChunkPos(cx, cy)).getStartPos());
-            SpawnHelper.populateEntities(region, biome, region.getCenterPos(), region.getRandom());
+            ChunkPos chunkPos = region.getCenterPos();
+            Biome biome = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
+            ChunkRandom chunkRandom = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
+            chunkRandom.setPopulationSeed(region.getSeed(), chunkPos.getStartX(), chunkPos.getStartZ());
+            SpawnHelper.populateEntities(region, biome, chunkPos, chunkRandom);
         }
     }
     
