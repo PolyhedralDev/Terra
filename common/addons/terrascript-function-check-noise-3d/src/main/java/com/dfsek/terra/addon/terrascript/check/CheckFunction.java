@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.script.functions;
+package com.dfsek.terra.addon.terrascript.check;
 
 import com.dfsek.terra.api.world.WritableWorld;
 
@@ -27,12 +27,10 @@ import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
 
 
 public class CheckFunction implements Function<String> {
-    private final Platform platform;
     private final Returnable<Number> x, y, z;
     private final Position position;
     
-    public CheckFunction(Platform platform, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
-        this.platform = platform;
+    public CheckFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;

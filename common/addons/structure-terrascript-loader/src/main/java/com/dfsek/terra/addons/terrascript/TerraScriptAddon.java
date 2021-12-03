@@ -9,11 +9,9 @@ package com.dfsek.terra.addons.terrascript;
 
 import com.dfsek.tectonic.exception.LoadException;
 
-import java.io.InputStream;
-import java.util.Map;
-
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -24,6 +22,10 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
+
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 
 public class TerraScriptAddon implements AddonInitializer {
@@ -47,7 +49,8 @@ public class TerraScriptAddon implements AddonInitializer {
                                 String id = StringUtil.fileName(entry.getKey());
                                 StructureScript structureScript = new StructureScript(entry.getValue(), id, platform, structureRegistry,
                                                                                       lootRegistry,
-                                                                                      event.getPack().getRegistryFactory().create());
+                                                                                      event.getPack().getOrCreateRegistry(
+                                                                                              (Type) FunctionBuilder.class));
                                 structureRegistry.register(structureScript.getID(), structureScript);
                             } catch(ParseException e) {
                                 throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);
@@ -55,6 +58,7 @@ public class TerraScriptAddon implements AddonInitializer {
                         }
                     }).close();
                 })
+                .priority(2)
                 .failThrough();
     }
 }

@@ -4,7 +4,7 @@ contributors:
 id: structure-terrascript-loader
 version: @VERSION@
 entrypoints:
-  - "com.dfsek.terra.addons.terrascript.TerraScriptAddon"
+  - "com.dfsek.terra.addon.terrascript.check.TerraScriptCheckFunctionAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra-structure-terrascript-loader/issues
   source: https://github.com/PolyhedralDev/Terra-structure-terrascript-loader

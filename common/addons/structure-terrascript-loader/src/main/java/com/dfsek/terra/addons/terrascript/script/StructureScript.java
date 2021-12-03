@@ -7,13 +7,12 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.WritableWorld;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +28,6 @@ import com.dfsek.terra.addons.terrascript.script.builders.BinaryNumberFunctionBu
 import com.dfsek.terra.addons.terrascript.script.builders.BiomeFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BlockFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.CheckBlockFunctionBuilder;
-import com.dfsek.terra.addons.terrascript.script.builders.CheckFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.EntityFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.GetMarkFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.LootFunctionBuilder;
@@ -53,10 +51,9 @@ import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
 import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class StructureScript implements Structure {
@@ -83,7 +80,6 @@ public class StructureScript implements Structure {
         parser
                 .registerFunction("block", new BlockFunctionBuilder(platform))
                 .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
-                .registerFunction("check", new CheckFunctionBuilder(platform))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, platform))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())
