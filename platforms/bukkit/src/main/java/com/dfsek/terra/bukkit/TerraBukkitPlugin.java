@@ -49,7 +49,7 @@ import com.dfsek.terra.commands.TerraCommandManager;
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
     
-    private final PlatformImpl terraPlugin = new PlatformImpl(this);
+    private final PlatformImpl platform = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
     
     @Override
@@ -58,13 +58,13 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
         
-        terraPlugin.getEventManager().callEvent(new PlatformInitializationEvent());
+        platform.getEventManager().callEvent(new PlatformInitializationEvent());
         
         new Metrics(this, 9017); // Set up bStats.
         
         PluginCommand cmd = Objects.requireNonNull(getCommand("terra"));
         
-        CommandManager manager = new TerraCommandManager(terraPlugin);
+        CommandManager manager = new TerraCommandManager(platform);
         
         
         try {
@@ -91,7 +91,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         try {
             Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
-            Bukkit.getPluginManager().registerEvents(new PaperListener(terraPlugin), this); // Register Paper events.
+            Bukkit.getPluginManager().registerEvents(new PaperListener(platform), this); // Register Paper events.
         } catch(ClassNotFoundException e) {
             /*
               The command
@@ -130,7 +130,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                             |------------------------------------------------------------------------------|
                             """.strip(), e);
                 
-                Bukkit.getPluginManager().registerEvents(new SpigotListener(terraPlugin), this); // Register Spigot event listener
+                Bukkit.getPluginManager().registerEvents(new SpigotListener(platform), this); // Register Spigot event listener
             }
         }
     }
@@ -207,8 +207,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            ConfigPack pack = terraPlugin.getConfigRegistry().get(id).orElseThrow(() -> new IllegalArgumentException("No such config pack \"" + id + "\""));
+            ConfigPack pack = platform.getConfigRegistry().get(id).orElseThrow(() -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
-        }), terraPlugin.getRawConfigRegistry().get(id).orElseThrow());
+        }), platform.getRawConfigRegistry().get(id).orElseThrow(), platform);
     }
 }

@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.world;
+package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;

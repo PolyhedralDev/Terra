@@ -11,6 +11,8 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
 
+import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,12 +41,17 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final Platform platform;
     private final List<GenerationStage> generationStages = new ArrayList<>();
     
+    private final int elevationBlend;
+    
+    private final SamplerProvider samplerCache;
+    
     private final BlockState air;
     
-    public NoiseChunkGenerator3D(ConfigPack c, Platform platform) {
+    public NoiseChunkGenerator3D(ConfigPack c, Platform platform, int elevationBlend) {
         this.configPack = c;
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
+        this.elevationBlend = elevationBlend;
         c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
     }
     
@@ -59,7 +66,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
             
-            Sampler sampler = world.getConfig().getSamplerCache().getChunk(chunkX, chunkZ);
+            Sampler sampler = samplerCache.getChunk(chunkX, chunkZ);
             
             long seed = world.getSeed();
             

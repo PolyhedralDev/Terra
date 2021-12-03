@@ -27,14 +27,11 @@ import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.util.math.SamplerProvider;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.world.SamplerProviderImpl;
 
 
 public class WorldConfigImpl implements WorldConfig {
-    private final SamplerProvider samplerProvider;
-    
     private final BiomeProvider provider;
     
     private final ServerWorld world;
@@ -45,16 +42,10 @@ public class WorldConfigImpl implements WorldConfig {
     public WorldConfigImpl(ServerWorld world, ConfigPackImpl pack, Platform platform) {
         this.world = world;
         this.pack = pack;
-        this.samplerProvider = new SamplerProviderImpl(platform, world);
         
         pack.getRegistryMap().forEach((clazz, pair) -> registryMap.put(clazz, new LockedRegistryImpl<>(pair.getLeft())));
         
         this.provider = pack.getBiomeProvider();
-    }
-    
-    @Override
-    public int elevationBlend() {
-        return pack.getTemplate().getElevationBlend();
     }
     
     @Override
@@ -66,11 +57,6 @@ public class WorldConfigImpl implements WorldConfig {
     @Override
     public ServerWorld getWorld() {
         return world;
-    }
-    
-    @Override
-    public SamplerProvider getSamplerCache() {
-        return samplerProvider;
     }
     
     @Override

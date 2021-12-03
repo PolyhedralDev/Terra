@@ -166,7 +166,6 @@ public class ConfigPackImpl implements ConfigPack {
             logger.error("Failed to load config pack from folder \"{}\"", folder.getAbsolutePath(), e);
             throw e;
         }
-        toWorldConfig(new DummyServerWorld()); // Build now to catch any errors immediately.
     }
     
     public ConfigPackImpl(ZipFile file, Platform platform) throws ConfigException {
@@ -219,8 +218,6 @@ public class ConfigPackImpl implements ConfigPack {
             logger.error("Failed to load config pack from ZIP archive \"{}\"", file.getName());
             throw e;
         }
-        
-        toWorldConfig(new DummyServerWorld()); // Build now to catch any errors immediately.
     }
     
     @Override

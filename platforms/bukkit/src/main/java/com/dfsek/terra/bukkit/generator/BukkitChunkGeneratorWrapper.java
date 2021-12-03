@@ -17,9 +17,15 @@
 
 package com.dfsek.terra.bukkit.generator;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
+
+import com.dfsek.terra.bukkit.world.BukkitServerWorld;
+
+import com.dfsek.terra.world.SamplerProviderImpl;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -34,22 +40,23 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
     private final ChunkGenerator delegate;
     
-    private WorldConfig worldConfig;
+    private World world;
+    private ServerWorld terraWorld;
     
     private final ConfigPack pack;
+    private final Platform platform;
     
-    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack) {
+    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, Platform platform) {
         this.delegate = delegate;
         this.pack = pack;
+        this.platform = platform;
     }
     
     @Override
@@ -59,10 +66,11 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
-        if(this.worldConfig == null) {
-            this.worldConfig = pack.toWorldConfig(BukkitAdapter.adapt(Bukkit.getWorld(worldInfo.getUID())));
+        if(this.world == null) {
+            this.world = Bukkit.getWorld(worldInfo.getUID());
+            this.terraWorld = new BukkitServerWorld(world);
         }
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), worldConfig.getWorld(), z, x);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), terraWorld, z, x);
     }
     
     @Override
@@ -95,8 +103,13 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         return pack.vanillaStructures();
     }
     
-    public WorldConfig getWorldConfig() {
-        return worldConfig;
+    
+    public World getWorld() {
+        return world;
+    }
+    
+    public ConfigPack getPack() {
+        return pack;
     }
     
     @Override

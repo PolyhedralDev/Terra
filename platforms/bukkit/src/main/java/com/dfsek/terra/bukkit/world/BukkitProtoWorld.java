@@ -1,25 +1,21 @@
 package com.dfsek.terra.bukkit.world;
 
+import org.bukkit.Location;
+import org.bukkit.generator.LimitedRegion;
+
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.WorldConfig;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
-
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
-
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
-
-import org.bukkit.Location;
-import org.bukkit.generator.LimitedRegion;
 
 
 public class BukkitProtoWorld implements ProtoWorld {
@@ -79,12 +75,7 @@ public class BukkitProtoWorld implements ProtoWorld {
     
     @Override
     public BiomeProvider getBiomeProvider() {
-        return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getWorldConfig().getProvider();
-    }
-    
-    @Override
-    public WorldConfig getConfig() {
-        return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getWorldConfig();
+        return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getPack().getBiomeProvider();
     }
     
     @Override

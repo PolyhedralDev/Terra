@@ -59,13 +59,12 @@ public final class FabricAddon implements BaseAddon {
                          .getHandler(FunctionalEventHandler.class)
                          .register(this, ConfigPackPreLoadEvent.class)
                          .then(event -> {
-                             PreLoadCompatibilityOptions template = new PreLoadCompatibilityOptions();
                              try {
-                                 event.loadTemplate(template);
+                                 PreLoadCompatibilityOptions template = event.loadTemplate(new PreLoadCompatibilityOptions());
+                                 templates.put(event.getPack(), Mutable.of(template, null));
                              } catch(ConfigException e) {
                                  logger.error("Error loading config template", e);
                              }
-                             templates.put(event.getPack(), Mutable.of(template, null));
                          })
                          .global();
         
@@ -73,15 +72,11 @@ public final class FabricAddon implements BaseAddon {
                          .getHandler(FunctionalEventHandler.class)
                          .register(this, ConfigPackPostLoadEvent.class)
                          .then(event -> {
-                             PostLoadCompatibilityOptions template = new PostLoadCompatibilityOptions();
-            
                              try {
-                                 event.loadTemplate(template);
+                                 templates.get(event.getPack()).setRight(event.loadTemplate(new PostLoadCompatibilityOptions()));
                              } catch(ConfigException e) {
                                  logger.error("Error loading config template", e);
                              }
-            
-                             templates.get(event.getPack()).setRight(template);
                          })
                          .priority(100)
                          .global();

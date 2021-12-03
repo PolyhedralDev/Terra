@@ -32,8 +32,9 @@ public abstract class ConfigPackLoadEvent implements PackEvent, FailThroughEvent
      *
      * @param template Template to register.
      */
-    public void loadTemplate(ConfigTemplate template) throws ConfigException {
+    public <T extends ConfigTemplate> T loadTemplate(T template) throws ConfigException {
         configLoader.accept(template);
+        return template;
     }
     
     @Override

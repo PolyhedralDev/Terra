@@ -109,8 +109,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("EXPRESSION", () -> new ExpressionFunctionTemplate(packSamplers, packFunctions));
             
             
-                  NoiseConfigPackTemplate template = new NoiseConfigPackTemplate();
-                  event.loadTemplate(template);
+                  NoiseConfigPackTemplate template = event.loadTemplate(new NoiseConfigPackTemplate());
                   packSamplers.putAll(template.getSamplers());
                   packFunctions.putAll(template.getFunctions());
               })
