@@ -13,21 +13,6 @@ import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
@@ -39,6 +24,23 @@ import com.dfsek.terra.addons.manifest.impl.exception.ManifestException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestNotPresentException;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
     private static final Logger logger = LoggerFactory.getLogger(ManifestAddonLoader.class);
@@ -49,7 +51,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
             .registerLoader(VersionRange.class, new VersionRangeLoader())
             .registerLoader(WebsiteConfig.class, WebsiteConfig::new);
     
-    public ManifestAddon loadAddon(Path addonPath) {
+    public ManifestAddon loadAddon(Path addonPath, ClassLoader loader) {
         try(JarFile jar = new JarFile(addonPath.toFile())) {
             logger.debug("Loading addon from JAR {}", addonPath);
             
@@ -72,12 +74,12 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                 }
                 
                 @SuppressWarnings({ "IOResourceOpenedButNotSafelyClosed", "resource" })
-                ManifestAddonClassLoader loader = new ManifestAddonClassLoader(new URL[]{ addonPath.toUri().toURL() },
-                                                                               getClass().getClassLoader());
+                ManifestAddonClassLoader childLoader = new ManifestAddonClassLoader(new URL[]{ addonPath.toUri().toURL() },
+                                                                                    loader);
                 
                 List<AddonInitializer> initializers = manifest.getEntryPoints().stream().map(entryPoint -> {
                     try {
-                        Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
+                        Object in = childLoader.loadClass(entryPoint).getConstructor().newInstance();
                         if(!(in instanceof AddonInitializer)) {
                             throw new AddonException(in.getClass() + " does not extend " + AddonInitializer.class);
                         }
@@ -97,7 +99,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                 throw new ManifestException("Failed to load addon manifest", e);
             }
         } catch(IOException e) {
-            throw new UncheckedIOException(e);
+            throw new AddonException("Failed to load addon from JAR " + addonPath, e);
         }
     }
     
@@ -105,11 +107,22 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
     public Iterable<ManifestAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
         logger.debug("Loading addons...");
         
-        try(Stream<Path> addons = Files.walk(addonsFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
-            return addons.filter(path -> path.toFile().isFile())
-                         .filter(path -> path.toFile().canRead())
-                         .filter(path -> path.toString().endsWith(".jar"))
-                         .map(this::loadAddon)
+        try(Stream<Path> files = Files.walk(addonsFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
+            List<Path> addons = files.filter(path -> path.toFile().isFile())
+                                     .filter(path -> path.toFile().canRead())
+                                     .filter(path -> path.toString().endsWith(".jar"))
+                                     .toList();
+            
+            ManifestAddonClassLoader loader = new ManifestAddonClassLoader(addons.stream().map(path -> {
+                try {
+                    return path.toUri().toURL();
+                } catch(MalformedURLException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }).toArray(URL[]::new), getClass().getClassLoader());
+            
+            return addons.stream()
+                         .map(jar -> loadAddon(jar, loader))
                          .collect(Collectors.toList());
         } catch(IOException e) {
             throw new UncheckedIOException(e);
