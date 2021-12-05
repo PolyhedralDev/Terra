@@ -27,7 +27,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
@@ -53,7 +53,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private @Meta NoiseSampler carvingEquation = NoiseSampler.zero();
     
     @Value("vanilla")
-    private @Meta ProbabilityCollection<Biome> vanilla;
+    private @Meta ProbabilityCollection<PlatformBiome> vanilla;
     
     @Value("biome-noise")
     @Default
@@ -198,7 +198,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return id;
     }
     
-    public ProbabilityCollection<Biome> getVanilla() {
+    public ProbabilityCollection<PlatformBiome> getVanilla() {
         return vanilla;
     }
     

@@ -24,7 +24,7 @@ public interface TerraBiome extends PropertyHolder {
      *
      * @return TerraBiome - The Vanilla biome.
      */
-    ProbabilityCollection<Biome> getVanillaBiomes();
+    ProbabilityCollection<PlatformBiome> getVanillaBiomes();
     
     /**
      * Gets the BiomeTerrain instance used to generate the biome.

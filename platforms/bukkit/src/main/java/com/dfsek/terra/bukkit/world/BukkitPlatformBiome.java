@@ -15,27 +15,20 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric.util;
+package com.dfsek.terra.bukkit.world;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
-public class ProtoBiome implements Biome {
-    private final Identifier identifier;
+public class BukkitPlatformBiome implements PlatformBiome {
+    private final org.bukkit.block.Biome biome;
     
-    public ProtoBiome(Identifier identifier) {
-        this.identifier = identifier;
-    }
-    
-    public net.minecraft.world.biome.Biome get(Registry<net.minecraft.world.biome.Biome> registry) {
-        return registry.get(identifier);
+    public BukkitPlatformBiome(org.bukkit.block.Biome biome) {
+        this.biome = biome;
     }
     
     @Override
-    public Object getHandle() {
-        return identifier;
+    public org.bukkit.block.Biome getHandle() {
+        return biome;
     }
 }

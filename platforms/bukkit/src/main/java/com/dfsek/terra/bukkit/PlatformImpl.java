@@ -29,10 +29,10 @@ import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
-import com.dfsek.terra.bukkit.world.BukkitBiome;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -87,13 +87,13 @@ public class PlatformImpl extends AbstractPlatform {
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(BlockState.class, (t, o, l) -> handle.createBlockData((String) o))
-                .registerLoader(Biome.class, (t, o, l) -> parseBiome((String) o))
+                .registerLoader(PlatformBiome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         
     }
     
-    private BukkitBiome parseBiome(String id) throws LoadException {
+    private BukkitPlatformBiome parseBiome(String id) throws LoadException {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id);
-        return new BukkitBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
+        return new BukkitPlatformBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
 }

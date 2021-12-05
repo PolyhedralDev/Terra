@@ -46,7 +46,6 @@ import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.TerraBiome;
-import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
@@ -70,7 +69,7 @@ public final class FabricUtil {
         //TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
         
         Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-        Biome vanilla = ((ProtoBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
+        Biome vanilla = ((ProtoPlatformBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         

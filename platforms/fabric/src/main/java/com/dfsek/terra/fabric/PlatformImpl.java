@@ -22,6 +22,9 @@ import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.LoadException;
 import com.dfsek.tectonic.loading.TypeRegistry;
+
+import com.dfsek.terra.api.world.biome.PlatformBiome;
+
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.world.ServerWorld;
@@ -46,7 +49,7 @@ import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;
-import com.dfsek.terra.fabric.util.ProtoBiome;
+import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
 
 public class PlatformImpl extends AbstractPlatform {
@@ -135,7 +138,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(com.dfsek.terra.api.world.biome.Biome.class, (t, o, l) -> parseBiome((String) o))
+        registry.registerLoader(PlatformBiome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(Identifier.class, (t, o, l) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
                     if(identifier == null)
@@ -145,9 +148,9 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     
-    private ProtoBiome parseBiome(String id) throws LoadException {
+    private ProtoPlatformBiome parseBiome(String id) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
         if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier); // failure.
-        return new ProtoBiome(identifier);
+        return new ProtoPlatformBiome(identifier);
     }
 }
