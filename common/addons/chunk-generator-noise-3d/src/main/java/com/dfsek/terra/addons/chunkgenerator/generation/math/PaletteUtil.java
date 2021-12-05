@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
-import com.dfsek.terra.api.util.math.Sampler;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 

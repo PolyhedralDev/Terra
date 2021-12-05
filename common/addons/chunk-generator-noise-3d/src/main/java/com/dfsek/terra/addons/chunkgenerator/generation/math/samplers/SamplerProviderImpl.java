@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
