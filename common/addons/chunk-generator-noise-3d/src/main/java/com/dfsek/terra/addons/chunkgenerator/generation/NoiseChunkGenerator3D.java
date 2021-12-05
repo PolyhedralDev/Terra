@@ -57,8 +57,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     @Override
     @SuppressWarnings("try")
     public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
-                                  int chunkZ,
-                                  int chunkX) {
+                                  int chunkX, int chunkZ) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
             BiomeProvider grid = world.getBiomeProvider();
             

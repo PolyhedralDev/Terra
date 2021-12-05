@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -63,7 +62,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
             this.world = Bukkit.getWorld(worldInfo.getUID());
             this.terraWorld = new BukkitServerWorld(world);
         }
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), terraWorld, z, x);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), terraWorld, x, z);
     }
     
     @Override

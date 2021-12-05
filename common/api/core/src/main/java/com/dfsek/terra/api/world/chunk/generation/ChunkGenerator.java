@@ -21,7 +21,7 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 public interface ChunkGenerator {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
-                           int chunkZ, int chunkX);
+                           int chunkX, int chunkZ);
     
     List<GenerationStage> getGenerationStages();
     
