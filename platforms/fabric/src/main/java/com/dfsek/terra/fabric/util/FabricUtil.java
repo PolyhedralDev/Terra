@@ -33,7 +33,9 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -48,6 +50,10 @@ import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
 public final class FabricUtil {
+    
+    private static final Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>>
+            terraVanillaBiomes = new HashMap<>();
+    
     public static String createBiomeID(ConfigPack pack, String biomeID) {
         return pack.getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
     }
@@ -57,10 +63,8 @@ public final class FabricUtil {
      *
      * @param biome The Terra BiomeBuilder.
      * @param pack  The ConfigPack this biome belongs to.
-     *
-     * @return The Minecraft delegate biome.
      */
-    public static net.minecraft.world.biome.Biome createBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager) {
+    public static void registerBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager, String id) {
         // BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = new HashMap<>(); // template.getColors();
         
@@ -133,7 +137,7 @@ public final class FabricUtil {
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
         }
         
-        return new net.minecraft.world.biome.Biome.Builder()
+        net.minecraft.world.biome.Biome minecraftBiome = new net.minecraft.world.biome.Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
                 .temperature(vanilla.getTemperature())
@@ -142,6 +146,16 @@ public final class FabricUtil {
                 .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
+        Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
+        FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, identifier, minecraftBiome);
+        
+        terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
+                biomeRegistry.getKey(minecraftBiome).orElseThrow());
+        
+    }
+    
+    public static Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>> getTerraVanillaBiomes() {
+        return terraVanillaBiomes;
     }
     
     public static <T> void registerOrOverwrite(Registry<T> registry, RegistryKey<Registry<T>> key, Identifier identifier, T item) {

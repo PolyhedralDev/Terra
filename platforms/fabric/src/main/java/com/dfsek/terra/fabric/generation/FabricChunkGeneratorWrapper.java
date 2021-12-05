@@ -191,12 +191,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     @Override
-    public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk,
-                                   StructureManager structureManager, long worldSeed) {
-        super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
-    }
-    
-    @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();

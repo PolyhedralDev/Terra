@@ -5,11 +5,12 @@
     "compatibilityLevel": "JAVA_16",
     "mixins": [
         "CommandManagerMixin",
+        "ConfiguredStructureFeaturesMixin",
         "ServerWorldMixin",
-        "access.StructureAccessorAccessor",
         "access.BiomeEffectsAccessor",
         "access.MobSpawnerLogicAccessor",
         "access.StateAccessor",
+        "access.StructureAccessorAccessor",
         "implementations.BiomeMixin",
         "implementations.block.BlockEntityMixin",
         "implementations.block.BlockMixin",
