@@ -31,6 +31,7 @@ import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 
+import com.dfsek.terra.api.event.events.config.RegistrationEvent;
 import com.dfsek.terra.api.util.generic.Construct;
 
 import org.slf4j.Logger;
@@ -164,6 +165,8 @@ public class ConfigPackImpl implements ConfigPack {
         register(abstractConfigLoader);
         platform.register(abstractConfigLoader);
         
+        platform.getEventManager().callEvent(new RegistrationEvent(this));
+        
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
         this.addons = addonsTemplate.getAddons();
@@ -263,13 +266,14 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public void registerConfigType(ConfigType<?, ?> type, String id, int priority) {
+    public ConfigPack registerConfigType(ConfigType<?, ?> type, String id, int priority) {
         Set<String> contained = new HashSet<>();
         configTypes.forEach((p, configs) -> configs.forEach(pair -> {
             if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config ID: " + id);
             contained.add(id);
         }));
         configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(Pair.of(id, type));
+        return this;
     }
     
     @Override

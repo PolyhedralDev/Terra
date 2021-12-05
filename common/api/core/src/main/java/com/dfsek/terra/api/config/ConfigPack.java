@@ -29,7 +29,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageP
 
 public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder, StringIdentifiable {
     
-    void registerConfigType(ConfigType<?, ?> type, String id, int priority);
+    ConfigPack registerConfigType(ConfigType<?, ?> type, String id, int priority);
     
     Map<BaseAddon, VersionRange> addons();
     
