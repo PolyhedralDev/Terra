@@ -31,12 +31,12 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-public class SamplerProviderImpl {
+public class SamplerProvider {
     private final LoadingCache<Pair<Long, World>, Sampler> cache;
     
     
     
-    public SamplerProviderImpl(Platform platform, BiomeProvider provider, int elevationSmooth) {
+    public SamplerProvider(Platform platform, BiomeProvider provider, int elevationSmooth) {
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
                             .build(new CacheLoader<>() {
                                 @Override

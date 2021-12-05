@@ -14,7 +14,7 @@ import net.jafama.FastMath;
 import java.util.Map;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.generators.NoiseChunkGenerator3D;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProviderImpl;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
@@ -71,7 +71,7 @@ public class CheckFunction implements Function<String> {
     private String apply(Vector3 vector, WritableWorld world) {
         int y = vector.getBlockY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
-        SamplerProviderImpl cache = ((NoiseChunkGenerator3D) world.getGenerator()).samplerProvider();
+        SamplerProvider cache = ((NoiseChunkGenerator3D) world.getGenerator()).samplerProvider();
         double comp = sample(vector.getX(), vector.getY(), vector.getZ(), cache, world);
         
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
@@ -84,7 +84,7 @@ public class CheckFunction implements Function<String> {
         //return "OCEAN"; // Below sea level
     }
     
-    private double sample(double x, double y, double z, SamplerProviderImpl cache, World world) {
+    private double sample(double x, double y, double z, SamplerProvider cache, World world) {
         int cx = FastMath.floorDiv((int) x, 16);
         int cz = FastMath.floorDiv((int) z, 16);
         return cache.getChunk(cx, cz, world).sample(x - (cx << 4), y, z - (cz << 4));

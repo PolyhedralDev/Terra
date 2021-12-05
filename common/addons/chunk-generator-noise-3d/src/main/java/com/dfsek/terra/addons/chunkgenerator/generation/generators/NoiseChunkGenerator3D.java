@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProviderImpl;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -38,14 +38,14 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final Platform platform;
     private final List<GenerationStage> generationStages = new ArrayList<>();
     
-    private final SamplerProviderImpl samplerCache;
+    private final SamplerProvider samplerCache;
     
     private final BlockState air;
     
     public NoiseChunkGenerator3D(ConfigPack c, Platform platform, int elevationBlend) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
-        this.samplerCache = new SamplerProviderImpl(platform, c.getBiomeProvider(), elevationBlend);
+        this.samplerCache = new SamplerProvider(platform, c.getBiomeProvider(), elevationBlend);
         c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
     }
     
@@ -129,7 +129,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         } else return air;
     }
     
-    public SamplerProviderImpl samplerProvider() {
+    public SamplerProvider samplerProvider() {
         return samplerCache;
     }
 }
