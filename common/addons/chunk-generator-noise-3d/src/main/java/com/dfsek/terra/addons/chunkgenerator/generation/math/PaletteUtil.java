@@ -20,7 +20,7 @@ public final class PaletteUtil {
     private static final double DERIVATIVE_DIST = 0.55;
     
     public static Palette getPalette(int x, int y, int z, Sampler3D sampler, PaletteInfo paletteInfo) {
-        SlantHolder slant = paletteInfo.getSlantHolder();
+        SlantHolder slant = paletteInfo.slantHolder();
         if(slant != null) {
             double slope = derivative(sampler, x, y, z);
             if(slope > slant.getMinSlope()) {
@@ -28,7 +28,7 @@ public final class PaletteUtil {
             }
         }
         
-        return paletteInfo.getPaletteHolder().getPalette(y);
+        return paletteInfo.paletteHolder().getPalette(y);
     }
     
     public static double derivative(Sampler3D sampler, double x, double y, double z) {
