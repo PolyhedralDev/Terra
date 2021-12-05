@@ -28,8 +28,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT")
     shadedImplementation("io.papermc:paperlib:1.0.5")
     
-    shadedImplementation("org.bstats:bstats-bukkit:1.7")
-    
     shadedApi("com.google.guava:guava:30.0-jre")
 }
 
