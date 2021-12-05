@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
@@ -42,9 +41,15 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     private final BlockState air;
     
-    public NoiseChunkGenerator3D(ConfigPack c, Platform platform, int elevationBlend) {
+    private final int carverHorizontalResolution;
+    private final int carverVerticalResolution;
+    
+    public NoiseChunkGenerator3D(ConfigPack c, Platform platform, int elevationBlend, int carverHorizontalResolution,
+                                 int carverVerticalResolution) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
+        this.carverHorizontalResolution = carverHorizontalResolution;
+        this.carverVerticalResolution = carverVerticalResolution;
         this.samplerCache = new SamplerProvider(platform, c.getBiomeProvider(), elevationBlend);
         c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
     }
@@ -64,8 +69,14 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
             
             long seed = world.getSeed();
             
-            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(world.getBiomeProvider(), chunkX, chunkZ,
-                                                                                 world.getMaxHeight(), world.getMinHeight(), 2, 4, seed);
+            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(world.getBiomeProvider(),
+                                                                                 chunkX,
+                                                                                 chunkZ,
+                                                                                 world.getMaxHeight(),
+                                                                                 world.getMinHeight(),
+                                                                                 carverHorizontalResolution,
+                                                                                 carverVerticalResolution,
+                                                                                 seed);
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     int paletteLevel = 0;
