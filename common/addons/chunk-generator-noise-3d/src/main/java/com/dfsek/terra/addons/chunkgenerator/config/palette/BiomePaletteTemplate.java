@@ -5,14 +5,13 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.chunkgenerator;
+package com.dfsek.terra.addons.chunkgenerator.config.palette;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
-import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;

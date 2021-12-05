@@ -12,7 +12,7 @@ import net.jafama.FastMath;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 

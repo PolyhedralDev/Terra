@@ -8,7 +8,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
-import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
-import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.chunkgenerator.config;
+package com.dfsek.terra.addons.chunkgenerator.config.noise;
 
 import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;

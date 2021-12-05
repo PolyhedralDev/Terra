@@ -5,8 +5,10 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.chunkgenerator.palette;
+package com.dfsek.terra.addons.chunkgenerator.config.palette;
 
+import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
+import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
