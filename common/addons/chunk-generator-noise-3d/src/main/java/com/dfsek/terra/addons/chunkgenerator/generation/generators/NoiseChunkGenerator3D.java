@@ -83,7 +83,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     BlockState data;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
-                            if(properties.carving().noise(seed, cx, y, cz) < 0) {
+                            if(properties.carving().noise(seed, cx, y, cz) <= 0) {
                                 data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
                                                                                                  seed);
                                 chunk.setBlock(x, y, z, data);
