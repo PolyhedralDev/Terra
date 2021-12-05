@@ -10,10 +10,8 @@ package com.dfsek.terra.addons.biome;
 import java.util.Set;
 
 import com.dfsek.terra.api.properties.Context;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.api.world.biome.GenerationSettings;
 
 
 /**
@@ -52,11 +50,6 @@ public class UserDefinedBiome implements Biome {
     @Override
     public PlatformBiome getPlatformBiome() {
         return vanilla;
-    }
-    
-    @Override
-    public GenerationSettings getGenerator() {
-        return gen;
     }
     
     @Override

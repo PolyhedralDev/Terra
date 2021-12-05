@@ -25,13 +25,6 @@ public interface Biome extends PropertyHolder {
      */
     PlatformBiome getPlatformBiome();
     
-    /**
-     * Gets the BiomeTerrain instance used to generate the biome.
-     *
-     * @return BiomeTerrain - The terrain generation instance.
-     */
-    GenerationSettings getGenerator();
-    
     int getColor();
     
     Set<String> getTags();
