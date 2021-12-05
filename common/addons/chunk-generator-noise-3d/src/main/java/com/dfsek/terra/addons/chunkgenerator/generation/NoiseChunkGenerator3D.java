@@ -8,19 +8,18 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
-import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
-
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -57,38 +56,39 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                                   int chunkX) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
             BiomeProvider grid = world.getBiomeProvider();
-    
+            
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
-    
+            
             Sampler3D sampler = samplerCache.getChunk(chunkX, chunkZ, world);
-    
+            
             long seed = world.getSeed();
-    
+            
+            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(world.getBiomeProvider(), chunkX, chunkZ,
+                                                                                 world.getMaxHeight(), world.getMinHeight(), 2, 4, seed);
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
                     int paletteLevel = 0;
-    
+                    
                     int cx = xOrig + x;
                     int cz = zOrig + z;
-    
+                    
                     Biome biome = grid.getBiome(cx, cz, seed);
-                    BiomeNoiseProperties properties = biome.getContext().get(BiomeNoiseProperties.class);
-    
+                    
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-    
+                    
                     int sea = paletteInfo.seaLevel();
                     Palette seaPalette = paletteInfo.ocean();
-    
+                    
                     BlockState data;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
-                            if(properties.carving().noise(seed, cx, y, cz) <= 0) {
+                            if(carver.sample(x, y, z) <= 0) {
                                 data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
                                                                                                  seed);
                                 chunk.setBlock(x, y, z, data);
                             }
-    
+                            
                             paletteLevel++;
                         } else if(y <= sea) {
                             chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig, seed));
