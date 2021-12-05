@@ -184,25 +184,7 @@ public class ConfigPackImpl implements ConfigPack {
     
         platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, (s, c) -> configurations.put(s.replace("\\","/"), c))); // Create all the configs.
     
-        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-    
-        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
-    
-        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
-    
-        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-    
-        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        registerMeta(configurations);
     
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
     
@@ -241,6 +223,28 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.load(packPostTemplate, packManifest);
         seededBiomeProvider = packPostTemplate.getProviderBuilder();
         checkDeadEntries();
+    }
+    
+    private void registerMeta(Map<String, Configuration> configurations) {
+        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+    
+        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
+    
+        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+    
+        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+    
+        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
     }
     
     @Override
