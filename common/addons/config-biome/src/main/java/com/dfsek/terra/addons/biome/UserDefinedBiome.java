@@ -18,7 +18,6 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements Biome {
-    private final UserDefinedGenerationSettings gen;
     private final PlatformBiome vanilla;
     private final String id;
     private final BiomeTemplate config;
@@ -27,9 +26,8 @@ public class UserDefinedBiome implements Biome {
     
     private final Context context = new Context();
     
-    public UserDefinedBiome(PlatformBiome vanilla, UserDefinedGenerationSettings gen, BiomeTemplate config) {
+    public UserDefinedBiome(PlatformBiome vanilla, BiomeTemplate config) {
         this.vanilla = vanilla;
-        this.gen = gen;
         this.id = config.getID();
         this.config = config;
         this.color = config.getColor();

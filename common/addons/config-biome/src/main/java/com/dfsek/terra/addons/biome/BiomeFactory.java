@@ -22,12 +22,6 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, Biome> {
     
     @Override
     public Biome build(BiomeTemplate template, Platform platform) {
-        UserDefinedGenerationSettings generator = new UserDefinedGenerationSettings(template.getNoiseEquation(),
-                                                                                    template.getElevationEquation(),
-                                                                                    template.getCarvingEquation(), template.getBiomeNoise(),
-                                                                                    template.getElevationWeight(),
-                                                                                    template.getBlendDistance(), template.getBlendStep(),
-                                                                                    template.getBlendWeight());
-        return new UserDefinedBiome(template.getVanilla(), generator, template);
+        return new UserDefinedBiome(template.getVanilla(), template);
     }
 }
