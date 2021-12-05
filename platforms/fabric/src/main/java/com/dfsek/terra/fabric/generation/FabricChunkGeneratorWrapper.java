@@ -206,14 +206,12 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
+        super.generateFeatures(world, chunk, structureAccessor);
         delegate.getGenerationStages().forEach(populator -> {
             if(!(populator instanceof Chunkified)) {
                 populator.populate((ProtoWorld) world);
             }
         });
-        if(pack.vanillaFlora()) {
-            super.generateFeatures(world, chunk, structureAccessor);
-        }
     }
     
     @Override
@@ -243,19 +241,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             array[y - view.getBottomY()] = ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
-    }
-    
-    @Override
-    public int getHeightOnGround(int x, int z, Heightmap.Type heightmap, HeightLimitView world) {
-        return super.getHeightOnGround(x, z, heightmap, world);
-    }
-    
-    @Override
-    public boolean isStrongholdStartingChunk(ChunkPos chunkPos) {
-        if(pack.vanillaStructures()) {
-            return super.isStrongholdStartingChunk(chunkPos);
-        }
-        return false;
     }
     
     public ConfigPack getPack() {
